@@ -1,5 +1,13 @@
 # Shared contract: Recognize and Tenants specialist coordinators
 
+Current shared structure (13 October): read the relevant sections of [Company, domains and coordinator capabilities](domain-coordinator-structure-20261013.md). It defines responsibility, sibling interfaces, required skill/connection mapping, proven frontend-agent reference and completion/handoff duties. Capabilities are not automatic agent assignments. Current tasks and authorization control; stopped work stays stopped.
+
+## Current routing correction — 13 October 2026
+
+Apply the standing “Owner communication and delivery standard — 13 October 2026” in `C:/Users/gombc/.codex/AGENTS.md`: factual independent judgment, concise focused communication, no teaching or unsolicited code explanations, small-business simplicity and practical human steps, clean repeatable code, no one-off fixes or patch layering, and debugging/verification before delivery. Include it in subordinate handoffs; it adds no runtime or release permission.
+
+For a shared interface, load only the relevant rows of `C:/Users/gombc/.codex/skills/rs-coordinator/references/shared-delivery-lanes.md`. It maps Recognize, Tenants, Messages, Publish and read-only Engines planning, with operation-specific skill/review evidence. For worker transitions use the adjacent `worker-completion.md`; for context/delegation use `efficient-context.md`. These are reusable references, not new roles or runtime authority. The dated deployment and scope paragraphs below are historical snapshots; current owner instructions and verified task records control.
+
 ## Action after a clear failure — owner correction, 11 October 2026
 
 When a failure is established, use self-assessment to identify and perform the next authorized corrective action in the same turn. Do not substitute a status report, full evaluation, apology, or "Partial"/"Almost" closing response for continued work; do not make the owner repeat "fix it." Record evidence and the next action internally, then continue through the agreed acceptance. Logging a failure or updating these instructions is not a correction of the product failure.
@@ -46,8 +54,8 @@ Both specialists maintain their status and interface changes in Agents; read tho
 
 Agents base appZahVgD156cMAe3:
 - bases tbltaHwEyBfcuOHIm: stable base identity, Resume here and linked base-lanes. Read the row for your domain and its linked lanes; do not redefine another base.
-- agents tblmfGCqj3XZiXDBV: actual coordinator/worker identity, scope and status.
-- handoffs tbl5GR2kL4BlUbfJx: exact prompt, worker ID, execution location, references and next action. Prepared is not Dispatched.
+- threads tblvIft5zuUKuw3Si: current coordinator/worker chat identity, scope and status.
+- tasks tbluT1yhP1FJMb8Cm: current assignment, exact prompt, worker ID, references, acceptance and next action. Prepared is not Dispatched. Historical ___agents tblmfGCqj3XZiXDBV and ___handoffs tbl5GR2kL4BlUbfJx remain references, not active registers.
 - activity tblITeJfxlIhlDvGk: short completed-work/next-action record linked to affected base rows.
 - Resolve current tasks/fails/development tables from current schema; do not write to guessed historical names. Record observed failures once, timestamp/model/effort if known, cause only when supported. Do not duplicate old complaints or close them because a plan was written.
 

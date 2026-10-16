@@ -2,6 +2,10 @@
 
 Owner: skills-maintenance chat 01a11632-62fd-73b1-997e-8be4119185de. This process maintains instructions, not runtime code or business workflows. Use Airtable connector/MCP, not browser when supported.
 
+For a same-role chat continuation, start at `docs/coordination/rs-skills-start.md` and the current owner request. Its topic directory replaces full-library startup reads and completed adoption exercises; routine maintenance does not require reloading that packet.
+
+For assignment size, model evidence, repeated-context extraction or continuation, load `C:/Users/gombc/.codex/skills/rs-coordinator/references/efficient-context.md`. Keep this skills/agents role separate from product coordinators. Reuse references in existing skills before creating another skill or standing agent. Short replies, narrow reads and bounded authorized delegation are defaults; changing a model, dispatching or scheduling still requires applicable authority. Validate applied review and behavior separately from instruction loading.
+
 Registry: Agents appZahVgD156cMAe3, skills-included tbluP8DFZGFNLGX8u currently holds individual skills; skills is the existing category table. Consolidation is not yet complete. Retain existing IDs/links until a verified transfer. Individual source-path, revision (SHA256), review-state and last-checked describe actual inspected evidence, not behavior certification. Plugin-supplied sources remain vendor-owned; do not patch plugin cache.
 
 1. On an owner complaint or verified failure, update its existing complaints record with exact behavior, source/turn evidence, timestamp and exposed model/effort (unknown if unavailable). Link one actionable task; deduplicate recurrence instead of creating repeated generic complaints.
@@ -15,6 +19,8 @@ Registry: Agents appZahVgD156cMAe3, skills-included tbluP8DFZGFNLGX8u currently 
 Refresh triggers: owner request; relevant verified complaint or changed locked workflow; source/path/plugin change discovered during use; weekly inventory review Monday 09:00 America/New_York. Weekly job uses hashes and narrow records, reports only material changes or owner action, and does not repeatedly reload whole chat histories. Maximum 15 minutes per run; save exact remaining task at cutoff. It does not run agents indefinitely, edit third-party sources, release code or change architecture. No new table is needed.
 
 All local custom roots must be inventoried, including repository .agents/skills; absence from the short operational custom list is not evidence that a skill is obsolete. Third-party catalog reconciliation is a separate bounded task; do not call the entire inventory current until compared and read back.
+
+For shared setup changes, use the authoritative-source directory in `domain-coordinator-structure-20261013.md`. Update the source that owns the fact, then only affected links/current checkpoint fields. Preserve prior evidence in changes/activity instead of stacking contradictory current-state instructions. Record before/after revisions for changed SKILL.md and supporting references. Deliver narrowly scoped guidance-only reloads to authorized peers; inspect actual reads and preserved stops. Runtime behavior requires separate authorized proof. A shared-setup assignment belongs in its own existing or scoped task, not automatically in the inventory backlog.
 
 Latest bounded inventory checkpoint: `.git/ringstatus-control/skill-maintenance-state.json`. Start from its source hashes, report and existing task; compare relevant supporting references as well as SKILL.md. Recheck current registry names/status and exposed catalog instead of freezing a versioned plugin path or a cached-file claim into the schedule. Preserve vendor-owned sources even when copied outside plugin cache. Do not repeat unchanged full inventories or unavailable-validator attempts without relevant capability changes.
 

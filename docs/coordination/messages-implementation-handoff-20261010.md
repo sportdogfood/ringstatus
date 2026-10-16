@@ -1,5 +1,7 @@
 # Messages implementation handoff — 10 October 2026
 
+**14 October ownership addition:** Messages now owns the alerts page and completion, using Recognize identity and Tenants canonical preferences. The [current alerts handoff](recognize-tenants-messages-ownership-20261014.md) preserves the prepared implementation, failed verification and approval boundaries; this older two-way assignment does not replace it or authorize its execution.
+
 Prepared only. No runtime files changed, SMS, automation activation or deployment. Owner-confirmed architecture is in messages-lanes-20261010.md; verified source map is messages-all-lanes-map-20261010.md. Engine isolation remains deferred. Preserve existing OTP, producer calculations, alert events, deterministic two-way lookup and notifications UI. This handoff does not select a replacement architecture.
 
 CURRENT STATUS: first local selector/test scope was subsequently owner-approved and completed on10October.46/46offline regressions pass; independent review also reproduced19baseline failures and passed9edge probes; all bytes outside selector unchanged. Exact artifact/rollback/full-lane readiness are in messages-local-release-readiness-20261010.md and .git/ringstatus-control/messages-show-selection-20261010/. The original Prepared text above remains historical; only first scope implemented. Other queued code, deployment/SMS/activation remain unapproved.

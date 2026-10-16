@@ -1,5 +1,12 @@
 # Messages specialist — base retrofit and connection map
 
+**Current ownership correction — 14 October 2026:** Messages owns `/rs-barn-onboarding-alerts` and its input/save/retry acceptance. Recognize provides identity; Tenants retains canonical opt-ins, options and permission/data processing. Read [the exact three-area ownership and alerts handoff](recognize-tenants-messages-ownership-20261014.md), including existing source, failed checks and release boundaries. This supersedes earlier Tenants page ownership; product work is not restarted by this documentation change.
+
+
+Current entry (14 October 2026): use this domain's resume row in [the authoritative-source directory](domain-coordinator-structure-20261013.md). This dated document preserves workflow/source evidence; original setup commands and old dispatch/monitor instructions are historical, not a new assignment. Follow the current owner request and verified checkpoint. Guidance-only updates leave stopped product work stopped.
+
+Current shared structure (13 October): read the relevant sections of [Company, domains and coordinator capabilities](domain-coordinator-structure-20261013.md). It defines responsibility, sibling interfaces, required skill/connection mapping, proven frontend-agent reference and completion/handoff duties. Capabilities are not automatic agent assignments. Current tasks and authorization control; stopped work stays stopped.
+
 ## Clarification: finish the retrofit without requiring future runtime decisions
 
 The owner cannot answer technical questions about recipient precedence, reply implementation or engine isolation. Those are not prerequisites for this assignment's base retrofit. Record unresolved future behavior in development, distinguish it from existing proven behavior, and finish the operating records, index, registry readback and usable resume checkpoint. Do not expand this assignment into implementing messaging or claim unknown policies were approved.

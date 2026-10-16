@@ -1,0 +1,14 @@
+{
+  "page": "lm",
+  "width": 393,
+  "hover": [
+    {
+      "background": "rgb(70, 51, 43)",
+      "color": "rgb(255, 255, 255)",
+      "font": "14px",
+      "height": 43.998348236083984,
+      "radius": "18px 18px 18px 0px",
+      "text": "contact"
+    }
+  ]
+}

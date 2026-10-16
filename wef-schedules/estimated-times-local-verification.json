@@ -1,0 +1,20 @@
+{
+  "verified_at": "2026-10-15T18:13:32.531334+00:00",
+  "scope": "local only",
+  "tests": 49,
+  "passed": 49,
+  "failed": 0,
+  "deployed": false,
+  "business_runs": false,
+  "sha256": {
+    "schedule-times.js": "8717f4e0ca9b75ed250a1dfb01ccf1b3e511a3ab7e5b2b22d4a4df312335c2b9",
+    "store.js": "f8bc5862bc55a54e6779c69d4cfcd3e9d9e47b25e229b429d1359e53560afd35",
+    "package.json": "f962562aebe17f715806281e61236d215419c098cfa005e8c32cdf97d90ee1fe",
+    "package-lock.json": "dfad56209c7eb6a1fc6161eafeaf2bae588505f7516af5780b6a3c64c1c0faae",
+    "tests/isolation.test.js": "e6e61f9afc2efedc745658d7f7bf260d13ca2893a4ea8e74ca3ed3d523651fd0",
+    "tests/schedule-times.test.js": "90acdca21c4c0bf761a9ad0b9d1135018433168734bb1100c2c13ab58e8f4fb6",
+    "tests/schedules_staging.test.js": "419e6418b6bc7cf025bc82ff852495b968faada743b685c50dc889e63e9c3120",
+    "tests/fixtures/schedule-collector.js": "b5a5ce7f00100585f105687108bf97821426cfdfa75aef493b0b5084e650a428",
+    "estimated-times-test-results.txt": "c6985b4f8068095e854175d2bbce53ae0d3be83323ffc4242f6793debb4e381e"
+  }
+}

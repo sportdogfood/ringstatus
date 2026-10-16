@@ -1,5 +1,9 @@
 # Recognize — overview and expected workflow
 
+Latest owner-requested workflow review: [shared native/API-agent workflow and exact change register, 14 October](recognize-shared-workflow-review-20261014.md). Read it before the dated implementation notes below. It records the staging-only recognition page, silent public entry, shared inputs and Tenants handoff; unresolved credential/retry decisions are explicit. Documentation only: it does not establish a new deployment or authorize edits.
+
+Additional proven source: [Recognize frontend-agent demonstration](recognize-frontend-agent-proof-20261013.md), 13 October 2026, owner-confirmed phone/code to `/rs-member` using the existing native workflow. Its local implementation and exact source turns are indexed there. For later shared release evidence see [October 11 resume checkpoint](resume-recognize-tenants-20261011.md); the earlier checkpoint below does not supersede that later evidence.
+
 ## Current runtime checkpoint — 11 October 2026
 
 The dated implementation notes below are historical. Current evidence is in [Recognize completion release](recognize-completion-release-20261011.md): approved source deployed as `785f571c2167c82c214f0e5c81ffcb77208b70e8`; original Edge browser silently redirects to `/rs-member`; Sessions create/reuse and confirmed browser state are now live verified. Three public footer updates are saved and read back, awaiting owner publication. Public-page live checks and desktop/mobile same-browser SMS acceptance remain open. Do not use the older “not implemented” descriptions below as the current runtime state or infer full completion from this checkpoint.

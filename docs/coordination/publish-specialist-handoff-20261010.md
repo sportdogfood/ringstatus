@@ -1,5 +1,10 @@
 # Publish — new runner handoff
 
+
+Current entry (14 October 2026): use this domain's resume row in [the authoritative-source directory](domain-coordinator-structure-20261013.md). This dated document preserves workflow/source evidence; original setup commands and old dispatch/monitor instructions are historical, not a new assignment. Follow the current owner request and verified checkpoint. Guidance-only updates leave stopped product work stopped.
+
+Current shared structure (13 October): read the relevant sections of [Company, domains and coordinator capabilities](domain-coordinator-structure-20261013.md). It defines responsibility, sibling interfaces, required skill/connection mapping, proven frontend-agent reference and completion/handoff duties. Capabilities are not automatic agent assignments. Current tasks and authorization control; stopped work stays stopped.
+
 Prepared 2026-10-10. Execution location: new separate chat. Prepared, not dispatched. Start on receiving this handoff; complete the authorized base setup rather than stopping after inspection.
 
 ## Assignment and target

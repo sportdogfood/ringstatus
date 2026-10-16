@@ -1,0 +1,311 @@
+TAP version 13
+# Subtest: migration archives exact old records, removes duplicate snapshots and leaves one current key
+ok 1 - migration archives exact old records, removes duplicate snapshots and leaves one current key
+  ---
+  duration_ms: 94.7668
+  type: 'test'
+  ...
+# Subtest: repeat process and real edits update in place, preserve unrelated fields and archive history
+ok 2 - repeat process and real edits update in place, preserve unrelated fields and archive history
+  ---
+  duration_ms: 38.9642
+  type: 'test'
+  ...
+# Subtest: failed fetch preserves current rows and last complete state
+ok 3 - failed fetch preserves current rows and last complete state
+  ---
+  duration_ms: 102.903
+  type: 'test'
+  ...
+# Subtest: partial materialization does not promote checkpoint and subsequent normal invocation can converge
+ok 4 - partial materialization does not promote checkpoint and subsequent normal invocation can converge
+  ---
+  duration_ms: 83.5651
+  type: 'test'
+  ...
+# Subtest: successful default transition retires old show only through explicit finalize and preserves archive
+ok 5 - successful default transition retires old show only through explicit finalize and preserves archive
+  ---
+  duration_ms: 28.6395
+  type: 'test'
+  ...
+# Subtest: current store integrates two collector repeats without growing either table
+ok 6 - current store integrates two collector repeats without growing either table
+  ---
+  duration_ms: 129.5841
+  type: 'test'
+  ...
+# Subtest: projection exposes source values without invented times or transport duplicates
+ok 7 - projection exposes source values without invented times or transport duplicates
+  ---
+  duration_ms: 0.214
+  type: 'test'
+  ...
+# Subtest: private dependency graph has no imports outside package
+ok 8 - private dependency graph has no imports outside package
+  ---
+  duration_ms: 36.0087
+  type: 'test'
+  ...
+# Subtest: legacy settings cannot change private base paths or credentials
+ok 9 - legacy settings cannot change private base paths or credentials
+  ---
+  duration_ms: 203.1001
+  type: 'test'
+  ...
+# Subtest: private fallback and PowerShell paths stay inside package
+ok 10 - private fallback and PowerShell paths stay inside package
+  ---
+  duration_ms: 15.8769
+  type: 'test'
+  ...
+# Subtest: copied package runs offline tests without its original checkout
+ok 11 - copied package runs offline tests without its original checkout
+  ---
+  duration_ms: 1069.7045
+  type: 'test'
+  ...
+# Subtest: copied PowerShell request retains all five parameters
+ok 12 - copied PowerShell request retains all five parameters
+  ---
+  duration_ms: 569.9607
+  type: 'test'
+  ...
+# Subtest: structured matching avoids substring and wrong-ring matches; compact PM parses
+ok 13 - structured matching avoids substring and wrong-ring matches; compact PM parses
+  ---
+  duration_ms: 4.1858
+  type: 'test'
+  ...
+# Subtest: ambiguous rows retain prior time and report unmatched
+ok 14 - ambiguous rows retain prior time and report unmatched
+  ---
+  duration_ms: 0.4744
+  type: 'test'
+  ...
+# Subtest: failed or empty capture preserves prior times without inventing new ones
+ok 15 - failed or empty capture preserves prior times without inventing new ones
+  ---
+  duration_ms: 1.025
+  type: 'test'
+  ...
+# Subtest: both existing manual override spellings and manual HTML retain their times
+ok 16 - both existing manual override spellings and manual HTML retain their times
+  ---
+  duration_ms: 0.6521
+  type: 'test'
+  ...
+# Subtest: empty schedule day does not launch browser
+ok 17 - empty schedule day does not launch browser
+  ---
+  duration_ms: 1.2404
+  type: 'test'
+  ...
+# Subtest: copied browser loading checks show/day and closes browser on failure
+ok 18 - copied browser loading checks show/day and closes browser on failure
+  ---
+  duration_ms: 9.7968
+  type: 'test'
+  ...
+# schedule_normalizer_machine_key tests passed
+# Subtest: tests\\schedule_normalizer_machine_key.test.js
+ok 4 - tests\\schedule_normalizer_machine_key.test.js
+  ---
+  duration_ms: 173.7446
+  type: 'test'
+  ...
+# schedules_daily_class_list_enrichment tests passed
+# Subtest: tests\\schedules_daily_class_list_enrichment.test.js
+ok 5 - tests\\schedules_daily_class_list_enrichment.test.js
+  ---
+  duration_ms: 217.8326
+  type: 'test'
+  ...
+# schedules_daily_empty_ping tests passed
+# Subtest: tests\\schedules_daily_empty_ping.test.js
+ok 6 - tests\\schedules_daily_empty_ping.test.js
+  ---
+  duration_ms: 175.335
+  type: 'test'
+  ...
+# schedules_daily_forward_schedule_dates tests passed
+# Subtest: tests\\schedules_daily_forward_schedule_dates.test.js
+ok 7 - tests\\schedules_daily_forward_schedule_dates.test.js
+  ---
+  duration_ms: 251.5249
+  type: 'test'
+  ...
+# schedules_daily_live_groups_fallback tests passed
+# Subtest: tests\\schedules_daily_live_groups_fallback.test.js
+ok 8 - tests\\schedules_daily_live_groups_fallback.test.js
+  ---
+  duration_ms: 256.9988
+  type: 'test'
+  ...
+# schedules_daily_night_shift_scope tests passed
+# Subtest: tests\\schedules_daily_night_shift_scope.test.js
+ok 9 - tests\\schedules_daily_night_shift_scope.test.js
+  ---
+  duration_ms: 280.7402
+  type: 'test'
+  ...
+# schedules_daily_schedule_fallback tests passed
+# Subtest: tests\\schedules_daily_schedule_fallback.test.js
+ok 10 - tests\\schedules_daily_schedule_fallback.test.js
+  ---
+  duration_ms: 214.4084
+  type: 'test'
+  ...
+# Subtest: all show days collected with no runtime reads or writes
+ok 26 - all show days collected with no runtime reads or writes
+  ---
+  duration_ms: 21.2367
+  type: 'test'
+  ...
+# Subtest: unchanged recurring collection reuses existing datasets
+ok 27 - unchanged recurring collection reuses existing datasets
+  ---
+  duration_ms: 9.4858
+  type: 'test'
+  ...
+# Subtest: source failure preserves last completed data
+ok 28 - source failure preserves last completed data
+  ---
+  duration_ms: 5.0433
+  type: 'test'
+  ...
+# Subtest: partial write never becomes complete
+ok 29 - partial write never becomes complete
+  ---
+  duration_ms: 2.0519
+  type: 'test'
+  ...
+# Subtest: readback corruption prevents completion
+ok 30 - readback corruption prevents completion
+  ---
+  duration_ms: 1.8816
+  type: 'test'
+  ...
+# Subtest: in-progress collection leaves completed snapshot available
+ok 31 - in-progress collection leaves completed snapshot available
+  ---
+  duration_ms: 5.7286
+  type: 'test'
+  ...
+# Subtest: missing show bounds reject without guessing focus dates
+ok 32 - missing show bounds reject without guessing focus dates
+  ---
+  duration_ms: 1.246
+  type: 'test'
+  ...
+# Subtest: same-day keys track adds changes drops and preserve inactive history
+ok 33 - same-day keys track adds changes drops and preserve inactive history
+  ---
+  duration_ms: 27.0008
+  type: 'test'
+  ...
+# Subtest: empty response cannot drop established records
+ok 34 - empty response cannot drop established records
+  ---
+  duration_ms: 3.9476
+  type: 'test'
+  ...
+# Subtest: returning dropped record reactivates without deleting history
+ok 35 - returning dropped record reactivates without deleting history
+  ---
+  duration_ms: 0.8311
+  type: 'test'
+  ...
+# Subtest: all days reconcile independently and repeated drops are not reissued
+ok 36 - all days reconcile independently and repeated drops are not reissued
+  ---
+  duration_ms: 8.7423
+  type: 'test'
+  ...
+# Subtest: wrong date and malformed payload never replace a saved snapshot
+ok 37 - wrong date and malformed payload never replace a saved snapshot
+  ---
+  duration_ms: 2.6843
+  type: 'test'
+  ...
+# Subtest: rotating token evidence does not change semantic schedules or stored datasets
+ok 38 - rotating token evidence does not change semantic schedules or stored datasets
+  ---
+  duration_ms: 10.594
+  type: 'test'
+  ...
+# Subtest: valid empty in-range days warn while failed retrieval remains failure
+ok 39 - valid empty in-range days warn while failed retrieval remains failure
+  ---
+  duration_ms: 5.5757
+  type: 'test'
+  ...
+# Subtest: estimated times cover every show day, changes update snapshots, failure preserves them
+ok 40 - estimated times cover every show day, changes update snapshots, failure preserves them
+  ---
+  duration_ms: 9.9622
+  type: 'test'
+  ...
+# Subtest: discovers new/current/new show and persists focus independently
+ok 41 - discovers new/current/new show and persists focus independently
+  ---
+  duration_ms: 68.9144
+  type: 'test'
+  ...
+# Subtest: focus rollover does not restrict the complete show range
+ok 42 - focus rollover does not restrict the complete show range
+  ---
+  duration_ms: 0.8001
+  type: 'test'
+  ...
+# Subtest: manual focus and attachment settings persist only for their own show
+ok 43 - manual focus and attachment settings persist only for their own show
+  ---
+  duration_ms: 51.6091
+  type: 'test'
+  ...
+# Subtest: invalid discovery leaves last saved focus intact
+ok 44 - invalid discovery leaves last saved focus intact
+  ---
+  duration_ms: 11.9403
+  type: 'test'
+  ...
+# Subtest: mismatched default response is rejected
+ok 45 - mismatched default response is rejected
+  ---
+  duration_ms: 1.9638
+  type: 'test'
+  ...
+# Subtest: collector transport disables legacy audit on both fetch paths
+ok 46 - collector transport disables legacy audit on both fetch paths
+  ---
+  duration_ms: 0.7121
+  type: 'test'
+  ...
+# Subtest: overlapping collector is rejected without invoking SGL
+ok 47 - overlapping collector is rejected without invoking SGL
+  ---
+  duration_ms: 4.5352
+  type: 'test'
+  ...
+# Subtest: complete scheduled entry discovers once, collects, then repeats without duplicate datasets
+ok 48 - complete scheduled entry discovers once, collects, then repeats without duplicate datasets
+  ---
+  duration_ms: 42.2096
+  type: 'test'
+  ...
+# Subtest: default changes before next show without inventing contiguous days
+ok 49 - default changes before next show without inventing contiguous days
+  ---
+  duration_ms: 10.9369
+  type: 'test'
+  ...
+1..49
+# tests 49
+# suites 0
+# pass 49
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2118.0856

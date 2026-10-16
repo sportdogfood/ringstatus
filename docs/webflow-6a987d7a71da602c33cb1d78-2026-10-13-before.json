@@ -1,0 +1,2176 @@
+{
+  "pageId": "6a987d7a71da602c33cb1d78",
+  "root": {
+    "id": {
+      "component": "6a987d7a71da602c33cb1d78",
+      "element": "6a75bbadaeb595f44c35595c"
+    },
+    "type": "Body",
+    "children": [
+      {
+        "id": {
+          "component": "6a987d7a71da602c33cb1d78",
+          "element": "eb0f1572-9cd7-bd36-5123-fd7c8846f27e"
+        },
+        "type": "Block",
+        "styleNames": [
+          "lp-page-wrapper"
+        ],
+        "settings": {
+          "tag": "div",
+          "visibility": true,
+          "block": {
+            "tag": "div"
+          }
+        },
+        "children": [
+          {
+            "id": {
+              "component": "6a987d7a71da602c33cb1d78",
+              "element": "eb0f1572-9cd7-bd36-5123-fd7c8846f27f"
+            },
+            "type": "Block",
+            "styleNames": [
+              "lp-main-wrapper"
+            ],
+            "attributes": {
+              "id": "main"
+            },
+            "settings": {
+              "tag": "div",
+              "visibility": true,
+              "block": {
+                "tag": "div"
+              }
+            },
+            "children": [
+              {
+                "id": {
+                  "component": "6a987d7a71da602c33cb1d78",
+                  "element": "0624ae25-730f-30e3-3d8c-c54c5953c7e2"
+                },
+                "type": "Block",
+                "styleNames": [
+                  "rs10-stack"
+                ],
+                "settings": {
+                  "tag": "div",
+                  "visibility": true,
+                  "block": {
+                    "tag": "div"
+                  }
+                },
+                "children": [
+                  {
+                    "id": {
+                      "component": "6a987d7a71da602c33cb1d78",
+                      "element": "0624ae25-730f-30e3-3d8c-c54c5953c7e3"
+                    },
+                    "type": "Section",
+                    "settings": {
+                      "tag": "section",
+                      "visibility": true
+                    },
+                    "children": [
+                      {
+                        "id": {
+                          "component": "6a987d7a71da602c33cb1d78",
+                          "element": "0624ae25-730f-30e3-3d8c-c54c5953c7e4"
+                        },
+                        "type": "ComponentInstance",
+                        "instanceDetails": {
+                          "type": "ComponentInstance",
+                          "id": "8d758694-fa53-7657-3b49-254d2a9a7300",
+                          "name": "lp-section-nav",
+                          "props": [
+                            {
+                              "propId": "0f7f46f0-7727-fc02-5d49-0091ef642360",
+                              "value": {
+                                "mode": "page",
+                                "to": {
+                                  "pageId": "6aa739aad90e0d765affe666"
+                                }
+                              },
+                              "hasOverride": true,
+                              "name": "Link 1"
+                            },
+                            {
+                              "propId": "80be8191-8fae-7de1-e7f7-1123deb8db2a",
+                              "value": "lainey",
+                              "hasOverride": true,
+                              "name": "Text 1"
+                            },
+                            {
+                              "propId": "5c36fc16-c126-69e3-c087-510347574971",
+                              "value": "posa",
+                              "hasOverride": true,
+                              "name": "Text 2"
+                            },
+                            {
+                              "propId": "2b80d892-1217-70a2-7c1f-0613c50c5a35",
+                              "value": {
+                                "mode": "page",
+                                "to": {
+                                  "pageId": "6aa739aad90e0d765affe666"
+                                }
+                              },
+                              "hasOverride": true,
+                              "name": "Link 2"
+                            },
+                            {
+                              "propId": "fc1637d9-842d-b936-3f15-c77f49105ba2",
+                              "value": "home",
+                              "hasOverride": true,
+                              "name": "Text 3"
+                            },
+                            {
+                              "propId": "8cc27216-e50a-4eaf-1541-56f47c7a73d0",
+                              "value": {
+                                "mode": "page",
+                                "to": {
+                                  "pageId": "6a987d7a71da602c33cb1d78"
+                                }
+                              },
+                              "hasOverride": true,
+                              "name": "Link 3"
+                            },
+                            {
+                              "propId": "fa244987-fcfb-0612-fc1a-53eb2e4b1ee4",
+                              "value": "me",
+                              "hasOverride": true,
+                              "name": "Text 4"
+                            },
+                            {
+                              "propId": "bd242c5b-18e5-3943-8561-fc8472ff2066",
+                              "value": {
+                                "mode": "page",
+                                "to": {
+                                  "pageId": "6a98779e537b98fb48b2573b"
+                                }
+                              },
+                              "hasOverride": true,
+                              "name": "Link 4"
+                            },
+                            {
+                              "propId": "8ddb32d5-7418-812f-fea4-2d0fc0599220",
+                              "value": "videos",
+                              "hasOverride": true,
+                              "name": "Text 5"
+                            },
+                            {
+                              "propId": "466354e1-6746-41d4-33eb-9c0afb488bd2",
+                              "value": {
+                                "mode": "page",
+                                "to": {
+                                  "pageId": "6a99b1d63230c8012ed7264a"
+                                }
+                              },
+                              "hasOverride": true,
+                              "name": "Link 5"
+                            },
+                            {
+                              "propId": "4815b709-e102-aaab-3d0f-e930fecdf5d2",
+                              "value": "classes",
+                              "hasOverride": true,
+                              "name": "Text 6"
+                            },
+                            {
+                              "propId": "a36519d0-120a-7f2a-427e-1645fa86df1c",
+                              "value": {
+                                "mode": "page",
+                                "to": {
+                                  "pageId": "6a99bcb9bff9d04cec704b55"
+                                }
+                              },
+                              "hasOverride": true,
+                              "name": "Link 6"
+                            },
+                            {
+                              "propId": "9b093249-112e-01a3-8858-b900951dee43",
+                              "value": "horses",
+                              "hasOverride": true,
+                              "name": "Text 7"
+                            }
+                          ],
+                          "slots": []
+                        }
+                      },
+                      {
+                        "id": {
+                          "component": "6a987d7a71da602c33cb1d78",
+                          "element": "0624ae25-730f-30e3-3d8c-c54c5953c7ec"
+                        },
+                        "type": "DOM",
+                        "styleNames": [
+                          "ls-section-content"
+                        ],
+                        "settings": {
+                          "tag": "section",
+                          "visibility": true,
+                          "dom": {
+                            "tag": "section"
+                          }
+                        },
+                        "children": [
+                          {
+                            "id": {
+                              "component": "6a987d7a71da602c33cb1d78",
+                              "element": "0624ae25-730f-30e3-3d8c-c54c5953c7ed"
+                            },
+                            "type": "Block",
+                            "styleNames": [
+                              "lp-yt-hero"
+                            ],
+                            "settings": {
+                              "tag": "div",
+                              "visibility": true,
+                              "block": {
+                                "tag": "div"
+                              }
+                            },
+                            "children": [
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "3e849b84-ef5a-dda5-4c10-9e57b7e2a632"
+                                },
+                                "type": "Block",
+                                "styleNames": [
+                                  "lpt-hero-copy"
+                                ],
+                                "settings": {
+                                  "tag": "div",
+                                  "visibility": true,
+                                  "block": {
+                                    "tag": "div"
+                                  }
+                                },
+                                "children": [
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "3e849b84-ef5a-dda5-4c10-9e57b7e2a633"
+                                    },
+                                    "type": "Heading",
+                                    "styleNames": [
+                                      "lpt-hero-title"
+                                    ],
+                                    "settings": {
+                                      "tag": "h1",
+                                      "visibility": true,
+                                      "headingLevel": 1
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "3e849b84-ef5a-dda5-4c10-9e57b7e2a634"
+                                        },
+                                        "type": "String",
+                                        "textContent": "Me"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "3e849b84-ef5a-dda5-4c10-9e57b7e2a635"
+                                    },
+                                    "type": "Paragraph",
+                                    "styleNames": [
+                                      "lpt-hero-text"
+                                    ],
+                                    "settings": {
+                                      "visibility": true
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "3e849b84-ef5a-dda5-4c10-9e57b7e2a636"
+                                        },
+                                        "type": "String",
+                                        "textContent": "Riding, Results & Recruiting"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": {
+                              "component": "6a987d7a71da602c33cb1d78",
+                              "element": "0624ae25-730f-30e3-3d8c-c54c5953c7f3"
+                            },
+                            "type": "Block",
+                            "styleNames": [
+                              "herojs"
+                            ],
+                            "settings": {
+                              "tag": "div",
+                              "visibility": true,
+                              "block": {
+                                "tag": "div"
+                              }
+                            },
+                            "children": [
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "0624ae25-730f-30e3-3d8c-c54c5953c7f4"
+                                },
+                                "type": "HtmlEmbed",
+                                "settings": {
+                                  "visibility": true
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": {
+                      "component": "6a987d7a71da602c33cb1d78",
+                      "element": "dee6f306-825d-1fb2-59d4-d4a1f0c9b52f"
+                    },
+                    "type": "Section",
+                    "styleNames": [
+                      "portfolio-system"
+                    ],
+                    "settings": {
+                      "tag": "section",
+                      "visibility": true
+                    },
+                    "children": [
+                      {
+                        "id": {
+                          "component": "6a987d7a71da602c33cb1d78",
+                          "element": "dee6f306-825d-1fb2-59d4-d4a1f0c9b530"
+                        },
+                        "type": "Block",
+                        "styleNames": [
+                          "portfolio-container"
+                        ],
+                        "attributes": {
+                          "id": "casestudies"
+                        },
+                        "settings": {
+                          "tag": "div",
+                          "visibility": true,
+                          "block": {
+                            "tag": "div"
+                          }
+                        },
+                        "children": [
+                          {
+                            "id": {
+                              "component": "6a987d7a71da602c33cb1d78",
+                              "element": "74ad248c-cb96-228e-9b54-a24769e9cf9f"
+                            },
+                            "type": "DynamoWrapper",
+                            "settings": {
+                              "visibility": true
+                            },
+                            "children": [
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "74ad248c-cb96-228e-9b54-a24769e9cfa0"
+                                },
+                                "type": "DynamoList",
+                                "styleNames": [
+                                  "rs-section-list"
+                                ],
+                                "settings": {
+                                  "visibility": true
+                                },
+                                "children": [
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "74ad248c-cb96-228e-9b54-a24769e9cfa1"
+                                    },
+                                    "type": "DynamoItem",
+                                    "settings": {
+                                      "visibility": true
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "cc66b982-137a-d7eb-fec0-661ac515f599"
+                                        },
+                                        "type": "Block",
+                                        "styleNames": [
+                                          "portfolio-item"
+                                        ],
+                                        "settings": {
+                                          "tag": "div",
+                                          "visibility": true,
+                                          "block": {
+                                            "tag": "div"
+                                          }
+                                        },
+                                        "children": [
+                                          {
+                                            "id": {
+                                              "component": "6a987d7a71da602c33cb1d78",
+                                              "element": "0883f8ff-b51a-38c5-413a-20522a22c374"
+                                            },
+                                            "type": "Block",
+                                            "styleNames": [
+                                              "ls-portfolio-section-spacer-static"
+                                            ],
+                                            "settings": {
+                                              "tag": "div",
+                                              "visibility": true,
+                                              "block": {
+                                                "tag": "div"
+                                              }
+                                            },
+                                            "children": [
+                                              {
+                                                "id": {
+                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                  "element": "0883f8ff-b51a-38c5-413a-20522a22c375"
+                                                },
+                                                "type": "Block",
+                                                "attributes": {
+                                                  "data-portfolio-video": ""
+                                                },
+                                                "settings": {
+                                                  "tag": "div",
+                                                  "visibility": true,
+                                                  "block": {
+                                                    "tag": "div"
+                                                  }
+                                                },
+                                                "children": [
+                                                  {
+                                                    "id": {
+                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                      "element": "0883f8ff-b51a-38c5-413a-20522a22c376"
+                                                    },
+                                                    "type": "DOM",
+                                                    "styleNames": [
+                                                      "portfolio-video-poster",
+                                                      "is-rs"
+                                                    ],
+                                                    "attributes": {
+                                                      "aria-hidden": "true"
+                                                    },
+                                                    "settings": {
+                                                      "tag": "img",
+                                                      "visibility": true,
+                                                      "dom": {
+                                                        "tag": "img"
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": {
+                                              "component": "6a987d7a71da602c33cb1d78",
+                                              "element": "cc66b982-137a-d7eb-fec0-661ac515f5a0"
+                                            },
+                                            "type": "Block",
+                                            "styleNames": [
+                                              "portfolio-content",
+                                              "is-first"
+                                            ],
+                                            "settings": {
+                                              "tag": "div",
+                                              "visibility": true,
+                                              "block": {
+                                                "tag": "div"
+                                              }
+                                            },
+                                            "children": [
+                                              {
+                                                "id": {
+                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                  "element": "cc66b982-137a-d7eb-fec0-661ac515f5a1"
+                                                },
+                                                "type": "Block",
+                                                "styleNames": [
+                                                  "portfolio-content-bg",
+                                                  "is-rs"
+                                                ],
+                                                "settings": {
+                                                  "tag": "div",
+                                                  "visibility": true,
+                                                  "block": {
+                                                    "tag": "div"
+                                                  }
+                                                },
+                                                "children": [
+                                                  {
+                                                    "id": {
+                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                      "element": "cc66b982-137a-d7eb-fec0-661ac515f5a2"
+                                                    },
+                                                    "type": "Block",
+                                                    "styleNames": [
+                                                      "fsl-vw-panel",
+                                                      "is-transparent",
+                                                      "is-copy"
+                                                    ],
+                                                    "settings": {
+                                                      "tag": "div",
+                                                      "visibility": true,
+                                                      "block": {
+                                                        "tag": "div"
+                                                      }
+                                                    },
+                                                    "children": [
+                                                      {
+                                                        "id": {
+                                                          "component": "6a987d7a71da602c33cb1d78",
+                                                          "element": "cc66b982-137a-d7eb-fec0-661ac515f5a3"
+                                                        },
+                                                        "type": "Block",
+                                                        "styleNames": [
+                                                          "portfolio-text"
+                                                        ],
+                                                        "settings": {
+                                                          "tag": "div",
+                                                          "visibility": true,
+                                                          "block": {
+                                                            "tag": "div"
+                                                          }
+                                                        },
+                                                        "children": [
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "cc66b982-137a-d7eb-fec0-661ac515f5a4"
+                                                            },
+                                                            "type": "Block",
+                                                            "styleNames": [
+                                                              "portfolio-heading"
+                                                            ],
+                                                            "settings": {
+                                                              "tag": "div",
+                                                              "visibility": true,
+                                                              "block": {
+                                                                "tag": "div"
+                                                              }
+                                                            },
+                                                            "children": [
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "7007a0ff-4861-aa1f-c9a0-e72073abdfda"
+                                                                },
+                                                                "type": "Heading",
+                                                                "styleNames": [
+                                                                  "l5-heading-white"
+                                                                ],
+                                                                "settings": {
+                                                                  "tag": "h1",
+                                                                  "visibility": true,
+                                                                  "headingLevel": 1
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "cc66b982-137a-d7eb-fec0-661ac515f5a6"
+                                                            },
+                                                            "type": "Block",
+                                                            "styleNames": [
+                                                              "portfolio-paragraphs"
+                                                            ],
+                                                            "settings": {
+                                                              "tag": "div",
+                                                              "visibility": true,
+                                                              "block": {
+                                                                "tag": "div"
+                                                              }
+                                                            },
+                                                            "children": [
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "74ad248c-cb96-228e-9b54-a24769e9cfb2"
+                                                                },
+                                                                "type": "Paragraph",
+                                                                "styleNames": [
+                                                                  "l5-paragraph-white",
+                                                                  "is-xl"
+                                                                ],
+                                                                "settings": {
+                                                                  "visibility": true
+                                                                }
+                                                              },
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "74ad248c-cb96-228e-9b54-a24769e9cfb3"
+                                                                },
+                                                                "type": "Paragraph",
+                                                                "styleNames": [
+                                                                  "l5-paragraph-white",
+                                                                  "is-xl"
+                                                                ],
+                                                                "settings": {
+                                                                  "visibility": true
+                                                                }
+                                                              },
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "74ad248c-cb96-228e-9b54-a24769e9cfb4"
+                                                                },
+                                                                "type": "Paragraph",
+                                                                "styleNames": [
+                                                                  "l5-paragraph-white"
+                                                                ],
+                                                                "settings": {
+                                                                  "visibility": true
+                                                                }
+                                                              },
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "cc66b982-137a-d7eb-fec0-661ac515f5a9"
+                                                                },
+                                                                "type": "Paragraph",
+                                                                "styleNames": [
+                                                                  "l5-paragrapg-dark"
+                                                                ],
+                                                                "settings": {
+                                                                  "visibility": true
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433560"
+                                                            },
+                                                            "type": "Block",
+                                                            "styleNames": [
+                                                              "Div Block 11643"
+                                                            ],
+                                                            "settings": {
+                                                              "tag": "div",
+                                                              "visibility": true,
+                                                              "block": {
+                                                                "tag": "div"
+                                                              }
+                                                            },
+                                                            "children": [
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433561"
+                                                                },
+                                                                "type": "Block",
+                                                                "styleNames": [
+                                                                  "rs10-button-link"
+                                                                ],
+                                                                "settings": {
+                                                                  "tag": "div",
+                                                                  "visibility": true,
+                                                                  "block": {
+                                                                    "tag": "div"
+                                                                  }
+                                                                },
+                                                                "children": [
+                                                                  {
+                                                                    "id": {
+                                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                                      "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433562"
+                                                                    },
+                                                                    "type": "HtmlEmbed",
+                                                                    "styleNames": [
+                                                                      "modern-btn-css"
+                                                                    ],
+                                                                    "settings": {
+                                                                      "visibility": true
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "id": {
+                                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                                      "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433563"
+                                                                    },
+                                                                    "type": "Link",
+                                                                    "styleNames": [
+                                                                      "modern-btn",
+                                                                      "is-rs"
+                                                                    ],
+                                                                    "settings": {
+                                                                      "visibility": true,
+                                                                      "link": {
+                                                                        "linkType": "page",
+                                                                        "pageId": "6ab260d76d76d28aa9be185f"
+                                                                      }
+                                                                    },
+                                                                    "children": [
+                                                                      {
+                                                                        "id": {
+                                                                          "component": "6a987d7a71da602c33cb1d78",
+                                                                          "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433564"
+                                                                        },
+                                                                        "type": "String",
+                                                                        "textContent": "Learn More"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  {
+                                                                    "id": {
+                                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                                      "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433565"
+                                                                    },
+                                                                    "type": "Link",
+                                                                    "styleNames": [
+                                                                      "rs0-logo-link-navv"
+                                                                    ],
+                                                                    "settings": {
+                                                                      "visibility": true,
+                                                                      "link": {
+                                                                        "linkType": "page",
+                                                                        "pageId": "6982268d7543ac3c801512cd"
+                                                                      }
+                                                                    },
+                                                                    "children": [
+                                                                      {
+                                                                        "id": {
+                                                                          "component": "6a987d7a71da602c33cb1d78",
+                                                                          "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433566"
+                                                                        },
+                                                                        "type": "Block",
+                                                                        "styleNames": [
+                                                                          "rd-status-xss",
+                                                                          "is-ring"
+                                                                        ],
+                                                                        "settings": {
+                                                                          "tag": "div",
+                                                                          "visibility": true,
+                                                                          "block": {
+                                                                            "tag": "div"
+                                                                          }
+                                                                        },
+                                                                        "children": [
+                                                                          {
+                                                                            "id": {
+                                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                                              "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433567"
+                                                                            },
+                                                                            "type": "String",
+                                                                            "textContent": "RING"
+                                                                          }
+                                                                        ]
+                                                                      },
+                                                                      {
+                                                                        "id": {
+                                                                          "component": "6a987d7a71da602c33cb1d78",
+                                                                          "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433568"
+                                                                        },
+                                                                        "type": "Block",
+                                                                        "styleNames": [
+                                                                          "rd-status-xs",
+                                                                          "is-status",
+                                                                          "inc-status"
+                                                                        ],
+                                                                        "settings": {
+                                                                          "tag": "div",
+                                                                          "visibility": true,
+                                                                          "block": {
+                                                                            "tag": "div"
+                                                                          }
+                                                                        },
+                                                                        "children": [
+                                                                          {
+                                                                            "id": {
+                                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                                              "element": "d9e2fcab-4ec2-e70e-1092-97d7f4433569"
+                                                                            },
+                                                                            "type": "String",
+                                                                            "textContent": "STATUS"
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "8d7022a9-6699-7eda-3403-571dd26d67d3"
+                                        },
+                                        "type": "Block",
+                                        "styleNames": [
+                                          "lp-spacer-2vw",
+                                          "add-bottom"
+                                        ],
+                                        "settings": {
+                                          "tag": "div",
+                                          "visibility": true,
+                                          "block": {
+                                            "tag": "div"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "74ad248c-cb96-228e-9b54-a24769e9cfb9"
+                                },
+                                "type": "DynamoEmpty",
+                                "settings": {
+                                  "visibility": true
+                                },
+                                "children": [
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "74ad248c-cb96-228e-9b54-a24769e9cfba"
+                                    },
+                                    "type": "Block",
+                                    "settings": {
+                                      "tag": "div",
+                                      "visibility": true,
+                                      "block": {
+                                        "tag": "div"
+                                      }
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "74ad248c-cb96-228e-9b54-a24769e9cfbb"
+                                        },
+                                        "type": "String",
+                                        "textContent": "No items found."
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": {
+                      "component": "6a987d7a71da602c33cb1d78",
+                      "element": "9997135f-f2e5-6934-0efe-a330c0d725e6"
+                    },
+                    "type": "Section",
+                    "styleNames": [
+                      "portfolio-system"
+                    ],
+                    "settings": {
+                      "tag": "section",
+                      "visibility": true
+                    },
+                    "children": [
+                      {
+                        "id": {
+                          "component": "6a987d7a71da602c33cb1d78",
+                          "element": "9997135f-f2e5-6934-0efe-a330c0d725e7"
+                        },
+                        "type": "Block",
+                        "styleNames": [
+                          "portfolio-container"
+                        ],
+                        "attributes": {
+                          "id": "casestudies"
+                        },
+                        "settings": {
+                          "tag": "div",
+                          "visibility": true,
+                          "block": {
+                            "tag": "div"
+                          }
+                        },
+                        "children": [
+                          {
+                            "id": {
+                              "component": "6a987d7a71da602c33cb1d78",
+                              "element": "9997135f-f2e5-6934-0efe-a330c0d725e8"
+                            },
+                            "type": "DynamoWrapper",
+                            "settings": {
+                              "visibility": true
+                            },
+                            "children": [
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "9997135f-f2e5-6934-0efe-a330c0d725e9"
+                                },
+                                "type": "DynamoList",
+                                "styleNames": [
+                                  "rs-section-list"
+                                ],
+                                "settings": {
+                                  "visibility": true
+                                },
+                                "children": [
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "9997135f-f2e5-6934-0efe-a330c0d725ea"
+                                    },
+                                    "type": "DynamoItem",
+                                    "settings": {
+                                      "visibility": true
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "9997135f-f2e5-6934-0efe-a330c0d725eb"
+                                        },
+                                        "type": "Block",
+                                        "styleNames": [
+                                          "portfolio-item"
+                                        ],
+                                        "settings": {
+                                          "tag": "div",
+                                          "visibility": true,
+                                          "block": {
+                                            "tag": "div"
+                                          }
+                                        },
+                                        "children": [
+                                          {
+                                            "id": {
+                                              "component": "6a987d7a71da602c33cb1d78",
+                                              "element": "9997135f-f2e5-6934-0efe-a330c0d725ec"
+                                            },
+                                            "type": "Block",
+                                            "styleNames": [
+                                              "ls-portfolio-section-spacer"
+                                            ],
+                                            "settings": {
+                                              "tag": "div",
+                                              "visibility": true,
+                                              "block": {
+                                                "tag": "div"
+                                              }
+                                            },
+                                            "children": [
+                                              {
+                                                "id": {
+                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                  "element": "9997135f-f2e5-6934-0efe-a330c0d725ed"
+                                                },
+                                                "type": "Block",
+                                                "styleNames": [
+                                                  "portfolio-video-frame"
+                                                ],
+                                                "attributes": {
+                                                  "data-portfolio-video": ""
+                                                },
+                                                "settings": {
+                                                  "tag": "div",
+                                                  "visibility": true,
+                                                  "block": {
+                                                    "tag": "div"
+                                                  }
+                                                },
+                                                "children": [
+                                                  {
+                                                    "id": {
+                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                      "element": "9997135f-f2e5-6934-0efe-a330c0d725ee"
+                                                    },
+                                                    "type": "DOM",
+                                                    "styleNames": [
+                                                      "portfolio-video-poster"
+                                                    ],
+                                                    "attributes": {
+                                                      "aria-hidden": "true"
+                                                    },
+                                                    "settings": {
+                                                      "tag": "img",
+                                                      "visibility": true,
+                                                      "dom": {
+                                                        "tag": "img"
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "id": {
+                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                      "element": "9997135f-f2e5-6934-0efe-a330c0d725ef"
+                                                    },
+                                                    "type": "DOM",
+                                                    "styleNames": [
+                                                      "portfolio-video"
+                                                    ],
+                                                    "attributes": {
+                                                      "muted": "",
+                                                      "playsinline": "",
+                                                      "preload": "auto",
+                                                      "aria-hidden": "true"
+                                                    },
+                                                    "settings": {
+                                                      "tag": "video",
+                                                      "visibility": true,
+                                                      "dom": {
+                                                        "tag": "video"
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "id": {
+                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                      "element": "9997135f-f2e5-6934-0efe-a330c0d725f0"
+                                                    },
+                                                    "type": "DOM",
+                                                    "styleNames": [
+                                                      "portfolio-video-replay"
+                                                    ],
+                                                    "attributes": {
+                                                      "type": "button",
+                                                      "aria-label": "Replay video"
+                                                    },
+                                                    "settings": {
+                                                      "tag": "button",
+                                                      "visibility": true,
+                                                      "dom": {
+                                                        "tag": "button"
+                                                      }
+                                                    },
+                                                    "children": [
+                                                      {
+                                                        "id": {
+                                                          "component": "6a987d7a71da602c33cb1d78",
+                                                          "element": "9997135f-f2e5-6934-0efe-a330c0d725f1"
+                                                        },
+                                                        "type": "String",
+                                                        "textContent": "↻"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": {
+                                              "component": "6a987d7a71da602c33cb1d78",
+                                              "element": "9997135f-f2e5-6934-0efe-a330c0d725f2"
+                                            },
+                                            "type": "Block",
+                                            "styleNames": [
+                                              "portfolio-content"
+                                            ],
+                                            "settings": {
+                                              "tag": "div",
+                                              "visibility": true,
+                                              "block": {
+                                                "tag": "div"
+                                              }
+                                            },
+                                            "children": [
+                                              {
+                                                "id": {
+                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                  "element": "9997135f-f2e5-6934-0efe-a330c0d725f3"
+                                                },
+                                                "type": "Block",
+                                                "styleNames": [
+                                                  "portfolio-content-bg"
+                                                ],
+                                                "settings": {
+                                                  "tag": "div",
+                                                  "visibility": true,
+                                                  "block": {
+                                                    "tag": "div"
+                                                  }
+                                                },
+                                                "children": [
+                                                  {
+                                                    "id": {
+                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                      "element": "9997135f-f2e5-6934-0efe-a330c0d725f4"
+                                                    },
+                                                    "type": "Block",
+                                                    "styleNames": [
+                                                      "fsl-vw-panel",
+                                                      "is-transparent",
+                                                      "is-copy"
+                                                    ],
+                                                    "settings": {
+                                                      "tag": "div",
+                                                      "visibility": true,
+                                                      "block": {
+                                                        "tag": "div"
+                                                      }
+                                                    },
+                                                    "children": [
+                                                      {
+                                                        "id": {
+                                                          "component": "6a987d7a71da602c33cb1d78",
+                                                          "element": "9997135f-f2e5-6934-0efe-a330c0d725f5"
+                                                        },
+                                                        "type": "Block",
+                                                        "styleNames": [
+                                                          "portfolio-text"
+                                                        ],
+                                                        "settings": {
+                                                          "tag": "div",
+                                                          "visibility": true,
+                                                          "block": {
+                                                            "tag": "div"
+                                                          }
+                                                        },
+                                                        "children": [
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "9997135f-f2e5-6934-0efe-a330c0d725f6"
+                                                            },
+                                                            "type": "Block",
+                                                            "styleNames": [
+                                                              "portfolio-heading"
+                                                            ],
+                                                            "settings": {
+                                                              "tag": "div",
+                                                              "visibility": true,
+                                                              "block": {
+                                                                "tag": "div"
+                                                              }
+                                                            },
+                                                            "children": [
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "9997135f-f2e5-6934-0efe-a330c0d725f7"
+                                                                },
+                                                                "type": "Blockquote",
+                                                                "styleNames": [
+                                                                  "l5-heading-dark"
+                                                                ],
+                                                                "settings": {
+                                                                  "visibility": true
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "9997135f-f2e5-6934-0efe-a330c0d725f8"
+                                                            },
+                                                            "type": "Block",
+                                                            "styleNames": [
+                                                              "portfolio-paragraphs"
+                                                            ],
+                                                            "settings": {
+                                                              "tag": "div",
+                                                              "visibility": true,
+                                                              "block": {
+                                                                "tag": "div"
+                                                              }
+                                                            },
+                                                            "children": [
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "9997135f-f2e5-6934-0efe-a330c0d725f9"
+                                                                },
+                                                                "type": "Paragraph",
+                                                                "styleNames": [
+                                                                  "l5-paragrapg-dark"
+                                                                ],
+                                                                "settings": {
+                                                                  "visibility": true
+                                                                }
+                                                              },
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "9997135f-f2e5-6934-0efe-a330c0d725fa"
+                                                                },
+                                                                "type": "Paragraph",
+                                                                "styleNames": [
+                                                                  "l5-paragrapg-dark"
+                                                                ],
+                                                                "settings": {
+                                                                  "visibility": true
+                                                                }
+                                                              },
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "9997135f-f2e5-6934-0efe-a330c0d725fb"
+                                                                },
+                                                                "type": "Paragraph",
+                                                                "styleNames": [
+                                                                  "l5-paragrapg-dark"
+                                                                ],
+                                                                "settings": {
+                                                                  "visibility": true
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "9997135f-f2e5-6934-0efe-a330c0d725fc"
+                                        },
+                                        "type": "Block",
+                                        "styleNames": [
+                                          "lp-spacer-2vw",
+                                          "add-bottom"
+                                        ],
+                                        "settings": {
+                                          "tag": "div",
+                                          "visibility": true,
+                                          "block": {
+                                            "tag": "div"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "9997135f-f2e5-6934-0efe-a330c0d725fd"
+                                },
+                                "type": "DynamoEmpty",
+                                "settings": {
+                                  "visibility": true
+                                },
+                                "children": [
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "9997135f-f2e5-6934-0efe-a330c0d725fe"
+                                    },
+                                    "type": "Block",
+                                    "settings": {
+                                      "tag": "div",
+                                      "visibility": true,
+                                      "block": {
+                                        "tag": "div"
+                                      }
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "9997135f-f2e5-6934-0efe-a330c0d725ff"
+                                        },
+                                        "type": "String",
+                                        "textContent": "No items found."
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": {
+                              "component": "6a987d7a71da602c33cb1d78",
+                              "element": "9997135f-f2e5-6934-0efe-a330c0d72600"
+                            },
+                            "type": "Block",
+                            "styleNames": [
+                              "portfolio-js-css"
+                            ],
+                            "settings": {
+                              "tag": "div",
+                              "visibility": true,
+                              "block": {
+                                "tag": "div"
+                              }
+                            },
+                            "children": [
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "9997135f-f2e5-6934-0efe-a330c0d72601"
+                                },
+                                "type": "HtmlEmbed",
+                                "settings": {
+                                  "visibility": true
+                                }
+                              },
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "9997135f-f2e5-6934-0efe-a330c0d72602"
+                                },
+                                "type": "HtmlEmbed",
+                                "settings": {
+                                  "visibility": true
+                                }
+                              },
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "9997135f-f2e5-6934-0efe-a330c0d72603"
+                                },
+                                "type": "HtmlEmbed",
+                                "styleNames": [
+                                  "videojs"
+                                ],
+                                "settings": {
+                                  "visibility": true
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": {
+                      "component": "6a987d7a71da602c33cb1d78",
+                      "element": "8aa00941-cf9e-69ab-5070-3bcf1f226d98"
+                    },
+                    "type": "Section",
+                    "styleNames": [
+                      "portfolio-system"
+                    ],
+                    "settings": {
+                      "tag": "section",
+                      "visibility": true
+                    },
+                    "children": [
+                      {
+                        "id": {
+                          "component": "6a987d7a71da602c33cb1d78",
+                          "element": "8aa00941-cf9e-69ab-5070-3bcf1f226d99"
+                        },
+                        "type": "Block",
+                        "styleNames": [
+                          "portfolio-container"
+                        ],
+                        "attributes": {
+                          "id": "casestudies"
+                        },
+                        "settings": {
+                          "tag": "div",
+                          "visibility": true,
+                          "block": {
+                            "tag": "div"
+                          }
+                        },
+                        "children": [
+                          {
+                            "id": {
+                              "component": "6a987d7a71da602c33cb1d78",
+                              "element": "8aa00941-cf9e-69ab-5070-3bcf1f226d9a"
+                            },
+                            "type": "DynamoWrapper",
+                            "settings": {
+                              "visibility": true
+                            },
+                            "children": [
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "8aa00941-cf9e-69ab-5070-3bcf1f226d9b"
+                                },
+                                "type": "DynamoList",
+                                "styleNames": [
+                                  "rs-section-list"
+                                ],
+                                "settings": {
+                                  "visibility": true
+                                },
+                                "children": [
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "8aa00941-cf9e-69ab-5070-3bcf1f226d9c"
+                                    },
+                                    "type": "DynamoItem",
+                                    "settings": {
+                                      "visibility": true
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "8aa00941-cf9e-69ab-5070-3bcf1f226d9d"
+                                        },
+                                        "type": "Block",
+                                        "styleNames": [
+                                          "portfolio-item"
+                                        ],
+                                        "settings": {
+                                          "tag": "div",
+                                          "visibility": true,
+                                          "block": {
+                                            "tag": "div"
+                                          }
+                                        },
+                                        "children": [
+                                          {
+                                            "id": {
+                                              "component": "6a987d7a71da602c33cb1d78",
+                                              "element": "8aa00941-cf9e-69ab-5070-3bcf1f226da4"
+                                            },
+                                            "type": "Block",
+                                            "styleNames": [
+                                              "portfolio-content",
+                                              "is-left"
+                                            ],
+                                            "settings": {
+                                              "tag": "div",
+                                              "visibility": true,
+                                              "block": {
+                                                "tag": "div"
+                                              }
+                                            },
+                                            "children": [
+                                              {
+                                                "id": {
+                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                  "element": "8aa00941-cf9e-69ab-5070-3bcf1f226da5"
+                                                },
+                                                "type": "Block",
+                                                "styleNames": [
+                                                  "portfolio-content-bg",
+                                                  "is-ld"
+                                                ],
+                                                "settings": {
+                                                  "tag": "div",
+                                                  "visibility": true,
+                                                  "block": {
+                                                    "tag": "div"
+                                                  }
+                                                },
+                                                "children": [
+                                                  {
+                                                    "id": {
+                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                      "element": "8aa00941-cf9e-69ab-5070-3bcf1f226da6"
+                                                    },
+                                                    "type": "Block",
+                                                    "styleNames": [
+                                                      "fsl-vw-panel",
+                                                      "is-transparent",
+                                                      "is-copy"
+                                                    ],
+                                                    "settings": {
+                                                      "tag": "div",
+                                                      "visibility": true,
+                                                      "block": {
+                                                        "tag": "div"
+                                                      }
+                                                    },
+                                                    "children": [
+                                                      {
+                                                        "id": {
+                                                          "component": "6a987d7a71da602c33cb1d78",
+                                                          "element": "8aa00941-cf9e-69ab-5070-3bcf1f226da7"
+                                                        },
+                                                        "type": "Block",
+                                                        "styleNames": [
+                                                          "portfolio-text"
+                                                        ],
+                                                        "settings": {
+                                                          "tag": "div",
+                                                          "visibility": true,
+                                                          "block": {
+                                                            "tag": "div"
+                                                          }
+                                                        },
+                                                        "children": [
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "5ca08fd6-ae26-5c37-8cc3-e7cf1b5a46b6"
+                                                            },
+                                                            "type": "Block",
+                                                            "styleNames": [
+                                                              "l5-kicker"
+                                                            ],
+                                                            "settings": {
+                                                              "tag": "div",
+                                                              "visibility": true,
+                                                              "block": {
+                                                                "tag": "div"
+                                                              }
+                                                            },
+                                                            "children": [
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "5ca08fd6-ae26-5c37-8cc3-e7cf1b5a46b7"
+                                                                },
+                                                                "type": "Heading",
+                                                                "styleNames": [
+                                                                  "Kicker2",
+                                                                  "is-lainey"
+                                                                ],
+                                                                "settings": {
+                                                                  "tag": "h5",
+                                                                  "visibility": true,
+                                                                  "headingLevel": 5
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "8aa00941-cf9e-69ab-5070-3bcf1f226da8"
+                                                            },
+                                                            "type": "Block",
+                                                            "styleNames": [
+                                                              "portfolio-heading"
+                                                            ],
+                                                            "settings": {
+                                                              "tag": "div",
+                                                              "visibility": true,
+                                                              "block": {
+                                                                "tag": "div"
+                                                              }
+                                                            },
+                                                            "children": [
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "7bca09ea-4e33-d18d-388f-6393eb9d5ca3"
+                                                                },
+                                                                "type": "Heading",
+                                                                "styleNames": [
+                                                                  "l5-heading-dark"
+                                                                ],
+                                                                "settings": {
+                                                                  "tag": "h1",
+                                                                  "visibility": true,
+                                                                  "headingLevel": 1
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "8aa00941-cf9e-69ab-5070-3bcf1f226daa"
+                                                            },
+                                                            "type": "Block",
+                                                            "styleNames": [
+                                                              "portfolio-paragraphs"
+                                                            ],
+                                                            "settings": {
+                                                              "tag": "div",
+                                                              "visibility": true,
+                                                              "block": {
+                                                                "tag": "div"
+                                                              }
+                                                            },
+                                                            "children": [
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "8aa00941-cf9e-69ab-5070-3bcf1f226dab"
+                                                                },
+                                                                "type": "Paragraph",
+                                                                "styleNames": [
+                                                                  "l5-paragrapg-dark"
+                                                                ],
+                                                                "settings": {
+                                                                  "visibility": true
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "id": {
+                                                          "component": "6a987d7a71da602c33cb1d78",
+                                                          "element": "ed33e6ff-157f-e904-9797-f53e0e3b39f9"
+                                                        },
+                                                        "type": "Block",
+                                                        "styleNames": [
+                                                          "rw5-actions"
+                                                        ],
+                                                        "settings": {
+                                                          "tag": "div",
+                                                          "visibility": true,
+                                                          "block": {
+                                                            "tag": "div"
+                                                          }
+                                                        },
+                                                        "children": [
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "ed33e6ff-157f-e904-9797-f53e0e3b39fa"
+                                                            },
+                                                            "type": "HtmlEmbed",
+                                                            "styleNames": [
+                                                              "modern-btn-css"
+                                                            ],
+                                                            "settings": {
+                                                              "visibility": true
+                                                            }
+                                                          },
+                                                          {
+                                                            "id": {
+                                                              "component": "6a987d7a71da602c33cb1d78",
+                                                              "element": "ed33e6ff-157f-e904-9797-f53e0e3b39fb"
+                                                            },
+                                                            "type": "Link",
+                                                            "styleNames": [
+                                                              "modern-btn"
+                                                            ],
+                                                            "settings": {
+                                                              "visibility": true,
+                                                              "link": {
+                                                                "linkType": "page",
+                                                                "pageId": "6a9fea3b5ccb5438bc13869c"
+                                                              }
+                                                            },
+                                                            "children": [
+                                                              {
+                                                                "id": {
+                                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                                  "element": "ed33e6ff-157f-e904-9797-f53e0e3b39fc"
+                                                                },
+                                                                "type": "String",
+                                                                "textContent": "Lainey's Dashboard"
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": {
+                                              "component": "6a987d7a71da602c33cb1d78",
+                                              "element": "8aa00941-cf9e-69ab-5070-3bcf1f226d9e"
+                                            },
+                                            "type": "Block",
+                                            "styleNames": [
+                                              "ls-portfolio-section-spacer",
+                                              "is-white"
+                                            ],
+                                            "settings": {
+                                              "tag": "div",
+                                              "visibility": true,
+                                              "block": {
+                                                "tag": "div"
+                                              }
+                                            },
+                                            "children": [
+                                              {
+                                                "id": {
+                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                  "element": "8aa00941-cf9e-69ab-5070-3bcf1f226d9f"
+                                                },
+                                                "type": "Block",
+                                                "attributes": {
+                                                  "data-portfolio-video": ""
+                                                },
+                                                "settings": {
+                                                  "tag": "div",
+                                                  "visibility": true,
+                                                  "block": {
+                                                    "tag": "div"
+                                                  }
+                                                },
+                                                "children": [
+                                                  {
+                                                    "id": {
+                                                      "component": "6a987d7a71da602c33cb1d78",
+                                                      "element": "8aa00941-cf9e-69ab-5070-3bcf1f226da0"
+                                                    },
+                                                    "type": "DOM",
+                                                    "styleNames": [
+                                                      "portfolio-video-poster"
+                                                    ],
+                                                    "attributes": {
+                                                      "aria-hidden": "true"
+                                                    },
+                                                    "settings": {
+                                                      "tag": "img",
+                                                      "visibility": true,
+                                                      "dom": {
+                                                        "tag": "img"
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "8aa00941-cf9e-69ab-5070-3bcf1f226daf"
+                                },
+                                "type": "DynamoEmpty",
+                                "settings": {
+                                  "visibility": true
+                                },
+                                "children": [
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "8aa00941-cf9e-69ab-5070-3bcf1f226db0"
+                                    },
+                                    "type": "Block",
+                                    "settings": {
+                                      "tag": "div",
+                                      "visibility": true,
+                                      "block": {
+                                        "tag": "div"
+                                      }
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "8aa00941-cf9e-69ab-5070-3bcf1f226db1"
+                                        },
+                                        "type": "String",
+                                        "textContent": "No items found."
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": {
+                      "component": "6a987d7a71da602c33cb1d78",
+                      "element": "eb0f1572-9cd7-bd36-5123-fd7c8846f534"
+                    },
+                    "type": "ComponentInstance",
+                    "instanceDetails": {
+                      "type": "ComponentInstance",
+                      "id": "7154ed28-bb5f-6ced-fe10-eaef65d971a5",
+                      "name": "lp-footer",
+                      "props": [
+                        {
+                          "propId": "04f26aca-2283-1e32-33db-695f2ce54984",
+                          "value": {
+                            "mode": "page",
+                            "to": {
+                              "pageId": "6aa739aad90e0d765affe666"
+                            }
+                          },
+                          "hasOverride": true,
+                          "name": "Link 1"
+                        },
+                        {
+                          "propId": "ea858ec5-3078-d223-2247-d39ba70fbf77",
+                          "value": "home",
+                          "hasOverride": true,
+                          "name": "Text 1"
+                        },
+                        {
+                          "propId": "af35e403-c936-becd-6e05-5c73076c9262",
+                          "value": {
+                            "mode": "page",
+                            "to": {
+                              "pageId": "6a987d7a71da602c33cb1d78"
+                            }
+                          },
+                          "hasOverride": true,
+                          "name": "Link 2"
+                        },
+                        {
+                          "propId": "78724f1f-2dec-e69b-c3e6-df33a811b8e1",
+                          "value": "me",
+                          "hasOverride": true,
+                          "name": "Text 2"
+                        },
+                        {
+                          "propId": "6a5cc2c9-8a9b-7c93-7c24-eea6619ef2e8",
+                          "value": {
+                            "mode": "page",
+                            "to": {
+                              "pageId": "6a98779e537b98fb48b2573b"
+                            }
+                          },
+                          "hasOverride": true,
+                          "name": "Link 3"
+                        },
+                        {
+                          "propId": "9e5cbcb0-3749-505a-ae5e-f5dd691b40ce",
+                          "value": "videos",
+                          "hasOverride": true,
+                          "name": "Text 3"
+                        },
+                        {
+                          "propId": "ac0ea2cf-8db4-eaf9-8a1c-770c89cedd75",
+                          "value": {
+                            "mode": "page",
+                            "to": {
+                              "pageId": "6a99b1d63230c8012ed7264a"
+                            }
+                          },
+                          "hasOverride": true,
+                          "name": "Link 4"
+                        },
+                        {
+                          "propId": "ea3f998e-9afd-ca04-3aff-0fa31a97dab7",
+                          "value": "classes",
+                          "hasOverride": true,
+                          "name": "Text 4"
+                        },
+                        {
+                          "propId": "fcda9c12-0fe8-c9da-3174-d24f0c639c4d",
+                          "value": {
+                            "mode": "page",
+                            "to": {
+                              "pageId": "6a99bcb9bff9d04cec704b55"
+                            }
+                          },
+                          "hasOverride": true,
+                          "name": "Link 5"
+                        },
+                        {
+                          "propId": "cb9f31e9-c9bd-5b4d-623d-ec8a6b1592e4",
+                          "value": "horses",
+                          "hasOverride": true,
+                          "name": "Text 5"
+                        },
+                        {
+                          "propId": "ea222d2f-6a77-dee1-0f2d-63e65f9c6eb9",
+                          "value": {
+                            "mode": "page",
+                            "to": {
+                              "pageId": "6aa739aad90e0d765affe666"
+                            }
+                          },
+                          "hasOverride": true,
+                          "name": "Link 6"
+                        },
+                        {
+                          "propId": "1c0c016e-d4ab-91c6-e45a-2839b3aab7f2",
+                          "value": "lainey",
+                          "hasOverride": true,
+                          "name": "Text 6"
+                        },
+                        {
+                          "propId": "04e9d561-25b0-c1c4-a043-77434545d57a",
+                          "value": "posa",
+                          "hasOverride": true,
+                          "name": "Text 7"
+                        }
+                      ],
+                      "slots": []
+                    }
+                  }
+                ]
+              },
+              {
+                "id": {
+                  "component": "6a987d7a71da602c33cb1d78",
+                  "element": "4448e498-310d-617d-c274-cc94c88c7356"
+                },
+                "type": "ComponentInstance",
+                "instanceDetails": {
+                  "type": "ComponentInstance",
+                  "id": "e337fee6-9c05-5dab-f8d1-0711ceec9f8f",
+                  "name": "rs10-contact=form",
+                  "props": [
+                    {
+                      "propId": "273df186-473a-2625-45f1-28c6a84141e1",
+                      "value": {
+                        "mode": "url",
+                        "to": "#"
+                      },
+                      "hasOverride": false,
+                      "name": "Link"
+                    },
+                    {
+                      "propId": "4c61899a-3de6-fe81-7c0a-3f1fb4690bc1",
+                      "value": "×",
+                      "hasOverride": false,
+                      "name": "Text"
+                    }
+                  ],
+                  "slots": []
+                }
+              },
+              {
+                "id": {
+                  "component": "6a987d7a71da602c33cb1d78",
+                  "element": "47393a7f-ad01-8970-dc7e-8b742332080c"
+                },
+                "type": "DOM",
+                "styleNames": [
+                  "ls-section-content",
+                  "tabs-hidden"
+                ],
+                "settings": {
+                  "tag": "section",
+                  "visibility": true,
+                  "dom": {
+                    "tag": "section"
+                  }
+                },
+                "children": [
+                  {
+                    "id": {
+                      "component": "6a987d7a71da602c33cb1d78",
+                      "element": "4a32d95c-2783-5fac-17f3-6b48a4dd0341"
+                    },
+                    "type": "Block",
+                    "settings": {
+                      "tag": "div",
+                      "visibility": true,
+                      "block": {
+                        "tag": "div"
+                      }
+                    },
+                    "children": [
+                      {
+                        "id": {
+                          "component": "6a987d7a71da602c33cb1d78",
+                          "element": "4a32d95c-2783-5fac-17f3-6b48a4dd0342"
+                        },
+                        "type": "Block",
+                        "styleNames": [
+                          "lp-global-tb"
+                        ],
+                        "settings": {
+                          "tag": "div",
+                          "visibility": true,
+                          "block": {
+                            "tag": "div"
+                          }
+                        },
+                        "children": [
+                          {
+                            "id": {
+                              "component": "6a987d7a71da602c33cb1d78",
+                              "element": "4a32d95c-2783-5fac-17f3-6b48a4dd0343"
+                            },
+                            "type": "Block",
+                            "settings": {
+                              "tag": "div",
+                              "visibility": true,
+                              "block": {
+                                "tag": "div"
+                              }
+                            },
+                            "children": [
+                              {
+                                "id": {
+                                  "component": "6a987d7a71da602c33cb1d78",
+                                  "element": "173e269b-bfb7-961f-2756-f92a9187a351"
+                                },
+                                "type": "TabsWrapper",
+                                "styleNames": [
+                                  "ls-custom-tabs"
+                                ],
+                                "settings": {
+                                  "visibility": true
+                                },
+                                "children": [
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "173e269b-bfb7-961f-2756-f92a9187a352"
+                                    },
+                                    "type": "TabsMenu",
+                                    "styleNames": [
+                                      "ls-transcripts-tabs"
+                                    ],
+                                    "settings": {
+                                      "visibility": true
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "173e269b-bfb7-961f-2756-f92a9187a353"
+                                        },
+                                        "type": "TabsLink",
+                                        "styleNames": [
+                                          "ls-tab-link"
+                                        ],
+                                        "settings": {
+                                          "visibility": true
+                                        },
+                                        "children": [
+                                          {
+                                            "id": {
+                                              "component": "6a987d7a71da602c33cb1d78",
+                                              "element": "173e269b-bfb7-961f-2756-f92a9187a354"
+                                            },
+                                            "type": "Block",
+                                            "settings": {
+                                              "tag": "div",
+                                              "visibility": true,
+                                              "block": {
+                                                "tag": "div"
+                                              }
+                                            },
+                                            "children": [
+                                              {
+                                                "id": {
+                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                  "element": "173e269b-bfb7-961f-2756-f92a9187a355"
+                                                },
+                                                "type": "String",
+                                                "textContent": "about me"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "0ef467e0-e1da-0479-1cdc-232f3eeb3a15"
+                                        },
+                                        "type": "TabsLink",
+                                        "styleNames": [
+                                          "ls-tab-link",
+                                          "hidden"
+                                        ],
+                                        "settings": {
+                                          "visibility": true
+                                        },
+                                        "children": [
+                                          {
+                                            "id": {
+                                              "component": "6a987d7a71da602c33cb1d78",
+                                              "element": "0ef467e0-e1da-0479-1cdc-232f3eeb3a16"
+                                            },
+                                            "type": "Block",
+                                            "settings": {
+                                              "tag": "div",
+                                              "visibility": true,
+                                              "block": {
+                                                "tag": "div"
+                                              }
+                                            },
+                                            "children": [
+                                              {
+                                                "id": {
+                                                  "component": "6a987d7a71da602c33cb1d78",
+                                                  "element": "0ef467e0-e1da-0479-1cdc-232f3eeb3a17"
+                                                },
+                                                "type": "String",
+                                                "textContent": "Tab 3"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": {
+                                      "component": "6a987d7a71da602c33cb1d78",
+                                      "element": "173e269b-bfb7-961f-2756-f92a9187a35c"
+                                    },
+                                    "type": "TabsContent",
+                                    "settings": {
+                                      "tag": "div",
+                                      "visibility": true
+                                    },
+                                    "children": [
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "173e269b-bfb7-961f-2756-f92a9187a35d"
+                                        },
+                                        "type": "TabsPane",
+                                        "settings": {
+                                          "visibility": true
+                                        }
+                                      },
+                                      {
+                                        "id": {
+                                          "component": "6a987d7a71da602c33cb1d78",
+                                          "element": "4559de5c-dccc-9743-03a6-bbcf3d6f8d80"
+                                        },
+                                        "type": "TabsPane",
+                                        "settings": {
+                                          "visibility": true
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "head": "\n<style>                                  \n.arrow {\n  -webkit-touch-callout: none; /* iOS Safari */\n    -webkit-user-select: none; /* Safari */\n     -khtml-user-select: none; /* Konqueror HTML */\n       -moz-user-select: none; /* Firefox */\n        -ms-user-select: none; /* Internet Explorer/Edge */\n            user-select: none; /* Non-prefixed version, currently\n                                  supported by Chrome and Opera */                                  \n</style> "
+}

@@ -54,3 +54,8 @@ Browser references reviewed October 9, 2026:
 - https://webkit.org/tracking-prevention/
 
 Documentation-only lock: no application code, Webflow page, Airtable schema, automation, cookie policy or deployment changed by this record.
+
+
+## Owner clarification — 14 October 2026
+
+Locked: show the requested value immediately; use only Saving, Saved or Retry for the save cycle. Keep failed edits on the device and retry the same existing operation. No extra consent prompts, extra workflow stages, framework replacement or new infrastructure. Saved means the designated Airtable target is confirmed. Correction, 15 October: use HPS field-update and WEC inline Save/returned-state patterns through the existing Tenants API directly for Barn/Rider; automation is not a required save boundary. Existing preferences automation is a separate implemented path, not a template to extend to other entity forms. Current evidence is in tenants-final-assembly-20261014.md; earlier tenants-immediate-feedback-20261014.md remains historical. These instructions do not authorize publishing or restart stopped work.

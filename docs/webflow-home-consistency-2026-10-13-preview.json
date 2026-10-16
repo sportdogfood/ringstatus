@@ -1,0 +1,259 @@
+{
+  "pageId": "6982268d7543ac3c801512cd",
+  "checks": [
+    {
+      "controlFonts": [
+        "14px"
+      ],
+      "corners": [
+        "18px 18px 18px 0px"
+      ],
+      "headings": [
+        {
+          "font": "54px",
+          "line": "45.9px"
+        },
+        {
+          "font": "54px",
+          "line": "45.9px"
+        },
+        {
+          "font": "54px",
+          "line": "45.9px"
+        },
+        {
+          "font": "54px",
+          "line": "45.9px"
+        },
+        {
+          "font": "54px",
+          "line": "45.9px"
+        }
+      ],
+      "paragraphMargins": [
+        "0px"
+      ],
+      "scroll": 393,
+      "width": 393,
+      "requested": 393
+    },
+    {
+      "controlFonts": [
+        "14px"
+      ],
+      "corners": [
+        "18px 18px 18px 0px"
+      ],
+      "headings": [
+        {
+          "font": "58.0797px",
+          "line": "49.3677px"
+        },
+        {
+          "font": "58.0797px",
+          "line": "49.3677px"
+        },
+        {
+          "font": "58.0797px",
+          "line": "49.3677px"
+        },
+        {
+          "font": "58.0797px",
+          "line": "49.3677px"
+        },
+        {
+          "font": "58.0797px",
+          "line": "49.3677px"
+        }
+      ],
+      "paragraphMargins": [
+        "0px"
+      ],
+      "scroll": 667,
+      "width": 667,
+      "requested": 667
+    },
+    {
+      "controlFonts": [
+        "14px"
+      ],
+      "corners": [
+        "18px 18px 18px 0px"
+      ],
+      "headings": [
+        {
+          "font": "72.0328px",
+          "line": "61.2279px"
+        },
+        {
+          "font": "72.0328px",
+          "line": "61.2279px"
+        },
+        {
+          "font": "72.0328px",
+          "line": "61.2279px"
+        },
+        {
+          "font": "72.0328px",
+          "line": "61.2279px"
+        },
+        {
+          "font": "72.0328px",
+          "line": "61.2279px"
+        }
+      ],
+      "paragraphMargins": [
+        "0px"
+      ],
+      "scroll": 820,
+      "width": 820,
+      "requested": 820
+    },
+    {
+      "controlFonts": [
+        "15.3483px"
+      ],
+      "corners": [
+        "18px 18px 18px 0px"
+      ],
+      "headings": [
+        {
+          "font": "104.88px",
+          "line": "89.1477px"
+        },
+        {
+          "font": "104.88px",
+          "line": "89.1477px"
+        },
+        {
+          "font": "104.88px",
+          "line": "89.1477px"
+        },
+        {
+          "font": "104.88px",
+          "line": "89.1477px"
+        },
+        {
+          "font": "104.88px",
+          "line": "89.1477px"
+        }
+      ],
+      "paragraphMargins": [
+        "0px"
+      ],
+      "scroll": 1279,
+      "width": 1279,
+      "requested": 1279
+    },
+    {
+      "controlFonts": [
+        "15.3589px"
+      ],
+      "corners": [
+        "18px 18px 18px 0px"
+      ],
+      "headings": [
+        {
+          "font": "104.952px",
+          "line": "89.2088px"
+        },
+        {
+          "font": "104.952px",
+          "line": "89.2088px"
+        },
+        {
+          "font": "104.952px",
+          "line": "89.2088px"
+        },
+        {
+          "font": "104.952px",
+          "line": "89.2088px"
+        },
+        {
+          "font": "104.952px",
+          "line": "89.2088px"
+        }
+      ],
+      "paragraphMargins": [
+        "0px"
+      ],
+      "scroll": 1280,
+      "width": 1280,
+      "requested": 1280
+    },
+    {
+      "controlFonts": [
+        "17.2821px"
+      ],
+      "corners": [
+        "18px 18px 18px 0px"
+      ],
+      "headings": [
+        {
+          "font": "116px",
+          "line": "98.6px"
+        },
+        {
+          "font": "116px",
+          "line": "98.6px"
+        },
+        {
+          "font": "116px",
+          "line": "98.6px"
+        },
+        {
+          "font": "116px",
+          "line": "98.6px"
+        },
+        {
+          "font": "116px",
+          "line": "98.6px"
+        }
+      ],
+      "paragraphMargins": [
+        "0px"
+      ],
+      "scroll": 1440,
+      "width": 1440,
+      "requested": 1440
+    },
+    {
+      "controlFonts": [
+        "18px"
+      ],
+      "corners": [
+        "18px 18px 18px 0px"
+      ],
+      "headings": [
+        {
+          "font": "116px",
+          "line": "98.6px"
+        },
+        {
+          "font": "116px",
+          "line": "98.6px"
+        },
+        {
+          "font": "116px",
+          "line": "98.6px"
+        },
+        {
+          "font": "116px",
+          "line": "98.6px"
+        },
+        {
+          "font": "116px",
+          "line": "98.6px"
+        }
+      ],
+      "paragraphMargins": [
+        "0px"
+      ],
+      "scroll": 1920,
+      "width": 1920,
+      "requested": 1920
+    }
+  ],
+  "headVerified": "18px control ceiling; XL clamp54/12cqw/132",
+  "publish": false
+}

@@ -23,7 +23,7 @@ The deliverable is an identification report appended to these documents or linke
 
 ### Locked two-day scope for this trace
 
-Use the [TODAY/live and tomorrow/staging owner lock](wef-engine-discussion-overview-20261010.md#locked-todaylive-and-tomorrowstaging). Each show date has the same -1 preparation / 0 live lifecycle, with only TODAY and tomorrow concurrently. Manual `focus_day` is accepted; when live is active it identifies TODAY. Display/calculate TODAY and build tomorrow independently. No complex day-by-day calendar logic or automatic rollover is required.
+Use the [TODAY/live and tomorrow/staging discussion](wef-engine-discussion-overview-20261010.md#locked-todaylive-and-tomorrowstaging), subject to the overview's 13 October clarification: discovery remains open and stage/module decisions are not locked. Each show date was described with the same -1 preparation / 0 live lifecycle, with only TODAY and tomorrow concurrently. Manual `focus_day` is accepted; when live is active it identifies TODAY. Display/calculate TODAY and build tomorrow independently is the discussed target, not a claim of current implementation. No complex day-by-day calendar logic or automatic rollover is required.
 
 The owner states that tomorrow preparation may be missing from current code. Classify every relevant path as: current-day working behavior; future-date acquisition/cache only; actual staged data; staged-data consumer; or missing/unverified. Do not assume a future-date fetch proves staging, or that NIGHT means changing TODAY to tomorrow. Trace any broader future-day loops as legacy behavior, not as the approved two-day target.
 
@@ -111,6 +111,8 @@ Identification is ready for owner review when every registered lane has a trace 
 Implementation remains a separate decision. No new code, agents, subagents or handoffs until the owner agrees that the WEF understanding is comprehensive. A finished report alone does not mark the engine newly tested, migrated or complete.
 
 ## Resume here
+
+Latest discovery continuation, 13 October 2026: [recurring responsibilities and manual preservation](wef-engine-recurring-tasks-manual-preservation-20261013.md). Local source checkpoint f5e895b6d3af5b87d1d2f0d8524061a5e7f171f9. Identified 14 responsibilities and writer-specific manual protections, including stored-time versus calculation precedence and unprotected order/derived-output writes in inspected functions. Next: trace the relevant existing views/automation writers and downstream consumers before asserting that any manual correction survives the whole workflow. No production execution, Airtable changes or application edits in this pass. Small-business/manual-handoff guidance and proposal-only stage status are in the overview's current clarification; older “locked target” labels below are retained historical wording, not new authorization.
 
 ### Schedule and two-day trace — source observations, 10 October 2026
 

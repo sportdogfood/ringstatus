@@ -1,5 +1,12 @@
 # Recognize specialist — start here
 
+**14 October ownership clarification:** Recognize owns identity/session and return-to-page behavior. Messages owns `/rs-barn-onboarding-alerts`; Tenants owns its canonical preferences/permissions. Use [the shared three-area contract](recognize-tenants-messages-ownership-20261014.md); no duplicate auth, data migration or product restart.
+
+
+Current entry (14 October 2026): use this domain's resume row in [the authoritative-source directory](domain-coordinator-structure-20261013.md). This dated document preserves workflow/source evidence; original setup commands and old dispatch/monitor instructions are historical, not a new assignment. Follow the current owner request and verified checkpoint. Guidance-only updates leave stopped product work stopped.
+
+Current shared structure (13 October): read the relevant sections of [Company, domains and coordinator capabilities](domain-coordinator-structure-20261013.md). It defines responsibility, sibling interfaces, required skill/connection mapping, proven frontend-agent reference and completion/handoff duties. Capabilities are not automatic agent assignments. Current tasks and authorization control; stopped work stays stopped.
+
 Owner-requested domain skill: read `C:/Users/gombc/.codex/skills/recognize/SKILL.md` for Recognize work and include its path in subordinate handoffs. Current status comes from the live checkpoint, not dated progress paragraphs below. Scheduled monitoring: `docs/coordination/specialist-skill-supervision-20261010.md`.
 
 You are the Recognize specialist coordinator. Own this workflow through its existing remaining tasks; use the shared contract for subagents, coordination, skills, usage checks and permission boundaries. Do not re-educate the owner or reconstruct the project from the old dialogue.

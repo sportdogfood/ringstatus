@@ -1,0 +1,1221 @@
+{
+  "rules": [
+    {
+      "label": "Kicker2 main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "Kicker2",
+          "properties": {
+            "display": "flex",
+            "box-sizing": "border-box",
+            "width": "fit-content",
+            "height": "auto",
+            "max-height": "none",
+            "max-width": "100%",
+            "min-width": "50%",
+            "margin-right": "auto",
+            "margin-bottom": "0em",
+            "margin-left": "0px",
+            "padding-right": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "padding-left": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "justify-content": "flex-start",
+            "align-items": "center",
+            "align-self": "flex-start",
+            "border-top-style": "solid",
+            "border-top-width": "1px",
+            "border-top-color": "#eee",
+            "border-right-style": "solid",
+            "border-right-width": "1px",
+            "border-right-color": "#eee",
+            "border-bottom-style": "solid",
+            "border-bottom-width": "1px",
+            "border-bottom-color": "#eee",
+            "border-left-style": "solid",
+            "border-left-width": "1px",
+            "border-left-color": "#eee",
+            "border-top-left-radius": "18px",
+            "border-top-right-radius": "18px",
+            "border-bottom-left-radius": "0px",
+            "border-bottom-right-radius": "18px",
+            "background-color": {
+              "id": "variable-5c5589e0-a305-4d2c-0a7e-e7d42ff23ab5"
+            },
+            "font-family": "Outfit, sans-serif",
+            "color": {
+              "id": "variable-faee5ae7-f591-417a-454b-466382d38165"
+            },
+            "line-height": "1.2",
+            "font-weight": "500",
+            "text-align": "left",
+            "letter-spacing": "0.075em",
+            "-webkit-text-stroke-color": {
+              "id": "variable-e39b2439-ca01-3563-7280-9d6ef0919818"
+            },
+            "text-transform": "uppercase",
+            "white-space": "normal",
+            "word-break": "normal",
+            "overflow-wrap": "normal",
+            "padding-top": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "padding-bottom": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "min-height": "var(--rs-control-height, clamp(44px, calc(28px + 1.25vw), 52px))",
+            "font-size": "var(--rs-kicker-size, clamp(14px, calc(6px + 0.625vw), 18px))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "Kicker2 medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "Kicker2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "Kicker2 small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "Kicker2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "Kicker2 tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "Kicker2",
+          "properties": {
+            "margin-bottom": "0em"
+          }
+        }
+      ]
+    },
+    {
+      "label": "Kicker2 large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "Kicker2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "Kicker2 xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "Kicker2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "Kicker2 xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "Kicker2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs-page-link main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs-page-link",
+          "properties": {
+            "display": "flex",
+            "box-sizing": "border-box",
+            "height": "auto",
+            "max-height": "none",
+            "margin-top": "0px",
+            "margin-bottom": "0px",
+            "padding-right": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "padding-left": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "justify-content": "flex-start",
+            "align-items": "center",
+            "align-self": "flex-start",
+            "border-top-style": "none",
+            "border-top-width": "1px",
+            "border-top-color": "#eee",
+            "border-right-style": "none",
+            "border-right-width": "1px",
+            "border-right-color": "#eee",
+            "border-bottom-style": "none",
+            "border-bottom-width": "1px",
+            "border-bottom-color": "#eee",
+            "border-left-style": "none",
+            "border-left-width": "1px",
+            "border-left-color": "#eee",
+            "border-top-left-radius": "18px",
+            "border-top-right-radius": "18px",
+            "border-bottom-left-radius": "0px",
+            "border-bottom-right-radius": "18px",
+            "background-color": "hsla(0, 0.00%, 100.00%, 0.00)",
+            "transform": "translate(0px, 0px)",
+            "transition-property": "border-color",
+            "transition-duration": "200ms",
+            "transition-timing-function": "ease",
+            "font-family": "Outfit, sans-serif",
+            "color": "hsla(216, 0.00%, 100.00%, 1.00)",
+            "line-height": "1.2",
+            "font-weight": "500",
+            "text-align": "left",
+            "letter-spacing": "0.075em",
+            "text-decoration": "none",
+            "text-transform": "uppercase",
+            "word-break": "normal",
+            "cursor": "pointer",
+            "padding-top": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "padding-bottom": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "min-height": "var(--rs-control-height, clamp(44px, calc(28px + 1.25vw), 52px))",
+            "font-size": "var(--rs-kicker-size, clamp(14px, calc(6px + 0.625vw), 18px))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rs-page-link medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs-page-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs-page-link small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs-page-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs-page-link tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs-page-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs-page-link large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs-page-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs-page-link xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs-page-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs-page-link xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs-page-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs6-tab-link main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs6-tab-link",
+          "properties": {
+            "display": "flex",
+            "box-sizing": "border-box",
+            "height": "auto",
+            "max-height": "none",
+            "min-width": "100px",
+            "margin-top": "0px",
+            "margin-bottom": "0px",
+            "padding-right": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "padding-left": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "justify-content": "flex-start",
+            "align-items": "center",
+            "align-self": "flex-start",
+            "flex-grow": "1",
+            "flex-shrink": "0",
+            "flex-basis": "auto",
+            "border-top-style": "solid",
+            "border-top-width": "1px",
+            "border-top-color": "#eee",
+            "border-right-style": "solid",
+            "border-right-width": "1px",
+            "border-right-color": "#eee",
+            "border-bottom-style": "solid",
+            "border-bottom-width": "1px",
+            "border-bottom-color": "#eee",
+            "border-left-style": "solid",
+            "border-left-width": "1px",
+            "border-left-color": "#eee",
+            "border-top-left-radius": "18px",
+            "border-top-right-radius": "18px",
+            "border-bottom-left-radius": "0px",
+            "border-bottom-right-radius": "18px",
+            "background-color": {
+              "id": "variable-a89bb531-98f7-bdf4-8913-38032bc0db9b"
+            },
+            "font-family": "Outfit, sans-serif",
+            "color": {
+              "id": "variable-faee5ae7-f591-417a-454b-466382d38165"
+            },
+            "line-height": "1.2",
+            "font-weight": "500",
+            "text-align": "left",
+            "letter-spacing": "0.075em",
+            "text-transform": "uppercase",
+            "padding-top": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "padding-bottom": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "min-height": "var(--rs-control-height, clamp(44px, calc(28px + 1.25vw), 52px))",
+            "font-size": "var(--rs-kicker-size, clamp(14px, calc(6px + 0.625vw), 18px))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rs6-tab-link medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs6-tab-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs6-tab-link small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs6-tab-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs6-tab-link tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs6-tab-link",
+          "properties": {
+            "width": "max-content",
+            "flex-grow": "0",
+            "white-space": "nowrap"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rs6-tab-link large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs6-tab-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs6-tab-link xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs6-tab-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs6-tab-link xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs6-tab-link",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-user main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-user",
+          "properties": {
+            "display": "flex",
+            "box-sizing": "border-box",
+            "width": "fit-content",
+            "height": "auto",
+            "max-height": "none",
+            "max-width": "72%",
+            "min-width": "50%",
+            "margin-top": "0px",
+            "margin-right": "auto",
+            "margin-bottom": "0px",
+            "margin-left": "0px",
+            "padding-right": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "padding-left": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "justify-content": "flex-start",
+            "align-items": "center",
+            "align-self": "flex-start",
+            "border-top-style": "solid",
+            "border-top-width": "1px",
+            "border-top-color": "#eee",
+            "border-right-style": "solid",
+            "border-right-width": "1px",
+            "border-right-color": "#eee",
+            "border-bottom-style": "solid",
+            "border-bottom-width": "1px",
+            "border-bottom-color": "#eee",
+            "border-left-style": "solid",
+            "border-left-width": "1px",
+            "border-left-color": "#eee",
+            "border-top-left-radius": "18px",
+            "border-top-right-radius": "18px",
+            "border-bottom-left-radius": "0px",
+            "border-bottom-right-radius": "18px",
+            "background-color": "#1c1f22",
+            "font-family": "Outfit, sans-serif",
+            "color": "#ffffff",
+            "line-height": "1.2",
+            "font-weight": "500",
+            "text-align": "left",
+            "letter-spacing": "0.075em",
+            "text-decoration": "none",
+            "text-transform": "capitalize",
+            "padding-top": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "padding-bottom": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "min-height": "var(--rs-control-height, clamp(44px, calc(28px + 1.25vw), 52px))",
+            "font-size": "var(--rs-kicker-size, clamp(14px, calc(6px + 0.625vw), 18px))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-user medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-user",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-user small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-user",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-user tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-user",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-user large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-user",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-user xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-user",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-user xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-user",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-bot main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-bot",
+          "properties": {
+            "display": "flex",
+            "box-sizing": "border-box",
+            "width": "fit-content",
+            "height": "auto",
+            "max-height": "none",
+            "max-width": "82%",
+            "min-width": "50%",
+            "margin-top": "0px",
+            "margin-right": "0px",
+            "margin-bottom": "0px",
+            "margin-left": "auto",
+            "padding-right": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "padding-left": "var(--rs-control-space, clamp(16px, 2vw, 32px))",
+            "justify-content": "flex-start",
+            "align-items": "center",
+            "align-self": "flex-end",
+            "border-top-style": "solid",
+            "border-top-width": "1px",
+            "border-top-color": "#eee",
+            "border-right-style": "solid",
+            "border-right-width": "1px",
+            "border-right-color": "#eee",
+            "border-bottom-style": "solid",
+            "border-bottom-width": "1px",
+            "border-bottom-color": "#eee",
+            "border-left-style": "solid",
+            "border-left-width": "1px",
+            "border-left-color": "#eee",
+            "border-top-left-radius": "18px",
+            "border-top-right-radius": "18px",
+            "border-bottom-left-radius": "0px",
+            "border-bottom-right-radius": "18px",
+            "background-color": "#1c1f22",
+            "font-family": "Outfit, sans-serif",
+            "color": "#ffffff",
+            "line-height": "1.2",
+            "font-weight": "500",
+            "text-align": "right",
+            "letter-spacing": "0.075em",
+            "text-decoration": "none",
+            "text-transform": "capitalize",
+            "min-height": "var(--rs-control-height, clamp(44px, calc(28px + 1.25vw), 52px))",
+            "padding-top": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "padding-bottom": "var(--rs-control-block, max(8px, calc((clamp(44px, calc(28px + 1.25vw), 52px) - 2px - clamp(14px, calc(6px + 0.625vw), 18px) * 1.2) / 2)))",
+            "font-size": "var(--rs-kicker-size, clamp(14px, calc(6px + 0.625vw), 18px))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-bot medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-bot",
+          "properties": {
+            "min-width": "60%"
+          }
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-bot small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-bot",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-bot tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-bot",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-bot large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-bot",
+          "properties": {
+            "justify-content": "flex-start",
+            "align-items": "center"
+          }
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-bot xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-bot",
+          "properties": {
+            "justify-content": "flex-start",
+            "align-items": "center"
+          }
+        }
+      ]
+    },
+    {
+      "label": "chat-msg messagex-bot xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "chat-msg messagex-bot",
+          "properties": {
+            "justify-content": "flex-start",
+            "align-items": "center"
+          }
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-copy main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-copy",
+          "properties": {
+            "display": "flex",
+            "box-sizing": "border-box",
+            "width": "100%",
+            "min-width": "0px",
+            "padding-top": "0px",
+            "padding-right": "0px",
+            "padding-bottom": "0px",
+            "padding-left": "0px",
+            "flex-direction": "column",
+            "flex-wrap": "nowrap",
+            "grid-column-gap": "var(--rs-copy-gap, clamp(16px, 1.67vw, 24px))",
+            "grid-row-gap": "var(--rs-copy-gap, clamp(16px, 1.67vw, 24px))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-copy medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-copy",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-copy small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-copy",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-copy tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-copy",
+          "properties": {
+            "display": "flex",
+            "flex-direction": "column",
+            "flex-wrap": "nowrap"
+          }
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-copy large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-copy",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-copy xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-copy",
+          "properties": {
+            "grid-column-gap": "var(--rs-copy-gap, clamp(16px, 1.67vw, 24px))",
+            "grid-row-gap": "var(--rs-copy-gap, clamp(16px, 1.67vw, 24px))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-copy xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-copy",
+          "properties": {
+            "display": "flex",
+            "margin-right": "0px",
+            "margin-left": "0px",
+            "flex-direction": "column",
+            "flex-wrap": "nowrap"
+          }
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-tabs main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-tabs",
+          "properties": {
+            "margin-top": "0px",
+            "padding-top": "0px",
+            "padding-right": "0px",
+            "padding-bottom": "0px",
+            "padding-left": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-tabs medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-tabs",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-tabs small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-tabs",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-tabs tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-tabs",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-tabs large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-tabs",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-tabs xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-tabs",
+          "properties": {
+            "display": "flex",
+            "margin-top": "0px",
+            "flex-direction": "column",
+            "flex-wrap": "nowrap",
+            "grid-column-gap": "var(--rs-copy-gap, clamp(16px, 1.67vw, 24px))",
+            "grid-row-gap": "var(--rs-copy-gap, clamp(16px, 1.67vw, 24px))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "fsl-vw-tabs xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "fsl-vw-tabs",
+          "properties": {
+            "margin-top": "0vw"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big",
+          "properties": {
+            "color": {
+              "id": "variable-faee5ae7-f591-417a-454b-466382d38165"
+            },
+            "line-height": "0.85",
+            "font-weight": "600",
+            "letter-spacing": "-0.08em",
+            "text-transform": "uppercase",
+            "font-size": "clamp(24px, 7.5vw, 144px)"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big-q main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big-q",
+          "properties": {
+            "padding-right": "10px",
+            "color": {
+              "id": "variable-faee5ae7-f591-417a-454b-466382d38165"
+            },
+            "line-height": "0.85",
+            "font-weight": "600",
+            "letter-spacing": "-0.08em",
+            "text-transform": "uppercase",
+            "font-size": "clamp(24px, 7.5vw, 144px)"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big-q medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big-q",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big-q small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big-q",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big-q tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big-q",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big-q large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big-q",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big-q xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big-q",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rd-status-big-q xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rd-status-big-q",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs2-social-2 main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs2-social-2",
+          "properties": {
+            "box-sizing": "border-box",
+            "max-width": "100%",
+            "border-top-style": "none",
+            "border-top-width": "1px",
+            "border-top-color": "hsla(0, 100.00%, 99.55%, 1.00)",
+            "border-right-style": "none",
+            "border-right-width": "1px",
+            "border-right-color": "hsla(0, 100.00%, 99.55%, 1.00)",
+            "border-bottom-style": "none",
+            "border-bottom-width": "1px",
+            "border-bottom-color": "hsla(0, 100.00%, 99.55%, 1.00)",
+            "border-left-style": "none",
+            "border-left-width": "1px",
+            "border-left-color": "hsla(0, 100.00%, 99.55%, 1.00)",
+            "border-top-left-radius": "200px",
+            "border-top-right-radius": "200px",
+            "border-bottom-left-radius": "200px",
+            "border-bottom-right-radius": "200px",
+            "background-color": {
+              "id": "variable-a89bb531-98f7-bdf4-8913-38032bc0db9b"
+            },
+            "box-shadow": "0 14px 14px 0 rgba(0,0,0,0.2), 0 2px 5px 0 rgba(0,0,0,0.2)",
+            "padding-top": "clamp(8px, 0.625vw, 12px)",
+            "padding-right": "clamp(8px, 0.625vw, 12px)",
+            "padding-bottom": "clamp(8px, 0.625vw, 12px)",
+            "padding-left": "clamp(8px, 0.625vw, 12px)",
+            "width": "fit-content"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rs2-social-2 medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs2-social-2",
+          "properties": {
+            "box-shadow": "none"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rs2-social-2 small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs2-social-2",
+          "properties": {
+            "background-image": "linear-gradient(to bottom, rgba(0,0,0,0.50),rgba(0,0,0,0.50))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rs2-social-2 tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs2-social-2",
+          "properties": {
+            "margin-top": "0rem",
+            "margin-left": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "label": "rs2-social-2 large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs2-social-2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs2-social-2 xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs2-social-2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "rs2-social-2 xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "rs2-social-2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "footer_icon-link 2 main",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "footer_icon-link 2",
+          "properties": {
+            "display": "inline-flex",
+            "box-sizing": "border-box",
+            "justify-content": "center",
+            "align-items": "center",
+            "flex-shrink": "0",
+            "color": "hsla(0, 0.00%, 100.00%, 1.00)",
+            "width": "var(--rs-control-height, clamp(44px, calc(28px + 1.25vw), 52px))",
+            "height": "var(--rs-control-height, clamp(44px, calc(28px + 1.25vw), 52px))",
+            "padding-top": "clamp(10px, 0.8vw, 14px)",
+            "padding-right": "clamp(10px, 0.8vw, 14px)",
+            "padding-bottom": "clamp(10px, 0.8vw, 14px)",
+            "padding-left": "clamp(10px, 0.8vw, 14px)",
+            "min-width": "var(--rs-control-height, clamp(44px, calc(28px + 1.25vw), 52px))",
+            "min-height": "var(--rs-control-height, clamp(44px, calc(28px + 1.25vw), 52px))"
+          }
+        }
+      ]
+    },
+    {
+      "label": "footer_icon-link 2 medium",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "footer_icon-link 2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "footer_icon-link 2 small",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "footer_icon-link 2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "footer_icon-link 2 tiny",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "footer_icon-link 2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "footer_icon-link 2 large",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "footer_icon-link 2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "footer_icon-link 2 xl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "footer_icon-link 2",
+          "properties": {}
+        }
+      ]
+    },
+    {
+      "label": "footer_icon-link 2 xxl",
+      "action": "get_variant_styles",
+      "result": [
+        {
+          "variant_id": "base",
+          "style": "footer_icon-link 2",
+          "properties": {}
+        }
+      ]
+    }
+  ],
+  "headExact": true,
+  "head": "<link rel=\"canonical\" href=\"https://ringstatus.com/\">\n<style id=\"rs-public-shared-styles-v1\">\n\n\n/* =========================================================\n   L4 — RESPONSIVE 3-CARD SYSTEM\n   ========================================================= */\n\n.l4-section {\n  width: 100%;\n  margin: 0;\n  padding: 0;\n\n  --l4-card-width: 330px;\n  --l4-card-height: 400px;\n  --l4-card-gap: 16px;\n}\n\n\n/* =========================================================\n   HORIZONTAL VIEWPORT\n   ========================================================= */\n\n.l4-section-bg {\n  width: 100%;\n\n  overflow-x: auto;\n  overflow-y: hidden;\n\n  -webkit-overflow-scrolling: touch;\n}\n\n\n/* =========================================================\n   3 CARD ROW\n   ========================================================= */\n\n.l4-section-flex {\n  display: flex;\n  flex-direction: row;\n  align-items: stretch;\n\n  gap: var(--l4-card-gap);\n\n  width: max-content;\n\n  margin-left: auto;\n  margin-right: auto;\n}\n\n\n/* =========================================================\n   CARD\n   ========================================================= */\n\n.l4-card {\n  width: var(--l4-card-width);\n  height: var(--l4-card-height);\n\n  flex: 0 0 var(--l4-card-width);\n}\n\n\n/* =========================================================\n   CARD INNER\n   ========================================================= */\n\n.l4-card-inner {\n  width: 100%;\n  height: 100%;\n\n  box-sizing: border-box;\n\n  padding: var(--l4-card-padding, 19px);\n\n  display: flex;\n  flex-direction: column;\n\n  container-type: inline-size;\n}\n\n\n/* =========================================================\n   COPY\n   ========================================================= */\n\n.l4-copy {\n  width: 100%;\n  height: 100%;\n\n  display: flex;\n  flex-direction: column;\n}\n\n\n/* =========================================================\n   KICKER\n   ========================================================= */\n\n.l4-kicker {\n  width: 100%;\n  flex: 0 0 auto;\n}\n\n.l4-kicker h5 {\n  margin: 0;\n\n  font-size: var(--l4-kicker-font, 14px);\n  line-height: 1.2;\n}\n\n\n/* =========================================================\n   HEADING\n   ========================================================= */\n\n.l4-h {\n  width: 100%;\n\n  flex: 0 0 auto;\n\n  margin-top: 18px;\n}\n\n.l4-h h2 {\n  margin: 0;\n\n  \n  \n\n  \n\n  text-wrap: balance;\n\n  overflow-wrap: normal;\n  word-break: normal;\n\n}\n\n\n/* =========================================================\n   HEADING LINE STATES\n   ========================================================= */\n\n.l4-h.is-line-1 h2 {\n  \n  \n\n}\n\n.l4-h.is-line-2 h2 {\n  \n  \n\n}\n\n.l4-h.is-line-3 h2 {\n  \n  \n\n}\n\n.l4-h.is-line-4plus h2 {\n  \n  \n\n}\n\n\n/* =========================================================\n   PARAGRAPH\n   ========================================================= */\n\n.l4-p {\n  width: 100%;\n\n  flex: 0 0 auto;\n\n  margin-top: auto;\n  padding-top: 24px;\n}\n\n.l4-p p {\n  margin: 0;\n\n  font-size: var(--l4-p-font, 15px);\n  line-height: var(--l4-p-line, 1.35);\n}\n\n.l4-p p + p {\n  margin-top: 0.85em;\n}\n\n\n\n  /* =========================================================\n   L4 CARD NAVIGATION\n   ADDITIVE — DOES NOT REPLACE EXISTING L4 SYSTEM\n   ========================================================= */\n\n.l4-section-bg {\n  scroll-behavior: smooth;\n\n  overflow-x: auto;\n  overflow-y: hidden;\n\n  overscroll-behavior-x: contain;\n\n  /* Preserve horizontal swipe AND normal vertical page scroll */\n  touch-action: pan-x pan-y;\n\n  scroll-snap-type: x proximity;\n\n  scrollbar-width: none;\n\n  -webkit-overflow-scrolling: touch;\n}\n\n.l4-section-bg::-webkit-scrollbar {\n  display: none;\n}\n\n\n/* =========================================================\n   CARD SNAP\n   ========================================================= */\n\n.l4-card {\n  scroll-snap-align: start;\n}\n\n\n/* =========================================================\n   DESKTOP GRAB\n   Only shown when horizontal scrolling is actually available.\n   ========================================================= */\n\n@media (pointer: fine) {\n\n  .l4-section-bg.is-scrollable {\n    cursor: grab;\n  }\n\n  .l4-section-bg.is-scrollable.is-dragging {\n    cursor: grabbing;\n  }\n\n}\n\n\n/* =========================================================\n   ACTIVE DRAG\n\n   Temporarily disable snap/smooth behavior while the\n   pointer is physically moving the track.\n   ========================================================= */\n\n.l4-section-bg.is-dragging {\n  scroll-behavior: auto;\n  scroll-snap-type: none;\n}\n\n.l4-section-bg.is-dragging,\n.l4-section-bg.is-dragging * {\n  user-select: none;\n}\n\n\n/* =========================================================\n   CONTROLS\n   ========================================================= */\n\n.l4-controls {\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n\n  gap: 12px;\n\n  margin-top: 20px;\n}\n\n.l4-controls[hidden],\n.l4-prev[hidden],\n.l4-next[hidden] {\n  display: none !important;\n}\n\n\n/* =========================================================\n   L5 ISOLATED DYNAMIC TYPE SYSTEM\n   ========================================================= */\n\n.l5-section,\n.l5-section * {\n  box-sizing: border-box;\n}\n\n\n/* =========================================================\n   ROOT\n\n   No 100vw.\n   No negative full-bleed margins.\n   ========================================================= */\n\n.l5-section {\n  position: relative;\n\n  width: 100%;\n  max-width: none;\n\n  margin: 0;\n  padding: 0;\n\n  display: block;\n  overflow: visible;\n}\n\n\n/* =========================================================\n   BACKGROUND\n   ========================================================= */\n\n.l5-section .l5-section-bg {\n  position: relative;\n\n  width: 100%;\n  max-width: none;\n\n  margin: 0;\n  padding: 0;\n\n  display: block;\n}\n\n\n/* =========================================================\n   COPY + FLUID GUTTERS\n\n   This is the only horizontal gutter owner.\n   ========================================================= */\n\n.l5-section .l5-copy {\n  position: relative;\n\n  container-type: inline-size;\n\n  width: 100%;\n  max-width: 1680px;\n  min-width: 0;\n\n  margin-inline: auto;\n\n  padding-inline: clamp(\n    20px,\n    4vw,\n    64px\n  );\n\n  display: block;\n}\n\n\n/* =========================================================\n   RESPONSIVE HEIGHT\n\n   Minimum height preserves the overall design.\n   Padding guarantees breathing room.\n   Content-heavy sections can grow beyond the minimum.\n   ========================================================= */\n\n.l5-section .l5-height {\n  position: relative;\n\n  width: 100%;\n  max-width: none;\n\n  height: auto;\n\n  min-height: clamp(\n    420px,\n    30.945vw,\n    860px\n  );\n\n  margin: 0;\n\n  padding-block: 64px;\n  padding-inline: 0;\n\n  display: flex;\n  align-items: center;\n}\n\n\n/* =========================================================\n   INNER\n\n   Copy owns horizontal gutters.\n   Height owns vertical spacing.\n   ========================================================= */\n\n.l5-section .l5-inner {\n  position: relative;\n\n  width: 100%;\n  max-width: 1480px;\n\n  height: auto;\n  min-height: 0;\n\n  margin-inline: auto;\n  padding: 0;\n\n  display: block;\n}\n\n\n/* =========================================================\n   CONTENT WRAPPER\n   ========================================================= */\n\n.l5-section .l5-content-wrapper {\n  position: relative;\n\n  width: 100%;\n  max-width: none;\n\n  height: auto;\n\n  margin: 0;\n  padding: 0;\n\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n}\n\n\n/* =========================================================\n   KICKER\n   ========================================================= */\n\n.l5-section .l5-kicker {\n  width: 100%;\n\n  margin: 0;\n  padding: 0;\n}\n\n.l5-section .l5-kicker h5 {\n  margin: 0;\n  padding: 0;\n\n  font-family: \"Outfit\", sans-serif;\n  font-weight: 600;\n\n  font-size: clamp(\n    22px,\n    1.5cqw,\n    24px\n  );\n\n  line-height: 1.15;\n\n  letter-spacing: 0.05em;\n  text-transform: uppercase;\n  text-align: left;\n}\n\n\n/* =========================================================\n   HEADING + PARAGRAPH\n   ========================================================= */\n\n.l5-section .l5-hp {\n  width: 100%;\n  height: auto;\n\n  margin-top: clamp(\n    20px,\n    2cqw,\n    30px\n  );\n\n  padding: 0;\n\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n\n  gap: clamp(\n    28px,\n    2.4cqw,\n    36px\n  );\n}\n\n\n/* =========================================================\n   HEADING\n   ========================================================= */\n\n.l5-section .l5-h {\n  width: 100%;\n\n  margin: 0;\n  padding: 0;\n}\n\n.l5-section .l5-h h1 {\n  width: 100%;\n\n  margin: 0;\n  padding: 0;\n\n  font-family: \"Outfit\", sans-serif;\n  font-weight: 600;\n\n  font-size: var(\n    --l5-h-font,\n    76px\n  );\n\n  line-height: 0.9;\n  letter-spacing: -0.055em;\n\n  text-align: left;\n  text-wrap: balance;\n\n  overflow-wrap: normal;\n  word-break: normal;\n}\n\n\n/* =========================================================\n   HEADING LINE STATES\n   ========================================================= */\n\n.l5-section .l5-h.is-line-1 h1 {\n  line-height: 0.87;\n  letter-spacing: -0.065em;\n}\n\n.l5-section .l5-h.is-line-2 h1 {\n  line-height: 0.90;\n  letter-spacing: -0.058em;\n}\n\n.l5-section .l5-h.is-line-3 h1 {\n  line-height: 0.93;\n  letter-spacing: -0.05em;\n}\n\n.l5-section .l5-h.is-line-4plus h1 {\n  line-height: 0.97;\n  letter-spacing: -0.04em;\n}\n\n\n/* =========================================================\n   PARAGRAPH\n   ========================================================= */\n\n.l5-section .l5-p {\n  width: var(\n    --l5-p-width,\n    78%\n  );\n\n  max-width: none;\n\n  margin: 0;\n  padding: 0;\n}\n\n.l5-section .l5-p p {\n  width: 100%;\n\n  margin: 0;\n  padding: 0;\n\n  font-family: \"Outfit\", sans-serif;\n  font-weight: 400;\n\n  font-size: var(\n    --l5-p-font,\n    24px\n  );\n\n  line-height: var(\n    --l5-p-line,\n    1.3\n  );\n\n  letter-spacing: 0;\n  text-align: left;\n}\n\n.l5-section .l5-p p + p {\n  margin-top: 0.85em;\n}\n\n\n/* =========================================================\n   CTA HEIGHT\n\n   Allow dense CTA groups to increase section height.\n   ========================================================= */\n\n.l5-section .rs-button-block {\n  height: auto;\n  min-height: 0;\n}\n\n\n/* =========================================================\n   DEBUG\n   ========================================================= */\n\n.l5-section .l5-debug {\n  position: absolute;\n\n  left: clamp(20px, 4vw, 64px);\n  bottom: 12px;\n\n  margin: 0;\n  padding: 0;\n\n  font-family: Arial, sans-serif;\n  font-size: 11px;\n  line-height: 1.35;\n\n  opacity: 0.5;\n}\n\n\n/* =========================================================\n   TABLET\n   ========================================================= */\n\n@media screen and (max-width: 991px) {\n\n  .l5-section .l5-copy {\n    padding-inline: clamp(\n      20px,\n      4vw,\n      36px\n    );\n  }\n\n  .l5-section .l5-height {\n    min-height: 560px;\n\n    padding-block: 96px;\n  }\n\n  .l5-section .l5-debug {\n    left: clamp(\n      20px,\n      4vw,\n      36px\n    );\n  }\n\n}\n\n\n/* =========================================================\n   MOBILE\n   ========================================================= */\n\n@media screen and (max-width: 479px) {\n\n  .l5-section .l5-copy {\n    padding-inline: 16px;\n  }\n\n  .l5-section .l5-height {\n    min-height: 0;\n\n    padding-block: 64px;\n  }\n\n  .l5-section .l5-p {\n    width: 100%;\n  }\n\n  .l5-section .l5-debug {\n    left: 16px;\n  }\n\n}\n\n\n\n/* =========================================================\n   L6 — RESPONSIVE CARD SYSTEM\n   ========================================================= */\n\n.l6-section {\n  width: 100%;\n  margin: 0;\n  padding: 0;\n\n  --l6-card-width: 330px;\n  --l6-card-height: 400px;\n  --l6-card-gap: 16px;\n}\n\n\n/* =========================================================\n   VIEWPORT\n   ========================================================= */\n\n.l6-section-bg {\n  width: 100%;\n\n  overflow-x: auto;\n  overflow-y: hidden;\n\n  -webkit-overflow-scrolling: touch;\n}\n\n\n/* =========================================================\n   CARD ROW\n   ========================================================= */\n\n.l6-section-flex {\n  display: flex;\n  flex-direction: row;\n  align-items: stretch;\n\n  gap: var(--l6-card-gap);\n\n  width: max-content;\n\n  margin-left: auto;\n  margin-right: auto;\n}\n\n\n/* =========================================================\n   CARD\n   ========================================================= */\n\n.l6-card {\n  width: var(--l6-card-width);\n  height: var(--l6-card-height);\n\n  flex: 0 0 var(--l6-card-width);\n}\n\n\n/* =========================================================\n   CARD INNER\n   ========================================================= */\n\n.l6-card-inner {\n  width: 100%;\n  height: 100%;\n\n  box-sizing: border-box;\n\n  padding: var(--l6-card-padding, 19px);\n\n  display: flex;\n  flex-direction: column;\n\n  align-items: stretch;\n  justify-content: center;\n\n  container-type: inline-size;\n}\n\n\n/* =========================================================\n   CARD CONTENT WRAPPER\n   ========================================================= */\n\n.l6-card-content-wrapper {\n  width: 100%;\n  height: 100%;\n\n  display: flex;\n  flex-direction: column;\n\n  justify-content: space-between;\n  align-items: stretch;\n}\n\n\n/* =========================================================\n   COPY\n   ========================================================= */\n\n.l6-copy {\n  width: 100%;\n\n  flex: 0 0 auto;\n\n  display: flex;\n  flex-direction: column;\n\n  gap: 10pt;\n}\n\n\n/* =========================================================\n   KICKER\n   ========================================================= */\n\n.l6-kicker {\n  width: 100%;\n  flex: 0 0 auto;\n}\n\n.l6-kicker h5 {\n  margin: 0;\n\n  font-size: var(--l6-kicker-font, 14px);\n  line-height: 1.2;\n}\n\n\n/* =========================================================\n   HEADING\n   ========================================================= */\n\n.l6-h {\n  width: 100%;\n  flex: 0 0 auto;\n\n  margin: 0;\n}\n\n.l6-h h2 {\n  margin: 0;\n\n  font-size: var(--l6-h-font, 38px);\n  line-height: var(--l6-h-line, 0.94);\n\n  letter-spacing: var(--l6-h-track, -0.04em);\n\n  text-wrap: balance;\n\n  overflow-wrap: normal;\n  word-break: normal;\n}\n\n\n/* =========================================================\n   HEADING LINE STATES\n   ========================================================= */\n\n.l6-h.is-line-1 h2 {\n  line-height: 0.90;\n  letter-spacing: -0.05em;\n}\n\n.l6-h.is-line-2 h2 {\n  line-height: 0.94;\n  letter-spacing: -0.045em;\n}\n\n.l6-h.is-line-3 h2 {\n  line-height: 0.98;\n  letter-spacing: -0.035em;\n}\n\n.l6-h.is-line-4plus h2 {\n  line-height: 1.02;\n  letter-spacing: -0.025em;\n}\n\n\n/* =========================================================\n   PARAGRAPH\n   ========================================================= */\n\n.l6-p {\n  width: 100%;\n  flex: 0 0 auto;\n\n  margin: 0;\n  padding: 0;\n}\n\n.l6-p p {\n  margin: 0;\n\n  font-size: var(--l6-p-font, 15px);\n  line-height: var(--l6-p-line, 1.35);\n}\n\n.l6-p p + p {\n  margin-top: 0.85em;\n}\n\n\n/* =========================================================\n   BOTTOM HELPER\n   EMPTY FLEX ANCHOR ONLY\n   ========================================================= */\n\n.l6-bottom-helper {\n  width: 100%;\n  height: 0;\n\n  flex: 0 0 0;\n}\n\n\n/* =========================================================\n   MOBILE CARD ADJUSTMENT\n   ========================================================= */\n\n@media (max-width: 767px) {\n\n  .l6-card {\n    min-height: 450px;\n  }\n\n  .l6-card-inner {\n    padding-top: max(\n      24px,\n      var(--l6-card-padding, 19px)\n    );\n\n    padding-bottom: max(\n      24px,\n      var(--l6-card-padding, 19px)\n    );\n  }\n\n}\n\n\n/* =========================================================\n   LEFT / RIGHT SPLIT\n   ========================================================= */\n\n.l6-split {\n  width: 100%;\n}\n\n.l6-split-grid {\n  width: 100%;\n\n  display: grid;\n\n  grid-template-columns:\n    minmax(0, 1fr)\n    minmax(0, 1fr);\n\n  grid-template-rows: auto;\n\n  align-items: stretch;\n}\n\n\n/* =========================================================\n   SPLIT LEFT\n   ========================================================= */\n\n.l6-split-left {\n  width: 100%;\n  min-width: 0;\n}\n\n.l6-split-left img {\n  display: block;\n\n  width: 100%;\n  height: 100%;\n\n  max-height: 400px;\n\n  object-fit: cover;\n}\n\n\n/* =========================================================\n   SPLIT RIGHT\n   ========================================================= */\n\n.l6-split-right {\n  width: 100%;\n  min-width: 0;\n\n  display: flex;\n  align-items: stretch;\n}\n\n.l6-split-right .l6-section {\n  width: 100%;\n}\n\n.l6-split-right .l6-section-bg {\n  width: 100%;\n}\n\n.l6-split-right .l6-section-flex {\n  width: 100%;\n\n  margin-left: 0;\n  margin-right: 0;\n}\n\n.l6-split-right .l6-card {\n  width: 100%;\n\n  flex-basis: 100%;\n}\n\n\n/* =========================================================\n   SPLIT MOBILE\n\n   DESKTOP:\n   LEFT | RIGHT\n\n   MOBILE:\n   TOP\n   BOTTOM\n   ========================================================= */\n\n@media (max-width: 767px) {\n\n  .l6-split-grid {\n    grid-template-columns: 1fr;\n    grid-template-rows: auto auto;\n  }\n\n  .l6-split-left img {\n    height: auto;\n    max-height: 400px;\n  }\n\n}\n\n\n/* =========================================================\n   CARD LANE\n   ========================================================= */\n\n.l6-card-lane {\n  width: 100%;\n  max-width: 100%;\n\n  overflow-x: auto;\n  overflow-y: hidden;\n\n  -webkit-overflow-scrolling: touch;\n}\n\n\n\n/* =========================================================\n   L6 CARD NAVIGATION\n   ADDITIVE — DOES NOT REPLACE EXISTING L6 SYSTEM\n   ========================================================= */\n\n.l6-section-bg {\n  scroll-behavior: smooth;\n\n  overflow-x: auto;\n  overflow-y: hidden;\n\n  overscroll-behavior-x: contain;\n\n  /* Preserve horizontal swipe AND normal vertical page scroll */\n  touch-action: pan-x pan-y;\n\n  scroll-snap-type: x proximity;\n\n  scrollbar-width: none;\n\n  -webkit-overflow-scrolling: touch;\n}\n\n.l6-section-bg::-webkit-scrollbar {\n  display: none;\n}\n\n\n/* =========================================================\n   CARD SNAP\n   ========================================================= */\n\n.l6-card {\n  scroll-snap-align: start;\n}\n\n\n/* =========================================================\n   DESKTOP GRAB\n   Only shown when horizontal scrolling is actually available.\n   ========================================================= */\n\n@media (pointer: fine) {\n\n  .l6-section-bg.is-scrollable {\n    cursor: grab;\n  }\n\n  .l6-section-bg.is-scrollable.is-dragging {\n    cursor: grabbing;\n  }\n\n}\n\n\n/* =========================================================\n   ACTIVE DRAG\n\n   Temporarily disable snap/smooth behavior while the\n   pointer is physically moving the track.\n   ========================================================= */\n\n.l6-section-bg.is-dragging {\n  scroll-behavior: auto;\n  scroll-snap-type: none;\n}\n\n.l6-section-bg.is-dragging,\n.l6-section-bg.is-dragging * {\n  user-select: none;\n}\n\n\n/* =========================================================\n   CONTROLS\n   ========================================================= */\n\n.l6-controls {\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n\n  gap: 12px;\n\n  margin-top: 20px;\n}\n\n.l6-controls[hidden],\n.l6-prev[hidden],\n.l6-next[hidden] {\n  display: none !important;\n}\n\n</style>\n\n<style id=\"rs-public-contract-v2\">\n/* Home shared type and spacing. Fluid base values; no typography breakpoint overrides. */\n:root {\n  --rs-font: \"Outfit\", sans-serif;\n  --rs-heading-size: clamp(54px, 10cqw, 116px);\n  --rs-heading-xl-size: clamp(54px, 12cqw, 132px);\n  --rs-h2-size: clamp(38px, 3vw, 54px);\n  --rs-paragraph-size: clamp(19px, calc(5.3px + 1.08vw), 26px);\n  --rs-body-size: var(--rs-paragraph-size);\n  --rs-paragraph-xl-size: clamp(21px, calc(6px + 1.4vw), 32px);\n  --rs-kicker-size: clamp(14px, calc(6px + 0.625vw), 18px);\n  --rs-nav-size: var(--rs-kicker-size);\n  --rs-nav-line: 1.2;\n  --rs-heading-parent-width: clamp(60rem, 82vw, 90rem);\n  --rs-heading-line: .85;\n  --rs-control-weight: 500;\n  --rs-control-line: 1.2;\n  --rs-control-track: .075em;\n  --rs-gutter: clamp(16px, 4.071vw, 65px);\n  --rs-section-space: clamp(32px, 4vw, 64px);\n  --rs-stack-space: clamp(16px, 2vw, 32px);\n  --rs-method-gap: clamp(24px, 2.78vw, 40px);\n  --rs-copy-gap: clamp(16px, 1.67vw, 24px);\n  --rs-control-space: clamp(16px, 2vw, 32px);\n  --rs-control-block: max(8px, calc((var(--rs-control-height) - 2px - var(--rs-kicker-size) * 1.2) / 2));\n  --rs-control-height: clamp(44px, calc(28px + 1.25vw), 52px);\n  --rs-content-max: 1600px;\n}\nbody { font-family:var(--rs-font); }\nh1,h2,h3,h4,h5,p { font-family:var(--rs-font); margin-top:0; }\nh1,.l5-heading-white,.l5-heading-dark,\n.rs10-h1-xl,.rs10-h1-xl.is-white,.rs10-h1-xl.is-white-2,.rs10-h1-xl.is-rust {\n  font-size:var(--rs-heading-size); font-weight:600;\n  line-height:var(--rs-heading-line); letter-spacing:-.04em;\n}\n.l5-h,.rs0-big-text {\n  box-sizing:border-box; width:var(--rs-heading-parent-width);\n  max-width:100%; min-width:0; container-type:inline-size;\n}\n.l5-heading-white,.l5-heading-dark,.rs10-h1-xl { width:100%; max-width:100%; margin:0; padding:0; }\nh2,.rs-shared-h2,.rd-status-big-top,.l4-h h2,\n.l4-h.is-line-1 h2,.l4-h.is-line-2 h2,.l4-h.is-line-3 h2,.l4-h.is-line-4plus h2 {\n  font-size:var(--rs-h2-size); font-weight:600; line-height:var(--rs-heading-line); letter-spacing:-.04em;\n}\np,.l5-paragraph-white,.l5-paragrapg-dark,.paragraph-583,.paragraph-589,.l4-p p {\n  font-size:var(--rs-paragraph-size); font-weight:400; line-height:1.3;\n}\nstrong,b { font-weight:600; }\n.l5-paragraph-white.is-xl,.l5-paragrapg-dark.is-xl { font-size:var(--rs-paragraph-xl-size, clamp(21px, calc(6px + 1.4vw), 32px)); }\nh5,.kicker2,.kicker2.is-dark,.kicker2.is-rust,.kicker2.is-color-is-err,\n.chat-msg-messagex-bot,.chat-msg-messagex-user,\n.rs-shared-control-text,.rs10-tab-label,.rs6-tab-link,\n.rs-page-link,.nav-drop-link,.member-link,.submit-button-5,\n.heading-1644,.rs-h5-card-kicker,.footer-legal-link-2,.lainey-link,\n.l5-section .l5-kicker h5,.l4-kicker h5 {\n  font-family:var(--rs-font); font-size:var(--rs-kicker-size);\n  font-weight:var(--rs-control-weight); line-height:var(--rs-control-line);\n  letter-spacing:var(--rs-control-track);\n}\n.kicker2,.chat-msg-messagex-bot,.chat-msg-messagex-user,\n.rs6-tab-link,.rs6-tab-link.w--current,.rs-page-link,.nav-drop-link,.member-link,.submit-button-5 {\n  display:flex; justify-content:flex-start; align-items:center;\n  box-sizing:border-box; min-height:var(--rs-control-height); height:auto;\n  padding:var(--rs-control-block) var(--rs-control-space);\n  font-family:var(--rs-font); font-size:var(--rs-kicker-size); font-weight:var(--rs-control-weight);\n  line-height:var(--rs-control-line); letter-spacing:var(--rs-control-track);\n  text-transform:uppercase; text-align:left;\n  border:1px solid #eee; border-radius:18px 18px 18px 0;\n\n}\n.rs-shared-control-text,.rs10-tab-label { margin:0; }\n.rs-shared-control-text,.rs10-tab-label { font-family:inherit; font-size:inherit; font-weight:inherit; line-height:inherit; letter-spacing:inherit; text-transform:inherit; }\n.l5-kicker { width:100%; max-width:100%; }\n.kicker2 { width:fit-content; min-width:50%; max-width:100%; align-self:flex-start; margin-left:0; margin-right:auto; text-align:left; text-transform:uppercase; white-space:normal; word-break:normal; overflow-wrap:normal; }\n.chat-msg-messagex-user { width:fit-content; min-width:50%; max-width:72%; align-self:flex-start; margin-left:0; margin-right:auto; justify-content:flex-start; text-align:left; text-transform:capitalize; }\n.chat-msg-messagex-bot { width:fit-content; min-width:50%; max-width:82%; align-self:flex-end; margin-left:auto; margin-right:0; justify-content:flex-end; text-align:right; text-transform:capitalize; }\n.kicker2,.chat-msg-messagex-user,.chat-msg-messagex-bot,.rs-page-link,.rs6-tab-link { min-height:var(--rs-control-height); max-height:none; }\n.rs-page-link,.rs6-tab-link { align-self:flex-start; margin-top:0; margin-bottom:0; }\n.rs-page-link > *,.rs6-tab-link > *,.chat-msg-messagex-user > *,.chat-msg-messagex-bot > * { margin:0; font-family:inherit; font-size:inherit; font-weight:inherit; line-height:inherit; letter-spacing:inherit; text-transform:inherit; text-align:inherit; }\n.rs-h1-xl-text-1-2 { font-size:var(--rs-heading-size, clamp(54px, 12cqw, 132px)); font-weight:600; }\n.rs0-big-text { --rs-heading-size:clamp(54px, 12cqw, 132px); }\n.rs10-stack { width:100%; min-width:0; }\n.fsl-method {\n  box-sizing:border-box; width:100%; max-width:var(--rs-content-max);\n  margin-inline:auto; padding:var(--rs-section-space) var(--rs-gutter);\n  gap:var(--rs-method-gap);\n}\n.fsl-vw-copy,.fs1-copy,.l5-hp,.l5-section .l5-hp { gap:var(--rs-copy-gap); }\n.bqw-container-1,.bqw-b-wrap-1 { gap:var(--rs-method-gap); }\n.fsl-vw-panel.is-transparent,.fsl-vw-panel.is-transparent.is-copy,\n.fsl-vw-copy,.fsl-vw-tabs { min-width:0; max-width:100%; padding-inline:0; }\n.fsl-vw-copy { padding:0; }\n.rs-custom-nav-center,.rs10-footer-wrapper {\n  box-sizing:border-box; width:100%; max-width:var(--rs-content-max);\n  margin-inline:auto; padding-inline:var(--rs-gutter); min-width:0;\n}\n.rs10-footer-wrapper { padding-block:var(--rs-stack-space); }\n.rs-page-nav { position:sticky; top:0; height:auto; }\n.fsl-vw-tab-menu { max-width:100%; min-width:0; overflow-x:auto; overflow-y:hidden; flex-wrap:nowrap; }\n.rs6-tab-link { min-width:100px; flex-shrink:0; white-space:nowrap; }\n.input-16 {\n  box-sizing:border-box; font-family:var(--rs-font); font-size:clamp(16px,1vw,18px);\n  line-height:1.2; min-height:var(--rs-control-height); height:auto;\n  max-height:none; min-width:0; max-width:100%; flex-basis:auto;\n}\n.sign-up-flex-form { gap:10px; }\n.sign-up-flex-form .input-16 { margin-right:0; }\n.rs10-footer-bottom,.rs-legal-block,.rs-copyright-block,\n.rs10-waitlist-block,.rs10-waitlist-input { min-width:0; }\n.rs-legal-block { flex-wrap:wrap; gap:var(--rs-stack-space); }\n.rs0-logo-link,.rs0-logo-link-footer { max-width:100%; min-width:0; }\n.rs0-logo-link > *,.rs0-logo-link-footer > *,\n.rs0-logo-link .rd-status-big,.rs0-logo-link .rd-status-big.is-status,.rs0-logo-link .rd-status-big-q { font-size:clamp(24px,7.5vw,144px); line-height:.85; }\n.div-block-11624 { display:flex; flex-wrap:wrap; gap:8px; min-width:0; max-width:100%; }\n@media screen and (max-width:767px) {\n  .rs-custom-nav-center { flex-wrap:wrap; gap:10px; }\n  .rs-nav-logo { width:100%; }\n  .div-block-11572 { display:flex; width:100%; min-width:0; gap:8px; }\n  .sign-up-flex-form { flex-wrap:wrap; }\n  .sign-up-flex-form .input-16 { flex:1 1 auto; width:100%; }\n  .rs10-waitlist-label { min-width:0; }\n}\n</style>"
+}

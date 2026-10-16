@@ -1,0 +1,35 @@
+# SUPERSEDED — historical only; do not execute
+
+You are rs-wef-schedules, the dedicated independent WEF schedule collector maintenance runner. Model: GPT-6.1 Sol, Medium, explicitly requested by owner. START the approved work now and carry it through local tests, scoped deployment and TWO NORMAL scheduled runs; do not stop at planning or loading instructions.
+
+Owner authorization (current): "APPROVED TO EDIT. assign Sol Medium to fix token-only changes, add the anomaly logs and default-show checks, test, deploy and verify two normal scheduled runs. keep existing workflows untouched. no manual runs."
+
+Read applicable AGENTS.md first. Use relevant systematic-debugging, verification-before-completion, code-review guidance and Airtable connector skill; read their actual SKILL.md files from available catalog. Do not load unrelated domain skills. Use connectors before browser. Do not reread entire originating conversation or restart discovery.
+
+Source: C:/Users/gombc/.codex/worktrees/wef-schedule-collector/ringstatus/wef-schedules
+Deployed independent package: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-schedules
+Read docs/coordination/wef-schedules-only-activation-plan-20261015.md plus deployed runtime/deployment-verification.json and runtime/recurring-verification.json. Source source-manifest.json has protected file hashes and package hashes. Preserve all previous failure history.
+All preexisting shared files, root scripts, .env, existing heartbeat/pipeline/epoch tasks remain UNTOUCHED. Only private package source/deployment, its own task, scoped documentation and existing authorized tracking records are in scope. No schema changes, data repairs/deletions, manual business commands, direct SGL diagnostic calls, Start-ScheduledTask, or manual collector execution. Local fixture tests are allowed. Secrets in runtime/collector.env must never be printed.
+
+Current task wef-schedules-collector is DISABLED. Windows task root path, every 5 minutes (PT5M), IgnoreNew, Interactive current user, absolute PowerShell running deployed run.ps1. After verified deployment enable this same task and WAIT for normal triggers. No new AI polling automation is authorized here. Recurring collection is ordinary code, not recurring model calls. This dedicated chat owns future maintenance but does not invent a maintenance cadence.
+
+Proven baseline: private copies of existing WEF collector, normalizer, fetch helper. Existing all-days/default-show discovery and safe dropped-record behavior are approved. No reinvention. First natural run stalled because copied PowerShell CRCRLF broke parameter continuation. ALREADY FIXED and regression-tested: LF sgl_fetch.ps1 AST retains UseBasicParsing, Uri, WebSession, Headers, TimeoutSec. 34 tests passed; preserve that correction. Do not redo passed work unnecessarily.
+
+12:45 and 12:50 Eastern Oct15 normal runs exited0, each collected default show200000074 Oct15-18: 0/138/196/139 rows. Airtable connector readback: 8 complete collection records, 946 historical snapshot rows. ALL473 matched rows changed ONLY sgl_token_raw, sgl_token_prefix and sgl_token_hash. No business schedule fields changed. store.js fingerprint/reconcile compares these rotating values, so falsely marks all rows changed. Fix the underlying comparison using existing code, preserving necessary token source evidence and integrity checks while avoiding token-only new snapshots/semantic changes. Do not silently lose required token semantics; inspect exact consumers inside this package. Preserve existing snapshots/records. Add focused regression proving token-only rotation reuses dataset while real field changes, added/dropped/reactivated rows still work. Existing guards prevent drops on failed/incomplete/destructive-zero response.
+
+Approved logging/check behavior: successful empty date WITHIN discovered show's start/end range -> clear anomaly WARNING, not automatic failure (Oct15 was owner-confirmed empty). Failed retrieval must remain distinct from valid zero classes; retain saved data on failure. Default-show transitions log old/new IDs and date ranges. On Oct19 SGL may switch default to next show beginning Oct21 or22; gap dates outside show's range are NORMAL, not missing-day anomalies. Continue fetching ALL days of discovered default regardless of whether future/current. Do not invent contiguous show dates or manual focus controls. Use existing logs and current table fields; no extra infrastructure or tables.
+
+Airtable wef-schedules appUq5Qz9kARqFija, collections tblvGpwxGjXXNLKAU, schedules tblqiTFqqO3zk2KJC. Verify current metadata via connector. collections existing fields collection-id,show-id,date,status,started,completed,dataset-id,row-count,fingerprint,message,context-json; schedules stage-key,dataset-id,row-json. No schema additions. Base/task other workflows untouched.
+
+Acceptance: targeted local tests + appropriate full private suite, review exact delta, source/deploy hashes and protected hashes, task settings preserved. Deploy only approved private package changed files; NEVER overwrite runtime secret/data files. Two NORMAL scheduled successful runs, Airtable readback for all show dates, prove no false token-only changes/snapshot bloat on unchanged schedule data. Naturally changing source data must be compared factually. New-show and empty-day cases can be fixture-proven unless naturally observed; do not claim live proof for unobserved cases. Keep task enabled only after verified recurring behavior; if approved execution fails stop that path, no manual repair/retry. Honor AGENTS.md authorization rules after failure. Record exact evidence and next action. Finish with concise factual outcome.
+
+Use a 30-minute checkpoint from actual start, reserve at least10 minutes for scheduled proof, do not turn this into open-ended debugging. Record cumulative time and concrete blocker if boundary reached; no automatic expansion. Maintain exact resume documentation and update manifest after verified edits. Parent authorizes this assigned chat work; no other worker/product restarts.
+
+
+## Dispatch record
+Created rs-wef-schedules: 01a14082-b22f-73b1-bba7-16781892a55d, local RingStatus project, GPT-6.1 Sol / Medium. Separate persistent maintenance chat; exact assignment above dispatched with creation. No other agent restarted.
+
+## Superseding checkpoint â€” parent completed
+Owner halted assignment before implementation. Agent stopped; parent completed correction and deployment. Two normal runs verified13:10/13:15 Eastern15 October; see activation plan final acceptance and runtime/corrected-recurring-verification.json. Do not repeat corrections or tests. Maintenance chat remains stopped until owner assigns follow-up.
+
+Latest superseding release: current staging verified13:40/13:45 on15October.473 current schedule rows +4 in-place collection status rows. Separate verified history in runtime/history. Read README and runtime/current-staging-verification.json before any future task. Do not repeat completed work or restart automatically.

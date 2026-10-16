@@ -1,0 +1,192 @@
+[
+  {
+    "bots": [
+      {
+        "bubbleWidth": 502.4972839355469,
+        "rightError": -0.00000762939453125,
+        "stackWidth": 612.8035888671875,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 441.31488037109375,
+        "rightError": -0.00000762939453125,
+        "stackWidth": 612.8035888671875,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 367.6807556152344,
+        "rightError": -0.00000762939453125,
+        "stackWidth": 612.8035888671875,
+        "wrapperError": 0
+      }
+    ],
+    "logo": [
+      {
+        "font": "80.053px",
+        "height": 68.03946685791016
+      },
+      {
+        "font": "80.053px",
+        "height": 68.03946685791016
+      },
+      {
+        "font": "80.053px",
+        "height": 68.03946685791016
+      }
+    ],
+    "scroll": 667,
+    "width": 667
+  },
+  {
+    "bots": [
+      {
+        "bubbleWidth": 342.8877258300781,
+        "rightError": 0.00000286102294921875,
+        "stackWidth": 360.94097900390625,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 342.8877258300781,
+        "rightError": 0.00000286102294921875,
+        "stackWidth": 360.94097900390625,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 274.3929443359375,
+        "rightError": -0.00001239776611328125,
+        "stackWidth": 360.94097900390625,
+        "wrapperError": 0
+      }
+    ],
+    "logo": [
+      {
+        "font": "47.1523px",
+        "height": 40.07312774658203
+      },
+      {
+        "font": "47.1523px",
+        "height": 40.07312774658203
+      },
+      {
+        "font": "47.1523px",
+        "height": 40.07312774658203
+      }
+    ],
+    "scroll": 393,
+    "width": 393
+  },
+  {
+    "bots": [
+      {
+        "bubbleWidth": 617.556640625,
+        "rightError": 0.000030517578125,
+        "stackWidth": 753.1181640625,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 489.5213012695313,
+        "rightError": 0,
+        "stackWidth": 753.1181640625,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 275.17938232421875,
+        "rightError": 0,
+        "stackWidth": 380.0704040527344,
+        "wrapperError": 0
+      }
+    ],
+    "logo": [
+      {
+        "font": "96px",
+        "height": 81.59493255615234
+      },
+      {
+        "font": "96px",
+        "height": 81.59493255615234
+      },
+      {
+        "font": "96px",
+        "height": 81.59493255615234
+      }
+    ],
+    "scroll": 820,
+    "width": 820
+  },
+  {
+    "bots": [
+      {
+        "bubbleWidth": 963.4176025390624,
+        "rightError": -0.000019073486328125,
+        "stackWidth": 1174.903564453125,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 763.6865844726562,
+        "rightError": -0.000049591064453125,
+        "stackWidth": 1174.903564453125,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 296.9508972167969,
+        "rightError": 0.000030517578125,
+        "stackWidth": 593.90869140625,
+        "wrapperError": 0
+      }
+    ],
+    "logo": [
+      {
+        "font": "96px",
+        "height": 81.59493255615234
+      },
+      {
+        "font": "96px",
+        "height": 81.59493255615234
+      },
+      {
+        "font": "96px",
+        "height": 81.59493255615234
+      }
+    ],
+    "scroll": 1279,
+    "width": 1279
+  },
+  {
+    "bots": [
+      {
+        "bubbleWidth": 1205.3946533203125,
+        "rightError": -0.000091552734375,
+        "stackWidth": 1469.998779296875,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 955.4981689453124,
+        "rightError": -0.000030517578125,
+        "stackWidth": 1469.998779296875,
+        "wrapperError": 0
+      },
+      {
+        "bubbleWidth": 375.075927734375,
+        "rightError": 0,
+        "stackWidth": 745.4194946289062,
+        "wrapperError": 0
+      }
+    ],
+    "logo": [
+      {
+        "font": "144px",
+        "height": 122.39239501953124
+      },
+      {
+        "font": "144px",
+        "height": 122.39239501953124
+      },
+      {
+        "font": "144px",
+        "height": 122.39239501953124
+      }
+    ],
+    "scroll": 1920,
+    "width": 1920
+  }
+]

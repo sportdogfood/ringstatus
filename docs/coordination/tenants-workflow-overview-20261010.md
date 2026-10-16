@@ -1,5 +1,7 @@
 # Tenants workflow and persistence
 
+15 October correction: later owner-approved WEC/HPS direct saves supersede this document's original automation proposal for Barn/Rider. The actual release/checkpoint controls runtime claims. Input logs are evidence, not mandatory queued processors. Existing preferences automation is separate; do not change it or expand it to other forms without explicit scope.
+
 Current structural update: [tenant relationship schema readback](tenants-schema-completion-20261010.md). `tenant-trainers` stores Primary/Additional policy, `tenant-roster` stores tenant-local horse/rider enablement, and `tenant-assignments` stores membership-to-horse assignments. Existing favorites/opt-in options remain separate. These tables are prepared and empty; application validation and runtime integration remain open.
 
 Recorded October 10, 2026. Airtable system record: https://airtable.com/app7BXcw801n19QKF/tblMKWJw8Q6joKc8U/recJzisHwiPPkKG6y
@@ -18,8 +20,8 @@ NORMAL LOOP
 2. Resolve the person's tenant membership, role and assigned scope. Show cached data for the same recognized account/tenant only; cache is not authorization. Exact logout, account-switch and stale-offline-access rules are open.
 3. Render permitted cached data immediately, then request current data through Astro. Cache keeps last-confirmed data separate from pending local edits.
 4. Add/edit updates the visible UI immediately and persists the pending change on the device. Dirty means not yet confirmed in the designated Airtable target.
-5. Astro receives the operation, validates it and records input-submissions. Each operation needs a stable submission ID reused for retries; logging the submission is not confirmation that the target was updated.
-6. Intended automation validates/applies the submission to its designated table and records Applied, Failed or Needs review. Current writer/processor and duplicate prevention are not implemented or proven here.
+5. Astro receives the operation and validates identity, tenant scope and requested fields. Preserve the existing operation identifier for retry; logging alone is not confirmation.
+6. Barn/Rider writes go directly through the existing Astro adapter to the designated Airtable records, returning confirmed data using the WEC/HPS pattern. Other entity mappings still require their own proof; do not infer they are complete or add a processor merely to match this overview.
 7. Client obtains final outcome. Only confirmed target persistence clears that operation's dirty state and updates the confirmed cache. A later edit made while an earlier save is in flight must remain pending.
 8. Background refresh updates clean data while preserving pending local changes. Conflicts and failures stay visible; do not silently discard edits or claim saved.
 9. Offline: show last available permitted data and retain pending edits across refresh/restart where browser storage survives. On return/reconnect, refresh and resume pending operations under the same IDs. Retry limits, ordering and conflict handling require implementation decisions.
@@ -35,7 +37,7 @@ Do not state all iPhones clear all storage after exactly seven days: that was a 
 CADENCE
 Page open: use eligible cache immediately, then refresh.
 Edit: immediate optimistic display and durable local pending save; submit when connectivity and authorization allow.
-Submission arrival: intended automation processes it; no activation claimed.
+Save request: existing Astro handler applies the authorized change directly and returns confirmation for Barn/Rider; preferences retains its separately implemented path.
 Confirmation: update device cache and clear only confirmed operation.
 Tab return / reconnect: refresh/resume is the proposed implementation trigger supporting agreed persistence.
 Foreground periodic refresh: 60 seconds is PROPOSED, NOT LOCKED. Exact interval, debounce/backoff, polling for confirmation, hidden-tab behavior and retry cap remain open.
@@ -50,7 +52,7 @@ Needs review / Conflict: human decision needed; never resolve by guessing or mar
 Routine edits do not repeat tenant onboarding. Sensitive owner/role/access edits need a defined policy; the exact review mechanism is not yet implemented.
 
 EXAMPLES
-Rename horse: immediate new text + pending indicator -> Astro submission -> automation updates exact horse ID -> confirmed result -> saved. Shared horse renaming authority must be checked.
+Rename horse target behavior: immediate new text + pending indicator -> authorized Astro save of exact horse ID -> confirmed result -> saved. Shared horse renaming authority must be checked. This is not proof the horse adapter is implemented.
 Offline rider edit: persist local dirty change -> page reload shows it pending -> reconnect submits same operation ID -> confirmed write clears pending.
 Second-device update: fresh server data updates clean fields; overlapping dirty changes remain visible for conflict resolution.
 Response lost after target write: retry must not create duplicate target/event. Durable idempotency behavior is a required proof, not established by a log table.
@@ -82,5 +84,5 @@ No tenant runtime migration, automation activation, new application code, deploy
 
 FINISH CRITERIA
 Prove exact page/build/base/table mappings; load/add/edit/save/reload; offline edit/reconnect; restart with pending changes; lost acknowledgement + duplicate retry; new edit during earlier save; second-device conflict; server validation/failed save; tenant/account isolation and session expiry; consent/assignment limits.
-Record evidence per case. Missing automation may use an owner-agreed human step with named responsible person, exact action, result location and resumption condition. Do not claim such a handoff already exists.
+Record evidence per case. Missing entity wiring is not a reason to add automation to the proven direct-save path. An owner-agreed human step may bridge a genuine independent gap; record exact action and result rather than claim it already happened.
 

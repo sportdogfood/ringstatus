@@ -1,0 +1,99 @@
+{
+  "sources": {
+    "collect.js": {
+      "copied_from": "schedules_standalone.js",
+      "source_sha256": "d321dfbaf2c8f69ef29a12aa54b499f29eb4828f1079ce645c27e8ea6cd52fc0"
+    },
+    "store.js": {
+      "copied_from": "schedules_staging.js",
+      "source_sha256": "3cdcc04832ed4794dec8de0308610826bd667b6cdeafd5a4a2edd51ad9b219f8"
+    },
+    "collector-core.js": {
+      "copied_from": "schedules_dailyv2.js",
+      "source_sha256": "7d1a1b2f293137a3de4f66b391284e5a66be2db09de54d966f983fee6767878a"
+    },
+    "normalizer.js": {
+      "copied_from": "schedule_normalizer_v2.js",
+      "source_sha256": "402cc7b70a80d68db690d9534301f1b79278db419ee26cc28d70a594e1f09d90"
+    },
+    "token-utils.js": {
+      "copied_from": "sgl_token_utils.js",
+      "source_sha256": "5df524c6decd12f90306da56b9e093b0814349c11a7cebf82556126d895de916"
+    },
+    "sgl_fetch.ps1": {
+      "copied_from": "sgl_fetch.ps1",
+      "source_sha256": "07b176f114f264a24f6e0cb20078b0495b26978b1ff8cfb0eb147ffc7871b15c"
+    },
+    "lib/sgl_fetch_adapter.js": {
+      "copied_from": "lib/sgl_fetch_adapter.js",
+      "source_sha256": "eaf70f6003a9004eb49f74487c639206610952b3a4d35a3b74df3edbba88e7b7"
+    },
+    "lib/soft_payload_guard.js": {
+      "copied_from": "lib/soft_payload_guard.js",
+      "source_sha256": "0655c3b24e414759222cdd4a8f53a18366b18d37f0619f0bb5e5dfbe34bc1df5"
+    },
+    "lib/scope_fields.js": {
+      "copied_from": "lib/scope_fields.js",
+      "source_sha256": "44a6eb0479a379cb59836c39c27a98017d3827277aeea9fe6aafa5b854de2737"
+    }
+  },
+  "protected_files_before": {
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\schedules_standalone.js": "d321dfbaf2c8f69ef29a12aa54b499f29eb4828f1079ce645c27e8ea6cd52fc0",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\schedules_staging.js": "3cdcc04832ed4794dec8de0308610826bd667b6cdeafd5a4a2edd51ad9b219f8",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\schedules_dailyv2.js": "7d1a1b2f293137a3de4f66b391284e5a66be2db09de54d966f983fee6767878a",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\schedule_normalizer_v2.js": "402cc7b70a80d68db690d9534301f1b79278db419ee26cc28d70a594e1f09d90",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\sgl_token_utils.js": "5df524c6decd12f90306da56b9e093b0814349c11a7cebf82556126d895de916",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\sgl_fetch.ps1": "07b176f114f264a24f6e0cb20078b0495b26978b1ff8cfb0eb147ffc7871b15c",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\lib\\sgl_fetch_adapter.js": "eaf70f6003a9004eb49f74487c639206610952b3a4d35a3b74df3edbba88e7b7",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\lib\\soft_payload_guard.js": "0655c3b24e414759222cdd4a8f53a18366b18d37f0619f0bb5e5dfbe34bc1df5",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\lib\\scope_fields.js": "44a6eb0479a379cb59836c39c27a98017d3827277aeea9fe6aafa5b854de2737",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_dailyv2.js": "088041c4b55d9820ded9aba9b3bb89aeae3deb2686beb5518a3d6070230fee08",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedule_normalizer_v2.js": "0e7e0626510cfbd1bc16f18811253a6ba50cef4b1aafdac3f61e4229a9ea80e5",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\sgl_token_utils.js": "d1787b66ade4a5ce0ef9de225ae4e04758df3bcee3fbb0712d3e354fabea43c3",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\sgl_fetch.ps1": "4b7818890c9ab7426d90e66200d67411bddf7e5d356a616a8569f2b3cca3e3cc",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\lib\\sgl_fetch_adapter.js": "b056f195630c2b8e352f25421ea3b801c2cb1302ce668898771cc7425122592f",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\lib\\soft_payload_guard.js": "d7e8aba034da91eac812a1df00d16c49ea619dc13c01265d9bb97fef751b11cb",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\lib\\scope_fields.js": "40b464355c612a55a243af4ef5d42af644690df0601a06b255cd454dd4a5c9f0"
+  },
+  "package_sha256": {
+    ".env.example": "bab6f2dfd452ad954211d2c3b1d749186ffc817854b68ae53bb82345fb88c63b",
+    ".gitignore": "65a2becd9e2144c4c4ab174700dd2bcbb06c64a3c3b62bffd81786e6c95c5267",
+    "collect.js": "d4befef1b06a2e61287ff964527ea321771746961d0b64757b72e4cbe20ca7d6",
+    "collector-core.js": "0fcbb26f2380990377db72235721686406dbdead07975bb6874e5126fa8b8dca",
+    "normalizer.js": "d3ce0403adb64799908aa6a270243558976a644b7aa6f0dfa208c6452784a3b0",
+    "run.ps1": "09b70f5a0eb92456e7c6fd2080d00a2fb0a4a817f30f2a7fe794d2c9f2c75daa",
+    "settings.js": "4ffca1c2ec7ff22d1923210bffa2e94dd44caf87c8e12a3a994b569a593f237d",
+    "sgl_fetch.ps1": "bb9578b866415844761c11593319d2b6180bc9aea78917d0d08259fb80c307ee",
+    "store.js": "c6ad840bb33fa219d4381ae34f357dc71c3b4e171dbc3609e2c6afa8a874ab76",
+    "token-utils.js": "0de2517a21b7d1826bfdace3d54c41336bc50d6574b0fa74e66e4bcac38ee9c0",
+    "docs\\ringstatus_daily_scope_2026-05-09.md": "f4a7df6f66d1177e46265eaa2b5b1ce178dbdb80140ad82b31804166d51a8c28",
+    "lib\\scope_fields.js": "b7d3d0601959e2715f2bcbf839e0c142dde2c0a3c1d09646f65346b37236d8e7",
+    "lib\\sgl_fetch_adapter.js": "1b598d4e4a96b78ac343d3d3b28a75b11483cdfba4aea300bf34903236e0ef47",
+    "lib\\soft_payload_guard.js": "7fa18ca60eb258cbb4157cdcecad3fb5c37ab29b57a92f6fcdf2e9c50e6f1fb0",
+    "tests\\isolation.test.js": "647471a8721b36250ea2dc55c616136abf0d3f384c034b1129ef7b0c73556453",
+    "tests\\schedules_daily_class_list_enrichment.test.js": "c979b4565869081a4cd50eb13c30152dba728e5ddaf6ea4f911b772c2165df46",
+    "tests\\schedules_daily_empty_ping.test.js": "3b495f41e140f248c38c1a20a05f2818c6f8e6617dbf999982e64f829e70a0c6",
+    "tests\\schedules_daily_forward_schedule_dates.test.js": "e5adf3ae6f7d7c7e294e4964a948f0d09f3da4bd07e7ca5f6bd0c8e580dc0aa6",
+    "tests\\schedules_daily_live_groups_fallback.test.js": "e06b963cbecd1ca21347ebf3af4ef02d551ef8d2c2aa4b959ef5ff7be8a543a2",
+    "tests\\schedules_daily_night_shift_scope.test.js": "c098e4b4c12fccdaecef9f433419ddc9219ace69f3bbdd3b85980ce8113fe742",
+    "tests\\schedules_daily_schedule_fallback.test.js": "4e31f979565abaddece263e6dc39ebc7dcbd365dd19be9d2ecb65fb38daa9912",
+    "tests\\schedules_staging.test.js": "2086ac192cbf1205c4d2e12a8573c5f2aa781b35f1fba2097bc521451c5b66a8",
+    "tests\\schedules_standalone.test.js": "8fa842bba04b8e20018bf78349220a8de54a6d6956905cc81359d1897aaf220a",
+    "tests\\schedule_normalizer_machine_key.test.js": "59d194d4ce2361fde25112287a8f0bce866203e5015d1ea54e460eea0dfb7705",
+    "tests\\fixtures\\schedule-collector.js": "4c6a1f0404a4b8126f3dee7513333bd72fce537651a4d823e7dd400e98a0cfd6",
+    "current-store.js": "7892cb134faa64f89eb3388c44f13bc3bd37e57c95b22c62fd28d382336411b1",
+    "tests/current-store.test.js": "8f6c73087ef791b4069e6b52b64c651354cb684d2b8e78c9826c1edc82cf1bb2"
+  },
+  "verification": {
+    "checked_at": "2026-10-15T16:28:06.809273+00:00",
+    "private_suite_passed": 42,
+    "detached_functional_checks_passed": 22,
+    "protected_files_changed": [],
+    "deployment": false,
+    "business_runs": false,
+    "line_ending_correction": "Private PowerShell LF restored; AST verifies all five Invoke-WebRequest parameters without execution.",
+    "detached_functional_checks": 25,
+    "approved_correction": "Semantic schedule comparison excludes rotating tokens; full stored fingerprints retained. Empty-day and default-show logs added. Reviewed delta, local tests passed.",
+    "current_staging": "One row per scoped source key; compressed local history verified before archive cleanup; one collection status per day; scheduled migration only"
+  }
+}

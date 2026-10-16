@@ -1,0 +1,18 @@
+{
+  "verified_at": "2026-10-15T18:47:12.532645+00:00",
+  "scope": "isolated source only",
+  "tests": 54,
+  "passed": 54,
+  "failed": 0,
+  "deployed": false,
+  "manual_business_runs": 0,
+  "sha256": {
+    "collector-core.js": "9d12600b4ab0b6b33699c7d7bb5b9eb9da2055aee6ff7b314796b78f80c25b60",
+    "collect.js": "1338b5195cc3dad50906e130a64835bd0dde0a11da2cb8397847530fd84a9823",
+    "store.js": "bb324a61d69a7e5bc2cd9ff0b11e566c24717d451b8daffe03197b7205e793b4",
+    "tests/schedule-times.test.js": "906abfa88eb0986c3cb40b0148f6978b034ea20821371375e1a19c9927f07ad5",
+    "tests/schedules_staging.test.js": "376344d8a9e7cc5dd1cd4895613ef5b9004c2594ce654bd149c886c7eeb70adc",
+    "tests/schedules_standalone.test.js": "f3ad7a75892b5820b7cfff73d14276480f2c5d00deb7c702d3c9f8bd9a67bc7d",
+    "estimated-time-inheritance-tests.txt": "3e898b37783961494ba6b0f72b11022f9e5a6747fa0f842090b89e7cdca4aaff"
+  }
+}

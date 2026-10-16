@@ -1,0 +1,14 @@
+{
+  "verified_at": "2026-10-15T19:27:30.611347+00:00",
+  "tests": 58,
+  "passed": 58,
+  "failed": 0,
+  "deployed": false,
+  "manual_business_runs": 0,
+  "sha256": {
+    "collector-core.js": "cfac703b5be38e3f7267f67744cec0d87666e3e6998ff319acd193f7bff611a3",
+    "tests/schedule-times.test.js": "961c3a6bc42f48646a28cc7e572233c974fbfdd973045f67a5f7eba72330c25d",
+    "tests/fixtures/rendered-vankampen-20261016.html": "6a5eb8e1ee25f28a7f2574fbcb1d395b6315bc01ee454cc8d53d38a78358011e",
+    "table-ring-tests.txt": "ca1bb57821c65bb41cc530f2c351caea425f6973d222b04c0a22b1eda1978427"
+  }
+}

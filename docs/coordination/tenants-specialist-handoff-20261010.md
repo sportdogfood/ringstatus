@@ -1,12 +1,19 @@
 # Tenants specialist — start here
 
+**14 October ownership transfer:** Messages owns `/rs-barn-onboarding-alerts`, its UI and completion. Tenants retains membership/permissions and canonical opt-ins/options with the existing save processor. [Three-area ownership and exact transfer](recognize-tenants-messages-ownership-20261014.md) supersedes earlier page assignments. Preserve Barn/Rider proof and prepared alerts source; no competing alerts writer, data migration or product restart.
+
+
+Current entry (14 October 2026): use this domain's resume row in [the authoritative-source directory](domain-coordinator-structure-20261013.md). This dated document preserves workflow/source evidence; original setup commands and old dispatch/monitor instructions are historical, not a new assignment. Follow the current owner request and verified checkpoint. Guidance-only updates leave stopped product work stopped.
+
+Current shared structure (13 October): read the relevant sections of [Company, domains and coordinator capabilities](domain-coordinator-structure-20261013.md). It defines responsibility, sibling interfaces, required skill/connection mapping, proven frontend-agent reference and completion/handoff duties. Capabilities are not automatic agent assignments. Current tasks and authorization control; stopped work stays stopped.
+
 Owner-requested domain skill: read `C:/Users/gombc/.codex/skills/tenants/SKILL.md` for Tenants work and include its path in subordinate handoffs. Current status comes from the live checkpoint, not dated progress paragraphs below. Scheduled monitoring: `docs/coordination/specialist-skill-supervision-20261010.md`.
 
 ## Clarification: existing decisions are not new approval questions
 
 The owner-approved `shared-data-behavior-contract.md` already specifies one shared IndexedDB cache/pending-operation layer, exact-operation confirmation, preservation of newer edits and reuse of proven implementations. Do not request approval of that same design again through an optionally selected brainstorming skill. Existing authorization and protected-source boundaries still apply to implementation.
 
-The owner agreed that Astro input tables are logs and Airtable automation applies them to designated records. The workflow overview lines 21–22 and 38 document this intended processor. Its absence is implementation work, not a reason to ask the owner to select a processor again. Prepare the smallest compatible automation and confirmation path within existing authorization; activation and live access grants retain their existing boundaries.
+Superseded processor guidance, corrected 15 October 2026: the owner's later WEC/HPS direction controls Barn/Rider saves. Use the existing direct Astro-to-Airtable write and confirmed response; do not prepare or require an automation for those saves. The earlier input-log/automation proposal is historical, not a current implementation instruction. Existing preferences automations retain their separate scope and are not changed by this correction. Preserve records, permissions, consent and retained dirty edits.
 
 No verified live test person/tenant membership has been established by these decisions. Recover any previously authorized test association from evidence; never guess one or grant access. Use synthetic fixtures for independent implementation and tests while that live-proof dependency remains. Ask only for the concrete person/barn association if it cannot be recovered and is actually needed for the next live step. Do not require the owner to choose technical record IDs or design the implementation. Sensitive membership/consent changes remain outside a basic personal-preferences proof; do not invent policy or let future policy questions block that proof.
 

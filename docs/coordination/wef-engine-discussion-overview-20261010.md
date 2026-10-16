@@ -1,11 +1,74 @@
 # WEF show-engine — owner discussion overview
 
+## Proposed slower reference collection lane - 15 October 2026
+
+Proposal only; not current engine behavior or implementation approval. Collect people, horses and rings across show weeks on a slower recurring cadence. Reuse their known identities and retain each show's associations and participation history. This supports selecting existing records rather than manually entering the same details, narrowing lists and suggesting familiar choices from prior show/tenant history. A suggestion is not an automatic follow, assignment or access grant.
+
+Keep this separate from faster tenant-specific operational updates: those refresh the current details for people, horses and entries a tenant is associated with or watching, rather than repeatedly fetching the entire reference population. Exact intervals and endpoint coverage remain to be established from working source evidence; none are selected here.
+
+Preserve reusable person/horse identity separately from show-specific entry and participation. Repeated appearances must update/link the known identity and add show history, not create another person or horse or overwrite the previous show. Retain source IDs and their verified scope; do not assume an entry ID is a permanent horse ID or merge by name alone. Unresolved identity matches remain unresolved for review. Exact identity keys and existing matching rules must be traced before implementation. Preserve manual corrections and existing records; absence from a later show does not erase history.
+
+Owner's corrected drill-down context: `shows > show > show_day > schedule > rings > start_time > groups > classes > entries > go_time > trips`. Start time and go time remain distinct. Results, alerts, two-way, print and mobile consume relevant outputs; this context is not a new table schema or a claim of strict execution order.
+
+Next discovery: identify the existing identity keys, show-association keys, source endpoints, tenant/follow selection and manual preservation rules that can support this lane. Reuse proven working code; no new collectors, runtime changes, schedules or manual business runs are authorized by this proposal.
+
+### Pagination and proposed lazy weekly collection - 15 October 2026
+
+Subsequent supplied entries capture verifies ten records per page, total 666 (67 pages). This resolves the entries page-size uncertainty below. Verified identity evidence and the smallest proposed saved-progress plan: [resumable slower collection](wef-slower-collection-resume-plan-20261015.md). No endpoint was called; cross-week identity stability is not proven by one captured page.
+
+Owner-supplied /people response for show 200000074 reports total_people=758, records_per_page=10, page=1: 76 requests for one full pass at that size. Peak estimate is 2,500 people plus about 2,500 entries. People would require 250 pages; entries would require another 250 ONLY if its response also reports 10 per page. The entries page size and any supported larger page size are not verified.
+
+Owner proposal: after the default show changes, use the quieter Monday/Tuesday/Wednesday period for a slow first sweep, approximately 500 page requests over 60 hours; repeat approximately 500 over the next 90 hours, then repeat for the next show week. That averages one combined page request every 7 minutes 12 seconds, then every 10 minutes 48 seconds. These are planning examples, not enabled schedules, fixed request budgets or guarantees of completeness. Actual totals can change. Faster tenant-associated/followed detail updates continue separately.
+
+Preserve weekly associations and reusable identities across passes. A multi-day name-sorted list can change between page reads; completing page numbers alone is not proof that every unique record was seen. Retain source IDs, distinguish an incomplete pass, and do not infer deletion from a failed/incomplete collection. Exact identity and reconciliation behavior still needs source-backed definition before implementation.
+
+#### Existing source evidence (read only; deployment not established here)
+
+- `utils/workers/broad-tooth-b8ed/worker.js:57-110,176-230`: forwards allowed page parameters and defaults page to 1; makes one upstream request per incoming request. No all-pages loop or saved cursor in this file.
+- `utils/workers/broad-tooth-b8ed/worker2.js:65-199,403-410`: existing optional all/fetch_all/paginate helper for /people, /entries and /classes. Reads response total and records_per_page, calculates ceiling(total/perPage), fetches pages sequentially and accumulates in memory. HTTP/JSON failure returns failed_page; accumulated records and next-page progress are not persisted. It runs inside one request, not across hours. Its loop always starts at page 2 even when a later first page is supplied, so it is not a saved-progress resume mechanism. No identity deduplication or final unique-count reconciliation appears in this helper. Repository presence does not prove it is the deployed Worker.
+- `trips_dailyv2.js:514-545`: Airtable offset pagination in a single invocation. Offset is local memory, not a saved SGL page cursor.
+- `trips_dailyv2.js:1287-1455`: tenant/source-specific /people/{id} request, with timestamped person/show JSON payload cache and same-person/same-show fallback. Saved payloads are useful existing fallback behavior, not a checkpoint for collecting all people or entries.
+- `wef-schedules/current-store.js:30-54`: separate schedules history/current.json persistence, not people/entries paging progress.
+
+Finding: paging code and payload persistence exist, but no durable people/entries directory paging checkpoint was found in these inspected paths. A proposed lazy lane would need to remember show, collection, pass and next uncompleted page after its records are safely saved; exact storage remains undecided. Do not claim this already exists or reuse the all-pages helper unchanged as an hours-long collector. No code, deployment, scheduled-task changes or manual business runs performed.
+
+## Independent recurring responsibilities - owner concept, 15 October 2026
+
+Concept and tracing only. Each future responsibility must be an independent, end-to-end recurring function with defined keys, rules, designated source endpoints, storage and API/output contract. Schedules, entries, groups, rings, live state and results are responsibilities to trace; separate bases are proposed, not provisioned or locked here. Use the independent schedules work as a learning reference, not permission to copy assumptions into another function.
+
+Timing is the brain: it takes the relevant collected data and produces evaluations and snapshots. Publish, APIs, alerts and two-way may pull, push or notify from those outputs. This is the proposed relationship, not a claim that all current consumers already use Timing. Heartbeat/control remains a stage to understand in the existing local flow; the proposed independent responsibilities do not authorize altering it.
+
+The existing working code is both the guide and fallback. Leave all existing scripts, shared dependencies, settings, scheduled tasks, automations and operational records untouched. Any later implementation requires its own approval and isolation. Only reuse, clean up and improve efficiency of the proven behavior; no reinvention, complicated options, replacement architecture or changes to the baseline. Preserve existing manual controls and the owner's practical manual steps.
+
+First identify each responsibility's actual key, request parameters, inputs, outputs, recurring/stop rules, manual ownership and downstream dependencies. Current source and natural-run evidence must be distinguished from proposed boundaries and unobserved behavior. No new functions, bases, agents, schedules or endpoint executions are authorized in this pass.
+
+Default-show discovery is a separate initial-default responsibility only: expected Sunday 4-8 PM Eastern, stop on change until discovery logic calls again; optional six-hour check remains a proposal. It triggers no collection or downstream work. See [discovery clarification](wef-schedules-only-activation-plan-20261015.md).
+
+Read-only continuation: [stage keys, endpoints and dependencies](wef-engine-stage-contract-trace-20261015.md).
+
+
+Current entry (14 October 2026): use this domain's resume row in [the authoritative-source directory](domain-coordinator-structure-20261013.md). This dated document preserves workflow/source evidence; original setup commands and old dispatch/monitor instructions are historical, not a new assignment. Follow the current owner request and verified checkpoint. Guidance-only updates leave stopped product work stopped.
+
+Current shared structure (13 October): read the relevant sections of [Company, domains and coordinator capabilities](domain-coordinator-structure-20261013.md). It defines responsibility, sibling interfaces, required skill/connection mapping, proven frontend-agent reference and completion/handoff duties. Capabilities are not automatic agent assignments. Current tasks and authorization control; stopped work stays stopped.
+
 Date: 10 October 2026  
 Status: owner requirements recorded; current-system identification remains open.  
 Scope: WEF only. Documentation and read-only planning; no implementation or execution authorization.  
 Next document: [Current-system identification plan](wef-engine-identification-plan-20261010.md).
 
 ## Purpose and authority
+
+### Current owner clarification — 13 October 2026
+
+RingStatus is a very small company. Optimize for understandable, reliable recurring work and practical owner correction in Airtable. Commercial-scale infrastructure, additional services and complete automation are not objectives. Keep the existing local cadence and proven implementation; propose separation only where it demonstrably simplifies maintenance or removes repeated work. A manual focus-day selection, data correction or exception handoff is a valid part of delivery, not a defect requiring new infrastructure.
+
+Engine remains in discovery. Stage names, module grouping, Rider order of go, Results, and proposed ownership moves to Publish/Messages are proposals, not locked implementation decisions. Earlier uses of “strict”, “locked” or “owner lock” in these dated engine documents do not authorize stage moves or establish a finalized new architecture. Preserve the owner's stated behavior as discovery context and distinguish it from the current implementation. No invention or replacement without explicit approval; the working WEF engine remains untouched as the reference. Future tests of rearranged blocks must use an authorized separate working copy and compare behavior with that reference; this discovery pass does not execute those tests.
+
+Identify actual recurring responsibilities before deciding the new stack: routine acquisition/normalization/matching; established calculations and evaluations; delivery of outputs/events; and supporting engineering work. Code review, handoffs, discovery and development notes support maintenance and do not automatically run inside every heartbeat. “More intelligence” does not imply an AI dependency in the production loop.
+
+Manual edits require a field-by-field writer map: where the owner enters a correction, which existing control protects it, which jobs consume it, whether calculations honor it, and what resumes automatic ownership. Do not assume a writable Airtable cell is protected, invent a global override, or interpret protecting a stored value as proof it controls downstream calculations. Preserve existing manual controls; unresolved field policies remain questions in discovery rather than new gates.
+
+Continuation evidence: [Recurring responsibilities and manual preservation](wef-engine-recurring-tasks-manual-preservation-20261013.md). This is source inspection, not a new live execution or a claim that every writer/automation has been checked.
 
 The owner built and completed the existing WEF engine through extensive real operation. It is a working end-to-end baseline, not a speculative prototype to replace. The owner is the authority on intended business behavior. Code, configuration and historical run evidence establish how the implementation operates; uncertainties must be identified rather than filled with assumptions.
 
@@ -17,7 +80,7 @@ Never reinvent a supplied working solution. Never keep modifying a guessed repla
 
 | Source | Role |
 | --- | --- |
-| [Engines base](https://airtable.com/appnOAk2pW8JawiuP) | Its `stages` and `lanes` tables define the strict stage stack and the placement of referenced JavaScript. |
+| [Engines base](https://airtable.com/appnOAk2pW8JawiuP) | Its `stages` and `lanes` tables are the current discovery register. Preserve existing records while evaluating proposed grouping separately; they do not lock the future architecture. |
 | [Legacy RingStatus base](https://airtable.com/apptdhhNzduxm5gjn) | Existing working engine data, controls, relationships and automation references. |
 | Local WEF code | Working implementation to trace, including dependencies outside the register. Owner confirms the code is parked locally. Exact authoritative source copies still need identification. |
 | WEC show-engine | A second working end-to-end example of the same stages. Built later with lessons learned, less robust source data and a Catalyst experiment. Context and comparison, not replacement authority. |

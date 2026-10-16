@@ -1,5 +1,7 @@
 # RingStatus coordinator handoff
 
+Historical packet. For the same-role continuation of rs-skills prepared on 13 October, use [rs-skills continuation](rs-skills-continuation-20261013.md). Do not resume the expired operational instructions below as the current chat assignment.
+
 Prepared October 10, 2026, 17:39 UTC / 1:39 PM Eastern. Snapshot, not a claim of future state.
 
 ## Purpose and first action

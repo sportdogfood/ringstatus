@@ -1,5 +1,7 @@
 # Resume here — RingStatus coordination, 10 October 2026
 
+Historical Recognize-task packet, not the current rs-skills continuation. Use [rs-skills continuation](rs-skills-continuation-20261013.md) for the same-role transfer; the old immediate task below is not current authorization.
+
 Prepared handoff from chat 01a11632-62fd-73b1-997e-8be4119185de. No new chat dispatched. This packet replaces reading the long conversation; inspect linked evidence only as needed.
 
 ## Immediate next task

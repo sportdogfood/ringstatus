@@ -1,0 +1,3905 @@
+{
+  "native": [
+    {
+      "fonts": [
+        "14px"
+      ],
+      "logo": [
+        {
+          "font": "29.4702px",
+          "height": 25.04829216003418
+        },
+        {
+          "font": "29.4702px",
+          "height": 25.04829216003418
+        },
+        {
+          "font": "29.4702px",
+          "height": 25.04829216003418
+        }
+      ],
+      "minimums": [
+        "44px"
+      ],
+      "padding": [
+        "0px"
+      ],
+      "scroll": 393,
+      "social": [
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        }
+      ],
+      "width": 393
+    },
+    {
+      "fonts": [
+        "14px"
+      ],
+      "logo": [
+        {
+          "font": "50.0331px",
+          "height": 42.52897644042969
+        },
+        {
+          "font": "50.0331px",
+          "height": 42.52897644042969
+        },
+        {
+          "font": "50.0331px",
+          "height": 42.52897644042969
+        }
+      ],
+      "minimums": [
+        "44px"
+      ],
+      "padding": [
+        "0px"
+      ],
+      "scroll": 667,
+      "social": [
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        }
+      ],
+      "width": 667
+    },
+    {
+      "fonts": [
+        "14px"
+      ],
+      "logo": [
+        {
+          "font": "61.4901px",
+          "height": 52.262699127197266
+        },
+        {
+          "font": "61.4901px",
+          "height": 52.262699127197266
+        },
+        {
+          "font": "61.4901px",
+          "height": 52.262699127197266
+        }
+      ],
+      "minimums": [
+        "44px"
+      ],
+      "padding": [
+        "0px"
+      ],
+      "scroll": 820,
+      "social": [
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        }
+      ],
+      "width": 820
+    },
+    {
+      "fonts": [
+        "14px"
+      ],
+      "logo": [
+        {
+          "font": "95.9272px",
+          "height": 81.53974151611328
+        },
+        {
+          "font": "95.9272px",
+          "height": 81.53974151611328
+        },
+        {
+          "font": "95.9272px",
+          "height": 81.53974151611328
+        }
+      ],
+      "minimums": [
+        "44px"
+      ],
+      "padding": [
+        "0px"
+      ],
+      "scroll": 1279,
+      "social": [
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        }
+      ],
+      "width": 1279
+    },
+    {
+      "fonts": [
+        "14px"
+      ],
+      "logo": [
+        {
+          "font": "95.9934px",
+          "height": 81.58802795410156
+        },
+        {
+          "font": "95.9934px",
+          "height": 81.58802795410156
+        },
+        {
+          "font": "95.9934px",
+          "height": 81.58802795410156
+        }
+      ],
+      "minimums": [
+        "44px"
+      ],
+      "padding": [
+        "0px"
+      ],
+      "scroll": 1280,
+      "social": [
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        },
+        {
+          "height": 43.998348236083984,
+          "width": 43.998348236083984
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "fonts": [
+        "15.0011px"
+      ],
+      "logo": [
+        {
+          "font": "108.013px",
+          "height": 91.81153869628906
+        },
+        {
+          "font": "108.013px",
+          "height": 91.81153869628906
+        },
+        {
+          "font": "108.013px",
+          "height": 91.81153869628906
+        }
+      ],
+      "minimums": [
+        "46.0022px"
+      ],
+      "padding": [
+        "0px"
+      ],
+      "scroll": 1440,
+      "social": [
+        {
+          "height": 45.9989013671875,
+          "width": 45.9989013671875
+        },
+        {
+          "height": 45.9989013671875,
+          "width": 45.9989013671875
+        },
+        {
+          "height": 45.9989013671875,
+          "width": 45.9989013671875
+        }
+      ],
+      "width": 1440
+    },
+    {
+      "fonts": [
+        "18px"
+      ],
+      "logo": [
+        {
+          "font": "144px",
+          "height": 122.39239501953124
+        },
+        {
+          "font": "144px",
+          "height": 122.39239501953124
+        },
+        {
+          "font": "144px",
+          "height": 122.39239501953124
+        }
+      ],
+      "minimums": [
+        "52px"
+      ],
+      "padding": [
+        "0px"
+      ],
+      "scroll": 1920,
+      "social": [
+        {
+          "height": 51.993656158447266,
+          "width": 51.993656158447266
+        },
+        {
+          "height": 51.993656158447266,
+          "width": 51.993656158447266
+        },
+        {
+          "height": 51.993656158447266,
+          "width": 51.993656158447266
+        }
+      ],
+      "width": 1920
+    }
+  ],
+  "preview": [
+    {
+      "controls": [
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "home",
+          "width": 98.2615966796875
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "Tools",
+          "width": 103.58030700683594
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "about",
+          "width": 105.91888427734376
+        },
+        {
+          "class": "kicker2 is-dark",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "Start with a plan",
+          "width": 587.4517822265625
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "PACK",
+          "width": 279.6012878417969
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "prep",
+          "width": 277.6076354980469
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "show",
+          "width": 286.1479187011719
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "connect",
+          "width": 313.5623779296875
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "Moving targets",
+          "width": 587.4517822265625
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "PACK",
+          "width": 279.6012878417969
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "prep",
+          "width": 277.6076354980469
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "show",
+          "width": 286.1479187011719
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "connect",
+          "width": 313.5623779296875
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "Keep everyone in the loop.",
+          "width": 587.4517822265625
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 60.54084396362305,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "I’m really proud of the two-way SMS. It’s sup",
+          "width": 963.4176025390624
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "I’m using it, too",
+          "width": 587.4517822265625
+        },
+        {
+          "class": "chat-msg-messagex-user is-eee",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "My dad calls it ‘eating my own dog food’—what",
+          "width": 587.4517822265625
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "Back to it.",
+          "width": 587.4517822265625
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "My horse and I both ride better when I’m less",
+          "width": 587.4517822265625
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "Ring 6",
+          "width": 219.7433929443359
+        },
+        {
+          "class": "chat-msg-messagex-bot",
+          "font": "14px",
+          "height": 178.07672119140625,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "Ring 6 - as of 10:33AFirst: Low Children's Hu",
+          "width": 293.5568542480469
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "Ring 7",
+          "width": 219.7433929443359
+        },
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "home",
+          "width": 98.2615966796875
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "Tools",
+          "width": 103.58030700683594
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "about",
+          "width": 105.91888427734376
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5806px",
+          "text": "lainey",
+          "width": 107.56761169433594
+        }
+      ],
+      "logo": [
+        {
+          "class": "rd-status-big is-ring",
+          "font": "95.9272px",
+          "height": 81.53974151611328,
+          "line": "81.5381px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RING",
+          "width": 200.57948303222656
+        },
+        {
+          "class": "rd-status-big is-status",
+          "font": "95.9272px",
+          "height": 81.53974151611328,
+          "line": "81.5381px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 20px 0px 10px",
+          "text": "STATUS",
+          "width": 327.48345947265625
+        },
+        {
+          "class": "rd-status-big-q",
+          "font": "95.9272px",
+          "height": 81.53974151611328,
+          "line": "81.5381px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 10px 0px 0px",
+          "text": "?",
+          "width": 50.57257461547851
+        }
+      ],
+      "scroll": 1279,
+      "social": [
+        {
+          "class": "rs2-social-2",
+          "font": "14px",
+          "height": 59.98896789550781,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "8px",
+          "text": "InstagramYouTube",
+          "width": 179.95310974121094
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10.2322px",
+          "text": "",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10.2322px",
+          "text": "Instagram",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10.2322px",
+          "text": "YouTube",
+          "width": 43.998348236083984
+        }
+      ],
+      "token": "clamp(44px, calc(28px + 1.25vw), 52px)",
+      "width": 1279,
+      "wrappers": [
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 393.8190307617187,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Built for the dayyou get.I’m Lainey, a rider ",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 359.1335754394531,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Start with a planKnow what needs to happen.Th",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 345.578125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 479.3460693359375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Moving targetsWhen the day changes, our plan ",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 345.578125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 465.0317687988281,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Keep everyone in the loop.Now the team needs ",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 448.4892883300781,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "I’m using it, tooI see what works. And what d",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 479.5599060058594,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Back to it.It’s no secret—show days are long.",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 681.78125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingYour horses, right beside their classe",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 681.78125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 6Ring 6 - as of 10:33AFirst: Low Childre",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 681.78125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 7HeadingJust ask. In a text.I type “Ring",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 681.78125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingReminders you can forward.You’ve got m",
+          "width": 1174.903564453125
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 428.0422668457031,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RINGSTATUSbuilt for the day you getInstagramY",
+          "width": 1174.903564453125
+        }
+      ]
+    },
+    {
+      "controls": [
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "home",
+          "width": 98.28919219970705
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "Tools",
+          "width": 103.60790252685548
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "about",
+          "width": 105.94647979736328
+        },
+        {
+          "class": "kicker2 is-dark",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "Start with a plan",
+          "width": 587.8518676757812
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "PACK",
+          "width": 279.8013610839844
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "prep",
+          "width": 277.8077087402344
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "show",
+          "width": 286.3479919433594
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "connect",
+          "width": 313.762451171875
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "Moving targets",
+          "width": 587.8518676757812
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "PACK",
+          "width": 279.8013610839844
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "prep",
+          "width": 277.8077087402344
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "show",
+          "width": 286.3479919433594
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "connect",
+          "width": 313.762451171875
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "Keep everyone in the loop.",
+          "width": 587.8518676757812
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 60.54084396362305,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "I’m really proud of the two-way SMS. It’s sup",
+          "width": 964.0729370117188
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "I’m using it, too",
+          "width": 587.8518676757812
+        },
+        {
+          "class": "chat-msg-messagex-user is-eee",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "My dad calls it ‘eating my own dog food’—what",
+          "width": 587.8518676757812
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "Back to it.",
+          "width": 587.8518676757812
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "My horse and I both ride better when I’m less",
+          "width": 587.8518676757812
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "Ring 6",
+          "width": 219.89515686035156
+        },
+        {
+          "class": "chat-msg-messagex-bot",
+          "font": "14px",
+          "height": 178.07672119140625,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "Ring 6 - as of 10:33AFirst: Low Children's Hu",
+          "width": 293.58447265625
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "Ring 7",
+          "width": 219.89515686035156
+        },
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "home",
+          "width": 98.28919219970705
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "Tools",
+          "width": 103.60790252685548
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "about",
+          "width": 105.94647979736328
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 25.5982px",
+          "text": "lainey",
+          "width": 107.59520721435548
+        }
+      ],
+      "logo": [
+        {
+          "class": "rd-status-big is-ring",
+          "font": "95.9934px",
+          "height": 81.58802795410156,
+          "line": "81.5944px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RING",
+          "width": 200.7174530029297
+        },
+        {
+          "class": "rd-status-big is-status",
+          "font": "95.9934px",
+          "height": 81.58802795410156,
+          "line": "81.5944px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 20px 0px 10px",
+          "text": "STATUS",
+          "width": 327.6904296875
+        },
+        {
+          "class": "rd-status-big-q",
+          "font": "95.9934px",
+          "height": 81.58802795410156,
+          "line": "81.5944px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 10px 0px 0px",
+          "text": "?",
+          "width": 50.60017013549805
+        }
+      ],
+      "scroll": 1280,
+      "social": [
+        {
+          "class": "rs2-social-2",
+          "font": "14px",
+          "height": 59.98896789550781,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "8px",
+          "text": "InstagramYouTube",
+          "width": 179.98069763183594
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10.2393px",
+          "text": "",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10.2393px",
+          "text": "Instagram",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10.2393px",
+          "text": "YouTube",
+          "width": 43.998348236083984
+        }
+      ],
+      "token": "clamp(44px, calc(28px + 1.25vw), 52px)",
+      "width": 1280,
+      "wrappers": [
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 394.0742492675781,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Built for the dayyou get.I’m Lainey, a rider ",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 359.3267517089844,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Start with a planKnow what needs to happen.Th",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 345.62640380859375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 479.62200927734375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Moving targetsWhen the day changes, our plan ",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 345.62640380859375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 465.2387390136719,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Keep everyone in the loop.Now the team needs ",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 448.69622802734375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "I’m using it, tooI see what works. And what d",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 479.7875671386719,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Back to it.It’s no secret—show days are long.",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 682.243408203125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingYour horses, right beside their classe",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 682.243408203125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 6Ring 6 - as of 10:33AFirst: Low Childre",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 682.243408203125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 7HeadingJust ask. In a text.I type “Ring",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 682.243408203125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingReminders you can forward.You’ve got m",
+          "width": 1175.7037353515625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 428.0836486816406,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RINGSTATUSbuilt for the day you getInstagramY",
+          "width": 1175.7037353515625
+        }
+      ]
+    },
+    {
+      "controls": [
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "home",
+          "width": 124.02732849121094
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "Tools",
+          "width": 130.87059020996094
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "about",
+          "width": 133.87142944335938
+        },
+        {
+          "class": "kicker2 is-dark",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "Start with a plan",
+          "width": 734.9959106445312
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "PACK",
+          "width": 350.6277770996094
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "prep",
+          "width": 348.0615539550781
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "show",
+          "width": 359.0439147949219
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "connect",
+          "width": 394.2812194824219
+        },
+        {
+          "class": "kicker2",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "Moving targets",
+          "width": 734.9959106445312
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "PACK",
+          "width": 350.6277770996094
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "prep",
+          "width": 348.0615539550781
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "show",
+          "width": 359.0439147949219
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "connect",
+          "width": 394.2812194824219
+        },
+        {
+          "class": "kicker2",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "Keep everyone in the loop.",
+          "width": 734.9959106445312
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "18px",
+          "height": 73.34437561035156,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "I’m really proud of the two-way SMS. It’s sup",
+          "width": 1205.3946533203125
+        },
+        {
+          "class": "kicker2",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "I’m using it, too",
+          "width": 734.9959106445312
+        },
+        {
+          "class": "chat-msg-messagex-user is-eee",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "My dad calls it ‘eating my own dog food’—what",
+          "width": 734.9959106445312
+        },
+        {
+          "class": "kicker2",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "Back to it.",
+          "width": 734.9959106445312
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "My horse and I both ride better when I’m less",
+          "width": 734.9959106445312
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "Ring 6",
+          "width": 279.5323181152344
+        },
+        {
+          "class": "chat-msg-messagex-bot",
+          "font": "18px",
+          "height": 224.48953247070312,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "Ring 6 - as of 10:33AFirst: Low Children's Hu",
+          "width": 375.075927734375
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "Ring 7",
+          "width": 279.5323181152344
+        },
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "home",
+          "width": 124.02732849121094
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "Tools",
+          "width": 130.87059020996094
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "about",
+          "width": 133.87142944335938
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "21.6px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14.2px 32px",
+          "text": "lainey",
+          "width": 135.99615478515625
+        }
+      ],
+      "logo": [
+        {
+          "class": "rd-status-big is-ring",
+          "font": "144px",
+          "height": 122.39239501953124,
+          "line": "122.4px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RING",
+          "width": 301.0968933105469
+        },
+        {
+          "class": "rd-status-big is-status",
+          "font": "144px",
+          "height": 122.39239501953124,
+          "line": "122.4px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 20px 0px 10px",
+          "text": "STATUS",
+          "width": 476.55908203125
+        },
+        {
+          "class": "rd-status-big-q",
+          "font": "144px",
+          "height": 122.39239501953124,
+          "line": "122.4px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 10px 0px 0px",
+          "text": "?",
+          "width": 70.90922546386719
+        }
+      ],
+      "scroll": 1920,
+      "social": [
+        {
+          "class": "rs2-social-2",
+          "font": "18px",
+          "height": 75.98648834228516,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "12px",
+          "text": "InstagramYouTube",
+          "width": 227.97325134277344
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14px",
+          "text": "",
+          "width": 51.993656158447266
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14px",
+          "text": "Instagram",
+          "width": 51.993656158447266
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "18px",
+          "height": 51.993656158447266,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "52px",
+          "padding": "14px",
+          "text": "YouTube",
+          "width": 51.993656158447266
+        }
+      ],
+      "token": "clamp(44px, calc(28px + 1.25vw), 52px)",
+      "width": 1920,
+      "wrappers": [
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 450.7795715332031,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Built for the dayyou get.I’m Lainey, a rider ",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 281.7812194824219,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Start with a planKnow what needs to happen.Th",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 354.38055419921875,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 463.5693054199219,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Moving targetsWhen the day changes, our plan ",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 354.38055419921875,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 403.1250305175781,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Keep everyone in the loop.Now the team needs ",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 480.3670349121094,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "I’m using it, tooI see what works. And what d",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 521.9647216796875,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Back to it.It’s no secret—show days are long.",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 734.9959106445312,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingYour horses, right beside their classe",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 734.9959106445312,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 6Ring 6 - as of 10:33AFirst: Low Childre",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 734.9959106445312,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 7HeadingJust ask. In a text.I type “Ring",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 734.9959106445312,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingReminders you can forward.You’ve got m",
+          "width": 1469.998779296875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 530.1049194335938,
+          "line": "18px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RINGSTATUSbuilt for the day you getInstagramY",
+          "width": 1469.998779296875
+        }
+      ]
+    },
+    {
+      "controls": [
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "home",
+          "width": 79.88410949707031
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "Tools",
+          "width": 85.20281982421875
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "about",
+          "width": 87.54139709472656
+        },
+        {
+          "class": "kicker2 is-dark",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "Start with a plan",
+          "width": 376.55908203125
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "PACK",
+          "width": 174.1584014892578
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "prep",
+          "width": 172.1647491455078
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "show",
+          "width": 180.69813537597656
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "connect",
+          "width": 208.1125946044922
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "Moving targets",
+          "width": 376.55908203125
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "PACK",
+          "width": 174.1584014892578
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "prep",
+          "width": 172.1647491455078
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "show",
+          "width": 180.69813537597656
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "connect",
+          "width": 208.1125946044922
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "Keep everyone in the loop.",
+          "width": 376.55908203125
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 77.3316879272461,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "I’m really proud of the two-way SMS. It’s sup",
+          "width": 506.3948974609375
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "I’m using it, too",
+          "width": 376.55908203125
+        },
+        {
+          "class": "chat-msg-messagex-user is-eee",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "My dad calls it ‘eating my own dog food’—what",
+          "width": 514.3695068359375
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "Back to it.",
+          "width": 376.55908203125
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "My horse and I both ride better when I’m less",
+          "width": 442.101318359375
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "Ring 6",
+          "width": 168.75001525878906
+        },
+        {
+          "class": "chat-msg-messagex-bot",
+          "font": "14px",
+          "height": 278.82177734375,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "Ring 6 - as of 10:33AFirst: Low Children's Hu",
+          "width": 189.10736083984375
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "Ring 7",
+          "width": 168.75001525878906
+        },
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "home",
+          "width": 79.88410949707031
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "Tools",
+          "width": 85.20281982421875
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "about",
+          "width": 87.54139709472656
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16.3974px",
+          "text": "lainey",
+          "width": 89.19013214111328
+        }
+      ],
+      "logo": [
+        {
+          "class": "rd-status-big is-ring",
+          "font": "61.4901px",
+          "height": 52.262699127197266,
+          "line": "52.2666px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RING",
+          "width": 128.5734100341797
+        },
+        {
+          "class": "rd-status-big is-status",
+          "font": "61.4901px",
+          "height": 52.262699127197266,
+          "line": "52.2666px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 20px 0px 10px",
+          "text": "STATUS",
+          "width": 220.68849182128903
+        },
+        {
+          "class": "rd-status-big-q",
+          "font": "61.4901px",
+          "height": 52.262699127197266,
+          "line": "52.2666px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 10px 0px 0px",
+          "text": "?",
+          "width": 36.00993728637695
+        }
+      ],
+      "scroll": 820,
+      "social": [
+        {
+          "class": "rs2-social-2",
+          "font": "14px",
+          "height": 59.98896789550781,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "8px",
+          "text": "InstagramYouTube",
+          "width": 171.97848510742188
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10px",
+          "text": "",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10px",
+          "text": "Instagram",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10px",
+          "text": "YouTube",
+          "width": 43.998348236083984
+        }
+      ],
+      "token": "clamp(44px, calc(28px + 1.25vw), 52px)",
+      "width": 820,
+      "wrappers": [
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 393.6534423828125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Built for the dayyou get.I’m Lainey, a rider ",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 317.9015197753906,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Start with a planKnow what needs to happen.Th",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 317.8601379394531,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 409.20947265625,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Moving targetsWhen the day changes, our plan ",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 321.468017578125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 435.2304382324219,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Keep everyone in the loop.Now the team needs ",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 401.8970947265625,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "I’m using it, tooI see what works. And what d",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 429.1943054199219,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Back to it.It’s no secret—show days are long.",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 436.2997131347656,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingYour horses, right beside their classe",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 628.2698974609375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 6Ring 6 - as of 10:33AFirst: Low Childre",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 436.2997131347656,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 7HeadingJust ask. In a text.I type “Ring",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 436.2997131347656,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingReminders you can forward.You’ve got m",
+          "width": 753.1181640625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 417.3565368652344,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RINGSTATUSbuilt for the day you getInstagramY",
+          "width": 753.1181640625
+        }
+      ]
+    },
+    {
+      "controls": [
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "home",
+          "width": 79.09768676757812
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Tools",
+          "width": 84.41639709472656
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "about",
+          "width": 86.75497436523438
+        },
+        {
+          "class": "kicker2 is-dark",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Start with a plan",
+          "width": 306.40179443359375
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "PACK",
+          "width": 139.0797576904297
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "prep",
+          "width": 137.0861053466797
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "show",
+          "width": 145.61949157714844
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "connect",
+          "width": 173.03395080566406
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Moving targets",
+          "width": 306.40179443359375
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "PACK",
+          "width": 139.0797576904297
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "prep",
+          "width": 137.0861053466797
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "show",
+          "width": 145.61949157714844
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "connect",
+          "width": 173.03395080566406
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Keep everyone in the loop.",
+          "width": 306.40179443359375
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 94.12252807617188,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "I’m really proud of the two-way SMS. It’s sup",
+          "width": 412.0447387695313
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "I’m using it, too",
+          "width": 306.40179443359375
+        },
+        {
+          "class": "chat-msg-messagex-user is-eee",
+          "font": "14px",
+          "height": 60.54084396362305,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "My dad calls it ‘eating my own dog food’—what",
+          "width": 441.2182922363281
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Back to it.",
+          "width": 306.40179443359375
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 60.54084396362305,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "My horse and I both ride better when I’m less",
+          "width": 412.0447387695313
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Ring 6",
+          "width": 367.6807556152344
+        },
+        {
+          "class": "chat-msg-messagex-bot",
+          "font": "14px",
+          "height": 178.07672119140625,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Ring 6 - as of 10:33AFirst: Low Children's Hu",
+          "width": 274.3929443359375
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Ring 7",
+          "width": 367.6807556152344
+        },
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "home",
+          "width": 79.09768676757812
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Tools",
+          "width": 84.41639709472656
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "about",
+          "width": 86.75497436523438
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "lainey",
+          "width": 88.40370178222656
+        }
+      ],
+      "logo": [
+        {
+          "class": "rd-status-big is-ring",
+          "font": "50.0331px",
+          "height": 42.52897644042969,
+          "line": "42.5281px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RING",
+          "width": 104.61507415771484
+        },
+        {
+          "class": "rd-status-big is-status",
+          "font": "50.0331px",
+          "height": 42.52897644042969,
+          "line": "42.5281px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 20px 0px 10px",
+          "text": "STATUS",
+          "width": 185.154541015625
+        },
+        {
+          "class": "rd-status-big-q",
+          "font": "50.0331px",
+          "height": 42.52897644042969,
+          "line": "42.5281px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 10px 0px 0px",
+          "text": "?",
+          "width": 31.160322189331055
+        }
+      ],
+      "scroll": 667,
+      "social": [
+        {
+          "class": "rs2-social-2",
+          "font": "14px",
+          "height": 59.98896789550781,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "8px",
+          "text": "InstagramYouTube",
+          "width": 171.97848510742188
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10px",
+          "text": "",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10px",
+          "text": "Instagram",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10px",
+          "text": "YouTube",
+          "width": 43.998348236083984
+        }
+      ],
+      "token": "clamp(44px, calc(28px + 1.25vw), 52px)",
+      "width": 667,
+      "wrappers": [
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 383.4782409667969,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Built for the dayyou get.I’m Lainey, a rider ",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 262.0516357421875,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Start with a planKnow what needs to happen.Th",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 308.7127685546875,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 368.7293395996094,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Moving targetsWhen the day changes, our plan ",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 315.3697814941406,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 392.1702880859375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Keep everyone in the loop.Now the team needs ",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 358.5885925292969,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "I’m using it, tooI see what works. And what d",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 385.88580322265625,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Back to it.It’s no secret—show days are long.",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 763.0519409179688,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingYour horses, right beside their classe",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 924.4343872070312,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 6Ring 6 - as of 10:33AFirst: Low Childre",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 761.0582885742188,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 7HeadingJust ask. In a text.I type “Ring",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 763.0519409179688,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingReminders you can forward.You’ve got m",
+          "width": 612.8035888671875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 516.2528076171875,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RINGSTATUSbuilt for the day you getInstagramY",
+          "width": 612.8035888671875
+        }
+      ]
+    },
+    {
+      "controls": [
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Tools",
+          "width": 84.41639709472656
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "about",
+          "width": 86.75497436523438
+        },
+        {
+          "class": "kicker2 is-dark",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Start with a plan",
+          "width": 181.6156311035156
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "PACK",
+          "width": 99.99311065673828
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "prep",
+          "width": 99.99311065673828
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "show",
+          "width": 99.99311065673828
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "connect",
+          "width": 107.5745086669922
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Moving targets",
+          "width": 180.47048950195312
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "PACK",
+          "width": 99.99311065673828
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "prep",
+          "width": 99.99311065673828
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "show",
+          "width": 99.99311065673828
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "connect",
+          "width": 107.5745086669922
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Keep everyone in the loop.",
+          "width": 259.3336181640625
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 110.91336822509766,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "I’m really proud of the two-way SMS. It’s sup",
+          "width": 295.9713134765625
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "I’m using it, too",
+          "width": 180.47048950195312
+        },
+        {
+          "class": "chat-msg-messagex-user is-eee",
+          "font": "14px",
+          "height": 77.3316879272461,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "My dad calls it ‘eating my own dog food’—what",
+          "width": 259.8717041015625
+        },
+        {
+          "class": "kicker2",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Back to it.",
+          "width": 180.47048950195312
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "14px",
+          "height": 60.54084396362305,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "My horse and I both ride better when I’m less",
+          "width": 295.9713134765625
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Ring 6",
+          "width": 216.56320190429688
+        },
+        {
+          "class": "chat-msg-messagex-bot",
+          "font": "14px",
+          "height": 178.07672119140625,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Ring 6 - as of 10:33AFirst: Low Children's Hu",
+          "width": 274.3929443359375
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Ring 7",
+          "width": 216.56320190429688
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "Tools",
+          "width": 84.41639709472656
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "about",
+          "width": 86.75497436523438
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "16.8px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "12.6px 16px",
+          "text": "lainey",
+          "width": 88.40370178222656
+        }
+      ],
+      "logo": [
+        {
+          "class": "rd-status-big is-ring",
+          "font": "29.4702px",
+          "height": 25.04829216003418,
+          "line": "25.0497px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RING",
+          "width": 61.6239013671875
+        },
+        {
+          "class": "rd-status-big is-status",
+          "font": "29.4702px",
+          "height": 25.04829216003418,
+          "line": "25.0497px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 20px 0px 10px",
+          "text": "STATUS",
+          "width": 121.39212036132812
+        },
+        {
+          "class": "rd-status-big-q",
+          "font": "29.4702px",
+          "height": 25.04829216003418,
+          "line": "25.0497px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 10px 0px 0px",
+          "text": "?",
+          "width": 22.46826934814453
+        }
+      ],
+      "scroll": 393,
+      "social": [
+        {
+          "class": "rs2-social-2",
+          "font": "14px",
+          "height": 59.98896789550781,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "8px",
+          "text": "InstagramYouTube",
+          "width": 171.97848510742188
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10px",
+          "text": "",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10px",
+          "text": "Instagram",
+          "width": 43.998348236083984
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14px",
+          "height": 43.998348236083984,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "44px",
+          "padding": "10px",
+          "text": "YouTube",
+          "width": 43.998348236083984
+        }
+      ],
+      "token": "clamp(44px, calc(28px + 1.25vw), 52px)",
+      "width": 393,
+      "wrappers": [
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 468.04638671875,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Built for the dayyou get.I’m Lainey, a rider ",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 350.16558837890625,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Start with a planKnow what needs to happen.Th",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 331.96746826171875,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 477.95257568359375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Moving targetsWhen the day changes, our plan ",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 344.1087341308594,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 451.1796875,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Keep everyone in the loop.Now the team needs ",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 463.493408203125,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "I’m using it, tooI see what works. And what d",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 473.999755859375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Back to it.It’s no secret—show days are long.",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 820.6126708984375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingYour horses, right beside their classe",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 968.9777221679688,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 6Ring 6 - as of 10:33AFirst: Low Childre",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 811.0238037109375,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 7HeadingJust ask. In a text.I type “Ring",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 795.9161987304688,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingReminders you can forward.You’ve got m",
+          "width": 360.94097900390625
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 706.1051635742188,
+          "line": "14px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RINGSTATUSbuilt for the day you getInstagramY",
+          "width": 360.94097900390625
+        }
+      ]
+    },
+    {
+      "controls": [
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "home",
+          "width": 107.93323516845705
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "Tools",
+          "width": 113.63135528564452
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "about",
+          "width": 116.14239501953124
+        },
+        {
+          "class": "kicker2 is-dark",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "Start with a plan",
+          "width": 661.4652709960938
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "PACK",
+          "width": 315.9285583496094
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "prep",
+          "width": 313.78314208984375
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "show",
+          "width": 322.9373779296875
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "connect",
+          "width": 352.2972106933594
+        },
+        {
+          "class": "kicker2",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "Moving targets",
+          "width": 661.4652709960938
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "PACK",
+          "width": 315.9285583496094
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "prep",
+          "width": 313.78314208984375
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "show",
+          "width": 322.9373779296875
+        },
+        {
+          "class": "rs6-tab-link w-inline-block w-tab-link",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "connect",
+          "width": 352.2972106933594
+        },
+        {
+          "class": "kicker2",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "Keep everyone in the loop.",
+          "width": 661.4652709960938
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "15.0011px",
+          "height": 63.76932144165039,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "I’m really proud of the two-way SMS. It’s sup",
+          "width": 1084.802734375
+        },
+        {
+          "class": "kicker2",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "I’m using it, too",
+          "width": 661.4652709960938
+        },
+        {
+          "class": "chat-msg-messagex-user is-eee",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "My dad calls it ‘eating my own dog food’—what",
+          "width": 661.4652709960938
+        },
+        {
+          "class": "kicker2",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "Back to it.",
+          "width": 661.4652709960938
+        },
+        {
+          "class": "chat-msg-messagex-bot is-eee",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "My horse and I both ride better when I’m less",
+          "width": 661.4652709960938
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "Ring 6",
+          "width": 247.4337921142578
+        },
+        {
+          "class": "chat-msg-messagex-bot",
+          "font": "15.0011px",
+          "height": 189.80409240722656,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "Ring 6 - as of 10:33AFirst: Low Children's Hu",
+          "width": 317.16339111328125
+        },
+        {
+          "class": "chat-msg-messagex-user is-green",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "Ring 7",
+          "width": 247.4337921142578
+        },
+        {
+          "class": "rs-page-link w-button w--current",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "home",
+          "width": 107.93323516845705
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "Tools",
+          "width": 113.63135528564452
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "about",
+          "width": 116.14239501953124
+        },
+        {
+          "class": "rs-page-link w-button",
+          "font": "15.0011px",
+          "height": 45.9989013671875,
+          "line": "18.0013px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "13.0004px 28.8035px",
+          "text": "lainey",
+          "width": 117.9084014892578
+        }
+      ],
+      "logo": [
+        {
+          "class": "rd-status-big is-ring",
+          "font": "108.013px",
+          "height": 91.81153869628906,
+          "line": "91.8113px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RING",
+          "width": 225.84852600097656
+        },
+        {
+          "class": "rd-status-big is-status",
+          "font": "108.013px",
+          "height": 91.81153869628906,
+          "line": "91.8113px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 20px 0px 10px",
+          "text": "STATUS",
+          "width": 364.9558715820313
+        },
+        {
+          "class": "rd-status-big-q",
+          "font": "108.013px",
+          "height": 91.81153869628906,
+          "line": "91.8113px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px 10px 0px 0px",
+          "text": "?",
+          "width": 55.684329986572266
+        }
+      ],
+      "scroll": 1440,
+      "social": [
+        {
+          "class": "rs2-social-2",
+          "font": "14.4018px",
+          "height": 63.99007034301758,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "9.0011px",
+          "text": "InstagramYouTube",
+          "width": 191.9840087890625
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14.4018px",
+          "height": 45.9989013671875,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "11.5214px",
+          "text": "",
+          "width": 45.9989013671875
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14.4018px",
+          "height": 45.9989013671875,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "11.5214px",
+          "text": "Instagram",
+          "width": 45.9989013671875
+        },
+        {
+          "class": "footer_icon-link-2 w-inline-block",
+          "font": "14.4018px",
+          "height": 45.9989013671875,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "46.0022px",
+          "padding": "11.5214px",
+          "text": "YouTube",
+          "width": 45.9989013671875
+        }
+      ],
+      "token": "clamp(44px, calc(28px + 1.25vw), 52px)",
+      "width": 1440,
+      "wrappers": [
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 419.9503784179687,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Built for the dayyou get.I’m Lainey, a rider ",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 359.20257568359375,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Start with a planKnow what needs to happen.Th",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 338.7900390625,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 491.8046875,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Moving targetsWhen the day changes, our plan ",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-tabs",
+          "font": "14px",
+          "height": 338.7900390625,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Tap below to see how I keep up when things ch",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 470.9713439941406,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Keep everyone in the loop.Now the team needs ",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 453.200927734375,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "I’m using it, tooI see what works. And what d",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 487.2102966308594,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Back to it.It’s no secret—show days are long.",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 661.4583740234375,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingYour horses, right beside their classe",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 661.4583740234375,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 6Ring 6 - as of 10:33AFirst: Low Childre",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 661.4583740234375,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "Ring 7HeadingJust ask. In a text.I type “Ring",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 661.4583740234375,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "HeadingReminders you can forward.You’ve got m",
+          "width": 1322.9305419921875
+        },
+        {
+          "class": "fsl-vw-copy",
+          "font": "14px",
+          "height": 494.34332275390625,
+          "line": "14.4018px",
+          "maxHeight": "none",
+          "minHeight": "auto",
+          "padding": "0px",
+          "text": "RINGSTATUSbuilt for the day you getInstagramY",
+          "width": 1322.9305419921875
+        }
+      ]
+    }
+  ],
+  "published": false
+}

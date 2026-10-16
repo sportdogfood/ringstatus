@@ -46,3 +46,11 @@ The owner approved freezing the agreed baseline. This is a documented contract, 
 A fresh native style export was attempted at lock time; both the full-breakpoint request and base-only request returned `Transport closed`. Existing evidence is preserved; a complete fresh export remains pending. Airtable has not been updated for this lock.
 
 Known items for a later explicit correction: verify the owner's requested 18px shared kicker ceiling against the saved 16px fallback; reconcile Home's XL variable alias; inspect nested copy wrappers and the remaining legacy control in the `lm` ring section. Do not silently change these while recording the lock.
+
+### Home correction verified — 13 October 2026
+
+Owner explicitly authorized Home-first corrections. The18px shared control ceiling, independentXL heading alias, Home split-copy wrapper reuse, current-tab corners and white-only mobile paragraph margin are now corrected. Home Designer/custom-code Preview checks and remaining acceptance boundaries are recorded in `webflow-home-consistency-2026-10-13.md` and its Preview JSON. This supplements the historical baseline; it is not a new owner lock, component conversion or downstream-page acceptance. LM's remaining legacy control remains outside this correction.
+# Owner correction addendum — 13 October 2026
+
+The owner's latest Home corrections supersede earlier global `fsl-vw-copy` padding and fixed control-height values. Copy and tabs now have zero global padding; controls scale from 44px at desktop to 52px at 1920, with shared 14–18px text. The three large wordmark parts share `clamp(24px, 7.5vw, 144px)` and .85 line-height. Full requests, implementation and verification are recorded in `webflow-home-owner-corrections-2026-10-13.md`. This addendum records authorized corrections; it does not declare a new owner lock or component conversion.
+
