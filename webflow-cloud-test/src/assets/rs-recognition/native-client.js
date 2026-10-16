@@ -52,7 +52,7 @@ export async function runSilentRecognition({ endpoint, fetchImpl = fetch,
       sessionStorageImpl.setItem(sessionKey, uuid());
     }
     if (!response.ok || data.ok !== true) {onOutcome({outcome:'unavailable',error:data.error});return false;}
-    if(data.recognized!==true){onOutcome({outcome:'unknown'});return false;}
+    if(data.recognized!==true){persistentStorage.removeItem('rs_recognition_identity_v1');onOutcome({outcome:'unknown'});return false;}
     onOutcome({outcome:'recognized',data});
     persistentStorage.setItem(expiryKey, String(now() + 365 * 86400000));
     sessionStorageImpl.setItem(confirmationKey, JSON.stringify({ session_uid: session, confirmed: true, confirmed_at: now() }));
@@ -100,7 +100,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   persistentStorage = browserStorage("localStorage"), sessionStorageImpl = browserStorage("sessionStorage"),
   locationImpl = globalThis.location, historyImpl = globalThis.history,
   navigate = url => location.assign(url), uuid = () => crypto.randomUUID(), timeoutMs = 12000,
-  silentRecognition = true, launcherPath = '/' }) {
+  silentRecognition = true, launcherPath = '/', minimal = false }) {
   persistentStorage=safeStorage(persistentStorage); sessionStorageImpl=safeStorage(sessionStorageImpl);
   if (!root || typeof present !== "function") throw new Error("native_presenter_required");
   if (root.__rsNativeRecognition) return root.__rsNativeRecognition;
@@ -115,7 +115,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   if (!endpoint.pathname.endsWith('/rs-inputs/native-recognition')) throw new Error('native_cookie_scope_required');
   const get = selector => root.querySelector(selector);
   const all = selector => [...root.querySelectorAll(selector)];
-  for (const state of ["recognized", "profile", "login", "recovery", "received", "unavailable"]) {
+  for (const state of (minimal ? ["recognized", "login", "unavailable"] : ["recognized", "profile", "login", "recovery", "received", "unavailable"])) {
     if (!get(`[data-rs-native-state="${state}"]`)) throw new Error("native_state_missing:" + state);
   }
   if (!get('[data-rs-native-feedback]')) throw new Error("native_feedback_missing");
@@ -162,6 +162,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     } finally {clearTimeout(timer);}
     if(!response.ok||access.ok!==true||!access.actor?.id||access.actor.id!==(alreadyRecognized||outcome?.data)?.person_uid){show('unavailable','Recognized, but Tenants access could not be confirmed.');return;}
     tenantReady=true; resultVersion++; opened=false; show('recognized');
+    persistentStorage.setItem('rs_recognition_identity_v1', JSON.stringify({ personUid: access.actor.id, deviceToken, expiresAt: Date.now() + 365 * 86400000 }));
     const destination=returnPath||root.getAttribute('data-rs-setup-path')||launcherPath;
     if(!destination.startsWith('/')||destination.startsWith('//')||destination.includes('\\'))throw new Error('invalid_destination');
     navigate(destination);
@@ -174,7 +175,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     const input=get('[data-rs-native-state="login"] [name="identifier"]');
     input.value='';input.setAttribute('autocomplete',mode==='phone'||mode==='sms'?'tel':'off');
     input.setAttribute('aria-label',mode==='pin'?'4-digit PIN':mode==='invite'?'7-digit invitation':'10-digit phone');
-    input.setAttribute('placeholder',mode==='pin'?'4-digit PIN':mode==='invite'?'7-digit invitation':'10-digit phone');
+    input.setAttribute('placeholder',minimal?'Phone, PIN or owner invite':mode==='pin'?'4-digit PIN':mode==='invite'?'7-digit invitation':'10-digit phone');
     const button=get('[data-rs-native-action="phone-login"]');if(button)button.textContent=mode==='sms'?'Send SMS code':'Continue';
     show('login',mode==='sms'?'Optional SMS verification.':mode==='pin'?'Enter your PIN.':mode==='invite'?'Enter your active invitation.':'Enter your phone number.');
   }
@@ -324,6 +325,8 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
       const next = pending.continuation;
       if (pending.body.action === "retire_device") {
         bindPerson(null);verified=false;tenantReady=false;
+        persistentStorage.removeItem('rs_recognition_identity_v1');
+        persistentStorage.removeItem('rs_recognition_device_expires_v1');
         sessionStorageImpl.removeItem(sessionKey);sessionUid=uuid();sessionStorageImpl.setItem(sessionKey,sessionUid);
         deviceToken = uuid(); persistentStorage.setItem(tokenKey, deviceToken);
       } else if (data.recognized === true) bindPerson(data);

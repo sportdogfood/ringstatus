@@ -15,7 +15,7 @@ const safePerson = p => p ? Object.fromEntries([
 
 // A recognition-only façade for the existing signed-session contract. It must
 // be mounted inside /rs-inputs so the existing path-scoped cookie reaches it.
-export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
+export async function handleNativeRecognition(request, env, fetchImpl = fetch, executionContext = null) {
   try {
     const config = recognitionConfig(env);
     if (env.RS_INPUTS_BASE_ID && env.RS_INPUTS_BASE_ID !== config.baseId) return respond({ ok: false, error: 'recognition_base_mismatch' }, 503);
@@ -66,9 +66,14 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
       const found = await recognition.recognizeDevice(token);
       let session;
       try {
-        session = await recordRecognitionSummary({ env: bindings, fetchImpl, sessionUid: payload.session_uid,
+        const summary = recordRecognitionSummary({ env: bindings, fetchImpl, sessionUid: payload.session_uid,
           tokenFingerprint: await accessHash(token), recognized: found.recognized, retired: found.device === 'retired',
           personRecordId: found.personRecordId, deviceRecordId: found.deviceRecordId });
+        if (executionContext?.waitUntil) {
+          // Person/device/tenant eligibility above authorizes identity; this
+          // summary is tracking and must not hold the visitor's response open.
+          executionContext.waitUntil(summary.catch(() => console.error('[rs-recognition] session tracking unavailable')));
+        } else session = await summary;
       } catch (error) {
         const response = respond({ ok: false, recognized: false, error: error.code || 'session_summary_unavailable' }, error.status || 503);
         if (!found.recognized) response.headers.set('Set-Cookie', '__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
@@ -82,7 +87,7 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
       // Reuse the existing canonical session/Geo-IP logger. This is recognition,
       // not permission to edit profiles or access protected Inputs routes.
       const eventUid = await accessHash(`${payload.session_uid}:${token}`);
-      await recordRecognitionSession({ env: bindings, fetchImpl, request, payload: {
+      const audit = recordRecognitionSession({ env: bindings, fetchImpl, request, payload: {
         session_uid: payload.session_uid, session_event_uid: eventUid,
         idempotency_key: `native_silent:${eventUid}`, event_type: 'recognition',
         event_result: 'matched', recognition_status: 'confirmed', matched_by: 'device_token',
@@ -90,6 +95,12 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch) {
         page_path: typeof payload.page_path === 'string' && payload.page_path.startsWith('/') ? payload.page_path.split(/[?#]/)[0].slice(0, 1024) : undefined,
         detail: { source: 'native_silent_recognition' }
       } });
+      if (executionContext?.waitUntil) {
+        executionContext.waitUntil(audit.catch(() => console.error('[rs-recognition] visit audit unavailable')));
+      } else {
+        // Local hosts without an execution context must still observe rejection.
+        await audit.catch(() => console.error('[rs-recognition] visit audit unavailable'));
+      }
       response.headers.set('Set-Cookie', `__Host-rs_recognition_device=${token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
       return response;
     }
