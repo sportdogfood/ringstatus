@@ -18,9 +18,9 @@ test('native sign-out activation navigates existing route and preserves device d
   if(!u.pathname.startsWith('/test/rs-inputs/'))return route.abort();
   const response=await f.dispatch(new Request(r.url(),{method:r.method(),headers:await r.allHeaders(),...(r.postData()?{body:r.postData()}:{})}));return route.fulfill({status:response.status,headers:Object.fromEntries(response.headers),body:await response.text()});});
  try{await page.goto(origin+path);await page.waitForFunction(()=>app?.getState()?.selectedBarn&&!app.isBusy());
-  await page.evaluate(()=>{localStorage.setItem('unrelated-pending-draft','preserve');document.addEventListener('click',e=>e.preventDefault());});
+  await page.evaluate(()=>{localStorage.setItem('unrelated-pending-draft','preserve');document.addEventListener('click',e=>e.preventDefault());const header=document.createElement('div');header.style.cssText='position:fixed;left:120px;right:0;top:0;height:44px;z-index:999';document.body.append(header);});
   const button=page.getByRole('button',{name:'Not you? Sign out',exact:true});
-  await button.click();await page.waitForURL(origin+'/rs-recognize?sign_out=1');
+  assert.ok(await button.evaluate(el=>el.getBoundingClientRect().width<120),'sign-out hit area stays outside header overlay');await button.click();await page.waitForURL(origin+'/rs-recognize?sign_out=1');
   assert.equal(await page.evaluate(()=>localStorage.getItem('unrelated-pending-draft')),'preserve');
  }finally{await browser.close();f.db.close();}
 });
