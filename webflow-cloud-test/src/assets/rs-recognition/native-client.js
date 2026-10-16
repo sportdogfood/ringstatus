@@ -2,6 +2,7 @@
 // Nothing mounts until the page supplies its verified native state presenter.
 // Standalone so the same silent entry can later be called from a global footer.
 const confirmationKey = 'rs_native_recognition_confirmation_v1';
+const signOutKey = 'rs_recognition_pending_signout_v1';
 const confirmationGenerations = new WeakMap();
 const safeStores = new WeakMap();
 function safeStorage(storage) {
@@ -28,6 +29,7 @@ export async function runSilentRecognition({ endpoint, fetchImpl = fetch,
   const abort = new AbortController(), timer = setTimeout(() => abort.abort(), timeoutMs);
   let generation;
   try {
+    if(persistentStorage.getItem(signOutKey)){onOutcome({outcome:'unknown'});return false;}
     // Display context only: every visit still waits for server revalidation.
     generation = clearConfirmation(sessionStorageImpl);
     const target = new URL(endpoint);
@@ -278,7 +280,16 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
     const body = { action: name, device_token: deviceToken, session_uid: currentSessionUid(),
       session_event_uid: uuid(), ...data };
     pending = { body, continuation };
+    if(name==='retire_device'){
+      persistentStorage.setItem(signOutKey,JSON.stringify(pending));
+      clearBrowserRecognition();opened=true;busy=false;show('login','Signed out on this device.');
+    }
     await executePending();
+  }
+  function clearBrowserRecognition(){
+    clearConfirmation(sessionStorageImpl);bindPerson(null);verified=false;tenantReady=false;
+    persistentStorage.removeItem('rs_recognition_identity_v1');persistentStorage.removeItem('rs_recognition_device_expires_v1');
+    sessionUid=uuid();sessionStorageImpl.setItem(sessionKey,sessionUid);deviceToken=uuid();persistentStorage.setItem(tokenKey,deviceToken);
   }
   function otpInput(checking) {
     const input = get('[data-rs-native-state="login"] [name="identifier"]');
@@ -317,18 +328,18 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
       show('login', error.message === 'otp_rate_limited' ? 'Too many attempts. Wait before requesting another code.' : 'Verification could not finish. Request a new SMS code.');
     } finally { busy = false; present({ state, open: opened, busy }); }
   }
+  let signOutInFlight=false;
   async function executePending() {
     if (!pending) return;
-    busy = true; feedback("Saving…"); present({ state, open: opened, busy });
+    const signingOut=pending.body.action==='retire_device';
+    if(signingOut&&signOutInFlight)return;
+    if(signingOut)signOutInFlight=true;
+    busy = !signingOut;if(!signingOut)feedback("Saving…"); present({ state, open: opened, busy });
     try {
       const data = await json("action", { method: "POST", headers: { "Content-Type": "application/json", "X-RS-Audit-Outcome": "report" }, body: JSON.stringify(pending.body) });
       const next = pending.continuation;
       if (pending.body.action === "retire_device") {
-        bindPerson(null);verified=false;tenantReady=false;
-        persistentStorage.removeItem('rs_recognition_identity_v1');
-        persistentStorage.removeItem('rs_recognition_device_expires_v1');
-        sessionStorageImpl.removeItem(sessionKey);sessionUid=uuid();sessionStorageImpl.setItem(sessionKey,sessionUid);
-        deviceToken = uuid(); persistentStorage.setItem(tokenKey, deviceToken);
+        clearBrowserRecognition();persistentStorage.removeItem(signOutKey);pending=null;opened=true;show('login','Signed out.');return;
       } else if (data.recognized === true) bindPerson(data);
       else if (pending.body.action === "phone_login") {
         bindPerson(null);
@@ -353,10 +364,11 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
       } else if (next === "closed") { opened = false; show("recognized"); returnFocus?.focus(); }
       else show(next, next === "received" ? "Request received. If your account is eligible, check for an SMS. Delivery is not confirmed." : "");
     } catch (error) {
+      if(signingOut){opened=true;show('login','Signed out on this device. Server sign-out will retry.');return;}
       const invalid = /^(missing_|invalid_|ambiguous_|phone_already|unauthorized_|request_id_conflict|authentication_required|invitation_only|sms_recovery_unconfigured)/.test(error.message);
       if (invalid) { pending = null; show("unavailable", "Please check your details. " + error.message.replaceAll("_", " ")); }
       else show("unavailable", "The outcome could not be confirmed. Retry keeps the same request ID.");
-    } finally { busy = false; present({ state, open: opened, busy }); }
+    } finally { if(signingOut)signOutInFlight=false;busy = false; present({ state, open: opened, busy }); }
   }
   function owned() { return { person_record_id: person?.person_record_id || "", person_uid: person?.person_uid || "" }; }
   async function click(event) {
@@ -418,7 +430,12 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   const api={lookup,snapshot,perform,destroy(){controller.abort();delete root.__rsNativeRecognition;root.removeAttribute('data-rs-recognition-state');}};
   root.__rsNativeRecognition=api;
   bindPerson(null);show('unavailable');
-  if(signOut){
+  let savedSignOut;try{savedSignOut=JSON.parse(persistentStorage.getItem(signOutKey)||'null');}catch{}
+  globalThis.addEventListener?.('online',()=>{if(pending?.body.action==='retire_device')void executePending();},{signal:controller.signal});
+  if(savedSignOut?.body?.action==='retire_device'){
+    pending=savedSignOut;clearBrowserRecognition();opened=true;show('login','Signed out on this device.');void executePending();
+  }
+  else if(signOut){
     const search=new URLSearchParams(locationImpl?.search||'');search.delete('sign_out');
     historyImpl.replaceState(historyImpl.state,'',locationImpl.pathname+(search.size?'?'+search.toString():'')+(locationImpl.hash||''));
     opened=true;void action('retire_device',{},'login');

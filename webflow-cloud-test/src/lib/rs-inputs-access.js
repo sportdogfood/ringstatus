@@ -1,5 +1,6 @@
 // Invitation access for the owned isolated trial. Recognition is not authentication.
 import { InputError } from './rs-inputs.js';
+import {iamActor,handleIamRecognition,iamEnabled} from './rs-recognition-iam.js';
 import { claimOnce, requireClaimDatabase } from './rs-recognition-claims.js';
 import { createInputRecognition } from './rs-inputs-recognition.js';
 import {createTenantRecognitionPolicy} from './rs-tenant-recognition-policy.js';
@@ -143,14 +144,17 @@ export async function handleAccessRoute(request, env, fetchImpl, inputHandler, l
   try {
     if (!['GET', 'POST'].includes(request.method)) fail('method_not_allowed', 405);
     if (request.method === 'POST' && request.headers.get('Origin') !== new URL(request.url).origin) fail('origin_denied', 403);
-    const access = createInputAccess({ env, fetchImpl });
+    const useIam=await iamEnabled(env);
+    const access = useIam?null:createInputAccess({ env, fetchImpl });
     if (operation === 'logout') {
       if (request.method !== 'POST') fail('method_not_allowed', 405);
+      if(!access){const target=new URL(request.url);target.searchParams.set('operation','action');return handleIamRecognition(new Request(target,{method:'POST',headers:request.headers,body:JSON.stringify({action:'retire_device'})}),env);}
       const response = respond({ ok: true }, 200, { 'Set-Cookie': access.logout(request) });
       response.headers.append('Set-Cookie', '__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
       return response;
     }
     if (operation === 'access' && request.method === 'POST') {
+      if(!access)fail('unsupported_operation',400);
       const body = await jsonBody(request);
       if (!body || Object.keys(body).length !== 1 || !('token' in body)) fail('invalid_request', 400);
       const result = await access.redeem(request, body.token);
@@ -158,11 +162,11 @@ export async function handleAccessRoute(request, env, fetchImpl, inputHandler, l
       return respond({ ok: true, actor: result.actor }, 200, { 'Set-Cookie': result.cookie });
     }
     let actor;
-    try { actor = await access.session(request); }
+    try { actor = useIam?await iamActor(request,env):await access.session(request); }
     catch (error) {
       // Barn Inputs uses the remembered browser, plus the person's existing
       // Inputs permission. Never accept a phone, body token or client actor ID.
-      if (error.code !== 'authentication_required' || !['access', 'state', 'record', 'profile-link', 'subscriptions','user-optins'].includes(operation)) throw error;
+      if (useIam||error.code !== 'authentication_required' || !['access', 'state', 'record', 'profile-link', 'subscriptions','user-optins'].includes(operation)) throw error;
       const devices = (request.headers.get('Cookie') || '').split(';').map(value => value.trim()).filter(value => value.startsWith('__Host-rs_recognition_device='));
       if (devices.length !== 1) throw error;
       const token = devices[0].slice('__Host-rs_recognition_device='.length);

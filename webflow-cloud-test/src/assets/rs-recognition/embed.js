@@ -28,7 +28,7 @@ export function mountRecognitionEmbed(root, options = {}) {
   const destination = '/rs-barn-onboarding-setup-v24';
   // Cached state controls presentation only. The existing Tenants server still
   // validates its secure cookie before returning any private records.
-  if (!options.skipCachedReturn && new URLSearchParams(location.search).get('sign_out') !== '1') {
+  if (!options.skipCachedReturn && !persistentStorage?.getItem('rs_recognition_pending_signout_v1') && new URLSearchParams(location.search).get('sign_out') !== '1') {
     try {
       const remembered = JSON.parse(persistentStorage?.getItem('rs_recognition_identity_v1') || 'null');
       const token = persistentStorage?.getItem('rs_recognition_device_token_v1');

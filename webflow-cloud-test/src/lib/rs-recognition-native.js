@@ -1,4 +1,6 @@
 import { recognitionConfig } from './rs-recognition-config.js';
+import {handleIamRecognition,iamEnabled} from './rs-recognition-iam.js';
+import {handleIamRefresh} from './rs-recognition-iam-refresh.js';
 import { handleAuthenticatedInputRoute } from '../pages/rs-inputs/[operation].js';
 import { handleAccessRoute, createAccessStore, createInputAccess, accessHash } from './rs-inputs-access.js';
 import { createInputRecognition } from './rs-inputs-recognition.js';
@@ -16,6 +18,8 @@ const safePerson = p => p ? Object.fromEntries([
 // A recognition-only façade for the existing signed-session contract. It must
 // be mounted inside /rs-inputs so the existing path-scoped cookie reaches it.
 export async function handleNativeRecognition(request, env, fetchImpl = fetch, executionContext = null) {
+  if(new URL(request.url).searchParams.get('operation')==='refresh_iam')return handleIamRefresh(request,env,fetchImpl);
+  if(await iamEnabled(env))return handleIamRecognition(request,env,executionContext);
   try {
     const config = recognitionConfig(env);
     if (env.RS_INPUTS_BASE_ID && env.RS_INPUTS_BASE_ID !== config.baseId) return respond({ ok: false, error: 'recognition_base_mismatch' }, 503);
@@ -32,7 +36,7 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch, e
     if (operation !== 'device' && (!payload || Array.isArray(payload))) return respond({ ok: false, error: 'invalid_request' }, 400);
     if(['sms_prepare','sms_outcome'].includes(operation)||(operation==='action'&&['otp_start','otp_check','recovery','phone_login','update_profile','create_profile'].includes(payload.action)))return respond({ok:false,error:'unsupported_operation'},400);
     if(operation==='action'&&payload.action==='credential') {
-      const result=await handleRecognitionCredential({request,env:bindings,payload,fetchImpl});
+      const result=await handleRecognitionCredential({request,env:bindings,payload,fetchImpl,executionContext});
       const response=respond(result);
       if(result.verified){
         response.headers.set('Set-Cookie',`__Host-rs_recognition_device=${result.device_token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`);
@@ -47,7 +51,7 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch, e
         const token=cookies[0].slice('__Host-rs_recognition_device='.length);
         const principal=await createInputRecognition({env:bindings,fetchImpl,verifiedInputAccess:true}).retirementPrincipal(token);
         if(!principal)return respond({ok:false,error:'authentication_required'},401);
-        await createInputRecognition({env:bindings,fetchImpl,principalPersonUid:principal,verifiedInputAccess:true}).action({action:'retire_device',requestId:payload.session_event_uid,device_token:token,values:{}},request);
+        await createInputRecognition({env:bindings,fetchImpl,principalPersonUid:principal,verifiedInputAccess:true,executionContext}).action({action:'retire_device',requestId:payload.session_event_uid,device_token:token,values:{}},request);
         const response=respond({ok:true,retired:true,recognized:false});
         response.headers.append('Set-Cookie','__Host-rs_recognition_device=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax');
         response.headers.append('Set-Cookie',createInputAccess({env:bindings,fetchImpl}).logout(request));
