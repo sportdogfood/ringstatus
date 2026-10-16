@@ -894,7 +894,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
   const signOut = document2.createElement("a");
   signOut.className = "rs-barn-v24-link";
   signOut.textContent = "Not you? Sign out";
-  signOut.href = "/rs-recognize?sign_out=1";
+  signOut.href = "/rec2?sign_out=1";
   signOut.style.width = "fit-content";
   one2(root, ".rs-barn-v24-main").prepend(signOut);
   const barnLogo = document2.createElement("img");

@@ -40,7 +40,7 @@ export function prepareNativeBarn({document, api, chooser}) {
   }));
   const profile=one(panes.users,':scope > .rs-barn-v24-link');
   const barnName=one(root,'.rs-barn-v24-barn-name');
-  const signOut=document.createElement('a');signOut.className='rs-barn-v24-link';signOut.textContent='Not you? Sign out';signOut.href='/rs-recognize?sign_out=1';signOut.style.width='fit-content';
+  const signOut=document.createElement('a');signOut.className='rs-barn-v24-link';signOut.textContent='Not you? Sign out';signOut.href='/rec2?sign_out=1';signOut.style.width='fit-content';
   one(root,'.rs-barn-v24-main').prepend(signOut);
   const barnLogo=document.createElement('img');barnLogo.alt='Barn logo';barnLogo.width=48;barnLogo.height=48;barnLogo.hidden=true;barnName.before(barnLogo);
   const chooseControl=one(root,'[aria-label="Choose barn"]');
