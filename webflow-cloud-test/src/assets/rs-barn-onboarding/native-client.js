@@ -1246,6 +1246,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
       optinsPanel.textContent = "Opt-ins could not load. Try again.";
     }
   });
+  click(signOut, () => document2.defaultView.location.assign(signOut.href));
   click(profile, () => controller.profileLink());
   click(editBarn, () => {
     const state = controller.getState();
@@ -1345,6 +1346,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
       }
       for (const [select, options] of originalOptions) select.replaceChildren(...options);
       chooser.container.replaceChildren(originalChooserOption);
+      signOut.remove();
       mountedViews.delete(root);
     }
   };

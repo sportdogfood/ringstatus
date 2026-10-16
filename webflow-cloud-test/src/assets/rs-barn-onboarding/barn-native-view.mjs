@@ -180,6 +180,7 @@ export function prepareNativeBarn({document, api, chooser}) {
     if(result.manageUrl){const link=document.createElement('a');link.href=result.manageUrl;link.textContent='Edit my opt-ins';link.className='rs-barn-v24-link';optinsPanel.append(link);}
    }catch{optinsPanel.textContent='Opt-ins could not load. Try again.';}
   });
+  click(signOut,()=>document.defaultView.location.assign(signOut.href));
   click(profile,()=>controller.profileLink());click(editBarn,()=>{const state=controller.getState();if(state?.selectedBarn)return controller.beginEdit('barn',state.selectedBarn);});
   for(const [field,ownerKind,kind]of [['userId','riders','users'],['riderId','horses','riders'],['locationId','horses','locations']]){
     click(one(forms[ownerKind].fields[field].parentElement,'button.rs-barn-v24-link[popovertarget]'),node=>openSheet(kind,{field,ownerKind,opener:node}));
@@ -221,6 +222,6 @@ export function prepareNativeBarn({document, api, chooser}) {
       for(const slot of Object.values(templates)){for(const row of [...slot.parent.children])if(row.classList.contains('rs-barn-v24-row'))row.remove();slot.parent.append(slot.node);}
       for(const [select,options]of originalOptions)select.replaceChildren(...options);
       chooser.container.replaceChildren(originalChooserOption);
-      mountedViews.delete(root);}};
+      signOut.remove();mountedViews.delete(root);}};
   mountedViews.set(root,result);return result;
 }
