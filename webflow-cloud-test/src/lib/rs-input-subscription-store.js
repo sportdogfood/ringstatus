@@ -11,7 +11,7 @@ export function validateSubscription(row,{writing=false}={}){
  if(!row||Object.keys(row).some(k=>!names.includes(k)))fail('invalid_subscription_record',502);
  const personal=row.target_type==='Person'&&typeof row.preferences_json==='string';
  for(const key of personal?['entity_uid','target_uid','owner_uid']:['entity_uid','barn_uid','user_uid','target_uid','owner_uid'])if(!uid(row[key]))fail('invalid_subscription_record',502);
- if(personal&&(row.target_uid!==row.owner_uid||row.barn_uid||row.user_uid||row.engine_scope||row.status==='Active'))fail('invalid_subscription_record',502);
+ if(personal&&(row.target_uid!==row.owner_uid||row.engine_scope||row.status==='Active'))fail('invalid_subscription_record',502);
  if((!personal&&!['WEC','WEF'].includes(row.engine_scope))||!['Barn','Person','Horse','Show','Ring'].includes(row.target_type)||!['Draft','Active','Paused','Revoked'].includes(row.status)||!['Unknown','Granted','Revoked'].includes(row.consent_state)||!['Test','Live'].includes(row.record_mode)||!Number.isSafeInteger(row.revision)||row.revision<1)fail('invalid_subscription_record',502);
  if(typeof row.alert_types!=='string'||row.alert_types.length>8192||typeof row.request_uid!=='string'||!row.request_uid||!/^[a-f0-9]{64}$/.test(row.request_hash||''))fail('invalid_subscription_record',502);
  if(['Granted','Revoked'].includes(row.consent_state)&&(!date(row.consent_at)||typeof row.consent_source!=='string'||!row.consent_source))fail('consent_evidence_required',409);

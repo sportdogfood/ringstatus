@@ -236,7 +236,7 @@ async function processSubmission(){
   }
   const targets=base.getTable(TABLES.target),options=base.getTable(TABLES.option),events=base.getTable(TABLES.event);
   const entityId='rs_'+digest('sms-preferences|'+ACTOR).slice(0,32);
-  const scope=r=>{if(!r||r.id!==TARGET||cell(r,'entity_uid')!==entityId||cell(r,'owner_uid')!==ACTOR||cell(r,'target_uid')!==ACTOR||select(cell(r,'target_type'))!=='Person'||select(cell(r,'record_mode'))!=='Test'||!['Draft','Revoked','Paused'].includes(select(cell(r,'status')))||['barn_uid','user_uid','engine_scope','alert_types'].some(k=>cell(r,k))||(cell(r,'Membership')||[]).length||(cell(r,'Managed by')||[]).length||(cell(r,'Selected favorites')||[]).length)review('preference_scope_mismatch');return r;};
+  const scope=r=>{if(!r||r.id!==TARGET||cell(r,'entity_uid')!==entityId||cell(r,'owner_uid')!==ACTOR||cell(r,'target_uid')!==ACTOR||select(cell(r,'target_type'))!=='Person'||select(cell(r,'record_mode'))!=='Test'||!['Draft','Revoked','Paused'].includes(select(cell(r,'status')))||['engine_scope','alert_types'].some(k=>cell(r,k))||(cell(r,'Managed by')||[]).length||(cell(r,'Selected favorites')||[]).length)review('preference_scope_mismatch');return r;};
   let target=scope(await targets.selectRecordAsync(TARGET));
   if(!Number.isSafeInteger(cell(target,'revision'))||cell(target,'revision')<1)review('invalid_target_revision');
   const allOptions=(await options.selectRecordsAsync()).records.filter(r=>(cell(r,'Opt-in')||[]).some(v=>v.id===TARGET));

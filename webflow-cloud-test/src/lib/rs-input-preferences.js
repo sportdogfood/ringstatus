@@ -59,7 +59,7 @@ export async function personalPreferences({request,payload,actor,store,env,defin
   }
   if(current?payload.expectedRevision!==current.revision:![undefined,0].includes(payload.expectedRevision))fail('record_changed',409);
   const at=clock();if(!Number.isFinite(Date.parse(at)))fail('invalid_server_time',503);
-  const record={entity_uid:id,target_type:'Person',target_uid:actor.id,owner_uid:actor.id,
+  const record={...(current?.barn_uid?{barn_uid:current.barn_uid}:{}),...(current?.user_uid?{user_uid:current.user_uid}:{}),entity_uid:id,target_type:'Person',target_uid:actor.id,owner_uid:actor.id,
    preferences_json:JSON.stringify(preferences),phone_e164:preferences.phone,
    status:preferences.enabled?'Draft':'Revoked',consent_state:preferences.enabled?'Granted':'Revoked',
    consent_at:at,consent_source:'/rs-barn-onboarding-alerts:explicit-save',notice_version:'sms-preferences-v1',

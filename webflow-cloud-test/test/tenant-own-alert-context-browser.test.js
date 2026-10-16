@@ -1,0 +1,32 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {createRequire} from 'node:module';
+import {recognizeTenantsFixture} from '../test-support/recognize-tenants-fixture.mjs';
+import {TABLE} from '../src/lib/rs-tenant-barn.js';
+import {TABLES} from '../src/lib/rs-tenant-submission-store.js';
+const {chromium}=createRequire('C:/Users/gombc/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/package.json')('playwright');
+const origin='https://ringstatus.com',path='/rs-barn-onboarding-alerts';
+const archived=await readFile('C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/.git/ringstatus-control/tenants-connections-20261010/rs-barn-onboarding-alerts.html','utf8');
+const html=archived.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/<link\b[^>]*>/gi,'')+'<style>[hidden]{display:none!important}</style><script type="module" src="/test/rs-inputs/native-alerts.js"></script>';
+const assets=new Map(await Promise.all([['/test/rs-inputs/native-alerts.js','../src/assets/rs-input-subscriptions/native-client.js'],['/test/rs-inputs/persistence.js','../src/assets/rs-inputs/persistence.js'],['/test/rs-recognition/native-client.js','../src/assets/rs-recognition/native-client.js']].map(async([url,file])=>[url,await readFile(new URL(file,import.meta.url),'utf8')])));
+// Existing account identifiers are local fixture context only. No live network or consent writes.
+for(const account of [{name:'owner',person:'rec09Fqo8EzuNXHa1',actor:'this_sms_test',phone:'+16318752160'},{name:'User',person:'recfl24ktSvsf6R0q',actor:'tenant_rs_c72e974694fb92e183a7dd387432eb22',phone:'+16313757752'}])for(const writer of ['direct','staged'])test(`${account.name} own alerts ${writer}: immediate save, confirmation, reload, preserved context`,{timeout:60000},async()=>{
+ const f=await recognizeTenantsFixture({tenantOwner:true,actor:account.actor,phone:account.phone});
+ const member=f.rows[TABLE.memberships][0],person=f.rows[TABLE.people][0],barn=f.rows[TABLE.barn][0];person.id=account.person;member.fields.Person=[person.id];barn.id='recsJkP55Xps5nSL8';member.fields.Tenant=[barn.id];if(account.name==='User')f.rows[TABLE.roles][0].fields.rec_name='user';
+ const metadata={barn_uid:barn.id,user_uid:person.id,Membership:[member.id]};Object.assign(f.target.fields,metadata,{consent_source:'/rs-barn-onboarding-alerts:explicit-save',notice_version:'sms-preferences-v1'});
+ if(writer==='direct'){const prior=JSON.parse(f.prior.fields.result_json);prior.preferences=structuredClone(f.preferences);f.prior.fields.result_json=JSON.stringify(prior);Object.assign(f.original,structuredClone(f.prior));}
+ const identity=await(await f.dispatch(new Request(origin+'/test/rs-inputs/native-recognition?operation=action',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({action:'credential',kind:'phone',value:account.phone,request_id:crypto.randomUUID()})}))).json();assert.equal(identity.verified,true);
+ const browser=await chromium.launch({headless:true,channel:'msedge'}),context=await browser.newContext(),page=await context.newPage();let release;const held=new Promise(r=>release=r);let first=true;const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await context.addCookies([{name:'__Host-rs_recognition_device',value:identity.device_token,url:origin,secure:true,httpOnly:true,sameSite:'Lax'}]);
+ await context.route('**/*',async route=>{const r=route.request(),u=new URL(r.url());if(u.origin!==origin)return route.abort();if(u.pathname===path)return route.fulfill({contentType:'text/html',body:html});if(assets.has(u.pathname))return route.fulfill({contentType:'text/javascript',body:assets.get(u.pathname)});if(!u.pathname.startsWith('/test/rs-inputs/'))return route.abort();if(u.pathname.endsWith('/subscriptions')&&r.method()==='POST'&&first){first=false;await held;}const response=await f.dispatch(new Request(r.url(),{method:r.method(),headers:await r.allHeaders(),...(r.postData()?{body:r.postData()}:{})}));const result=await response.clone().json();if(result.state==='Pending'){const row=f.rows[TABLES.sub].find(x=>x.fields['Processing status']==='Pending');if(row)await f.processPreferences(row);}return route.fulfill({status:response.status,headers:Object.fromEntries(response.headers),body:await response.text()});});
+ try{await page.goto(origin+path);await page.waitForFunction(()=>document.querySelector('[data-rs-field="phone"]')&&!document.querySelector('[data-rs-field="phone"]').disabled);
+ await page.locator('[data-rs-sms]').check();await page.locator('[data-rs-alert="class_started"]').check();await page.locator('[data-rs-form="alerts"] [type="submit"]').click();await page.waitForFunction(()=>document.querySelector('[data-rs-status]').textContent.includes('Saving'));
+ assert.equal(await page.locator('[data-rs-sms]').isChecked(),true);assert.equal(await page.locator('[data-rs-field="phone"]').isEnabled(),true);assert.equal(await page.locator('[data-rs-alert="class_started"]').isEnabled(),true);release();await page.waitForFunction(()=>document.querySelector('[data-rs-status]').textContent==='Saved');
+ await page.reload();await page.waitForFunction(()=>!document.querySelector('[data-rs-field="phone"]').disabled);assert.equal(await page.locator('[data-rs-sms]').isChecked(),true);assert.equal(await page.locator('[data-rs-alert="class_started"]').isChecked(),true);assert.equal(await page.locator('[data-rs-field="phone"]').inputValue(),account.phone);
+ for(const[k,v]of Object.entries(metadata))assert.deepEqual(f.target.fields[k],v);assert.deepEqual(f.prior,f.original);assert.deepEqual(errors,[]);
+ const request=body=>f.dispatch(new Request(origin+'/test/rs-inputs/subscriptions',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json',Cookie:`__Host-rs_recognition_device=${identity.device_token}`},body:JSON.stringify(body)}));
+ const own={action:'preferences',requestId:crypto.randomUUID(),expectedRevision:f.target.fields.revision,preferences:JSON.parse(f.target.fields.preferences_json)};
+ assert.equal((await request({...own,barn_uid:'other'})).status,400);const priorWrites=f.writes.length;f.target.fields.owner_uid='other_person';assert.notEqual((await request({...own,requestId:crypto.randomUUID()})).status,200);assert.equal(f.writes.length,priorWrites);
+ }finally{release();await browser.close();f.db.close();}
+});

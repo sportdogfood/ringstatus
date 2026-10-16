@@ -20,7 +20,7 @@ export function createTenantSubmissionBridge({env,definitions,store=createTenant
  const rowFor=actor=>db.prepare('SELECT * FROM subscription_write_reservations WHERE actor_uid=?').bind(actor).first();
  const authorize=actor=>{if(!uid(actor?.id)||actor.profile?.personUid!==actor.id||!actor.permissions?.includes('inputs:read')||!actor.permissions?.includes('inputs:write'))fail('permission_denied',403)};
  async function targetFor(actor){const id='rs_'+(await digest('sms-preferences|'+actor)).slice(0,32),row=await store.target(id),f=row?.fields;
-  if(!row||!/^rec[A-Za-z0-9]+$/.test(row.id)||f.entity_uid!==id||f.owner_uid!==actor||f.target_uid!==actor||f.target_type!=='Person'||f.record_mode!=='Test'||!['Draft','Revoked','Paused'].includes(f.status)||['barn_uid','user_uid','engine_scope','alert_types'].some(k=>f[k])||['Membership','Managed by','Selected favorites'].some(k=>f[k]?.length)||!Number.isSafeInteger(f.revision)||f.revision<1)fail('preference_scope_mismatch');return row;
+  if(!row||!/^rec[A-Za-z0-9]+$/.test(row.id)||f.entity_uid!==id||f.owner_uid!==actor||f.target_uid!==actor||f.target_type!=='Person'||f.record_mode!=='Test'||!['Draft','Revoked','Paused'].includes(f.status)||['engine_scope','alert_types'].some(k=>f[k])||['Managed by','Selected favorites'].some(k=>f[k]?.length)||!Number.isSafeInteger(f.revision)||f.revision<1)fail('preference_scope_mismatch');return row;
  }
  async function verify(capability){
   if(!capability||Object.keys(capability).some(k=>!['eventId','version','token','signature'].includes(k))||!/^[a-f0-9]{64}$/.test(capability.eventId||'')||capability.version!==1||!/^[a-f0-9-]{36}$/.test(capability.token||'')||!/^[a-f0-9]{64}$/.test(capability.signature||''))fail('invalid_admission',403);

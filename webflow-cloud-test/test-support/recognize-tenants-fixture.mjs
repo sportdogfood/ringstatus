@@ -16,19 +16,19 @@ import {processTenantBarn} from '../src/pages/rs-inputs/tenant-barn-process.js';
 
 // Local stand-ins only for Airtable storage, Cloudflare D1 and SMS delivery.
 // Application handlers, validation, cookie issuance and processor are real source.
-export async function recognizeTenantsFixture({tenantOwner=false}={}){
- const db=subscriptionControlDatabase(),actor='person_fixture',origin='https://ringstatus.com';
+export async function recognizeTenantsFixture({tenantOwner=false,actor="person_fixture",phone="+16318752160"}={}){
+ const db=subscriptionControlDatabase(),origin='https://ringstatus.com';
  const env={AIRTABLE_TOKEN:'synthetic',RS_INPUTS_BASE_ID:'app9kOZdIaGyKk5uG',RS_INPUTS_RECOGNITION_BASE_ID:'app9kOZdIaGyKk5uG',RS_INPUTS_WRITE_MODE:'isolated-trial',RS_INPUTS_SESSION_SECRET:'ab'.repeat(32),RS_RECOGNITION_CONTROL_DB:db,RS_RECOGNITION_SMS_QUEUE_MODE:'ready-gated',RS_RECOGNITION_SMS_RECORD_MODE:'test',RS_RECOGNITION_SMS_TEST_RECIPIENT:'+16318752160'};
  const recognition=['tbly1PM5iFYqVzKSm','tblfkRSJAEMzuzApR','tblgDWKi0Bb6OcoqS','tblWjbASVMIjFLyW8','tblBgvP7pYSv8o20j','tblxC4SYtzYhJNcJS','tblF1Hdqi3yoKTZPV','tblRvTwo3HYPUkZou','tblYgoeLEey05xgw9','tblnd2ToLs7dTzLAM','tblpyyaOMgjLzLvkP','tblEuwOr1rUKnj1j3','tblwts3huk3w1ACjh'];
  const tenantTables=[...new Set([...Object.values(TABLES),...Object.values(TABLE)])];
  const rows=Object.fromEntries([...recognition,...tenantTables].map(id=>[id,[]])),writes=[];
  let seq=0,code=null;
  const insert=(table,fields)=>{const row={id:'rec'+String(++seq).padStart(14,'0'),fields:structuredClone(fields)};rows[table].push(row);return row};
- const person=insert(recognition[0],{person_uid:actor,person_name:'Fixture Owner',first_name:'Fixture',primary_phone_e164:'+16318752160',input_access:'approved',status:'Test',input_session_version:'cd'.repeat(16)});
+ const person=insert(recognition[0],{person_uid:actor,person_name:'Fixture Owner',first_name:'Fixture',primary_phone_e164:phone,input_access:'approved',status:'Test',input_session_version:'cd'.repeat(16)});
  const barnId='rs_'+'a'.repeat(32);
  insert('tblRvTwo3HYPUkZou',{entity_uid:barnId,barn_uid:barnId,name:'Fixture Barn',owner_uid:actor,revision:1});
- if(tenantOwner){const role=insert(TABLE.roles,{rec_name:'owner'}),p=insert(TABLE.people,{entity_uid:'canonical-owner',recognition_person_uid:actor,name:'Fixture Owner',phone_e164:'+16318752160',status:'Active'}),t=insert(TABLE.barn,{tenant_official_name:'Fixture Barn',tenant_active:true});insert(TABLE.memberships,{Person:[p.id],Tenant:[t.id],Roles:[role.id],Status:'Enabled'});}
- const preferences={version:1,enabled:false,phone:'+16318752160',timeZone:'America/New_York',variables:Object.fromEntries(definitions.map(d=>[d.key,{enabled:false,value:''}]))};
+ if(tenantOwner){const role=insert(TABLE.roles,{rec_name:'owner'}),p=insert(TABLE.people,{entity_uid:'canonical-owner',recognition_person_uid:actor,name:'Fixture Owner',phone_e164:phone,status:'Active'}),t=insert(TABLE.barn,{tenant_official_name:'Fixture Barn',tenant_active:true});insert(TABLE.memberships,{Person:[p.id],Tenant:[t.id],Roles:[role.id],Status:'Enabled'});}
+ const preferences={version:1,enabled:false,phone,timeZone:'America/New_York',variables:Object.fromEntries(definitions.map(d=>[d.key,{enabled:false,value:''}]))};
  const entity='rs_'+(await digest('sms-preferences|'+actor)).slice(0,32);
  const target=insert(TABLES.target,{entity_uid:entity,owner_uid:actor,target_uid:actor,target_type:'Person',record_mode:'Test',status:'Revoked',consent_state:'Revoked',consent_at:'2026-10-09T16:44:16.668Z',revoked_at:'2026-10-09T16:44:16.668Z',revision:2,request_uid:'a'.repeat(64),request_hash:'b'.repeat(64),preferences_json:JSON.stringify(preferences)});
  const prior=insert(TABLES.event,{event_uid:target.fields.request_uid,input_hash:target.fields.request_hash,actor_uid:actor,entity_uid:entity,kind:'subscriptions',outcome:'committed',record_mode:'Test',occurred_at:'2026-10-09T16:44:17.277Z',action:'consent_revoked',result_json:JSON.stringify({id:entity,ownerUid:actor,targetUid:actor,targetType:'Person',revision:2})});
