@@ -896,7 +896,7 @@ function prepareNativeBarn({ document: document2, api, chooser }) {
   signOut.textContent = "Not you? Sign out";
   signOut.href = "/rs-recognize?sign_out=1";
   signOut.style.width = "fit-content";
-  root.prepend(signOut);
+  one2(root, ".rs-barn-v24-main").prepend(signOut);
   const barnLogo = document2.createElement("img");
   barnLogo.alt = "Barn logo";
   barnLogo.width = 48;
