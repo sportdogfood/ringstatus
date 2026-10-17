@@ -68,6 +68,7 @@ function audit(env,ctx,body){
  // Existing durable claim table is the outbox; Airtable export is separate.
  const work=claimOnce(env,'iam-audit',[body.event_uid]).then(c=>c.won?completeClaim(env,c,{...body,exported:false}):c.result).catch(()=>console.error('[rs-recognition] IAM audit unavailable'));
  if(ctx?.waitUntil)ctx.waitUntil(work);
+ return body.event_uid;
 }
 export async function handleIamRecognition(request,env,ctx=null){
  try{
@@ -75,15 +76,16 @@ export async function handleIamRecognition(request,env,ctx=null){
   if(request.method!=='POST'||request.headers.get('Origin')!==url.origin)fail('origin_denied',403);
   const body=await request.json().catch(()=>null);if(!body||Array.isArray(body))fail('invalid_request');
   if(operation==='recognize'){
-   const p=await remembered(request,env);audit(env,ctx,{event_uid:crypto.randomUUID(),event_type:'recognition',person_uid:p?.person_uid||'',session_uid:body.session_uid||'',at:new Date().toISOString()});
-   return respond({ok:true,recognized:!!p,...(p?{person_uid:p.person_uid,person_name:p.person_name,first_name:p.first_name}:{})});
+   const p=await remembered(request,env);const history_event_uid=audit(env,ctx,{event_uid:crypto.randomUUID(),event_type:'recognition',person_uid:p?.person_uid||'',person_record_id:p?.person_record_id||'',device_token:tokenFrom(request)||body.device_token||'',session_uid:body.session_uid||'',page_path:body.page_path||'',at:new Date().toISOString()});
+   return respond({ok:true,history_event_uid,recognized:!!p,...(p?{person_uid:p.person_uid,person_name:p.person_name,first_name:p.first_name}:{})});
   }
   if(operation!=='action')fail('unsupported_operation');
   if(body.action==='retire_device'){
    const token=tokenFrom(request);
+   const p=await remembered(request,env);
    if(token)await db.prepare('UPDATE recognize_iam_devices SET retired=1 WHERE token_hash=?').bind(await accessHash(token)).run();
-   audit(env,ctx,{event_uid:body.session_event_uid||crypto.randomUUID(),event_type:'device_retired',at:new Date().toISOString()});
-   const response=respond({ok:true,retired:true,recognized:false});response.headers.append('Set-Cookie',cookie('',0));response.headers.append('Set-Cookie','__Secure-rs_input_access=; Path=/test/rs-inputs; Max-Age=0; HttpOnly; Secure; SameSite=Strict');return response;
+   const history_event_uid=audit(env,ctx,{event_uid:body.session_event_uid||crypto.randomUUID(),event_type:'device_retired',person_uid:p?.person_uid||'',person_record_id:p?.person_record_id||'',device_token:token,session_uid:body.session_uid||'',at:new Date().toISOString()});
+   const response=respond({ok:true,history_event_uid,retired:true,recognized:false});response.headers.append('Set-Cookie',cookie('',0));response.headers.append('Set-Cookie','__Secure-rs_input_access=; Path=/test/rs-inputs; Max-Age=0; HttpOnly; Secure; SameSite=Strict');return response;
   }
   if(body.action!=='credential')fail('unsupported_operation');
   const {kind,value,request_id}=body;
@@ -102,9 +104,9 @@ export async function handleIamRecognition(request,env,ctx=null){
   const p=JSON.parse(rows[0].profile_json);
   if(kind==='invite'){const invitation=await claimOnce(env,'iam-invitation',[p.person_uid,key,rows[0].expires_at]);if(!invitation.won)return respond(await completeClaim(env,claim,{ok:true,verified:false,reason:'invalid_invitation'}));}
   const token=crypto.randomUUID();await db.prepare('INSERT INTO recognize_iam_devices(token_hash,person_uid,expires_at,retired) VALUES (?,?,?,0)').bind(await accessHash(token),p.person_uid,Date.now()+TTL*1000).run();
-  const result=await completeClaim(env,claim,{ok:true,verified:true,device_token:token});
+  const result=await completeClaim(env,claim,{ok:true,verified:true,device_token:token,history_event_uid:request_id});
   await db.prepare(`UPDATE recognize_claims SET result_json=json_set(result_json,'$.count',MAX(0,json_extract(result_json,'$.count')-1)) WHERE claim_key=?`).bind(bucket).run();
-  audit(env,ctx,{event_uid:request_id,event_type:'login',person_uid:p.person_uid,at:new Date().toISOString()});
+  audit(env,ctx,{event_uid:request_id,event_type:'login',person_uid:p.person_uid,person_record_id:p.person_record_id,device_token:token,session_uid:body.session_uid||'',matched_by:kind,at:new Date().toISOString()});
   const response=respond(result);response.headers.set('Set-Cookie',cookie(token));return response;
  }catch(error){return respond({ok:false,error:error.code||'recognition_unavailable'},error.status||503);}
 }

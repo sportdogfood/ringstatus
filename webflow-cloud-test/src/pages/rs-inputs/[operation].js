@@ -4,6 +4,7 @@ import { handleInputRequest } from '../../lib/rs-inputs.js';
 import { createInputStore } from '../../lib/rs-inputs-store.js';
 import { createInputRecognition } from '../../lib/rs-inputs-recognition.js';
 import { createTenantBarnBridge } from '../../lib/rs-tenant-barn.js';
+import {queueIamRefresh} from '../../lib/rs-recognition-iam-connections.js';
 
 // Internal domain dispatch. The public ALL entry point derives its actor from a verified cookie.
 export async function handleInputRoute({ request, locals }, bindings = env, fetchImpl = fetch) {
@@ -29,7 +30,11 @@ export async function handleInputRoute({ request, locals }, bindings = env, fetc
           let payload;try{payload=JSON.parse(raw)}catch{return Response.json({ok:false,error:'invalid_json'},{status:400})}
           if(typeof payload?.requestId==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(payload.requestId))submittedOperationId=payload.requestId;
           if(operation==='profile-link')return Response.json(await bridge.intake(payload,{profileLink:true}),{headers:{'Cache-Control':'no-store'}});
-          if(['barn','riders','users'].includes(payload?.kind))return Response.json(await bridge.intake(payload),{headers:{'Cache-Control':'no-store'}});
+          if(['barn','riders','users'].includes(payload?.kind)){
+            const result=await bridge.intake(payload);
+            if(result.ok&&['barn','users'].includes(payload.kind))try{await queueIamRefresh({env:bindings,operationId:payload.requestId,executionContext:locals?.cfContext,fetchImpl});}catch{console.error('[rs-recognition] IAM refresh enqueue unavailable after confirmed save');result.iam_refresh='pending';}
+            return Response.json(result,{headers:{'Cache-Control':'no-store'}});
+          }
         }
         }
       }
@@ -45,5 +50,5 @@ export async function handleInputRoute({ request, locals }, bindings = env, fetc
 }
 export const handleAuthenticatedInputRoute = (context, bindings = env, fetchImpl = fetch) =>
   handleAccessRoute(context.request, bindings, fetchImpl, actor =>
-    handleInputRoute({ request: context.request, locals: { rsInputActor: actor, rsInputAccessVerified: true } }, bindings, fetchImpl));
+    handleInputRoute({ request: context.request, locals: { ...context.locals, rsInputActor: actor, rsInputAccessVerified: true } }, bindings, fetchImpl));
 export const ALL = context => handleAuthenticatedInputRoute(context);

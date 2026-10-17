@@ -5,6 +5,15 @@ const confirmationKey = 'rs_native_recognition_confirmation_v1';
 const signOutKey = 'rs_recognition_pending_signout_v1';
 const confirmationGenerations = new WeakMap();
 const safeStores = new WeakMap();
+const historyKey='rs_recognition_pending_history_v1',historyFlushes=new WeakMap();
+export function flushIamHistory({endpoint,fetchImpl=fetch,persistentStorage=browserStorage('localStorage'),eventUid}){
+ const storage=safeStorage(persistentStorage);
+ let queued;try{queued=JSON.parse(storage.getItem(historyKey)||'[]');}catch{queued=[];}
+ if(eventUid&&/^[a-f0-9-]{36}$/i.test(eventUid)&&!queued.includes(eventUid)){queued.push(eventUid);storage.setItem(historyKey,JSON.stringify(queued));}
+ if(historyFlushes.has(storage))return historyFlushes.get(storage);
+ const work=(async()=>{for(let processed=0;processed<20;processed++){try{const id=JSON.parse(storage.getItem(historyKey)||'[]')[0];if(!id)break;const target=new URL(endpoint);target.searchParams.set('operation','session');const response=await fetchImpl(target,{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({history_event_uid:id})});const data=await response.json();if(!response.ok||!data.exported)break;const current=JSON.parse(storage.getItem(historyKey)||'[]').filter(x=>x!==id);storage.setItem(historyKey,JSON.stringify(current));}catch{break;}}})();
+ historyFlushes.set(storage,work);void work.finally(()=>historyFlushes.delete(storage));return work;
+}
 function safeStorage(storage) {
   if (safeStores.has(storage)) return safeStores.get(storage);
   const memory = new Map();
@@ -54,6 +63,7 @@ export async function runSilentRecognition({ endpoint, fetchImpl = fetch,
       sessionStorageImpl.setItem(sessionKey, uuid());
     }
     if (!response.ok || data.ok !== true) {onOutcome({outcome:'unavailable',error:data.error});return false;}
+    if(data.history_event_uid)void flushIamHistory({endpoint,fetchImpl,persistentStorage,eventUid:data.history_event_uid});
     if(data.recognized!==true){persistentStorage.removeItem('rs_recognition_identity_v1');onOutcome({outcome:'unknown'});return false;}
     onOutcome({outcome:'recognized',data});
     persistentStorage.setItem(expiryKey, String(now() + 365 * 86400000));
@@ -183,7 +193,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   }
   async function submitCredential(value,phone){
     if(busy||pending)return;
-    if(!credentialPending){const kind=entryMode==='phone'&&/^\d{4}$/.test(value)?'pin':entryMode==='phone'&&/^\d{7}$/.test(value)?'invite':entryMode;credentialPending={action:'credential',kind,value,phone,request_id:uuid()};}
+    if(!credentialPending){const kind=entryMode==='phone'&&/^\d{4}$/.test(value)?'pin':entryMode==='phone'&&/^\d{7}$/.test(value)?'invite':entryMode;credentialPending={action:'credential',kind,value,phone,request_id:uuid(),session_uid:currentSessionUid()};}
     busy=true;show('login','Checking…');
     try {
       const data=await json('action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(credentialPending)});
@@ -234,6 +244,7 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
       const response = await fetchImpl(target, { ...options, credentials: 'same-origin', signal: abort.signal });
       const data = await response.json();
       if (!response.ok || data.ok !== true) throw new Error(data.error || "recognition_unavailable");
+      if(data.history_event_uid)void flushIamHistory({endpoint,fetchImpl,persistentStorage,eventUid:data.history_event_uid});
       if (data.recognized === false) clearConfirmation(sessionStorageImpl);
       return data;
     } catch (error) { clearConfirmation(sessionStorageImpl); throw error; }
@@ -432,6 +443,8 @@ export function mountNativeRecognition({ root, baseUrl, present, fetchImpl = fet
   bindPerson(null);show('unavailable');
   let savedSignOut;try{savedSignOut=JSON.parse(persistentStorage.getItem(signOutKey)||'null');}catch{}
   globalThis.addEventListener?.('online',()=>{if(pending?.body.action==='retire_device')void executePending();},{signal:controller.signal});
+  globalThis.addEventListener?.('online',()=>{void flushIamHistory({endpoint,fetchImpl,persistentStorage});},{signal:controller.signal});
+  void flushIamHistory({endpoint,fetchImpl,persistentStorage});
   if(savedSignOut?.body?.action==='retire_device'){
     pending=savedSignOut;clearBrowserRecognition();opened=true;show('login','Signed out on this device.');void executePending();
   }

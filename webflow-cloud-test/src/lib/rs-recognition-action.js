@@ -272,6 +272,12 @@ async function upsertDevice(config, tokenValue, personId, fetchImpl) {
   return existing ? updateRecord(config, config.devices, existing.id, fields, fetchImpl) : createRecord(config, config.devices, fields, fetchImpl);
 }
 
+// Reuse the existing device writer for the separate IAM history export only.
+export async function syncIamHistoryDevice({env,fetchImpl=fetch,deviceToken,personRecordId,retired=false}){
+ const config=getConfig(env),device=await upsertDevice(config,deviceToken,personRecordId,fetchImpl);
+ return retired?updateRecord(config,config.devices,device.id,{status:'Retired'},fetchImpl):device;
+}
+
 async function findDevice(config, token, fetchImpl) {
   const records = await listRecords(config, config.devices, `{device_token} = '${escapeFormula(token)}'`, 2, fetchImpl);
   if (records.length > 1) throw new RecognitionActionError("ambiguous_device", 409);

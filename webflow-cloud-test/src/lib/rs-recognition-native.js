@@ -1,6 +1,7 @@
 import { recognitionConfig } from './rs-recognition-config.js';
 import {handleIamRecognition,iamEnabled} from './rs-recognition-iam.js';
 import {handleIamRefresh} from './rs-recognition-iam-refresh.js';
+import {exportIamHistory,drainIamRefresh} from './rs-recognition-iam-connections.js';
 import { handleAuthenticatedInputRoute } from '../pages/rs-inputs/[operation].js';
 import { handleAccessRoute, createAccessStore, createInputAccess, accessHash } from './rs-inputs-access.js';
 import { createInputRecognition } from './rs-inputs-recognition.js';
@@ -19,7 +20,16 @@ const safePerson = p => p ? Object.fromEntries([
 // be mounted inside /rs-inputs so the existing path-scoped cookie reaches it.
 export async function handleNativeRecognition(request, env, fetchImpl = fetch, executionContext = null) {
   if(new URL(request.url).searchParams.get('operation')==='refresh_iam')return handleIamRefresh(request,env,fetchImpl);
-  if(await iamEnabled(env))return handleIamRecognition(request,env,executionContext);
+  if(await iamEnabled(env)){
+    if(new URL(request.url).searchParams.get('operation')==='session'){
+      if(request.method!=='POST'||request.headers.get('Origin')!==new URL(request.url).origin)return respond({ok:false,error:'origin_denied'},403);
+      try{const body=await request.json();const result=await exportIamHistory({env,request,eventUid:body?.history_event_uid,fetchImpl});
+        if(executionContext?.waitUntil)executionContext.waitUntil(drainIamRefresh({env,fetchImpl}).catch(()=>{}));
+        return respond({ok:true,...result});
+      }catch{return respond({ok:false,error:'history_export_pending'},503);}
+    }
+    return handleIamRecognition(request,env,executionContext);
+  }
   try {
     const config = recognitionConfig(env);
     if (env.RS_INPUTS_BASE_ID && env.RS_INPUTS_BASE_ID !== config.baseId) return respond({ ok: false, error: 'recognition_base_mismatch' }, 503);
