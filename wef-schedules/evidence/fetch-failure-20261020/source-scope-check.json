@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "collector_core_changes_confined_to": "airtableList request/parse boundary",
+  "all_other_core_functions_unchanged": true,
+  "source_deployed_files_match": [
+    "collector-core.js",
+    "airtable-read.js",
+    "run.ps1",
+    "tests/airtable-read.test.js",
+    "tests/runner-output.test.js"
+  ]
+}

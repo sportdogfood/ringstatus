@@ -1,0 +1,70 @@
+[
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\.gitignore",
+    "Hash": "0DF22AE9F7BBA20851845E60C326EEBFA9BC8B81FB82EA9D15168BE30ED170A1"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\airtable.js",
+    "Hash": "D9C1089C75814AF29D18E5860F5C783F30D9A519B9C9131BFCED17276AEE93E5"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\archive.js",
+    "Hash": "54EF82ED30487C9D59452E41A8033E02072B332C064FE740D63B5D8AFFCB32BF"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\collector.js",
+    "Hash": "F268F5D94BC1B10D24831DC6AD7EF4880AD013241578E739AC563F69D8DED394"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\compare.js",
+    "Hash": "A97293702E4CC310B86756901C538EA5B15A49890F197FCCC0AE619D26BFE38E"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\configure-roster-fields.js",
+    "Hash": "8BA97E77AC69FA1DF28393FEAFBC3771531AA61BAAD3894168DAC7B91A6B6B8F"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\entry.js",
+    "Hash": "B8FC3526AB18EEDD5D2ABBA602713C42D289A3044951B36A9481C1EC3B8ADC6E"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\model.js",
+    "Hash": "18936090D9D01303A1C1A9E149472AECDD49B19A61A6FC1B0A38649CB5D1F63C"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\README.md",
+    "Hash": "0BCFFDEEFC6C8FAD4B1348486AF4262637C6760CC872BD2E2B684A64CCC3C481"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\run.ps1",
+    "Hash": "9BAF2A075209DC58A57F79DC4A3F226EBD7BD18AEEB92EA52A103F8A3271882A"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\schema.json",
+    "Hash": "4B46D57514FB9E570D94C0A035EB5D47F733AB22BDAF0F5833935E3B831B0DB4"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\settings.js",
+    "Hash": "C8E60A82413811FF70D90656C229F74AFCDC84E7E34A1B392A070D5B403ACAEE"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\setup.js",
+    "Hash": "CD4D3AE774E9D7ADA9070E5E549B95BF1616F78C9AD81BCF45E25CC0999E7ABF"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\sgl_fetch.ps1",
+    "Hash": "BB9578B866415844761C11593319D2B6180BC9AEA78917D0D08259FB80C307EE"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\source.js",
+    "Hash": "D9583779CF94479299BA9ECF2CF27B3753C45D30D06B603F5444752798E7ABB7"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\standing-roster.js",
+    "Hash": "F1458169666B259C3D5FC8FC5B0D1B329CC3866D58C53DEF0AA2E4C26E970E02"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\verify.js",
+    "Hash": "8E01A7E56FD17417EC83DC4D3ADA16A736917E2B18C143AE3ED188C4E2C4E1B1"
+  }
+]

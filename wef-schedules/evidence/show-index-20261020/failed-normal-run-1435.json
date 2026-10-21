@@ -1,0 +1,66 @@
+{
+  "checked_at": "2026-10-20T18:36:22.486Z",
+  "task_exit": 1,
+  "records": [
+    {
+      "id": "recZtVaGhCSygpDuK",
+      "createdTime": "2026-10-20T18:30:03.000Z",
+      "fields": {
+        "archives": "2026-10-20T18:30:06.342Z: attempts Created; shows 200000075; dates 2026-10-22; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\d4ddcb25-dcc0-4891-a1d4-430432ddc7c8-complete.json.gz; SHA256 30e11c97c7d0fd09a4090b37228b13e4d21794bb50bb121477a0f822391b4413\n2026-10-20T18:30:18.472Z: attempts Created; shows 200000075; dates 2026-10-23; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\de139115-0f4e-4579-8b72-e3028ad24586-complete.json.gz; SHA256 87238ac8a0bf47031c7a30afe87ec8ab5de43b3f2b061dc60d5dab9f5524dc68\n2026-10-20T18:30:29.939Z: attempts Created; shows 200000075; dates 2026-10-24; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\0928a559-afa7-47c6-8b0e-4396d926b725-complete.json.gz; SHA256 412138bbcf969d39bcd65e1ea68f5ac70338fcd59ab2bfb441ba7481fc5b620b\n2026-10-20T18:30:41.435Z: attempts Created; shows 200000075; dates 2026-10-25; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\e38c2fcb-af10-4ca3-a395-248032354a79-complete.json.gz; SHA256 af91a83adc12cc6a5f2f7fbb60d98dfa1c2d138b60e3e0126e91de62feb70d15",
+        "summary": "2026-10-22: 0 rows; added 0, changed 0, dropped 0; dataset reused; empty_show_day: Successful response contains no classes within the show date range\n2026-10-23: 113 rows; added 0, changed 0, dropped 0; dataset reused\n2026-10-24: 183 rows; added 0, changed 0, dropped 0; dataset reused\n2026-10-25: 139 rows; added 0, changed 0, dropped 0; dataset reused\nShow/rings verified: show 200000075; source-selected date 2026-10-22; 24 daily rings (6 selected); 6 static helpers; 435 schedule links.",
+        "days-complete": 4,
+        "rows": 435,
+        "completed": "2026-10-20T18:30:46.499Z",
+        "shows": [
+          "recpjdzMqBApZ8KPs"
+        ],
+        "show-id": 200000075,
+        "run-id": "cc63fbd3-dd95-479f-8ec5-810c98b31445",
+        "result": "Warning",
+        "archive-count": 4,
+        "started": "2026-10-20T18:30:02.866Z",
+        "days-failed": 0
+      }
+    },
+    {
+      "id": "recYU1Mdq5QD5uJUA",
+      "createdTime": "2026-10-20T18:25:02.000Z",
+      "fields": {
+        "archives": "2026-10-20T18:25:06.414Z: attempts Created; shows 200000075; dates 2026-10-22; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\63fd7f62-0213-4d7e-9b0d-ee407cae7529-complete.json.gz; SHA256 3d7238e1df6f8bf0df7cb6b7455246048384c781fe540f6057e2e8942f13f76a\n2026-10-20T18:25:18.366Z: attempts Created; shows 200000075; dates 2026-10-23; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\b2149528-f6f9-45dc-b143-ebdd643ddc2b-complete.json.gz; SHA256 95dd8fed0ddd8a092308ae4fbc73a34da98696778dc2aeb47167795fd1188be7\n2026-10-20T18:25:29.936Z: attempts Created; shows 200000075; dates 2026-10-24; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\08d8ef19-e515-45d6-b904-31c2bf20bca7-complete.json.gz; SHA256 8671448f21db3456cbd979592cbf6021cf893bbf140f3bb21b1ac58820b03b45\n2026-10-20T18:25:41.039Z: attempts Created; shows 200000075; dates 2026-10-25; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\f770be94-08d6-43bb-94a5-f99e3a3d4bb3-complete.json.gz; SHA256 8e16c93e9353ad625a40d92a82f971e032912c16498fdc253c7283715d5811c4",
+        "summary": "2026-10-22: 0 rows; added 0, changed 0, dropped 0; dataset reused; empty_show_day: Successful response contains no classes within the show date range\n2026-10-23: 113 rows; added 0, changed 0, dropped 0; dataset reused\n2026-10-24: 183 rows; added 0, changed 0, dropped 0; dataset reused\n2026-10-25: 139 rows; added 0, changed 0, dropped 0; dataset reused\nShow/rings verified: show 200000075; source-selected date 2026-10-22; 24 daily rings (6 selected); 6 static helpers; 435 schedule links.",
+        "days-complete": 4,
+        "rows": 435,
+        "completed": "2026-10-20T18:25:45.900Z",
+        "shows": [
+          "recpjdzMqBApZ8KPs"
+        ],
+        "show-id": 200000075,
+        "run-id": "b6ecccd1-b337-4b2a-8212-67ed34218506",
+        "result": "Warning",
+        "archive-count": 4,
+        "started": "2026-10-20T18:25:02.522Z",
+        "days-failed": 0
+      }
+    },
+    {
+      "id": "recA2fLrJzcE1k3w5",
+      "createdTime": "2026-10-20T18:20:05.000Z",
+      "fields": {
+        "archives": "2026-10-20T18:20:11.069Z: attempts Created; shows 200000075; dates 2026-10-22; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\6c3b011e-3681-4100-b18f-d48f8c3729d8-complete.json.gz; SHA256 9044c0c54c40786e335863d04b5bac6b6e1ab2709131a7d4bc249574334df8b0\n2026-10-20T18:20:24.452Z: attempts Created; shows 200000075; dates 2026-10-23; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\a693c8c1-a63c-433b-a2e4-41f6923a06cb-complete.json.gz; SHA256 cfed07ec96518a0b7d50c0922125ab242da2446517da03ba767fd7fb8b66a100\n2026-10-20T18:20:35.690Z: attempts Created; shows 200000075; dates 2026-10-24; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\15803f43-7fe2-443d-b6cd-8ac17e15341a-complete.json.gz; SHA256 bd7c6645efdabc3216d16a0988ed24de4c1cdedc1756e007b05eea1b47fd81a3\n2026-10-20T18:20:47.773Z: attempts Created; shows 200000075; dates 2026-10-25; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\8155b002-2ecf-413a-bee8-276f5e49e845-complete.json.gz; SHA256 49b39a92f91571a1f86d9aa42071dd613d0ef034e820c2647af9263a1b60f9d6",
+        "summary": "2026-10-22: 0 rows; added 0, changed 0, dropped 0; dataset reused; empty_show_day: Successful response contains no classes within the show date range\n2026-10-23: 113 rows; added 0, changed 0, dropped 0; dataset reused\n2026-10-24: 183 rows; added 0, changed 0, dropped 0; dataset reused\n2026-10-25: 139 rows; added 0, changed 0, dropped 0; dataset reused\nShow/rings verified: show 200000075; source-selected date 2026-10-22; 24 daily rings (6 selected); 6 static helpers; 435 schedule links.",
+        "days-complete": 4,
+        "rows": 435,
+        "completed": "2026-10-20T18:20:52.569Z",
+        "shows": [
+          "recpjdzMqBApZ8KPs"
+        ],
+        "show-id": 200000075,
+        "run-id": "dc27c74d-3621-4bda-b667-e8a69fbd2b5e",
+        "result": "Warning",
+        "archive-count": 4,
+        "started": "2026-10-20T18:20:05.046Z",
+        "days-failed": 0
+      }
+    }
+  ]
+}

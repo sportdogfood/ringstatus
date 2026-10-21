@@ -1,0 +1,14 @@
+[
+  {
+    "id": "recMaNo3AhWEUNJDK",
+    "createdTime": "2026-10-20T16:49:38.000Z",
+    "fields": {
+      "last-review": "2026-10-20T17:33:46.767Z",
+      "routine": "Weekly tenant collector review",
+      "cadence": "Monday 09:00 America/New_York",
+      "last-result": "PASS: standing helpers populated independently of current-show entries. 32 offline tests passed; normal13:27/13:32 Eastern runs verified71horses/33riders, stable IDs and no duplicates,8lookup checks per run,12verified archive events. 13missing source horse IDs flagged;9source-inactive retained. No manual runs or source repairs.",
+      "next-review": "2026-10-26T09:00:00-04:00",
+      "notes": "See docs/coordination/wef-standing-roster-release-20261020.md and wef-tenants/evidence/standing-roster-20261020. Helpers seeded from existing retained source fields; owner names/nicknames/aliases/notes/disabled including intentional blank edits preserved. Horse show-name is registered display name, not competition attendance. Tanner9590 is explicitly linked to CWF despite pid19676; no additional trainer enabled. Legacy roster GET-only, unchanged task cadence and schedules code."
+    }
+  }
+]

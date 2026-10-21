@@ -1,0 +1,32 @@
+{
+  "checked_at": "2026-10-20T19:17:42.512262+00:00",
+  "status": "PASS",
+  "scope": "Airtable GET response/body recovery and accurate wrapper error logging; existing retry limits and mutation paths preserved",
+  "tests_passed": 124,
+  "source_tests_passed": 127,
+  "normal_runs": [
+    {
+      "run_id": "66a332a1-f19f-4dd7-ae07-d2519aca9f1d",
+      "completed": "2026-10-20T19:10:47.154Z",
+      "result": "Warning",
+      "task_exit": 0
+    },
+    {
+      "run_id": "8ed835ef-f19e-4df7-a8ca-f2a37966ebfb",
+      "completed": "2026-10-20T19:15:46.783Z",
+      "result": "Warning",
+      "task_exit": 0
+    }
+  ],
+  "rows_verified_per_run": 435,
+  "current_archive_events_verified": 8,
+  "historical_archive_files_verified_per_run": 2,
+  "record_ids_and_static_helpers_preserved": true,
+  "prior_logs_unchanged": true,
+  "manual_runs": 0,
+  "record_repairs": 0,
+  "task_definitions_changed": false,
+  "network_cause": "Original network interruption underlying cause not captured/unconfirmed; no network configuration or credential changes. Sustained outages still fail explicitly.",
+  "source_value_comparison": "Source-owned schedule values checked against respective run archives; obsolete frozen14:22 snapshot comparison stopped without code patches.",
+  "evidence": "evidence/fetch-failure-20261020"
+}

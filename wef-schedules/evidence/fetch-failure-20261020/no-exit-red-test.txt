@@ -1,0 +1,60 @@
+TAP version 13
+# Subtest: PowerShell wrapper retains stderr and exact exit 7 fixture fetch failed: ECONNRESET
+ok 1 - PowerShell wrapper retains stderr and exact exit 7 fixture fetch failed: ECONNRESET
+  ---
+  duration_ms: 647.1769
+  type: 'test'
+  ...
+# Subtest: PowerShell wrapper retains stderr and exact exit 0 fixture warning
+ok 2 - PowerShell wrapper retains stderr and exact exit 0 fixture warning
+  ---
+  duration_ms: 703.0749
+  type: 'test'
+  ...
+# Subtest: PowerShell wrapper retains stderr and exact exit 0 
+ok 3 - PowerShell wrapper retains stderr and exact exit 0 
+  ---
+  duration_ms: 562.1771
+  type: 'test'
+  ...
+# Subtest: wrapper fails explicitly when native launch produces no exit code
+ok 4 - wrapper fails explicitly when native launch produces no exit code
+  ---
+  duration_ms: 792.9873
+  type: 'test'
+  ...
+# Subtest: wrapper keeps failure default when command returns without a native exit code
+not ok 5 - wrapper keeps failure default when command returns without a native exit code
+  ---
+  duration_ms: 612.5141
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\tests\\runner-output.test.js:12:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-schedules\tests\runner-output.test.js:12:742)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 4
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3422.8468

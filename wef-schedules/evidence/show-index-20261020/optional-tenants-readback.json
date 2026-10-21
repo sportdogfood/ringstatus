@@ -1,0 +1,9 @@
+{
+  "checked_at": "2026-10-20T18:33:50.141262+00:00",
+  "operation": "Additional read-only GET of shared tenants for whole-record comparison",
+  "result": "BLOCKED",
+  "error": "fetch failed",
+  "business_mutations": 0,
+  "manual_collector_runs": 0,
+  "response": "No repeated request, alternate business endpoint or repair. Normal tenant14:27/14:32 receipts and repeatcomparison PASS; remaining scheduled14:35 acceptance continues independently."
+}

@@ -7,7 +7,7 @@ const row=(key='a',name='Class A')=>({key,fields:{show_id:74,show_date:'2026-10-
 function setup(t){const root=fs.mkdtempSync(path.join(os.tmpdir(),'current-staging-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));let next=0;const db={collections:[],schedules:[]},deleted=[];
  const api={async airtableList(table){return structuredClone(db[table]);},async airtableCreateRecords(table,records){for(const r of records)db[table].push({id:'rec'+(++next),fields:structuredClone(r.fields)});return {failedRows:[]};},async airtablePatchRecords(table,records){for(const r of records){const old=db[table].find(x=>x.id===r.id);if(!old)throw Error('Missing fixture');Object.assign(old.fields,structuredClone(r.fields));}return {failedRows:[]};}};
  const removeRecords=async(table,ids)=>{assert.ok(fs.readdirSync(root).length);deleted.push(...ids);db[table]=db[table].filter(r=>!ids.includes(r.id));};
- const make=()=>currentStore({api,historyRoot:root,removeRecords});return {root,db,api,deleted,make};}
+ const make=(options={})=>currentStore({api,collections:'collections',historyRoot:root,removeRecords,...options});return {root,db,api,deleted,make};}
 function complete(rows,id='dataset1',show=74,date='2026-10-15'){return {'collection-id':id,'show-id':show,date,status:'complete',started:NOW,completed:NOW,'dataset-id':id,'row-count':rows.length,fingerprint:fingerprint(rows),message:'ok','context-json':'{}'};}
 async function save(store,rows,id='dataset1'){const f=complete(rows,id);const r=await store.begin(f);await store.writeRows(id,74,'2026-10-15',rows);await store.finish(r,f);return f;}
 test('migration archives exact old records, removes duplicate snapshots and leaves one current key',async t=>{
@@ -41,4 +41,50 @@ test('current store integrates two collector repeats without growing either tabl
 });
 test('projection exposes source values without invented times or transport duplicates',()=>{
  const f=columns(row(),74,'2026-10-15','d',NOW);assert.equal(f['start-time'],null);assert.equal(f['class-number'],101);assert.equal(f.status,'active');assert.equal(f.sgl_token_raw,undefined);
+});
+
+
+test('every archive emits verified scope count and path; retirement reports cleanup after archive',async t=>{
+ const x=setup(t),events=[],s=x.make({onArchive:async e=>{events.push(structuredClone(e));if(e.outcome==='Created')assert.ok(fs.existsSync(e.file));}});
+ await save(s,[row()]);await s.writeRows('dataset1',74,'2026-10-15',[row()]);await s.finalize(75);
+ for(const kind of ['initial-airtable','datasets','attempts','retired'])assert.ok(events.some(e=>e.kind===kind&&e.outcome==='Created'),kind);
+ const dataset=events.find(e=>e.kind==='datasets');assert.deepEqual(dataset.shows,[74]);assert.deepEqual(dataset.dates,['2026-10-15']);assert.equal(dataset.records,1);assert.match(dataset.sha256,/^[a-f0-9]{64}$/);
+ assert.ok(events.some(e=>e.kind==='datasets'&&e.outcome==='Reused'));
+ assert.equal(events.filter(e=>e.cleanup==='Complete').length,2);assert.equal(x.db.schedules.length,0);
+});
+test('failed archive is logged and never permits retirement deletion',async t=>{
+ const x=setup(t);await save(x.make(),[row()]);const events=[];
+ fs.writeFileSync(path.join(x.root,'retired'),'block archive directory');
+ await assert.rejects(x.make({onArchive:async e=>events.push(e)}).finalize(75));
+ assert.equal(x.db.schedules.length,1);assert.ok(events.some(e=>e.outcome==='Failed'&&e.error));
+});
+
+
+test('identical stage-key duplicates archive before cleanup and preserve survivor and other scopes on repeat',async t=>{
+ const x=setup(t);await save(x.make(),[row()]);const original=x.db.schedules[0].id;
+ const duplicate=structuredClone(x.db.schedules[0]);duplicate.id='duplicate';duplicate.fields['owner-note']='archive me exactly';x.db.schedules.push(duplicate);
+ const other={id:'other-show',fields:columns({...row(),fields:{...row().fields,show_id:75}},75,'2026-10-15','foreign',NOW)};x.db.schedules.push(other);
+ const events=[];const removeRecords=async(table,ids)=>{assert.equal(table,'schedules');assert.deepEqual(ids,['duplicate']);const event=events.find(e=>e.kind==='removed');assert.ok(event);assert.deepEqual(JSON.parse(zlib.gunzipSync(fs.readFileSync(event.file))),[duplicate]);x.db.schedules=x.db.schedules.filter(r=>!ids.includes(r.id));};
+ await save(x.make({onArchive:async e=>events.push(e),removeRecords}),[row()],'dataset2');assert.deepEqual(x.db.schedules.map(r=>r.id),[original,'other-show']);assert.deepEqual(x.db.schedules[1],other);
+ await save(x.make(),[row()],'dataset3');assert.deepEqual(x.db.schedules.map(r=>r.id),[original,'other-show']);
+});
+test('duplicate POST results converge within normal collection and remain stable on repeat',async t=>{
+ const x=setup(t),create=x.api.airtableCreateRecords;let creates=0;
+ x.api.airtableCreateRecords=async(table,records)=>{const result=await create(table,records);if(table==='schedules'){creates++;for(const saved of [...x.db.schedules])x.db.schedules.push({...structuredClone(saved),id:saved.id+'-retry'});}return result;};
+ await save(x.make(),[row()]);assert.equal(x.db.schedules.length,1);assert.equal(creates,1);const id=x.db.schedules[0].id;
+ await save(x.make(),[row()],'dataset2');assert.equal(x.db.schedules.length,1);assert.equal(x.db.schedules[0].id,id);assert.equal(creates,1);
+});
+test('unverified survivor blocks duplicate deletion and checkpoint promotion',async t=>{
+ const x=setup(t);await save(x.make(),[row()]);x.db.schedules.push({...structuredClone(x.db.schedules[0]),id:'duplicate'});x.api.airtablePatchRecords=async()=>({failedRows:[]});
+ await assert.rejects(save(x.make(),[row('a','Changed')],'dataset2'),/readback mismatch/);assert.equal(x.db.schedules.length,2);assert.equal(x.deleted.length,0);assert.equal((await x.make().latest(74,'2026-10-15')).fields['dataset-id'],'dataset1');
+});
+test('duplicate archive failure prevents deletion and retains complete checkpoint',async t=>{
+ const x=setup(t);await save(x.make(),[row()]);x.db.schedules.push({...structuredClone(x.db.schedules[0]),id:'duplicate'});fs.writeFileSync(path.join(x.root,'removed'),'block archive directory');
+ await assert.rejects(save(x.make(),[row()],'dataset2'));assert.equal(x.db.schedules.length,2);assert.equal(x.deleted.length,0);assert.equal((await x.make().latest(74,'2026-10-15')).fields['dataset-id'],'dataset1');
+});
+test('failed duplicate cleanup blocks completion and later normal invocation converges',async t=>{
+ const x=setup(t);await save(x.make(),[row()]);const id=x.db.schedules[0].id;x.db.schedules.push({...structuredClone(x.db.schedules[0]),id:'duplicate'});
+ await assert.rejects(save(x.make({removeRecords:async()=>{throw Error('cleanup unavailable');}}),[row()],'dataset2'),/cleanup unavailable/);
+ assert.equal((await x.make().latest(74,'2026-10-15')).fields['dataset-id'],'dataset1');assert.equal(x.db.schedules.length,2);
+ await save(x.make(),[row()],'dataset3');assert.equal(x.db.schedules.length,1);assert.equal(x.db.schedules[0].id,id);assert.equal((await x.make().latest(74,'2026-10-15')).fields['dataset-id'],'dataset3');
 });

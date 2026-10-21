@@ -1,0 +1,22 @@
+{
+  "reviewer": "standing_roster_review",
+  "result": "PASS",
+  "offline_tests": 42,
+  "first_normal_run": "6faf88ae-43b9-41d5-a6ed-fcc22f26f3b9",
+  "checked": [
+    "71 horses and 33 riders unique by policy column",
+    "13 unknown horse IDs and 33 blank rider nicknames retained",
+    "6 archive hashes verified",
+    "rider field ID retained during rename",
+    "retired field excluded from valid search formula",
+    "baseline static values and stable record IDs unchanged",
+    "business runtime files match deployed hashes"
+  ],
+  "verification_only_correction": "Airtable metadata formulas return field IDs; passive checker now verifies referencedFieldIds. Collector unchanged.",
+  "final_result": "PASS",
+  "second_normal_run": "4e6dd875-6433-49f1-b4c9-6c57b34cd9d6",
+  "verified_archive_events": 12,
+  "stable_tables": 12,
+  "new_run_logs": 1,
+  "material_findings": []
+}

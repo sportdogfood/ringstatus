@@ -1,0 +1,1174 @@
+{
+  "checked_at": "2026-10-20T17:02:59.212Z",
+  "ok": true,
+  "receipt": {
+    "ok": true,
+    "run_id": "4d11f084-4719-4d6f-9b15-bf7a3dcfff10",
+    "started": "2026-10-20T17:02:02.218Z",
+    "rows": 0,
+    "days": [
+      {
+        "date": "2026-10-22",
+        "ok": true,
+        "row_count": 0
+      },
+      {
+        "date": "2026-10-23",
+        "ok": true,
+        "row_count": 0
+      },
+      {
+        "date": "2026-10-24",
+        "ok": true,
+        "row_count": 0
+      },
+      {
+        "date": "2026-10-25",
+        "ok": true,
+        "row_count": 0
+      }
+    ],
+    "trainers": [
+      {
+        "trainer_id": 8778,
+        "role": "main",
+        "result": "No entries",
+        "rows": 0
+      }
+    ],
+    "errors": [],
+    "archives": [
+      {
+        "at": "2026-10-20T17:02:15.129Z",
+        "kind": "people-8778",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\people-8778\\45aaecb42ef2312dcc0c91ade4550b5a9bbfa9b22dab00e5401f1bfd8cb68239.json.gz",
+        "records": 1,
+        "sha256": "45aaecb42ef2312dcc0c91ade4550b5a9bbfa9b22dab00e5401f1bfd8cb68239",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-22",
+          "2026-10-23",
+          "2026-10-24",
+          "2026-10-25"
+        ]
+      },
+      {
+        "at": "2026-10-20T17:02:16.456Z",
+        "kind": "dataset-8778",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+        "records": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-22"
+        ]
+      },
+      {
+        "at": "2026-10-20T17:02:17.650Z",
+        "kind": "dataset-8778",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+        "records": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-20T17:02:18.873Z",
+        "kind": "dataset-8778",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+        "records": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-24"
+        ]
+      },
+      {
+        "at": "2026-10-20T17:02:20.113Z",
+        "kind": "dataset-8778",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+        "records": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-25"
+        ]
+      }
+    ],
+    "show_id": 200000075,
+    "selected_date": "2026-10-22",
+    "completed": "2026-10-20T17:02:33.787Z"
+  },
+  "counts": {
+    "tenant-details": 1,
+    "trainers": 1,
+    "heartbeat": 1,
+    "show-details": 1,
+    "collections": 4,
+    "rings": 24,
+    "rings-helper": 6,
+    "ring-walks": 6,
+    "horses": 0,
+    "riders": 0,
+    "entries": 0,
+    "run-logs": 2,
+    "code-reviews": 1
+  },
+  "records": {
+    "tenant-details": [
+      {
+        "id": "recDJobUnMPrT5YWu",
+        "createdTime": "2026-10-20T16:49:38.000Z",
+        "fields": {
+          "tenant-id": 8778,
+          "barn-lon": -80.277224,
+          "active": true,
+          "tenant-name": "Castlewood Farm",
+          "barn-name": "home",
+          "barn-lat": 26.633278,
+          "barn-map": "https://www.google.com/maps/place/26.633277999999997,-80.27722399999999/@26.6313646,-80.2790453,16z/data=!4m8!1m3!11m2!2s86AtMipL4VWvBlzTphGNDA!3e3!3m3!8m2!3d26.633278!4d-80.277224?entry=ttu&g_ep=EgoyMDI2MTAxNC4wIKXMDSoASAFQAw%3D%3D",
+          "notes": "Owner-confirmed tenant. Linked ring walking minutes are fabricated examples until confirmed times are supplied.\n\n2026-10-20 — Owner decision: keep all six fabricated CWF walking times for now (rings 1–6: 8, 10, 6, 12, 14, 16 minutes). Keep ring-walk-is-example checked. These are demonstration values, not measured walking times. Replacement with confirmed times and mapped paths is deferred until further instruction. Next work is determining tenant fields and links.\n\n2026-10-20 — Owner selected the RingMap pin 'home' as CWF's default show-barn walking starting point. Opened that specific pin and copied latitude 26.633278, longitude -80.277224. Source: https://www.google.com/maps/place/26.633277999999997,-80.27722399999999/@26.6313646,-80.2790453,16z/data=!4m8!1m3!11m2!2s86AtMipL4VWvBlzTphGNDA!3e3!3m3!8m2!3d26.633278!4d-80.277224?entry=ttu&g_ep=EgoyMDI2MTAxNC4wIKXMDSoASAFQAw%3D%3D. This is the default location; a show-specific override can be added later. The six example CWF walking times and example flags remain unchanged; no route calculation is implied.",
+          "tenant-key": "CWF"
+        }
+      }
+    ],
+    "trainers": [
+      {
+        "id": "rec9Hmq2WuHuZc9mY",
+        "createdTime": "2026-10-20T16:49:38.000Z",
+        "fields": {
+          "trainer-id": 8778,
+          "last-checked": "2026-10-20T17:02:26.151Z",
+          "collections": [
+            "reckWdzLJAJI10Nyt",
+            "recvXKpYW5qC6V1zv",
+            "recjuCxV2TszGgh6n",
+            "reca3Z6R8j7ekQ5gc"
+          ],
+          "role": "main",
+          "trainer-key": "8778",
+          "last-result": "No entries",
+          "trainer-name": "ALAN KOROTKIN",
+          "active": true,
+          "slot": 1
+        }
+      }
+    ],
+    "heartbeat": [
+      {
+        "id": "recJWmC8t39z0Ih7O",
+        "createdTime": "2026-10-20T16:57:37.000Z",
+        "fields": {
+          "heartbeat-key": "CWF",
+          "checked-at": "2026-10-20T17:02:29.995Z",
+          "summary": "Trainer 8778 (main): No entries; 0 day entries\nShow 200000075; source-selected 2026-10-22; 4 days; 0 active entries; 24 daily rings; 6 shared helpers.",
+          "selected-date": "2026-10-22",
+          "show-id": 200000075,
+          "result": "Success"
+        }
+      }
+    ],
+    "show-details": [
+      {
+        "id": "recp0mgdpd9JBw8ny",
+        "createdTime": "2026-10-20T16:57:09.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "is_default": true,
+          "show-key": "15|200000075",
+          "facility_id": 516,
+          "selected_date": "2026-10-22",
+          "end_date": "2026-10-25",
+          "collections": [
+            "reckWdzLJAJI10Nyt",
+            "recvXKpYW5qC6V1zv",
+            "recjuCxV2TszGgh6n",
+            "reca3Z6R8j7ekQ5gc"
+          ],
+          "source-record": "recpjdzMqBApZ8KPs",
+          "customer_id": 15,
+          "show_name": "2026 ESP Fall III (#261901)",
+          "last_checked": "2026-10-20T17:00:59.381Z",
+          "rings": [
+            "recBhGtmVCW5v2X8G",
+            "recqGCtsPt6cdYgR3",
+            "recUC3pBuHpIXaAwm",
+            "recKorktVbv36UsBF",
+            "recWoHPEK8sgpRRV9",
+            "recJNegCyheuCk5y9",
+            "reczc0rPW6k7Y7i5r",
+            "recJQ1W8rgaHZx9cC",
+            "recWJ1u1g7h935QoX",
+            "rec9IfhpziMh5FmbZ",
+            "rectp1DaxOP2jVasT",
+            "recFvP7VfbWgbTdCf",
+            "recoCzeGvRZC1gUbq",
+            "reccJVGbzqGQZA8z0",
+            "reccE4pkFKmRdvYBp",
+            "rechlSRbnmcTBkW6V",
+            "rec8kRk95YZWRDzzA",
+            "recRAtvegxm1y9oC6",
+            "rec5Kig0IdYiCx5He",
+            "recUYlRpE7vL7AH8S",
+            "recmWDL9VzWVnERYg",
+            "recmfpH1WVHHM96Pk",
+            "recOxAI3tQTOwQNt7",
+            "recZz9MTewp1i7Le3"
+          ],
+          "available_dates": "2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25",
+          "start_date": "2026-10-22"
+        }
+      }
+    ],
+    "collections": [
+      {
+        "id": "reca3Z6R8j7ekQ5gc",
+        "createdTime": "2026-10-20T16:57:32.000Z",
+        "fields": {
+          "fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "trainers": [
+            "rec9Hmq2WuHuZc9mY"
+          ],
+          "date": "2026-10-25",
+          "dataset-id": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "show-id": 200000075,
+          "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+          "trainer-id": 8778,
+          "started": "2026-10-20T17:02:02.218Z",
+          "completed": "2026-10-20T17:02:24.984Z",
+          "message": "No entries for this show day",
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "status": "complete",
+          "row-count": 0,
+          "collection-id": "200000075|8778|2026-10-25"
+        }
+      },
+      {
+        "id": "recjuCxV2TszGgh6n",
+        "createdTime": "2026-10-20T16:57:30.000Z",
+        "fields": {
+          "fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "trainers": [
+            "rec9Hmq2WuHuZc9mY"
+          ],
+          "date": "2026-10-24",
+          "dataset-id": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "show-id": 200000075,
+          "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+          "trainer-id": 8778,
+          "started": "2026-10-20T17:02:02.218Z",
+          "completed": "2026-10-20T17:02:23.734Z",
+          "message": "No entries for this show day",
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "status": "complete",
+          "row-count": 0,
+          "collection-id": "200000075|8778|2026-10-24"
+        }
+      },
+      {
+        "id": "reckWdzLJAJI10Nyt",
+        "createdTime": "2026-10-20T16:57:27.000Z",
+        "fields": {
+          "fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "trainers": [
+            "rec9Hmq2WuHuZc9mY"
+          ],
+          "date": "2026-10-22",
+          "dataset-id": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "show-id": 200000075,
+          "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+          "trainer-id": 8778,
+          "started": "2026-10-20T17:02:02.218Z",
+          "completed": "2026-10-20T17:02:21.308Z",
+          "message": "No entries for this show day",
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "status": "complete",
+          "row-count": 0,
+          "collection-id": "200000075|8778|2026-10-22"
+        }
+      },
+      {
+        "id": "recvXKpYW5qC6V1zv",
+        "createdTime": "2026-10-20T16:57:29.000Z",
+        "fields": {
+          "fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "trainers": [
+            "rec9Hmq2WuHuZc9mY"
+          ],
+          "date": "2026-10-23",
+          "dataset-id": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "show-id": 200000075,
+          "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+          "trainer-id": 8778,
+          "started": "2026-10-20T17:02:02.218Z",
+          "completed": "2026-10-20T17:02:22.507Z",
+          "message": "No entries for this show day",
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "status": "complete",
+          "row-count": 0,
+          "collection-id": "200000075|8778|2026-10-23"
+        }
+      }
+    ],
+    "rings": [
+      {
+        "id": "rec5Kig0IdYiCx5He",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "is_selected_date": true,
+          "show_id": 200000075,
+          "ring_name": "Equestrian Village Derby Field",
+          "ring_date": "2026-10-22",
+          "ring_number": 1,
+          "rings-helper": [
+            "rec8Shy2UrTYX2gQw"
+          ],
+          "source-record": "recn49r7qTBFO8tZn",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-22|1",
+          "ring_id": 10
+        }
+      },
+      {
+        "id": "rec8kRk95YZWRDzzA",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "Equestrian Village Derby Field",
+          "ring_date": "2026-10-23",
+          "ring_number": 1,
+          "rings-helper": [
+            "rec8Shy2UrTYX2gQw"
+          ],
+          "source-record": "rechuoiAkv2zxJAfl",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-23|1",
+          "ring_id": 10
+        }
+      },
+      {
+        "id": "rec9IfhpziMh5FmbZ",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "VanKampen Covered Arena",
+          "ring_date": "2026-10-23",
+          "ring_number": 3,
+          "rings-helper": [
+            "rec5b1WpsfQfxTXXI"
+          ],
+          "source-record": "recLYOk2Kbh6HzMXb",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-23|3",
+          "ring_id": 44
+        }
+      },
+      {
+        "id": "recBhGtmVCW5v2X8G",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "GDF Hunter Ring 2",
+          "ring_date": "2026-10-25",
+          "ring_number": 6,
+          "rings-helper": [
+            "recZ0U8lS2wP9fArB"
+          ],
+          "source-record": "rec1kVeHFdi7956G6",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-25|6",
+          "ring_id": 45
+        }
+      },
+      {
+        "id": "recFvP7VfbWgbTdCf",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "is_selected_date": true,
+          "show_id": 200000075,
+          "ring_name": "Equestrian Village International Ring",
+          "ring_date": "2026-10-22",
+          "ring_number": 4,
+          "rings-helper": [
+            "recq8j147V3scpOlo"
+          ],
+          "source-record": "recUmdoW5PibiQpbm",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-22|4",
+          "ring_id": 13
+        }
+      },
+      {
+        "id": "recJNegCyheuCk5y9",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "VanKampen Covered Arena",
+          "ring_date": "2026-10-24",
+          "ring_number": 3,
+          "rings-helper": [
+            "rec5b1WpsfQfxTXXI"
+          ],
+          "source-record": "recFYApztRDzKB6VC",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-24|3",
+          "ring_id": 44
+        }
+      },
+      {
+        "id": "recJQ1W8rgaHZx9cC",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "Equestrian Village International Ring",
+          "ring_date": "2026-10-24",
+          "ring_number": 4,
+          "rings-helper": [
+            "recq8j147V3scpOlo"
+          ],
+          "source-record": "recHWUknIoNjyaqGl",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-24|4",
+          "ring_id": 13
+        }
+      },
+      {
+        "id": "recKorktVbv36UsBF",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "Annex Derby Field",
+          "ring_date": "2026-10-23",
+          "ring_number": 2,
+          "rings-helper": [
+            "recRpJ3hAbKN8O7hz"
+          ],
+          "source-record": "recCXzrmzN9i9czWc",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-23|2",
+          "ring_id": 3
+        }
+      },
+      {
+        "id": "recOxAI3tQTOwQNt7",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "is_selected_date": true,
+          "show_id": 200000075,
+          "ring_name": "VanKampen Covered Arena",
+          "ring_date": "2026-10-22",
+          "ring_number": 3,
+          "rings-helper": [
+            "rec5b1WpsfQfxTXXI"
+          ],
+          "source-record": "recyTSpj8CXPQczez",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-22|3",
+          "ring_id": 44
+        }
+      },
+      {
+        "id": "recRAtvegxm1y9oC6",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "GDF Hunter Ring 2",
+          "ring_date": "2026-10-24",
+          "ring_number": 6,
+          "rings-helper": [
+            "recZ0U8lS2wP9fArB"
+          ],
+          "source-record": "recj2wZeyytmSsKfW",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-24|6",
+          "ring_id": 45
+        }
+      },
+      {
+        "id": "recUC3pBuHpIXaAwm",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "GDF Hunter Ring 1",
+          "ring_date": "2026-10-23",
+          "ring_number": 5,
+          "rings-helper": [
+            "recx0Fl8wUCEQBDFh"
+          ],
+          "source-record": "recBUe9F9Q2Y3vbJp",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-23|5",
+          "ring_id": 48
+        }
+      },
+      {
+        "id": "recUYlRpE7vL7AH8S",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "is_selected_date": true,
+          "show_id": 200000075,
+          "ring_name": "Annex Derby Field",
+          "ring_date": "2026-10-22",
+          "ring_number": 2,
+          "rings-helper": [
+            "recRpJ3hAbKN8O7hz"
+          ],
+          "source-record": "recnVFATkL84Ku10h",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-22|2",
+          "ring_id": 3
+        }
+      },
+      {
+        "id": "recWJ1u1g7h935QoX",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "Equestrian Village Derby Field",
+          "ring_date": "2026-10-24",
+          "ring_number": 1,
+          "rings-helper": [
+            "rec8Shy2UrTYX2gQw"
+          ],
+          "source-record": "recJkHr8IsQ4tTpnf",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-24|1",
+          "ring_id": 10
+        }
+      },
+      {
+        "id": "recWoHPEK8sgpRRV9",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "Annex Derby Field",
+          "ring_date": "2026-10-24",
+          "ring_number": 2,
+          "rings-helper": [
+            "recRpJ3hAbKN8O7hz"
+          ],
+          "source-record": "recDJZqm10KckoYU1",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-24|2",
+          "ring_id": 3
+        }
+      },
+      {
+        "id": "recZz9MTewp1i7Le3",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "is_selected_date": true,
+          "show_id": 200000075,
+          "ring_name": "GDF Hunter Ring 1",
+          "ring_date": "2026-10-22",
+          "ring_number": 5,
+          "rings-helper": [
+            "recx0Fl8wUCEQBDFh"
+          ],
+          "source-record": "recz9ZXC4Ukfi3Is7",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-22|5",
+          "ring_id": 48
+        }
+      },
+      {
+        "id": "reccE4pkFKmRdvYBp",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "Equestrian Village International Ring",
+          "ring_date": "2026-10-23",
+          "ring_number": 4,
+          "rings-helper": [
+            "recq8j147V3scpOlo"
+          ],
+          "source-record": "recbhsVOUjk0SwFQw",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-23|4",
+          "ring_id": 13
+        }
+      },
+      {
+        "id": "reccJVGbzqGQZA8z0",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "Equestrian Village Derby Field",
+          "ring_date": "2026-10-25",
+          "ring_number": 1,
+          "rings-helper": [
+            "rec8Shy2UrTYX2gQw"
+          ],
+          "source-record": "recaPsjFvrE8je3SF",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-25|1",
+          "ring_id": 10
+        }
+      },
+      {
+        "id": "rechlSRbnmcTBkW6V",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "Annex Derby Field",
+          "ring_date": "2026-10-25",
+          "ring_number": 2,
+          "rings-helper": [
+            "recRpJ3hAbKN8O7hz"
+          ],
+          "source-record": "recgK7sjhFfPoVaVy",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-25|2",
+          "ring_id": 3
+        }
+      },
+      {
+        "id": "recmWDL9VzWVnERYg",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "Equestrian Village International Ring",
+          "ring_date": "2026-10-25",
+          "ring_number": 4,
+          "rings-helper": [
+            "recq8j147V3scpOlo"
+          ],
+          "source-record": "recqbNilKgNeHu0GI",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-25|4",
+          "ring_id": 13
+        }
+      },
+      {
+        "id": "recmfpH1WVHHM96Pk",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "is_selected_date": true,
+          "show_id": 200000075,
+          "ring_name": "GDF Hunter Ring 2",
+          "ring_date": "2026-10-22",
+          "ring_number": 6,
+          "rings-helper": [
+            "recZ0U8lS2wP9fArB"
+          ],
+          "source-record": "rectFyUKWylVjgS7Q",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-22|6",
+          "ring_id": 45
+        }
+      },
+      {
+        "id": "recoCzeGvRZC1gUbq",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "GDF Hunter Ring 2",
+          "ring_date": "2026-10-23",
+          "ring_number": 6,
+          "rings-helper": [
+            "recZ0U8lS2wP9fArB"
+          ],
+          "source-record": "recVW5pqGmAPhqLeo",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-23|6",
+          "ring_id": 45
+        }
+      },
+      {
+        "id": "recqGCtsPt6cdYgR3",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "VanKampen Covered Arena",
+          "ring_date": "2026-10-25",
+          "ring_number": 3,
+          "rings-helper": [
+            "rec5b1WpsfQfxTXXI"
+          ],
+          "source-record": "recAcF6gmE0JNjEwi",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-25|3",
+          "ring_id": 44
+        }
+      },
+      {
+        "id": "rectp1DaxOP2jVasT",
+        "createdTime": "2026-10-20T16:57:14.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "GDF Hunter Ring 1",
+          "ring_date": "2026-10-25",
+          "ring_number": 5,
+          "rings-helper": [
+            "recx0Fl8wUCEQBDFh"
+          ],
+          "source-record": "recSTT2xnC1aItb7W",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-25|5",
+          "ring_id": 48
+        }
+      },
+      {
+        "id": "reczc0rPW6k7Y7i5r",
+        "createdTime": "2026-10-20T16:57:13.000Z",
+        "fields": {
+          "show_id": 200000075,
+          "ring_name": "GDF Hunter Ring 1",
+          "ring_date": "2026-10-24",
+          "ring_number": 5,
+          "rings-helper": [
+            "recx0Fl8wUCEQBDFh"
+          ],
+          "source-record": "recHIExwk65eIfgJs",
+          "facility_id": 516,
+          "customer_id": 15,
+          "show-details": [
+            "recp0mgdpd9JBw8ny"
+          ],
+          "ring-key": "15|200000075|2026-10-24|5",
+          "ring_id": 48
+        }
+      }
+    ],
+    "rings-helper": [
+      {
+        "id": "rec5b1WpsfQfxTXXI",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recqGCtsPt6cdYgR3",
+            "recJNegCyheuCk5y9",
+            "rec9IfhpziMh5FmbZ",
+            "recOxAI3tQTOwQNt7"
+          ],
+          "ring_id": 44,
+          "ring-walks": [
+            "recOoVnNNuAQ61kuK"
+          ],
+          "source-record": "recu3PI7sdyLW74Vk",
+          "ring_number": 3,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "VanKampen Covered Arena",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:44"
+        }
+      },
+      {
+        "id": "rec8Shy2UrTYX2gQw",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recWJ1u1g7h935QoX",
+            "reccJVGbzqGQZA8z0",
+            "rec8kRk95YZWRDzzA",
+            "rec5Kig0IdYiCx5He"
+          ],
+          "ring_id": 10,
+          "ring-walks": [
+            "recBfR3mEUh22pXbt"
+          ],
+          "source-record": "rec4laRvUmKzVMYAr",
+          "ring_number": 1,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "Equestrian Village Derby Field",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:10"
+        }
+      },
+      {
+        "id": "recRpJ3hAbKN8O7hz",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recKorktVbv36UsBF",
+            "recWoHPEK8sgpRRV9",
+            "rechlSRbnmcTBkW6V",
+            "recUYlRpE7vL7AH8S"
+          ],
+          "ring_id": 3,
+          "ring-walks": [
+            "recbYxfoFksqsJerc"
+          ],
+          "source-record": "recXfbMKxRe5G2eXR",
+          "ring_number": 2,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "Annex Derby Field",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:3"
+        }
+      },
+      {
+        "id": "recZ0U8lS2wP9fArB",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recBhGtmVCW5v2X8G",
+            "recoCzeGvRZC1gUbq",
+            "recRAtvegxm1y9oC6",
+            "recmfpH1WVHHM96Pk"
+          ],
+          "ring_id": 45,
+          "ring-walks": [
+            "recHavzkUcrSYB4ok"
+          ],
+          "source-record": "recxnTCS3rX3B6SFg",
+          "ring_number": 6,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "GDF Hunter Ring 2",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:45"
+        }
+      },
+      {
+        "id": "recq8j147V3scpOlo",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recJQ1W8rgaHZx9cC",
+            "recFvP7VfbWgbTdCf",
+            "reccE4pkFKmRdvYBp",
+            "recmWDL9VzWVnERYg"
+          ],
+          "ring_id": 13,
+          "ring-walks": [
+            "rec9aCZz83WOnFHhs"
+          ],
+          "source-record": "recGVWTImr1s4z3tH",
+          "ring_number": 4,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "Equestrian Village International Ring",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:13"
+        }
+      },
+      {
+        "id": "recx0Fl8wUCEQBDFh",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recUC3pBuHpIXaAwm",
+            "reczc0rPW6k7Y7i5r",
+            "rectp1DaxOP2jVasT",
+            "recZz9MTewp1i7Le3"
+          ],
+          "ring_id": 48,
+          "ring-walks": [
+            "recDfx2PinyCg03BY"
+          ],
+          "source-record": "rec2Y5yTbOtivElAQ",
+          "ring_number": 5,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "GDF Hunter Ring 1",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:48"
+        }
+      }
+    ],
+    "ring-walks": [
+      {
+        "id": "rec9aCZz83WOnFHhs",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:13",
+          "minutes": 12,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "recq8j147V3scpOlo"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:13",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recBfR3mEUh22pXbt",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:10",
+          "minutes": 8,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "rec8Shy2UrTYX2gQw"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:10",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recDfx2PinyCg03BY",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:48",
+          "minutes": 14,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "recx0Fl8wUCEQBDFh"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:48",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recHavzkUcrSYB4ok",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:45",
+          "minutes": 16,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "recZ0U8lS2wP9fArB"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:45",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recOoVnNNuAQ61kuK",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:44",
+          "minutes": 6,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "rec5b1WpsfQfxTXXI"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:44",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recbYxfoFksqsJerc",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:3",
+          "minutes": 10,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "recRpJ3hAbKN8O7hz"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:3",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      }
+    ],
+    "horses": [],
+    "riders": [],
+    "entries": [],
+    "run-logs": [
+      {
+        "id": "recmmgZc0HAxOf1Tj",
+        "createdTime": "2026-10-20T16:57:02.000Z",
+        "fields": {
+          "archive-count": 5,
+          "archives": "2026-10-20T16:57:20.601Z: people-8778 Created; shows 200000075; dates 2026-10-22,2026-10-23,2026-10-24,2026-10-25; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\people-8778\\4f1fcf0f51e091ed671092bf31e53881af6f60c898f61a43276392a4f63da004.json.gz; SHA256 4f1fcf0f51e091ed671092bf31e53881af6f60c898f61a43276392a4f63da004\n2026-10-20T16:57:21.836Z: dataset-8778 Created; shows 200000075; dates 2026-10-22; 0 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz; SHA256 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\n2026-10-20T16:57:23.011Z: dataset-8778 Reused; shows 200000075; dates 2026-10-23; 0 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz; SHA256 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\n2026-10-20T16:57:24.221Z: dataset-8778 Reused; shows 200000075; dates 2026-10-24; 0 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz; SHA256 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\n2026-10-20T16:57:25.404Z: dataset-8778 Reused; shows 200000075; dates 2026-10-25; 0 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz; SHA256 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "completed": "2026-10-20T16:57:39.471Z",
+          "days-failed": 0,
+          "days-complete": 4,
+          "show-id": 200000075,
+          "rows": 0,
+          "started": "2026-10-20T16:57:01.220Z",
+          "summary": "Trainer 8778 (main): No entries; 0 day entries\nShow 200000075; source-selected 2026-10-22; 4 days; 0 active entries; 24 daily rings; 6 shared helpers.",
+          "run-id": "3134705d-cac2-4a5d-afbc-90ce13fdab8f",
+          "result": "No entries"
+        }
+      },
+      {
+        "id": "recxLSnEs5YKaT4iz",
+        "createdTime": "2026-10-20T17:02:03.000Z",
+        "fields": {
+          "archive-count": 5,
+          "archives": "2026-10-20T17:02:15.129Z: people-8778 Created; shows 200000075; dates 2026-10-22,2026-10-23,2026-10-24,2026-10-25; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\people-8778\\45aaecb42ef2312dcc0c91ade4550b5a9bbfa9b22dab00e5401f1bfd8cb68239.json.gz; SHA256 45aaecb42ef2312dcc0c91ade4550b5a9bbfa9b22dab00e5401f1bfd8cb68239\n2026-10-20T17:02:16.456Z: dataset-8778 Reused; shows 200000075; dates 2026-10-22; 0 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz; SHA256 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\n2026-10-20T17:02:17.650Z: dataset-8778 Reused; shows 200000075; dates 2026-10-23; 0 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz; SHA256 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\n2026-10-20T17:02:18.873Z: dataset-8778 Reused; shows 200000075; dates 2026-10-24; 0 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz; SHA256 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\n2026-10-20T17:02:20.113Z: dataset-8778 Reused; shows 200000075; dates 2026-10-25; 0 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz; SHA256 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "completed": "2026-10-20T17:02:32.530Z",
+          "days-failed": 0,
+          "days-complete": 4,
+          "show-id": 200000075,
+          "rows": 0,
+          "started": "2026-10-20T17:02:02.218Z",
+          "summary": "Trainer 8778 (main): No entries; 0 day entries\nShow 200000075; source-selected 2026-10-22; 4 days; 0 active entries; 24 daily rings; 6 shared helpers.",
+          "run-id": "4d11f084-4719-4d6f-9b15-bf7a3dcfff10",
+          "result": "No entries"
+        }
+      }
+    ],
+    "code-reviews": [
+      {
+        "id": "recMaNo3AhWEUNJDK",
+        "createdTime": "2026-10-20T16:49:38.000Z",
+        "fields": {
+          "last-review": "2026-10-20T16:55:02.402Z",
+          "routine": "Weekly tenant collector review",
+          "cadence": "Monday 09:00 America/New_York",
+          "last-result": "PASS: independent read-only technical review; 19 offline fixture tests passed. Live scheduled acceptance pending.",
+          "next-review": "2026-10-26T09:00:00-04:00",
+          "notes": "Review corrected transport runtime configuration, ambiguous entry dates and failed terminal status. No production source calls or manual collector runs. Existing workflows protected; see docs/coordination/wef-tenant-cwf-release-20261020.md."
+        }
+      }
+    ]
+  },
+  "index": [
+    {
+      "id": "rec1lQTw1ZzzkonFF",
+      "createdTime": "2026-10-20T16:57:19.000Z",
+      "fields": {
+        "tenant-key": "CWF",
+        "active": true,
+        "last-result": "No entries",
+        "tenant-name": "Castlewood Farm",
+        "barn-lon": -80.277224,
+        "show-id": 200000075,
+        "index-key": "CWF|200000075",
+        "tenant-id": 8778,
+        "last-checked": "2026-10-20T17:02:31.236Z",
+        "tenant-base-id": "appxKPBtdl2Rdq7CS",
+        "barn-lat": 26.633278,
+        "barn-name": "home",
+        "tenant-base-url": "https://airtable.com/appxKPBtdl2Rdq7CS",
+        "notes": "Enabled collector for this source-selected show; configuration does not assert attendance.",
+        "show-details": [
+          "recpjdzMqBApZ8KPs"
+        ]
+      }
+    }
+  ],
+  "verified_archives": 5
+}

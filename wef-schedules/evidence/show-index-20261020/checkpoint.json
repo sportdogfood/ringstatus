@@ -1,0 +1,13 @@
+{
+  "objective": "Approved shows/show-collection renames, verified archive index and relations, both tenant tables retained, meta notes preserved then table retired, two normal runs, no manual runs/record repairs.",
+  "state": "DEPLOYED_ACCEPTANCE_INCOMPLETE. Full schedules14:30PASS; required14:35exit1fetchfailed with no newrunlog/focus. Tenant27/32PASS. No executable changes since deployment or retry/repair.",
+  "evidence": "wef-schedules/evidence/show-index-20261020/",
+  "release_note": "docs/coordination/wef-shows-index-release-20261020.md",
+  "meta_note": "docs/coordination/wef-schedules-meta-notes-preserved-20261020.md",
+  "meta_delete_action": "actHJNCp7RFuEAX8e",
+  "next": [
+    "Owner decision required before retrying failed cadence path or any runtime correction. No manual runs. Existing schedule remains unchanged."
+  ],
+  "boundaries": "No manualcollector/sourcecalls, repairs, taskdefinitionchanges. Stop affected path on actualrunnerfailure; do not patch after failedliveverification without separate approval.",
+  "context_check": "Helper reported large-context202294input; prepared this compact checkpoint without interrupting authorized work."
+}

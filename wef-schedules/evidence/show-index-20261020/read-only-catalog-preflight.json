@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-10-20T18:25:15.316Z",
+  "business_records_written": 0,
+  "plan": [
+    {
+      "show-key": "15|200000075",
+      "show_id": 200000075,
+      "show-status": "current"
+    },
+    {
+      "show-key": "15|200000074",
+      "show_id": 200000074,
+      "show-status": "archived",
+      "customer_id": 15,
+      "is_default": false,
+      "show_name": "ESP Fall II",
+      "start_date": "2026-10-15",
+      "end_date": "2026-10-18",
+      "archive-status": "Verified",
+      "archive-files": "show-collection: 4 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\retired\\639cd73b-5aeb-4503-93f4-b97cdcf40500.json.gz; SHA256 f9a5a4143b2a8ba6141bf813f9d68abc6db00d12b0aa64147ac30c2f161efedf\nschedules: 499 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\retired\\7b8c2a38-9946-4227-a733-358ef49d3779.json.gz; SHA256 65e0f7bb6ae256f3d39c315ae88b04dded548c98ecd871a92e84103316a3e563",
+      "archived-schedule-count": 499,
+      "archived-collection-count": 4,
+      "archive-verified-at": "2026-10-20T18:25:15.292Z",
+      "archive-notes": "Verified local runner files; paths are not hosted download links. Counts identify unique archived records. Original archive time is not inferred from verification time."
+    }
+  ]
+}

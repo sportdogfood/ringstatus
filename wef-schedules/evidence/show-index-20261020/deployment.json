@@ -1,0 +1,18 @@
+{
+  "completed_at": "2026-10-20T18:28:09.661653+00:00",
+  "source": "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\wef-schedules",
+  "deployed": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules",
+  "normal_schedule_runs_expected": [
+    "14:30",
+    "14:35"
+  ],
+  "normal_tenant_compatibility_runs_expected": [
+    "14:27",
+    "14:32"
+  ],
+  "manual_runs": 0,
+  "schedules_tests": 113,
+  "tenant_tests": 42,
+  "meta_notes_preserved": true,
+  "meta_retirement_action": "actHJNCp7RFuEAX8e"
+}

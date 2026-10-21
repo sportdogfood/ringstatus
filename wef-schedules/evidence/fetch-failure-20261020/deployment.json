@@ -1,0 +1,24 @@
+{
+  "completed_at": "2026-10-20T19:04:20.300801+00:00",
+  "files": [
+    "collector-core.js",
+    "run.ps1",
+    "airtable-read.js",
+    "tests/airtable-read.test.js",
+    "tests/runner-output.test.js"
+  ],
+  "source_baseline_matched": true,
+  "source": "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\wef-schedules",
+  "deployed": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules",
+  "manual_runs": 0,
+  "record_repairs": 0,
+  "tests": 124,
+  "expected_normal_runs": [
+    "15:10",
+    "15:15"
+  ],
+  "network_cause": "Historical underlying DNS/TLS/socket cause was not retained; no speculative network configuration changes.",
+  "final_deployed_at": "2026-10-20T19:06:32.015509+00:00",
+  "source_tests": 127,
+  "scope": "GET response lifecycle and wrapper error handling; retry limits/write behavior unchanged"
+}

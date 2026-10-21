@@ -1,0 +1,138 @@
+[
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\.env.example",
+    "Hash": "BAB6F2DFD452AD954211D2C3B1D749186FFC817854B68AE53BB82345FB88C63B"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\.gitignore",
+    "Hash": "65A2BECD9E2144C4C4AB174700DD2BCBB06C64A3C3B62BFFD81786E6C95C5267"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\collect.js",
+    "Hash": "CA81E5DC7DA4F8134C8485E961D543FE312954E0D8FCE770B35D9EF41766BE01"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\collector-core.js",
+    "Hash": "CFAC703B5BE38E3F7267F67744CEC0D87666E3E6998FF319ACD193F7BFF611A3"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\configure-heartbeat.js",
+    "Hash": "B7BAE7E74545EF2AC40D7ED8DF461F6C7D2088FF772988FB3252A20EA6A5B26A"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\configure-shows.js",
+    "Hash": "6E4252F0A24A2D04C0619CE397F9A70781501DE936CBA28886B825C1B2C1E2BC"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\current-store.js",
+    "Hash": "4089472168EDF464556FD522D585CC4C6DD293F6B2BA379AD29AA2FF0D703093"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\estimated-time-inheritance-tests.txt",
+    "Hash": "3E898B37783961494BA6B0F72B11022F9E5A6747FA0F842090B89E7CDCA4AAFF"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\estimated-time-inheritance-verification.json",
+    "Hash": "D79C18BF50995AAF8AB150EEAFAADAE50C83AC0974897664E21CA2EE926A21EC"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\estimated-time-inheritance.md",
+    "Hash": "9FBEEA6ADC266E9050AF371025CB22EF1ED861A72C5238C5E51594065094796C"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\estimated-times-local-verification.json",
+    "Hash": "9980364409C6CC6A034FBA6C1CDB8BF660D5BB0F7522D2654E94D3FD712A4F9E"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\estimated-times-test-results.txt",
+    "Hash": "C6985B4F8068095E854175D2BBCE53AE0D3BE83323FFC4242F6793DEBB4E381E"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\estimated-times-verification.md",
+    "Hash": "14C863915D7789E0E60DAF0E4A0C1E836F6BA994CC7A029E6999C47573222456"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\heartbeat.js",
+    "Hash": "BE7C378A3EE2995190E4E6059EA338B7FE0C7C129DF3B6483C96219421590662"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\normalizer.js",
+    "Hash": "D3CE0403ADB64799908AA6A270243558976A644B7AA6F0DFA208C6452784A3B0"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\package-lock.json",
+    "Hash": "DFAD56209C7EB6A1FC6161EAFEAF2BAE588505F7516AF5780B6A3C64C1C0FAAE"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\package.json",
+    "Hash": "F962562AEBE17F715806281E61236D215419C098CFA005E8C32CDF97D90EE1FE"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\README.md",
+    "Hash": "5625EB5107631BBABF23645F8911F963FDC01A3F6A7D4CD16E78EB629830B17D"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\run-logs.js",
+    "Hash": "7F7FC6090C7E3B6267302C978146C70B1B637064F5786233D4B834FA19B75ED8"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\run.ps1",
+    "Hash": "09B70F5A0EB92456E7C6FD2080D00A2FB0A4A817F30F2A7FE794D2C9F2C75DAA"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\schedule-times.js",
+    "Hash": "D09697EED597FEB38C30DAE6A917C2DCAF991F82BB823C7F0B45E075241ECE30"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\settings.js",
+    "Hash": "F2A27793F4000AA0664D9D12211DB2F969B7699FC68B38278802392551580E88"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\sgl_fetch.ps1",
+    "Hash": "BB9578B866415844761C11593319D2B6180BC9AEA78917D0D08259FB80C307EE"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\show-index.js",
+    "Hash": "F658A0D1FF33DD092CDEDC1BF28F1814AB92A1FCB74BAA239D96EE3AFB3EB33F"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\show-rings.js",
+    "Hash": "D89A63D457FD97EE922C4CC4BFF486F05FA4F59DB3153DFADCFB5868DE3689BA"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\source-manifest.json",
+    "Hash": "D13362F5D8DA8FED09175698DA91F19557A0539C1AD778A117225D7AC094FC07"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\STATUS.md",
+    "Hash": "CCDA0605C2ADBA34EE86D99F475B762B8EBCB40C412D08FCBB96A61D1740699B"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\store.js",
+    "Hash": "36AF40AB6CD7E834D8B94A1DC2E7A90E5AD2E0AC67482680BC8548C857D899CA"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\table-ring-local-verification.json",
+    "Hash": "662A7D32DACA8A52877359925CC1C90088F950F55C06E8DB798D2DECBAB1698C"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\table-ring-tests.txt",
+    "Hash": "CA1BB57821C65BB41CC530F2C351CAEA425F6973D222B04C0A22B1EDA1978427"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\table-ring-verification.md",
+    "Hash": "95421A5FFB35223204567FC3E35D68F2CA2158736DA8C6EF514D5E0AB409F350"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\token-utils.js",
+    "Hash": "0DE2517A21B7D1826BFDACE3D54C41336BC50D6574B0FA74E66E4BCAC38EE9C0"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\verify-heartbeat.js",
+    "Hash": "4316503346367DF4455CEF46E980B3E812F945902D504DB66C83D3966618EA33"
+  },
+  {
+    "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\verify-shows.js",
+    "Hash": "E07D3E2573D5513F8088310A1AACAEFBAD61E141734FED969F913697265A3501"
+  }
+]

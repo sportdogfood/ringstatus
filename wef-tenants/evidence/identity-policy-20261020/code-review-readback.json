@@ -1,0 +1,14 @@
+[
+  {
+    "id": "recMaNo3AhWEUNJDK",
+    "createdTime": "2026-10-20T16:49:38.000Z",
+    "fields": {
+      "last-review": "2026-10-20T17:53:18.986Z",
+      "routine": "Weekly tenant collector review",
+      "cadence": "Monday 09:00 America/New_York",
+      "last-result": "PASS: identity policy deployed. 42 offline tests; normal scheduled13:47/13:52 Eastern runs verified71horses/33riders, unique populated policy fields, stable IDs/static values,12archive events. Rider show-name retired; first/last searchable. Unknown13horse IDs and33rider nicknames preserved blank. No manual runs or repairs.",
+      "next-review": "2026-10-26T09:00:00-04:00",
+      "notes": "See docs/coordination/wef-roster-identity-policy-20261020.md and wef-tenants/evidence/identity-policy-20261020. Per-column uniqueness checked before roster writes/lookups; direct Airtable edits checked next normal run. Individual first/last names may repeat. Historical rider show-name values preserved in legacy-display-name, excluded from active collection/search. Existing workflows and cadence unchanged."
+    }
+  }
+]

@@ -1,0 +1,1564 @@
+{
+  "tables": [
+    {
+      "id": "tblOsAWFAqPJbE0Oc",
+      "name": "meta",
+      "description": "Base setup metadata. Default empty starter rows are not business records.",
+      "primaryFieldId": "fldUntAgu6AfVk7QY",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldUntAgu6AfVk7QY",
+          "name": "Name"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldNEldeQybT3tZrQ",
+          "name": "Notes"
+        },
+        {
+          "type": "singleCollaborator",
+          "id": "fldGwyN0B8QfJmrmH",
+          "name": "Assignee"
+        },
+        {
+          "type": "singleSelect",
+          "options": {
+            "choices": [
+              {
+                "id": "sel1Ut2JXwREdD7EN",
+                "name": "Todo",
+                "color": "redLight2"
+              },
+              {
+                "id": "selDFH8tqdOmVtUAG",
+                "name": "In progress",
+                "color": "yellowLight2"
+              },
+              {
+                "id": "selIiZBRTglDLk4yN",
+                "name": "Done",
+                "color": "greenLight2"
+              }
+            ]
+          },
+          "id": "fldXELxBGQ4YX6iRN",
+          "name": "Status"
+        },
+        {
+          "type": "multipleAttachments",
+          "options": {
+            "isReversed": false
+          },
+          "id": "fldE0bZEw1YHAHdab",
+          "name": "Attachments"
+        },
+        {
+          "type": "aiText",
+          "options": {
+            "referencedFieldIds": [
+              "fldE0bZEw1YHAHdab"
+            ],
+            "prompt": [
+              "You are a professional document analyst specializing in summarizing content from various file types. Your task is to extract key points and provide a concise summary of the content found in the attached files. Ensure that the summary captures the main ideas and any important details without including unnecessary information.\n\nAnalyze the content of the attached files to identify the main themes and significant details. Summarize these points clearly and concisely, ensuring that the summary is informative and relevant to the document's purpose.\n\nFormat your response as plain text, keeping it concise and to the point. If you cannot summarize the content, output \"Unable to summarize the content.\" Example: \"The document discusses the impact of climate change on polar bears, highlighting the loss of habitat and food sources.\" (Real examples should be longer and more detailed.)\n\nFiles:\n",
+              {
+                "field": {
+                  "fieldId": "fldE0bZEw1YHAHdab"
+                }
+              }
+            ]
+          },
+          "id": "fldQ6EWtNuAhBFeue",
+          "name": "Attachment Summary",
+          "description": "An AI generated summary of the Attachments field. Upload files to Attachments to generate a summary."
+        }
+      ],
+      "views": [
+        {
+          "id": "viw8BrBEHKsRQDMmq",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblUoIrtdQ2Wg7DjB",
+      "name": "tenant-details",
+      "primaryFieldId": "fldm6P3r2BL7Atfu5",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldm6P3r2BL7Atfu5",
+          "name": "tenant-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld9CB6kf6eZJNi0H",
+          "name": "tenant-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldDID2LSfsG1N4s3",
+          "name": "barn-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldWDrXRzqMJnTMuk",
+          "name": "barn-map"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldiAgzYZ6HoMIdgt",
+          "name": "notes"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fld3PlhKQwqvifZq1",
+          "name": "tenant-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 6
+          },
+          "id": "fldJDTCW8ktTsgYI1",
+          "name": "barn-lat"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 6
+          },
+          "id": "fld5BOpsyAloIv84a",
+          "name": "barn-lon"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fld7knf80qxsebmgS",
+          "name": "active"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwFyWjITNjpdssh9",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tbljBHTXEJn71RRIl",
+      "name": "trainers",
+      "primaryFieldId": "fldVGHL9sFpspy76L",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldVGHL9sFpspy76L",
+          "name": "trainer-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "flduPZMPpYYDpg97J",
+          "name": "trainer-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldTSDSZXn1tEhWYs",
+          "name": "role"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldiOJCAUfWdEwvEU",
+          "name": "last-result"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld3884oady5IwPza",
+          "name": "last-checked"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldTY7B4hkhUOsDMf",
+          "name": "last-error"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fld2MWxq6K5HnIz9r",
+          "name": "trainer-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldxSvlVtAEtVOWIJ",
+          "name": "slot"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fldxEjEX2rD5bwWYV",
+          "name": "active"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblDhAutHYlDbvzNd",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld569ZjJTyE7wtLP"
+          },
+          "id": "fldtgGRy1LiSkak3L",
+          "name": "entries"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblbac3wwWJAmUthL",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld2reJ8ELL6vPz0A"
+          },
+          "id": "fld39u1CSm3bt54Ws",
+          "name": "collections"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblxMpG75KL3Nmt1v",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldFIY4EdFhCe6iA1"
+          },
+          "id": "fldWUTs0xfrEpODK3",
+          "name": "horses"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblll5l7eG5wc27uP",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "flddwrR89IEn8B1gy"
+          },
+          "id": "fldoIT9gXVWoOuX6B",
+          "name": "riders"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwBW4Nh6Al6mkXJc",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblLwQ0JFyuHvcp82",
+      "name": "heartbeat",
+      "primaryFieldId": "fld4pab3IHCO9TWkV",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fld4pab3IHCO9TWkV",
+          "name": "heartbeat-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldCY5muTAkKeRaq1",
+          "name": "checked-at"
+        },
+        {
+          "type": "singleLineText",
+          "id": "flda5nSAUL7EKQxPF",
+          "name": "selected-date"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldt20ictVX4whAp6",
+          "name": "result"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldN4PnNRkGjx1dBF",
+          "name": "summary"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldJxzzqHfNaqJATa",
+          "name": "errors"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldjy9eF54ZJp46pm",
+          "name": "show-id"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwLrVmcgp314417E",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblxutSCBQzmkJLLO",
+      "name": "show-details",
+      "primaryFieldId": "fldHSYL0YdtV4akmJ",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldHSYL0YdtV4akmJ",
+          "name": "show-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldtHTaWcTNCCOjS5",
+          "name": "show_name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldyzfhN2HHVnOCB8",
+          "name": "start_date"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldVsZGFcjg2WuMHZ",
+          "name": "end_date"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldVldg9Wt6xtH1WQ",
+          "name": "selected_date"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldyK3IdBF92etXGn",
+          "name": "available_dates"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldwRYEXyizeLiJQK",
+          "name": "last_checked"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldlsGD0xOWiH6ZwP",
+          "name": "source-record"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fld0yjlHFVfskM0OT",
+          "name": "show_id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldovht7HmCZlKHqZ",
+          "name": "customer_id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldR6DC0ifBsyucQP",
+          "name": "facility_id"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fld6zr0z6nXILwAaE",
+          "name": "is_default"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblsVT0Poao9wKhs4",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldqXyWBcmsMg9ZBi"
+          },
+          "id": "fldxYF3H7UELgYt2T",
+          "name": "rings"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblDhAutHYlDbvzNd",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldGhqNtI5phVMvPv"
+          },
+          "id": "flds5Ok2I176egRmm",
+          "name": "entries"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblbac3wwWJAmUthL",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldg0EayAJAV97hAk"
+          },
+          "id": "fldkYTY4DCbkWtdRN",
+          "name": "collections"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwDxdIiJtTwWSlWU",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblbac3wwWJAmUthL",
+      "name": "collections",
+      "primaryFieldId": "fldzEg3rAofdzwNV7",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldzEg3rAofdzwNV7",
+          "name": "collection-id"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld8q3pkaYklhxIZF",
+          "name": "date"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldl6F36Z8jUG2aRF",
+          "name": "status"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldP6NZ9jTMNem45N",
+          "name": "started"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldVDdCFr0B5PiG7h",
+          "name": "completed"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld9b4U7lhT7KTN6O",
+          "name": "dataset-id"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld2CnXu3zrPoZGFa",
+          "name": "fingerprint"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldVO4mYQfmiGamVA",
+          "name": "message"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldFSqLhxH1TNuLON",
+          "name": "archive-file"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldCHbmPXiR2w5yvn",
+          "name": "show-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldIdQLqrgsZ8HtUa",
+          "name": "trainer-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldrvbE7cBw26nECU",
+          "name": "row-count"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblxutSCBQzmkJLLO",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldkYTY4DCbkWtdRN"
+          },
+          "id": "fldg0EayAJAV97hAk",
+          "name": "show-details"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbljBHTXEJn71RRIl",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld39u1CSm3bt54Ws"
+          },
+          "id": "fld2reJ8ELL6vPz0A",
+          "name": "trainers"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwPAosz82E5FzBjn",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblsVT0Poao9wKhs4",
+      "name": "rings",
+      "primaryFieldId": "fldsBS3uyzFtry4rO",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldsBS3uyzFtry4rO",
+          "name": "ring-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldRsge7UhDmCzlxk",
+          "name": "ring_date"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldPyJ7hucQHOfPFm",
+          "name": "ring_name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldWkeJFY8VJ0rvc9",
+          "name": "source-record"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldNsQaesQyyjPPbM",
+          "name": "show_id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldgGevAFpkeeMEiG",
+          "name": "customer_id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldd5WFOsT45gXilY",
+          "name": "facility_id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "flduvh3Zm8Hl2TQLa",
+          "name": "ring_id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldVd3fJH43GIxwsS",
+          "name": "ring_number"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fld7kyo2fDj1z2qBC",
+          "name": "is_selected_date"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblxutSCBQzmkJLLO",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldxYF3H7UELgYt2T"
+          },
+          "id": "fldqXyWBcmsMg9ZBi",
+          "name": "show-details"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblu9SBWyir2z4CCt",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld8wGxdSdAqk7cRS"
+          },
+          "id": "fldVyY2K7shBEK1Ux",
+          "name": "rings-helper"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblDhAutHYlDbvzNd",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldeHNP1diNFbGtbs"
+          },
+          "id": "fldVi7xB61Z2bTKPC",
+          "name": "entries"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwB7NDe6qS0jvGRU",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblu9SBWyir2z4CCt",
+      "name": "rings-helper",
+      "primaryFieldId": "fldvYPGqgOdzxrF2z",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldvYPGqgOdzxrF2z",
+          "name": "ring-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldcTY1e6jM9R34p2",
+          "name": "ring_name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldfeMWMDE6TwUVUK",
+          "name": "ring-nickname"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldpln8BAPpEGAjPw",
+          "name": "notes"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldMnFEXtBfeDWGG0",
+          "name": "source-record"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldoVplBIrvh4kLAk",
+          "name": "source-base"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldSXKDyOpIeeErJ2",
+          "name": "customer_id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldSB2PoLFXaNYxpi",
+          "name": "facility_id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fld9moLXbSWov79Lp",
+          "name": "ring_id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldPzQxvwoteYY6uK",
+          "name": "ring_number"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 6
+          },
+          "id": "fldveyHK74IQzANB0",
+          "name": "ring-lat"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 6
+          },
+          "id": "fldsG7XZbRCZUWQeM",
+          "name": "ring-lon"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblsVT0Poao9wKhs4",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldVyY2K7shBEK1Ux"
+          },
+          "id": "fld8wGxdSdAqk7cRS",
+          "name": "rings"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbl6Gk0HzDYrjxADE",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldcm2TdHGgGVINxf"
+          },
+          "id": "fldIaq0qafoDzboIt",
+          "name": "ring-walks"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwptSHWohbepSAsk",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tbl6Gk0HzDYrjxADE",
+      "name": "ring-walks",
+      "primaryFieldId": "fld4rA0fjJVMoqGPz",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fld4rA0fjJVMoqGPz",
+          "name": "walk-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldruO21V17eTPGD3",
+          "name": "tenant-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldv4OwnNCLIpQC64",
+          "name": "ring-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldkBuUP7RmZTgT9U",
+          "name": "barn-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldUVVmX7zPH55kDK",
+          "name": "confirmed-on"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldzOVyadkVpb9Avj",
+          "name": "notes"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldHY2VtLfi7sdwzP",
+          "name": "minutes"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "flddyZhOqxte1eg7U",
+          "name": "is-example"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblu9SBWyir2z4CCt",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldIaq0qafoDzboIt"
+          },
+          "id": "fldcm2TdHGgGVINxf",
+          "name": "rings-helper"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwUV3EL4krcb2Ki8",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblxMpG75KL3Nmt1v",
+      "name": "horses",
+      "primaryFieldId": "fldbVbMe1iYOqPzBb",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldbVbMe1iYOqPzBb",
+          "name": "horse-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldpBZEyAYofFqLgC",
+          "name": "horse-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldwRCycaSIS7APAp",
+          "name": "trainer-ids"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldahCCdflOeVOSJa",
+          "name": "first-seen"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldqSxHljhSxfV05C",
+          "name": "last-seen"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldT5ig0Arc3b1idQ",
+          "name": "source"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldxjULm2yWAlrpLQ",
+          "name": "horse-id"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fldiIqkeZk67iOSey",
+          "name": "disabled"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblDhAutHYlDbvzNd",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldnMh8lS6vhQqHZF"
+          },
+          "id": "fldPVhJF1rYMDvzQZ",
+          "name": "entries"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbljBHTXEJn71RRIl",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldWUTs0xfrEpODK3"
+          },
+          "id": "fldFIY4EdFhCe6iA1",
+          "name": "trainers"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldLQPowtCKtbG50g",
+          "name": "name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld7fqFPpOoR5JOWZ",
+          "name": "nick-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldlM2BEPWhUCFmzL",
+          "name": "show-name",
+          "description": "Registered/show display name of this horse or rider. Not the name of a competition and not proof of attendance."
+        },
+        {
+          "type": "multilineText",
+          "id": "fldnLX0zTsgoZqd5m",
+          "name": "aliases"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldZNfkULxyrv081m",
+          "name": "notes"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldty8YGzxOneqpxF",
+          "name": "trainer-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldQ7F6H6hsZWkG8k",
+          "name": "source-base"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldNfjl2X3BPntCMf",
+          "name": "source-table"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldbtC1Fz7VlOhBcL",
+          "name": "source-record"
+        },
+        {
+          "type": "url",
+          "id": "fldDXUzgSSg4C9sWR",
+          "name": "source-link"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldB2QO051SMbNok9",
+          "name": "source-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld7BPotwta2axzxe",
+          "name": "helper-refreshed"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldMZONCiJamVFvEi",
+          "name": "tenant-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldGwwKjNT4yY0P18",
+          "name": "trainer-id"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fldUnbWoBNaNDvpzm",
+          "name": "source-inactive"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fldPzj5YmELHHuuNB",
+          "name": "source-id-missing"
+        },
+        {
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "LOWER({fldLQPowtCKtbG50g}&\" | \"&{fld7fqFPpOoR5JOWZ}&\" | \"&{fldlM2BEPWhUCFmzL}&\" | \"&{fldnLX0zTsgoZqd5m}&\" | \"&{fldwRCycaSIS7APAp}&\" | \"&{fldMZONCiJamVFvEi})",
+            "referencedFieldIds": [
+              "fldLQPowtCKtbG50g",
+              "fld7fqFPpOoR5JOWZ",
+              "fldlM2BEPWhUCFmzL",
+              "fldnLX0zTsgoZqd5m",
+              "fldwRCycaSIS7APAp",
+              "fldMZONCiJamVFvEi"
+            ],
+            "result": {
+              "type": "singleLineText"
+            }
+          },
+          "id": "fldtYpQQCJDwfMLHP",
+          "name": "lookup-text",
+          "description": "Searchable helper names and exact identifiers; reflects manual nickname/name edits immediately."
+        }
+      ],
+      "views": [
+        {
+          "id": "viwbcSE9bsrv94lNY",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblll5l7eG5wc27uP",
+      "name": "riders",
+      "primaryFieldId": "fldekTBs6wsQFVFNx",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldekTBs6wsQFVFNx",
+          "name": "rider-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldBgPmPMfkG6CF0Z",
+          "name": "rider-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldHwxum1XvrrIsWH",
+          "name": "trainer-ids"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld63CBywkzAPIwuS",
+          "name": "first-seen"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldY1bWd8J79YYc7R",
+          "name": "last-seen"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldOT2fGp8YyxU0Q4",
+          "name": "source"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldI4L48fp0hJ2cUJ",
+          "name": "rider-id"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fldPrnMCimCdW0PSF",
+          "name": "disabled"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblDhAutHYlDbvzNd",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldRYhtYiRgiuXN8r"
+          },
+          "id": "fldEANCeAdn4KgbDN",
+          "name": "entries"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbljBHTXEJn71RRIl",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldoIT9gXVWoOuX6B"
+          },
+          "id": "flddwrR89IEn8B1gy",
+          "name": "trainers"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld5PjHm96bi6QoMs",
+          "name": "name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldHYyU2h5onlECBY",
+          "name": "nick-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldjjthpKFDPZB6Ee",
+          "name": "show-name",
+          "description": "Registered/show display name of this horse or rider. Not the name of a competition and not proof of attendance."
+        },
+        {
+          "type": "multilineText",
+          "id": "fldxD6yANHFnzMLAv",
+          "name": "aliases"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldV7emObMm6BGTs3",
+          "name": "notes"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldMqATzLBqo07u2w",
+          "name": "trainer-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldrf3lv6L0Cp1wRz",
+          "name": "source-base"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldc5LmAA6YuG0jMA",
+          "name": "source-table"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldLQlfz3k3CasBK4",
+          "name": "source-record"
+        },
+        {
+          "type": "url",
+          "id": "flduqjXDlSxHVbpOy",
+          "name": "source-link"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldrHQnFbK89RMLh6",
+          "name": "source-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "flda9EM4C4bsj5bvU",
+          "name": "helper-refreshed"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldDCCOZrkcRb3Flk",
+          "name": "tenant-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldo07kJQBpBmF35l",
+          "name": "trainer-id"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fldnirmsWCzA1o1LP",
+          "name": "source-inactive"
+        },
+        {
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          },
+          "id": "fldWvylseROSaYmRA",
+          "name": "source-id-missing"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldU13LSuwxuYKw1c",
+          "name": "first-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldVTPEEespbKrs5B",
+          "name": "last-name"
+        },
+        {
+          "type": "formula",
+          "options": {
+            "isValid": true,
+            "formula": "LOWER({fld5PjHm96bi6QoMs}&\" | \"&{fldHYyU2h5onlECBY}&\" | \"&{fldjjthpKFDPZB6Ee}&\" | \"&{fldxD6yANHFnzMLAv}&\" | \"&{fldHwxum1XvrrIsWH}&\" | \"&{fldDCCOZrkcRb3Flk}&\" | \"&{fldU13LSuwxuYKw1c}&\" | \"&{fldVTPEEespbKrs5B})",
+            "referencedFieldIds": [
+              "fld5PjHm96bi6QoMs",
+              "fldHYyU2h5onlECBY",
+              "fldjjthpKFDPZB6Ee",
+              "fldxD6yANHFnzMLAv",
+              "fldHwxum1XvrrIsWH",
+              "fldDCCOZrkcRb3Flk",
+              "fldU13LSuwxuYKw1c",
+              "fldVTPEEespbKrs5B"
+            ],
+            "result": {
+              "type": "singleLineText"
+            }
+          },
+          "id": "fldMT2MGh4Da4TtuZ",
+          "name": "lookup-text",
+          "description": "Searchable helper names and exact identifiers; reflects manual nickname/name edits immediately."
+        }
+      ],
+      "views": [
+        {
+          "id": "viwxvNNoAmLcK8jiW",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblDhAutHYlDbvzNd",
+      "name": "entries",
+      "primaryFieldId": "fld9osZXFFISdDHtE",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fld9osZXFFISdDHtE",
+          "name": "entry-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldWFKA0olb6KgcVe",
+          "name": "date"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldYtzfkoJZUSTTSj",
+          "name": "class-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldlOSY4iy0Y7Kzd7",
+          "name": "horse-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldBfporWjgVfs15n",
+          "name": "rider-name"
+        },
+        {
+          "type": "singleLineText",
+          "id": "flddNanaWoM2kMkug",
+          "name": "trainer-ids"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldmDisrtuGkb8zm9",
+          "name": "status"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldKZ8zX2nQKuAi8a",
+          "name": "source-json"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldCouqIrWvayaWTS",
+          "name": "schedule-key"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldGjFWUH4UrH7XP5",
+          "name": "schedule-link"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldSSRBfZuhKZ3Rin",
+          "name": "last-seen"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldzH429BdAEBaDru",
+          "name": "show-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldsttsAGkPtKyQBK",
+          "name": "entry-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldzaNReRMFm5Ad8p",
+          "name": "horse-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldc5u7RvXfehvZgm",
+          "name": "rider-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldk6FO81ht2SXt7W",
+          "name": "class-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldkmKmva0S4i7eGo",
+          "name": "ring-number"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblxutSCBQzmkJLLO",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "flds5Ok2I176egRmm"
+          },
+          "id": "fldGhqNtI5phVMvPv",
+          "name": "show-details"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblsVT0Poao9wKhs4",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldVi7xB61Z2bTKPC"
+          },
+          "id": "fldeHNP1diNFbGtbs",
+          "name": "rings"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblxMpG75KL3Nmt1v",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldPVhJF1rYMDvzQZ"
+          },
+          "id": "fldnMh8lS6vhQqHZF",
+          "name": "horses"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblll5l7eG5wc27uP",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldEANCeAdn4KgbDN"
+          },
+          "id": "fldRYhtYiRgiuXN8r",
+          "name": "riders"
+        },
+        {
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tbljBHTXEJn71RRIl",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldtgGRy1LiSkak3L"
+          },
+          "id": "fld569ZjJTyE7wtLP",
+          "name": "trainers"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwVKzAdDfP1H3hCd",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblYj2xTQG0Fq3QhU",
+      "name": "run-logs",
+      "primaryFieldId": "fldjs4VY5CqbxR4eL",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldjs4VY5CqbxR4eL",
+          "name": "run-id"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldPUHFs3DUEmWEvI",
+          "name": "started"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fld45KMthYz1r2PPO",
+          "name": "completed"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldqgh2wwwsu0R0XP",
+          "name": "result"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldWwx7EIk6ZcerBH",
+          "name": "summary"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldfldvR9JDl4OJfC",
+          "name": "errors"
+        },
+        {
+          "type": "multilineText",
+          "id": "fld3MPzeQZTDeTKNE",
+          "name": "archives"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldMHaAsp4nHvvqZH",
+          "name": "show-id"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldMbYCl3rbYBat1E",
+          "name": "rows"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldKHzY6vpK7W6dh5",
+          "name": "days-complete"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fldAANJuOGjZHIqww",
+          "name": "days-failed"
+        },
+        {
+          "type": "number",
+          "options": {
+            "precision": 0
+          },
+          "id": "fld2Kv0dMcdJFVKrY",
+          "name": "archive-count"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwZbSUwrVZ17YVl6",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    {
+      "id": "tblXKj2knWLvJ80mQ",
+      "name": "code-reviews",
+      "primaryFieldId": "fldEGZTUJoyUVkl42",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fldEGZTUJoyUVkl42",
+          "name": "routine"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldC3j8ujTmMRImi1",
+          "name": "last-review"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldL5dePZNAH93VAF",
+          "name": "last-result"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldgME0wnbtjB3Afb",
+          "name": "next-review"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldJ5KRFlwDqpyZ2a",
+          "name": "cadence"
+        },
+        {
+          "type": "multilineText",
+          "id": "fldhQdMpeMTMijjhT",
+          "name": "notes"
+        }
+      ],
+      "views": [
+        {
+          "id": "viw3Iuj7sEA55R9Gs",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    }
+  ]
+}

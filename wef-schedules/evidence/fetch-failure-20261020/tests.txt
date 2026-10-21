@@ -1,0 +1,761 @@
+TAP version 13
+# Subtest: safe GET retries a failed response body without treating it as an empty table
+ok 1 - safe GET retries a failed response body without treating it as an empty table
+  ---
+  duration_ms: 2.7561
+  type: 'test'
+  ...
+# Subtest: exhausted failures report read scope and nested cause without query or credentials
+ok 2 - exhausted failures report read scope and nested cause without query or credentials
+  ---
+  duration_ms: 1.5015
+  type: 'test'
+  ...
+# Subtest: authentication errors, invalid JSON and invalid list shape fail explicitly without empty fallback
+ok 3 - authentication errors, invalid JSON and invalid list shape fail explicitly without empty fallback
+  ---
+  duration_ms: 1.1449
+  type: 'test'
+  ...
+# Subtest: read timeout covers response body as well as headers and remains bounded
+ok 4 - read timeout covers response body as well as headers and remains bounded
+  ---
+  duration_ms: 22.8678
+  type: 'test'
+  ...
+# Subtest: rate-limited read retries and releases prior response body
+ok 5 - rate-limited read retries and releases prior response body
+  ---
+  duration_ms: 1.4797
+  type: 'test'
+  ...
+# Subtest: actual Airtable list adapter retries body disconnects and returns retained records
+ok 6 - actual Airtable list adapter retries body disconnects and returns retained records
+  ---
+  duration_ms: 521.5357
+  type: 'test'
+  ...
+# Subtest: migration archives exact old records, removes duplicate snapshots and leaves one current key
+ok 7 - migration archives exact old records, removes duplicate snapshots and leaves one current key
+  ---
+  duration_ms: 130.5348
+  type: 'test'
+  ...
+# Subtest: repeat process and real edits update in place, preserve unrelated fields and archive history
+ok 8 - repeat process and real edits update in place, preserve unrelated fields and archive history
+  ---
+  duration_ms: 31.9149
+  type: 'test'
+  ...
+# Subtest: failed fetch preserves current rows and last complete state
+ok 9 - failed fetch preserves current rows and last complete state
+  ---
+  duration_ms: 51.4981
+  type: 'test'
+  ...
+# Subtest: partial materialization does not promote checkpoint and subsequent normal invocation can converge
+ok 10 - partial materialization does not promote checkpoint and subsequent normal invocation can converge
+  ---
+  duration_ms: 37.7293
+  type: 'test'
+  ...
+# Subtest: successful default transition retires old show only through explicit finalize and preserves archive
+ok 11 - successful default transition retires old show only through explicit finalize and preserves archive
+  ---
+  duration_ms: 36.0321
+  type: 'test'
+  ...
+# Subtest: current store integrates two collector repeats without growing either table
+ok 12 - current store integrates two collector repeats without growing either table
+  ---
+  duration_ms: 183.7742
+  type: 'test'
+  ...
+# Subtest: projection exposes source values without invented times or transport duplicates
+ok 13 - projection exposes source values without invented times or transport duplicates
+  ---
+  duration_ms: 0.2916
+  type: 'test'
+  ...
+# Subtest: every archive emits verified scope count and path; retirement reports cleanup after archive
+ok 14 - every archive emits verified scope count and path; retirement reports cleanup after archive
+  ---
+  duration_ms: 29.707
+  type: 'test'
+  ...
+# Subtest: failed archive is logged and never permits retirement deletion
+ok 15 - failed archive is logged and never permits retirement deletion
+  ---
+  duration_ms: 34.5814
+  type: 'test'
+  ...
+# Subtest: identical stage-key duplicates archive before cleanup and preserve survivor and other scopes on repeat
+ok 16 - identical stage-key duplicates archive before cleanup and preserve survivor and other scopes on repeat
+  ---
+  duration_ms: 110.3716
+  type: 'test'
+  ...
+# Subtest: duplicate POST results converge within normal collection and remain stable on repeat
+ok 17 - duplicate POST results converge within normal collection and remain stable on repeat
+  ---
+  duration_ms: 54.2542
+  type: 'test'
+  ...
+# Subtest: unverified survivor blocks duplicate deletion and checkpoint promotion
+ok 18 - unverified survivor blocks duplicate deletion and checkpoint promotion
+  ---
+  duration_ms: 42.6334
+  type: 'test'
+  ...
+# Subtest: duplicate archive failure prevents deletion and retains complete checkpoint
+ok 19 - duplicate archive failure prevents deletion and retains complete checkpoint
+  ---
+  duration_ms: 32.4098
+  type: 'test'
+  ...
+# Subtest: failed duplicate cleanup blocks completion and later normal invocation converges
+ok 20 - failed duplicate cleanup blocks completion and later normal invocation converges
+  ---
+  duration_ms: 78.1346
+  type: 'test'
+  ...
+# Subtest: heartbeat projects saved run outcome and source date, repeat updates same row
+ok 21 - heartbeat projects saved run outcome and source date, repeat updates same row
+  ---
+  duration_ms: 4.6511
+  type: 'test'
+  ...
+# Subtest: early failure clears old scope and stores error instead of previous success
+ok 22 - early failure clears old scope and stores error instead of previous success
+  ---
+  duration_ms: 0.5633
+  type: 'test'
+  ...
+# Subtest: lost create response reconciles once and never retries POST
+ok 23 - lost create response reconciles once and never retries POST
+  ---
+  duration_ms: 1.0639
+  type: 'test'
+  ...
+# Subtest: duplicate status rows stop before any mutation
+ok 24 - duplicate status rows stop before any mutation
+  ---
+  duration_ms: 0.3452
+  type: 'test'
+  ...
+# Subtest: only finished saved runs can become status; empty optional cells may be omitted
+ok 25 - only finished saved runs can become status; empty optional cells may be omitted
+  ---
+  duration_ms: 1.0398
+  type: 'test'
+  ...
+# Subtest: corrupt readback and failed patch are explicit failures
+ok 26 - corrupt readback and failed patch are explicit failures
+  ---
+  duration_ms: 0.8025
+  type: 'test'
+  ...
+# Subtest: heartbeat preserves verified run show relation and clears it on unknown scope
+ok 27 - heartbeat preserves verified run show relation and clears it on unknown scope
+  ---
+  duration_ms: 1.5097
+  type: 'test'
+  ...
+# Subtest: private dependency graph has no imports outside package
+ok 28 - private dependency graph has no imports outside package
+  ---
+  duration_ms: 27.0231
+  type: 'test'
+  ...
+# Subtest: legacy settings cannot change private base paths or credentials
+ok 29 - legacy settings cannot change private base paths or credentials
+  ---
+  duration_ms: 208.2172
+  type: 'test'
+  ...
+# Subtest: private fallback and PowerShell paths stay inside package
+ok 30 - private fallback and PowerShell paths stay inside package
+  ---
+  duration_ms: 14.0429
+  type: 'test'
+  ...
+# Subtest: copied package runs offline tests without its original checkout
+ok 31 - copied package runs offline tests without its original checkout
+  ---
+  duration_ms: 1694.7178
+  type: 'test'
+  ...
+# Subtest: copied PowerShell request retains all five parameters
+ok 32 - copied PowerShell request retains all five parameters
+  ---
+  duration_ms: 793.4244
+  type: 'test'
+  ...
+# Subtest: verified show/ring totals are readable in the scheduled run log
+ok 33 - verified show/ring totals are readable in the scheduled run log
+  ---
+  duration_ms: 17.3334
+  type: 'test'
+  ...
+# Subtest: real collector publishes one readable run log across all show days
+ok 34 - real collector publishes one readable run log across all show days
+  ---
+  duration_ms: 69.7234
+  type: 'test'
+  ...
+# Subtest: discovery failure is recorded without rerunning collector
+ok 35 - discovery failure is recorded without rerunning collector
+  ---
+  duration_ms: 4.1173
+  type: 'test'
+  ...
+# Subtest: warnings and partial failures preserve readable per-day results and observed counts
+ok 36 - warnings and partial failures preserve readable per-day results and observed counts
+  ---
+  duration_ms: 2.5813
+  type: 'test'
+  ...
+# Subtest: bounded logs archive exact completed record before reusing its slot; running rows retained
+ok 37 - bounded logs archive exact completed record before reusing its slot; running rows retained
+  ---
+  duration_ms: 27.8551
+  type: 'test'
+  ...
+# Subtest: log write and readback failures are explicit
+ok 38 - log write and readback failures are explicit
+  ---
+  duration_ms: 3.4409
+  type: 'test'
+  ...
+# Subtest: omitted Airtable blank cells pass while corrupt populated values fail readback
+ok 39 - omitted Airtable blank cells pass while corrupt populated values fail readback
+  ---
+  duration_ms: 2.4035
+  type: 'test'
+  ...
+# Subtest: committed create timeout is recovered by run ID without a second POST
+ok 40 - committed create timeout is recovered by run ID without a second POST
+  ---
+  duration_ms: 1.3407
+  type: 'test'
+  ...
+# Subtest: uncommitted and ambiguous create outcomes fail without retrying POST
+ok 41 - uncommitted and ambiguous create outcomes fail without retrying POST
+  ---
+  duration_ms: 2.4121
+  type: 'test'
+  ...
+# Subtest: archive events persist on owning run and cleanup updates same file entry
+ok 42 - archive events persist on owning run and cleanup updates same file entry
+  ---
+  duration_ms: 2.4598
+  type: 'test'
+  ...
+# Subtest: heartbeat uses the verified terminal run log for success, warning and early failure
+ok 43 - heartbeat uses the verified terminal run log for success, warning and early failure
+  ---
+  duration_ms: 2.2751
+  type: 'test'
+  ...
+# Subtest: heartbeat failure is recorded in owning run-log and surfaces as failure
+ok 44 - heartbeat failure is recorded in owning run-log and surfaces as failure
+  ---
+  duration_ms: 1.895
+  type: 'test'
+  ...
+# Subtest: catalog links verified terminal log before heartbeat publishes show relation
+ok 45 - catalog links verified terminal log before heartbeat publishes show relation
+  ---
+  duration_ms: 1.6264
+  type: 'test'
+  ...
+# Subtest: catalog failure stops status publication and is recorded in run history
+ok 46 - catalog failure stops status publication and is recorded in run history
+  ---
+  duration_ms: 1.5636
+  type: 'test'
+  ...
+# Subtest: PowerShell wrapper retains stderr and exact exit 7 fixture fetch failed: ECONNRESET
+ok 47 - PowerShell wrapper retains stderr and exact exit 7 fixture fetch failed: ECONNRESET
+  ---
+  duration_ms: 1642.0704
+  type: 'test'
+  ...
+# Subtest: PowerShell wrapper retains stderr and exact exit 0 fixture warning
+ok 48 - PowerShell wrapper retains stderr and exact exit 0 fixture warning
+  ---
+  duration_ms: 1045.8834
+  type: 'test'
+  ...
+# Subtest: PowerShell wrapper retains stderr and exact exit 0 
+ok 49 - PowerShell wrapper retains stderr and exact exit 0 
+  ---
+  duration_ms: 713.6113
+  type: 'test'
+  ...
+# Subtest: wrapper fails explicitly when native launch produces no exit code
+ok 50 - wrapper fails explicitly when native launch produces no exit code
+  ---
+  duration_ms: 1197.0389
+  type: 'test'
+  ...
+# Subtest: wrapper keeps failure default when command returns without a native exit code
+ok 51 - wrapper keeps failure default when command returns without a native exit code
+  ---
+  duration_ms: 678.5078
+  type: 'test'
+  ...
+# Subtest: structured matching avoids substring and wrong-ring matches; compact PM parses
+ok 52 - structured matching avoids substring and wrong-ring matches; compact PM parses
+  ---
+  duration_ms: 4.0987
+  type: 'test'
+  ...
+# Subtest: ambiguous rows retain prior time and report unmatched
+ok 53 - ambiguous rows retain prior time and report unmatched
+  ---
+  duration_ms: 0.7535
+  type: 'test'
+  ...
+# Subtest: failed or empty capture preserves prior times without inventing new ones
+ok 54 - failed or empty capture preserves prior times without inventing new ones
+  ---
+  duration_ms: 1.6833
+  type: 'test'
+  ...
+# Subtest: both existing manual override spellings and manual HTML retain their times
+ok 55 - both existing manual override spellings and manual HTML retain their times
+  ---
+  duration_ms: 0.7358
+  type: 'test'
+  ...
+# Subtest: empty schedule day does not launch browser
+ok 56 - empty schedule day does not launch browser
+  ---
+  duration_ms: 0.2275
+  type: 'test'
+  ...
+# Subtest: copied browser loading checks show/day and closes browser on failure
+ok 57 - copied browser loading checks show/day and closes browser on failure
+  ---
+  duration_ms: 2.0038
+  type: 'test'
+  ...
+# Subtest: EST START applies to all group classes and carries until next printed time, including zero entries
+ok 58 - EST START applies to all group classes and carries until next printed time, including zero entries
+  ---
+  duration_ms: 1.5114
+  type: 'test'
+  ...
+# Subtest: time inheritance never crosses rings, days or captures
+ok 59 - time inheritance never crosses rings, days or captures
+  ---
+  duration_ms: 0.4231
+  type: 'test'
+  ...
+# Subtest: inherited times still respect manual overrides and failed capture preservation
+ok 60 - inherited times still respect manual overrides and failed capture preservation
+  ---
+  duration_ms: 0.8764
+  type: 'test'
+  ...
+# Subtest: actual rendered VanKampen rows inherit table ring and match720/787/835 to08:00
+ok 61 - actual rendered VanKampen rows inherit table ring and match720/787/835 to08:00
+  ---
+  duration_ms: 1.5532
+  type: 'test'
+  ...
+# Subtest: actual table correction retains manual overrides and previous values on capture failure
+ok 62 - actual table correction retains manual overrides and previous values on capture failure
+  ---
+  duration_ms: 0.9363
+  type: 'test'
+  ...
+# Subtest: table ring identity cannot leak into unknown or conflicting tables or other days
+ok 63 - table ring identity cannot leak into unknown or conflicting tables or other days
+  ---
+  duration_ms: 0.695
+  type: 'test'
+  ...
+# Subtest: missing-link group inherits preceding time only within its own ring table
+ok 64 - missing-link group inherits preceding time only within its own ring table
+  ---
+  duration_ms: 0.3891
+  type: 'test'
+  ...
+# schedule_normalizer_machine_key tests passed
+# Subtest: wef-schedules\\tests\\schedule_normalizer_machine_key.test.js
+ok 8 - wef-schedules\\tests\\schedule_normalizer_machine_key.test.js
+  ---
+  duration_ms: 233.883
+  type: 'test'
+  ...
+# schedules_daily_class_list_enrichment tests passed
+# Subtest: wef-schedules\\tests\\schedules_daily_class_list_enrichment.test.js
+ok 9 - wef-schedules\\tests\\schedules_daily_class_list_enrichment.test.js
+  ---
+  duration_ms: 198.897
+  type: 'test'
+  ...
+# schedules_daily_empty_ping tests passed
+# Subtest: wef-schedules\\tests\\schedules_daily_empty_ping.test.js
+ok 10 - wef-schedules\\tests\\schedules_daily_empty_ping.test.js
+  ---
+  duration_ms: 249.2705
+  type: 'test'
+  ...
+# schedules_daily_forward_schedule_dates tests passed
+# Subtest: wef-schedules\\tests\\schedules_daily_forward_schedule_dates.test.js
+ok 11 - wef-schedules\\tests\\schedules_daily_forward_schedule_dates.test.js
+  ---
+  duration_ms: 271.7828
+  type: 'test'
+  ...
+# schedules_daily_live_groups_fallback tests passed
+# Subtest: wef-schedules\\tests\\schedules_daily_live_groups_fallback.test.js
+ok 12 - wef-schedules\\tests\\schedules_daily_live_groups_fallback.test.js
+  ---
+  duration_ms: 304.8068
+  type: 'test'
+  ...
+# schedules_daily_night_shift_scope tests passed
+# Subtest: wef-schedules\\tests\\schedules_daily_night_shift_scope.test.js
+ok 13 - wef-schedules\\tests\\schedules_daily_night_shift_scope.test.js
+  ---
+  duration_ms: 202.0212
+  type: 'test'
+  ...
+# schedules_daily_schedule_fallback tests passed
+# Subtest: wef-schedules\\tests\\schedules_daily_schedule_fallback.test.js
+ok 14 - wef-schedules\\tests\\schedules_daily_schedule_fallback.test.js
+  ---
+  duration_ms: 405.8692
+  type: 'test'
+  ...
+# Subtest: all show days collected with no runtime reads or writes
+ok 72 - all show days collected with no runtime reads or writes
+  ---
+  duration_ms: 54.9829
+  type: 'test'
+  ...
+# Subtest: unchanged recurring collection reuses existing datasets
+ok 73 - unchanged recurring collection reuses existing datasets
+  ---
+  duration_ms: 12.1526
+  type: 'test'
+  ...
+# Subtest: source failure preserves last completed data
+ok 74 - source failure preserves last completed data
+  ---
+  duration_ms: 5.2017
+  type: 'test'
+  ...
+# Subtest: partial write never becomes complete
+ok 75 - partial write never becomes complete
+  ---
+  duration_ms: 2.0502
+  type: 'test'
+  ...
+# Subtest: readback corruption prevents completion
+ok 76 - readback corruption prevents completion
+  ---
+  duration_ms: 2.2456
+  type: 'test'
+  ...
+# Subtest: in-progress collection leaves completed snapshot available
+ok 77 - in-progress collection leaves completed snapshot available
+  ---
+  duration_ms: 5.0495
+  type: 'test'
+  ...
+# Subtest: missing show bounds reject without guessing focus dates
+ok 78 - missing show bounds reject without guessing focus dates
+  ---
+  duration_ms: 0.9458
+  type: 'test'
+  ...
+# Subtest: same-day keys track adds changes drops and preserve inactive history
+ok 79 - same-day keys track adds changes drops and preserve inactive history
+  ---
+  duration_ms: 2.3583
+  type: 'test'
+  ...
+# Subtest: empty response cannot drop established records
+ok 80 - empty response cannot drop established records
+  ---
+  duration_ms: 9.4699
+  type: 'test'
+  ...
+# Subtest: returning dropped record reactivates without deleting history
+ok 81 - returning dropped record reactivates without deleting history
+  ---
+  duration_ms: 0.697
+  type: 'test'
+  ...
+# Subtest: all days reconcile independently and repeated drops are not reissued
+ok 82 - all days reconcile independently and repeated drops are not reissued
+  ---
+  duration_ms: 25.3903
+  type: 'test'
+  ...
+# Subtest: wrong date and malformed payload never replace a saved snapshot
+ok 83 - wrong date and malformed payload never replace a saved snapshot
+  ---
+  duration_ms: 5.6111
+  type: 'test'
+  ...
+# Subtest: rotating token evidence does not change semantic schedules or stored datasets
+ok 84 - rotating token evidence does not change semantic schedules or stored datasets
+  ---
+  duration_ms: 11.0601
+  type: 'test'
+  ...
+# Subtest: valid empty in-range days warn while failed retrieval remains failure
+ok 85 - valid empty in-range days warn while failed retrieval remains failure
+  ---
+  duration_ms: 2.4525
+  type: 'test'
+  ...
+# Subtest: estimated times cover every show day, changes update snapshots, failure preserves them
+ok 86 - estimated times cover every show day, changes update snapshots, failure preserves them
+  ---
+  duration_ms: 18.2868
+  type: 'test'
+  ...
+# Subtest: collector processes today then tomorrow before fallback dates and keeps zero-entry classes
+ok 87 - collector processes today then tomorrow before fallback dates and keeps zero-entry classes
+  ---
+  duration_ms: 5.1952
+  type: 'test'
+  ...
+# Subtest: discovers new/current/new show and persists focus independently
+ok 88 - discovers new/current/new show and persists focus independently
+  ---
+  duration_ms: 126.6008
+  type: 'test'
+  ...
+# Subtest: focus rollover does not restrict the complete show range
+ok 89 - focus rollover does not restrict the complete show range
+  ---
+  duration_ms: 0.7762
+  type: 'test'
+  ...
+# Subtest: manual focus and attachment settings persist only for their own show
+ok 90 - manual focus and attachment settings persist only for their own show
+  ---
+  duration_ms: 49.5222
+  type: 'test'
+  ...
+# Subtest: invalid discovery leaves last saved focus intact
+ok 91 - invalid discovery leaves last saved focus intact
+  ---
+  duration_ms: 7.9659
+  type: 'test'
+  ...
+# Subtest: mismatched default response is rejected
+ok 92 - mismatched default response is rejected
+  ---
+  duration_ms: 1.6858
+  type: 'test'
+  ...
+# Subtest: collector transport disables legacy audit on both fetch paths
+ok 93 - collector transport disables legacy audit on both fetch paths
+  ---
+  duration_ms: 0.6168
+  type: 'test'
+  ...
+# Subtest: overlapping collector is rejected without invoking SGL
+ok 94 - overlapping collector is rejected without invoking SGL
+  ---
+  duration_ms: 4.2578
+  type: 'test'
+  ...
+# Subtest: complete scheduled entry discovers once, collects, then repeats without duplicate datasets
+ok 95 - complete scheduled entry discovers once, collects, then repeats without duplicate datasets
+  ---
+  duration_ms: 44.096
+  type: 'test'
+  ...
+# Subtest: default changes before next show without inventing contiguous days
+ok 96 - default changes before next show without inventing contiguous days
+  ---
+  duration_ms: 10.6705
+  type: 'test'
+  ...
+# Subtest: scheduled entry passes already-fetched day payloads to references and saves their verified result
+ok 97 - scheduled entry passes already-fetched day payloads to references and saves their verified result
+  ---
+  duration_ms: 12.5621
+  type: 'test'
+  ...
+# Subtest: reference-stage failure logs the run failure and releases the lock without repeating the stage
+ok 98 - reference-stage failure logs the run failure and releases the lock without repeating the stage
+  ---
+  duration_ms: 14.7582
+  type: 'test'
+  ...
+# Subtest: priority uses New York calendar day and preserves every show date
+ok 99 - priority uses New York calendar day and preserves every show date
+  ---
+  duration_ms: 1.5613
+  type: 'test'
+  ...
+# Subtest: SGL day changes reorder all days without altering manual focus or scope
+ok 100 - SGL day changes reorder all days without altering manual focus or scope
+  ---
+  duration_ms: 10.045
+  type: 'test'
+  ...
+# Subtest: missing invalid and out-of-range SGL default days retain calendar ordering with reason
+ok 101 - missing invalid and out-of-range SGL default days retain calendar ordering with reason
+  ---
+  duration_ms: 13.4563
+  type: 'test'
+  ...
+# Subtest: camel-case default date and last show day never add a day outside the show
+ok 102 - camel-case default date and last show day never add a day outside the show
+  ---
+  duration_ms: 3.5875
+  type: 'test'
+  ...
+# Subtest: catalog derives historical name/full dates and verified unique counts without restoring archived rows
+ok 103 - catalog derives historical name/full dates and verified unique counts without restoring archived rows
+  ---
+  duration_ms: 23.7657
+  type: 'test'
+  ...
+# Subtest: archive verification failure stops before any index or relation writes
+ok 104 - archive verification failure stops before any index or relation writes
+  ---
+  duration_ms: 0.9032
+  type: 'test'
+  ...
+# Subtest: uncertain creation reconciles once and preserves stable identities
+ok 105 - uncertain creation reconciles once and preserves stable identities
+  ---
+  duration_ms: 1.2756
+  type: 'test'
+  ...
+# Subtest: same archived record in multiple files is counted once and active current show is not called archived
+ok 106 - same archived record in multiple files is counted once and active current show is not called archived
+  ---
+  duration_ms: 0.7683
+  type: 'test'
+  ...
+# Subtest: real compressed archives require the exact digest and approved history path
+ok 107 - real compressed archives require the exact digest and approved history path
+  ---
+  duration_ms: 9.9592
+  type: 'test'
+  ...
+# Subtest: Airtable omitted false checkboxes do not fail archived-show creation/readback
+ok 108 - Airtable omitted false checkboxes do not fail archived-show creation/readback
+  ---
+  duration_ms: 1.1581
+  type: 'test'
+  ...
+# Subtest: unknown failed run clears retained show relation instead of linking heartbeat to old scope
+ok 109 - unknown failed run clears retained show relation instead of linking heartbeat to old scope
+  ---
+  duration_ms: 0.7423
+  type: 'test'
+  ...
+# Subtest: show archive index survives run-log retention and keeps verifying saved file references
+ok 110 - show archive index survives run-log retention and keeps verifying saved file references
+  ---
+  duration_ms: 2.0285
+  type: 'test'
+  ...
+# Subtest: source date wins, daily rings link every schedule, repeated runs preserve IDs and static details
+ok 111 - source date wins, daily rings link every schedule, repeated runs preserve IDs and static details
+  ---
+  duration_ms: 15.6345
+  type: 'test'
+  ...
+# Subtest: helper lookup accepts each identifier within facility, rejects conflicts and ambiguity
+ok 112 - helper lookup accepts each identifier within facility, rejects conflicts and ambiguity
+  ---
+  duration_ms: 2.2842
+  type: 'test'
+  ...
+# Subtest: blank helper identity fills from source without overwriting owner fields
+ok 113 - blank helper identity fills from source without overwriting owner fields
+  ---
+  duration_ms: 4.4152
+  type: 'test'
+  ...
+# Subtest: missing source date never falls back to computer date and invalid sources write nothing
+ok 114 - missing source date never falls back to computer date and invalid sources write nothing
+  ---
+  duration_ms: 1.3744
+  type: 'test'
+  ...
+# Subtest: a committed creation timeout is reconciled once without a second POST
+ok 115 - a committed creation timeout is reconciled once without a second POST
+  ---
+  duration_ms: 2.5478
+  type: 'test'
+  ...
+# Subtest: uncertain uncommitted creation stops and never repeats POST
+ok 116 - uncertain uncommitted creation stops and never repeats POST
+  ---
+  duration_ms: 0.9111
+  type: 'test'
+  ...
+# Subtest: default show/date rollover clears old selection without deleting old records
+ok 117 - default show/date rollover clears old selection without deleting old records
+  ---
+  duration_ms: 2.4512
+  type: 'test'
+  ...
+# Subtest: missing or ambiguous schedule ring mapping stops without modifying schedule data
+ok 118 - missing or ambiguous schedule ring mapping stops without modifying schedule data
+  ---
+  duration_ms: 0.5486
+  type: 'test'
+  ...
+# Subtest: patch readback mismatch fails the new stage
+ok 119 - patch readback mismatch fails the new stage
+  ---
+  duration_ms: 1.3469
+  type: 'test'
+  ...
+# Subtest: conflicting source identities across dates fail before writes
+ok 120 - conflicting source identities across dates fail before writes
+  ---
+  duration_ms: 0.7813
+  type: 'test'
+  ...
+# Subtest: Airtable omitted unchecked boxes are accepted on readback
+ok 121 - Airtable omitted unchecked boxes are accepted on readback
+  ---
+  duration_ms: 2.0276
+  type: 'test'
+  ...
+# Subtest: retained dropped schedules keep historical rings when source removes that ring
+ok 122 - retained dropped schedules keep historical rings when source removes that ring
+  ---
+  duration_ms: 1.7808
+  type: 'test'
+  ...
+# Subtest: first adoption does not invent a ring for a dropped row absent from source
+ok 123 - first adoption does not invent a ring for a dropped row absent from source
+  ---
+  duration_ms: 1.3988
+  type: 'test'
+  ...
+# Subtest: new record batches are paced without repeating POSTs
+ok 124 - new record batches are paced without repeating POSTs
+  ---
+  duration_ms: 1.2607
+  type: 'test'
+  ...
+1..124
+# tests 124
+# suites 0
+# pass 124
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5572.7002

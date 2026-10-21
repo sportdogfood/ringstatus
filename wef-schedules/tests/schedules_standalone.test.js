@@ -65,9 +65,56 @@ test('default changes before next show without inventing contiguous days',async 
  assert.equal(again.state.default_show.code,'default_show_current');assert.equal(again.state.default_show.phase,'upcoming');
 });
 
+test('scheduled entry passes already-fetched day payloads to references and saves their verified result',async t=>{
+ const files=temp(t),f=fixture(),datasets=new Map();let syncCalls=0;
+ const store={async begin(fields){return {fields};},async latest(){return null;},async writeRows(id,show,date,rows){datasets.set(id,rows);},async loadRows(id){return datasets.get(id)||[];},async finish(){}};
+ const source=f.io.fetchJson;f.io.fetchJson=async u=>{const url=new URL(u);if(url.pathname==='/ring')return {show:{show_id:74}};const p=await source(u);p.show={show_id:74,facility_id:516,start_date:'2026-10-15',end_date:'2026-10-17'};return p;};
+ const references={async sync({payloads,days,show}){syncCalls++;assert.equal(payloads.size,3);assert.ok(days.every(d=>payloads.get(d.date).show_date===d.date));assert.equal(show.fields.sgl_default_day,'2026-10-15');return {ok:true,selected_date:'2026-10-15',rings:6,helpers:2,schedule_links:3};}};
+ const report=await runStagedCollector({...files,store,io:f.io,now:NOW,references});assert.equal(syncCalls,1);assert.equal(report.references.schedule_links,3);assert.deepEqual(JSON.parse(fs.readFileSync(files.statePath)).last_collection.references,report.references);
+});
+
+test('reference-stage failure logs the run failure and releases the lock without repeating the stage',async t=>{
+ const files=temp(t),f=fixture(),datasets=new Map();let calls=0,finished;
+ const store={async begin(fields){return {fields};},async latest(){return null;},async writeRows(id,show,date,rows){datasets.set(id,rows);},async loadRows(id){return datasets.get(id)||[];},async finish(){}};
+ const source=f.io.fetchJson;f.io.fetchJson=async u=>{const url=new URL(u);if(url.pathname==='/ring')return {show:{show_id:74}};const p=await source(u);p.show={show_id:74,start_date:'2026-10-15',end_date:'2026-10-17'};return p;};
+ const runLog={async begin(){return {id:'log'};},async finish(record,report,error){finished={report,error};}};
+ await assert.rejects(runStagedCollector({...files,store,io:f.io,now:NOW,runLog,references:{async sync(){calls++;throw Error('reference failure');}}}),/reference failure/);
+ assert.equal(calls,1);assert.equal(finished.report.days.length,3);assert.match(finished.error.message,/reference failure/);assert.equal(fs.existsSync(files.lockPath),false);
+});
+
 
 test('priority uses New York calendar day and preserves every show date',()=>{
  const fields={start_date:'2026-10-14',end_date:'2026-10-18'};
  assert.deepEqual(s.selectedDays(fields,'2026-10-16T01:00:00Z'),['2026-10-15','2026-10-16','2026-10-17','2026-10-18','2026-10-14']);
  assert.deepEqual(s.selectedDays(fields,'2026-10-17T12:00:00Z'),['2026-10-17','2026-10-18','2026-10-14','2026-10-15','2026-10-16']);
+});
+
+
+test('SGL day changes reorder all days without altering manual focus or scope',async t=>{
+ const files=temp(t),overrides={'74':{focus_day:'2026-10-18'}};
+ fs.writeFileSync(files.statePath,JSON.stringify({overrides}));
+ const io=day=>({fetchJson:async u=>new URL(u).pathname==='/ring'?{show:{show_id:74}}:{show:{show_id:74,start_date:'2026-10-15',end_date:'2026-10-18'},show_date:day}});
+ const first=await s.discoverFocus({...files,io:io('2026-10-15'),now:NOW});
+ const next=await s.discoverFocus({...files,io:io('2026-10-16'),now:NOW});
+ assert.deepEqual(s.selectedDays(first.show.fields,NOW),['2026-10-15','2026-10-16','2026-10-17','2026-10-18']);
+ assert.deepEqual(s.selectedDays(next.show.fields,NOW),['2026-10-16','2026-10-17','2026-10-18','2026-10-15']);
+ assert.equal(next.show.fields.focus_day,'2026-10-18');assert.deepEqual(next.state.overrides,overrides);
+ assert.equal(next.state.default_show.schedule_day.previous,'2026-10-15');assert.equal(next.state.default_show.schedule_day.current,'2026-10-16');
+ assert.equal(s.explicitScope(next.show,'2026-10-18',NOW).mode,'DAY');
+ assert.equal(s.explicitScope(next.show,'2026-10-16',NOW).mode,'NIGHT');
+});
+test('missing invalid and out-of-range SGL default days retain calendar ordering with reason',async t=>{
+ const files=temp(t);
+ for(const day of [undefined,'bad','2026-02-30','2026-10-19']) {
+  const io={fetchJson:async u=>new URL(u).pathname==='/ring'?{show:{show_id:74}}:{show:{show_id:74,start_date:'2026-10-15',end_date:'2026-10-18'},show_date:day}};
+  const r=await s.discoverFocus({...files,io,now:NOW});
+  assert.equal(r.show.fields.sgl_default_day,null);assert.ok(r.state.default_show.schedule_day.fallback_reason);
+  assert.deepEqual(s.selectedDays(r.show.fields,NOW),['2026-10-15','2026-10-16','2026-10-17','2026-10-18']);
+ }
+});
+test('camel-case default date and last show day never add a day outside the show',async t=>{
+ const files=temp(t);const io={fetchJson:async u=>new URL(u).pathname==='/ring'?{show:{show_id:74}}:{show:{show_id:74,start_date:'2026-10-15',end_date:'2026-10-18'},showDate:'2026-10-18'}};
+ const r=await s.discoverFocus({...files,io,now:NOW});
+ assert.deepEqual(s.selectedDays(r.show.fields,NOW),['2026-10-18','2026-10-15','2026-10-16','2026-10-17']);
+ assert.equal(r.state.default_show.schedule_day.fallback_reason,null);
 });

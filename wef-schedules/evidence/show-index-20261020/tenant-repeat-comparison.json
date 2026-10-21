@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "first": "7ae7cce6-4c65-4ef7-85c6-2db17840c3cc",
+  "second": "0b6ad1b6-0a63-46df-92e7-ac8bbbd1dafc",
+  "first_completed": "2026-10-20T18:27:44.691Z",
+  "second_completed": "2026-10-20T18:32:43.764Z",
+  "stable_tables": [
+    "tenant-details",
+    "trainers",
+    "heartbeat",
+    "show-details",
+    "collections",
+    "rings",
+    "rings-helper",
+    "ring-walks",
+    "horses",
+    "riders",
+    "entries",
+    "code-reviews"
+  ],
+  "new_run_logs": 1,
+  "verified_archive_events": 12
+}

@@ -20,18 +20,31 @@ function columns(row,show,date,dataset,changedAt) {
  f.status=row.inactive?'dropped':'active';f['changed-at']=changedAt;
  return f;
 }
-function currentStore({baseId=settings.SCHEDULE_STAGING_BASE_ID,collections='collections',schedules='schedules',api=legacy,
- historyRoot=path.join(path.dirname(settings.SCHEDULE_FOCUS_FILE),'history'),removeRecords}={}) {
+function currentStore({baseId=settings.SCHEDULE_STAGING_BASE_ID,collections=settings.SCHEDULE_COLLECTIONS_TABLE,schedules='schedules',api=legacy,
+ historyRoot=path.join(path.dirname(settings.SCHEDULE_FOCUS_FILE),'history'),removeRecords,onArchive}={}) {
  if(baseId!==settings.SCHEDULE_STAGING_BASE_ID) throw Error('Current store is restricted to the independent schedules base');
  const list=(table,q={})=>api.airtableList(table,q,baseId);
  const checked=r=>{if(r.failedRows?.length)throw Error('Required staging write failed: '+JSON.stringify(r.failedRows));};
- const archive=(name,value)=>{
-  const file=path.join(historyRoot,name+'.json.gz');fs.mkdirSync(path.dirname(file),{recursive:true});
-  const body=Buffer.from(JSON.stringify(value));
-  if(fs.existsSync(file)) {if(!zlib.gunzipSync(fs.readFileSync(file)).equals(body))throw Error('History collision '+name);return;}
-  const tmp=file+'.tmp';fs.writeFileSync(tmp,zlib.gzipSync(body));
-  if(!zlib.gunzipSync(fs.readFileSync(tmp)).equals(body))throw Error('History verification failed');fs.renameSync(tmp,file);
+ const archive=async(name,value,scope={})=>{
+  const file=path.join(historyRoot,name+'.json.gz'),items=Array.isArray(value)?value:value.collections?[...value.collections,...value.schedules]:[value];
+  const fields=items.map(r=>r.fields||r),event={at:new Date().toISOString(),kind:name.split('/')[0],file,records:items.length,
+   shows:[...new Set(fields.map(f=>Number(f['show-id']??f.show_id)).filter(Number.isFinite))],
+   dates:[...new Set(fields.map(f=>f.date||f.show_date).filter(Boolean))],...scope};
+  try {
+   fs.mkdirSync(path.dirname(file),{recursive:true});const body=Buffer.from(JSON.stringify(value));
+   if(fs.existsSync(file)){if(!zlib.gunzipSync(fs.readFileSync(file)).equals(body))throw Error('History collision '+name);event.outcome='Reused';}
+   else {const tmp=file+'.tmp';fs.writeFileSync(tmp,zlib.gzipSync(body));if(!zlib.gunzipSync(fs.readFileSync(tmp)).equals(body))throw Error('History verification failed');fs.renameSync(tmp,file);event.outcome='Created';}
+   event.sha256=crypto.createHash('sha256').update(body).digest('hex');
+  } catch(error){if(onArchive)await onArchive({...event,outcome:'Failed',error:String(error.message||error)});throw error;}
+  if(onArchive)await onArchive(event);return event;
  };
+ async function archiveThenRemove(name,records,table){
+  const event=await archive(name,records);
+  try {await remove(table,records.map(r=>r.id));}
+  catch(error){if(onArchive)await onArchive({...event,cleanup:'Failed',error:String(error.message||error)});throw error;}
+  if(onArchive)await onArchive({...event,cleanup:'Complete'});
+ }
+
  const read=name=>JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(historyRoot,name+'.json.gz'))));
  const safe=s=>{if(!/^[A-Za-z0-9_-]+$/.test(String(s)))throw Error('Invalid history identifier');return String(s);};
  const checkpoint=path.join(historyRoot,'current.json');let state={},ready=false;
@@ -53,23 +66,24 @@ function currentStore({baseId=settings.SCHEDULE_STAGING_BASE_ID,collections='col
   if(ready)return;
   if(fs.existsSync(checkpoint)){state=JSON.parse(fs.readFileSync(checkpoint));ready=true;return;}
   const attempts=await list(collections),records=await list(schedules);
-  archive('initial-airtable', {collections:attempts,schedules:records});
+  await archive('initial-airtable', {collections:attempts,schedules:records});
   const datasets=new Map();for(const r of records){const id=r.fields['dataset-id'];if(!datasets.has(id))datasets.set(id,[]);datasets.get(id).push(JSON.parse(r.fields['row-json']));}
-  for(const [id,rows] of datasets)archive('datasets/'+safe(id),rows);
+  for(const [id,rows] of datasets)await archive('datasets/'+safe(id),rows);
   for(const r of attempts.filter(r=>r.fields.status==='complete')){
    const f=r.fields,key=`${f['show-id']}|${f.date}`;
    if(!state[key]||f.completed>state[key].fields.completed)state[key]=r;
    // Empty datasets have no schedule records.
-   if(!datasets.has(f['dataset-id'])){if(f['row-count']!==0)throw Error('Historical dataset missing');archive('datasets/'+safe(f['dataset-id']),[]);}
+   if(!datasets.has(f['dataset-id'])){if(f['row-count']!==0)throw Error('Historical dataset missing');await archive('datasets/'+safe(f['dataset-id']),[]);}
   }
   for(const r of Object.values(state))require('./store').verifyDataset(r,read('datasets/'+safe(r.fields['dataset-id'])),r.fields['show-id'],r.fields.date);
   save();ready=true;
  }
  async function sync(show,date,dataset,rows){
-  const all=await list(schedules);const current=all.filter(r=>{
+  const inScope=r=>{
    if(r.fields['show-id']!==undefined)return Number(r.fields['show-id'])===Number(show)&&r.fields.date===date;
    const row=JSON.parse(r.fields['row-json']);return Number(row.fields.show_id)===Number(show)&&legacy.resolveExistingScheduleShowDate({fields:row.fields})===date;
-  });
+  };
+  const all=await list(schedules),current=all.filter(inScope);
   const desired=new Map(rows.map(row=>[`${show}|${date}|${row.key}`,row]));if(desired.size!==rows.length)throw Error('Duplicate current schedule key');
   if(all.length-current.length+rows.length>=4900)throw Error('Staging capacity warning: current schedule exceeds 4900 rows; existing data retained');
   const groups=new Map();for(const r of current){const row=JSON.parse(r.fields['row-json']);const key=`${show}|${date}|${row.key}`;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r);}
@@ -81,17 +95,39 @@ function currentStore({baseId=settings.SCHEDULE_STAGING_BASE_ID,collections='col
   }
   if(patches.length)checked(await api.airtablePatchRecords(schedules,patches,baseId));
   if(creates.length)checked(await api.airtableCreateRecords(schedules,creates,baseId));
-  const saved=await list(schedules);for(const [key,row] of desired){const matches=saved.filter(r=>r.fields['stage-key']===key);if(matches.length!==1)throw Error('Current schedule key readback mismatch');const expected=columns(row,show,date,dataset,matches[0].fields['changed-at']);for(const [k,v] of Object.entries(expected))if(JSON.stringify(matches[0].fields[k]??null)!==JSON.stringify(v))throw Error('Current field readback mismatch '+k);}
-  const extras=current.filter(r=>!keep.has(r.id));if(extras.length){archive('removed/'+crypto.randomUUID(),extras);await remove(schedules,extras.map(r=>r.id));}
+  const saved=await list(schedules),survivors=new Set();
+  // Verify the selected survivor before allowing exact archived duplicates to
+  // be removed. A successful retried POST can return multiple identical keys.
+  function verifyRow(record,row){
+   const expected=columns(row,show,date,dataset,record.fields['changed-at']);
+   for(const [k,v] of Object.entries(expected))if(JSON.stringify(record.fields[k]??null)!==JSON.stringify(v))throw Error('Current field readback mismatch '+k);
+  }
+  for(const [key,row] of desired){
+   const matches=saved.filter(r=>r.fields['stage-key']===key);
+   const survivor=matches.find(r=>keep.has(r.id))||matches[0];
+   if(!survivor)throw Error('Current schedule key readback mismatch');
+   verifyRow(survivor,row);survivors.add(survivor.id);
+  }
+  // Include duplicates created during this invocation, not only rows seen at
+  // its start. Scope and survivor readback remain prerequisites for cleanup.
+  const extras=saved.filter(r=>inScope(r)&&!survivors.has(r.id));
+  if(extras.length)await archiveThenRemove('removed/'+crypto.randomUUID(),extras,schedules);
+  const final=extras.length?await list(schedules):saved;
+  for(const [key,row] of desired){
+   const matches=final.filter(r=>r.fields['stage-key']===key);
+   if(matches.length!==1||!survivors.has(matches[0].id))throw Error('Current schedule key readback mismatch');
+   verifyRow(matches[0],row);
+  }
+
  }
  return {
   async begin(fields){await init();return {fields:{...fields}};},
   async latest(show,date){await init();return state[`${show}|${date}`]||null;},
-  async writeRows(dataset,show,date,rows){archive('datasets/'+safe(dataset),rows);},
+  async writeRows(dataset,show,date,rows){await archive('datasets/'+safe(dataset),rows,{shows:[Number(show)],dates:[date]});},
   async loadRows(dataset){return read('datasets/'+safe(dataset));},
   async finish(record,fields){
    const merged={...record.fields,...fields},key=`${merged['show-id']}|${merged.date}`;
-   archive('attempts/'+safe(merged['collection-id'])+'-'+safe(fields.status),merged);
+   await archive('attempts/'+safe(merged['collection-id'])+'-'+safe(fields.status),merged);
    if(fields.status==='complete')await sync(merged['show-id'],merged.date,merged['dataset-id'],read('datasets/'+safe(merged['dataset-id'])));
    const prior=(await list(collections)).filter(r=>Number(r.fields['show-id'])===merged['show-id']&&r.fields.date===merged.date);
    const existing=prior.find(r=>r.id===state[key]?.id)||prior[0];
@@ -100,13 +136,13 @@ function currentStore({baseId=settings.SCHEDULE_STAGING_BASE_ID,collections='col
    const saved=(await list(collections)).find(r=>r.fields['collection-id']===merged['collection-id']);if(!saved)throw Error('Collection readback missing');
    for(const [k,v] of Object.entries(payload))if(JSON.stringify(saved.fields[k])!==JSON.stringify(v))throw Error('Collection readback mismatch '+k);
    if(fields.status==='complete'){state[key]=saved;save();}
-   const extras=prior.filter(r=>r.id!==saved.id);if(extras.length){archive('removed/'+crypto.randomUUID(),extras);await remove(collections,extras.map(r=>r.id));}
+   const extras=prior.filter(r=>r.id!==saved.id);if(extras.length){await archiveThenRemove('removed/'+crypto.randomUUID(),extras,collections);}
    return saved;
   },
   async finalize(show){
    // Only after every new-show day succeeds. Retire old-show Airtable data,
    // preserving exact records in the separate verified archive first.
-   for(const table of [schedules,collections]){const old=(await list(table)).filter(r=>Number(r.fields['show-id'])!==Number(show));if(old.length){archive('retired/'+crypto.randomUUID(),old);await remove(table,old.map(r=>r.id));}}
+   for(const table of [schedules,collections]){const old=(await list(table)).filter(r=>Number(r.fields['show-id'])!==Number(show));if(old.length){await archiveThenRemove('retired/'+crypto.randomUUID(),old,table);}}
   }
  };
 }

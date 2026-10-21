@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "first": "6867ae7a-6a76-44b3-a3ee-c006269cbf52",
+  "second": "94059842-a96a-42e6-887b-5aabe6039704",
+  "same_heartbeat_record_id": "recrPBYzI2s6XpW0O",
+  "heartbeat_rows": 1,
+  "new_run_logs": 1,
+  "schedule_records_preserved": 435,
+  "rings_preserved": 24,
+  "static_helpers_preserved": 6,
+  "collections_preserved": 4,
+  "collection_attempt_ids": "rotate per existing baseline; record IDs and datasets stable",
+  "verified_archives": 8
+}

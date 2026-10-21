@@ -221,7 +221,7 @@ async function collectStagedSchedules({store=stageStore(),io={},shows,now=new Da
 
       await store.finish(record,completed);
 
-      days.push({show_id:showId,date,ok:true,dataset_id:datasetId,unchanged:datasetId!==id,changes,warnings,token_rotated_rows:rotatedRows});
+      days.push({show_id:showId,date,ok:true,dataset_id:datasetId,unchanged:datasetId!==id,changes,warnings,row_count:observed.length,token_rotated_rows:rotatedRows});
 
     } catch(error) {
 
@@ -239,32 +239,48 @@ async function collectStagedSchedules({store=stageStore(),io={},shows,now=new Da
 
 }
 
-async function runStagedCollector({lockPath=settings.SCHEDULE_COLLECTION_LOCK,statePath=settings.SCHEDULE_FOCUS_FILE,...options}={}) {
+async function runStagedCollector({lockPath=settings.SCHEDULE_COLLECTION_LOCK,statePath=settings.SCHEDULE_FOCUS_FILE,runLog,references,...options}={}) {
 
   if(!lockPath) throw new Error("Explicit collector-only lock path required");
 
   const release=shared.acquireLock(lockPath);
+  let runRecord,report,runError;
 
   try {
 
     // Validate destination before contacting SGL. No legacy base fallback.
 
-    const store=options.store||stageStore();
+    const store=options.store||stageStore({onArchive:runLog?event=>runLog.archive(runRecord,event):undefined});
+    if(runLog) runRecord=await runLog.begin();
 
     const found=await shared.discoverFocus({statePath,io:options.io,now:options.now});
 
     const adapters=shared.collectorIO(options.io);
+    const payloads=new Map();
 
-    const report=await collectStagedSchedules({...options,store,shows:[found.show],io:{...adapters,
+    report=await collectStagedSchedules({...options,store,shows:[found.show],io:{...adapters,
 
-      fetchJson:(url,audit)=>url===found.endpoint?Promise.resolve(found.payload):adapters.fetchJson(url,audit)}});
+      fetchJson:async(url,audit)=>{
+        const payload=url===found.endpoint?found.payload:await adapters.fetchJson(url,audit);
+        if(references){const endpoint=new URL(url),date=endpoint.searchParams.get('date');
+          if(endpoint.pathname==='/schedule'&&/^\d{4}-\d{2}-\d{2}$/.test(date||''))payloads.set(date,payload);
+        }
+        return payload;
+      }}});
 
     if(report.ok && store.finalize) await store.finalize(found.show.fields.show_id);
+    if(report.ok && references) report.references=await references.sync({show:found.show,payload:found.payload,payloads,days:report.days,now:options.now||new Date().toISOString()});
     await shared.atomicReport(statePath,{...found.state,last_collection:report});
 
-    return {...report,discovery:found.state.discovery,default_show:found.state.default_show,focus_day:found.show.fields.focus_day};
+    report={...report,discovery:found.state.discovery,default_show:found.state.default_show,focus_day:found.show.fields.focus_day};
+    return report;
 
-  } finally {release();}
+  } catch(error) {runError=error;throw error;}
+  finally {
+    try {if(runRecord) await runLog.finish(runRecord,report,runError);}
+    catch(logError) {throw Error((runError?runError.message+"; ":"")+"Run log completion failed: "+logError.message);}
+    finally {release();}
+  }
 
 }
 

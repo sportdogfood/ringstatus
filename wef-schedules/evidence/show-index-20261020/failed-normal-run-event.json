@@ -1,0 +1,14 @@
+{
+  "observed_at": "2026-10-20T14:37:14.4054662-04:00",
+  "verification": "STOPPED after failed required second normal run; no manual rerun or code/data repair",
+  "events": [
+    {
+      "TimeCreated": "2026-10-20T14:35:25.0172569-04:00",
+      "Id": 4100,
+      "Message": "Error Message = The running command stopped because the preference variable \"ErrorActionPreference\" or common parameter is set to Stop: fetch failed\r\nFully Qualified Error ID = NativeCommandError\r\n\r\n\r\nContext:\r\n        Severity = Warning\r\n        Host Name = ConsoleHost\r\n        Host Version = 5.1.26100.9750\r\n        Host ID = 212dd9d4-3e85-4070-8a1c-046044101629\r\n        Host Application = C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\run.ps1\r\n        Engine Version = 5.1.26100.9750\r\n        Runspace ID = 83d72ffb-bd7a-4384-9ca9-779739c927d2\r\n        Pipeline ID = 1\r\n        Command Name = node.exe\r\n        Command Type = Application\r\n        Script Name = C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\run.ps1\r\n        Command Path = C:\\Program Files\\nodejs\\node.exe\r\n        Sequence Number = 45\r\n        User = DESKTOP-BSKUK1V\\gombc\r\n        Connected User = \r\n        Shell ID = Microsoft.PowerShell\r\n\r\n\r\nUser Data:\r\n\r\n"
+    }
+  ],
+  "last_start": "2026-10-20T14:35:01-04:00",
+  "last_result": 1,
+  "next_run": "2026-10-20T14:40:00-04:00"
+}

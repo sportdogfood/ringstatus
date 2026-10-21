@@ -1,0 +1,11 @@
+{
+  "task_definitions_changed": [],
+  "normal_schedule_pass": 1,
+  "record_repairs": 0,
+  "manual_runs": 0,
+  "normal_schedule_required": 2,
+  "checked_at": "2026-10-20T14:37:39.9265017-04:00",
+  "patches_after_failure": 0,
+  "second_normal_result": "FAIL fetch failed",
+  "verification_path_stopped": true
+}

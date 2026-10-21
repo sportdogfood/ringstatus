@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-10-20T18:11:55.853389+00:00",
+  "acceptance": "PASS: two normal scheduled runs, one stable heartbeat row matching terminal run-logs,435 preserved schedules,8 verified archive events",
+  "tests_passed": 102,
+  "source_focused_tests_passed": 18,
+  "normal_runs": [
+    {
+      "run_id": "6867ae7a-6a76-44b3-a3ee-c006269cbf52",
+      "completed": "2026-10-20T18:05:57.292Z",
+      "result": "Warning"
+    },
+    {
+      "run_id": "94059842-a96a-42e6-887b-5aabe6039704",
+      "completed": "2026-10-20T18:10:45.906Z",
+      "result": "Warning"
+    }
+  ],
+  "manual_runs": 0,
+  "existing_workflows_changed": false,
+  "evidence": "evidence/heartbeat-20261020",
+  "heartbeat_table": "tblj077efYbhlznOJ"
+}

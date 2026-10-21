@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "first": "66a332a1-f19f-4dd7-ae07-d2519aca9f1d",
+  "second": "8ed835ef-f19e-4df7-a8ca-f2a37966ebfb",
+  "first_completed": "2026-10-20T19:10:47.154Z",
+  "second_completed": "2026-10-20T19:15:46.783Z",
+  "schedule_rows_verified_per_run": 435,
+  "current_archives_verified": 8,
+  "historical_archives_verified_per_run": 2,
+  "stable_record_tables": [
+    "schedules",
+    "rings",
+    "rings-helper",
+    "show-collection",
+    "shows"
+  ],
+  "static_ring_helper_values_preserved": true,
+  "show_archive_metadata_preserved": true,
+  "same_heartbeat_record": true,
+  "new_run_logs": 1,
+  "earlier_logs_unchanged": true,
+  "wrapper_end": "END 2026-10-20T15:15:48.9213960-04:00 exit=0"
+}

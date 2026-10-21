@@ -1,0 +1,165 @@
+{
+  "helpers": [
+    {
+      "id": "rec2Y5yTbOtivElAQ",
+      "createdTime": "2026-10-20T15:35:59.000Z",
+      "fields": {
+        "ring-key": "15|516|id:48",
+        "walk-tenant": [
+          "rec7Q4OoHsaGTHKUb"
+        ],
+        "ring_number": 5,
+        "ring_id": 48,
+        "ring-walk": 14,
+        "rings": [
+          "recz9ZXC4Ukfi3Is7",
+          "recBUe9F9Q2Y3vbJp",
+          "recHIExwk65eIfgJs",
+          "recSTT2xnC1aItb7W"
+        ],
+        "facility_id": 516,
+        "ring-walk-is-example": true,
+        "ring_name": "GDF Hunter Ring 1",
+        "customer_id": 15
+      }
+    },
+    {
+      "id": "rec4laRvUmKzVMYAr",
+      "createdTime": "2026-10-20T15:35:59.000Z",
+      "fields": {
+        "ring-key": "15|516|id:10",
+        "walk-tenant": [
+          "rec7Q4OoHsaGTHKUb"
+        ],
+        "ring_number": 1,
+        "ring_id": 10,
+        "ring-walk": 8,
+        "rings": [
+          "recn49r7qTBFO8tZn",
+          "rechuoiAkv2zxJAfl",
+          "recJkHr8IsQ4tTpnf",
+          "recaPsjFvrE8je3SF"
+        ],
+        "facility_id": 516,
+        "ring-walk-is-example": true,
+        "ring_name": "Equestrian Village Derby Field",
+        "customer_id": 15
+      }
+    },
+    {
+      "id": "recGVWTImr1s4z3tH",
+      "createdTime": "2026-10-20T15:35:59.000Z",
+      "fields": {
+        "ring-key": "15|516|id:13",
+        "walk-tenant": [
+          "rec7Q4OoHsaGTHKUb"
+        ],
+        "ring_number": 4,
+        "ring_id": 13,
+        "ring-walk": 12,
+        "rings": [
+          "recUmdoW5PibiQpbm",
+          "recbhsVOUjk0SwFQw",
+          "recHWUknIoNjyaqGl",
+          "recqbNilKgNeHu0GI"
+        ],
+        "facility_id": 516,
+        "ring-walk-is-example": true,
+        "ring_name": "Equestrian Village International Ring",
+        "customer_id": 15
+      }
+    },
+    {
+      "id": "recXfbMKxRe5G2eXR",
+      "createdTime": "2026-10-20T15:35:59.000Z",
+      "fields": {
+        "ring-key": "15|516|id:3",
+        "walk-tenant": [
+          "rec7Q4OoHsaGTHKUb"
+        ],
+        "ring_number": 2,
+        "ring_id": 3,
+        "ring-walk": 10,
+        "rings": [
+          "recnVFATkL84Ku10h",
+          "recCXzrmzN9i9czWc",
+          "recDJZqm10KckoYU1",
+          "recgK7sjhFfPoVaVy"
+        ],
+        "facility_id": 516,
+        "ring-walk-is-example": true,
+        "ring_name": "Annex Derby Field",
+        "customer_id": 15
+      }
+    },
+    {
+      "id": "recu3PI7sdyLW74Vk",
+      "createdTime": "2026-10-20T15:35:59.000Z",
+      "fields": {
+        "ring-key": "15|516|id:44",
+        "walk-tenant": [
+          "rec7Q4OoHsaGTHKUb"
+        ],
+        "ring_number": 3,
+        "ring_id": 44,
+        "ring-walk": 6,
+        "rings": [
+          "recyTSpj8CXPQczez",
+          "recLYOk2Kbh6HzMXb",
+          "recFYApztRDzKB6VC",
+          "recAcF6gmE0JNjEwi"
+        ],
+        "facility_id": 516,
+        "ring-walk-is-example": true,
+        "ring_name": "VanKampen Covered Arena",
+        "customer_id": 15
+      }
+    },
+    {
+      "id": "recxnTCS3rX3B6SFg",
+      "createdTime": "2026-10-20T15:35:59.000Z",
+      "fields": {
+        "ring-key": "15|516|id:45",
+        "walk-tenant": [
+          "rec7Q4OoHsaGTHKUb"
+        ],
+        "ring_number": 6,
+        "ring_id": 45,
+        "ring-walk": 16,
+        "rings": [
+          "rectFyUKWylVjgS7Q",
+          "recVW5pqGmAPhqLeo",
+          "recj2wZeyytmSsKfW",
+          "rec1kVeHFdi7956G6"
+        ],
+        "facility_id": 516,
+        "ring-walk-is-example": true,
+        "ring_name": "GDF Hunter Ring 2",
+        "customer_id": 15
+      }
+    }
+  ],
+  "tenants": [
+    {
+      "id": "rec7Q4OoHsaGTHKUb",
+      "createdTime": "2026-10-20T16:09:10.000Z",
+      "fields": {
+        "barn-lat": 26.633278,
+        "barn-name": "home",
+        "tenant-name": "CWF",
+        "barn-lon": -80.277224,
+        "tenant-key": "CWF",
+        "rings-helper": [
+          "rec2Y5yTbOtivElAQ",
+          "rec4laRvUmKzVMYAr",
+          "recGVWTImr1s4z3tH",
+          "recXfbMKxRe5G2eXR",
+          "recu3PI7sdyLW74Vk",
+          "recxnTCS3rX3B6SFg"
+        ],
+        "notes": "Owner-confirmed tenant. Linked ring walking minutes are fabricated examples until confirmed times are supplied.\n\n2026-10-20 — Owner decision: keep all six fabricated CWF walking times for now (rings 1–6: 8, 10, 6, 12, 14, 16 minutes). Keep ring-walk-is-example checked. These are demonstration values, not measured walking times. Replacement with confirmed times and mapped paths is deferred until further instruction. Next work is determining tenant fields and links.\n\n2026-10-20 — Owner selected the RingMap pin 'home' as CWF's default show-barn walking starting point. Opened that specific pin and copied latitude 26.633278, longitude -80.277224. Source: https://www.google.com/maps/place/26.633277999999997,-80.27722399999999/@26.6313646,-80.2790453,16z/data=!4m8!1m3!11m2!2s86AtMipL4VWvBlzTphGNDA!3e3!3m3!8m2!3d26.633278!4d-80.277224?entry=ttu&g_ep=EgoyMDI2MTAxNC4wIKXMDSoASAFQAw%3D%3D. This is the default location; a show-specific override can be added later. The six example CWF walking times and example flags remain unchanged; no route calculation is implied.",
+        "barn-map": "https://www.google.com/maps/place/26.633277999999997,-80.27722399999999/@26.6313646,-80.2790453,16z/data=!4m8!1m3!11m2!2s86AtMipL4VWvBlzTphGNDA!3e3!3m3!8m2!3d26.633278!4d-80.277224?entry=ttu&g_ep=EgoyMDI2MTAxNC4wIKXMDSoASAFQAw%3D%3D"
+      }
+    }
+  ]
+}

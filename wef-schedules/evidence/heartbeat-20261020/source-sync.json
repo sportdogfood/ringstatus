@@ -1,0 +1,14 @@
+{
+  "source": "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\wef-schedules",
+  "deployed": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules",
+  "files": [
+    "collect.js",
+    "run-logs.js",
+    "heartbeat.js",
+    "tests/heartbeat.test.js",
+    "tests/run_logs.test.js",
+    "configure-heartbeat.js",
+    "verify-heartbeat.js"
+  ],
+  "existing_baseline_matched": true
+}

@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-10-20T18:37:39.466067+00:00",
+  "status": "DEPLOYED_ACCEPTANCE_INCOMPLETE",
+  "acceptance": "1 of2 full schedules normal runs verified; required second14:35 exited1 fetch failed. Verification path stopped.",
+  "schedules_tests_passed": 113,
+  "source_tests_passed": 116,
+  "tenant_tests_passed": 42,
+  "first_schedule_run": {
+    "run_id": "cc63fbd3-dd95-479f-8ec5-810c98b31445",
+    "completed": "2026-10-20T18:30:46.499Z",
+    "result": "Warning",
+    "pass": true
+  },
+  "second_schedule_run": {
+    "started": "2026-10-20T18:35:01-00:00",
+    "task_exit": 1,
+    "error": "fetch failed",
+    "windows_event_at_eastern": "2026-10-20T14:35:25-04:00",
+    "new_run_log_observed": false,
+    "pass": false
+  },
+  "tenant_normal_runs_verified": [
+    "7ae7cce6-4c65-4ef7-85c6-2db17840c3cc",
+    "0b6ad1b6-0a63-46df-92e7-ac8bbbd1dafc"
+  ],
+  "historical_show": {
+    "id": 200000074,
+    "record": "recNXbBZ94kin9R3d",
+    "name": "ESP Fall II",
+    "dates": "2026-10-15/2026-10-18",
+    "archived_schedules": 499,
+    "archived_collections": 4,
+    "verified_files": 2
+  },
+  "manual_runs": 0,
+  "record_repairs": 0,
+  "patches_after_failure": 0,
+  "task_definitions_changed": false,
+  "evidence": "evidence/show-index-20261020"
+}

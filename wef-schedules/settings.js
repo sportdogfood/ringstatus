@@ -10,7 +10,7 @@ for(const key of ['AIRTABLE_TOKEN','SGL_DATA_BASE_URL','SGL_DIRECT_BASE_URL','SG
   if(process.env['WEF_SCHEDULES_'+key]) settings[key]=process.env['WEF_SCHEDULES_'+key];
 Object.assign(settings,{
   CUSTOMER_ID:'15',AIRTABLE_BASE_ID:'',SCHEDULE_STAGING_BASE_ID:'appUq5Qz9kARqFija',
-  SCHEDULE_COLLECTIONS_TABLE:'collections',SCHEDULE_STAGING_TABLE:'schedules',
+  SCHEDULE_COLLECTIONS_TABLE:'tblvGpwxGjXXNLKAU',SHOWS_TABLE:'tblBq3gXC0TYBCmMZ',SCHEDULE_STAGING_TABLE:'schedules',
   SCHEDULE_FOCUS_FILE:path.join(root,'focus.json'),SCHEDULE_COLLECTION_LOCK:path.join(root,'collector.lock'),
   SGL_PAYLOAD_ROOT:root,EARLY_SGL_PAYLOAD_ROOT:path.join(root,'cache'),
   EARLY_SCHEDULE_PAYLOAD_DIR:path.join(root,'cache','schedule'),

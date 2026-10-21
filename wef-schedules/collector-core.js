@@ -877,25 +877,11 @@ async function airtableList(tableName, queryParams = {}, baseId = AIRTABLE_BASE_
 
 
 
-    const response = await fetchWithRetry(url.toString(), {
-
+    const json = await require('./airtable-read').readAirtable(url.toString(), {
       headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` },
-
+      timeoutMs: HTTP_TIMEOUT_MS, attempts: AT_RETRY_ATTEMPTS,
+      baseMs: AT_RETRY_BASE_MS, maxMs: AT_RETRY_MAX_MS,
     });
-
-
-
-    if (!response.ok) {
-
-      const body = await response.text().catch(() => "");
-
-      throw new Error(`Airtable list failed (${response.status}) ${tableName}: ${body}`);
-
-    }
-
-
-
-    const json = await response.json().catch(() => ({}));
 
     records.push(...(json.records || []));
 

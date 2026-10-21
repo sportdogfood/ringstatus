@@ -270,7 +270,7 @@ module.exports={isoDate,selectedDays,explicitScope,acquireLock,atomicReport,loca
 if(require.main===module) {
   if(!settings.AIRTABLE_TOKEN) throw new Error('WEF_SCHEDULES_AIRTABLE_TOKEN required');
 
-  require('./store').runStagedCollector()
+  require('./store').runStagedCollector({runLog:require('./run-logs').runLogs({heartbeat:require('./heartbeat').heartbeat(),catalog:require('./show-index').showIndex()}),references:require('./show-rings').showRings()})
 
     .then(r=>{console.log(JSON.stringify(r,null,2));process.exitCode=r.ok?0:1;})
 

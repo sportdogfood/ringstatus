@@ -1,0 +1,14 @@
+[
+  {
+    "id": "recMaNo3AhWEUNJDK",
+    "createdTime": "2026-10-20T16:49:38.000Z",
+    "fields": {
+      "last-review": "2026-10-20T16:55:02.402Z",
+      "routine": "Weekly tenant collector review",
+      "cadence": "Monday 09:00 America/New_York",
+      "last-result": "PASS: independent review and 19 offline tests; final normal scheduled runs 2026-10-20 13:02 and 13:07 America/New_York verified. No entries for trainer 8778; four complete days,24 rings,6 helpers,6 example walks; stable record IDs and10 verified archive events across both runs. No manual runs.",
+      "next-review": "2026-10-26T09:00:00-04:00",
+      "notes": "Final repeat and preserved boundary evidence: docs/coordination/wef-tenant-cwf-release-20261020.md and wef-tenants/evidence/repeat-comparison.json. Nonempty/multiple-trainer, rollover and log-capacity branches are offline fixture-proven; live current-show source is empty. No legacy data repairs or existing task changes."
+    }
+  }
+]

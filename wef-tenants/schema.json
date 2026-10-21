@@ -1,0 +1,892 @@
+{
+  "baseId": "appxKPBtdl2Rdq7CS",
+  "sharedBaseId": "appUq5Qz9kARqFija",
+  "workspaceId": "wspHA1aKGRcTboZHc",
+  "tables": [
+    {
+      "name": "tenant-details",
+      "fields": [
+        {
+          "name": "tenant-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "tenant-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn-map",
+          "type": "singleLineText"
+        },
+        {
+          "name": "notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "tenant-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "barn-lat",
+          "type": "number",
+          "options": {
+            "precision": 6
+          }
+        },
+        {
+          "name": "barn-lon",
+          "type": "number",
+          "options": {
+            "precision": 6
+          }
+        },
+        {
+          "name": "active",
+          "type": "checkbox",
+          "options": {
+            "color": "greenBright",
+            "icon": "check"
+          }
+        }
+      ]
+    },
+    {
+      "name": "trainers",
+      "fields": [
+        {
+          "name": "trainer-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "trainer-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "role",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last-result",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last-checked",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last-error",
+          "type": "multilineText"
+        },
+        {
+          "name": "trainer-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "slot",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "active",
+          "type": "checkbox",
+          "options": {
+            "color": "greenBright",
+            "icon": "check"
+          }
+        }
+      ]
+    },
+    {
+      "name": "heartbeat",
+      "fields": [
+        {
+          "name": "heartbeat-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "checked-at",
+          "type": "singleLineText"
+        },
+        {
+          "name": "selected-date",
+          "type": "singleLineText"
+        },
+        {
+          "name": "result",
+          "type": "singleLineText"
+        },
+        {
+          "name": "summary",
+          "type": "multilineText"
+        },
+        {
+          "name": "errors",
+          "type": "multilineText"
+        },
+        {
+          "name": "show-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "show-details",
+      "fields": [
+        {
+          "name": "show-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "show_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "start_date",
+          "type": "singleLineText"
+        },
+        {
+          "name": "end_date",
+          "type": "singleLineText"
+        },
+        {
+          "name": "selected_date",
+          "type": "singleLineText"
+        },
+        {
+          "name": "available_dates",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last_checked",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-record",
+          "type": "singleLineText"
+        },
+        {
+          "name": "show_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "customer_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "facility_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "is_default",
+          "type": "checkbox",
+          "options": {
+            "color": "greenBright",
+            "icon": "check"
+          }
+        }
+      ]
+    },
+    {
+      "name": "collections",
+      "fields": [
+        {
+          "name": "collection-id",
+          "type": "singleLineText"
+        },
+        {
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "name": "status",
+          "type": "singleLineText"
+        },
+        {
+          "name": "started",
+          "type": "singleLineText"
+        },
+        {
+          "name": "completed",
+          "type": "singleLineText"
+        },
+        {
+          "name": "dataset-id",
+          "type": "singleLineText"
+        },
+        {
+          "name": "fingerprint",
+          "type": "singleLineText"
+        },
+        {
+          "name": "message",
+          "type": "multilineText"
+        },
+        {
+          "name": "archive-file",
+          "type": "singleLineText"
+        },
+        {
+          "name": "show-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "trainer-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "row-count",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "rings",
+      "fields": [
+        {
+          "name": "ring-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "ring_date",
+          "type": "singleLineText"
+        },
+        {
+          "name": "ring_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-record",
+          "type": "singleLineText"
+        },
+        {
+          "name": "show_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "customer_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "facility_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "ring_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "ring_number",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "is_selected_date",
+          "type": "checkbox",
+          "options": {
+            "color": "greenBright",
+            "icon": "check"
+          }
+        }
+      ]
+    },
+    {
+      "name": "rings-helper",
+      "fields": [
+        {
+          "name": "ring-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "ring_name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "ring-nickname",
+          "type": "singleLineText"
+        },
+        {
+          "name": "notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "source-record",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-base",
+          "type": "singleLineText"
+        },
+        {
+          "name": "customer_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "facility_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "ring_id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "ring_number",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "ring-lat",
+          "type": "number",
+          "options": {
+            "precision": 6
+          }
+        },
+        {
+          "name": "ring-lon",
+          "type": "number",
+          "options": {
+            "precision": 6
+          }
+        }
+      ]
+    },
+    {
+      "name": "ring-walks",
+      "fields": [
+        {
+          "name": "walk-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "tenant-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "ring-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "barn-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "confirmed-on",
+          "type": "singleLineText"
+        },
+        {
+          "name": "notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "minutes",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "is-example",
+          "type": "checkbox",
+          "options": {
+            "color": "greenBright",
+            "icon": "check"
+          }
+        }
+      ]
+    },
+    {
+      "name": "horses",
+      "fields": [
+        {
+          "name": "horse-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "horse-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "trainer-ids",
+          "type": "singleLineText"
+        },
+        {
+          "name": "first-seen",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last-seen",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source",
+          "type": "singleLineText"
+        },
+        {
+          "name": "horse-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "checkbox",
+          "options": {
+            "color": "greenBright",
+            "icon": "check"
+          }
+        },
+        {
+          "name": "name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "nick-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "show-name",
+          "type": "singleLineText",
+          "description": "Registered/show display name of this horse or rider. Not the name of a competition and not proof of attendance."
+        },
+        {
+          "name": "aliases",
+          "type": "multilineText"
+        },
+        {
+          "name": "notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "trainer-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-base",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-table",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-record",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-link",
+          "type": "url"
+        },
+        {
+          "name": "source-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "helper-refreshed",
+          "type": "singleLineText"
+        },
+        {
+          "name": "tenant-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "trainer-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "source-inactive",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "source-id-missing",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        }
+      ]
+    },
+    {
+      "name": "riders",
+      "fields": [
+        {
+          "name": "rider-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rider-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "trainer-ids",
+          "type": "singleLineText"
+        },
+        {
+          "name": "first-seen",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last-seen",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rider-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "checkbox",
+          "options": {
+            "color": "greenBright",
+            "icon": "check"
+          }
+        },
+        {
+          "name": "name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "nick-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "aliases",
+          "type": "multilineText"
+        },
+        {
+          "name": "notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "trainer-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-base",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-table",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-record",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-link",
+          "type": "url"
+        },
+        {
+          "name": "source-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "helper-refreshed",
+          "type": "singleLineText"
+        },
+        {
+          "name": "tenant-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "trainer-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "source-inactive",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "source-id-missing",
+          "type": "checkbox",
+          "options": {
+            "icon": "check",
+            "color": "greenBright"
+          }
+        },
+        {
+          "name": "first-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last-name",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "entries",
+      "fields": [
+        {
+          "name": "entry-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "name": "class-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "horse-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rider-name",
+          "type": "singleLineText"
+        },
+        {
+          "name": "trainer-ids",
+          "type": "singleLineText"
+        },
+        {
+          "name": "status",
+          "type": "singleLineText"
+        },
+        {
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "name": "schedule-key",
+          "type": "singleLineText"
+        },
+        {
+          "name": "schedule-link",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last-seen",
+          "type": "singleLineText"
+        },
+        {
+          "name": "show-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "entry-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "horse-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "rider-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "class-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "ring-number",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "run-logs",
+      "fields": [
+        {
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "name": "started",
+          "type": "singleLineText"
+        },
+        {
+          "name": "completed",
+          "type": "singleLineText"
+        },
+        {
+          "name": "result",
+          "type": "singleLineText"
+        },
+        {
+          "name": "summary",
+          "type": "multilineText"
+        },
+        {
+          "name": "errors",
+          "type": "multilineText"
+        },
+        {
+          "name": "archives",
+          "type": "multilineText"
+        },
+        {
+          "name": "show-id",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "rows",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "days-complete",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "days-failed",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "archive-count",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "code-reviews",
+      "fields": [
+        {
+          "name": "routine",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last-review",
+          "type": "singleLineText"
+        },
+        {
+          "name": "last-result",
+          "type": "singleLineText"
+        },
+        {
+          "name": "next-review",
+          "type": "singleLineText"
+        },
+        {
+          "name": "cadence",
+          "type": "singleLineText"
+        },
+        {
+          "name": "notes",
+          "type": "multilineText"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+TAP version 13
+# Subtest: Airtable omitted blank, false and empty links read back correctly; repeat creates none
+ok 1 - Airtable omitted blank, false and empty links read back correctly; repeat creates none
+  ---
+  duration_ms: 3.4035
+  type: 'test'
+  ...
+# Subtest: lost creation response reconciles using stable key without a second POST
+ok 2 - lost creation response reconciles using stable key without a second POST
+  ---
+  duration_ms: 0.9188
+  type: 'test'
+  ...
+# Subtest: unresolved creation cannot be resubmitted by a failure handler
+ok 3 - unresolved creation cannot be resubmitted by a failure handler
+  ---
+  duration_ms: 1.021
+  type: 'test'
+  ...
+# Subtest: API rejects writes to shared schedule tables and unknown bases
+ok 4 - API rejects writes to shared schedule tables and unknown bases
+  ---
+  duration_ms: 0.3979
+  type: 'test'
+  ...
+# Subtest: transport settings stay inside the new runtime
+ok 5 - transport settings stay inside the new runtime
+  ---
+  duration_ms: 0.1947
+  type: 'test'
+  ...
+# Subtest: legacy roster permits only GET on three source tables; all mutation methods fail
+ok 6 - legacy roster permits only GET on three source tables; all mutation methods fail
+  ---
+  duration_ms: 0.4454
+  type: 'test'
+  ...
+# Subtest: normal empty run covers four days; repeat does not duplicate references or collections
+ok 7 - normal empty run covers four days; repeat does not duplicate references or collections
+  ---
+  duration_ms: 12.851
+  type: 'test'
+  ...
+# Subtest: standing helpers populate with zero current-show entries and survive repeat source failure
+ok 8 - standing helpers populate with zero current-show entries and survive repeat source failure
+  ---
+  duration_ms: 4.9117
+  type: 'test'
+  ...
+# Subtest: standing helpers populate even when shared-show discovery is unavailable
+ok 9 - standing helpers populate even when shared-show discovery is unavailable
+  ---
+  duration_ms: 0.5876
+  type: 'test'
+  ...
+# Subtest: actual helper writes omit computed fields and nonempty entries preserve deliberately blank helper names
+ok 10 - actual helper writes omit computed fields and nonempty entries preserve deliberately blank helper names
+  ---
+  duration_ms: 2.5446
+  type: 'test'
+  ...
+# Subtest: one trainer failure is logged independently and preserves that trainer entries
+ok 11 - one trainer failure is logged independently and preserves that trainer entries
+  ---
+  duration_ms: 1.6405
+  type: 'test'
+  ...
+# Subtest: archive failure blocks dataset changes and old-show deletion
+ok 12 - archive failure blocks dataset changes and old-show deletion
+  ---
+  duration_ms: 0.5173
+  type: 'test'
+  ...
+# Subtest: late failure leaves heartbeat and tenant index terminal Failed
+ok 13 - late failure leaves heartbeat and tenant index terminal Failed
+  ---
+  duration_ms: 1.9282
+  type: 'test'
+  ...
+# Subtest: nonempty trainer datasets link all days, dedupe shared entries and preserve disabled roster
+ok 14 - nonempty trainer datasets link all days, dedupe shared entries and preserve disabled roster
+  ---
+  duration_ms: 14.9762
+  type: 'test'
+  ...
+# Subtest: log retention archives the exact finished row before reusing its ID
+ok 15 - log retention archives the exact finished row before reusing its ID
+  ---
+  duration_ms: 1.28
+  type: 'test'
+  ...
+# Subtest: show rollover archives exact old records before removing them
+ok 16 - show rollover archives exact old records before removing them
+  ---
+  duration_ms: 1.331
+  type: 'test'
+  ...
+# Subtest: archive is compressed, read back, content addressed and collision protected
+ok 17 - archive is compressed, read back, content addressed and collision protected
+  ---
+  duration_ms: 10.8679
+  type: 'test'
+  ...
+# Subtest: standing roster populates without a show or any entries
+ok 18 - standing roster populates without a show or any entries
+  ---
+  duration_ms: 1.4048
+  type: 'test'
+  ...
+# Subtest: repeat preserves owner helpers, aliases, notes and disabling while refreshing source facts
+ok 19 - repeat preserves owner helpers, aliases, notes and disabling while refreshing source facts
+  ---
+  duration_ms: 0.9165
+  type: 'test'
+  ...
+# Subtest: missing numeric ID retains a source identity and later fills ID without changing its key
+ok 20 - missing numeric ID retains a source identity and later fills ID without changing its key
+  ---
+  duration_ms: 1.1467
+  type: 'test'
+  ...
+# Subtest: additional trainer contributes horses only and empty source never removes standing helpers
+ok 21 - additional trainer contributes horses only and empty source never removes standing helpers
+  ---
+  duration_ms: 0.3865
+  type: 'test'
+  ...
+# Subtest: lookup supports exact names, aliases, trainer/tenant IDs, horse show name and rider first/last names
+ok 22 - lookup supports exact names, aliases, trainer/tenant IDs, horse show name and rider first/last names
+  ---
+  duration_ms: 0.8595
+  type: 'test'
+  ...
+# Subtest: ambiguous names return all matches; different stable identities never merge by name
+ok 23 - ambiguous names return all matches; different stable identities never merge by name
+  ---
+  duration_ms: 0.8555
+  type: 'test'
+  ...
+# Subtest: owner may clear seeded helper fields without the source refilling them
+ok 24 - owner may clear seeded helper fields without the source refilling them
+  ---
+  duration_ms: 0.198
+  type: 'test'
+  ...
+# Subtest: source record and numeric ID collisions fail without merging records
+ok 25 - source record and numeric ID collisions fail without merging records
+  ---
+  duration_ms: 0.238
+  type: 'test'
+  ...
+# Subtest: explicit tenant rider membership is retained independently of its current trainer association
+ok 26 - explicit tenant rider membership is retained independently of its current trainer association
+  ---
+  duration_ms: 0.4623
+  type: 'test'
+  ...
+# Subtest: one main plus five distinct additional trainers; disabled slots do not run
+ok 27 - one main plus five distinct additional trainers; disabled slots do not run
+  ---
+  duration_ms: 1.1114
+  type: 'test'
+  ...
+# Subtest: small but identified and explicit empty payload is valid; missing, wrong or inconsistent data fails
+ok 28 - small but identified and explicit empty payload is valid; missing, wrong or inconsistent data fails
+  ---
+  duration_ms: 0.2834
+  type: 'test'
+  ...
+# Subtest: source-selected date is required and stale references rejected
+ok 29 - source-selected date is required and stale references rejected
+  ---
+  duration_ms: 1.3677
+  type: 'test'
+  ...
+# Subtest: entries retain all show dates and cross-base schedule keys
+ok 30 - entries retain all show dates and cross-base schedule keys
+  ---
+  duration_ms: 9.4367
+  type: 'test'
+  ...
+# Subtest: unmatched or ambiguous schedules block inferred date assignment
+ok 31 - unmatched or ambiguous schedules block inferred date assignment
+  ---
+  duration_ms: 0.9866
+  type: 'test'
+  ...
+# Subtest: same entry across trainers deduplicates while keeping both sources
+ok 32 - same entry across trainers deduplicates while keeping both sources
+  ---
+  duration_ms: 0.4193
+  type: 'test'
+  ...
+1..32
+# tests 32
+# suites 0
+# pass 32
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 169.835

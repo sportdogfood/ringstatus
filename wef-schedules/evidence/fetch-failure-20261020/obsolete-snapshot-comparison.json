@@ -1,0 +1,12 @@
+{
+  "run": "66a332a1-f19f-4dd7-ae07-d2519aca9f1d",
+  "runner_exit": 0,
+  "failed_check": "verify-shows.js compares source-owned schedule fields to older14:22 snapshot",
+  "changes": {
+    "changed-at": 435,
+    "row-json": 435,
+    "dataset-id": 435,
+    "start-time": 67
+  },
+  "resolution": "Read-only check against this normal run archived datasets; no product/verifier patches."
+}

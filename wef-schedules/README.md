@@ -16,3 +16,39 @@ Token rotation is excluded from semantic comparison; full saved fingerprints sti
 
 ## Evidence and resume
 runtime/current-staging-verification.json is the latest acceptance evidence; runtime/deployment-verification.json is the deployment checkpoint. See docs/coordination/wef-schedules-only-activation-plan-20261015.md in the main repository for approval/failure history. Source-manifest.json contains exact private-package and protected-file hashes. The separate maintenance chat remains stopped; parent completed this release before handoff.
+
+
+## Heartbeat
+
+The heartbeat table holds one latest completed-run status for schedules.
+checked-at shows the last confirmed completion; run-id locates its detailed
+run-logs record. It copies result, source-selected date, counts, summary and
+errors after the run-log is saved and read back. Warning stays Warning; failed
+runs show Failed when logging/status storage remains available. A stale timestamp
+can mean the collector did not start or could not publish status. The table does
+not trigger runs. Detailed history and archive paths/hashes remain in run-logs.
+
+
+## Shows index — 20 October 2026
+
+Shared show-details is now shows; collections is now show-collection. Table IDs
+and existing linked fields are preserved. The normal collector indexes verified
+retired archive locations/counts in shows, links run-logs/show-collection/heartbeat,
+and retains previous show metadata without restoring archived schedules.
+Both tenants and wef-tenant-index remain. Original meta notes are preserved in
+docs/coordination/wef-schedules-meta-notes-preserved-20261020.md; meta is retired.
+
+Initial acceptance stopped after the14:35 fetch failure. Under separate owner
+approval, read failure handling and wrapper logging were corrected and normal
+15:10/15:15 runs passed full archived-source checks. Historical failure evidence
+is preserved; see docs/coordination/wef-fetch-failure-release-20261020.md and
+evidence/fetch-failure-20261020/. No manual runs or record repairs.
+
+
+## Airtable reads and runner logs
+
+GET reads validate records and cover both headers/body within the existing
+three-attempt timeout/backoff policy. Failed/invalid reads cannot masquerade as
+empty tables. Final errors identify request scope and nested cause codes without
+headers, query values or response contents. Native stderr, native exit and END
+timestamps are preserved in the daily runner log. Write retry behavior is unchanged.

@@ -1,0 +1,19 @@
+{
+  "tenant_existing_files_changed": [
+    "collector.js",
+    "settings.js",
+    "setup.js",
+    "verify.js"
+  ],
+  "schedules_existing_files_changed": [
+    "collect.js",
+    "current-store.js",
+    "heartbeat.js",
+    "run-logs.js",
+    "settings.js",
+    "show-rings.js",
+    "verify-heartbeat.js"
+  ],
+  "checked_at": "2026-10-20T14:28:30.9994870-04:00",
+  "task_definitions_changed": []
+}

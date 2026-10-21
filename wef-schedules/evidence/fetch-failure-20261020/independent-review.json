@@ -1,0 +1,11 @@
+{
+  "reviewer": "standing_roster_review",
+  "result": "PASS",
+  "normal_runs": 2,
+  "rows_verified_per_run": 435,
+  "current_archive_hashes": 8,
+  "static_helpers_and_ids_preserved": true,
+  "material_findings": [],
+  "business_calls": 0,
+  "writes": 0
+}

@@ -1,0 +1,32 @@
+{
+  "objective": "Separately APPROVED TO EDIT fix fetch failed,testdeploytwo normalruns, existingworkflowsunchanged,no manualruns/repairs.",
+  "findings": "Original14:35 transientinitialAirtableread error; exactnetworkcausewasnotretained andisunconfirmed. Laterunchanged14:40\u201355runsPASS. Provenbugs fixed:bodyerrorsswallowedasemptylist; timeoutonlyheaders; PowerShellStoploststderr/trueexit/END.",
+  "code": "GET-onlyairtable-read.js;collector-core.jschangesonlyairtableList requestparse; run.ps1Continueonlynativecapture,guardnullLASTEXITCODE,finallyEND. Existing3attempts20sec/backoff/POSTPATCHDELETEunchanged. Sourcebaselineanddeploymentmatched.",
+  "tests": "124deployed,127sourcePASS;independentreviewerstanding_roster_reviewPASS; 5copiedwrapperfixtures+6GETfixtures, no businessruns.",
+  "version": "Finalwrapper/source/deployedmanifestupdated15:05:21; doNOTcount15:05triggerbecausewrapperloadedbeforelastguard.",
+  "next": [],
+  "stop_rule": "Any actualverificationrunnerfailure stops path; no furthercodepatch/retry/repair withoutnewapproval.",
+  "evidence": "wef-schedules/evidence/fetch-failure-20261020",
+  "release_note": "docs/coordination/wef-fetch-failure-release-20261020.md",
+  "prior_release": "shows/show-collection renamed andmeta retired; ESP FallIIentrycreatednormal14:30. Prioracceptanceincompleteafter14:35; twofreshapprovednormalrunsnowmustverifyfullshowsindextoo.",
+  "context": "Localhelper261190inputtokens triggeredcheckpoint; accountusageappreadunavailable,read-onlylookupterminated; no businessactionaffected.",
+  "first_normal_verified": {
+    "run": "66a332a1-f19f-4dd7-ae07-d2519aca9f1d",
+    "task_start": "15:10:01",
+    "completed": "19:10:47Z",
+    "wrapper_end": "15:10:49 exit0",
+    "rows": 435,
+    "current_archives": 4,
+    "historical_files": 2,
+    "proof": "scheduled-66a332a1-f19f-4dd7-ae07-d2519aca9f1d.json"
+  },
+  "verification_note": "Oldverify-shows comparisonfailed expected14:22 frozenvalues afterlegitimateupdates435datasets/rowJSON/timestamps,67starttimes. Thatcomparison stopped, no codepatched. Basiccurrentrunverifierpassed; read-onlysavedreceipt/source-archiveverificationall435rowsPASS. Evidenceobsolete-snapshot-comparison.json.",
+  "status": "COMPLETE for approved code recovery and two-normal-run acceptance",
+  "second_normal_verified": {
+    "run_id": "8ed835ef-f19e-4df7-a8ca-f2a37966ebfb",
+    "completed": "2026-10-20T19:15:46.783Z",
+    "result": "Warning",
+    "task_exit": 0
+  },
+  "material_limit": "Original historical networkcause unconfirmed; sustained outages fail explicitly, no networkconfiguration change made."
+}
