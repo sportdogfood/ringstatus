@@ -36,7 +36,7 @@ horse/rider reference records before show discovery or people-entry fetching.
 The exact source is `apptdhhNzduxm5gjn`: `ww_tenants`, `ww_horses`, `ww_riders`.
 Those three tables are GET-only in the adapter; no source records are changed.
 Explicit tenant links and configured trainer associations supply the standing
-list. Additional trainers supply horses, while the main trainer supplies riders;
+list. All active trainers supply horses and riders;
 previous explicit tenant memberships are retained. Absence never deletes helpers.
 
 New helper fields include name, nick-name, show-name, aliases, notes, tenant-id,
@@ -82,7 +82,7 @@ its expected examples/counts describe this dated inventory, not a future quota.
 - Match entries to the shared class schedules and retain stable show/date/entry/
   class keys. If a dateless entry has multiple possible days, fail rather than
   assign attendance. No new calls to class/rider/horse endpoints.
-- Main trainer supplies horses and riders; additional trainers supply horses.
+- All active trainers supply horses and riders.
   Their entries retain rider source IDs. Historical roster records and owner
   disabled flags survive a show with no entries.
 - Shared entries deduplicate across trainers and retain source associations.
@@ -142,3 +142,27 @@ Conflicts stop roster writes and identify the column/records in run-logs.
 Rider show-name is retired. Its original values remain in legacy-display-name
 for provenance, excluded from collection writes, helper lookup and lookup-text.
 Horse show-name remains active. Metadata configuration never runs collection.
+
+## Direct rider and horse links - 21 October 2026
+
+Riders have a horses linked-record field, with reciprocal riders on horses.
+After verified entry writes, normal collection retains existing associations and
+adds horses from active collected entries. Links accumulate across shows and do
+not indicate ownership. Existing helper values and entry links are preserved.
+Configure only these fields with configure-rider-horses.js; it is schema-only
+and never collects data or writes business records.
+
+## Synced schedule references - 21 October 2026
+
+The collector now reads the existing wef-schedules.shows, wef-schedules.rings
+and wef-schedules.schedules tables in CWF by their configured IDs. These are
+read-only references; source editing is Off in all three syncs. Incomplete or
+stale synced relationships stop entry processing without dropping valid entries.
+CWF entries use shows, synced-rings and schedules links; collections use shows.
+Local rings-helper records link to synced-rings. Existing tenant-owned horses,
+riders, nicknames, notes, locations, walking times and rider-horse links remain.
+The former show-details/rings copies are frozen history, retired only after
+normal-run verification. Their historical links remain intact; no data is deleted.
+Use configure-synced-references.js for the new link fields. Do not rerun the
+original initial setup.js against a migrated base: it describes the old layout.
+See docs/coordination/wef-synced-references-20261021.md for current acceptance.

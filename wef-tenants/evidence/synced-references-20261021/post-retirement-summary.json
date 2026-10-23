@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-22T02:12:00.349Z",
+  "ok": true,
+  "method": "Compare records by stable table/record/field IDs, then run read-only synced verifier",
+  "tablesChecked": [
+    "tblDhAutHYlDbvzNd",
+    "tblbac3wwWJAmUthL",
+    "tblu9SBWyir2z4CCt",
+    "tblxutSCBQzmkJLLO",
+    "tblsVT0Poao9wKhs4"
+  ],
+  "recordsAndLinksUnchanged": true,
+  "runId": "f943e786-949f-4095-89f5-3b8f97b22ed8",
+  "entries": 6,
+  "collections": 12,
+  "riders": 36,
+  "horses": 75,
+  "syncedShows": 2,
+  "syncedRings": 24,
+  "syncedSchedules": 435,
+  "comparisonNote": "The pre/post-retirement field-name comparison detected the explicitly approved rings -> retired-rings label changes. Stable field-ID comparison confirms identical values and links. No product code changed after that comparison."
+}

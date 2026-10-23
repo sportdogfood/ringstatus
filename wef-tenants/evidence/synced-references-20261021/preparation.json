@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-22T01:46:24.163Z",
+  "stage": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-synced-refs-tHjZ5Q",
+  "hashes": {
+    "collector.js": "8d12c6e7bc21d51fad8c4513e65bf2483095c73346876be334a284e61a17372d",
+    "settings.js": "d519f7ed435b8c09bf2ffa039e1f30edac178516a618d0d77615c560e052468a",
+    "airtable.js": "1dcce2a0302899cf72ba633e3cc82671856e4b62a8ef332a6b1786c33ca86423",
+    "model.js": "18936090d9d01303a1c1a9e149472aecdd49b19a61a6fc1b0a38649cb5d1f63c",
+    "verify.js": "c4a6e0aeb6cc28ae1d7ca80a971af14ca2b0573082c713760816daba465dac0b",
+    "compare.js": "02ebd2ec1b68b8c2f4e26356f3304517d1fe29661a5992852a709732945b5562"
+  }
+}

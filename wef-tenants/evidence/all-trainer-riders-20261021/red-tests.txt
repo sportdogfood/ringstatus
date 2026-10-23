@@ -1,0 +1,390 @@
+TAP version 13
+# Subtest: Airtable omitted blank, false and empty links read back correctly; repeat creates none
+ok 1 - Airtable omitted blank, false and empty links read back correctly; repeat creates none
+  ---
+  duration_ms: 3.83
+  type: 'test'
+  ...
+# Subtest: lost creation response reconciles using stable key without a second POST
+ok 2 - lost creation response reconciles using stable key without a second POST
+  ---
+  duration_ms: 0.6601
+  type: 'test'
+  ...
+# Subtest: unresolved creation cannot be resubmitted by a failure handler
+ok 3 - unresolved creation cannot be resubmitted by a failure handler
+  ---
+  duration_ms: 0.8661
+  type: 'test'
+  ...
+# Subtest: API rejects writes to shared schedule tables and unknown bases
+ok 4 - API rejects writes to shared schedule tables and unknown bases
+  ---
+  duration_ms: 0.3435
+  type: 'test'
+  ...
+# Subtest: transport settings stay inside the new runtime
+ok 5 - transport settings stay inside the new runtime
+  ---
+  duration_ms: 0.2103
+  type: 'test'
+  ...
+# Subtest: legacy roster permits only GET on three source tables; all mutation methods fail
+ok 6 - legacy roster permits only GET on three source tables; all mutation methods fail
+  ---
+  duration_ms: 0.4249
+  type: 'test'
+  ...
+# Subtest: actual roster adapter rejects duplicate names before any mutation
+ok 7 - actual roster adapter rejects duplicate names before any mutation
+  ---
+  duration_ms: 1.473
+  type: 'test'
+  ...
+# Subtest: actual rider adapter rejects show-name before creation
+ok 8 - actual rider adapter rejects show-name before creation
+  ---
+  duration_ms: 0.3507
+  type: 'test'
+  ...
+# Subtest: policy enforces each named horse and rider column, ignoring case/outer and repeated whitespace
+ok 9 - policy enforces each named horse and rider column, ignoring case/outer and repeated whitespace
+  ---
+  duration_ms: 2.6617
+  type: 'test'
+  ...
+# Subtest: separate columns and separate tables may share a value
+ok 10 - separate columns and separate tables may share a value
+  ---
+  duration_ms: 0.2534
+  type: 'test'
+  ...
+# Subtest: unknown optional IDs/nicknames stay blank; keys are required
+ok 11 - unknown optional IDs/nicknames stay blank; keys are required
+  ---
+  duration_ms: 0.1695
+  type: 'test'
+  ...
+# Subtest: rider first and last names may repeat while full names remain unique
+ok 12 - rider first and last names may repeat while full names remain unique
+  ---
+  duration_ms: 0.8331
+  type: 'test'
+  ...
+# Subtest: prospective partial writes are checked against retained records before mutation
+ok 13 - prospective partial writes are checked against retained records before mutation
+  ---
+  duration_ms: 0.5828
+  type: 'test'
+  ...
+# Subtest: numeric IDs cannot be zero, negative or non-integer; opaque keys retain exact case
+ok 14 - numeric IDs cannot be zero, negative or non-integer; opaque keys retain exact case
+  ---
+  duration_ms: 0.3203
+  type: 'test'
+  ...
+# Subtest: normal empty run covers four days; repeat does not duplicate references or collections
+ok 15 - normal empty run covers four days; repeat does not duplicate references or collections
+  ---
+  duration_ms: 14.3899
+  type: 'test'
+  ...
+# Subtest: standing helpers populate with zero current-show entries and survive repeat source failure
+ok 16 - standing helpers populate with zero current-show entries and survive repeat source failure
+  ---
+  duration_ms: 6.0369
+  type: 'test'
+  ...
+# Subtest: standing helpers populate even when shared-show discovery is unavailable
+ok 17 - standing helpers populate even when shared-show discovery is unavailable
+  ---
+  duration_ms: 0.8508
+  type: 'test'
+  ...
+# Subtest: actual helper writes omit computed fields and nonempty entries preserve deliberately blank helper names
+ok 18 - actual helper writes omit computed fields and nonempty entries preserve deliberately blank helper names
+  ---
+  duration_ms: 2.155
+  type: 'test'
+  ...
+# Subtest: one trainer failure is logged independently and preserves that trainer entries
+ok 19 - one trainer failure is logged independently and preserves that trainer entries
+  ---
+  duration_ms: 1.6113
+  type: 'test'
+  ...
+# Subtest: archive failure blocks dataset changes and old-show deletion
+ok 20 - archive failure blocks dataset changes and old-show deletion
+  ---
+  duration_ms: 0.424
+  type: 'test'
+  ...
+# Subtest: late failure leaves heartbeat and tenant index terminal Failed
+ok 21 - late failure leaves heartbeat and tenant index terminal Failed
+  ---
+  duration_ms: 2.0763
+  type: 'test'
+  ...
+# Subtest: nonempty trainer datasets link all days, dedupe shared entries and preserve disabled roster
+ok 22 - nonempty trainer datasets link all days, dedupe shared entries and preserve disabled roster
+  ---
+  duration_ms: 12.1196
+  type: 'test'
+  ...
+# Subtest: log retention archives the exact finished row before reusing its ID
+ok 23 - log retention archives the exact finished row before reusing its ID
+  ---
+  duration_ms: 1.5183
+  type: 'test'
+  ...
+# Subtest: show rollover archives exact old records before removing them
+ok 24 - show rollover archives exact old records before removing them
+  ---
+  duration_ms: 1.4529
+  type: 'test'
+  ...
+# Subtest: archive is compressed, read back, content addressed and collision protected
+ok 25 - archive is compressed, read back, content addressed and collision protected
+  ---
+  duration_ms: 10.9585
+  type: 'test'
+  ...
+# Subtest: all active trainers create rider helpers and link entries without changing existing helpers on repeat
+not ok 26 - all active trainers create rider helpers and link entries without changing existing helpers on repeat
+  ---
+  duration_ms: 3.1213
+  type: 'test'
+  location: 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-all-riders-p3bum3\\tests\\runner.test.js:77:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    2 !== 4
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 4
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\AppData\Local\Temp\wef-all-riders-p3bum3\tests\runner.test.js:86:86)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a rider shared by active trainers gets one helper with both associations and entry links
+not ok 27 - a rider shared by active trainers gets one helper with both associations and entry links
+  ---
+  duration_ms: 1.8987
+  type: 'test'
+  location: 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-all-riders-p3bum3\\tests\\runner.test.js:94:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + '8778'
+    - '50121,8778'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '50121,8778'
+  actual: '8778'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\AppData\Local\Temp\wef-all-riders-p3bum3\tests\runner.test.js:98:165)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: an additional trainer rider name collision is rejected before helper or entry creation
+not ok 28 - an additional trainer rider name collision is rejected before helper or entry creation
+  ---
+  duration_ms: 2.9039
+  type: 'test'
+  location: 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-all-riders-p3bum3\\tests\\runner.test.js:101:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\AppData\Local\Temp\wef-all-riders-p3bum3\tests\runner.test.js:106:66)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: validated people names populate each trainer on empty runs and retain record identities on repeat
+ok 29 - validated people names populate each trainer on empty runs and retain record identities on repeat
+  ---
+  duration_ms: 4.1332
+  type: 'test'
+  ...
+# Subtest: missing or unusable people names preserve existing trainer names
+ok 30 - missing or unusable people names preserve existing trainer names
+  ---
+  duration_ms: 5.9877
+  type: 'test'
+  ...
+# Subtest: invalid identity or failed archive never overwrites trainer name
+ok 31 - invalid identity or failed archive never overwrites trainer name
+  ---
+  duration_ms: 1.7082
+  type: 'test'
+  ...
+# Subtest: rider collision logs exact conflict before either standing table writes or show source calls
+ok 32 - rider collision logs exact conflict before either standing table writes or show source calls
+  ---
+  duration_ms: 0.4947
+  type: 'test'
+  ...
+# Subtest: standing roster populates without a show or any entries
+ok 33 - standing roster populates without a show or any entries
+  ---
+  duration_ms: 1.7094
+  type: 'test'
+  ...
+# Subtest: repeat preserves owner helpers, aliases, notes and disabling while refreshing source facts
+ok 34 - repeat preserves owner helpers, aliases, notes and disabling while refreshing source facts
+  ---
+  duration_ms: 1.6166
+  type: 'test'
+  ...
+# Subtest: missing numeric ID retains a source identity and later fills ID without changing its key
+ok 35 - missing numeric ID retains a source identity and later fills ID without changing its key
+  ---
+  duration_ms: 0.5871
+  type: 'test'
+  ...
+# Subtest: additional trainers contribute horses and riders; empty source never removes standing helpers
+not ok 36 - additional trainers contribute horses and riders; empty source never removes standing helpers
+  ---
+  duration_ms: 1.3995
+  type: 'test'
+  location: 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-all-riders-p3bum3\\tests\\standing-roster.test.js:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 2
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 2
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\AppData\Local\Temp\wef-all-riders-p3bum3\tests\standing-roster.test.js:10:368)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: standing source reads riders for all active trainers and excludes inactive trainer scope
+not ok 37 - standing source reads riders for all active trainers and excludes inactive trainer scope
+  ---
+  duration_ms: 1.035
+  type: 'test'
+  location: 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-all-riders-p3bum3\\tests\\standing-roster.test.js:12:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /\{pid\}=19676/. Input:
+    
+    'OR({pid}=8778)'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'OR({pid}=8778)'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\AppData\Local\Temp\wef-all-riders-p3bum3\tests\standing-roster.test.js:15:119)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: lookup supports exact names, aliases, trainer/tenant IDs, horse show name and rider first/last names
+ok 38 - lookup supports exact names, aliases, trainer/tenant IDs, horse show name and rider first/last names
+  ---
+  duration_ms: 1.2041
+  type: 'test'
+  ...
+# Subtest: duplicate policy values are rejected without merging identities
+ok 39 - duplicate policy values are rejected without merging identities
+  ---
+  duration_ms: 0.8503
+  type: 'test'
+  ...
+# Subtest: owner may clear seeded helper fields without the source refilling them
+ok 40 - owner may clear seeded helper fields without the source refilling them
+  ---
+  duration_ms: 0.3354
+  type: 'test'
+  ...
+# Subtest: source record and numeric ID collisions fail without merging records
+ok 41 - source record and numeric ID collisions fail without merging records
+  ---
+  duration_ms: 0.8568
+  type: 'test'
+  ...
+# Subtest: explicit tenant rider membership is retained independently of its current trainer association
+ok 42 - explicit tenant rider membership is retained independently of its current trainer association
+  ---
+  duration_ms: 1.5156
+  type: 'test'
+  ...
+# Subtest: rider show-name is neither produced nor accepted as lookup
+ok 43 - rider show-name is neither produced nor accepted as lookup
+  ---
+  duration_ms: 0.3018
+  type: 'test'
+  ...
+# Subtest: one main plus five distinct additional trainers; disabled slots do not run
+ok 44 - one main plus five distinct additional trainers; disabled slots do not run
+  ---
+  duration_ms: 1.7675
+  type: 'test'
+  ...
+# Subtest: small but identified and explicit empty payload is valid; missing, wrong or inconsistent data fails
+ok 45 - small but identified and explicit empty payload is valid; missing, wrong or inconsistent data fails
+  ---
+  duration_ms: 0.425
+  type: 'test'
+  ...
+# Subtest: source-selected date is required and stale references rejected
+ok 46 - source-selected date is required and stale references rejected
+  ---
+  duration_ms: 1.3246
+  type: 'test'
+  ...
+# Subtest: entries retain all show dates and cross-base schedule keys
+ok 47 - entries retain all show dates and cross-base schedule keys
+  ---
+  duration_ms: 12.6644
+  type: 'test'
+  ...
+# Subtest: unmatched or ambiguous schedules block inferred date assignment
+ok 48 - unmatched or ambiguous schedules block inferred date assignment
+  ---
+  duration_ms: 1.3018
+  type: 'test'
+  ...
+# Subtest: same entry across trainers deduplicates while keeping both sources
+ok 49 - same entry across trainers deduplicates while keeping both sources
+  ---
+  duration_ms: 0.4237
+  type: 'test'
+  ...
+1..49
+# tests 49
+# suites 0
+# pass 44
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 269.7632

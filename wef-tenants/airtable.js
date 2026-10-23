@@ -7,10 +7,12 @@ function airtable({token=settings.AIRTABLE_TOKEN,request=globalThis.fetch,pause=
  const unresolved=new Set();
  const legacyBase='apptdhhNzduxm5gjn',legacyTables=new Set(['ww_tenants','ww_horses','ww_riders']);
  const identity=(base,table,key,value)=>JSON.stringify([base,table,key,value]);
+ const readOnlyReferences=new Set([settings.SYNC_SHOWS_TABLE,settings.SYNC_RINGS_TABLE,settings.SYNC_SCHEDULES_TABLE,'wef-schedules.shows','wef-schedules.rings','wef-schedules.schedules','tblxutSCBQzmkJLLO','tblsVT0Poao9wKhs4','show-details','rings','retired-show-details','retired-rings']);
  async function call(base,table,method='GET',body,query=''){
   if(base===legacyBase){if(method!=='GET'||!legacyTables.has(table))throw Error('Legacy roster is read-only and table restricted');}
   else if(![settings.BASE_ID,settings.SHARED_BASE_ID].includes(base))throw Error('Unapproved base');
   if(method!=='GET'&&base===settings.SHARED_BASE_ID&&table!=='wef-tenant-index')throw Error('Shared schedule writes forbidden');
+  if(method!=='GET'&&base===settings.BASE_ID&&readOnlyReferences.has(table))throw Error('Schedule references are read-only');
   await pause(250);const r=await request(`https://api.airtable.com/v0/${base}/${encodeURIComponent(table)}${query}`,{method,headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(30000)});
   if(!r.ok)throw Error('Airtable '+method+' '+table+' HTTP '+r.status);return r.json();
  }

@@ -1,0 +1,43 @@
+{
+  "verifiedAt": "2026-10-22T02:09:05.802Z",
+  "runId": "f943e786-949f-4095-89f5-3b8f97b22ed8",
+  "started": "2026-10-22T02:07:02.023Z",
+  "completed": "2026-10-22T02:08:55.198Z",
+  "result": "Success",
+  "entries": 6,
+  "collections": 12,
+  "riders": 36,
+  "horses": 75,
+  "syncedShows": 2,
+  "syncedRings": 24,
+  "syncedSchedules": 435,
+  "existingHelperValuesAndLinksPreserved": true,
+  "legacyReferencesFrozen": true,
+  "archiveHashesVerified": 16,
+  "protectedFilesUnchanged": true,
+  "repeatStable": true,
+  "comparison": {
+    "ok": true,
+    "first": "7a7823b3-fe37-4667-a129-e57e9cffbf19",
+    "second": "f943e786-949f-4095-89f5-3b8f97b22ed8",
+    "first_completed": "2026-10-22T02:03:42.495Z",
+    "second_completed": "2026-10-22T02:08:55.198Z",
+    "stable_tables": [
+      "tenant-details",
+      "trainers",
+      "heartbeat",
+      "synced-shows",
+      "collections",
+      "synced-rings",
+      "synced-schedules",
+      "rings-helper",
+      "ring-walks",
+      "horses",
+      "riders",
+      "entries",
+      "code-reviews"
+    ],
+    "new_run_logs": 1,
+    "verified_archive_events": 32
+  }
+}

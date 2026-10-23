@@ -1,0 +1,118 @@
+{
+  "at": "2026-10-22T00:18:59.401Z",
+  "before": [
+    {
+      "id": "rec1sBWKmh1xl6MPA",
+      "createdTime": "2026-10-21T22:59:29.000Z",
+      "fields": {
+        "trainer-id": 80970,
+        "role": "additional",
+        "trainer-key": "80970",
+        "slot": 2
+      }
+    },
+    {
+      "id": "rec9Hmq2WuHuZc9mY",
+      "createdTime": "2026-10-20T16:49:38.000Z",
+      "fields": {
+        "trainer-id": 8778,
+        "role": "main",
+        "trainer-key": "8778",
+        "active": true,
+        "slot": 1
+      }
+    },
+    {
+      "id": "recY4aRfPwodSQVBJ",
+      "createdTime": "2026-10-21T23:08:41.000Z",
+      "fields": {
+        "trainer-id": 50121,
+        "role": "additional",
+        "trainer-key": "50121",
+        "active": true,
+        "slot": 2
+      }
+    }
+  ],
+  "after": [
+    {
+      "id": "rec1sBWKmh1xl6MPA",
+      "createdTime": "2026-10-21T22:59:29.000Z",
+      "fields": {
+        "trainer-id": 80970,
+        "role": "additional",
+        "trainer-key": "80970",
+        "active": true,
+        "slot": 3
+      }
+    },
+    {
+      "id": "rec9Hmq2WuHuZc9mY",
+      "createdTime": "2026-10-20T16:49:38.000Z",
+      "fields": {
+        "trainer-id": 8778,
+        "role": "main",
+        "trainer-key": "8778",
+        "active": true,
+        "slot": 1
+      }
+    },
+    {
+      "id": "recY4aRfPwodSQVBJ",
+      "createdTime": "2026-10-21T23:08:41.000Z",
+      "fields": {
+        "trainer-id": 50121,
+        "role": "additional",
+        "trainer-key": "50121",
+        "active": true,
+        "slot": 2
+      }
+    }
+  ],
+  "priorEntries": [
+    {
+      "id": "recExiDfsusGy9CJv",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "entry-key": "200000075|2026-10-24|200245506|200030399",
+        "date": "2026-10-24",
+        "trainer-ids": "50121",
+        "class-id": 200030399,
+        "status": "active"
+      }
+    },
+    {
+      "id": "rece6esDNI2bCBx2g",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "entry-key": "200000075|2026-10-25|200241392|200030331",
+        "date": "2026-10-25",
+        "trainer-ids": "50121",
+        "class-id": 200030331,
+        "status": "active"
+      }
+    },
+    {
+      "id": "recfANMpXOHSEuL7x",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "entry-key": "200000075|2026-10-23|200245506|200030347",
+        "date": "2026-10-23",
+        "trainer-ids": "50121",
+        "class-id": 200030347,
+        "status": "active"
+      }
+    },
+    {
+      "id": "rect3aBhzq8GTcM7d",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "entry-key": "200000075|2026-10-24|200241392|200030330",
+        "date": "2026-10-24",
+        "trainer-ids": "50121",
+        "class-id": 200030330,
+        "status": "active"
+      }
+    }
+  ]
+}

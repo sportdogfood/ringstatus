@@ -1,0 +1,75 @@
+TAP version 13
+# Subtest: Airtable omitted blank, false and empty links read back correctly; repeat creates none
+ok 1 - Airtable omitted blank, false and empty links read back correctly; repeat creates none
+  ---
+  duration_ms: 3.318
+  type: 'test'
+  ...
+# Subtest: lost creation response reconciles using stable key without a second POST
+ok 2 - lost creation response reconciles using stable key without a second POST
+  ---
+  duration_ms: 0.6227
+  type: 'test'
+  ...
+# Subtest: unresolved creation cannot be resubmitted by a failure handler
+ok 3 - unresolved creation cannot be resubmitted by a failure handler
+  ---
+  duration_ms: 0.713
+  type: 'test'
+  ...
+# Subtest: API rejects writes to shared schedule tables and unknown bases
+ok 4 - API rejects writes to shared schedule tables and unknown bases
+  ---
+  duration_ms: 0.2976
+  type: 'test'
+  ...
+# Subtest: transport settings stay inside the new runtime
+ok 5 - transport settings stay inside the new runtime
+  ---
+  duration_ms: 0.1882
+  type: 'test'
+  ...
+# Subtest: legacy roster permits only GET on three source tables; all mutation methods fail
+ok 6 - legacy roster permits only GET on three source tables; all mutation methods fail
+  ---
+  duration_ms: 0.3868
+  type: 'test'
+  ...
+# Subtest: actual roster adapter rejects duplicate names before any mutation
+ok 7 - actual roster adapter rejects duplicate names before any mutation
+  ---
+  duration_ms: 1.3234
+  type: 'test'
+  ...
+# Subtest: actual rider adapter rejects show-name before creation
+ok 8 - actual rider adapter rejects show-name before creation
+  ---
+  duration_ms: 0.1724
+  type: 'test'
+  ...
+# Subtest: synced and retired schedule reference tables reject all business writes by name or ID
+not ok 9 - synced and retired schedule reference tables reject all business writes by name or ID
+  ---
+  duration_ms: 0.6854
+  type: 'test'
+  location: 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-synced-refs-tHjZ5Q\\tests\\airtable.test.js:14:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (C:\Users\gombc\AppData\Local\Temp\wef-synced-refs-tHjZ5Q\tests\airtable.test.js:14:379)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 8
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 107.2572

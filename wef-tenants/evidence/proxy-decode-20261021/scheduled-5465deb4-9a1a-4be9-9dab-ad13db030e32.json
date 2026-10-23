@@ -1,0 +1,270 @@
+{
+  "checkedAt": "2026-10-21T23:43:28.037Z",
+  "report": {
+    "ok": false,
+    "run_id": "5465deb4-9a1a-4be9-9dab-ad13db030e32",
+    "started": "2026-10-21T23:42:02.113Z",
+    "completed": "2026-10-21T23:43:07.641Z",
+    "rows": 0,
+    "trainers": [
+      {
+        "trainer_id": 8778,
+        "role": "main",
+        "result": "No entries",
+        "rows": 0
+      },
+      {
+        "trainer_id": 50121,
+        "role": "additional",
+        "result": "Failed",
+        "rows": 0,
+        "error": "No shared schedule for entry 200241392 class 200030330"
+      }
+    ],
+    "errors": [
+      "Trainer 50121: No shared schedule for entry 200241392 class 200030330"
+    ],
+    "days": [
+      {
+        "date": "2026-10-22",
+        "ok": false,
+        "row_count": 0
+      },
+      {
+        "date": "2026-10-23",
+        "ok": false,
+        "row_count": 0
+      },
+      {
+        "date": "2026-10-24",
+        "ok": false,
+        "row_count": 0
+      },
+      {
+        "date": "2026-10-25",
+        "ok": false,
+        "row_count": 0
+      }
+    ]
+  },
+  "logs": [
+    {
+      "id": "recnMQuWcvDxUy07M",
+      "createdTime": "2026-10-21T23:42:07.000Z",
+      "fields": {
+        "archive-count": 7,
+        "completed": "2026-10-21T23:43:04.956Z",
+        "days-failed": 4,
+        "days-complete": 0,
+        "rows": 0,
+        "started": "2026-10-21T23:42:02.113Z",
+        "summary": "Trainer 8778 (main): No entries; 0 day entries\nTrainer 50121 (additional): Failed; 0 day entries; No shared schedule for entry 200241392 class 200030330\nShow 200000075; source-selected 2026-10-22; 4 days; 0 active entries; 24 daily rings; 6 shared helpers.\nStanding helpers: 71 horses, 33 riders; 13 source IDs missing (source-record identity retained).",
+        "errors": "Trainer 50121: No shared schedule for entry 200241392 class 200030330",
+        "run-id": "5465deb4-9a1a-4be9-9dab-ad13db030e32",
+        "result": "Failed"
+      }
+    }
+  ],
+  "heartbeat": [
+    {
+      "id": "recJWmC8t39z0Ih7O",
+      "createdTime": "2026-10-20T16:57:37.000Z",
+      "fields": {
+        "heartbeat-key": "CWF",
+        "checked-at": "2026-10-21T23:43:02.529Z",
+        "errors": "Trainer 50121: No shared schedule for entry 200241392 class 200030330",
+        "summary": "Trainer 8778 (main): No entries; 0 day entries\nTrainer 50121 (additional): Failed; 0 day entries; No shared schedule for entry 200241392 class 200030330\nShow 200000075; source-selected 2026-10-22; 4 days; 0 active entries; 24 daily rings; 6 shared helpers.\nStanding helpers: 71 horses, 33 riders; 13 source IDs missing (source-record identity retained).",
+        "selected-date": "2026-10-22",
+        "show-id": 200000075,
+        "result": "Failed"
+      }
+    }
+  ],
+  "trainers": [
+    {
+      "id": "rec1sBWKmh1xl6MPA",
+      "createdTime": "2026-10-21T22:59:29.000Z",
+      "fields": {
+        "trainer-id": 80970,
+        "last-checked": "2026-10-21T23:08:01.712Z",
+        "role": "additional",
+        "last-error": "Invalid entry ID",
+        "trainer-key": "80970",
+        "last-result": "Failed",
+        "slot": 2
+      }
+    },
+    {
+      "id": "rec9Hmq2WuHuZc9mY",
+      "createdTime": "2026-10-20T16:49:38.000Z",
+      "fields": {
+        "trainer-id": 8778,
+        "last-checked": "2026-10-21T23:42:50.921Z",
+        "role": "main",
+        "trainer-key": "8778",
+        "last-result": "No entries",
+        "active": true,
+        "slot": 1
+      }
+    },
+    {
+      "id": "recY4aRfPwodSQVBJ",
+      "createdTime": "2026-10-21T23:08:41.000Z",
+      "fields": {
+        "trainer-id": 50121,
+        "last-checked": "2026-10-21T23:42:59.518Z",
+        "role": "additional",
+        "last-error": "No shared schedule for entry 200241392 class 200030330",
+        "trainer-key": "50121",
+        "last-result": "Failed",
+        "active": true,
+        "slot": 2
+      }
+    }
+  ],
+  "entries": [],
+  "archives": [
+    {
+      "at": "2026-10-21T23:42:11.984Z",
+      "kind": "standing-roster",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\standing-roster\\4830919c98955d2143373493abec669c8c2314087c6f0224819eedc179e7f7e4.json.gz",
+      "records": 105,
+      "sha256": "4830919c98955d2143373493abec669c8c2314087c6f0224819eedc179e7f7e4",
+      "hashMatches": true,
+      "recordCountMatches": false
+    },
+    {
+      "at": "2026-10-21T23:42:32.865Z",
+      "kind": "people-8778",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\people-8778\\5fe0a20fa5a02c94c95a3435d60f145ef74b8ccc998a7fa899dfb7b1824632a4.json.gz",
+      "records": 1,
+      "sha256": "5fe0a20fa5a02c94c95a3435d60f145ef74b8ccc998a7fa899dfb7b1824632a4",
+      "shows": [
+        200000075
+      ],
+      "dates": [
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
+      ],
+      "hashMatches": true,
+      "recordCountMatches": true
+    },
+    {
+      "at": "2026-10-21T23:42:35.574Z",
+      "kind": "dataset-8778",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000075
+      ],
+      "dates": [
+        "2026-10-22"
+      ],
+      "hashMatches": true,
+      "recordCountMatches": true
+    },
+    {
+      "at": "2026-10-21T23:42:38.257Z",
+      "kind": "dataset-8778",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000075
+      ],
+      "dates": [
+        "2026-10-23"
+      ],
+      "hashMatches": true,
+      "recordCountMatches": true
+    },
+    {
+      "at": "2026-10-21T23:42:40.940Z",
+      "kind": "dataset-8778",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000075
+      ],
+      "dates": [
+        "2026-10-24"
+      ],
+      "hashMatches": true,
+      "recordCountMatches": true
+    },
+    {
+      "at": "2026-10-21T23:42:43.650Z",
+      "kind": "dataset-8778",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\dataset-8778\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000075
+      ],
+      "dates": [
+        "2026-10-25"
+      ],
+      "hashMatches": true,
+      "recordCountMatches": true
+    },
+    {
+      "at": "2026-10-21T23:42:52.307Z",
+      "kind": "people-50121",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-tenants\\runtime\\history\\people-50121\\093f125b7f37038b267b74852174e498a8aede37b3c8352bcf351c3c7d37e4de.json.gz",
+      "records": 1,
+      "sha256": "093f125b7f37038b267b74852174e498a8aede37b3c8352bcf351c3c7d37e4de",
+      "shows": [
+        200000075
+      ],
+      "dates": [
+        "2026-10-22",
+        "2026-10-23",
+        "2026-10-24",
+        "2026-10-25"
+      ],
+      "hashMatches": true,
+      "recordCountMatches": true,
+      "decodedRows": [
+        {
+          "entry_id": 200241392,
+          "class_id": 200030330,
+          "horse_id": 141234,
+          "rider_id": 81017,
+          "protectedBlobRemaining": false
+        },
+        {
+          "entry_id": 200241392,
+          "class_id": 200030331,
+          "horse_id": 141234,
+          "rider_id": 81017,
+          "protectedBlobRemaining": false
+        },
+        {
+          "entry_id": 200245506,
+          "class_id": 200030347,
+          "horse_id": 200002670,
+          "rider_id": 50121,
+          "protectedBlobRemaining": false
+        },
+        {
+          "entry_id": 200245506,
+          "class_id": 200030399,
+          "horse_id": 200002670,
+          "rider_id": 50121,
+          "protectedBlobRemaining": false
+        }
+      ]
+    }
+  ]
+}

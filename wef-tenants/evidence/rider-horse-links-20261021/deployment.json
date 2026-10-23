@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-22T01:21:39.240Z",
+  "sha256": "8d12c6e7bc21d51fad8c4513e65bf2483095c73346876be334a284e61a17372d",
+  "candidateMatches": true,
+  "offlineTests": {
+    "pass": 54,
+    "fail": 0
+  },
+  "review": "No actionable findings",
+  "schema": {
+    "base": "appxKPBtdl2Rdq7CS",
+    "riderTable": "tblll5l7eG5wc27uP",
+    "riderField": "fldKt8o5QoLla9eYL",
+    "horseTable": "tblxMpG75KL3Nmt1v",
+    "horseField": "fld1NS33LT88kykq1",
+    "businessRecordsWritten": 0
+  }
+}

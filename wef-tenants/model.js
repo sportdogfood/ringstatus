@@ -23,7 +23,7 @@ function validateShow(rows,now){
 }
 function showDays(show){const result=[];for(let d=day(show.start_date);d<=day(show.end_date);d=new Date(Date.parse(d+'T00:00:00Z')+86400000).toISOString().slice(0,10)){result.push(d);if(result.length>31)throw Error('Show exceeds supported 31 days');}return result;}
 const value=(o,...keys)=>keys.map(k=>o[k]).find(v=>v!=null&&v!=='');
-function normalizeEntries(trips,trainer,show,schedules){
+function normalizeEntries(trips,trainer,show,schedules,scheduleTarget={baseId:'appUq5Qz9kARqFija',tableId:'tblqiTFqqO3zk2KJC'}){
  const out=[],pid=positive(trainer.fields['trainer-id'],'trainer ID');
  for(const trip of trips){
   if(!trip||typeof trip!=='object'||Array.isArray(trip))throw Error('Invalid trip row');
@@ -35,7 +35,7 @@ function normalizeEntries(trips,trainer,show,schedules){
   if(!date&&new Set(matches.map(r=>r.fields.date)).size>1)throw Error('Ambiguous entry date for class '+classId);
   const dates=new Set();for(const schedule of matches){const f=schedule.fields,d=day(f.date);if(dates.has(d))throw Error('Ambiguous class schedule '+classId+' '+d);dates.add(d);if(d<show.start_date||d>show.end_date)throw Error('Entry date outside show');
    out.push({'entry-key':`${show.show_id}|${d}|${entry}|${classId}`,date:d,'show-id':Number(show.show_id),'entry-id':entry,'horse-id':horse,'rider-id':rider,'class-id':classId,'ring-number':positive(f.ring,'schedule ring'),
-    'class-name':String(f['class-name']||value(trip,'class_name','className')||''),'horse-name':String(value(trip,'horse','Horse','horse_name','horseName')||''),'rider-name':String(value(trip,'rider_name','riderName')||''),'trainer-ids':String(pid),status:'active','source-json':JSON.stringify(trip),'schedule-key':f['stage-key'],'schedule-link':`https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/${schedule.id}`});
+    'class-name':String(f['class-name']||value(trip,'class_name','className')||''),'horse-name':String(value(trip,'horse','Horse','horse_name','horseName')||''),'rider-name':String(value(trip,'rider_name','riderName')||''),'trainer-ids':String(pid),status:'active','source-json':JSON.stringify(trip),'schedule-key':f['stage-key'],'schedule-link':`https://airtable.com/${scheduleTarget.baseId}/${scheduleTarget.tableId}/${schedule.id}`});
   }
  }
  return mergeEntries(out);

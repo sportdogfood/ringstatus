@@ -8,6 +8,7 @@ for(const key of ['SystemRoot','WINDIR','ComSpec','PATH','PATHEXT','TEMP','TMP',
   if(process.env[key]) settings[key]=process.env[key];
 for(const key of ['AIRTABLE_TOKEN','SGL_DATA_BASE_URL','SGL_DIRECT_BASE_URL','SGL_FETCH_TRANSPORT','SGL_USER_AGENT','SGL_COOKIE_HEADER','SGL_SEC_CH_UA','SGL_SEC_CH_UA_MOBILE','SGL_SEC_CH_UA_PLATFORM','SGL_RECAPTCHA_TOKEN','SGL_X_RECAPTCHA_TOKEN','SGL_AUTHORIZATION','SGL_BEARER_TOKEN','SGL_FETCH_TIMEOUT_SEC','HTTP_TIMEOUT_MS'])
   if(process.env['WEF_SCHEDULES_'+key]) settings[key]=process.env['WEF_SCHEDULES_'+key];
+if(!settings.SGL_DATA_BASE_URL) settings.SGL_DATA_BASE_URL='https://wef-schedules-decoded.gombcg.workers.dev';
 Object.assign(settings,{
   CUSTOMER_ID:'15',AIRTABLE_BASE_ID:'',SCHEDULE_STAGING_BASE_ID:'appUq5Qz9kARqFija',
   SCHEDULE_COLLECTIONS_TABLE:'tblvGpwxGjXXNLKAU',SHOWS_TABLE:'tblBq3gXC0TYBCmMZ',SCHEDULE_STAGING_TABLE:'schedules',

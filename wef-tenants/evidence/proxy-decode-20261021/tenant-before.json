@@ -1,0 +1,1525 @@
+{
+  "at": "2026-10-21T23:38:12.699Z",
+  "tables": {
+    "trainers": [
+      {
+        "id": "rec1sBWKmh1xl6MPA",
+        "createdTime": "2026-10-21T22:59:29.000Z",
+        "fields": {
+          "trainer-id": 80970,
+          "role": "additional",
+          "trainer-key": "80970",
+          "slot": 2
+        }
+      },
+      {
+        "id": "rec9Hmq2WuHuZc9mY",
+        "createdTime": "2026-10-20T16:49:38.000Z",
+        "fields": {
+          "trainer-id": 8778,
+          "role": "main",
+          "trainer-key": "8778",
+          "trainer-name": "ALAN KOROTKIN",
+          "active": true,
+          "slot": 1
+        }
+      },
+      {
+        "id": "recY4aRfPwodSQVBJ",
+        "createdTime": "2026-10-21T23:08:41.000Z",
+        "fields": {
+          "trainer-id": 50121,
+          "role": "additional",
+          "trainer-key": "50121",
+          "trainer-name": "DE SOUSA, ISABELA",
+          "active": true,
+          "slot": 2
+        }
+      }
+    ],
+    "horses": [
+      {
+        "id": "rec0H2Th0ynS5rM5S",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Cardozo",
+          "name": "CARDOZO 4",
+          "horse-key": "147744",
+          "show-name": "Cardozo 4",
+          "horse-name": "CARDOZO 4",
+          "horse-id": 147744
+        }
+      },
+      {
+        "id": "rec0IirimhFe65PE3",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Corny",
+          "name": "QORNWELL D’OX Z",
+          "horse-key": "151339",
+          "show-name": "Qornwell D'OX Z",
+          "horse-name": "QORNWELL D’OX Z",
+          "horse-id": 151339
+        }
+      },
+      {
+        "id": "rec0LXYicCNtBJfwa",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Piccolo",
+          "name": "PICCOLO",
+          "horse-key": "legacy:rec7WNvlsFSQYjafT",
+          "show-name": "Piccolo",
+          "horse-name": "PICCOLO"
+        }
+      },
+      {
+        "id": "rec1gpX41ZeBZTY5K",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Gaston",
+          "name": "GASTON VAN DE HELLE",
+          "horse-key": "legacy:rec49o6FdKuRtsUco",
+          "show-name": "Gaston Van De Helle",
+          "horse-name": "GASTON VAN DE HELLE"
+        }
+      },
+      {
+        "id": "rec3t48sBtWJU7QtN",
+        "createdTime": "2026-10-20T17:27:19.000Z",
+        "fields": {
+          "nick-name": "Cupcake",
+          "name": "CUPCAKE",
+          "horse-key": "legacy:reczFFBHZFj0xsoY8",
+          "show-name": "Cupcake",
+          "horse-name": "CUPCAKE"
+        }
+      },
+      {
+        "id": "rec4423KCpPG8vGvN",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "Arrow",
+          "name": "ARROW M Z",
+          "horse-key": "146806",
+          "show-name": "Arrow M Z",
+          "horse-name": "ARROW M Z",
+          "horse-id": 146806
+        }
+      },
+      {
+        "id": "rec49T9AzyxdJQfaV",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Macho",
+          "name": "FORTE",
+          "horse-key": "151630",
+          "show-name": "Forte",
+          "horse-name": "FORTE",
+          "horse-id": 151630
+        }
+      },
+      {
+        "id": "rec9RUnsJzbqsmMpw",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Coffee",
+          "name": "IRISH COFFEE VHL",
+          "horse-key": "142146",
+          "show-name": "Irish Coffee VHL",
+          "horse-name": "IRISH COFFEE VHL",
+          "horse-id": 142146
+        }
+      },
+      {
+        "id": "rec9zxcf43zcRgCek",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Munster",
+          "name": "MASTERMIND",
+          "horse-key": "200002853",
+          "show-name": "Mastermind",
+          "horse-name": "MASTERMIND",
+          "horse-id": 200002853
+        }
+      },
+      {
+        "id": "recAfsSJqKN8tkAaZ",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "Ranger",
+          "name": "RANGE ROVER",
+          "horse-key": "138724",
+          "show-name": "Range Rover",
+          "horse-name": "RANGE ROVER",
+          "horse-id": 138724
+        }
+      },
+      {
+        "id": "recEHMwAyw3V0tWRQ",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Cervin",
+          "name": "CERVIN DE LA POMME Z",
+          "horse-key": "200001948",
+          "show-name": "Cervin De La Pomme Z",
+          "horse-name": "CERVIN DE LA POMME Z",
+          "horse-id": 200001948
+        }
+      },
+      {
+        "id": "recF2LAaQ7fhCIQzD",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "Ben",
+          "name": "IB MERCEDES",
+          "horse-key": "200001461",
+          "show-name": "IB Mercedes",
+          "horse-name": "IB MERCEDES",
+          "horse-id": 200001461
+        }
+      },
+      {
+        "id": "recFwIlRJcpFxamxN",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "Dany",
+          "name": "DANY VILLERS",
+          "horse-key": "129527",
+          "show-name": "Dany Villers",
+          "horse-name": "DANY VILLERS",
+          "horse-id": 129527
+        }
+      },
+      {
+        "id": "recGQQ1GetPSRhW6i",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Caymus",
+          "name": "CAYMUS",
+          "horse-key": "121591",
+          "show-name": "Caymus",
+          "horse-name": "CAYMUS",
+          "horse-id": 121591
+        }
+      },
+      {
+        "id": "recJQ6KnkNELhIxUO",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "Milo",
+          "name": "DIO MIO",
+          "horse-key": "legacy:recqL4Razj2ToCEZI",
+          "show-name": "Dio Mio",
+          "horse-name": "DIO MIO"
+        }
+      },
+      {
+        "id": "recKOL5DA8fn4w6XR",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Dino",
+          "name": "COMDINUS VAN BEEK Z",
+          "horse-key": "146306",
+          "show-name": "Comidinus Van Beek Z",
+          "horse-name": "COMDINUS VAN BEEK Z",
+          "horse-id": 146306
+        }
+      },
+      {
+        "id": "recKUGelFQaTUeIsO",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "Tommy",
+          "name": "SPECIALIST",
+          "horse-key": "152286",
+          "show-name": "Specialist",
+          "horse-name": "SPECIALIST",
+          "horse-id": 152286
+        }
+      },
+      {
+        "id": "recLwOoif1AF7A4FS",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Snoop",
+          "name": "SANDENAL",
+          "horse-key": "200003954",
+          "show-name": "Sandenal",
+          "horse-name": "SANDENAL",
+          "horse-id": 200003954
+        }
+      },
+      {
+        "id": "recM5c0LFBVFfDJTk",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Bernie",
+          "name": "SUGARBROOK BURNSIDE",
+          "horse-key": "117338",
+          "show-name": "Sugarbrook Burnside",
+          "horse-name": "SUGARBROOK BURNSIDE",
+          "horse-id": 117338
+        }
+      },
+      {
+        "id": "recN3O5qZTsodbXBB",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "Q",
+          "name": "QASTAAR VAN'T HEIKE",
+          "horse-key": "147278",
+          "show-name": "Qstaar Van’t Heike",
+          "horse-name": "QASTAAR VAN'T HEIKE",
+          "horse-id": 147278
+        }
+      },
+      {
+        "id": "recNEkaFwtyNKoKnj",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Power",
+          "name": "S&L PREDICTABLE",
+          "horse-key": "legacy:rec6RQRDxmMh8ZxRc",
+          "show-name": "S&L Predictable",
+          "horse-name": "S&L PREDICTABLE"
+        }
+      },
+      {
+        "id": "recOBBDNMnSutzxgw",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Coin",
+          "name": "GOLD COIN",
+          "horse-key": "115135",
+          "show-name": "Gold Coin",
+          "horse-name": "GOLD COIN",
+          "horse-id": 115135
+        }
+      },
+      {
+        "id": "recOlkz7ACiD6yeiD",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "King",
+          "name": "KING Z",
+          "horse-key": "146912",
+          "show-name": "King Z",
+          "horse-name": "KING Z",
+          "horse-id": 146912
+        }
+      },
+      {
+        "id": "recR7Bc9ZXi5uZBiL",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "Navy",
+          "name": "NAVIGATOR",
+          "horse-key": "147044",
+          "show-name": "Navigator",
+          "horse-name": "NAVIGATOR",
+          "horse-id": 147044
+        }
+      },
+      {
+        "id": "recTUmZR8tuX07CTI",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Cartoon",
+          "name": "CARTOON",
+          "horse-key": "legacy:rec1YwgB9uO8aO8XR",
+          "show-name": "Cartoon",
+          "horse-name": "CARTOON"
+        }
+      },
+      {
+        "id": "recUZq19haTlMGZro",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Indy",
+          "name": "INDIGO VAN DE MUGGENHOEK",
+          "horse-key": "200001353",
+          "show-name": "Indigo Van De Moeggenhoek",
+          "horse-name": "INDIGO VAN DE MUGGENHOEK",
+          "horse-id": 200001353
+        }
+      },
+      {
+        "id": "recUjh3naagDOdC0W",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Kinmar",
+          "name": "KINMAR QUALITY HERO",
+          "horse-key": "147948",
+          "show-name": "Kinmar Quality Hero",
+          "horse-name": "KINMAR QUALITY HERO",
+          "horse-id": 147948
+        }
+      },
+      {
+        "id": "recVnKkU2IQjLOhUI",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Lenny",
+          "name": "LEONIDAS Z",
+          "horse-key": "142227",
+          "show-name": "Leonidas Z",
+          "horse-name": "LEONIDAS Z",
+          "horse-id": 142227
+        }
+      },
+      {
+        "id": "recWhlZ491UmgHKeZ",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Paisley",
+          "name": "HALO",
+          "horse-key": "139893",
+          "show-name": "Halo",
+          "horse-name": "HALO",
+          "horse-id": 139893
+        }
+      },
+      {
+        "id": "recWnpX6bcWELMsB6",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Fento",
+          "name": "FENTO DES FONTAINES",
+          "horse-key": "legacy:recCzp1svrHcNHrxu",
+          "show-name": "Fento Des Fontaines",
+          "horse-name": "FENTO DES FONTAINES"
+        }
+      },
+      {
+        "id": "recXLYIfCNCs8WQun",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Georgina",
+          "name": "GEORGINA",
+          "horse-key": "legacy:recbs4LE7MisO00rE",
+          "show-name": "Georgina",
+          "horse-name": "GEORGINA"
+        }
+      },
+      {
+        "id": "recXzAacKOZX0UO5V",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "Calypso",
+          "name": "CALYPSO",
+          "horse-key": "148329",
+          "show-name": "Calypso",
+          "horse-name": "CALYPSO",
+          "horse-id": 148329
+        }
+      },
+      {
+        "id": "recZjyHg9xXCjiRQr",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Zen",
+          "name": "AMONG US",
+          "horse-key": "137439",
+          "show-name": "Among Us",
+          "horse-name": "AMONG US",
+          "horse-id": 137439
+        }
+      },
+      {
+        "id": "recZmrjHrfjLQfenG",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Elliot",
+          "name": "LUMINOSITY CLASS",
+          "horse-key": "140758",
+          "show-name": "Luminosity Class",
+          "horse-name": "LUMINOSITY CLASS",
+          "horse-id": 140758
+        }
+      },
+      {
+        "id": "recaRqj1r9QlIqF1D",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "Coco",
+          "name": "COCO",
+          "horse-key": "legacy:reczB38eQiI82i6ej",
+          "show-name": "Coco",
+          "horse-name": "COCO"
+        }
+      },
+      {
+        "id": "recb5l5vQMptKY8oq",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Curtis",
+          "name": "CURTIS 89",
+          "horse-key": "142111",
+          "show-name": "Curtis",
+          "horse-name": "CURTIS 89",
+          "horse-id": 142111
+        }
+      },
+      {
+        "id": "recbCk3S7YW3XFuiS",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Doug",
+          "name": "IDEAL",
+          "horse-key": "128185",
+          "show-name": "Ideal",
+          "horse-name": "IDEAL",
+          "horse-id": 128185
+        }
+      },
+      {
+        "id": "reccCVXhSgBm2aGKC",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "Toni",
+          "name": "ETONEMOI DEL CABALERO",
+          "horse-key": "140238",
+          "show-name": "Etonemoi",
+          "horse-name": "ETONEMOI DEL CABALERO",
+          "horse-id": 140238
+        }
+      },
+      {
+        "id": "reccMCzW53kEsHl2T",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "Yankee",
+          "name": "MANHATTAN",
+          "horse-key": "147296",
+          "show-name": "Manhattan",
+          "horse-name": "MANHATTAN",
+          "horse-id": 147296
+        }
+      },
+      {
+        "id": "recdCslRNduRLA3qt",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Oddur",
+          "name": "ODDUR VAN BEAUGAARDE",
+          "horse-key": "legacy:recdzLApmxXlM4n0N",
+          "show-name": "Oddur Van Beaugaarde",
+          "horse-name": "ODDUR VAN BEAUGAARDE"
+        }
+      },
+      {
+        "id": "recezgeZjtbRx0OGu",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "Krypton",
+          "name": "KRYPTON DV",
+          "horse-key": "138302",
+          "show-name": "Krypton DV",
+          "horse-name": "KRYPTON DV",
+          "horse-id": 138302
+        }
+      },
+      {
+        "id": "rech0s1W6l6pnHQCV",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Inchidee Tarpania",
+          "name": "INCHIDEE TARPANIA",
+          "horse-key": "200001790",
+          "show-name": "Inchidee Tarpania",
+          "horse-name": "INCHIDEE TARPANIA",
+          "horse-id": 200001790
+        }
+      },
+      {
+        "id": "reciUdrRS5SYYPWIM",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Poptart",
+          "name": "POPTART",
+          "horse-key": "106759",
+          "show-name": "Poptart",
+          "horse-name": "POPTART",
+          "horse-id": 106759
+        }
+      },
+      {
+        "id": "recilDAzWli3vc1Tm",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Hermes",
+          "name": "HERMES D'ARMANVILLE",
+          "horse-key": "200001947",
+          "show-name": "Hermes D'Armanville",
+          "horse-name": "HERMES D'ARMANVILLE",
+          "horse-id": 200001947
+        }
+      },
+      {
+        "id": "recjJTeb2kJ1UfgKb",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "Charly",
+          "name": "CHARLY D'YSENBEEKC Z",
+          "horse-key": "137531",
+          "show-name": "Charly D'ysenbeekc Z",
+          "horse-name": "CHARLY D'YSENBEEKC Z",
+          "horse-id": 137531
+        }
+      },
+      {
+        "id": "recjpJQzze0Iz3bwr",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Knox",
+          "name": "FORT KNOX",
+          "horse-key": "200002451",
+          "show-name": "Fort Knox",
+          "horse-name": "FORT KNOX",
+          "horse-id": 200002451
+        }
+      },
+      {
+        "id": "reck3bTBEX4Yyot3n",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Casanova",
+          "name": "CASANOVA VH REUKENIS Z",
+          "horse-key": "200004722",
+          "show-name": "Casanova VH Reukenis Z",
+          "horse-name": "CASANOVA VH REUKENIS Z",
+          "horse-id": 200004722
+        }
+      },
+      {
+        "id": "recmEVzn854eQzsHq",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Winnie",
+          "name": "IN IT TO WIN IT",
+          "horse-key": "200001185",
+          "show-name": "In it to Win It",
+          "horse-name": "IN IT TO WIN IT",
+          "horse-id": 200001185
+        }
+      },
+      {
+        "id": "recn1jRmOvgV7aUHb",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Maiki",
+          "name": "MAIKI",
+          "horse-key": "147279",
+          "show-name": "Maiki",
+          "horse-name": "MAIKI",
+          "horse-id": 147279
+        }
+      },
+      {
+        "id": "recnLHW1gdn3LlFcA",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Peri",
+          "name": "PERIDONI 20",
+          "horse-key": "140695",
+          "show-name": "Peridoni 20",
+          "horse-name": "PERIDONI 20",
+          "horse-id": 140695
+        }
+      },
+      {
+        "id": "recnlCL33i9RZdfDF",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Choco",
+          "name": "CHOCO DU REVERDY",
+          "horse-key": "139117",
+          "show-name": "Choco Du Reverdy",
+          "horse-name": "CHOCO DU REVERDY",
+          "horse-id": 139117
+        }
+      },
+      {
+        "id": "recnypJGmVMqD3aUB",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Darcy",
+          "name": "WR'S  PEMBERLEY",
+          "horse-key": "200000988",
+          "show-name": "WR’S Pemberley",
+          "horse-name": "WR'S  PEMBERLEY",
+          "horse-id": 200000988
+        }
+      },
+      {
+        "id": "recpGfgzFupUDxJlb",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Kenny",
+          "name": "TROUBLESHOOT",
+          "horse-key": "legacy:recRQw3kTA5DDQDks",
+          "show-name": "Troubleshoot",
+          "horse-name": "TROUBLESHOOT"
+        }
+      },
+      {
+        "id": "recqJ1Jcrjs8FPS9I",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Mark",
+          "name": "MARKANTO A",
+          "horse-key": "200003885",
+          "show-name": "Markanto A",
+          "horse-name": "MARKANTO A",
+          "horse-id": 200003885
+        }
+      },
+      {
+        "id": "recqVDg0ON8NJfm1x",
+        "createdTime": "2026-10-20T17:27:18.000Z",
+        "fields": {
+          "nick-name": "Crush",
+          "name": "DF CRUSH",
+          "horse-key": "130705",
+          "show-name": "DF Crush",
+          "horse-name": "DF CRUSH",
+          "horse-id": 130705
+        }
+      },
+      {
+        "id": "recqfy21Sy1OmUd5w",
+        "createdTime": "2026-10-20T17:27:12.000Z",
+        "fields": {
+          "nick-name": "Insider",
+          "name": "INSIDER BH",
+          "horse-key": "129381",
+          "show-name": "Insider BH",
+          "horse-name": "INSIDER BH",
+          "horse-id": 129381
+        }
+      },
+      {
+        "id": "recrUe4akjtQRncxJ",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Romeo",
+          "name": "ROMEO",
+          "horse-key": "legacy:recblzm1N2f2IDnZa",
+          "show-name": "Romeo",
+          "horse-name": "ROMEO"
+        }
+      },
+      {
+        "id": "recrmt33Oddk9hg97",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Hurricane",
+          "name": "HURRICANE",
+          "horse-key": "153198",
+          "show-name": "Hurricane",
+          "horse-name": "HURRICANE",
+          "horse-id": 153198
+        }
+      },
+      {
+        "id": "recsCorux6PNBtOar",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Fan Fan",
+          "name": "FANFAN BOY",
+          "horse-key": "8002",
+          "show-name": "Fan Fan Boy",
+          "horse-name": "FANFAN BOY",
+          "horse-id": 8002
+        }
+      },
+      {
+        "id": "recsOX0mayXE1ddau",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "Dottie",
+          "name": "DODICCI",
+          "horse-key": "144230",
+          "show-name": "Dodicci",
+          "horse-name": "DODICCI",
+          "horse-id": 144230
+        }
+      },
+      {
+        "id": "recsYwvs9CxqC8LlV",
+        "createdTime": "2026-10-20T17:27:14.000Z",
+        "fields": {
+          "nick-name": "Carry",
+          "name": "CARRY AWAY",
+          "horse-key": "106630",
+          "show-name": "Carry Away",
+          "horse-name": "CARRY AWAY",
+          "horse-id": 106630
+        }
+      },
+      {
+        "id": "rectXYph5sOyMlO5M",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Rimini",
+          "name": "RIMINI DU PRINTEMPS",
+          "horse-key": "151710",
+          "show-name": "Rimini Du Printemps",
+          "horse-name": "RIMINI DU PRINTEMPS",
+          "horse-id": 151710
+        }
+      },
+      {
+        "id": "rectkuX7M82ZdJ0cZ",
+        "createdTime": "2026-10-20T17:27:15.000Z",
+        "fields": {
+          "nick-name": "Bee",
+          "name": "KINDLY",
+          "horse-key": "147970",
+          "show-name": "Kindly",
+          "horse-name": "KINDLY",
+          "horse-id": 147970
+        }
+      },
+      {
+        "id": "recx9mW6kbIxbHOUJ",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Pedro",
+          "name": "VOTE FOR PEDRO",
+          "horse-key": "200001129",
+          "show-name": "Vote For Pedro",
+          "horse-name": "VOTE FOR PEDRO",
+          "horse-id": 200001129
+        }
+      },
+      {
+        "id": "recxRCxmpIfhqEEwA",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "LaLa",
+          "name": "LA LA LAND",
+          "horse-key": "legacy:recpaqS7GMtakADGW",
+          "show-name": "La La Land",
+          "horse-name": "LA LA LAND"
+        }
+      },
+      {
+        "id": "recxS2wDDwby40sRj",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "Shrek",
+          "name": "TENOR VAN'T KLAVERTJE VIER",
+          "horse-key": "200005007",
+          "show-name": "Tenor Van't Klavertje Vier",
+          "horse-name": "TENOR VAN'T KLAVERTJE VIER",
+          "horse-id": 200005007
+        }
+      },
+      {
+        "id": "recyHR00NST3B8GSN",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Pancake",
+          "name": "SHORT STACK",
+          "horse-key": "136401",
+          "show-name": "Pancake",
+          "horse-name": "SHORT STACK",
+          "horse-id": 136401
+        }
+      },
+      {
+        "id": "recz2JoFyVt212nn6",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Orion",
+          "name": "HIGH HOPES",
+          "horse-key": "130032",
+          "show-name": "High Hopes",
+          "horse-name": "HIGH HOPES",
+          "horse-id": 130032
+        }
+      },
+      {
+        "id": "recz4AowhLdRSdODo",
+        "createdTime": "2026-10-20T17:27:16.000Z",
+        "fields": {
+          "nick-name": "Titan",
+          "name": "TITANIUM Z",
+          "horse-key": "200000551",
+          "show-name": "Titanium Z",
+          "horse-name": "TITANIUM Z",
+          "horse-id": 200000551
+        }
+      },
+      {
+        "id": "reczLO96ZX52RSs8M",
+        "createdTime": "2026-10-20T17:27:13.000Z",
+        "fields": {
+          "nick-name": "Kudos",
+          "name": "FERNHILL KUDOS",
+          "horse-key": "137384",
+          "show-name": "Fernhill Kudos",
+          "horse-name": "FERNHILL KUDOS",
+          "horse-id": 137384
+        }
+      },
+      {
+        "id": "reczmFoJp3LczFw0L",
+        "createdTime": "2026-10-20T17:27:17.000Z",
+        "fields": {
+          "nick-name": "Calou",
+          "name": "CALOU US",
+          "horse-key": "200004291",
+          "show-name": "Calou US",
+          "horse-name": "CALOU US",
+          "horse-id": 200004291
+        }
+      }
+    ],
+    "riders": [
+      {
+        "id": "rec07lZ8zWta2pSyP",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "SOPHIE HEAP",
+          "rider-name": "SOPHIE HEAP",
+          "rider-id": 67673,
+          "first-name": "Sophie",
+          "last-name": "Heap",
+          "rider-key": "67673"
+        }
+      },
+      {
+        "id": "rec12obKov6O3ZzJE",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "JOSSELYN MERSEREAU",
+          "rider-name": "JOSSELYN MERSEREAU",
+          "rider-id": 47630,
+          "first-name": "Josselyn",
+          "last-name": "Mersereau",
+          "rider-key": "47630"
+        }
+      },
+      {
+        "id": "rec2zIgN5NSQhHA8f",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "Daniella Mccasland",
+          "rider-name": "Daniella Mccasland",
+          "rider-id": 1000000485,
+          "first-name": "Daniella",
+          "last-name": "Mccasland",
+          "rider-key": "1000000485"
+        }
+      },
+      {
+        "id": "rec4Eq7ReOLwpgGn1",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "LACEY POWERS",
+          "rider-name": "LACEY POWERS",
+          "rider-id": 56558,
+          "first-name": "Lacey",
+          "last-name": "Powers",
+          "rider-key": "56558"
+        }
+      },
+      {
+        "id": "rec6K8QreBFl5PYbe",
+        "createdTime": "2026-10-20T17:27:24.000Z",
+        "fields": {
+          "name": "ARIA WAXMAN",
+          "rider-name": "ARIA WAXMAN",
+          "rider-id": 85313,
+          "first-name": "Aria",
+          "last-name": "Waxman",
+          "rider-key": "85313"
+        }
+      },
+      {
+        "id": "recB3N91s0Bl2GxL0",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "Noora Hardy",
+          "rider-name": "Noora Hardy",
+          "rider-id": 79056,
+          "first-name": "Noora",
+          "last-name": "Hardy",
+          "rider-key": "79056"
+        }
+      },
+      {
+        "id": "recBNYz6TH980Btrv",
+        "createdTime": "2026-10-20T17:27:24.000Z",
+        "fields": {
+          "name": "Tanner Korotkin",
+          "rider-name": "Tanner Korotkin",
+          "rider-id": 9590,
+          "first-name": "Tanner",
+          "last-name": "Korotkin",
+          "rider-key": "9590"
+        }
+      },
+      {
+        "id": "recBhSc6s97WS1ZOQ",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "HADDEN FROST",
+          "rider-name": "HADDEN FROST",
+          "rider-id": 64677,
+          "first-name": "Hadden",
+          "last-name": "Frost",
+          "rider-key": "64677"
+        }
+      },
+      {
+        "id": "recEHPrSEZq6QsmoO",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "Elisabeth Rotsaert",
+          "rider-name": "Elisabeth Rotsaert",
+          "rider-id": 67597,
+          "first-name": "Elisabeth",
+          "last-name": "Rotsaert",
+          "rider-key": "67597"
+        }
+      },
+      {
+        "id": "recO5cCQcCe9lCY4V",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "ERIN STEPHANY-PEREZ",
+          "rider-name": "ERIN STEPHANY-PEREZ",
+          "rider-id": 42240,
+          "first-name": "Erin",
+          "last-name": "Stephany-perez",
+          "rider-key": "42240"
+        }
+      },
+      {
+        "id": "recP8ZSwwHUzTKunO",
+        "createdTime": "2026-10-20T17:27:24.000Z",
+        "fields": {
+          "name": "LOLA APPLEBAUM",
+          "rider-name": "LOLA APPLEBAUM",
+          "rider-id": 88626,
+          "first-name": "Lola",
+          "last-name": "Applebaum",
+          "rider-key": "88626"
+        }
+      },
+      {
+        "id": "recROvgNVJToenr0b",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "ARIANA REYES",
+          "rider-name": "ARIANA REYES",
+          "rider-id": 81394,
+          "first-name": "Ariana",
+          "last-name": "Reyes",
+          "rider-key": "81394"
+        }
+      },
+      {
+        "id": "recRUe0UrHW2PZHUV",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "TAYLOR OAKVIK",
+          "rider-name": "TAYLOR OAKVIK",
+          "rider-id": 47066,
+          "first-name": "Taylor",
+          "last-name": "Oakvik",
+          "rider-key": "47066"
+        }
+      },
+      {
+        "id": "recScQgoxsmuOcqw1",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "Brielle Diamond",
+          "rider-name": "Brielle Diamond",
+          "rider-id": 1000001423,
+          "first-name": "Brielle",
+          "last-name": "Diamond",
+          "rider-key": "1000001423"
+        }
+      },
+      {
+        "id": "recTDtcZuMxhTxb1l",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "Alana Picard",
+          "rider-name": "Alana Picard",
+          "rider-id": 19691,
+          "first-name": "Alana",
+          "last-name": "Picard",
+          "rider-key": "19691"
+        }
+      },
+      {
+        "id": "recUO22xwf0x8Sob7",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "ILIANA PALUMBO",
+          "rider-name": "ILIANA PALUMBO",
+          "rider-id": 67632,
+          "first-name": "Iliana",
+          "last-name": "Palumbo",
+          "rider-key": "67632"
+        }
+      },
+      {
+        "id": "recZ8us0YOTffsQBx",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "HALI VANDERWIEL",
+          "rider-name": "HALI VANDERWIEL",
+          "rider-id": 1000002415,
+          "first-name": "Hali",
+          "last-name": "Vanderwiel",
+          "rider-key": "1000002415"
+        }
+      },
+      {
+        "id": "reccqFTGFn2m7mwVp",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "LAINEY POSA",
+          "rider-name": "LAINEY POSA",
+          "rider-id": 79378,
+          "first-name": "Lainey",
+          "last-name": "Posa",
+          "rider-key": "79378"
+        }
+      },
+      {
+        "id": "rece1ZpEQqFJ7A89v",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "GRACE LYONS",
+          "rider-name": "GRACE LYONS",
+          "rider-id": 73560,
+          "first-name": "Grace",
+          "last-name": "Lyons",
+          "rider-key": "73560"
+        }
+      },
+      {
+        "id": "recgvQtyksk0JKhbr",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "LYNN YOOS",
+          "rider-name": "LYNN YOOS",
+          "rider-id": 4025,
+          "first-name": "Lynn",
+          "last-name": "Yoos",
+          "rider-key": "4025"
+        }
+      },
+      {
+        "id": "rechlu4NM7shxZv4a",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "Victoria Rotsaert",
+          "rider-name": "Victoria Rotsaert",
+          "rider-id": 60851,
+          "first-name": "Victoria",
+          "last-name": "Rotsaert",
+          "rider-key": "60851"
+        }
+      },
+      {
+        "id": "recjIFLmTNUDrEQ2f",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "Dylan D'antonio",
+          "rider-name": "Dylan D'antonio",
+          "rider-id": 79590,
+          "first-name": "Dylan",
+          "last-name": "D'antonio",
+          "rider-key": "79590"
+        }
+      },
+      {
+        "id": "recjN8g49ze6cRA7l",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "NAOMI SELLECK",
+          "rider-name": "NAOMI SELLECK",
+          "rider-id": 1000001728,
+          "first-name": "Naomi",
+          "last-name": "Selleck",
+          "rider-key": "1000001728"
+        }
+      },
+      {
+        "id": "reclh6wNfR7A6oYKr",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "JOSEPHINE DEMMO",
+          "rider-name": "JOSEPHINE DEMMO",
+          "rider-id": 70856,
+          "first-name": "Josephine",
+          "last-name": "Demmo",
+          "rider-key": "70856"
+        }
+      },
+      {
+        "id": "recovIAcrm4wdDWzy",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "CARSYN KOROTKIN",
+          "rider-name": "CARSYN KOROTKIN",
+          "rider-id": 50082,
+          "first-name": "Carsyn",
+          "last-name": "Korotkin",
+          "rider-key": "50082"
+        }
+      },
+      {
+        "id": "recozlDZujeAseXhi",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "SYDNEY MATALON",
+          "rider-name": "SYDNEY MATALON",
+          "rider-id": 83010,
+          "first-name": "Sydney",
+          "last-name": "Matalon",
+          "rider-key": "83010"
+        }
+      },
+      {
+        "id": "recqAZR9xsCElYQCb",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "Victoria Sheehan",
+          "rider-name": "Victoria Sheehan",
+          "rider-id": 74855,
+          "first-name": "Victoria",
+          "last-name": "Sheehan",
+          "rider-key": "74855"
+        }
+      },
+      {
+        "id": "rectXATOdFlpr3MIK",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "KATE MARISCH",
+          "rider-name": "KATE MARISCH",
+          "rider-id": 1000001391,
+          "first-name": "Kate",
+          "last-name": "Marisch",
+          "rider-key": "1000001391"
+        }
+      },
+      {
+        "id": "recvbPDm6vbJKCFQM",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "Maddyn Vatland",
+          "rider-name": "Maddyn Vatland",
+          "rider-id": 86318,
+          "first-name": "Maddyn",
+          "last-name": "Vatland",
+          "rider-key": "86318"
+        }
+      },
+      {
+        "id": "recxnvvzfuGJXnUfv",
+        "createdTime": "2026-10-20T17:27:22.000Z",
+        "fields": {
+          "name": "Marley Katz",
+          "rider-name": "Marley Katz",
+          "rider-id": 59457,
+          "first-name": "Marley",
+          "last-name": "Katz",
+          "rider-key": "59457"
+        }
+      },
+      {
+        "id": "recxsfI6iSunBVFd0",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "JESSICA HEAP",
+          "rider-name": "JESSICA HEAP",
+          "rider-id": 70495,
+          "first-name": "Jessica",
+          "last-name": "Heap",
+          "rider-key": "70495"
+        }
+      },
+      {
+        "id": "recyYGvtW8I4KgAjk",
+        "createdTime": "2026-10-20T17:27:23.000Z",
+        "fields": {
+          "name": "Kaitlyn Sheerahamed",
+          "rider-name": "Kaitlyn Sheerahamed",
+          "rider-id": 49525,
+          "first-name": "Kaitlyn",
+          "last-name": "Sheerahamed",
+          "rider-key": "49525"
+        }
+      },
+      {
+        "id": "recz1HwlsAqt9GRwU",
+        "createdTime": "2026-10-20T17:27:21.000Z",
+        "fields": {
+          "name": "Noemi Varela",
+          "rider-name": "Noemi Varela",
+          "rider-id": 5731233,
+          "first-name": "Noemi",
+          "last-name": "Varela",
+          "rider-key": "5731233"
+        }
+      }
+    ],
+    "entries": [],
+    "rings-helper": [
+      {
+        "id": "rec5b1WpsfQfxTXXI",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recqGCtsPt6cdYgR3",
+            "recJNegCyheuCk5y9",
+            "rec9IfhpziMh5FmbZ",
+            "recOxAI3tQTOwQNt7"
+          ],
+          "ring_id": 44,
+          "ring-walks": [
+            "recOoVnNNuAQ61kuK"
+          ],
+          "source-record": "recu3PI7sdyLW74Vk",
+          "ring_number": 3,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "VanKampen Covered Arena",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:44"
+        }
+      },
+      {
+        "id": "rec8Shy2UrTYX2gQw",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recWJ1u1g7h935QoX",
+            "reccJVGbzqGQZA8z0",
+            "rec8kRk95YZWRDzzA",
+            "rec5Kig0IdYiCx5He"
+          ],
+          "ring_id": 10,
+          "ring-walks": [
+            "recBfR3mEUh22pXbt"
+          ],
+          "source-record": "rec4laRvUmKzVMYAr",
+          "ring_number": 1,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "Equestrian Village Derby Field",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:10"
+        }
+      },
+      {
+        "id": "recRpJ3hAbKN8O7hz",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recKorktVbv36UsBF",
+            "recWoHPEK8sgpRRV9",
+            "rechlSRbnmcTBkW6V",
+            "recUYlRpE7vL7AH8S"
+          ],
+          "ring_id": 3,
+          "ring-walks": [
+            "recbYxfoFksqsJerc"
+          ],
+          "source-record": "recXfbMKxRe5G2eXR",
+          "ring_number": 2,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "Annex Derby Field",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:3"
+        }
+      },
+      {
+        "id": "recZ0U8lS2wP9fArB",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recBhGtmVCW5v2X8G",
+            "recoCzeGvRZC1gUbq",
+            "recRAtvegxm1y9oC6",
+            "recmfpH1WVHHM96Pk"
+          ],
+          "ring_id": 45,
+          "ring-walks": [
+            "recHavzkUcrSYB4ok"
+          ],
+          "source-record": "recxnTCS3rX3B6SFg",
+          "ring_number": 6,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "GDF Hunter Ring 2",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:45"
+        }
+      },
+      {
+        "id": "recq8j147V3scpOlo",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recJQ1W8rgaHZx9cC",
+            "recFvP7VfbWgbTdCf",
+            "reccE4pkFKmRdvYBp",
+            "recmWDL9VzWVnERYg"
+          ],
+          "ring_id": 13,
+          "ring-walks": [
+            "rec9aCZz83WOnFHhs"
+          ],
+          "source-record": "recGVWTImr1s4z3tH",
+          "ring_number": 4,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "Equestrian Village International Ring",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:13"
+        }
+      },
+      {
+        "id": "recx0Fl8wUCEQBDFh",
+        "createdTime": "2026-10-20T16:57:11.000Z",
+        "fields": {
+          "rings": [
+            "recUC3pBuHpIXaAwm",
+            "reczc0rPW6k7Y7i5r",
+            "rectp1DaxOP2jVasT",
+            "recZz9MTewp1i7Le3"
+          ],
+          "ring_id": 48,
+          "ring-walks": [
+            "recDfx2PinyCg03BY"
+          ],
+          "source-record": "rec2Y5yTbOtivElAQ",
+          "ring_number": 5,
+          "facility_id": 516,
+          "customer_id": 15,
+          "ring_name": "GDF Hunter Ring 1",
+          "source-base": "appUq5Qz9kARqFija",
+          "ring-key": "15|516|id:48"
+        }
+      }
+    ],
+    "ring-walks": [
+      {
+        "id": "rec9aCZz83WOnFHhs",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:13",
+          "minutes": 12,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "recq8j147V3scpOlo"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:13",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recBfR3mEUh22pXbt",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:10",
+          "minutes": 8,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "rec8Shy2UrTYX2gQw"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:10",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recDfx2PinyCg03BY",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:48",
+          "minutes": 14,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "recx0Fl8wUCEQBDFh"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:48",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recHavzkUcrSYB4ok",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:45",
+          "minutes": 16,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "recZ0U8lS2wP9fArB"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:45",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recOoVnNNuAQ61kuK",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:44",
+          "minutes": 6,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "rec5b1WpsfQfxTXXI"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:44",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      },
+      {
+        "id": "recbYxfoFksqsJerc",
+        "createdTime": "2026-10-20T16:57:16.000Z",
+        "fields": {
+          "walk-key": "CWF|home|15|516|id:3",
+          "minutes": 10,
+          "confirmed-on": "2026-10-20",
+          "rings-helper": [
+            "recRpJ3hAbKN8O7hz"
+          ],
+          "is-example": true,
+          "barn-name": "home",
+          "tenant-key": "CWF",
+          "ring-key": "15|516|id:3",
+          "notes": "Owner retained demonstration minutes on 2026-10-20. Not measured walking time."
+        }
+      }
+    ]
+  }
+}

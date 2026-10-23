@@ -1,0 +1,19 @@
+{
+  "verifiedAt": "2026-10-22T02:04:44.656Z",
+  "runId": "7a7823b3-fe37-4667-a129-e57e9cffbf19",
+  "started": "2026-10-22T02:02:02.077Z",
+  "completed": "2026-10-22T02:03:42.495Z",
+  "result": "Success",
+  "entries": 6,
+  "collections": 12,
+  "riders": 36,
+  "horses": 75,
+  "syncedShows": 2,
+  "syncedRings": 24,
+  "syncedSchedules": 435,
+  "existingHelperValuesAndLinksPreserved": true,
+  "legacyReferencesFrozen": true,
+  "archiveHashesVerified": 16,
+  "protectedFilesUnchanged": true,
+  "repeatStable": false
+}

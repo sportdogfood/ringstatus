@@ -1,0 +1,148 @@
+{
+  "status": "PASS",
+  "offlineTests": 65,
+  "normalScheduledRuns": [
+    {
+      "verifiedAt": "2026-10-22T02:04:44.656Z",
+      "runId": "7a7823b3-fe37-4667-a129-e57e9cffbf19",
+      "started": "2026-10-22T02:02:02.077Z",
+      "completed": "2026-10-22T02:03:42.495Z",
+      "result": "Success",
+      "entries": 6,
+      "collections": 12,
+      "riders": 36,
+      "horses": 75,
+      "syncedShows": 2,
+      "syncedRings": 24,
+      "syncedSchedules": 435,
+      "existingHelperValuesAndLinksPreserved": true,
+      "legacyReferencesFrozen": true,
+      "archiveHashesVerified": 16,
+      "protectedFilesUnchanged": true,
+      "repeatStable": false
+    },
+    {
+      "verifiedAt": "2026-10-22T02:09:05.802Z",
+      "runId": "f943e786-949f-4095-89f5-3b8f97b22ed8",
+      "started": "2026-10-22T02:07:02.023Z",
+      "completed": "2026-10-22T02:08:55.198Z",
+      "result": "Success",
+      "entries": 6,
+      "collections": 12,
+      "riders": 36,
+      "horses": 75,
+      "syncedShows": 2,
+      "syncedRings": 24,
+      "syncedSchedules": 435,
+      "existingHelperValuesAndLinksPreserved": true,
+      "legacyReferencesFrozen": true,
+      "archiveHashesVerified": 16,
+      "protectedFilesUnchanged": true,
+      "repeatStable": true,
+      "comparison": {
+        "ok": true,
+        "first": "7a7823b3-fe37-4667-a129-e57e9cffbf19",
+        "second": "f943e786-949f-4095-89f5-3b8f97b22ed8",
+        "first_completed": "2026-10-22T02:03:42.495Z",
+        "second_completed": "2026-10-22T02:08:55.198Z",
+        "stable_tables": [
+          "tenant-details",
+          "trainers",
+          "heartbeat",
+          "synced-shows",
+          "collections",
+          "synced-rings",
+          "synced-schedules",
+          "rings-helper",
+          "ring-walks",
+          "horses",
+          "riders",
+          "entries",
+          "code-reviews"
+        ],
+        "new_run_logs": 1,
+        "verified_archive_events": 32
+      }
+    }
+  ],
+  "retirement": {
+    "at": "2026-10-22T02:10:10.952Z",
+    "normalRuns": [
+      "7a7823b3-fe37-4667-a129-e57e9cffbf19",
+      "f943e786-949f-4095-89f5-3b8f97b22ed8"
+    ],
+    "retiredTables": [
+      {
+        "id": "tblxutSCBQzmkJLLO",
+        "old": "show-details",
+        "name": "retired-show-details"
+      },
+      {
+        "id": "tblsVT0Poao9wKhs4",
+        "old": "rings",
+        "name": "retired-rings"
+      }
+    ],
+    "renamedHistoricalFields": [
+      {
+        "table": "tblDhAutHYlDbvzNd",
+        "id": "fldGhqNtI5phVMvPv",
+        "old": "show-details",
+        "name": "retired-show-details",
+        "target": "tblxutSCBQzmkJLLO"
+      },
+      {
+        "table": "tblDhAutHYlDbvzNd",
+        "id": "fldeHNP1diNFbGtbs",
+        "old": "rings",
+        "name": "retired-rings",
+        "target": "tblsVT0Poao9wKhs4"
+      },
+      {
+        "table": "tblbac3wwWJAmUthL",
+        "id": "fldg0EayAJAV97hAk",
+        "old": "show-details",
+        "name": "retired-show-details",
+        "target": "tblxutSCBQzmkJLLO"
+      },
+      {
+        "table": "tblu9SBWyir2z4CCt",
+        "id": "fld8wGxdSdAqk7cRS",
+        "old": "rings",
+        "name": "retired-rings",
+        "target": "tblsVT0Poao9wKhs4"
+      }
+    ],
+    "businessRecordsWritten": 0,
+    "recordsDeleted": 0,
+    "fieldsDeleted": 0,
+    "verified": true
+  },
+  "postRetirement": {
+    "at": "2026-10-22T02:12:00.349Z",
+    "ok": true,
+    "method": "Compare records by stable table/record/field IDs, then run read-only synced verifier",
+    "tablesChecked": [
+      "tblDhAutHYlDbvzNd",
+      "tblbac3wwWJAmUthL",
+      "tblu9SBWyir2z4CCt",
+      "tblxutSCBQzmkJLLO",
+      "tblsVT0Poao9wKhs4"
+    ],
+    "recordsAndLinksUnchanged": true,
+    "runId": "f943e786-949f-4095-89f5-3b8f97b22ed8",
+    "entries": 6,
+    "collections": 12,
+    "riders": 36,
+    "horses": 75,
+    "syncedShows": 2,
+    "syncedRings": 24,
+    "syncedSchedules": 435,
+    "comparisonNote": "The pre/post-retirement field-name comparison detected the explicitly approved rings -> retired-rings label changes. Stable field-ID comparison confirms identical values and links. No product code changed after that comparison."
+  },
+  "manualCollectorRuns": 0,
+  "recordRepairs": 0,
+  "schedule": "Existing five-minute task unchanged",
+  "scheduleSourceEditing": "Off for all three synced tables",
+  "tenantEdits": "Remain in CWF"
+}

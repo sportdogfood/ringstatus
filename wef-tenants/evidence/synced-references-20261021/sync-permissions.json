@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-10-22T01:55:10.117Z",
+  "method": "Existing authenticated Airtable browser, Synced table settings",
+  "tables": [
+    {
+      "name": "wef-schedules.shows",
+      "editSourceRecords": "Off",
+      "automaticSync": true,
+      "deleteRecordsWhenDeletedOrHiddenInSource": true
+    },
+    {
+      "name": "wef-schedules.rings",
+      "editSourceRecords": "Off",
+      "automaticSync": true,
+      "deleteRecordsWhenDeletedOrHiddenInSource": true
+    },
+    {
+      "name": "wef-schedules.schedules",
+      "editSourceRecords": "Off",
+      "automaticSync": true,
+      "deleteRecordsWhenDeletedOrHiddenInSource": true
+    }
+  ],
+  "settingsChanged": false
+}

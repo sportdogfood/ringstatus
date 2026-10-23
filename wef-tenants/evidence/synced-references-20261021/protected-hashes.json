@@ -1,0 +1,13 @@
+{
+  "wef-tenants/source.js": "fdfadfb970900a8f4bde36ef5a16da3b47209130194be8e5793425e9cd379089",
+  "wef-tenants/standing-roster.js": "fcbb0865db46f036c6957eaa2009aa22779ecbdee39dbb4169c184d9e6595080",
+  "wef-tenants/identity-policy.js": "0090d564736b2deefcb247f894e4c8d4e78048a1d1459413d52b07908b5cb516",
+  "wef-tenants/archive.js": "54ef82ed30487c9d59452e41a8033e02072b332c064fe740d63b5d8affcb32bf",
+  "wef-tenants/entry.js": "b8fc3526ab18eedd5d2abba602713c42d289a3044951b36a9481c1ec3b8adc6e",
+  "wef-tenants/run.ps1": "9baf2a075209dc58a57f79dc4a3f226ebd7bd18aeeb92ea52a103f8a3271882a",
+  "wef-tenants/schema.json": "5563a19f05d5ea45d0a2195aba2679dc8b1c9ec2582e7268256398aff54c9385",
+  "wef-schedules/settings.js": "3df0d2a56b16ffe12cf9f78c19b8ba1efafca16881f45acc3c2897246292768c",
+  "wef-schedules/collect.js": "ca81e5dc7da4f8134c8485e961d543fe312954e0d8fce770b35d9ef41766be01",
+  "wef-schedules/current-store.js": "4089472168edf464556fd522d585cc4c6dd293f6b2ba379ad29aa2ff0d703093",
+  "workers/wef-schedules-decoded/worker.js": "278964744a614b4cde037a6852c99d54b614cb722b7ff4a1565bf6b32b62ddcc"
+}

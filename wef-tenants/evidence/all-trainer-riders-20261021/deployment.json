@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-22T01:01:07.410Z",
+  "files": [
+    {
+      "name": "collector.js",
+      "sha256": "2dd782c9aee492d2982156bc8c2f69f96bb6fba382a5429d0b944b2fa3b7ec7d",
+      "candidateMatches": true
+    },
+    {
+      "name": "standing-roster.js",
+      "sha256": "fcbb0865db46f036c6957eaa2009aa22779ecbdee39dbb4169c184d9e6595080",
+      "candidateMatches": true
+    }
+  ],
+  "offlineTests": {
+    "pass": 49,
+    "fail": 0
+  },
+  "review": "No actionable findings"
+}

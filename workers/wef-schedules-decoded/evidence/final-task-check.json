@@ -1,0 +1,16 @@
+[
+  {
+    "Task": "wef-schedules-collector",
+    "DefinitionUnchanged": true,
+    "Last": "2026-10-21T20:05:01.0000000-04:00",
+    "Result": 0,
+    "Interval": "PT5M"
+  },
+  {
+    "Task": "wef-tenant-cwf-collector",
+    "DefinitionUnchanged": true,
+    "Last": "2026-10-21T20:07:01.0000000-04:00",
+    "Result": 0,
+    "Interval": "PT5M"
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "verifiedAt": "2026-10-22T01:09:28.834Z",
+  "offlineTests": {
+    "pass": 49,
+    "fail": 0
+  },
+  "normalRuns": [
+    {
+      "runId": "0936b0ea-84c1-4ffb-97e1-66bbb0e6d74e",
+      "started": "2026-10-22T01:02:02.303Z",
+      "completed": "2026-10-22T01:03:43.012Z",
+      "result": "Success",
+      "riders": 36,
+      "entries": 6,
+      "archivesVerified": 16
+    },
+    {
+      "runId": "ed1f698c-12f6-4e25-bc24-c02f168ac5b1",
+      "started": "2026-10-22T01:07:02.176Z",
+      "completed": "2026-10-22T01:08:54.003Z",
+      "result": "Success",
+      "riders": 36,
+      "entries": 6,
+      "archivesVerified": 16
+    }
+  ],
+  "newRiders": [
+    {
+      "record": "recC0EgXDnULgS30X",
+      "id": 50121,
+      "name": "ISABELA DE SOUSA",
+      "trainers": "50121"
+    },
+    {
+      "record": "recmt2H6SBE50y8QJ",
+      "id": 81017,
+      "name": "JACQUELINE ROSENTHAL",
+      "trainers": "50121"
+    },
+    {
+      "record": "recsdZmEkqilv5ZRb",
+      "id": 80970,
+      "name": "TAYLOR COWLES",
+      "trainers": "80970"
+    }
+  ],
+  "original33RiderHelpersPreserved": true,
+  "allSixEntryRiderLinksCorrect": true,
+  "repeatRecordIdsStable": true,
+  "uniquenessPreserved": true,
+  "taskUnchanged": true,
+  "manualRuns": false,
+  "recordRepairs": false
+}

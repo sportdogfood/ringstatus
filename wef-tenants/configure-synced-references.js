@@ -1,0 +1,13 @@
+"use strict";
+// Metadata only. Collection and record linking are performed by the scheduled task.
+const links=[['entries','shows','wef-schedules.shows'],['entries','synced-rings','wef-schedules.rings'],['entries','schedules','wef-schedules.schedules'],['collections','shows','wef-schedules.shows'],['rings-helper','synced-rings','wef-schedules.rings']];
+async function configure({request=globalThis.fetch,settings=require('./settings'),pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))}={}){
+ const route='https://api.airtable.com/v0/meta/bases/'+settings.BASE_ID+'/tables';
+ async function api(url,method='GET',body){await pause(250);const r=await request(url,{method,headers:{Authorization:'Bearer '+settings.AIRTABLE_TOKEN,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(30000)});if(!r.ok)throw Error('Synced reference schema HTTP '+r.status);return r.json();}
+ let schema=await api(route);const targets={'wef-schedules.shows':settings.SYNC_SHOWS_TABLE,'wef-schedules.rings':settings.SYNC_RINGS_TABLE,'wef-schedules.schedules':settings.SYNC_SCHEDULES_TABLE};const plans=links.map(([from,name,to])=>{const table=schema.tables.find(t=>t.name===from),target=schema.tables.find(t=>t.name===to);if(!table||!target)throw Error('Existing CWF/synced table missing');if(target.id!==targets[to])throw Error('Synced table identity differs from configured ID');const field=table.fields.find(f=>f.name===name);if(field&&(field.type!=='multipleRecordLinks'||field.options?.linkedTableId!==target.id))throw Error('Conflicting '+from+'.'+name);return{table,target,name,field};});
+ for(const p of plans)if(!p.field)await api(route+'/'+p.table.id+'/fields','POST',{name:p.name,type:'multipleRecordLinks',options:{linkedTableId:p.target.id},description:'CWF link to an existing read-only synced reference. Source schedule fields remain read-only.'});
+ schema=await api(route);const saved=[];for(const p of plans){const table=schema.tables.find(t=>t.id===p.table.id),target=schema.tables.find(t=>t.id===p.target.id),field=table.fields.find(f=>f.name===p.name),inverse=target.fields.find(f=>f.id===field?.options?.inverseLinkFieldId);if(field?.type!=='multipleRecordLinks'||field.options?.linkedTableId!==target.id||inverse?.options?.linkedTableId!==table.id||inverse.options.inverseLinkFieldId!==field.id)throw Error('Synced reference link readback failed');saved.push({table:table.id,name:field.name,field:field.id,target:target.id,inverse:inverse.id});}
+ return{base:settings.BASE_ID,links:saved,businessRecordsWritten:0};
+}
+if(require.main===module)configure().then(r=>console.log(JSON.stringify(r))).catch(e=>{console.error(e.message);process.exitCode=1;});
+module.exports={configure,links};

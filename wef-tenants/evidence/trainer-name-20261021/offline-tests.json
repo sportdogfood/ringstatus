@@ -1,0 +1,14 @@
+{
+  "baseline": {
+    "tests": 15,
+    "pass": 14,
+    "fail": 1,
+    "failure": "validated people names populate each trainer on empty runs and retain record identities on repeat: expected TAYLOR COWLES, got undefined"
+  },
+  "candidate": {
+    "tests": 45,
+    "pass": 45,
+    "fail": 0
+  },
+  "networkCalls": false
+}

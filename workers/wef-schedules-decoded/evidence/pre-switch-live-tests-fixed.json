@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-21T23:58:42.180Z",
+  "results": [
+    {
+      "route": "/ring?customer_id=15",
+      "status": 200,
+      "decoded": "1"
+    },
+    {
+      "route": "/schedule?date=2026-10-25&show_id=200000075&customer_id=15",
+      "status": 200,
+      "decoded": "1",
+      "rows": 139,
+      "classIds": 139,
+      "keysPreserved": true
+    },
+    {
+      "route": "/people/50121?pid=50121&show_id=200000075&customer_id=15",
+      "status": 200,
+      "decoded": "1",
+      "trips": 4,
+      "allIds": true
+    }
+  ]
+}

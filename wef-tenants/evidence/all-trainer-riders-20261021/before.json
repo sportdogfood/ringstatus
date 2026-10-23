@@ -1,0 +1,3520 @@
+{
+  "at": "2026-10-22T00:58:53.723Z",
+  "trainers": [
+    {
+      "id": "rec1sBWKmh1xl6MPA",
+      "createdTime": "2026-10-21T22:59:29.000Z",
+      "fields": {
+        "trainer-id": 80970,
+        "last-checked": "2026-10-22T00:58:30.725Z",
+        "collections": [
+          "rec3LfOy0NCtc757q",
+          "recrNy2xMyxe27bjQ",
+          "recCo3bSZwzaPwsMU",
+          "recpbu56eqxxwWR8G"
+        ],
+        "role": "additional",
+        "trainer-key": "80970",
+        "horses": [
+          "recxMMFNm83rdmofA",
+          "rec1eQ29x3LhlMZGU"
+        ],
+        "last-result": "Success",
+        "entries": [
+          "rec2iIvE9mLfUNHaf",
+          "recL8BOAIA7XCdApS"
+        ],
+        "trainer-name": "TAYLOR COWLES",
+        "active": true,
+        "slot": 3
+      }
+    },
+    {
+      "id": "rec9Hmq2WuHuZc9mY",
+      "createdTime": "2026-10-20T16:49:38.000Z",
+      "fields": {
+        "trainer-id": 8778,
+        "last-checked": "2026-10-22T00:57:50.251Z",
+        "collections": [
+          "reckWdzLJAJI10Nyt",
+          "recvXKpYW5qC6V1zv",
+          "recjuCxV2TszGgh6n",
+          "reca3Z6R8j7ekQ5gc"
+        ],
+        "role": "main",
+        "trainer-key": "8778",
+        "horses": [
+          "recnlCL33i9RZdfDF",
+          "recZjyHg9xXCjiRQr",
+          "recTUmZR8tuX07CTI",
+          "recqfy21Sy1OmUd5w",
+          "recUZq19haTlMGZro",
+          "rec1gpX41ZeBZTY5K",
+          "recNEkaFwtyNKoKnj",
+          "recGQQ1GetPSRhW6i",
+          "rec0LXYicCNtBJfwa",
+          "recKOL5DA8fn4w6XR",
+          "recUjh3naagDOdC0W",
+          "recnypJGmVMqD3aUB",
+          "recWnpX6bcWELMsB6",
+          "recz2JoFyVt212nn6",
+          "recOBBDNMnSutzxgw",
+          "recVnKkU2IQjLOhUI",
+          "recmEVzn854eQzsHq",
+          "reczLO96ZX52RSs8M",
+          "recqJ1Jcrjs8FPS9I",
+          "recM5c0LFBVFfDJTk",
+          "recb5l5vQMptKY8oq",
+          "recsYwvs9CxqC8LlV",
+          "rec0IirimhFe65PE3",
+          "rech0s1W6l6pnHQCV",
+          "recjpJQzze0Iz3bwr",
+          "rec0H2Th0ynS5rM5S",
+          "recLwOoif1AF7A4FS",
+          "rec9RUnsJzbqsmMpw",
+          "recWhlZ491UmgHKeZ",
+          "recpGfgzFupUDxJlb",
+          "recilDAzWli3vc1Tm",
+          "rec9zxcf43zcRgCek",
+          "recrmt33Oddk9hg97",
+          "rectkuX7M82ZdJ0cZ",
+          "recn1jRmOvgV7aUHb",
+          "rectXYph5sOyMlO5M",
+          "rec49T9AzyxdJQfaV",
+          "recsCorux6PNBtOar",
+          "reck3bTBEX4Yyot3n",
+          "recnLHW1gdn3LlFcA",
+          "recZmrjHrfjLQfenG",
+          "recrUe4akjtQRncxJ",
+          "recXLYIfCNCs8WQun",
+          "recx9mW6kbIxbHOUJ",
+          "recEHMwAyw3V0tWRQ",
+          "recdCslRNduRLA3qt",
+          "recyHR00NST3B8GSN",
+          "recz4AowhLdRSdODo",
+          "recbCk3S7YW3XFuiS",
+          "reciUdrRS5SYYPWIM",
+          "recjJTeb2kJ1UfgKb",
+          "recxS2wDDwby40sRj",
+          "recAfsSJqKN8tkAaZ",
+          "reczmFoJp3LczFw0L",
+          "recxRCxmpIfhqEEwA",
+          "recF2LAaQ7fhCIQzD",
+          "recN3O5qZTsodbXBB",
+          "recJQ6KnkNELhIxUO",
+          "recsOX0mayXE1ddau",
+          "recFwIlRJcpFxamxN",
+          "recqVDg0ON8NJfm1x",
+          "reccMCzW53kEsHl2T",
+          "recezgeZjtbRx0OGu",
+          "recXzAacKOZX0UO5V",
+          "recR7Bc9ZXi5uZBiL",
+          "recKUGelFQaTUeIsO",
+          "rec4423KCpPG8vGvN",
+          "recOlkz7ACiD6yeiD",
+          "reccCVXhSgBm2aGKC",
+          "recaRqj1r9QlIqF1D",
+          "rec3t48sBtWJU7QtN"
+        ],
+        "last-result": "No entries",
+        "riders": [
+          "rece1ZpEQqFJ7A89v",
+          "recScQgoxsmuOcqw1",
+          "recEHPrSEZq6QsmoO",
+          "recRUe0UrHW2PZHUV",
+          "recUO22xwf0x8Sob7",
+          "recxsfI6iSunBVFd0",
+          "recB3N91s0Bl2GxL0",
+          "recovIAcrm4wdDWzy",
+          "recozlDZujeAseXhi",
+          "recz1HwlsAqt9GRwU",
+          "recROvgNVJToenr0b",
+          "recvbPDm6vbJKCFQM",
+          "recxnvvzfuGJXnUfv",
+          "recZ8us0YOTffsQBx",
+          "rec2zIgN5NSQhHA8f",
+          "reccqFTGFn2m7mwVp",
+          "recgvQtyksk0JKhbr",
+          "rec12obKov6O3ZzJE",
+          "recBhSc6s97WS1ZOQ",
+          "rectXATOdFlpr3MIK",
+          "recjN8g49ze6cRA7l",
+          "rec4Eq7ReOLwpgGn1",
+          "rechlu4NM7shxZv4a",
+          "recO5cCQcCe9lCY4V",
+          "recTDtcZuMxhTxb1l",
+          "reclh6wNfR7A6oYKr",
+          "recqAZR9xsCElYQCb",
+          "recyYGvtW8I4KgAjk",
+          "recjIFLmTNUDrEQ2f",
+          "rec07lZ8zWta2pSyP",
+          "rec6K8QreBFl5PYbe",
+          "recP8ZSwwHUzTKunO"
+        ],
+        "trainer-name": "ALAN KOROTKIN",
+        "active": true,
+        "slot": 1
+      }
+    },
+    {
+      "id": "recY4aRfPwodSQVBJ",
+      "createdTime": "2026-10-21T23:08:41.000Z",
+      "fields": {
+        "trainer-id": 50121,
+        "last-checked": "2026-10-22T00:58:11.405Z",
+        "collections": [
+          "recfgpr3myqwALvxi",
+          "recdCYnQPLRWGibmV",
+          "rec49KnRwB0yWSJfx",
+          "recWryWfQXz96XfPG"
+        ],
+        "role": "additional",
+        "trainer-key": "50121",
+        "horses": [
+          "recQDCLG6rBgB26AM",
+          "recmRfdpPLsMFtTZo"
+        ],
+        "last-result": "Success",
+        "entries": [
+          "recfANMpXOHSEuL7x",
+          "rect3aBhzq8GTcM7d",
+          "recExiDfsusGy9CJv",
+          "rece6esDNI2bCBx2g"
+        ],
+        "trainer-name": "ISABELA DE SOUSA",
+        "active": true,
+        "slot": 2
+      }
+    }
+  ],
+  "horses": [
+    {
+      "id": "rec0H2Th0ynS5rM5S",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Cardozo",
+        "source-name": "CARDOZO 4",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recNKhGLZbpRIBXRi",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CARDOZO 4",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "147744",
+        "source-record": "recNKhGLZbpRIBXRi",
+        "show-name": "Cardozo 4",
+        "horse-name": "CARDOZO 4",
+        "lookup-text": "cardozo 4 | cardozo | cardozo 4 |  | cardozo 4 | 147744 | 147744 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 147744
+      }
+    },
+    {
+      "id": "rec0IirimhFe65PE3",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Corny",
+        "source-name": "QORNWELL D’OX Z",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recLDwzH5z6vmhZFU",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "QORNWELL D’OX Z",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "151339",
+        "source-record": "recLDwzH5z6vmhZFU",
+        "show-name": "Qornwell D'OX Z",
+        "horse-name": "QORNWELL D’OX Z",
+        "lookup-text": "qornwell d’ox z | corny | qornwell d'ox z |  | qornwell d’ox z | 151339 | 151339 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 151339
+      }
+    },
+    {
+      "id": "rec0LXYicCNtBJfwa",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Piccolo",
+        "source-name": "PICCOLO",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec7WNvlsFSQYjafT",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "PICCOLO",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:rec7WNvlsFSQYjafT",
+        "source-record": "rec7WNvlsFSQYjafT",
+        "show-name": "Piccolo",
+        "horse-name": "PICCOLO",
+        "lookup-text": "piccolo | piccolo | piccolo |  | piccolo | legacy:rec7wnvlsfsqyjaft |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "rec1eQ29x3LhlMZGU",
+      "createdTime": "2026-10-22T00:23:33.000Z",
+      "fields": {
+        "trainers": [
+          "rec1sBWKmh1xl6MPA"
+        ],
+        "trainer-id": 80970,
+        "name": "WHERE'S WALDO",
+        "tenant-id": 8778,
+        "entries": [
+          "recL8BOAIA7XCdApS"
+        ],
+        "source": "people feed; show 200000075",
+        "first-seen": "2026-10-22T00:23:31.038Z",
+        "horse-key": "200002216",
+        "horse-name": "WHERE'S WALDO",
+        "last-seen": "2026-10-22T00:58:32.545Z",
+        "lookup-text": "where's waldo |  |  |  | where's waldo | 200002216 | 200002216 | 80970 | 8778",
+        "trainer-ids": "80970",
+        "horse-id": 200002216
+      }
+    },
+    {
+      "id": "rec1gpX41ZeBZTY5K",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Gaston",
+        "source-name": "GASTON VAN DE HELLE",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec49o6FdKuRtsUco",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "GASTON VAN DE HELLE",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:rec49o6FdKuRtsUco",
+        "source-record": "rec49o6FdKuRtsUco",
+        "show-name": "Gaston Van De Helle",
+        "horse-name": "GASTON VAN DE HELLE",
+        "lookup-text": "gaston van de helle | gaston | gaston van de helle |  | gaston van de helle | legacy:rec49o6fdkurtsuco |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "rec3t48sBtWJU7QtN",
+      "createdTime": "2026-10-20T17:27:19.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Cupcake",
+        "source-name": "CUPCAKE",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/reczFFBHZFj0xsoY8",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CUPCAKE",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:reczFFBHZFj0xsoY8",
+        "source-record": "reczFFBHZFj0xsoY8",
+        "show-name": "Cupcake",
+        "horse-name": "CUPCAKE",
+        "lookup-text": "cupcake | cupcake | cupcake |  | cupcake | legacy:reczffbhzfj0xsoy8 |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "rec4423KCpPG8vGvN",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Arrow",
+        "source-name": "ARROW M Z",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recvwm1b068OermOm",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "ARROW M Z",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "146806",
+        "source-record": "recvwm1b068OermOm",
+        "show-name": "Arrow M Z",
+        "horse-name": "ARROW M Z",
+        "lookup-text": "arrow m z | arrow | arrow m z |  | arrow m z | 146806 | 146806 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 146806
+      }
+    },
+    {
+      "id": "rec49T9AzyxdJQfaV",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Macho",
+        "source-name": "FORTE",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recY59QK9sDnTqmPZ",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "FORTE",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "151630",
+        "source-record": "recY59QK9sDnTqmPZ",
+        "show-name": "Forte",
+        "horse-name": "FORTE",
+        "lookup-text": "forte | macho | forte |  | forte | 151630 | 151630 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 151630
+      }
+    },
+    {
+      "id": "rec9RUnsJzbqsmMpw",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Coffee",
+        "source-name": "IRISH COFFEE VHL",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recQszJ2ttg2KG8II",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "IRISH COFFEE VHL",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "142146",
+        "source-record": "recQszJ2ttg2KG8II",
+        "show-name": "Irish Coffee VHL",
+        "horse-name": "IRISH COFFEE VHL",
+        "lookup-text": "irish coffee vhl | coffee | irish coffee vhl |  | irish coffee vhl | 142146 | 142146 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 142146
+      }
+    },
+    {
+      "id": "rec9zxcf43zcRgCek",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Munster",
+        "source-name": "MASTERMIND",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recSqMaL7VwLmUhWX",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "MASTERMIND",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200002853",
+        "source-record": "recSqMaL7VwLmUhWX",
+        "show-name": "Mastermind",
+        "horse-name": "MASTERMIND",
+        "lookup-text": "mastermind | munster | mastermind |  | mastermind | 200002853 | 200002853 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200002853
+      }
+    },
+    {
+      "id": "recAfsSJqKN8tkAaZ",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Ranger",
+        "source-name": "RANGE ROVER",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recjzVhIflf5s5Vf9",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "RANGE ROVER",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "source-inactive": true,
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "138724",
+        "source-record": "recjzVhIflf5s5Vf9",
+        "disabled": true,
+        "show-name": "Range Rover",
+        "horse-name": "RANGE ROVER",
+        "lookup-text": "range rover | ranger | range rover |  | range rover | 138724 | 138724 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 138724
+      }
+    },
+    {
+      "id": "recEHMwAyw3V0tWRQ",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Cervin",
+        "source-name": "CERVIN DE LA POMME Z",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/reccVW4QwFVyWe6D2",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CERVIN DE LA POMME Z",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200001948",
+        "source-record": "reccVW4QwFVyWe6D2",
+        "show-name": "Cervin De La Pomme Z",
+        "horse-name": "CERVIN DE LA POMME Z",
+        "lookup-text": "cervin de la pomme z | cervin | cervin de la pomme z |  | cervin de la pomme z | 200001948 | 200001948 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200001948
+      }
+    },
+    {
+      "id": "recF2LAaQ7fhCIQzD",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Ben",
+        "source-name": "IB MERCEDES",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recph5ytDQkS43gSX",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "IB MERCEDES",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200001461",
+        "source-record": "recph5ytDQkS43gSX",
+        "show-name": "IB Mercedes",
+        "horse-name": "IB MERCEDES",
+        "lookup-text": "ib mercedes | ben | ib mercedes |  | ib mercedes | 200001461 | 200001461 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200001461
+      }
+    },
+    {
+      "id": "recFwIlRJcpFxamxN",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Dany",
+        "source-name": "DANY VILLERS",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recqwtJme96hmCQRU",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "DANY VILLERS",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "129527",
+        "source-record": "recqwtJme96hmCQRU",
+        "show-name": "Dany Villers",
+        "horse-name": "DANY VILLERS",
+        "lookup-text": "dany villers | dany | dany villers |  | dany villers | 129527 | 129527 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 129527
+      }
+    },
+    {
+      "id": "recGQQ1GetPSRhW6i",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Caymus",
+        "source-name": "CAYMUS",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec6bfvpWX9SP6nfx",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CAYMUS",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "121591",
+        "source-record": "rec6bfvpWX9SP6nfx",
+        "show-name": "Caymus",
+        "horse-name": "CAYMUS",
+        "lookup-text": "caymus | caymus | caymus |  | caymus | 121591 | 121591 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 121591
+      }
+    },
+    {
+      "id": "recJQ6KnkNELhIxUO",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Milo",
+        "source-name": "DIO MIO",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recqL4Razj2ToCEZI",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "DIO MIO",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:recqL4Razj2ToCEZI",
+        "source-record": "recqL4Razj2ToCEZI",
+        "show-name": "Dio Mio",
+        "horse-name": "DIO MIO",
+        "lookup-text": "dio mio | milo | dio mio |  | dio mio | legacy:recql4razj2tocezi |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recKOL5DA8fn4w6XR",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Dino",
+        "source-name": "COMDINUS VAN BEEK Z",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec7lpJPPtAwysEx5",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "COMDINUS VAN BEEK Z",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "146306",
+        "source-record": "rec7lpJPPtAwysEx5",
+        "show-name": "Comidinus Van Beek Z",
+        "horse-name": "COMDINUS VAN BEEK Z",
+        "lookup-text": "comdinus van beek z | dino | comidinus van beek z |  | comdinus van beek z | 146306 | 146306 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 146306
+      }
+    },
+    {
+      "id": "recKUGelFQaTUeIsO",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Tommy",
+        "source-name": "SPECIALIST",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recvMaPxk3TGdPUs2",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "SPECIALIST",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "152286",
+        "source-record": "recvMaPxk3TGdPUs2",
+        "show-name": "Specialist",
+        "horse-name": "SPECIALIST",
+        "lookup-text": "specialist | tommy | specialist |  | specialist | 152286 | 152286 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 152286
+      }
+    },
+    {
+      "id": "recLwOoif1AF7A4FS",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Snoop",
+        "source-name": "SANDENAL",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recNdkzSgO05iWmOw",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "SANDENAL",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "source-inactive": true,
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200003954",
+        "source-record": "recNdkzSgO05iWmOw",
+        "disabled": true,
+        "show-name": "Sandenal",
+        "horse-name": "SANDENAL",
+        "lookup-text": "sandenal | snoop | sandenal |  | sandenal | 200003954 | 200003954 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200003954
+      }
+    },
+    {
+      "id": "recM5c0LFBVFfDJTk",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Bernie",
+        "source-name": "SUGARBROOK BURNSIDE",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recIjOLIiPfxaa207",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "SUGARBROOK BURNSIDE",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "117338",
+        "source-record": "recIjOLIiPfxaa207",
+        "show-name": "Sugarbrook Burnside",
+        "horse-name": "SUGARBROOK BURNSIDE",
+        "lookup-text": "sugarbrook burnside | bernie | sugarbrook burnside |  | sugarbrook burnside | 117338 | 117338 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 117338
+      }
+    },
+    {
+      "id": "recN3O5qZTsodbXBB",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Q",
+        "source-name": "QASTAAR VAN'T HEIKE",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recpuyIb4A96kJ2V0",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "QASTAAR VAN'T HEIKE",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "147278",
+        "source-record": "recpuyIb4A96kJ2V0",
+        "show-name": "Qstaar Van’t Heike",
+        "horse-name": "QASTAAR VAN'T HEIKE",
+        "lookup-text": "qastaar van't heike | q | qstaar van’t heike |  | qastaar van't heike | 147278 | 147278 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 147278
+      }
+    },
+    {
+      "id": "recNEkaFwtyNKoKnj",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Power",
+        "source-name": "S&L PREDICTABLE",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec6RQRDxmMh8ZxRc",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "S&L PREDICTABLE",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:rec6RQRDxmMh8ZxRc",
+        "source-record": "rec6RQRDxmMh8ZxRc",
+        "show-name": "S&L Predictable",
+        "horse-name": "S&L PREDICTABLE",
+        "lookup-text": "s&l predictable | power | s&l predictable |  | s&l predictable | legacy:rec6rqrdxmmh8zxrc |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recOBBDNMnSutzxgw",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Coin",
+        "source-name": "GOLD COIN",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recF4dDOuC2fi8WZM",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "GOLD COIN",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "115135",
+        "source-record": "recF4dDOuC2fi8WZM",
+        "show-name": "Gold Coin",
+        "horse-name": "GOLD COIN",
+        "lookup-text": "gold coin | coin | gold coin |  | gold coin | 115135 | 115135 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 115135
+      }
+    },
+    {
+      "id": "recOlkz7ACiD6yeiD",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "King",
+        "source-name": "KING Z",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recxH3kNE6WVXDmVp",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "KING Z",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "146912",
+        "source-record": "recxH3kNE6WVXDmVp",
+        "show-name": "King Z",
+        "horse-name": "KING Z",
+        "lookup-text": "king z | king | king z |  | king z | 146912 | 146912 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 146912
+      }
+    },
+    {
+      "id": "recQDCLG6rBgB26AM",
+      "createdTime": "2026-10-22T00:03:12.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "trainer-id": 50121,
+        "name": "CROSS OVER SR",
+        "tenant-id": 8778,
+        "entries": [
+          "recfANMpXOHSEuL7x",
+          "recExiDfsusGy9CJv"
+        ],
+        "source": "people feed; show 200000075",
+        "first-seen": "2026-10-22T00:03:10.981Z",
+        "horse-key": "200002670",
+        "horse-name": "CROSS OVER SR",
+        "last-seen": "2026-10-22T00:58:32.545Z",
+        "lookup-text": "cross over sr |  |  |  | cross over sr | 200002670 | 200002670 | 50121 | 8778",
+        "trainer-ids": "50121",
+        "horse-id": 200002670
+      }
+    },
+    {
+      "id": "recR7Bc9ZXi5uZBiL",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Navy",
+        "source-name": "NAVIGATOR",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recuvloEqtD0CxNem",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "NAVIGATOR",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "147044",
+        "source-record": "recuvloEqtD0CxNem",
+        "show-name": "Navigator",
+        "horse-name": "NAVIGATOR",
+        "lookup-text": "navigator | navy | navigator |  | navigator | 147044 | 147044 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 147044
+      }
+    },
+    {
+      "id": "recTUmZR8tuX07CTI",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Cartoon",
+        "source-name": "CARTOON",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec1YwgB9uO8aO8XR",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CARTOON",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:rec1YwgB9uO8aO8XR",
+        "source-record": "rec1YwgB9uO8aO8XR",
+        "show-name": "Cartoon",
+        "horse-name": "CARTOON",
+        "lookup-text": "cartoon | cartoon | cartoon |  | cartoon | legacy:rec1ywgb9uo8ao8xr |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recUZq19haTlMGZro",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Indy",
+        "source-name": "INDIGO VAN DE MUGGENHOEK",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec2cGr5EAEerQtcg",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "INDIGO VAN DE MUGGENHOEK",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200001353",
+        "source-record": "rec2cGr5EAEerQtcg",
+        "show-name": "Indigo Van De Moeggenhoek",
+        "horse-name": "INDIGO VAN DE MUGGENHOEK",
+        "lookup-text": "indigo van de muggenhoek | indy | indigo van de moeggenhoek |  | indigo van de muggenhoek | 200001353 | 200001353 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200001353
+      }
+    },
+    {
+      "id": "recUjh3naagDOdC0W",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Kinmar",
+        "source-name": "KINMAR QUALITY HERO",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec8ufypvgPD3JbFd",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "KINMAR QUALITY HERO",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "147948",
+        "source-record": "rec8ufypvgPD3JbFd",
+        "show-name": "Kinmar Quality Hero",
+        "horse-name": "KINMAR QUALITY HERO",
+        "lookup-text": "kinmar quality hero | kinmar | kinmar quality hero |  | kinmar quality hero | 147948 | 147948 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 147948
+      }
+    },
+    {
+      "id": "recVnKkU2IQjLOhUI",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Lenny",
+        "source-name": "LEONIDAS Z",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recFQ8Ik6FJseEtoK",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "LEONIDAS Z",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "142227",
+        "source-record": "recFQ8Ik6FJseEtoK",
+        "show-name": "Leonidas Z",
+        "horse-name": "LEONIDAS Z",
+        "lookup-text": "leonidas z | lenny | leonidas z |  | leonidas z | 142227 | 142227 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 142227
+      }
+    },
+    {
+      "id": "recWhlZ491UmgHKeZ",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Paisley",
+        "source-name": "HALO",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recQx7DG6A6ydTyjc",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "HALO",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "139893",
+        "source-record": "recQx7DG6A6ydTyjc",
+        "show-name": "Halo",
+        "horse-name": "HALO",
+        "lookup-text": "halo | paisley | halo |  | halo | 139893 | 139893 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 139893
+      }
+    },
+    {
+      "id": "recWnpX6bcWELMsB6",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Fento",
+        "source-name": "FENTO DES FONTAINES",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recCzp1svrHcNHrxu",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "FENTO DES FONTAINES",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:recCzp1svrHcNHrxu",
+        "source-record": "recCzp1svrHcNHrxu",
+        "show-name": "Fento Des Fontaines",
+        "horse-name": "FENTO DES FONTAINES",
+        "lookup-text": "fento des fontaines | fento | fento des fontaines |  | fento des fontaines | legacy:recczp1svrhcnhrxu |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recXLYIfCNCs8WQun",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Georgina",
+        "source-name": "GEORGINA",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recbs4LE7MisO00rE",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "GEORGINA",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:recbs4LE7MisO00rE",
+        "source-record": "recbs4LE7MisO00rE",
+        "show-name": "Georgina",
+        "horse-name": "GEORGINA",
+        "lookup-text": "georgina | georgina | georgina |  | georgina | legacy:recbs4le7miso00re |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recXzAacKOZX0UO5V",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Calypso",
+        "source-name": "CALYPSO",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recsX83zkLyxy2Pzg",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CALYPSO",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "148329",
+        "source-record": "recsX83zkLyxy2Pzg",
+        "show-name": "Calypso",
+        "horse-name": "CALYPSO",
+        "lookup-text": "calypso | calypso | calypso |  | calypso | 148329 | 148329 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 148329
+      }
+    },
+    {
+      "id": "recZjyHg9xXCjiRQr",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Zen",
+        "source-name": "AMONG US",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec1QjuqAtXfeAxBX",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "AMONG US",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "137439",
+        "source-record": "rec1QjuqAtXfeAxBX",
+        "show-name": "Among Us",
+        "horse-name": "AMONG US",
+        "lookup-text": "among us | zen | among us |  | among us | 137439 | 137439 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 137439
+      }
+    },
+    {
+      "id": "recZmrjHrfjLQfenG",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Elliot",
+        "source-name": "LUMINOSITY CLASS",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recaxPbBWUEZY5mhN",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "LUMINOSITY CLASS",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "140758",
+        "source-record": "recaxPbBWUEZY5mhN",
+        "show-name": "Luminosity Class",
+        "horse-name": "LUMINOSITY CLASS",
+        "lookup-text": "luminosity class | elliot | luminosity class |  | luminosity class | 140758 | 140758 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 140758
+      }
+    },
+    {
+      "id": "recaRqj1r9QlIqF1D",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Coco",
+        "source-name": "COCO",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/reczB38eQiI82i6ej",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "COCO",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:reczB38eQiI82i6ej",
+        "source-record": "reczB38eQiI82i6ej",
+        "show-name": "Coco",
+        "horse-name": "COCO",
+        "lookup-text": "coco | coco | coco |  | coco | legacy:reczb38eqii82i6ej |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recb5l5vQMptKY8oq",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Curtis",
+        "source-name": "CURTIS 89",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recJGGIcpgSwKswtl",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CURTIS 89",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "source-inactive": true,
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "142111",
+        "source-record": "recJGGIcpgSwKswtl",
+        "disabled": true,
+        "show-name": "Curtis",
+        "horse-name": "CURTIS 89",
+        "lookup-text": "curtis 89 | curtis | curtis |  | curtis 89 | 142111 | 142111 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 142111
+      }
+    },
+    {
+      "id": "recbCk3S7YW3XFuiS",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Doug",
+        "source-name": "IDEAL",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/reciUhZJGJskWEleX",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "IDEAL",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "128185",
+        "source-record": "reciUhZJGJskWEleX",
+        "show-name": "Ideal",
+        "horse-name": "IDEAL",
+        "lookup-text": "ideal | doug | ideal |  | ideal | 128185 | 128185 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 128185
+      }
+    },
+    {
+      "id": "reccCVXhSgBm2aGKC",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Toni",
+        "source-name": "ETONEMOI DEL CABALERO",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recz107rFcYTUApfT",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "ETONEMOI DEL CABALERO",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "source-inactive": true,
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "140238",
+        "source-record": "recz107rFcYTUApfT",
+        "disabled": true,
+        "show-name": "Etonemoi",
+        "horse-name": "ETONEMOI DEL CABALERO",
+        "lookup-text": "etonemoi del cabalero | toni | etonemoi |  | etonemoi del cabalero | 140238 | 140238 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 140238
+      }
+    },
+    {
+      "id": "reccMCzW53kEsHl2T",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Yankee",
+        "source-name": "MANHATTAN",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recrHlQymPrjZlPzQ",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "MANHATTAN",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "147296",
+        "source-record": "recrHlQymPrjZlPzQ",
+        "show-name": "Manhattan",
+        "horse-name": "MANHATTAN",
+        "lookup-text": "manhattan | yankee | manhattan |  | manhattan | 147296 | 147296 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 147296
+      }
+    },
+    {
+      "id": "recdCslRNduRLA3qt",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Oddur",
+        "source-name": "ODDUR VAN BEAUGAARDE",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recdzLApmxXlM4n0N",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "ODDUR VAN BEAUGAARDE",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:recdzLApmxXlM4n0N",
+        "source-record": "recdzLApmxXlM4n0N",
+        "show-name": "Oddur Van Beaugaarde",
+        "horse-name": "ODDUR VAN BEAUGAARDE",
+        "lookup-text": "oddur van beaugaarde | oddur | oddur van beaugaarde |  | oddur van beaugaarde | legacy:recdzlapmxxlm4n0n |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recezgeZjtbRx0OGu",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Krypton",
+        "source-name": "KRYPTON DV",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recrafEMHYPRq9p1a",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "KRYPTON DV",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "138302",
+        "source-record": "recrafEMHYPRq9p1a",
+        "show-name": "Krypton DV",
+        "horse-name": "KRYPTON DV",
+        "lookup-text": "krypton dv | krypton | krypton dv |  | krypton dv | 138302 | 138302 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 138302
+      }
+    },
+    {
+      "id": "rech0s1W6l6pnHQCV",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Inchidee Tarpania",
+        "source-name": "INCHIDEE TARPANIA",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recLV1pdBRWJaM9A9",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "INCHIDEE TARPANIA",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "source-inactive": true,
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200001790",
+        "source-record": "recLV1pdBRWJaM9A9",
+        "disabled": true,
+        "show-name": "Inchidee Tarpania",
+        "horse-name": "INCHIDEE TARPANIA",
+        "lookup-text": "inchidee tarpania | inchidee tarpania | inchidee tarpania |  | inchidee tarpania | 200001790 | 200001790 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200001790
+      }
+    },
+    {
+      "id": "reciUdrRS5SYYPWIM",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Poptart",
+        "source-name": "POPTART",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recifuf2y6Cf6ThxR",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "POPTART",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "106759",
+        "source-record": "recifuf2y6Cf6ThxR",
+        "show-name": "Poptart",
+        "horse-name": "POPTART",
+        "lookup-text": "poptart | poptart | poptart |  | poptart | 106759 | 106759 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 106759
+      }
+    },
+    {
+      "id": "recilDAzWli3vc1Tm",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Hermes",
+        "source-name": "HERMES D'ARMANVILLE",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recSNlaGBIhKWJIVQ",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "HERMES D'ARMANVILLE",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200001947",
+        "source-record": "recSNlaGBIhKWJIVQ",
+        "show-name": "Hermes D'Armanville",
+        "horse-name": "HERMES D'ARMANVILLE",
+        "lookup-text": "hermes d'armanville | hermes | hermes d'armanville |  | hermes d'armanville | 200001947 | 200001947 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200001947
+      }
+    },
+    {
+      "id": "recjJTeb2kJ1UfgKb",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Charly",
+        "source-name": "CHARLY D'YSENBEEKC Z",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recjgctDN9z0XeQ3w",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CHARLY D'YSENBEEKC Z",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "137531",
+        "source-record": "recjgctDN9z0XeQ3w",
+        "show-name": "Charly D'ysenbeekc Z",
+        "horse-name": "CHARLY D'YSENBEEKC Z",
+        "lookup-text": "charly d'ysenbeekc z | charly | charly d'ysenbeekc z |  | charly d'ysenbeekc z | 137531 | 137531 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 137531
+      }
+    },
+    {
+      "id": "recjpJQzze0Iz3bwr",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Knox",
+        "source-name": "FORT KNOX",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recLt0JBXEGDG6o2A",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "FORT KNOX",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200002451",
+        "source-record": "recLt0JBXEGDG6o2A",
+        "show-name": "Fort Knox",
+        "horse-name": "FORT KNOX",
+        "lookup-text": "fort knox | knox | fort knox |  | fort knox | 200002451 | 200002451 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200002451
+      }
+    },
+    {
+      "id": "reck3bTBEX4Yyot3n",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Casanova",
+        "source-name": "CASANOVA VH REUKENIS Z",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recaNja0FXHOXRLg9",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CASANOVA VH REUKENIS Z",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200004722",
+        "source-record": "recaNja0FXHOXRLg9",
+        "show-name": "Casanova VH Reukenis Z",
+        "horse-name": "CASANOVA VH REUKENIS Z",
+        "lookup-text": "casanova vh reukenis z | casanova | casanova vh reukenis z |  | casanova vh reukenis z | 200004722 | 200004722 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200004722
+      }
+    },
+    {
+      "id": "recmEVzn854eQzsHq",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Winnie",
+        "source-name": "IN IT TO WIN IT",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recGfY5WDuapE3HNM",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "IN IT TO WIN IT",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "source-inactive": true,
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200001185",
+        "source-record": "recGfY5WDuapE3HNM",
+        "disabled": true,
+        "show-name": "In it to Win It",
+        "horse-name": "IN IT TO WIN IT",
+        "lookup-text": "in it to win it | winnie | in it to win it |  | in it to win it | 200001185 | 200001185 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200001185
+      }
+    },
+    {
+      "id": "recmRfdpPLsMFtTZo",
+      "createdTime": "2026-10-22T00:03:12.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "trainer-id": 50121,
+        "name": "EDITION DE RIVERLAND",
+        "tenant-id": 8778,
+        "entries": [
+          "rect3aBhzq8GTcM7d",
+          "rece6esDNI2bCBx2g"
+        ],
+        "source": "people feed; show 200000075",
+        "first-seen": "2026-10-22T00:03:10.981Z",
+        "horse-key": "141234",
+        "horse-name": "EDITION DE RIVERLAND",
+        "last-seen": "2026-10-22T00:58:32.545Z",
+        "lookup-text": "edition de riverland |  |  |  | edition de riverland | 141234 | 141234 | 50121 | 8778",
+        "trainer-ids": "50121",
+        "horse-id": 141234
+      }
+    },
+    {
+      "id": "recn1jRmOvgV7aUHb",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Maiki",
+        "source-name": "MAIKI",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recXFHsagSqQECT6C",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "MAIKI",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "147279",
+        "source-record": "recXFHsagSqQECT6C",
+        "show-name": "Maiki",
+        "horse-name": "MAIKI",
+        "lookup-text": "maiki | maiki | maiki |  | maiki | 147279 | 147279 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 147279
+      }
+    },
+    {
+      "id": "recnLHW1gdn3LlFcA",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Peri",
+        "source-name": "PERIDONI 20",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recaSCOSmILPOGehr",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "PERIDONI 20",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "140695",
+        "source-record": "recaSCOSmILPOGehr",
+        "show-name": "Peridoni 20",
+        "horse-name": "PERIDONI 20",
+        "lookup-text": "peridoni 20 | peri | peridoni 20 |  | peridoni 20 | 140695 | 140695 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 140695
+      }
+    },
+    {
+      "id": "recnlCL33i9RZdfDF",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Choco",
+        "source-name": "CHOCO DU REVERDY",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec0IxiqCbSPh2XhW",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CHOCO DU REVERDY",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "139117",
+        "source-record": "rec0IxiqCbSPh2XhW",
+        "show-name": "Choco Du Reverdy",
+        "horse-name": "CHOCO DU REVERDY",
+        "lookup-text": "choco du reverdy | choco | choco du reverdy |  | choco du reverdy | 139117 | 139117 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 139117
+      }
+    },
+    {
+      "id": "recnypJGmVMqD3aUB",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Darcy",
+        "source-name": "WR'S  PEMBERLEY",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recAPUZ2KYNe6jNRu",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "WR'S  PEMBERLEY",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "source-inactive": true,
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200000988",
+        "source-record": "recAPUZ2KYNe6jNRu",
+        "disabled": true,
+        "show-name": "WR’S Pemberley",
+        "horse-name": "WR'S  PEMBERLEY",
+        "lookup-text": "wr's  pemberley | darcy | wr’s pemberley |  | wr's  pemberley | 200000988 | 200000988 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200000988
+      }
+    },
+    {
+      "id": "recpGfgzFupUDxJlb",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Kenny",
+        "source-name": "TROUBLESHOOT",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recRQw3kTA5DDQDks",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "TROUBLESHOOT",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:recRQw3kTA5DDQDks",
+        "source-record": "recRQw3kTA5DDQDks",
+        "show-name": "Troubleshoot",
+        "horse-name": "TROUBLESHOOT",
+        "lookup-text": "troubleshoot | kenny | troubleshoot |  | troubleshoot | legacy:recrqw3kta5ddqdks |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recqJ1Jcrjs8FPS9I",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Mark",
+        "source-name": "MARKANTO A",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recId0G31vLBxyTaB",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "MARKANTO A",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200003885",
+        "source-record": "recId0G31vLBxyTaB",
+        "show-name": "Markanto A",
+        "horse-name": "MARKANTO A",
+        "lookup-text": "markanto a | mark | markanto a |  | markanto a | 200003885 | 200003885 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200003885
+      }
+    },
+    {
+      "id": "recqVDg0ON8NJfm1x",
+      "createdTime": "2026-10-20T17:27:18.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Crush",
+        "source-name": "DF CRUSH",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recr763cFzKWFXhiX",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "DF CRUSH",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "130705",
+        "source-record": "recr763cFzKWFXhiX",
+        "show-name": "DF Crush",
+        "horse-name": "DF CRUSH",
+        "lookup-text": "df crush | crush | df crush |  | df crush | 130705 | 130705 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 130705
+      }
+    },
+    {
+      "id": "recqfy21Sy1OmUd5w",
+      "createdTime": "2026-10-20T17:27:12.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Insider",
+        "source-name": "INSIDER BH",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/rec208W4EzrNJf8H2",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "INSIDER BH",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "129381",
+        "source-record": "rec208W4EzrNJf8H2",
+        "show-name": "Insider BH",
+        "horse-name": "INSIDER BH",
+        "lookup-text": "insider bh | insider | insider bh |  | insider bh | 129381 | 129381 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 129381
+      }
+    },
+    {
+      "id": "recrUe4akjtQRncxJ",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Romeo",
+        "source-name": "ROMEO",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recblzm1N2f2IDnZa",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "ROMEO",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:recblzm1N2f2IDnZa",
+        "source-record": "recblzm1N2f2IDnZa",
+        "show-name": "Romeo",
+        "horse-name": "ROMEO",
+        "lookup-text": "romeo | romeo | romeo |  | romeo | legacy:recblzm1n2f2idnza |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recrmt33Oddk9hg97",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Hurricane",
+        "source-name": "HURRICANE",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recWOHHQHunbiwWRQ",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "HURRICANE",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "153198",
+        "source-record": "recWOHHQHunbiwWRQ",
+        "show-name": "Hurricane",
+        "horse-name": "HURRICANE",
+        "lookup-text": "hurricane | hurricane | hurricane |  | hurricane | 153198 | 153198 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 153198
+      }
+    },
+    {
+      "id": "recsCorux6PNBtOar",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Fan Fan",
+        "source-name": "FANFAN BOY",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recaF1YJWGQQMn2KA",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "FANFAN BOY",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "8002",
+        "source-record": "recaF1YJWGQQMn2KA",
+        "show-name": "Fan Fan Boy",
+        "horse-name": "FANFAN BOY",
+        "lookup-text": "fanfan boy | fan fan | fan fan boy |  | fanfan boy | 8002 | 8002 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 8002
+      }
+    },
+    {
+      "id": "recsOX0mayXE1ddau",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Dottie",
+        "source-name": "DODICCI",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recqhnJxlQZLX85Rd",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "DODICCI",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "144230",
+        "source-record": "recqhnJxlQZLX85Rd",
+        "show-name": "Dodicci",
+        "horse-name": "DODICCI",
+        "lookup-text": "dodicci | dottie | dodicci |  | dodicci | 144230 | 144230 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 144230
+      }
+    },
+    {
+      "id": "recsYwvs9CxqC8LlV",
+      "createdTime": "2026-10-20T17:27:14.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Carry",
+        "source-name": "CARRY AWAY",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recK0fqlMisKOt40u",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CARRY AWAY",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "106630",
+        "source-record": "recK0fqlMisKOt40u",
+        "show-name": "Carry Away",
+        "horse-name": "CARRY AWAY",
+        "lookup-text": "carry away | carry | carry away |  | carry away | 106630 | 106630 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 106630
+      }
+    },
+    {
+      "id": "rectXYph5sOyMlO5M",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Rimini",
+        "source-name": "RIMINI DU PRINTEMPS",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recXPthjW7tM7sF65",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "RIMINI DU PRINTEMPS",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "source-inactive": true,
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "151710",
+        "source-record": "recXPthjW7tM7sF65",
+        "disabled": true,
+        "show-name": "Rimini Du Printemps",
+        "horse-name": "RIMINI DU PRINTEMPS",
+        "lookup-text": "rimini du printemps | rimini | rimini du printemps |  | rimini du printemps | 151710 | 151710 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 151710
+      }
+    },
+    {
+      "id": "rectkuX7M82ZdJ0cZ",
+      "createdTime": "2026-10-20T17:27:15.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Bee",
+        "source-name": "KINDLY",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recWYgstI9Kth5FBR",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "KINDLY",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "147970",
+        "source-record": "recWYgstI9Kth5FBR",
+        "show-name": "Kindly",
+        "horse-name": "KINDLY",
+        "lookup-text": "kindly | bee | kindly |  | kindly | 147970 | 147970 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 147970
+      }
+    },
+    {
+      "id": "recx9mW6kbIxbHOUJ",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Pedro",
+        "source-name": "VOTE FOR PEDRO",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/reccJRbNO8gEHbKGG",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "VOTE FOR PEDRO",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200001129",
+        "source-record": "reccJRbNO8gEHbKGG",
+        "show-name": "Vote For Pedro",
+        "horse-name": "VOTE FOR PEDRO",
+        "lookup-text": "vote for pedro | pedro | vote for pedro |  | vote for pedro | 200001129 | 200001129 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200001129
+      }
+    },
+    {
+      "id": "recxMMFNm83rdmofA",
+      "createdTime": "2026-10-22T00:23:33.000Z",
+      "fields": {
+        "trainers": [
+          "rec1sBWKmh1xl6MPA"
+        ],
+        "trainer-id": 80970,
+        "name": "SOLAGUAYRE DIMITRI",
+        "tenant-id": 8778,
+        "entries": [
+          "rec2iIvE9mLfUNHaf"
+        ],
+        "source": "people feed; show 200000075",
+        "first-seen": "2026-10-22T00:23:31.038Z",
+        "horse-key": "153346",
+        "horse-name": "SOLAGUAYRE DIMITRI",
+        "last-seen": "2026-10-22T00:58:32.545Z",
+        "lookup-text": "solaguayre dimitri |  |  |  | solaguayre dimitri | 153346 | 153346 | 80970 | 8778",
+        "trainer-ids": "80970",
+        "horse-id": 153346
+      }
+    },
+    {
+      "id": "recxRCxmpIfhqEEwA",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "LaLa",
+        "source-name": "LA LA LAND",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recpaqS7GMtakADGW",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "LA LA LAND",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-id-missing": true,
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "legacy:recpaqS7GMtakADGW",
+        "source-record": "recpaqS7GMtakADGW",
+        "show-name": "La La Land",
+        "horse-name": "LA LA LAND",
+        "lookup-text": "la la land | lala | la la land |  | la la land | legacy:recpaqs7gmtakadgw |  | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778"
+      }
+    },
+    {
+      "id": "recxS2wDDwby40sRj",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Shrek",
+        "source-name": "TENOR VAN'T KLAVERTJE VIER",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recjgtib7Wf6ibbHF",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "TENOR VAN'T KLAVERTJE VIER",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200005007",
+        "source-record": "recjgtib7Wf6ibbHF",
+        "show-name": "Tenor Van't Klavertje Vier",
+        "horse-name": "TENOR VAN'T KLAVERTJE VIER",
+        "lookup-text": "tenor van't klavertje vier | shrek | tenor van't klavertje vier |  | tenor van't klavertje vier | 200005007 | 200005007 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200005007
+      }
+    },
+    {
+      "id": "recyHR00NST3B8GSN",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Pancake",
+        "source-name": "SHORT STACK",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recgWRXBmNdSNhvT4",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "SHORT STACK",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "source-inactive": true,
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "136401",
+        "source-record": "recgWRXBmNdSNhvT4",
+        "disabled": true,
+        "show-name": "Pancake",
+        "horse-name": "SHORT STACK",
+        "lookup-text": "short stack | pancake | pancake |  | short stack | 136401 | 136401 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 136401
+      }
+    },
+    {
+      "id": "recz2JoFyVt212nn6",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Orion",
+        "source-name": "HIGH HOPES",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recEIYjEhk1C5eLh6",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "HIGH HOPES",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "130032",
+        "source-record": "recEIYjEhk1C5eLh6",
+        "show-name": "High Hopes",
+        "horse-name": "HIGH HOPES",
+        "lookup-text": "high hopes | orion | high hopes |  | high hopes | 130032 | 130032 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 130032
+      }
+    },
+    {
+      "id": "recz4AowhLdRSdODo",
+      "createdTime": "2026-10-20T17:27:16.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Titan",
+        "source-name": "TITANIUM Z",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/reciIij8MrRbtN0n5",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "TITANIUM Z",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200000551",
+        "source-record": "reciIij8MrRbtN0n5",
+        "show-name": "Titanium Z",
+        "horse-name": "TITANIUM Z",
+        "lookup-text": "titanium z | titan | titanium z |  | titanium z | 200000551 | 200000551 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200000551
+      }
+    },
+    {
+      "id": "reczLO96ZX52RSs8M",
+      "createdTime": "2026-10-20T17:27:13.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Kudos",
+        "source-name": "FERNHILL KUDOS",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recHJhfX9CgEcaLTJ",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "FERNHILL KUDOS",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "137384",
+        "source-record": "recHJhfX9CgEcaLTJ",
+        "show-name": "Fernhill Kudos",
+        "horse-name": "FERNHILL KUDOS",
+        "lookup-text": "fernhill kudos | kudos | fernhill kudos |  | fernhill kudos | 137384 | 137384 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 137384
+      }
+    },
+    {
+      "id": "reczmFoJp3LczFw0L",
+      "createdTime": "2026-10-20T17:27:17.000Z",
+      "fields": {
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "nick-name": "Calou",
+        "source-name": "CALOU US",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblliyUZ1ZS88Kfvl/recpFVb6yHUIalg6z",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "trainer-id": 8778,
+        "name": "CALOU US",
+        "tenant-id": 8778,
+        "source-table": "ww_horses",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "horse-key": "200004291",
+        "source-record": "recpFVb6yHUIalg6z",
+        "show-name": "Calou US",
+        "horse-name": "CALOU US",
+        "lookup-text": "calou us | calou | calou us |  | calou us | 200004291 | 200004291 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "trainer-ids": "8778",
+        "horse-id": 200004291
+      }
+    }
+  ],
+  "riders": [
+    {
+      "id": "rec07lZ8zWta2pSyP",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "SOPHIE HEAP",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "SOPHIE HEAP",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 67673,
+        "source-record": "recnpyqm8zW2w7dDD",
+        "lookup-text": "sophie heap |  | sophie | heap | heap, sophie | sophie heap | 67673 | 67673 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Sophie",
+        "last-name": "Heap",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "67673",
+        "legacy-display-name": "SOPHIE HEAP",
+        "trainer-id": 8778,
+        "source-name": "SOPHIE HEAP",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recnpyqm8zW2w7dDD",
+        "aliases": "HEAP, SOPHIE"
+      }
+    },
+    {
+      "id": "rec12obKov6O3ZzJE",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "JOSSELYN MERSEREAU",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "JOSSELYN MERSEREAU",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 47630,
+        "source-record": "recU3EqhCgiBNe6dC",
+        "lookup-text": "josselyn mersereau |  | josselyn | mersereau | mersereau, josselyn | josselyn mersereau | 47630 | 47630 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Josselyn",
+        "last-name": "Mersereau",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "47630",
+        "legacy-display-name": "JOSSELYN MERSEREAU",
+        "trainer-id": 8778,
+        "source-name": "JOSSELYN MERSEREAU",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recU3EqhCgiBNe6dC",
+        "aliases": "MERSEREAU, JOSSELYN"
+      }
+    },
+    {
+      "id": "rec2zIgN5NSQhHA8f",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "Daniella Mccasland",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Daniella Mccasland",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 1000000485,
+        "source-record": "recPyBuwkMAYJESe8",
+        "lookup-text": "daniella mccasland |  | daniella | mccasland | mccasland, daniella | daniella mccasland | 1000000485 | 1000000485 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Daniella",
+        "last-name": "Mccasland",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "1000000485",
+        "legacy-display-name": "Daniella Mccasland",
+        "trainer-id": 8778,
+        "source-name": "Daniella Mccasland",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recPyBuwkMAYJESe8",
+        "aliases": "MCCASLAND, DANIELLA"
+      }
+    },
+    {
+      "id": "rec4Eq7ReOLwpgGn1",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "LACEY POWERS",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "LACEY POWERS",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 56558,
+        "source-record": "recfZ2n0eIoRnl7Os",
+        "lookup-text": "lacey powers |  | lacey | powers | powers, lacey | lacey powers | 56558 | 56558 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Lacey",
+        "last-name": "Powers",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "56558",
+        "legacy-display-name": "LACEY POWERS",
+        "trainer-id": 8778,
+        "source-name": "LACEY POWERS",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recfZ2n0eIoRnl7Os",
+        "aliases": "POWERS, LACEY"
+      }
+    },
+    {
+      "id": "rec6K8QreBFl5PYbe",
+      "createdTime": "2026-10-20T17:27:24.000Z",
+      "fields": {
+        "name": "ARIA WAXMAN",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "ARIA WAXMAN",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 85313,
+        "source-record": "recqoNbIHnTHSoVXs",
+        "lookup-text": "aria waxman |  | aria | waxman | waxman, aria | aria waxman | 85313 | 85313 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Aria",
+        "last-name": "Waxman",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "85313",
+        "legacy-display-name": "ARIA WAXMAN",
+        "trainer-id": 8778,
+        "source-name": "ARIA WAXMAN",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recqoNbIHnTHSoVXs",
+        "aliases": "WAXMAN, ARIA"
+      }
+    },
+    {
+      "id": "recB3N91s0Bl2GxL0",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "Noora Hardy",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Noora Hardy",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 79056,
+        "source-record": "recDFCLvXlvrclSTi",
+        "lookup-text": "noora hardy |  | noora | hardy | hardy, noora | noora hardy | 79056 | 79056 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Noora",
+        "last-name": "Hardy",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "79056",
+        "legacy-display-name": "Noora Hardy",
+        "trainer-id": 8778,
+        "source-name": "Noora Hardy",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recDFCLvXlvrclSTi",
+        "aliases": "HARDY, NOORA"
+      }
+    },
+    {
+      "id": "recBNYz6TH980Btrv",
+      "createdTime": "2026-10-20T17:27:24.000Z",
+      "fields": {
+        "name": "Tanner Korotkin",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Tanner Korotkin",
+        "tenant-id": 8778,
+        "trainer-ids": "19676",
+        "rider-id": 9590,
+        "source-record": "recwXIsvDsflzecIN",
+        "lookup-text": "tanner korotkin |  | tanner | korotkin | korotkin, tanner | tanner korotkin | 9590 | 9590 | 19676 | 8778",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Tanner",
+        "last-name": "Korotkin",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "rider-key": "9590",
+        "legacy-display-name": "Tanner Korotkin",
+        "trainer-id": 19676,
+        "source-name": "Tanner Korotkin",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recwXIsvDsflzecIN",
+        "aliases": "KOROTKIN, TANNER"
+      }
+    },
+    {
+      "id": "recBhSc6s97WS1ZOQ",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "HADDEN FROST",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "HADDEN FROST",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 64677,
+        "source-record": "recWihmhVrftwTPsD",
+        "lookup-text": "hadden frost |  | hadden | frost | frost, hadden | hadden frost | 64677 | 64677 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Hadden",
+        "last-name": "Frost",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "64677",
+        "legacy-display-name": "HADDEN FROST",
+        "trainer-id": 8778,
+        "source-name": "HADDEN FROST",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recWihmhVrftwTPsD",
+        "aliases": "FROST, HADDEN"
+      }
+    },
+    {
+      "id": "recEHPrSEZq6QsmoO",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "Elisabeth Rotsaert",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Elisabeth Rotsaert",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 67597,
+        "source-record": "rec3xGh1bL6Fhy7po",
+        "lookup-text": "elisabeth rotsaert |  | elisabeth | rotsaert | rotsaert, elisabeth | elisabeth rotsaert | 67597 | 67597 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Elisabeth",
+        "last-name": "Rotsaert",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "67597",
+        "legacy-display-name": "Elisabeth Rotsaert",
+        "trainer-id": 8778,
+        "source-name": "Elisabeth Rotsaert",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/rec3xGh1bL6Fhy7po",
+        "aliases": "ROTSAERT, ELISABETH"
+      }
+    },
+    {
+      "id": "recO5cCQcCe9lCY4V",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "ERIN STEPHANY-PEREZ",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "ERIN STEPHANY-PEREZ",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 42240,
+        "source-record": "reciQ5QaW2I8rgQIl",
+        "lookup-text": "erin stephany-perez |  | erin | stephany-perez | stephany-perez, erin | erin stephany-perez | 42240 | 42240 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Erin",
+        "last-name": "Stephany-perez",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "42240",
+        "legacy-display-name": "ERIN STEPHANY-PEREZ",
+        "trainer-id": 8778,
+        "source-name": "ERIN STEPHANY-PEREZ",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/reciQ5QaW2I8rgQIl",
+        "aliases": "STEPHANY-PEREZ, ERIN"
+      }
+    },
+    {
+      "id": "recP8ZSwwHUzTKunO",
+      "createdTime": "2026-10-20T17:27:24.000Z",
+      "fields": {
+        "name": "LOLA APPLEBAUM",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "LOLA APPLEBAUM",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 88626,
+        "source-record": "recx3tG2qLmGgOVVl",
+        "lookup-text": "lola applebaum |  | lola | applebaum | applebaum, lola | lola applebaum | 88626 | 88626 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Lola",
+        "last-name": "Applebaum",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "88626",
+        "legacy-display-name": "LOLA APPLEBAUM",
+        "trainer-id": 8778,
+        "source-name": "LOLA APPLEBAUM",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recx3tG2qLmGgOVVl",
+        "aliases": "APPLEBAUM, LOLA"
+      }
+    },
+    {
+      "id": "recROvgNVJToenr0b",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "ARIANA REYES",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "ARIANA REYES",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 81394,
+        "source-record": "recG9sETr6vS6wcTW",
+        "lookup-text": "ariana reyes |  | ariana | reyes | reyes, ariana | ariana reyes | 81394 | 81394 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Ariana",
+        "last-name": "Reyes",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "81394",
+        "legacy-display-name": "ARIANA REYES",
+        "trainer-id": 8778,
+        "source-name": "ARIANA REYES",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recG9sETr6vS6wcTW",
+        "aliases": "REYES, ARIANA"
+      }
+    },
+    {
+      "id": "recRUe0UrHW2PZHUV",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "TAYLOR OAKVIK",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "TAYLOR OAKVIK",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 47066,
+        "source-record": "rec8dO35hzXmILC8Q",
+        "lookup-text": "taylor oakvik |  | taylor | oakvik | oakvik, taylor | taylor oakvik | 47066 | 47066 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Taylor",
+        "last-name": "Oakvik",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "47066",
+        "legacy-display-name": "TAYLOR OAKVIK",
+        "trainer-id": 8778,
+        "source-name": "TAYLOR OAKVIK",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/rec8dO35hzXmILC8Q",
+        "aliases": "OAKVIK, TAYLOR"
+      }
+    },
+    {
+      "id": "recScQgoxsmuOcqw1",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "Brielle Diamond",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Brielle Diamond",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 1000001423,
+        "source-record": "rec2TZf6ADIi8p1r4",
+        "lookup-text": "brielle diamond |  | brielle | diamond | diamond, brielle | brielle diamond | 1000001423 | 1000001423 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Brielle",
+        "last-name": "Diamond",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "1000001423",
+        "legacy-display-name": "Brielle Diamond",
+        "trainer-id": 8778,
+        "source-name": "Brielle Diamond",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/rec2TZf6ADIi8p1r4",
+        "aliases": "DIAMOND, BRIELLE"
+      }
+    },
+    {
+      "id": "recTDtcZuMxhTxb1l",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "Alana Picard",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Alana Picard",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 19691,
+        "source-record": "reckz5vOcvo3CAak2",
+        "lookup-text": "alana picard |  | alana | picard | picard, alana | alana picard | 19691 | 19691 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Alana",
+        "last-name": "Picard",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "19691",
+        "legacy-display-name": "Alana Picard",
+        "trainer-id": 8778,
+        "source-name": "Alana Picard",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/reckz5vOcvo3CAak2",
+        "aliases": "PICARD, ALANA"
+      }
+    },
+    {
+      "id": "recUO22xwf0x8Sob7",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "ILIANA PALUMBO",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "ILIANA PALUMBO",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 67632,
+        "source-record": "recA2pXGZYwOEhTQn",
+        "lookup-text": "iliana palumbo |  | iliana | palumbo | palumbo, iliana | iliana palumbo | 67632 | 67632 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Iliana",
+        "last-name": "Palumbo",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "67632",
+        "legacy-display-name": "ILIANA PALUMBO",
+        "trainer-id": 8778,
+        "source-name": "ILIANA PALUMBO",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recA2pXGZYwOEhTQn",
+        "aliases": "PALUMBO, ILIANA"
+      }
+    },
+    {
+      "id": "recZ8us0YOTffsQBx",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "HALI VANDERWIEL",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "HALI VANDERWIEL",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 1000002415,
+        "source-record": "recPu8RT6v5TB5x87",
+        "lookup-text": "hali vanderwiel |  | hali | vanderwiel | vanderwiel, hali | hali vanderwiel | 1000002415 | 1000002415 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Hali",
+        "last-name": "Vanderwiel",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "1000002415",
+        "legacy-display-name": "HALI VANDERWIEL",
+        "trainer-id": 8778,
+        "source-name": "HALI VANDERWIEL",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recPu8RT6v5TB5x87",
+        "aliases": "VANDERWIEL, HALI"
+      }
+    },
+    {
+      "id": "reccqFTGFn2m7mwVp",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "LAINEY POSA",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "LAINEY POSA",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 79378,
+        "source-record": "recQbxBkP9HwLhoKK",
+        "lookup-text": "lainey posa |  | lainey | posa | posa, lainey | lainey posa | 79378 | 79378 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Lainey",
+        "last-name": "Posa",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "79378",
+        "legacy-display-name": "LAINEY POSA",
+        "trainer-id": 8778,
+        "source-name": "LAINEY POSA",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recQbxBkP9HwLhoKK",
+        "aliases": "POSA, LAINEY"
+      }
+    },
+    {
+      "id": "rece1ZpEQqFJ7A89v",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "GRACE LYONS",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "GRACE LYONS",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 73560,
+        "source-record": "rec0DdbOfjlqGmMOA",
+        "lookup-text": "grace lyons |  | grace | lyons | lyons, grace | grace lyons | 73560 | 73560 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Grace",
+        "last-name": "Lyons",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "73560",
+        "legacy-display-name": "GRACE LYONS",
+        "trainer-id": 8778,
+        "source-name": "GRACE LYONS",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/rec0DdbOfjlqGmMOA",
+        "aliases": "LYONS, GRACE"
+      }
+    },
+    {
+      "id": "recgvQtyksk0JKhbr",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "LYNN YOOS",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "LYNN YOOS",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 4025,
+        "source-record": "recS518669cfmqyWx",
+        "lookup-text": "lynn yoos |  | lynn | yoos | yoos, lynn | lynn yoos | 4025 | 4025 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Lynn",
+        "last-name": "Yoos",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "4025",
+        "legacy-display-name": "LYNN YOOS",
+        "trainer-id": 8778,
+        "source-name": "LYNN YOOS",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recS518669cfmqyWx",
+        "aliases": "YOOS, LYNN"
+      }
+    },
+    {
+      "id": "rechlu4NM7shxZv4a",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "Victoria Rotsaert",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Victoria Rotsaert",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 60851,
+        "source-record": "rechZzT3mb8EsKilO",
+        "lookup-text": "victoria rotsaert |  | victoria | rotsaert | rotsaert, victoria | victoria rotsaert | 60851 | 60851 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Victoria",
+        "last-name": "Rotsaert",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "60851",
+        "legacy-display-name": "Victoria Rotsaert",
+        "trainer-id": 8778,
+        "source-name": "Victoria Rotsaert",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/rechZzT3mb8EsKilO",
+        "aliases": "ROTSAERT, VICTORIA"
+      }
+    },
+    {
+      "id": "recjIFLmTNUDrEQ2f",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "Dylan D'antonio",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Dylan D'antonio",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 79590,
+        "source-record": "recnBHc9fyuJqhO9p",
+        "lookup-text": "dylan d'antonio |  | dylan | d'antonio | d'antonio, dylan | dylan d'antonio | 79590 | 79590 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Dylan",
+        "last-name": "D'antonio",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "79590",
+        "legacy-display-name": "Dylan D'antonio",
+        "trainer-id": 8778,
+        "source-name": "Dylan D'antonio",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recnBHc9fyuJqhO9p",
+        "aliases": "D'ANTONIO, DYLAN"
+      }
+    },
+    {
+      "id": "recjN8g49ze6cRA7l",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "NAOMI SELLECK",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "NAOMI SELLECK",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 1000001728,
+        "source-record": "recepcO6js4oBbO5o",
+        "lookup-text": "naomi selleck |  | naomi | selleck | selleck, naomi | naomi selleck | 1000001728 | 1000001728 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Naomi",
+        "last-name": "Selleck",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "1000001728",
+        "legacy-display-name": "NAOMI SELLECK",
+        "trainer-id": 8778,
+        "source-name": "NAOMI SELLECK",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recepcO6js4oBbO5o",
+        "aliases": "SELLECK, NAOMI"
+      }
+    },
+    {
+      "id": "reclh6wNfR7A6oYKr",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "JOSEPHINE DEMMO",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "JOSEPHINE DEMMO",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 70856,
+        "source-record": "reclDBQkY77E1qN57",
+        "lookup-text": "josephine demmo |  | josephine | demmo | demmo, josephine | josephine demmo | 70856 | 70856 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Josephine",
+        "last-name": "Demmo",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "70856",
+        "legacy-display-name": "JOSEPHINE DEMMO",
+        "trainer-id": 8778,
+        "source-name": "JOSEPHINE DEMMO",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/reclDBQkY77E1qN57",
+        "aliases": "DEMMO, JOSEPHINE"
+      }
+    },
+    {
+      "id": "recovIAcrm4wdDWzy",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "CARSYN KOROTKIN",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "CARSYN KOROTKIN",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 50082,
+        "source-record": "recDFNiyvowcs7qaM",
+        "lookup-text": "carsyn korotkin |  | carsyn | korotkin | korotkin, carsyn | carsyn korotkin | 50082 | 50082 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Carsyn",
+        "last-name": "Korotkin",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "50082",
+        "legacy-display-name": "CARSYN KOROTKIN",
+        "trainer-id": 8778,
+        "source-name": "CARSYN KOROTKIN",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recDFNiyvowcs7qaM",
+        "aliases": "KOROTKIN, CARSYN"
+      }
+    },
+    {
+      "id": "recozlDZujeAseXhi",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "SYDNEY MATALON",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "SYDNEY MATALON",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 83010,
+        "source-record": "recDxWFQs6qZEZS8X",
+        "lookup-text": "sydney matalon |  | sydney | matalon | matalon, sydney | sydney matalon | 83010 | 83010 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Sydney",
+        "last-name": "Matalon",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "83010",
+        "legacy-display-name": "SYDNEY MATALON",
+        "trainer-id": 8778,
+        "source-name": "SYDNEY MATALON",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recDxWFQs6qZEZS8X",
+        "aliases": "MATALON, SYDNEY"
+      }
+    },
+    {
+      "id": "recqAZR9xsCElYQCb",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "Victoria Sheehan",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Victoria Sheehan",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 74855,
+        "source-record": "reclkcxcVRe2Ljwfi",
+        "lookup-text": "victoria sheehan |  | victoria | sheehan | sheehan, victoria | victoria sheehan | 74855 | 74855 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Victoria",
+        "last-name": "Sheehan",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "74855",
+        "legacy-display-name": "Victoria Sheehan",
+        "trainer-id": 8778,
+        "source-name": "Victoria Sheehan",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/reclkcxcVRe2Ljwfi",
+        "aliases": "SHEEHAN, VICTORIA"
+      }
+    },
+    {
+      "id": "rectXATOdFlpr3MIK",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "KATE MARISCH",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "KATE MARISCH",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 1000001391,
+        "source-record": "recXvyOVhBUF2trzH",
+        "lookup-text": "kate marisch |  | kate | marisch | marisch, kate | kate marisch | 1000001391 | 1000001391 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Kate",
+        "last-name": "Marisch",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "1000001391",
+        "legacy-display-name": "KATE MARISCH",
+        "trainer-id": 8778,
+        "source-name": "KATE MARISCH",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recXvyOVhBUF2trzH",
+        "aliases": "MARISCH, KATE"
+      }
+    },
+    {
+      "id": "recvbPDm6vbJKCFQM",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "Maddyn Vatland",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Maddyn Vatland",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 86318,
+        "source-record": "recMfFJWwcSvf9TBl",
+        "lookup-text": "maddyn vatland |  | maddyn | vatland | vatland, maddyn | maddyn vatland | 86318 | 86318 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Maddyn",
+        "last-name": "Vatland",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "86318",
+        "legacy-display-name": "Maddyn Vatland",
+        "trainer-id": 8778,
+        "source-name": "Maddyn Vatland",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recMfFJWwcSvf9TBl",
+        "aliases": "VATLAND, MADDYN"
+      }
+    },
+    {
+      "id": "recxnvvzfuGJXnUfv",
+      "createdTime": "2026-10-20T17:27:22.000Z",
+      "fields": {
+        "name": "Marley Katz",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Marley Katz",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 59457,
+        "source-record": "recPMz88ucq1ZoOjU",
+        "lookup-text": "marley katz |  | marley | katz | katz, marley | marley katz | 59457 | 59457 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Marley",
+        "last-name": "Katz",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "59457",
+        "legacy-display-name": "Marley Katz",
+        "trainer-id": 8778,
+        "source-name": "Marley Katz",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recPMz88ucq1ZoOjU",
+        "aliases": "KATZ, MARLEY"
+      }
+    },
+    {
+      "id": "recxsfI6iSunBVFd0",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "JESSICA HEAP",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "JESSICA HEAP",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 70495,
+        "source-record": "recA5LNcuFnjlK4pL",
+        "lookup-text": "jessica heap |  | jessica | heap | heap, jessica | jessica heap | 70495 | 70495 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Jessica",
+        "last-name": "Heap",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "70495",
+        "legacy-display-name": "JESSICA HEAP",
+        "trainer-id": 8778,
+        "source-name": "JESSICA HEAP",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recA5LNcuFnjlK4pL",
+        "aliases": "HEAP, JESSICA"
+      }
+    },
+    {
+      "id": "recyYGvtW8I4KgAjk",
+      "createdTime": "2026-10-20T17:27:23.000Z",
+      "fields": {
+        "name": "Kaitlyn Sheerahamed",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Kaitlyn Sheerahamed",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 49525,
+        "source-record": "recmCL7KVgIvHgix8",
+        "lookup-text": "kaitlyn sheerahamed |  | kaitlyn | sheerahamed | sheerahamed, kaitlyn | kaitlyn sheerahamed | 49525 | 49525 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Kaitlyn",
+        "last-name": "Sheerahamed",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "49525",
+        "legacy-display-name": "Kaitlyn Sheerahamed",
+        "trainer-id": 8778,
+        "source-name": "Kaitlyn Sheerahamed",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recmCL7KVgIvHgix8",
+        "aliases": "SHEERAHAMED, KAITLYN"
+      }
+    },
+    {
+      "id": "recz1HwlsAqt9GRwU",
+      "createdTime": "2026-10-20T17:27:21.000Z",
+      "fields": {
+        "name": "Noemi Varela",
+        "first-seen": "2026-10-20T17:27:10.273Z",
+        "rider-name": "Noemi Varela",
+        "tenant-id": 8778,
+        "trainer-ids": "8778",
+        "rider-id": 5731233,
+        "source-record": "recFWljaiFU0Od3Po",
+        "lookup-text": "noemi varela |  | noemi | varela | varela, noemi | noemi varela | 5731233 | 5731233 | 8778 | 8778",
+        "trainer-name": "ALAN KOROTKIN",
+        "source": "Retained CWF standing roster; not current-show attendance",
+        "first-name": "Noemi",
+        "last-name": "Varela",
+        "helper-refreshed": "2026-10-22T00:57:10.806Z",
+        "source-table": "ww_riders",
+        "trainers": [
+          "rec9Hmq2WuHuZc9mY"
+        ],
+        "rider-key": "5731233",
+        "legacy-display-name": "Noemi Varela",
+        "trainer-id": 8778,
+        "source-name": "Noemi Varela",
+        "source-base": "apptdhhNzduxm5gjn",
+        "source-link": "https://airtable.com/apptdhhNzduxm5gjn/tblI6yrqv0Y4QTvyi/recFWljaiFU0Od3Po",
+        "aliases": "VARELA, NOEMI"
+      }
+    }
+  ],
+  "entries": [
+    {
+      "id": "rec2iIvE9mLfUNHaf",
+      "createdTime": "2026-10-22T00:23:38.000Z",
+      "fields": {
+        "trainers": [
+          "rec1sBWKmh1xl6MPA"
+        ],
+        "entry-key": "200000075|2026-10-23|200245636|200030344",
+        "rider-name": "TAYLOR COWLES",
+        "schedule-key": "200000075|2026-10-23|200027913_710",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recJZQIHiGub73HJg",
+        "source-json": "{\"entry_id\":200245636,\"entry_number\":195,\"class_id\":200030344,\"class_number\":710,\"class_name\":\"1.25m Open Jumper II2d\",\"sponsor\":\"\",\"horse_id\":153346,\"horse\":\"SOLAGUAYRE DIMITRI\",\"rider_id\":80970,\"rider_name\":\"TAYLOR COWLES\",\"placing\":0,\"entryxclasses_uuid\":\"94E21B1B39BA48768287ED17D16BD7FD\",\"trips_count\":5,\"total_prize_money\":0,\"ring\":1,\"ring_name\":\"Equestrian Village Derby Field\",\"scheduled_date\":\"2026-10-23T00:00:00.000Z\",\"schedule_starttime\":\"08:21:00\",\"scratch_trip\":0,\"ring_id\":10,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.d\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:58:34.812Z",
+        "date": "2026-10-23",
+        "class-name": "1.25m Open Jumper II2d",
+        "rider-id": 80970,
+        "trainer-ids": "80970",
+        "rings": [
+          "rec8kRk95YZWRDzzA"
+        ],
+        "class-id": 200030344,
+        "ring-number": 1,
+        "horse-name": "SOLAGUAYRE DIMITRI",
+        "status": "active",
+        "horses": [
+          "recxMMFNm83rdmofA"
+        ],
+        "entry-id": 200245636,
+        "show-id": 200000075,
+        "horse-id": 153346
+      }
+    },
+    {
+      "id": "recExiDfsusGy9CJv",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "entry-key": "200000075|2026-10-24|200245506|200030399",
+        "rider-name": "ISABELA DE SOUSA",
+        "schedule-key": "200000075|2026-10-24|200027986_808",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recnBotst89srLALm",
+        "source-json": "{\"entry_id\":200245506,\"entry_number\":453,\"class_id\":200030399,\"class_number\":808,\"class_name\":\"$5,000 1.35m Stake II2b\",\"sponsor\":\"Florida Coast Equipment\",\"horse_id\":200002670,\"horse\":\"CROSS OVER SR\",\"rider_id\":50121,\"rider_name\":\"ISABELA DE SOUSA\",\"placing\":0,\"entryxclasses_uuid\":\"8DD74EA172C743A8ACC74974B147663F\",\"trips_count\":1,\"total_prize_money\":0,\"ring\":1,\"ring_name\":\"Equestrian Village Derby Field\",\"scheduled_date\":\"2026-10-24T00:00:00.000Z\",\"schedule_starttime\":\"08:00:00\",\"scratch_trip\":0,\"ring_id\":10,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table IV.2.b\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:58:34.812Z",
+        "date": "2026-10-24",
+        "class-name": "$5,000 1.35m Stake II2b",
+        "rider-id": 50121,
+        "trainer-ids": "50121",
+        "rings": [
+          "recWJ1u1g7h935QoX"
+        ],
+        "class-id": 200030399,
+        "ring-number": 1,
+        "horse-name": "CROSS OVER SR",
+        "status": "active",
+        "horses": [
+          "recQDCLG6rBgB26AM"
+        ],
+        "entry-id": 200245506,
+        "show-id": 200000075,
+        "horse-id": 200002670
+      }
+    },
+    {
+      "id": "recL8BOAIA7XCdApS",
+      "createdTime": "2026-10-22T00:23:38.000Z",
+      "fields": {
+        "trainers": [
+          "rec1sBWKmh1xl6MPA"
+        ],
+        "entry-key": "200000075|2026-10-23|200245642|200030344",
+        "rider-name": "TAYLOR COWLES",
+        "schedule-key": "200000075|2026-10-23|200027913_710",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recJZQIHiGub73HJg",
+        "source-json": "{\"entry_id\":200245642,\"entry_number\":194,\"class_id\":200030344,\"class_number\":710,\"class_name\":\"1.25m Open Jumper II2d\",\"sponsor\":\"\",\"horse_id\":200002216,\"horse\":\"WHERE'S WALDO\",\"rider_id\":80970,\"rider_name\":\"TAYLOR COWLES\",\"placing\":0,\"entryxclasses_uuid\":\"88714A600D2649749A1B84070A52D747\",\"trips_count\":5,\"total_prize_money\":0,\"ring\":1,\"ring_name\":\"Equestrian Village Derby Field\",\"scheduled_date\":\"2026-10-23T00:00:00.000Z\",\"schedule_starttime\":\"08:21:00\",\"scratch_trip\":0,\"ring_id\":10,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.d\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:58:34.812Z",
+        "date": "2026-10-23",
+        "class-name": "1.25m Open Jumper II2d",
+        "rider-id": 80970,
+        "trainer-ids": "80970",
+        "rings": [
+          "rec8kRk95YZWRDzzA"
+        ],
+        "class-id": 200030344,
+        "ring-number": 1,
+        "horse-name": "WHERE'S WALDO",
+        "status": "active",
+        "horses": [
+          "rec1eQ29x3LhlMZGU"
+        ],
+        "entry-id": 200245642,
+        "show-id": 200000075,
+        "horse-id": 200002216
+      }
+    },
+    {
+      "id": "rece6esDNI2bCBx2g",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "entry-key": "200000075|2026-10-25|200241392|200030331",
+        "rider-name": "JACQUELINE ROSENTHAL",
+        "schedule-key": "200000075|2026-10-25|200028084_753",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recs4VAvV29jAyjzy",
+        "source-json": "{\"entry_id\":200241392,\"entry_number\":451,\"class_id\":200030331,\"class_number\":753,\"class_name\":\"Training Jumper (.90m) II2d\",\"sponsor\":\"\",\"horse_id\":141234,\"horse\":\"EDITION DE RIVERLAND\",\"rider_id\":81017,\"rider_name\":\"JACQUELINE ROSENTHAL\",\"placing\":0,\"entryxclasses_uuid\":\"E03EEC25FD2841A18F91B28C2655DBD2\",\"trips_count\":4,\"total_prize_money\":0,\"ring\":4,\"ring_name\":\"Equestrian Village International Ring\",\"scheduled_date\":\"2026-10-25T00:00:00.000Z\",\"schedule_starttime\":\"09:09:00\",\"scratch_trip\":0,\"ring_id\":13,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.d\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:58:34.812Z",
+        "date": "2026-10-25",
+        "class-name": "Training Jumper (.90m) II2d",
+        "rider-id": 81017,
+        "trainer-ids": "50121",
+        "rings": [
+          "recmWDL9VzWVnERYg"
+        ],
+        "class-id": 200030331,
+        "ring-number": 4,
+        "horse-name": "EDITION DE RIVERLAND",
+        "status": "active",
+        "horses": [
+          "recmRfdpPLsMFtTZo"
+        ],
+        "entry-id": 200241392,
+        "show-id": 200000075,
+        "horse-id": 141234
+      }
+    },
+    {
+      "id": "recfANMpXOHSEuL7x",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "entry-key": "200000075|2026-10-23|200245506|200030347",
+        "rider-name": "ISABELA DE SOUSA",
+        "schedule-key": "200000075|2026-10-23|200027909_770",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recYJ1Nf0x3sGUplc",
+        "source-json": "{\"entry_id\":200245506,\"entry_number\":453,\"class_id\":200030347,\"class_number\":770,\"class_name\":\"1.30m Open Jumper II2d\",\"sponsor\":\"\",\"horse_id\":200002670,\"horse\":\"CROSS OVER SR\",\"rider_id\":50121,\"rider_name\":\"ISABELA DE SOUSA\",\"placing\":0,\"entryxclasses_uuid\":\"D16475014D64450695C6D10F5EA64B1F\",\"trips_count\":3,\"total_prize_money\":0,\"ring\":1,\"ring_name\":\"Equestrian Village Derby Field\",\"scheduled_date\":\"2026-10-23T00:00:00.000Z\",\"schedule_starttime\":\"08:00:00\",\"scratch_trip\":0,\"ring_id\":10,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.d\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:58:34.812Z",
+        "date": "2026-10-23",
+        "class-name": "1.30m Open Jumper II2d",
+        "rider-id": 50121,
+        "trainer-ids": "50121",
+        "rings": [
+          "rec8kRk95YZWRDzzA"
+        ],
+        "class-id": 200030347,
+        "ring-number": 1,
+        "horse-name": "CROSS OVER SR",
+        "status": "active",
+        "horses": [
+          "recQDCLG6rBgB26AM"
+        ],
+        "entry-id": 200245506,
+        "show-id": 200000075,
+        "horse-id": 200002670
+      }
+    },
+    {
+      "id": "rect3aBhzq8GTcM7d",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "entry-key": "200000075|2026-10-24|200241392|200030330",
+        "rider-name": "JACQUELINE ROSENTHAL",
+        "schedule-key": "200000075|2026-10-24|200028005_752",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recoOI4Bfj2xQ6KFE",
+        "source-json": "{\"entry_id\":200241392,\"entry_number\":451,\"class_id\":200030330,\"class_number\":752,\"class_name\":\"Training Jumper (.90m) II2b\",\"sponsor\":\"\",\"horse_id\":141234,\"horse\":\"EDITION DE RIVERLAND\",\"rider_id\":81017,\"rider_name\":\"JACQUELINE ROSENTHAL\",\"placing\":0,\"entryxclasses_uuid\":\"99E4029B7B384B52ADFA3626CEBEF067\",\"trips_count\":4,\"total_prize_money\":0,\"ring\":4,\"ring_name\":\"Equestrian Village International Ring\",\"scheduled_date\":\"2026-10-24T00:00:00.000Z\",\"schedule_starttime\":\"09:03:00\",\"scratch_trip\":0,\"ring_id\":13,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.b\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:58:34.812Z",
+        "date": "2026-10-24",
+        "class-name": "Training Jumper (.90m) II2b",
+        "rider-id": 81017,
+        "trainer-ids": "50121",
+        "rings": [
+          "recJQ1W8rgaHZx9cC"
+        ],
+        "class-id": 200030330,
+        "ring-number": 4,
+        "horse-name": "EDITION DE RIVERLAND",
+        "status": "active",
+        "horses": [
+          "recmRfdpPLsMFtTZo"
+        ],
+        "entry-id": 200241392,
+        "show-id": 200000075,
+        "horse-id": 141234
+      }
+    }
+  ],
+  "heartbeat": [
+    {
+      "id": "recJWmC8t39z0Ih7O",
+      "createdTime": "2026-10-20T16:57:37.000Z",
+      "fields": {
+        "heartbeat-key": "CWF",
+        "checked-at": "2026-10-22T00:58:36.679Z",
+        "summary": "Trainer 8778 (main): No entries; 0 day entries\nTrainer 50121 (additional): Success; 4 day entries\nTrainer 80970 (additional): Success; 2 day entries\nShow 200000075; source-selected 2026-10-22; 4 days; 6 active entries; 24 daily rings; 6 shared helpers.\nStanding helpers: 75 horses, 33 riders; 13 source IDs missing (source-record identity retained).",
+        "selected-date": "2026-10-22",
+        "show-id": 200000075,
+        "result": "Success"
+      }
+    }
+  ],
+  "code-reviews": [
+    {
+      "id": "recMaNo3AhWEUNJDK",
+      "createdTime": "2026-10-20T16:49:38.000Z",
+      "fields": {
+        "last-review": "2026-10-20T17:53:18.986Z",
+        "routine": "Weekly tenant collector review",
+        "cadence": "Monday 09:00 America/New_York",
+        "last-result": "PASS: identity policy deployed. 42 offline tests; normal scheduled13:47/13:52 Eastern runs verified71horses/33riders, unique populated policy fields, stable IDs/static values,12archive events. Rider show-name retired; first/last searchable. Unknown13horse IDs and33rider nicknames preserved blank. No manual runs or repairs.",
+        "next-review": "2026-10-26T09:00:00-04:00",
+        "notes": "See docs/coordination/wef-roster-identity-policy-20261020.md and wef-tenants/evidence/identity-policy-20261020. Per-column uniqueness checked before roster writes/lookups; direct Airtable edits checked next normal run. Individual first/last names may repeat. Historical rider show-name values preserved in legacy-display-name, excluded from active collection/search. Existing workflows and cadence unchanged."
+      }
+    }
+  ]
+}

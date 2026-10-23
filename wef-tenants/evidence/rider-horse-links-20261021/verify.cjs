@@ -1,0 +1,29 @@
+"use strict";
+// Read-only Airtable GETs and existing normal-run receipts/archives only.
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),zlib=require('node:zlib'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../../..'),{airtable}=require(path.join(root,'wef-tenants/airtable')),settings=require(path.join(root,'wef-tenants/settings')),{assertUniqueRoster}=require(path.join(root,'wef-tenants/identity-policy'));
+const read=n=>JSON.parse(fs.readFileSync(path.join(__dirname,n))),sameLinks=(a,b)=>assert.deepEqual([...(a||[])].sort(),[...(b||[])].sort());
+async function verify(){
+ const before=read('before.json'),deployment=read('deployment.json'),report=JSON.parse(fs.readFileSync(path.join(root,'wef-tenants/runtime/last-run.json')));
+ if(report.started<=deployment.at){console.log(JSON.stringify({pending:true,lastCompleted:report.completed}));return;}
+ assert.equal(report.ok,true,'Normal scheduled run failed; stop this verification path');assert.deepEqual(report.errors,[]);
+ assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'wef-tenants/collector.js'))).digest('hex'),deployment.sha256,'Deployed collector changed');
+ const api=airtable(),state={};for(const table of ['riders','horses','entries','trainers','heartbeat'])state[table]=await api.list(table);
+ const logs=await api.list('run-logs',undefined,{filterByFormula:`{run-id}='${report.run_id}'`});assert.equal(logs.length,1);assert.equal(logs[0].fields.result,'Success');assert.equal(logs[0].fields.rows,6);assert.equal(state.heartbeat[0].fields.result,'Success');assert.ok(state.heartbeat[0].fields['checked-at']>=report.started);
+ const schemaResponse=await fetch('https://api.airtable.com/v0/meta/bases/'+settings.BASE_ID+'/tables',{headers:{Authorization:'Bearer '+settings.AIRTABLE_TOKEN},signal:AbortSignal.timeout(20000)});assert.equal(schemaResponse.ok,true);const schema=await schemaResponse.json();
+ for(const old of before.schema.tables){const current=schema.tables.find(t=>t.id===old.id);assert.ok(current);assert.equal(current.name,old.name);for(const field of old.fields){const saved=current.fields.find(f=>f.id===field.id);assert.ok(saved);assert.equal(saved.name,field.name);assert.equal(saved.type,field.type);}}
+ const rTable=schema.tables.find(t=>t.name==='riders'),hTable=schema.tables.find(t=>t.name==='horses'),rField=rTable.fields.find(f=>f.name==='horses'),hField=hTable.fields.find(f=>f.name==='riders');assert.equal(rField.options.linkedTableId,hTable.id);assert.equal(hField.options.linkedTableId,rTable.id);assert.equal(rField.options.inverseLinkFieldId,hField.id);assert.equal(hField.options.inverseLinkFieldId,rField.id);
+ const helperFields=['name','nick-name','aliases','notes','disabled','first-name','last-name','show-name','legacy-display-name','source-base','source-record','entries','trainers'];
+ for(const [table,prefix]of [['riders','rider'],['horses','horse']]){assert.equal(state[table].length,before[table].length);assertUniqueRoster(table,state[table].map(r=>r.fields));for(const old of before[table]){const current=state[table].find(r=>r.id===old.id);assert.ok(current);for(const key of [prefix+'-key',prefix+'-id',prefix+'-name',...helperFields])assert.deepEqual(current.fields[key],old.fields[key],table+'.'+key+' '+old.id);}}
+ assert.equal(state.entries.length,before.entries.length);for(const old of before.entries){const current=state.entries.find(r=>r.id===old.id);assert.ok(current);for(const key of ['entry-key','entry-id','class-id','horse-id','rider-id','date','ring-number','status','schedule-key','schedule-link','riders','horses','rings','trainers'])assert.deepEqual(current.fields[key],old.fields[key],'entry '+key);}
+ for(const rider of state.riders){const old=before.riders.find(r=>r.id===rider.id);const expected=[...new Set([...(old.fields.horses||[]),...state.entries.filter(e=>e.fields.status==='active'&&(e.fields.riders||[]).includes(rider.id)).flatMap(e=>e.fields.horses||[])])];sameLinks(rider.fields.horses,expected);assert.equal(new Set(rider.fields.horses||[]).size,(rider.fields.horses||[]).length);}
+ for(const horse of state.horses)sameLinks(horse.fields.riders,state.riders.filter(r=>(r.fields.horses||[]).includes(horse.id)).map(r=>r.id));
+ for(const event of report.archives){const bytes=zlib.gunzipSync(fs.readFileSync(event.file));assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),event.sha256);}
+ for(const [file,hash]of Object.entries(read('protected-hashes.json')))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex'),hash,file);
+ const direct=state.riders.filter(r=>[50121,81017,80970].includes(r.fields['rider-id'])).map(r=>({record:r.id,id:r.fields['rider-id'],name:r.fields['rider-name'],horseLinks:r.fields.horses,horses:state.horses.filter(h=>(r.fields.horses||[]).includes(h.id)).map(h=>({record:h.id,name:h.fields['horse-name'],id:h.fields['horse-id']}))}));
+ assert.deepEqual(direct.map(r=>[r.id,r.horses.length]).sort((a,b)=>a[0]-b[0]),[[50121,1],[80970,2],[81017,1]]);
+ const previous=fs.readdirSync(__dirname).filter(n=>/^verified-.*\.json$/.test(n)).map(read).find(r=>r.runId!==report.run_id);if(previous)assert.deepEqual(direct,previous.direct,'Repeated run changed associations or identities');
+ const result={verifiedAt:new Date().toISOString(),runId:report.run_id,started:report.started,completed:report.completed,result:logs[0].fields.result,riders:state.riders.length,horses:state.horses.length,entries:state.entries.length,direct,reciprocalLinksCorrect:true,existingHelpersAndLinksPreserved:true,unique:true,archivesVerified:report.archives.length,repeatStable:!!previous,protectedFilesUnchanged:true};
+ fs.writeFileSync(path.join(__dirname,'verified-'+report.run_id+'.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));
+}
+verify().catch(e=>{console.error(e.message);process.exitCode=1;});

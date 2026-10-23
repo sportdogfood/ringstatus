@@ -1,0 +1,597 @@
+{
+  "at": "2026-10-22T02:01:36.026Z",
+  "shows": [
+    {
+      "id": "recp0mgdpd9JBw8ny",
+      "createdTime": "2026-10-20T16:57:09.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "is_default": true,
+        "show-key": "15|200000075",
+        "facility_id": 516,
+        "selected_date": "2026-10-22",
+        "end_date": "2026-10-25",
+        "collections": [
+          "reckWdzLJAJI10Nyt",
+          "recvXKpYW5qC6V1zv",
+          "recjuCxV2TszGgh6n",
+          "reca3Z6R8j7ekQ5gc",
+          "rec3LfOy0NCtc757q",
+          "recrNy2xMyxe27bjQ",
+          "recCo3bSZwzaPwsMU",
+          "recpbu56eqxxwWR8G",
+          "recfgpr3myqwALvxi",
+          "recdCYnQPLRWGibmV",
+          "rec49KnRwB0yWSJfx",
+          "recWryWfQXz96XfPG"
+        ],
+        "source-record": "recpjdzMqBApZ8KPs",
+        "customer_id": 15,
+        "entries": [
+          "recfANMpXOHSEuL7x",
+          "rect3aBhzq8GTcM7d",
+          "recExiDfsusGy9CJv",
+          "rece6esDNI2bCBx2g",
+          "rec2iIvE9mLfUNHaf",
+          "recL8BOAIA7XCdApS"
+        ],
+        "show_name": "2026 ESP Fall III (#261901)",
+        "last_checked": "2026-10-22T01:55:43.255Z",
+        "rings": [
+          "recBhGtmVCW5v2X8G",
+          "recqGCtsPt6cdYgR3",
+          "recUC3pBuHpIXaAwm",
+          "recKorktVbv36UsBF",
+          "recWoHPEK8sgpRRV9",
+          "recJNegCyheuCk5y9",
+          "reczc0rPW6k7Y7i5r",
+          "recJQ1W8rgaHZx9cC",
+          "recWJ1u1g7h935QoX",
+          "rec9IfhpziMh5FmbZ",
+          "rectp1DaxOP2jVasT",
+          "recFvP7VfbWgbTdCf",
+          "recoCzeGvRZC1gUbq",
+          "reccJVGbzqGQZA8z0",
+          "reccE4pkFKmRdvYBp",
+          "rechlSRbnmcTBkW6V",
+          "rec8kRk95YZWRDzzA",
+          "recRAtvegxm1y9oC6",
+          "rec5Kig0IdYiCx5He",
+          "recUYlRpE7vL7AH8S",
+          "recmWDL9VzWVnERYg",
+          "recmfpH1WVHHM96Pk",
+          "recOxAI3tQTOwQNt7",
+          "recZz9MTewp1i7Le3"
+        ],
+        "available_dates": "2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25",
+        "start_date": "2026-10-22"
+      }
+    }
+  ],
+  "rings": [
+    {
+      "id": "rec5Kig0IdYiCx5He",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "is_selected_date": true,
+        "show_id": 200000075,
+        "ring_name": "Equestrian Village Derby Field",
+        "ring_date": "2026-10-22",
+        "ring_number": 1,
+        "rings-helper": [
+          "rec8Shy2UrTYX2gQw"
+        ],
+        "source-record": "recn49r7qTBFO8tZn",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-22|1",
+        "ring_id": 10
+      }
+    },
+    {
+      "id": "rec8kRk95YZWRDzzA",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "Equestrian Village Derby Field",
+        "ring_date": "2026-10-23",
+        "ring_number": 1,
+        "entries": [
+          "recfANMpXOHSEuL7x",
+          "rec2iIvE9mLfUNHaf",
+          "recL8BOAIA7XCdApS"
+        ],
+        "rings-helper": [
+          "rec8Shy2UrTYX2gQw"
+        ],
+        "source-record": "rechuoiAkv2zxJAfl",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-23|1",
+        "ring_id": 10
+      }
+    },
+    {
+      "id": "rec9IfhpziMh5FmbZ",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "VanKampen Covered Arena",
+        "ring_date": "2026-10-23",
+        "ring_number": 3,
+        "rings-helper": [
+          "rec5b1WpsfQfxTXXI"
+        ],
+        "source-record": "recLYOk2Kbh6HzMXb",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-23|3",
+        "ring_id": 44
+      }
+    },
+    {
+      "id": "recBhGtmVCW5v2X8G",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "GDF Hunter Ring 2",
+        "ring_date": "2026-10-25",
+        "ring_number": 6,
+        "rings-helper": [
+          "recZ0U8lS2wP9fArB"
+        ],
+        "source-record": "rec1kVeHFdi7956G6",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-25|6",
+        "ring_id": 45
+      }
+    },
+    {
+      "id": "recFvP7VfbWgbTdCf",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "is_selected_date": true,
+        "show_id": 200000075,
+        "ring_name": "Equestrian Village International Ring",
+        "ring_date": "2026-10-22",
+        "ring_number": 4,
+        "rings-helper": [
+          "recq8j147V3scpOlo"
+        ],
+        "source-record": "recUmdoW5PibiQpbm",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-22|4",
+        "ring_id": 13
+      }
+    },
+    {
+      "id": "recJNegCyheuCk5y9",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "VanKampen Covered Arena",
+        "ring_date": "2026-10-24",
+        "ring_number": 3,
+        "rings-helper": [
+          "rec5b1WpsfQfxTXXI"
+        ],
+        "source-record": "recFYApztRDzKB6VC",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-24|3",
+        "ring_id": 44
+      }
+    },
+    {
+      "id": "recJQ1W8rgaHZx9cC",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "Equestrian Village International Ring",
+        "ring_date": "2026-10-24",
+        "ring_number": 4,
+        "entries": [
+          "rect3aBhzq8GTcM7d"
+        ],
+        "rings-helper": [
+          "recq8j147V3scpOlo"
+        ],
+        "source-record": "recHWUknIoNjyaqGl",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-24|4",
+        "ring_id": 13
+      }
+    },
+    {
+      "id": "recKorktVbv36UsBF",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "Annex Derby Field",
+        "ring_date": "2026-10-23",
+        "ring_number": 2,
+        "rings-helper": [
+          "recRpJ3hAbKN8O7hz"
+        ],
+        "source-record": "recCXzrmzN9i9czWc",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-23|2",
+        "ring_id": 3
+      }
+    },
+    {
+      "id": "recOxAI3tQTOwQNt7",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "is_selected_date": true,
+        "show_id": 200000075,
+        "ring_name": "VanKampen Covered Arena",
+        "ring_date": "2026-10-22",
+        "ring_number": 3,
+        "rings-helper": [
+          "rec5b1WpsfQfxTXXI"
+        ],
+        "source-record": "recyTSpj8CXPQczez",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-22|3",
+        "ring_id": 44
+      }
+    },
+    {
+      "id": "recRAtvegxm1y9oC6",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "GDF Hunter Ring 2",
+        "ring_date": "2026-10-24",
+        "ring_number": 6,
+        "rings-helper": [
+          "recZ0U8lS2wP9fArB"
+        ],
+        "source-record": "recj2wZeyytmSsKfW",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-24|6",
+        "ring_id": 45
+      }
+    },
+    {
+      "id": "recUC3pBuHpIXaAwm",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "GDF Hunter Ring 1",
+        "ring_date": "2026-10-23",
+        "ring_number": 5,
+        "rings-helper": [
+          "recx0Fl8wUCEQBDFh"
+        ],
+        "source-record": "recBUe9F9Q2Y3vbJp",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-23|5",
+        "ring_id": 48
+      }
+    },
+    {
+      "id": "recUYlRpE7vL7AH8S",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "is_selected_date": true,
+        "show_id": 200000075,
+        "ring_name": "Annex Derby Field",
+        "ring_date": "2026-10-22",
+        "ring_number": 2,
+        "rings-helper": [
+          "recRpJ3hAbKN8O7hz"
+        ],
+        "source-record": "recnVFATkL84Ku10h",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-22|2",
+        "ring_id": 3
+      }
+    },
+    {
+      "id": "recWJ1u1g7h935QoX",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "Equestrian Village Derby Field",
+        "ring_date": "2026-10-24",
+        "ring_number": 1,
+        "entries": [
+          "recExiDfsusGy9CJv"
+        ],
+        "rings-helper": [
+          "rec8Shy2UrTYX2gQw"
+        ],
+        "source-record": "recJkHr8IsQ4tTpnf",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-24|1",
+        "ring_id": 10
+      }
+    },
+    {
+      "id": "recWoHPEK8sgpRRV9",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "Annex Derby Field",
+        "ring_date": "2026-10-24",
+        "ring_number": 2,
+        "rings-helper": [
+          "recRpJ3hAbKN8O7hz"
+        ],
+        "source-record": "recDJZqm10KckoYU1",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-24|2",
+        "ring_id": 3
+      }
+    },
+    {
+      "id": "recZz9MTewp1i7Le3",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "is_selected_date": true,
+        "show_id": 200000075,
+        "ring_name": "GDF Hunter Ring 1",
+        "ring_date": "2026-10-22",
+        "ring_number": 5,
+        "rings-helper": [
+          "recx0Fl8wUCEQBDFh"
+        ],
+        "source-record": "recz9ZXC4Ukfi3Is7",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-22|5",
+        "ring_id": 48
+      }
+    },
+    {
+      "id": "reccE4pkFKmRdvYBp",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "Equestrian Village International Ring",
+        "ring_date": "2026-10-23",
+        "ring_number": 4,
+        "rings-helper": [
+          "recq8j147V3scpOlo"
+        ],
+        "source-record": "recbhsVOUjk0SwFQw",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-23|4",
+        "ring_id": 13
+      }
+    },
+    {
+      "id": "reccJVGbzqGQZA8z0",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "Equestrian Village Derby Field",
+        "ring_date": "2026-10-25",
+        "ring_number": 1,
+        "rings-helper": [
+          "rec8Shy2UrTYX2gQw"
+        ],
+        "source-record": "recaPsjFvrE8je3SF",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-25|1",
+        "ring_id": 10
+      }
+    },
+    {
+      "id": "rechlSRbnmcTBkW6V",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "Annex Derby Field",
+        "ring_date": "2026-10-25",
+        "ring_number": 2,
+        "rings-helper": [
+          "recRpJ3hAbKN8O7hz"
+        ],
+        "source-record": "recgK7sjhFfPoVaVy",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-25|2",
+        "ring_id": 3
+      }
+    },
+    {
+      "id": "recmWDL9VzWVnERYg",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "Equestrian Village International Ring",
+        "ring_date": "2026-10-25",
+        "ring_number": 4,
+        "entries": [
+          "rece6esDNI2bCBx2g"
+        ],
+        "rings-helper": [
+          "recq8j147V3scpOlo"
+        ],
+        "source-record": "recqbNilKgNeHu0GI",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-25|4",
+        "ring_id": 13
+      }
+    },
+    {
+      "id": "recmfpH1WVHHM96Pk",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "is_selected_date": true,
+        "show_id": 200000075,
+        "ring_name": "GDF Hunter Ring 2",
+        "ring_date": "2026-10-22",
+        "ring_number": 6,
+        "rings-helper": [
+          "recZ0U8lS2wP9fArB"
+        ],
+        "source-record": "rectFyUKWylVjgS7Q",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-22|6",
+        "ring_id": 45
+      }
+    },
+    {
+      "id": "recoCzeGvRZC1gUbq",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "GDF Hunter Ring 2",
+        "ring_date": "2026-10-23",
+        "ring_number": 6,
+        "rings-helper": [
+          "recZ0U8lS2wP9fArB"
+        ],
+        "source-record": "recVW5pqGmAPhqLeo",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-23|6",
+        "ring_id": 45
+      }
+    },
+    {
+      "id": "recqGCtsPt6cdYgR3",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "VanKampen Covered Arena",
+        "ring_date": "2026-10-25",
+        "ring_number": 3,
+        "rings-helper": [
+          "rec5b1WpsfQfxTXXI"
+        ],
+        "source-record": "recAcF6gmE0JNjEwi",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-25|3",
+        "ring_id": 44
+      }
+    },
+    {
+      "id": "rectp1DaxOP2jVasT",
+      "createdTime": "2026-10-20T16:57:14.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "GDF Hunter Ring 1",
+        "ring_date": "2026-10-25",
+        "ring_number": 5,
+        "rings-helper": [
+          "recx0Fl8wUCEQBDFh"
+        ],
+        "source-record": "recSTT2xnC1aItb7W",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-25|5",
+        "ring_id": 48
+      }
+    },
+    {
+      "id": "reczc0rPW6k7Y7i5r",
+      "createdTime": "2026-10-20T16:57:13.000Z",
+      "fields": {
+        "show_id": 200000075,
+        "ring_name": "GDF Hunter Ring 1",
+        "ring_date": "2026-10-24",
+        "ring_number": 5,
+        "rings-helper": [
+          "recx0Fl8wUCEQBDFh"
+        ],
+        "source-record": "recHIExwk65eIfgJs",
+        "facility_id": 516,
+        "customer_id": 15,
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "ring-key": "15|200000075|2026-10-24|5",
+        "ring_id": 48
+      }
+    }
+  ]
+}

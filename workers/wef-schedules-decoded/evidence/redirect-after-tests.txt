@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: schedule restores class IDs and preserves source evidence and schedule keys
+ok 1 - schedule restores class IDs and preserves source evidence and schedule keys
+  ---
+  duration_ms: 74.8371
+  type: 'test'
+  ...
+# Subtest: people restores IDs and removes protected blobs without returning credentials
+ok 2 - people restores IDs and removes protected blobs without returning credentials
+  ---
+  duration_ms: 23.1753
+  type: 'test'
+  ...
+# Subtest: empty show day remains empty and ring discovery is supported
+ok 3 - empty show day remains empty and ring discovery is supported
+  ---
+  duration_ms: 3.3478
+  type: 'test'
+  ...
+# Subtest: bad key, damaged blobs, invalid JSON, refreshed token and missing auth fail closed
+ok 4 - bad key, damaged blobs, invalid JSON, refreshed token and missing auth fail closed
+  ---
+  duration_ms: 13.5846
+  type: 'test'
+  ...
+# Subtest: unapproved routes, methods and query parameters cannot cause upstream actions
+ok 5 - unapproved routes, methods and query parameters cannot cause upstream actions
+  ---
+  duration_ms: 1.5768
+  type: 'test'
+  ...
+# Subtest: upstream failures stay failures, without retries or leaking the body
+ok 6 - upstream failures stay failures, without retries or leaking the body
+  ---
+  duration_ms: 1.4464
+  type: 'test'
+  ...
+# Subtest: uses Workers-supported manual redirects and blocks them without forwarding credentials
+ok 7 - uses Workers-supported manual redirects and blocks them without forwarding credentials
+  ---
+  duration_ms: 0.52
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 239.6036

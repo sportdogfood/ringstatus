@@ -65,7 +65,7 @@ assert.strictEqual(conflictCatalog.conflicts.length, 1);
 
 assert.strictEqual(
   buildClassListEndpoint(200000062, 15),
-  "https://sglapi.wellingtoninternational.com/classes?show_id=200000062&customer_id=15"
+  "https://wef-schedules-decoded.gombcg.workers.dev/classes?show_id=200000062&customer_id=15"
 );
 
 console.log("schedules_daily_class_list_enrichment tests passed");

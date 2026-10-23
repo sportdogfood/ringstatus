@@ -1,0 +1,83 @@
+{
+  "at": "2026-10-22T02:00:22.387Z",
+  "files": [
+    {
+      "name": "collector.js",
+      "sha256": "4254f837d90a2f89bbbab0b34227a1ea015648f9626332773e6c29f88393f97e"
+    },
+    {
+      "name": "settings.js",
+      "sha256": "607f9da82bcd4e9bc9ce48861a582bb030a08bc26dffd7bc92c0cf37961c773f"
+    },
+    {
+      "name": "airtable.js",
+      "sha256": "58e5443a9e510a3050d6aa7b5f4f7b9f006690a74676a095f5821c33341f53f5"
+    },
+    {
+      "name": "model.js",
+      "sha256": "566a8a3fe41d3ad71af775814002f325b977473d87d017e0d0ba0969034e93d5"
+    },
+    {
+      "name": "verify.js",
+      "sha256": "09218d8a3c47da1e6d2fbab68a370362aeafc552de7447fd268f6e7ea4e3f037"
+    },
+    {
+      "name": "compare.js",
+      "sha256": "643a388f438a865a8b48ad510f9ec9f05d87e68c865cad39b462528acb0fa6dd"
+    },
+    {
+      "name": "synced-references.js",
+      "sha256": "8d43b62d4492a9d26130f19e65401fd2344a662b319a6864ca18b0c7b5fd889b"
+    },
+    {
+      "name": "configure-synced-references.js",
+      "sha256": "7517ec224fbdcc16f2086b4a7a8dbe5006baf9812c990b8edf75e7732e213300"
+    }
+  ],
+  "tests": {
+    "pass": 65,
+    "fail": 0
+  },
+  "review": "Both initial findings resolved; no remaining blockers",
+  "schema": {
+    "base": "appxKPBtdl2Rdq7CS",
+    "links": [
+      {
+        "table": "tblDhAutHYlDbvzNd",
+        "name": "shows",
+        "field": "fldFOuJgGPlHv6M1H",
+        "target": "tblNABa50eiRKfZS4",
+        "inverse": "fldjuWWW8YiFGvpP7"
+      },
+      {
+        "table": "tblDhAutHYlDbvzNd",
+        "name": "synced-rings",
+        "field": "fldj7GhJaBvXusEOR",
+        "target": "tblK8EqyEVUktiLOI",
+        "inverse": "fld5gXh69afMnbFvY"
+      },
+      {
+        "table": "tblDhAutHYlDbvzNd",
+        "name": "schedules",
+        "field": "fld1Y4OW66hX0eBxb",
+        "target": "tbl3QiMIXd6Spi336",
+        "inverse": "fldPrvoErIn1ee7Ck"
+      },
+      {
+        "table": "tblbac3wwWJAmUthL",
+        "name": "shows",
+        "field": "fld35eBb4fJDavkRH",
+        "target": "tblNABa50eiRKfZS4",
+        "inverse": "fldNLEFhUJaM0YMuf"
+      },
+      {
+        "table": "tblu9SBWyir2z4CCt",
+        "name": "synced-rings",
+        "field": "fld9HdiYBnN3AdnRF",
+        "target": "tblK8EqyEVUktiLOI",
+        "inverse": "fld31569MgpmeZJ3a"
+      }
+    ],
+    "businessRecordsWritten": 0
+  }
+}

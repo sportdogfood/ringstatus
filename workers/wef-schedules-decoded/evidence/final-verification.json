@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-10-22T00:09:33.785Z",
+  "entryIdsStable": true,
+  "heartbeatMatches": true,
+  "newHorsesStable": true,
+  "newHorses": [
+    {
+      "id": "recQDCLG6rBgB26AM",
+      "createdTime": "2026-10-22T00:03:12.000Z",
+      "fields": {
+        "horse-key": "200002670",
+        "horse-name": "CROSS OVER SR",
+        "horse-id": 200002670
+      }
+    },
+    {
+      "id": "recmRfdpPLsMFtTZo",
+      "createdTime": "2026-10-22T00:03:12.000Z",
+      "fields": {
+        "horse-key": "141234",
+        "horse-name": "EDITION DE RIVERLAND",
+        "horse-id": 141234
+      }
+    }
+  ],
+  "trainers": [
+    {
+      "id": "rec1sBWKmh1xl6MPA",
+      "createdTime": "2026-10-21T22:59:29.000Z",
+      "fields": {
+        "trainer-id": 80970,
+        "role": "additional",
+        "trainer-key": "80970",
+        "last-result": "Failed",
+        "slot": 2
+      }
+    },
+    {
+      "id": "rec9Hmq2WuHuZc9mY",
+      "createdTime": "2026-10-20T16:49:38.000Z",
+      "fields": {
+        "trainer-id": 8778,
+        "role": "main",
+        "trainer-key": "8778",
+        "last-result": "No entries",
+        "active": true,
+        "slot": 1
+      }
+    },
+    {
+      "id": "recY4aRfPwodSQVBJ",
+      "createdTime": "2026-10-21T23:08:41.000Z",
+      "fields": {
+        "trainer-id": 50121,
+        "role": "additional",
+        "trainer-key": "50121",
+        "last-result": "Success",
+        "active": true,
+        "slot": 2
+      }
+    }
+  ],
+  "schedules": {
+    "count": 435,
+    "classIds": 435,
+    "preservedIds": true,
+    "uniqueKeys": 435
+  },
+  "tripLinksAllValid": true,
+  "duplicateEntries": false,
+  "allArchivesVerified": true
+}

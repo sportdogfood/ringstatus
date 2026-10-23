@@ -1,0 +1,439 @@
+{
+  "at": "2026-10-22T00:35:47.674Z",
+  "trainers": [
+    {
+      "id": "rec1sBWKmh1xl6MPA",
+      "createdTime": "2026-10-21T22:59:29.000Z",
+      "fields": {
+        "trainer-id": 80970,
+        "last-checked": "2026-10-22T00:33:31.159Z",
+        "collections": [
+          "rec3LfOy0NCtc757q",
+          "recrNy2xMyxe27bjQ",
+          "recCo3bSZwzaPwsMU",
+          "recpbu56eqxxwWR8G"
+        ],
+        "role": "additional",
+        "trainer-key": "80970",
+        "horses": [
+          "recxMMFNm83rdmofA",
+          "rec1eQ29x3LhlMZGU"
+        ],
+        "last-result": "Success",
+        "entries": [
+          "rec2iIvE9mLfUNHaf",
+          "recL8BOAIA7XCdApS"
+        ],
+        "active": true,
+        "slot": 3
+      }
+    },
+    {
+      "id": "rec9Hmq2WuHuZc9mY",
+      "createdTime": "2026-10-20T16:49:38.000Z",
+      "fields": {
+        "trainer-id": 8778,
+        "last-checked": "2026-10-22T00:32:52.065Z",
+        "collections": [
+          "reckWdzLJAJI10Nyt",
+          "recvXKpYW5qC6V1zv",
+          "recjuCxV2TszGgh6n",
+          "reca3Z6R8j7ekQ5gc"
+        ],
+        "role": "main",
+        "trainer-key": "8778",
+        "horses": [
+          "recnlCL33i9RZdfDF",
+          "recZjyHg9xXCjiRQr",
+          "recTUmZR8tuX07CTI",
+          "recqfy21Sy1OmUd5w",
+          "recUZq19haTlMGZro",
+          "rec1gpX41ZeBZTY5K",
+          "recNEkaFwtyNKoKnj",
+          "recGQQ1GetPSRhW6i",
+          "rec0LXYicCNtBJfwa",
+          "recKOL5DA8fn4w6XR",
+          "recUjh3naagDOdC0W",
+          "recnypJGmVMqD3aUB",
+          "recWnpX6bcWELMsB6",
+          "recz2JoFyVt212nn6",
+          "recOBBDNMnSutzxgw",
+          "recVnKkU2IQjLOhUI",
+          "recmEVzn854eQzsHq",
+          "reczLO96ZX52RSs8M",
+          "recqJ1Jcrjs8FPS9I",
+          "recM5c0LFBVFfDJTk",
+          "recb5l5vQMptKY8oq",
+          "recsYwvs9CxqC8LlV",
+          "rec0IirimhFe65PE3",
+          "rech0s1W6l6pnHQCV",
+          "recjpJQzze0Iz3bwr",
+          "rec0H2Th0ynS5rM5S",
+          "recLwOoif1AF7A4FS",
+          "rec9RUnsJzbqsmMpw",
+          "recWhlZ491UmgHKeZ",
+          "recpGfgzFupUDxJlb",
+          "recilDAzWli3vc1Tm",
+          "rec9zxcf43zcRgCek",
+          "recrmt33Oddk9hg97",
+          "rectkuX7M82ZdJ0cZ",
+          "recn1jRmOvgV7aUHb",
+          "rectXYph5sOyMlO5M",
+          "rec49T9AzyxdJQfaV",
+          "recsCorux6PNBtOar",
+          "reck3bTBEX4Yyot3n",
+          "recnLHW1gdn3LlFcA",
+          "recZmrjHrfjLQfenG",
+          "recrUe4akjtQRncxJ",
+          "recXLYIfCNCs8WQun",
+          "recx9mW6kbIxbHOUJ",
+          "recEHMwAyw3V0tWRQ",
+          "recdCslRNduRLA3qt",
+          "recyHR00NST3B8GSN",
+          "recz4AowhLdRSdODo",
+          "recbCk3S7YW3XFuiS",
+          "reciUdrRS5SYYPWIM",
+          "recjJTeb2kJ1UfgKb",
+          "recxS2wDDwby40sRj",
+          "recAfsSJqKN8tkAaZ",
+          "reczmFoJp3LczFw0L",
+          "recxRCxmpIfhqEEwA",
+          "recF2LAaQ7fhCIQzD",
+          "recN3O5qZTsodbXBB",
+          "recJQ6KnkNELhIxUO",
+          "recsOX0mayXE1ddau",
+          "recFwIlRJcpFxamxN",
+          "recqVDg0ON8NJfm1x",
+          "reccMCzW53kEsHl2T",
+          "recezgeZjtbRx0OGu",
+          "recXzAacKOZX0UO5V",
+          "recR7Bc9ZXi5uZBiL",
+          "recKUGelFQaTUeIsO",
+          "rec4423KCpPG8vGvN",
+          "recOlkz7ACiD6yeiD",
+          "reccCVXhSgBm2aGKC",
+          "recaRqj1r9QlIqF1D",
+          "rec3t48sBtWJU7QtN"
+        ],
+        "last-result": "No entries",
+        "riders": [
+          "rece1ZpEQqFJ7A89v",
+          "recScQgoxsmuOcqw1",
+          "recEHPrSEZq6QsmoO",
+          "recRUe0UrHW2PZHUV",
+          "recUO22xwf0x8Sob7",
+          "recxsfI6iSunBVFd0",
+          "recB3N91s0Bl2GxL0",
+          "recovIAcrm4wdDWzy",
+          "recozlDZujeAseXhi",
+          "recz1HwlsAqt9GRwU",
+          "recROvgNVJToenr0b",
+          "recvbPDm6vbJKCFQM",
+          "recxnvvzfuGJXnUfv",
+          "recZ8us0YOTffsQBx",
+          "rec2zIgN5NSQhHA8f",
+          "reccqFTGFn2m7mwVp",
+          "recgvQtyksk0JKhbr",
+          "rec12obKov6O3ZzJE",
+          "recBhSc6s97WS1ZOQ",
+          "rectXATOdFlpr3MIK",
+          "recjN8g49ze6cRA7l",
+          "rec4Eq7ReOLwpgGn1",
+          "rechlu4NM7shxZv4a",
+          "recO5cCQcCe9lCY4V",
+          "recTDtcZuMxhTxb1l",
+          "reclh6wNfR7A6oYKr",
+          "recqAZR9xsCElYQCb",
+          "recyYGvtW8I4KgAjk",
+          "recjIFLmTNUDrEQ2f",
+          "rec07lZ8zWta2pSyP",
+          "rec6K8QreBFl5PYbe",
+          "recP8ZSwwHUzTKunO"
+        ],
+        "trainer-name": "ALAN KOROTKIN",
+        "active": true,
+        "slot": 1
+      }
+    },
+    {
+      "id": "recY4aRfPwodSQVBJ",
+      "createdTime": "2026-10-21T23:08:41.000Z",
+      "fields": {
+        "trainer-id": 50121,
+        "last-checked": "2026-10-22T00:33:11.653Z",
+        "collections": [
+          "recfgpr3myqwALvxi",
+          "recdCYnQPLRWGibmV",
+          "rec49KnRwB0yWSJfx",
+          "recWryWfQXz96XfPG"
+        ],
+        "role": "additional",
+        "trainer-key": "50121",
+        "horses": [
+          "recQDCLG6rBgB26AM",
+          "recmRfdpPLsMFtTZo"
+        ],
+        "last-result": "Success",
+        "entries": [
+          "recfANMpXOHSEuL7x",
+          "rect3aBhzq8GTcM7d",
+          "recExiDfsusGy9CJv",
+          "rece6esDNI2bCBx2g"
+        ],
+        "trainer-name": "DE SOUSA, ISABELA",
+        "active": true,
+        "slot": 2
+      }
+    }
+  ],
+  "entries": [
+    {
+      "id": "rec2iIvE9mLfUNHaf",
+      "createdTime": "2026-10-22T00:23:38.000Z",
+      "fields": {
+        "trainers": [
+          "rec1sBWKmh1xl6MPA"
+        ],
+        "entry-key": "200000075|2026-10-23|200245636|200030344",
+        "rider-name": "TAYLOR COWLES",
+        "schedule-key": "200000075|2026-10-23|200027913_710",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recJZQIHiGub73HJg",
+        "source-json": "{\"entry_id\":200245636,\"entry_number\":195,\"class_id\":200030344,\"class_number\":710,\"class_name\":\"1.25m Open Jumper II2d\",\"sponsor\":\"\",\"horse_id\":153346,\"horse\":\"SOLAGUAYRE DIMITRI\",\"rider_id\":80970,\"rider_name\":\"TAYLOR COWLES\",\"placing\":0,\"entryxclasses_uuid\":\"94E21B1B39BA48768287ED17D16BD7FD\",\"trips_count\":5,\"total_prize_money\":0,\"ring\":1,\"ring_name\":\"Equestrian Village Derby Field\",\"scheduled_date\":\"2026-10-23T00:00:00.000Z\",\"schedule_starttime\":\"08:21:00\",\"scratch_trip\":0,\"ring_id\":10,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.d\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:33:35.314Z",
+        "date": "2026-10-23",
+        "class-name": "1.25m Open Jumper II2d",
+        "rider-id": 80970,
+        "trainer-ids": "80970",
+        "rings": [
+          "rec8kRk95YZWRDzzA"
+        ],
+        "class-id": 200030344,
+        "ring-number": 1,
+        "horse-name": "SOLAGUAYRE DIMITRI",
+        "status": "active",
+        "horses": [
+          "recxMMFNm83rdmofA"
+        ],
+        "entry-id": 200245636,
+        "show-id": 200000075,
+        "horse-id": 153346
+      }
+    },
+    {
+      "id": "recExiDfsusGy9CJv",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "entry-key": "200000075|2026-10-24|200245506|200030399",
+        "rider-name": "ISABELA DE SOUSA",
+        "schedule-key": "200000075|2026-10-24|200027986_808",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recnBotst89srLALm",
+        "source-json": "{\"entry_id\":200245506,\"entry_number\":453,\"class_id\":200030399,\"class_number\":808,\"class_name\":\"$5,000 1.35m Stake II2b\",\"sponsor\":\"Florida Coast Equipment\",\"horse_id\":200002670,\"horse\":\"CROSS OVER SR\",\"rider_id\":50121,\"rider_name\":\"ISABELA DE SOUSA\",\"placing\":0,\"entryxclasses_uuid\":\"8DD74EA172C743A8ACC74974B147663F\",\"trips_count\":1,\"total_prize_money\":0,\"ring\":1,\"ring_name\":\"Equestrian Village Derby Field\",\"scheduled_date\":\"2026-10-24T00:00:00.000Z\",\"schedule_starttime\":\"08:00:00\",\"scratch_trip\":0,\"ring_id\":10,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table IV.2.b\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:33:35.314Z",
+        "date": "2026-10-24",
+        "class-name": "$5,000 1.35m Stake II2b",
+        "rider-id": 50121,
+        "trainer-ids": "50121",
+        "rings": [
+          "recWJ1u1g7h935QoX"
+        ],
+        "class-id": 200030399,
+        "ring-number": 1,
+        "horse-name": "CROSS OVER SR",
+        "status": "active",
+        "horses": [
+          "recQDCLG6rBgB26AM"
+        ],
+        "entry-id": 200245506,
+        "show-id": 200000075,
+        "horse-id": 200002670
+      }
+    },
+    {
+      "id": "recL8BOAIA7XCdApS",
+      "createdTime": "2026-10-22T00:23:38.000Z",
+      "fields": {
+        "trainers": [
+          "rec1sBWKmh1xl6MPA"
+        ],
+        "entry-key": "200000075|2026-10-23|200245642|200030344",
+        "rider-name": "TAYLOR COWLES",
+        "schedule-key": "200000075|2026-10-23|200027913_710",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recJZQIHiGub73HJg",
+        "source-json": "{\"entry_id\":200245642,\"entry_number\":194,\"class_id\":200030344,\"class_number\":710,\"class_name\":\"1.25m Open Jumper II2d\",\"sponsor\":\"\",\"horse_id\":200002216,\"horse\":\"WHERE'S WALDO\",\"rider_id\":80970,\"rider_name\":\"TAYLOR COWLES\",\"placing\":0,\"entryxclasses_uuid\":\"88714A600D2649749A1B84070A52D747\",\"trips_count\":5,\"total_prize_money\":0,\"ring\":1,\"ring_name\":\"Equestrian Village Derby Field\",\"scheduled_date\":\"2026-10-23T00:00:00.000Z\",\"schedule_starttime\":\"08:21:00\",\"scratch_trip\":0,\"ring_id\":10,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.d\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:33:35.314Z",
+        "date": "2026-10-23",
+        "class-name": "1.25m Open Jumper II2d",
+        "rider-id": 80970,
+        "trainer-ids": "80970",
+        "rings": [
+          "rec8kRk95YZWRDzzA"
+        ],
+        "class-id": 200030344,
+        "ring-number": 1,
+        "horse-name": "WHERE'S WALDO",
+        "status": "active",
+        "horses": [
+          "rec1eQ29x3LhlMZGU"
+        ],
+        "entry-id": 200245642,
+        "show-id": 200000075,
+        "horse-id": 200002216
+      }
+    },
+    {
+      "id": "rece6esDNI2bCBx2g",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "entry-key": "200000075|2026-10-25|200241392|200030331",
+        "rider-name": "JACQUELINE ROSENTHAL",
+        "schedule-key": "200000075|2026-10-25|200028084_753",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recs4VAvV29jAyjzy",
+        "source-json": "{\"entry_id\":200241392,\"entry_number\":451,\"class_id\":200030331,\"class_number\":753,\"class_name\":\"Training Jumper (.90m) II2d\",\"sponsor\":\"\",\"horse_id\":141234,\"horse\":\"EDITION DE RIVERLAND\",\"rider_id\":81017,\"rider_name\":\"JACQUELINE ROSENTHAL\",\"placing\":0,\"entryxclasses_uuid\":\"E03EEC25FD2841A18F91B28C2655DBD2\",\"trips_count\":4,\"total_prize_money\":0,\"ring\":4,\"ring_name\":\"Equestrian Village International Ring\",\"scheduled_date\":\"2026-10-25T00:00:00.000Z\",\"schedule_starttime\":\"09:09:00\",\"scratch_trip\":0,\"ring_id\":13,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.d\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:33:35.314Z",
+        "date": "2026-10-25",
+        "class-name": "Training Jumper (.90m) II2d",
+        "rider-id": 81017,
+        "trainer-ids": "50121",
+        "rings": [
+          "recmWDL9VzWVnERYg"
+        ],
+        "class-id": 200030331,
+        "ring-number": 4,
+        "horse-name": "EDITION DE RIVERLAND",
+        "status": "active",
+        "horses": [
+          "recmRfdpPLsMFtTZo"
+        ],
+        "entry-id": 200241392,
+        "show-id": 200000075,
+        "horse-id": 141234
+      }
+    },
+    {
+      "id": "recfANMpXOHSEuL7x",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "entry-key": "200000075|2026-10-23|200245506|200030347",
+        "rider-name": "ISABELA DE SOUSA",
+        "schedule-key": "200000075|2026-10-23|200027909_770",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recYJ1Nf0x3sGUplc",
+        "source-json": "{\"entry_id\":200245506,\"entry_number\":453,\"class_id\":200030347,\"class_number\":770,\"class_name\":\"1.30m Open Jumper II2d\",\"sponsor\":\"\",\"horse_id\":200002670,\"horse\":\"CROSS OVER SR\",\"rider_id\":50121,\"rider_name\":\"ISABELA DE SOUSA\",\"placing\":0,\"entryxclasses_uuid\":\"D16475014D64450695C6D10F5EA64B1F\",\"trips_count\":3,\"total_prize_money\":0,\"ring\":1,\"ring_name\":\"Equestrian Village Derby Field\",\"scheduled_date\":\"2026-10-23T00:00:00.000Z\",\"schedule_starttime\":\"08:00:00\",\"scratch_trip\":0,\"ring_id\":10,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.d\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:33:35.313Z",
+        "date": "2026-10-23",
+        "class-name": "1.30m Open Jumper II2d",
+        "rider-id": 50121,
+        "trainer-ids": "50121",
+        "rings": [
+          "rec8kRk95YZWRDzzA"
+        ],
+        "class-id": 200030347,
+        "ring-number": 1,
+        "horse-name": "CROSS OVER SR",
+        "status": "active",
+        "horses": [
+          "recQDCLG6rBgB26AM"
+        ],
+        "entry-id": 200245506,
+        "show-id": 200000075,
+        "horse-id": 200002670
+      }
+    },
+    {
+      "id": "rect3aBhzq8GTcM7d",
+      "createdTime": "2026-10-22T00:03:15.000Z",
+      "fields": {
+        "trainers": [
+          "recY4aRfPwodSQVBJ"
+        ],
+        "entry-key": "200000075|2026-10-24|200241392|200030330",
+        "rider-name": "JACQUELINE ROSENTHAL",
+        "schedule-key": "200000075|2026-10-24|200028005_752",
+        "show-details": [
+          "recp0mgdpd9JBw8ny"
+        ],
+        "schedule-link": "https://airtable.com/appUq5Qz9kARqFija/tblqiTFqqO3zk2KJC/recoOI4Bfj2xQ6KFE",
+        "source-json": "{\"entry_id\":200241392,\"entry_number\":451,\"class_id\":200030330,\"class_number\":752,\"class_name\":\"Training Jumper (.90m) II2b\",\"sponsor\":\"\",\"horse_id\":141234,\"horse\":\"EDITION DE RIVERLAND\",\"rider_id\":81017,\"rider_name\":\"JACQUELINE ROSENTHAL\",\"placing\":0,\"entryxclasses_uuid\":\"99E4029B7B384B52ADFA3626CEBEF067\",\"trips_count\":3,\"total_prize_money\":0,\"ring\":4,\"ring_name\":\"Equestrian Village International Ring\",\"scheduled_date\":\"2026-10-24T00:00:00.000Z\",\"schedule_starttime\":\"09:03:00\",\"scratch_trip\":0,\"ring_id\":13,\"class_type\":\"Jumpers\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jumper_table\":\"USEF Table II.2.b\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"time_one\":0,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":0,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"country_code\":\"USA\",\"competing_nationality\":\"\",\"competing_country\":\"USA\"}",
+        "last-seen": "2026-10-22T00:33:35.314Z",
+        "date": "2026-10-24",
+        "class-name": "Training Jumper (.90m) II2b",
+        "rider-id": 81017,
+        "trainer-ids": "50121",
+        "rings": [
+          "recJQ1W8rgaHZx9cC"
+        ],
+        "class-id": 200030330,
+        "ring-number": 4,
+        "horse-name": "EDITION DE RIVERLAND",
+        "status": "active",
+        "horses": [
+          "recmRfdpPLsMFtTZo"
+        ],
+        "entry-id": 200241392,
+        "show-id": 200000075,
+        "horse-id": 141234
+      }
+    }
+  ],
+  "heartbeat": [
+    {
+      "id": "recJWmC8t39z0Ih7O",
+      "createdTime": "2026-10-20T16:57:37.000Z",
+      "fields": {
+        "heartbeat-key": "CWF",
+        "checked-at": "2026-10-22T00:33:37.179Z",
+        "summary": "Trainer 8778 (main): No entries; 0 day entries\nTrainer 50121 (additional): Success; 4 day entries\nTrainer 80970 (additional): Success; 2 day entries\nShow 200000075; source-selected 2026-10-22; 4 days; 6 active entries; 24 daily rings; 6 shared helpers.\nStanding helpers: 75 horses, 33 riders; 13 source IDs missing (source-record identity retained).",
+        "selected-date": "2026-10-22",
+        "show-id": 200000075,
+        "result": "Success"
+      }
+    }
+  ],
+  "logs": [
+    {
+      "id": "recpWzIKaUPux6oUD",
+      "createdTime": "2026-10-22T00:32:07.000Z",
+      "fields": {
+        "completed": "2026-10-22T00:33:39.533Z",
+        "rows": 6,
+        "started": "2026-10-22T00:32:02.108Z",
+        "run-id": "d6e4fb07-2bb5-4c63-82cd-5fa567d5e79b",
+        "result": "Success"
+      }
+    },
+    {
+      "id": "recIFJOdzsJQehirW",
+      "createdTime": "2026-10-22T00:27:07.000Z",
+      "fields": {
+        "completed": "2026-10-22T00:28:37.936Z",
+        "rows": 6,
+        "started": "2026-10-22T00:27:02.227Z",
+        "run-id": "3f20c91e-c9f2-4bae-b940-cfde5ea09cf6",
+        "result": "Success"
+      }
+    }
+  ]
+}

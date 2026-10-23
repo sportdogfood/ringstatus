@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-21T23:44:17.884Z",
+  "preservation": {
+    "horses": {
+      "before": 71,
+      "after": 71,
+      "changes": []
+    },
+    "riders": {
+      "before": 33,
+      "after": 33,
+      "changes": []
+    },
+    "rings-helper": {
+      "before": 6,
+      "after": 6,
+      "changes": []
+    },
+    "ring-walks": {
+      "before": 6,
+      "after": 6,
+      "changes": []
+    }
+  },
+  "sharedHeartbeat": [
+    {
+      "id": "recrPBYzI2s6XpW0O",
+      "createdTime": "2026-10-20T18:05:58.000Z",
+      "fields": {
+        "result": "Warning",
+        "run-id": "989284a0-2490-4bf6-a794-c931738110bb",
+        "rows": 435,
+        "checked-at": "2026-10-21T23:40:52.078Z"
+      }
+    }
+  ],
+  "allArchiveHashesMatch": true,
+  "standingRosterCount": {
+    "reported": 105,
+    "actual": 105
+  },
+  "note": "Generic inspector counts object envelopes as one; standing-roster contract counts one tenant plus horse and rider records."
+}

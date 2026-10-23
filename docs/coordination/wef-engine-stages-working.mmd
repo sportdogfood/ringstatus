@@ -1,0 +1,47 @@
+flowchart TB
+    CTRL["Heartbeat/control<br/>Existing show/date/mode and dispatch"]
+    ACQ["Schedule acquisition"]
+    NORM["Normalization<br/>Keys, joins and deduplication"]
+    CE["Classes and entries<br/>Existing acquisition and OOG"]
+    LIVE["Live state<br/>Existing ring/group/class implementations"]
+    TIME["Timing<br/>Existing schedule/trip calculators"]
+    RESULT["Results<br/>Existing trip result matching"]
+    OUT["Outputs<br/>Existing bulk/differ publisher"]
+    AUDIT["Audit<br/>Changes, calculations and failures"]
+    ALERT["Alerts — placeholder"]
+    TWO["Two-way — placeholder"]
+
+    S["Prepared wef-schedules<br/>shows / rings / schedules"]
+    TEN["Prepared tenants<br/>people / memberships / roles<br/>trainers / tenant-trainers<br/>horses / riders / tenant-roster"]
+    PREF["Prepared tenants<br/>favorites / optins"]
+    LEG["Prepared RingStatus<br/>watch_trips / watch_results<br/>live_groups / live_rings / live_classes"]
+    E["wef-entries — planned binder<br/>Schedule + horse + rider + trainer<br/>Related trips and results<br/>Reuse CWF participation structure"]
+    CWF["wef-tenant-cwf — existing<br/>entries / horses / riders / trainers<br/>Synced shows / rings / schedules"]
+
+    CTRL -.-> ACQ
+    CTRL -.-> CE
+    CTRL -.-> LIVE
+    ACQ -.-> NORM
+    CE -.-> NORM
+    NORM -.-> E
+    ACQ -.-> S
+    TEN -.-> E
+    TEN --> PREF
+    LEG -.-> LIVE
+    LEG -.-> RESULT
+    LEG -.-> E
+    S -->|"Existing read-only sync"| CWF
+    S -.->|"Owning schedule reference"| E
+    CWF -.->|"Existing structure to reuse"| E
+    E -.-> LIVE
+    LIVE -.-> TIME
+    LIVE -.-> RESULT
+    TIME -.->|"Related estimates"| E
+    RESULT -.->|"Related results"| E
+    E -.-> OUT
+    E -.->|"Relevant entries after verification"| CWF
+    E -.-> AUDIT
+    OUT -.-> AUDIT
+    PREF -.-> ALERT
+    E -.-> ALERT
+    E -.-> TWO

@@ -1,0 +1,155 @@
+TAP version 13
+# Subtest: normal empty run covers four days; repeat does not duplicate references or collections
+ok 1 - normal empty run covers four days; repeat does not duplicate references or collections
+  ---
+  duration_ms: 14.0373
+  type: 'test'
+  ...
+# Subtest: standing helpers populate with zero current-show entries and survive repeat source failure
+ok 2 - standing helpers populate with zero current-show entries and survive repeat source failure
+  ---
+  duration_ms: 3.8984
+  type: 'test'
+  ...
+# Subtest: standing helpers populate even when shared-show discovery is unavailable
+ok 3 - standing helpers populate even when shared-show discovery is unavailable
+  ---
+  duration_ms: 0.5233
+  type: 'test'
+  ...
+# Subtest: actual helper writes omit computed fields and nonempty entries preserve deliberately blank helper names
+ok 4 - actual helper writes omit computed fields and nonempty entries preserve deliberately blank helper names
+  ---
+  duration_ms: 1.8458
+  type: 'test'
+  ...
+# Subtest: one trainer failure is logged independently and preserves that trainer entries
+ok 5 - one trainer failure is logged independently and preserves that trainer entries
+  ---
+  duration_ms: 1.8658
+  type: 'test'
+  ...
+# Subtest: archive failure blocks dataset changes and old-show deletion
+ok 6 - archive failure blocks dataset changes and old-show deletion
+  ---
+  duration_ms: 0.442
+  type: 'test'
+  ...
+# Subtest: late failure leaves heartbeat and tenant index terminal Failed
+ok 7 - late failure leaves heartbeat and tenant index terminal Failed
+  ---
+  duration_ms: 1.8271
+  type: 'test'
+  ...
+# Subtest: nonempty trainer datasets link all days, dedupe shared entries and preserve disabled roster
+ok 8 - nonempty trainer datasets link all days, dedupe shared entries and preserve disabled roster
+  ---
+  duration_ms: 11.1488
+  type: 'test'
+  ...
+# Subtest: log retention archives the exact finished row before reusing its ID
+ok 9 - log retention archives the exact finished row before reusing its ID
+  ---
+  duration_ms: 1.5475
+  type: 'test'
+  ...
+# Subtest: show rollover archives exact old records before removing them
+ok 10 - show rollover archives exact old records before removing them
+  ---
+  duration_ms: 1.9788
+  type: 'test'
+  ...
+# Subtest: archive is compressed, read back, content addressed and collision protected
+ok 11 - archive is compressed, read back, content addressed and collision protected
+  ---
+  duration_ms: 10.2784
+  type: 'test'
+  ...
+# Subtest: direct rider horse links collect distinct horses and preserve previous associations and helpers on repeat
+not ok 12 - direct rider horse links collect distinct horses and preserve previous associations and helpers on repeat
+  ---
+  duration_ms: 2.9997
+  type: 'test'
+  location: 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-rider-horses-QNTGvX\\tests\\runner.test.js:77:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'rec11',
+    -   'rec26',
+    -   'rec27'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'rec11'
+    1: 'rec26'
+    2: 'rec27'
+  actual:
+    0: 'rec11'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\AppData\Local\Temp\wef-rider-horses-QNTGvX\tests\runner.test.js:85:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed entry save does not publish direct rider horse links
+ok 13 - failed entry save does not publish direct rider horse links
+  ---
+  duration_ms: 1.585
+  type: 'test'
+  ...
+# Subtest: all active trainers create rider helpers and link entries without changing existing helpers on repeat
+ok 14 - all active trainers create rider helpers and link entries without changing existing helpers on repeat
+  ---
+  duration_ms: 5.9869
+  type: 'test'
+  ...
+# Subtest: a rider shared by active trainers gets one helper with both associations and entry links
+ok 15 - a rider shared by active trainers gets one helper with both associations and entry links
+  ---
+  duration_ms: 2.9996
+  type: 'test'
+  ...
+# Subtest: an additional trainer rider name collision is rejected before helper or entry creation
+ok 16 - an additional trainer rider name collision is rejected before helper or entry creation
+  ---
+  duration_ms: 3.0623
+  type: 'test'
+  ...
+# Subtest: validated people names populate each trainer on empty runs and retain record identities on repeat
+ok 17 - validated people names populate each trainer on empty runs and retain record identities on repeat
+  ---
+  duration_ms: 2.9313
+  type: 'test'
+  ...
+# Subtest: missing or unusable people names preserve existing trainer names
+ok 18 - missing or unusable people names preserve existing trainer names
+  ---
+  duration_ms: 4.7743
+  type: 'test'
+  ...
+# Subtest: invalid identity or failed archive never overwrites trainer name
+ok 19 - invalid identity or failed archive never overwrites trainer name
+  ---
+  duration_ms: 1.2901
+  type: 'test'
+  ...
+# Subtest: rider collision logs exact conflict before either standing table writes or show source calls
+ok 20 - rider collision logs exact conflict before either standing table writes or show source calls
+  ---
+  duration_ms: 0.5433
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 19
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 232.5781

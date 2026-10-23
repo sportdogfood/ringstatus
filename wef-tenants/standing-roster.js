@@ -32,7 +32,7 @@ async function loadStandingRoster(api,tenant,trainers) {
  const main=active.filter(t=>t.fields.role==='main').map(t=>Number(t.fields['trainer-id']));
  if(all.some(id=>!positive(id))||main.length!==1)throw Error('Invalid roster trainer scope');
  const horses=await api.list(TABLES.horses,LEGACY_BASE,{...query('horses',all),fields:['horse_id','horse','show_name','barn_name','trainer_id','pid','tenant_id','inactive','horse_note']});
- const riders=await api.list(TABLES.riders,LEGACY_BASE,{...query('riders',main),fields:['rider_id','rider_name','name','lf_name','properFirst','properLast','pid','inactive']});
+ const riders=await api.list(TABLES.riders,LEGACY_BASE,{...query('riders',all),fields:['rider_id','rider_name','name','lf_name','properFirst','properLast','pid','inactive']});
  return {tenant:sourceTenant,horses,riders};
 }
 
@@ -48,7 +48,7 @@ function planStandingRoster({source,tenant,trainers,horses=[],riders=[],now}) {
   const memberships=new Set(links(source.tenant.fields[TABLES[type]]));
   for(const record of source[type]){
    const f=record.fields;
-   const matching=trainers.filter(t=>t.fields.active===true&&(type==='horses'||t.fields.role==='main')&&[f.pid,f.trainer_id].some(id=>Number(id)===Number(t.fields['trainer-id'])));
+   const matching=trainers.filter(t=>t.fields.active===true&&[f.pid,f.trainer_id].some(id=>Number(id)===Number(t.fields['trainer-id'])));
    const member=memberships.has(record.id)||Number(f.tenant_id)===tenantId;
    if(!member&&!matching.length)continue;
    if(seenRecords.has(record.id))throw Error('Duplicate roster source record');seenRecords.add(record.id);

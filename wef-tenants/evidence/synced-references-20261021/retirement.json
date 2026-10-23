@@ -1,0 +1,53 @@
+{
+  "at": "2026-10-22T02:10:10.952Z",
+  "normalRuns": [
+    "7a7823b3-fe37-4667-a129-e57e9cffbf19",
+    "f943e786-949f-4095-89f5-3b8f97b22ed8"
+  ],
+  "retiredTables": [
+    {
+      "id": "tblxutSCBQzmkJLLO",
+      "old": "show-details",
+      "name": "retired-show-details"
+    },
+    {
+      "id": "tblsVT0Poao9wKhs4",
+      "old": "rings",
+      "name": "retired-rings"
+    }
+  ],
+  "renamedHistoricalFields": [
+    {
+      "table": "tblDhAutHYlDbvzNd",
+      "id": "fldGhqNtI5phVMvPv",
+      "old": "show-details",
+      "name": "retired-show-details",
+      "target": "tblxutSCBQzmkJLLO"
+    },
+    {
+      "table": "tblDhAutHYlDbvzNd",
+      "id": "fldeHNP1diNFbGtbs",
+      "old": "rings",
+      "name": "retired-rings",
+      "target": "tblsVT0Poao9wKhs4"
+    },
+    {
+      "table": "tblbac3wwWJAmUthL",
+      "id": "fldg0EayAJAV97hAk",
+      "old": "show-details",
+      "name": "retired-show-details",
+      "target": "tblxutSCBQzmkJLLO"
+    },
+    {
+      "table": "tblu9SBWyir2z4CCt",
+      "id": "fld8wGxdSdAqk7cRS",
+      "old": "rings",
+      "name": "retired-rings",
+      "target": "tblsVT0Poao9wKhs4"
+    }
+  ],
+  "businessRecordsWritten": 0,
+  "recordsDeleted": 0,
+  "fieldsDeleted": 0,
+  "verified": true
+}

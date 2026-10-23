@@ -1,0 +1,71 @@
+{
+  "verifiedAt": "2026-10-22T00:24:33.018Z",
+  "trainers": [
+    {
+      "id": "rec1sBWKmh1xl6MPA",
+      "createdTime": "2026-10-21T22:59:29.000Z",
+      "fields": {
+        "trainer-id": 80970,
+        "role": "additional",
+        "last-result": "Success",
+        "active": true,
+        "slot": 3
+      }
+    },
+    {
+      "id": "rec9Hmq2WuHuZc9mY",
+      "createdTime": "2026-10-20T16:49:38.000Z",
+      "fields": {
+        "trainer-id": 8778,
+        "role": "main",
+        "last-result": "No entries",
+        "active": true,
+        "slot": 1
+      }
+    },
+    {
+      "id": "recY4aRfPwodSQVBJ",
+      "createdTime": "2026-10-21T23:08:41.000Z",
+      "fields": {
+        "trainer-id": 50121,
+        "role": "additional",
+        "last-result": "Success",
+        "active": true,
+        "slot": 2
+      }
+    }
+  ],
+  "logs": [
+    {
+      "id": "recmXimZFyLDjMvgV",
+      "createdTime": "2026-10-22T00:22:06.000Z",
+      "fields": {
+        "completed": "2026-10-22T00:23:44.268Z",
+        "rows": 6,
+        "started": "2026-10-22T00:22:02.242Z",
+        "summary": "Trainer 8778 (main): No entries; 0 day entries\nTrainer 50121 (additional): Success; 4 day entries\nTrainer 80970 (additional): Success; 2 day entries\nShow 200000075; source-selected 2026-10-22; 4 days; 6 active entries; 24 daily rings; 6 shared helpers.\nStanding helpers: 73 horses, 33 riders; 13 source IDs missing (source-record identity retained).",
+        "run-id": "9a93a3e0-a6ff-4a76-a57f-11cdd01b351b",
+        "result": "Success"
+      }
+    }
+  ],
+  "heartbeat": [
+    {
+      "id": "recJWmC8t39z0Ih7O",
+      "createdTime": "2026-10-20T16:57:37.000Z",
+      "fields": {
+        "heartbeat-key": "CWF",
+        "checked-at": "2026-10-22T00:23:40.026Z",
+        "summary": "Trainer 8778 (main): No entries; 0 day entries\nTrainer 50121 (additional): Success; 4 day entries\nTrainer 80970 (additional): Success; 2 day entries\nShow 200000075; source-selected 2026-10-22; 4 days; 6 active entries; 24 daily rings; 6 shared helpers.\nStanding helpers: 73 horses, 33 riders; 13 source IDs missing (source-record identity retained).",
+        "selected-date": "2026-10-22",
+        "show-id": 200000075,
+        "result": "Success"
+      }
+    }
+  ],
+  "activeEntries": 6,
+  "entries80970": 2,
+  "priorEntriesRetained": true,
+  "allScheduleLinksMatch": true,
+  "noDuplicates": true
+}

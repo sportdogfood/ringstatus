@@ -1,0 +1,82 @@
+{
+  "verifiedAt": "2026-10-22T01:29:29.756Z",
+  "offlineTests": {
+    "pass": 54,
+    "fail": 0
+  },
+  "normalRuns": [
+    {
+      "runId": "d5c98ab6-113c-471e-90f0-727a4cf710df",
+      "started": "2026-10-22T01:22:01.911Z",
+      "completed": "2026-10-22T01:23:49.180Z",
+      "result": "Success",
+      "archivesVerified": 16
+    },
+    {
+      "runId": "a133d221-e933-4225-aaba-9b08081cbe10",
+      "started": "2026-10-22T01:27:01.915Z",
+      "completed": "2026-10-22T01:28:39.123Z",
+      "result": "Success",
+      "archivesVerified": 16
+    }
+  ],
+  "direct": [
+    {
+      "record": "recC0EgXDnULgS30X",
+      "id": 50121,
+      "name": "ISABELA DE SOUSA",
+      "horseLinks": [
+        "recQDCLG6rBgB26AM"
+      ],
+      "horses": [
+        {
+          "record": "recQDCLG6rBgB26AM",
+          "name": "CROSS OVER SR",
+          "id": 200002670
+        }
+      ]
+    },
+    {
+      "record": "recmt2H6SBE50y8QJ",
+      "id": 81017,
+      "name": "JACQUELINE ROSENTHAL",
+      "horseLinks": [
+        "recmRfdpPLsMFtTZo"
+      ],
+      "horses": [
+        {
+          "record": "recmRfdpPLsMFtTZo",
+          "name": "EDITION DE RIVERLAND",
+          "id": 141234
+        }
+      ]
+    },
+    {
+      "record": "recsdZmEkqilv5ZRb",
+      "id": 80970,
+      "name": "TAYLOR COWLES",
+      "horseLinks": [
+        "recxMMFNm83rdmofA",
+        "rec1eQ29x3LhlMZGU"
+      ],
+      "horses": [
+        {
+          "record": "rec1eQ29x3LhlMZGU",
+          "name": "WHERE'S WALDO",
+          "id": 200002216
+        },
+        {
+          "record": "recxMMFNm83rdmofA",
+          "name": "SOLAGUAYRE DIMITRI",
+          "id": 153346
+        }
+      ]
+    }
+  ],
+  "reciprocalLinksCorrect": true,
+  "allOriginalHelpersAndEntryLinksPreserved": true,
+  "noDuplicates": true,
+  "taskUnchanged": true,
+  "manualRuns": false,
+  "recordRepairs": false
+}

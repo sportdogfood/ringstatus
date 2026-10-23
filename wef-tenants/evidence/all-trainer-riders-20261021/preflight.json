@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-22T01:00:31.452Z",
+  "sourceRiders": 33,
+  "standingRiders": 33,
+  "prospectiveRiders": 36,
+  "newRiders": [
+    {
+      "id": 80970,
+      "name": "TAYLOR COWLES"
+    },
+    {
+      "id": 50121,
+      "name": "ISABELA DE SOUSA"
+    },
+    {
+      "id": 81017,
+      "name": "JACQUELINE ROSENTHAL"
+    }
+  ],
+  "unique": true,
+  "readOnly": true
+}
