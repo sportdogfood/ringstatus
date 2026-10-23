@@ -1,0 +1,20 @@
+[
+  {
+    "file": "wef-tenants\\airtable.js",
+    "expected": "58e5443a9e510a3050d6aa7b5f4f7b9f006690a74676a095f5821c33341f53f5",
+    "actual": "9fe61df2d943b6180a2efe11e8bf6f47ca7b5d516d2b9af4e4b7211a4da7cade",
+    "modified": "2026-10-23T17:07:11.865Z"
+  },
+  {
+    "file": "wef-tenants\\collector.js",
+    "expected": "4254f837d90a2f89bbbab0b34227a1ea015648f9626332773e6c29f88393f97e",
+    "actual": "b109c7640e3a2e40c0d1536a05017c11aa70db2e0359a843ac790f9029dc8672",
+    "modified": "2026-10-23T17:07:44.271Z"
+  },
+  {
+    "file": "wef-tenants\\settings.js",
+    "expected": "607f9da82bcd4e9bc9ce48861a582bb030a08bc26dffd7bc92c0cf37961c773f",
+    "actual": "55b217c1950ef0fbf275aa321c3d3d16d32ae5e6310b15fa3f53995b4d51e854",
+    "modified": "2026-10-23T17:07:11.865Z"
+  }
+]

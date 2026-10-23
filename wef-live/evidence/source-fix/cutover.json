@@ -1,0 +1,13 @@
+{
+  "tests": 40,
+  "files": [
+    "lib/wef-source-read.js",
+    "wef-entries/source.js",
+    "wef-entries/tests/source-retry.test.js",
+    "wef-live/source.js",
+    "wef-live/model.js",
+    "wef-live/collector.js",
+    "wef-live/test/collector.test.js"
+  ],
+  "at": "2026-10-23T17:01:31.2317078Z"
+}

@@ -1,47 +1,68 @@
 flowchart TB
-    CTRL["Heartbeat/control<br/>Existing show/date/mode and dispatch"]
-    ACQ["Schedule acquisition"]
-    NORM["Normalization<br/>Keys, joins and deduplication"]
-    CE["Classes and entries<br/>Existing acquisition and OOG"]
-    LIVE["Live state<br/>Existing ring/group/class implementations"]
-    TIME["Timing<br/>Existing schedule/trip calculators"]
-    RESULT["Results<br/>Existing trip result matching"]
-    OUT["Outputs<br/>Existing bulk/differ publisher"]
-    AUDIT["Audit<br/>Changes, calculations and failures"]
-    ALERT["Alerts — placeholder"]
-    TWO["Two-way — placeholder"]
-
-    S["Prepared wef-schedules<br/>shows / rings / schedules"]
-    TEN["Prepared tenants<br/>people / memberships / roles<br/>trainers / tenant-trainers<br/>horses / riders / tenant-roster"]
-    PREF["Prepared tenants<br/>favorites / optins"]
-    LEG["Prepared RingStatus<br/>watch_trips / watch_results<br/>live_groups / live_rings / live_classes"]
-    E["wef-entries — planned binder<br/>Schedule + horse + rider + trainer<br/>Related trips and results<br/>Reuse CWF participation structure"]
-    CWF["wef-tenant-cwf — existing<br/>entries / horses / riders / trainers<br/>Synced shows / rings / schedules"]
-
-    CTRL -.-> ACQ
-    CTRL -.-> CE
-    CTRL -.-> LIVE
-    ACQ -.-> NORM
-    CE -.-> NORM
-    NORM -.-> E
-    ACQ -.-> S
-    TEN -.-> E
-    TEN --> PREF
-    LEG -.-> LIVE
-    LEG -.-> RESULT
-    LEG -.-> E
-    S -->|"Existing read-only sync"| CWF
-    S -.->|"Owning schedule reference"| E
-    CWF -.->|"Existing structure to reuse"| E
-    E -.-> LIVE
-    LIVE -.-> TIME
-    LIVE -.-> RESULT
-    TIME -.->|"Related estimates"| E
-    RESULT -.->|"Related results"| E
-    E -.-> OUT
-    E -.->|"Relevant entries after verification"| CWF
-    E -.-> AUDIT
-    OUT -.-> AUDIT
-    PREF -.-> ALERT
-    E -.-> ALERT
-    E -.-> TWO
+    subgraph COL["Independent collectors / normalizers — recurring updates, not a run sequence"]
+        SH["wef-shows<br/>Keeps updating"]
+        S["wef-schedules<br/>PROVING FOUNDATION<br/>Keeps updating"]
+        E["wef-entries — INDEPENDENT RECURRING FUNCTION<br/>Own refresh; not triggered by schedules completion<br/>Normalize each selected participation once<br/>Inactive participation retained; valid empty = Success"]
+        subgraph LIVE["wef-live — independent five-minute collection<br/>Direct show authority; verification blocked by source HTTP 502"]
+            L["Authority: wef-shows.shows<br/>Matched source show + TODAY only<br/>All relevant live activity; not limited to CWF entries<br/>Valid empty = Success; archive prior days before retirement"]
+            LR["live-rings<br/>Ring IDs / number / name<br/>Current, next, completed groups"]
+            LG["live-groups<br/>Group ID / status / counts<br/>Ring, classes and schedule links"]
+            LC["live-classes<br/>Class ID / counts / current trip<br/>Group, ring and schedule links"]
+            LE["live-entries<br/>Trip + entry + horse + rider + trainer IDs<br/>Order, scratch, gone, position<br/>Decoded trip-to-entry mapping"]
+            LO["collections / run-logs / heartbeat<br/>Scope, freshness, counts, errors and archives"]
+            LS["Read-only local sync<br/>wef-schedules.schedules"]
+            LB["Read-only local sync<br/>wef-entries.entries<br/>Identity fields only; no private selection reasons"]
+        end
+    end
+    B["wef-timing — BRAIN<br/>Continually calculates from available normalized data"]
+    subgraph OUT["Independent outputs — continually look to timing for answers"]
+        P["wef-publish<br/>Webflow / Astro / endpoint APIs"]
+        R["wef-results<br/>Independent source-result collection and management"]
+        M["wef-messaging<br/>Alerts and two-way"]
+    end
+    T["wef-tenants — CWF parameters<br/>Trainer feeds 8778 / 50121 / 80970<br/>Show and retained dates<br/>Plus private user selections"]
+    U1["main-user — placeholder<br/>Up to 10 private selections: M1–M10"]
+    U2["user-2 — placeholder<br/>Up to 10 private selections: U1–U10"]
+    LINK["Tenant linking contract<br/>Collect the union; normalize participation once<br/>Retain separate selection reasons<br/>Slice data and timing by tenant params"]
+    TEAM["Active team slice<br/>Hide inactive horses/riders here<br/>Personal followed lists remain separate"]
+    C["wef-tenants-cwf — existing wef-tenant-cwf<br/>Input: tenant-details / trainers configuration<br/>Workspace: tenant slice, edits and helpers<br/>Current collector continues unchanged"]
+    H["Helpers<br/>Rings / horses / riders / locations"]
+    W["wef-waze<br/>Interaction — comments and check-ins"]
+    SH -->|"Verified default show and dates; existing schedule links retained"| S
+    SH -->|"Default show and dates; direct read"| E
+    SH -->|"Default show and selected date; direct read"| L
+    SH -.->|"Normalized updates"| B
+    S -.->|"Normalized updates"| B
+    E -.->|"Normalized updates"| B
+    L -.->|"Normalized updates"| B
+    P -.->|"Continually reads answers"| B
+    R -.->|"Continually reads answers"| B
+    M -.->|"Continually reads answers"| B
+    T -.->|"Tenant params"| LINK
+    C -.->|"Initial CWF configuration input"| LINK
+    U1 -.->|"Private selections; may overlap trainer entries"| LINK
+    U2 -.->|"Private selections; may overlap either list"| LINK
+    LINK -.->|"Which entries to collect"| E
+    E -.->|"Own five-minute task; normal-run proof"| E
+    E -.->|"Reads available schedules: show ID + class ID + date"| S
+    E -.->|"Available bound entries"| LINK
+    B -.->|"Available timing answers"| LINK
+    LINK -.->|"Collected team participation plus timing"| TEAM
+    TEAM -.->|"Future verified connection"| C
+    S -->|"Existing read-only sync"| C
+    H -.->|"Reference lookups"| E
+    H -.->|"Reference lookups"| W
+    R -.->|"Collected results linked to entries/trips"| E
+    S -.->|"Read-only reference sync; no execution trigger"| LS
+    E -.->|"Read-only identity reference sync"| LB
+    L -.->|"Independent source observations"| LR
+    L -.->|"Independent source observations"| LG
+    L -.->|"Independent source observations"| LC
+    L -.->|"Independent source observations"| LE
+    L -.->|"Every run and archive"| LO
+    LG -.->|"ring link"| LR
+    LC -.->|"groups and ring links"| LG
+    LC -.->|"show + date + class ID"| LS
+    LG -.->|"Schedules of its classes"| LS
+    LE -.->|"class link"| LC
+    LE -.->|"Exact entry-key when present; unmatched untracked entries allowed"| LB

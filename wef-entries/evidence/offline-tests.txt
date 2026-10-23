@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: lost create response is read back without a second create
+ok 1 - lost create response is read back without a second create
+  ---
+  duration_ms: 3.7196
+  type: 'test'
+  ...
+# Subtest: unresolved creation is not retried in the same run
+ok 2 - unresolved creation is not retried in the same run
+  ---
+  duration_ms: 1.4923
+  type: 'test'
+  ...
+# Subtest: source class identity and explicit empty arrays are validated
+ok 3 - source class identity and explicit empty arrays are validated
+  ---
+  duration_ms: 1.1037
+  type: 'test'
+  ...
+# Subtest: independent empty collection succeeds for all five sources and all days
+ok 4 - independent empty collection succeeds for all five sources and all days
+  ---
+  duration_ms: 10.6299
+  type: 'test'
+  ...
+# Subtest: trainer overlap and both private follows collect once with separate collection associations
+ok 5 - trainer overlap and both private follows collect once with separate collection associations
+  ---
+  duration_ms: 6.471
+  type: 'test'
+  ...
+# Subtest: repeat run preserves entry/collection IDs and adds one terminal run log
+ok 6 - repeat run preserves entry/collection IDs and adds one terminal run log
+  ---
+  duration_ms: 3.5386
+  type: 'test'
+  ...
+# Subtest: one failed producer preserves its previous entry membership and other sources refresh
+ok 7 - one failed producer preserves its previous entry membership and other sources refresh
+  ---
+  duration_ms: 2.5312
+  type: 'test'
+  ...
+# Subtest: inactive roster never excludes collection; team slice hides inactive but user-only is never team
+ok 8 - inactive roster never excludes collection; team slice hides inactive but user-only is never team
+  ---
+  duration_ms: 2.0048
+  type: 'test'
+  ...
+# Subtest: schedule sync mismatch stops before source calls and retains existing participation
+ok 9 - schedule sync mismatch stops before source calls and retains existing participation
+  ---
+  duration_ms: 2.0797
+  type: 'test'
+  ...
+# Subtest: archive failure prevents entry changes
+ok 10 - archive failure prevents entry changes
+  ---
+  duration_ms: 0.996
+  type: 'test'
+  ...
+# Subtest: explicit missing followed entry fails that owner, not an empty success
+ok 11 - explicit missing followed entry fails that owner, not an empty success
+  ---
+  duration_ms: 1.1028
+  type: 'test'
+  ...
+# Subtest: more than ten private selections blocks sources and malformed empty people fails
+ok 12 - more than ten private selections blocks sources and malformed empty people fails
+  ---
+  duration_ms: 1.5273
+  type: 'test'
+  ...
+# Subtest: private-only entry has no invented trainer feed association
+ok 13 - private-only entry has no invented trainer feed association
+  ---
+  duration_ms: 1.7852
+  type: 'test'
+  ...
+# Subtest: scheduled date is respected; conflicting participation is rejected
+ok 14 - scheduled date is respected; conflicting participation is rejected
+  ---
+  duration_ms: 0.8501
+  type: 'test'
+  ...
+# Subtest: adapter rejects every CWF/shared mutation, synced destination writes and deletion
+ok 15 - adapter rejects every CWF/shared mutation, synced destination writes and deletion
+  ---
+  duration_ms: 0.7019
+  type: 'test'
+  ...
+# Subtest: log capacity archives finished slot before reuse
+ok 16 - log capacity archives finished slot before reuse
+  ---
+  duration_ms: 1.1968
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 201.0621

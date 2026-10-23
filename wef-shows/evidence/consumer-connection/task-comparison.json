@@ -1,0 +1,27 @@
+[
+  {
+    "unchanged": true,
+    "state": "Ready",
+    "task": "wef-shows-collector"
+  },
+  {
+    "unchanged": true,
+    "state": "Running",
+    "task": "wef-schedules-collector"
+  },
+  {
+    "unchanged": true,
+    "state": "Ready",
+    "task": "wef-entries-cwf-collector"
+  },
+  {
+    "unchanged": false,
+    "state": "Running",
+    "task": "wef-live-collector"
+  },
+  {
+    "unchanged": true,
+    "state": "Running",
+    "task": "wef-tenant-cwf-collector"
+  }
+]

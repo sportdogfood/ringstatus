@@ -1,0 +1,22 @@
+{
+  "tests": 40,
+  "files": [
+    "lib/wef-source-read.js",
+    "wef-entries/source.js",
+    "wef-entries/tests/source-retry.test.js",
+    "wef-live/source.js",
+    "wef-live/model.js",
+    "wef-live/collector.js",
+    "wef-live/test/collector.test.js"
+  ],
+  "at": "2026-10-23T17:01:31.2317078Z",
+  "hashes": {
+    "lib/wef-source-read.js": "0ca7836c62022d4ebf86d9fdb63e51f1b02859c5e854582b123a9ab1292f2ab3",
+    "wef-entries/source.js": "a647c4807a24bb7174d95cfe9c9aa2be346be34962c694a5e7373cb71ea87f62",
+    "wef-entries/tests/source-retry.test.js": "725a70bba25f7bf6696461a2c1ea37e1ac0075cabe49e004f7814af565607e49",
+    "wef-live/source.js": "1430300ace41917b0557c0f852731da344931b637ac4719a314e111717cb7b6e",
+    "wef-live/model.js": "a0903cb3e0208287d24993eb635fe72c95557a142eb549618f66c349b7b9b93f",
+    "wef-live/collector.js": "60d2c0ea1c18def4c59b71d6d8e102275c5679e56117f30342edf42ed2a7c571",
+    "wef-live/test/collector.test.js": "3570f6cd2bcb3f854752b45cfb93d409ce66c58f26266835c9af409851f4d467"
+  }
+}

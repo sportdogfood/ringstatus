@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-23T18:16:54.598Z",
+  "runs": [
+    {
+      "id": "c4953bd3-4f07-4705-978b-d9dc15395db0",
+      "started": "2026-10-23T18:12:12.995Z",
+      "completed": "2026-10-23T18:14:20.186Z",
+      "result": "Success",
+      "rings": 6,
+      "groups": 19,
+      "classes": 32,
+      "entries": 195,
+      "errors": ""
+    },
+    {
+      "id": "c4558a0c-a201-4e82-8a9e-9015461d17a5",
+      "started": "2026-10-23T18:07:12.918Z",
+      "completed": "2026-10-23T18:09:22.306Z",
+      "result": "Success",
+      "rings": 6,
+      "groups": 19,
+      "classes": 32,
+      "entries": 195,
+      "errors": ""
+    }
+  ],
+  "errorRows": 0,
+  "heartbeat": [
+    {
+      "result": "Success",
+      "checkedAt": "2026-10-23T18:14:20.186Z"
+    }
+  ],
+  "twoNormalRunsVerified": true,
+  "productionErrorContinuationVerified": false,
+  "reason": "Both post-change scheduled runs succeeded without errors; no natural error has exercised errs-log yet.",
+  "manualRuns": 0,
+  "recordRepairs": 0
+}

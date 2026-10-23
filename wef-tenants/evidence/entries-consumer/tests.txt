@@ -1,0 +1,436 @@
+TAP version 13
+# Subtest: Airtable omitted blank, false and empty links read back correctly; repeat creates none
+ok 1 - Airtable omitted blank, false and empty links read back correctly; repeat creates none
+  ---
+  duration_ms: 5.7425
+  type: 'test'
+  ...
+# Subtest: lost creation response reconciles using stable key without a second POST
+ok 2 - lost creation response reconciles using stable key without a second POST
+  ---
+  duration_ms: 1.1898
+  type: 'test'
+  ...
+# Subtest: unresolved creation cannot be resubmitted by a failure handler
+ok 3 - unresolved creation cannot be resubmitted by a failure handler
+  ---
+  duration_ms: 1.807
+  type: 'test'
+  ...
+# Subtest: API rejects writes to shared schedule tables and unknown bases
+ok 4 - API rejects writes to shared schedule tables and unknown bases
+  ---
+  duration_ms: 0.6934
+  type: 'test'
+  ...
+# Subtest: transport settings stay inside the new runtime
+ok 5 - transport settings stay inside the new runtime
+  ---
+  duration_ms: 0.3755
+  type: 'test'
+  ...
+# Subtest: central entry writes and synced source edits are forbidden; only local link patches pass
+ok 6 - central entry writes and synced source edits are forbidden; only local link patches pass
+  ---
+  duration_ms: 5.06
+  type: 'test'
+  ...
+# Subtest: legacy roster permits only GET on three source tables; all mutation methods fail
+ok 7 - legacy roster permits only GET on three source tables; all mutation methods fail
+  ---
+  duration_ms: 1.7076
+  type: 'test'
+  ...
+# Subtest: actual roster adapter rejects duplicate names before any mutation
+ok 8 - actual roster adapter rejects duplicate names before any mutation
+  ---
+  duration_ms: 1.2018
+  type: 'test'
+  ...
+# Subtest: actual rider adapter rejects show-name before creation
+ok 9 - actual rider adapter rejects show-name before creation
+  ---
+  duration_ms: 3.9762
+  type: 'test'
+  ...
+# Subtest: synced and retired schedule reference tables reject all business writes by name or ID
+ok 10 - synced and retired schedule reference tables reject all business writes by name or ID
+  ---
+  duration_ms: 2.9263
+  type: 'test'
+  ...
+# Subtest: policy enforces each named horse and rider column, ignoring case/outer and repeated whitespace
+ok 11 - policy enforces each named horse and rider column, ignoring case/outer and repeated whitespace
+  ---
+  duration_ms: 3.0084
+  type: 'test'
+  ...
+# Subtest: separate columns and separate tables may share a value
+ok 12 - separate columns and separate tables may share a value
+  ---
+  duration_ms: 0.5815
+  type: 'test'
+  ...
+# Subtest: unknown optional IDs/nicknames stay blank; keys are required
+ok 13 - unknown optional IDs/nicknames stay blank; keys are required
+  ---
+  duration_ms: 1.5624
+  type: 'test'
+  ...
+# Subtest: rider first and last names may repeat while full names remain unique
+ok 14 - rider first and last names may repeat while full names remain unique
+  ---
+  duration_ms: 1.271
+  type: 'test'
+  ...
+# Subtest: prospective partial writes are checked against retained records before mutation
+ok 15 - prospective partial writes are checked against retained records before mutation
+  ---
+  duration_ms: 0.754
+  type: 'test'
+  ...
+# Subtest: numeric IDs cannot be zero, negative or non-integer; opaque keys retain exact case
+ok 16 - numeric IDs cannot be zero, negative or non-integer; opaque keys retain exact case
+  ---
+  duration_ms: 0.3759
+  type: 'test'
+  ...
+# Subtest: schema configuration creates only the requested relation and reuses it on repeat
+ok 17 - schema configuration creates only the requested relation and reuses it on repeat
+  ---
+  duration_ms: 5.2352
+  type: 'test'
+  ...
+# Subtest: existing conflicting field prevents a second relationship from being created
+ok 18 - existing conflicting field prevents a second relationship from being created
+  ---
+  duration_ms: 0.884
+  type: 'test'
+  ...
+# Subtest: an existing horse-side rider field prevents duplicate relationship creation
+ok 19 - an existing horse-side rider field prevents duplicate relationship creation
+  ---
+  duration_ms: 0.4486
+  type: 'test'
+  ...
+# Subtest: normal empty run covers four days; repeat does not duplicate references or collections
+ok 20 - normal empty run covers four days; repeat does not duplicate references or collections
+  ---
+  duration_ms: 59.4943
+  type: 'test'
+  ...
+# Subtest: standing helpers populate with zero current-show entries and survive repeat source failure
+ok 21 - standing helpers populate with zero current-show entries and survive repeat source failure
+  ---
+  duration_ms: 7.037
+  type: 'test'
+  ...
+# Subtest: standing helpers populate even when shared-show discovery is unavailable
+ok 22 - standing helpers populate even when shared-show discovery is unavailable
+  ---
+  duration_ms: 2
+  type: 'test'
+  ...
+# Subtest: actual helper writes omit computed fields and nonempty entries preserve deliberately blank helper names
+ok 23 - actual helper writes omit computed fields and nonempty entries preserve deliberately blank helper names
+  ---
+  duration_ms: 4.6329
+  type: 'test'
+  ...
+# Subtest: one trainer failure is logged independently and preserves that trainer entries
+ok 24 - one trainer failure is logged independently and preserves that trainer entries
+  ---
+  duration_ms: 3.5651
+  type: 'test'
+  ...
+# Subtest: archive failure blocks dataset changes and old-show deletion
+ok 25 - archive failure blocks dataset changes and old-show deletion
+  ---
+  duration_ms: 1.1501
+  type: 'test'
+  ...
+# Subtest: late failure leaves heartbeat and tenant index terminal Failed
+ok 26 - late failure leaves heartbeat and tenant index terminal Failed
+  ---
+  duration_ms: 7.0038
+  type: 'test'
+  ...
+# Subtest: nonempty trainer datasets link all days, dedupe shared entries and preserve disabled roster
+ok 27 - nonempty trainer datasets link all days, dedupe shared entries and preserve disabled roster
+  ---
+  duration_ms: 23.8637
+  type: 'test'
+  ...
+# Subtest: log retention archives the exact finished row before reusing its ID
+ok 28 - log retention archives the exact finished row before reusing its ID
+  ---
+  duration_ms: 3.0013
+  type: 'test'
+  ...
+# Subtest: show rollover archives exact old records before removing them
+ok 29 - show rollover archives exact old records before removing them
+  ---
+  duration_ms: 3.8962
+  type: 'test'
+  ...
+# Subtest: archive is compressed, read back, content addressed and collision protected
+ok 30 - archive is compressed, read back, content addressed and collision protected
+  ---
+  duration_ms: 48.8866
+  type: 'test'
+  ...
+# Subtest: synced consumption preserves old entries and helpers, links new entries, and makes zero source fetches on repeat
+ok 31 - synced consumption preserves old entries and helpers, links new entries, and makes zero source fetches on repeat
+  ---
+  duration_ms: 9.9307
+  type: 'test'
+  ...
+# Subtest: synced zero-entry collections succeed without requiring a horse or rider
+ok 32 - synced zero-entry collections succeed without requiring a horse or rider
+  ---
+  duration_ms: 3.6709
+  type: 'test'
+  ...
+# Subtest: incomplete, stale, failed or private-contaminated sync stops consumption without source fallback or old entry edits
+ok 33 - incomplete, stale, failed or private-contaminated sync stops consumption without source fallback or old entry edits
+  ---
+  duration_ms: 12.668
+  type: 'test'
+  ...
+# Subtest: private-only central participation does not enter CWF helpers or synced team
+ok 34 - private-only central participation does not enter CWF helpers or synced team
+  ---
+  duration_ms: 3.1401
+  type: 'test'
+  ...
+# Subtest: shadow validates scheduled legacy entries before cutover while still making legacy requests
+ok 35 - shadow validates scheduled legacy entries before cutover while still making legacy requests
+  ---
+  duration_ms: 2.8964
+  type: 'test'
+  ...
+# Subtest: read-only scheduled verifier and repeat comparison accept synced links without legacy projections
+ok 36 - read-only scheduled verifier and repeat comparison accept synced links without legacy projections
+  ---
+  duration_ms: 213.8032
+  type: 'test'
+  ...
+# Subtest: entries and collections use local synced references while legacy reference links remain untouched
+ok 37 - entries and collections use local synced references while legacy reference links remain untouched
+  ---
+  duration_ms: 3.7208
+  type: 'test'
+  ...
+# Subtest: incomplete sync prevents people collection and entry replacement or old-show retirement
+ok 38 - incomplete sync prevents people collection and entry replacement or old-show retirement
+  ---
+  duration_ms: 1.0269
+  type: 'test'
+  ...
+# Subtest: direct rider horse links collect distinct horses and preserve previous associations and helpers on repeat
+ok 39 - direct rider horse links collect distinct horses and preserve previous associations and helpers on repeat
+  ---
+  duration_ms: 10.4476
+  type: 'test'
+  ...
+# Subtest: failed entry save does not publish direct rider horse links
+ok 40 - failed entry save does not publish direct rider horse links
+  ---
+  duration_ms: 2.6511
+  type: 'test'
+  ...
+# Subtest: all active trainers create rider helpers and link entries without changing existing helpers on repeat
+ok 41 - all active trainers create rider helpers and link entries without changing existing helpers on repeat
+  ---
+  duration_ms: 9.3233
+  type: 'test'
+  ...
+# Subtest: a rider shared by active trainers gets one helper with both associations and entry links
+ok 42 - a rider shared by active trainers gets one helper with both associations and entry links
+  ---
+  duration_ms: 3.7038
+  type: 'test'
+  ...
+# Subtest: an additional trainer rider name collision is rejected before helper or entry creation
+ok 43 - an additional trainer rider name collision is rejected before helper or entry creation
+  ---
+  duration_ms: 5.0491
+  type: 'test'
+  ...
+# Subtest: validated people names populate each trainer on empty runs and retain record identities on repeat
+ok 44 - validated people names populate each trainer on empty runs and retain record identities on repeat
+  ---
+  duration_ms: 5.7597
+  type: 'test'
+  ...
+# Subtest: missing or unusable people names preserve existing trainer names
+ok 45 - missing or unusable people names preserve existing trainer names
+  ---
+  duration_ms: 10.5749
+  type: 'test'
+  ...
+# Subtest: invalid identity or failed archive never overwrites trainer name
+ok 46 - invalid identity or failed archive never overwrites trainer name
+  ---
+  duration_ms: 3.3642
+  type: 'test'
+  ...
+# Subtest: rider collision logs exact conflict before either standing table writes or show source calls
+ok 47 - rider collision logs exact conflict before either standing table writes or show source calls
+  ---
+  duration_ms: 1.5376
+  type: 'test'
+  ...
+# Subtest: standing roster populates without a show or any entries
+ok 48 - standing roster populates without a show or any entries
+  ---
+  duration_ms: 4.148
+  type: 'test'
+  ...
+# Subtest: repeat preserves owner helpers, aliases, notes and disabling while refreshing source facts
+ok 49 - repeat preserves owner helpers, aliases, notes and disabling while refreshing source facts
+  ---
+  duration_ms: 2.4466
+  type: 'test'
+  ...
+# Subtest: missing numeric ID retains a source identity and later fills ID without changing its key
+ok 50 - missing numeric ID retains a source identity and later fills ID without changing its key
+  ---
+  duration_ms: 0.8484
+  type: 'test'
+  ...
+# Subtest: additional trainers contribute horses and riders; empty source never removes standing helpers
+ok 51 - additional trainers contribute horses and riders; empty source never removes standing helpers
+  ---
+  duration_ms: 2.9096
+  type: 'test'
+  ...
+# Subtest: standing source reads riders for all active trainers and excludes inactive trainer scope
+ok 52 - standing source reads riders for all active trainers and excludes inactive trainer scope
+  ---
+  duration_ms: 1.0678
+  type: 'test'
+  ...
+# Subtest: lookup supports exact names, aliases, trainer/tenant IDs, horse show name and rider first/last names
+ok 53 - lookup supports exact names, aliases, trainer/tenant IDs, horse show name and rider first/last names
+  ---
+  duration_ms: 1.3625
+  type: 'test'
+  ...
+# Subtest: duplicate policy values are rejected without merging identities
+ok 54 - duplicate policy values are rejected without merging identities
+  ---
+  duration_ms: 1.1887
+  type: 'test'
+  ...
+# Subtest: owner may clear seeded helper fields without the source refilling them
+ok 55 - owner may clear seeded helper fields without the source refilling them
+  ---
+  duration_ms: 0.4171
+  type: 'test'
+  ...
+# Subtest: source record and numeric ID collisions fail without merging records
+ok 56 - source record and numeric ID collisions fail without merging records
+  ---
+  duration_ms: 1.5354
+  type: 'test'
+  ...
+# Subtest: explicit tenant rider membership is retained independently of its current trainer association
+ok 57 - explicit tenant rider membership is retained independently of its current trainer association
+  ---
+  duration_ms: 1.5426
+  type: 'test'
+  ...
+# Subtest: rider show-name is neither produced nor accepted as lookup
+ok 58 - rider show-name is neither produced nor accepted as lookup
+  ---
+  duration_ms: 0.5757
+  type: 'test'
+  ...
+# Subtest: schema adds only CWF reference links and reuses them without modifying records
+ok 59 - schema adds only CWF reference links and reuses them without modifying records
+  ---
+  duration_ms: 3.4461
+  type: 'test'
+  ...
+# Subtest: conflicting native reference field is rejected before any schema change
+ok 60 - conflicting native reference field is rejected before any schema change
+  ---
+  duration_ms: 1.9896
+  type: 'test'
+  ...
+# Subtest: recreated synced table with another ID is rejected before schema writes
+ok 61 - recreated synced table with another ID is rejected before schema writes
+  ---
+  duration_ms: 24.2784
+  type: 'test'
+  ...
+# Subtest: complete synced graph resolves local record IDs and source-selected date
+ok 62 - complete synced graph resolves local record IDs and source-selected date
+  ---
+  duration_ms: 3.1466
+  type: 'test'
+  ...
+# Subtest: missing or partially synced relationships stop processing rather than treating data as empty
+ok 63 - missing or partially synced relationships stop processing rather than treating data as empty
+  ---
+  duration_ms: 1.5837
+  type: 'test'
+  ...
+# Subtest: duplicate schedule keys and stale synced shows are rejected
+ok 64 - duplicate schedule keys and stale synced shows are rejected
+  ---
+  duration_ms: 0.4572
+  type: 'test'
+  ...
+# Subtest: an explicitly empty show schedule remains valid when all synced links agree
+ok 65 - an explicitly empty show schedule remains valid when all synced links agree
+  ---
+  duration_ms: 1.2924
+  type: 'test'
+  ...
+# Subtest: one main plus five distinct additional trainers; disabled slots do not run
+ok 66 - one main plus five distinct additional trainers; disabled slots do not run
+  ---
+  duration_ms: 3.471
+  type: 'test'
+  ...
+# Subtest: small but identified and explicit empty payload is valid; missing, wrong or inconsistent data fails
+ok 67 - small but identified and explicit empty payload is valid; missing, wrong or inconsistent data fails
+  ---
+  duration_ms: 0.5465
+  type: 'test'
+  ...
+# Subtest: source-selected date is required and stale references rejected
+ok 68 - source-selected date is required and stale references rejected
+  ---
+  duration_ms: 2.0126
+  type: 'test'
+  ...
+# Subtest: entries retain all show dates and cross-base schedule keys
+ok 69 - entries retain all show dates and cross-base schedule keys
+  ---
+  duration_ms: 22.7511
+  type: 'test'
+  ...
+# Subtest: unmatched or ambiguous schedules block inferred date assignment
+ok 70 - unmatched or ambiguous schedules block inferred date assignment
+  ---
+  duration_ms: 1.6053
+  type: 'test'
+  ...
+# Subtest: same entry across trainers deduplicates while keeping both sources
+ok 71 - same entry across trainers deduplicates while keeping both sources
+  ---
+  duration_ms: 0.6491
+  type: 'test'
+  ...
+1..71
+# tests 71
+# suites 0
+# pass 71
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2143.2608

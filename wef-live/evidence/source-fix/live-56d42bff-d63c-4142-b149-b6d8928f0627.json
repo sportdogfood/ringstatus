@@ -1,0 +1,1071 @@
+{
+  "at": "2026-10-23T17:06:29.708Z",
+  "result": "BLOCKED",
+  "receipt": {
+    "run_id": "56d42bff-d63c-4142-b149-b6d8928f0627",
+    "started": "2026-10-23T17:02:26.710Z",
+    "ok": false,
+    "errors": [
+      "Class 200030347: Source HTTP 502 at /classes/200030347"
+    ],
+    "warnings": [],
+    "archives": [
+      {
+        "at": "2026-10-23T17:02:36.358Z",
+        "kind": "source-groups",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\1269cdbd05bb0f3dd9741e40a27788a57b2b910a6ba2ba03bd465cf7244dcbf3.json.gz",
+        "records": 1,
+        "sha256": "1269cdbd05bb0f3dd9741e40a27788a57b2b910a6ba2ba03bd465cf7244dcbf3",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:02:37.578Z",
+        "kind": "source-widget",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\035d26d00b88725b0a402f4bd0bec6e6e1ff510f8480603a3e39b1fa07c18fc0.json.gz",
+        "records": 1,
+        "sha256": "035d26d00b88725b0a402f4bd0bec6e6e1ff510f8480603a3e39b1fa07c18fc0",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:03:55.486Z",
+        "kind": "class-200030362",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030362\\09ffdf299658caae87d13d0444ab5f2a9e662670fa736fd32155eb16cb2716a2.json.gz",
+        "records": 1,
+        "sha256": "09ffdf299658caae87d13d0444ab5f2a9e662670fa736fd32155eb16cb2716a2",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:03:57.141Z",
+        "kind": "class-200030393",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030393\\de46dafa79854a59c19a203864cb10fe7544a1aa6f4b1130f02483ed7947c9c8.json.gz",
+        "records": 1,
+        "sha256": "de46dafa79854a59c19a203864cb10fe7544a1aa6f4b1130f02483ed7947c9c8",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:03:58.510Z",
+        "kind": "class-200030400",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030400\\efb8abeada48a19d77b551d280a6c298040d01f153f1cdec55c184737ac2a722.json.gz",
+        "records": 1,
+        "sha256": "efb8abeada48a19d77b551d280a6c298040d01f153f1cdec55c184737ac2a722",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:03:59.925Z",
+        "kind": "class-200030344",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030344\\f0f86ab5a864be78de313e64be8893b7ebfa149f6bad0f9213e00475963a20a3.json.gz",
+        "records": 1,
+        "sha256": "f0f86ab5a864be78de313e64be8893b7ebfa149f6bad0f9213e00475963a20a3",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:01.319Z",
+        "kind": "class-200030410",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030410\\73bb13cb9fce74e7ad575aaa043a280ac3b26b2fbee2d4f97133666d843df586.json.gz",
+        "records": 1,
+        "sha256": "73bb13cb9fce74e7ad575aaa043a280ac3b26b2fbee2d4f97133666d843df586",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:02.656Z",
+        "kind": "class-200030358",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030358\\e4cbdf5457435f210a55a1ccd6cefabb8f64e2d27f109f5db3567a95c62c2249.json.gz",
+        "records": 1,
+        "sha256": "e4cbdf5457435f210a55a1ccd6cefabb8f64e2d27f109f5db3567a95c62c2249",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:04.023Z",
+        "kind": "class-200030341",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030341\\f4426a9a4df4e333c53643ba0c1a7729d059efc55667eb70e127886ed6aad418.json.gz",
+        "records": 1,
+        "sha256": "f4426a9a4df4e333c53643ba0c1a7729d059efc55667eb70e127886ed6aad418",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:05.458Z",
+        "kind": "class-200030390",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030390\\87902548391eb62374550889fbfd119b08767234e76eb588573ae40ff803cb5c.json.gz",
+        "records": 1,
+        "sha256": "87902548391eb62374550889fbfd119b08767234e76eb588573ae40ff803cb5c",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:06.768Z",
+        "kind": "class-200030338",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030338\\f55d91327cc8b6e77186a75eb07d8819721849e2f89558ce686a47e9259c6d26.json.gz",
+        "records": 1,
+        "sha256": "f55d91327cc8b6e77186a75eb07d8819721849e2f89558ce686a47e9259c6d26",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:08.138Z",
+        "kind": "class-200030335",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030335\\d945d58acd85ca3b0d835334d34d98cdec7ac4dd5d16e64f4536d3e02b3a2b97.json.gz",
+        "records": 1,
+        "sha256": "d945d58acd85ca3b0d835334d34d98cdec7ac4dd5d16e64f4536d3e02b3a2b97",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:09.542Z",
+        "kind": "class-200030364",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030364\\1abe63625c4280b033ae3f952e5ec6dbad3251a9d1053be5cbd19845f76c31e8.json.gz",
+        "records": 1,
+        "sha256": "1abe63625c4280b033ae3f952e5ec6dbad3251a9d1053be5cbd19845f76c31e8",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:10.879Z",
+        "kind": "class-200030387",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030387\\1667b0635e6c2f0dcfe2e33db0c0145fdea349f1c4f6401e93f4220c168425f4.json.gz",
+        "records": 1,
+        "sha256": "1667b0635e6c2f0dcfe2e33db0c0145fdea349f1c4f6401e93f4220c168425f4",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:12.204Z",
+        "kind": "class-200030328",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030328\\7b814794e19441f80d4b849497a9182c151d2627f78573ea5a28f1dc7729f34d.json.gz",
+        "records": 1,
+        "sha256": "7b814794e19441f80d4b849497a9182c151d2627f78573ea5a28f1dc7729f34d",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:13.617Z",
+        "kind": "class-200030377",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030377\\5ed3b809960a06884eb15a4807a51960db817da8522af8b75396e050959a45f2.json.gz",
+        "records": 1,
+        "sha256": "5ed3b809960a06884eb15a4807a51960db817da8522af8b75396e050959a45f2",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:14.925Z",
+        "kind": "class-200030413",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030413\\cd42baced07f140c85498d44822bb0b4f5ba018a45e55b54f277f17dd055d59e.json.gz",
+        "records": 1,
+        "sha256": "cd42baced07f140c85498d44822bb0b4f5ba018a45e55b54f277f17dd055d59e",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:16.363Z",
+        "kind": "class-200030332",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030332\\641e350e735a5f2fdc93b04e2cd862410ec630b5c66f234d216e6cc3a8722293.json.gz",
+        "records": 1,
+        "sha256": "641e350e735a5f2fdc93b04e2cd862410ec630b5c66f234d216e6cc3a8722293",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:17.696Z",
+        "kind": "class-200030329",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030329\\b72401615c1e2f77aeee511b908fa49186e040285c96dbb8510e64b1d2616e22.json.gz",
+        "records": 1,
+        "sha256": "b72401615c1e2f77aeee511b908fa49186e040285c96dbb8510e64b1d2616e22",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:19.002Z",
+        "kind": "class-200030325",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030325\\385718f44f1c75ef204adf7a19e27cdfa6016d4371a905ff9eda43a5b4308976.json.gz",
+        "records": 1,
+        "sha256": "385718f44f1c75ef204adf7a19e27cdfa6016d4371a905ff9eda43a5b4308976",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:20.362Z",
+        "kind": "class-200030319",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030319\\64c8dd0a89d7ec69a7d9273ec8904dc37c66974ccc514009b0cc60fd6fae4a96.json.gz",
+        "records": 1,
+        "sha256": "64c8dd0a89d7ec69a7d9273ec8904dc37c66974ccc514009b0cc60fd6fae4a96",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:21.718Z",
+        "kind": "class-200030322",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030322\\018d74e63e53348caf40d9485e5fa2ff8384cc766616228d879e9b631e970afc.json.gz",
+        "records": 1,
+        "sha256": "018d74e63e53348caf40d9485e5fa2ff8384cc766616228d879e9b631e970afc",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:23.112Z",
+        "kind": "class-200030243",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030243\\6f26b7a2a4f97eb8a3098dac1ad1d3e9ed6cc586e954125e1bbc64f53e2959a0.json.gz",
+        "records": 1,
+        "sha256": "6f26b7a2a4f97eb8a3098dac1ad1d3e9ed6cc586e954125e1bbc64f53e2959a0",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:24.501Z",
+        "kind": "class-200030013",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030013\\84ba6b18e2166b31bff321fefb04903fb08c4ac2b3319692fd752ab5bd9ee52a.json.gz",
+        "records": 1,
+        "sha256": "84ba6b18e2166b31bff321fefb04903fb08c4ac2b3319692fd752ab5bd9ee52a",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:25.843Z",
+        "kind": "class-200030014",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030014\\c982e23a6d3982e9dc8099db0293d6516122686afbe08c2b36c389c3473eee1b.json.gz",
+        "records": 1,
+        "sha256": "c982e23a6d3982e9dc8099db0293d6516122686afbe08c2b36c389c3473eee1b",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:27.192Z",
+        "kind": "class-200030153",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030153\\096adab6ca75a8b482362bbe1b2ec1d02ccb31665268a974965ec855733bb213.json.gz",
+        "records": 1,
+        "sha256": "096adab6ca75a8b482362bbe1b2ec1d02ccb31665268a974965ec855733bb213",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:28.529Z",
+        "kind": "class-200030154",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030154\\a19d27cb175fe15700e0954631d243249bf0c76c948a7dd5db66a1b330318a76.json.gz",
+        "records": 1,
+        "sha256": "a19d27cb175fe15700e0954631d243249bf0c76c948a7dd5db66a1b330318a76",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:29.859Z",
+        "kind": "class-200030133",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030133\\0238bdc4a78c873f977c6ce0b1af181a0044d73fb92cd83ece7435c8a87b5b72.json.gz",
+        "records": 1,
+        "sha256": "0238bdc4a78c873f977c6ce0b1af181a0044d73fb92cd83ece7435c8a87b5b72",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:31.195Z",
+        "kind": "class-200030134",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030134\\0baecdf8243b1c23b36c57b52d2f36beeab615bd9182f420bb608b280e56c4e0.json.gz",
+        "records": 1,
+        "sha256": "0baecdf8243b1c23b36c57b52d2f36beeab615bd9182f420bb608b280e56c4e0",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:32.532Z",
+        "kind": "class-200030254",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030254\\9dcacce6be518762d1fe98adbab21230aff0ed6ebdc6b183141b3a744b430cc9.json.gz",
+        "records": 1,
+        "sha256": "9dcacce6be518762d1fe98adbab21230aff0ed6ebdc6b183141b3a744b430cc9",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:33.878Z",
+        "kind": "class-200030281",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030281\\4efabd789106a9338038ee8da1c1e1ff4eee3a0594e4f8dd8861992d648e6e2f.json.gz",
+        "records": 1,
+        "sha256": "4efabd789106a9338038ee8da1c1e1ff4eee3a0594e4f8dd8861992d648e6e2f",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:35.160Z",
+        "kind": "class-200030282",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030282\\e8b6e22d329561a5caa94b5ab85ab95dd64fc61c496ab7f59602a06100f02068.json.gz",
+        "records": 1,
+        "sha256": "e8b6e22d329561a5caa94b5ab85ab95dd64fc61c496ab7f59602a06100f02068",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:36.966Z",
+        "kind": "live-rings-before",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\live-rings-before\\f3ba31a662bcfd613220cbd4526377a7ca1438cf1c4ba0382abe84b2d785b1f6.json.gz",
+        "records": 6,
+        "sha256": "f3ba31a662bcfd613220cbd4526377a7ca1438cf1c4ba0382abe84b2d785b1f6",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:38.534Z",
+        "kind": "live-groups-before",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\live-groups-before\\40b809e3ae046f2d76b94da41e8e71b3a1aa9306d26cac940199098c72a08359.json.gz",
+        "records": 17,
+        "sha256": "40b809e3ae046f2d76b94da41e8e71b3a1aa9306d26cac940199098c72a08359",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:40.067Z",
+        "kind": "live-classes-before",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\live-classes-before\\2f3701549c336b3b3954b57d7ef5818f99e995d152c2e0d9e0ea20486d79109a.json.gz",
+        "records": 30,
+        "sha256": "2f3701549c336b3b3954b57d7ef5818f99e995d152c2e0d9e0ea20486d79109a",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:42.135Z",
+        "kind": "live-entries-before",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\live-entries-before\\fa8554a296740d518aafefe3b95539845cc7645691dde0d7c705eb55d6ff7ebf.json.gz",
+        "records": 196,
+        "sha256": "fa8554a296740d518aafefe3b95539845cc7645691dde0d7c705eb55d6ff7ebf",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:43.339Z",
+        "kind": "dataset-rings-200000075",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-rings-200000075\\c9e86f3751706f34a062ea2d4b5ef93ea6b03884bc03a6d4e07851eba229432f.json.gz",
+        "records": 6,
+        "sha256": "c9e86f3751706f34a062ea2d4b5ef93ea6b03884bc03a6d4e07851eba229432f",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:44.526Z",
+        "kind": "dataset-groups-200000075",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-groups-200000075\\3d65a2e968db69dd7ea207a56cc22071c9f7d3650e3cb31a98385d0ebdff4a1e.json.gz",
+        "records": 18,
+        "sha256": "3d65a2e968db69dd7ea207a56cc22071c9f7d3650e3cb31a98385d0ebdff4a1e",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:45.686Z",
+        "kind": "dataset-class-200030362",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030362\\4496d9f4e54ed349ef8844d6467d4ade55c51dedfa00cbc11645c0033072cfa6.json.gz",
+        "records": 2,
+        "sha256": "4496d9f4e54ed349ef8844d6467d4ade55c51dedfa00cbc11645c0033072cfa6",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:46.848Z",
+        "kind": "dataset-class-200030393",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030393\\9010273ef655f036530a876f8581577568e0d6efb9d4c8c0de94ee49784634b8.json.gz",
+        "records": 3,
+        "sha256": "9010273ef655f036530a876f8581577568e0d6efb9d4c8c0de94ee49784634b8",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:48.030Z",
+        "kind": "dataset-class-200030400",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030400\\ec8042ca8865759f97c2d9739ca7b30c8d72b814092fd5af498c12d31f85ddb2.json.gz",
+        "records": 14,
+        "sha256": "ec8042ca8865759f97c2d9739ca7b30c8d72b814092fd5af498c12d31f85ddb2",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:49.201Z",
+        "kind": "dataset-class-200030344",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030344\\6795603ea0d7245d123428e6d9ead114d28fcd263aeb364fde292e2af6eedb2c.json.gz",
+        "records": 16,
+        "sha256": "6795603ea0d7245d123428e6d9ead114d28fcd263aeb364fde292e2af6eedb2c",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:50.343Z",
+        "kind": "dataset-class-200030410",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030410\\dff73abc6dc4702311b1e0cb2aef34e19cf71e2f1cc6912d15c7728cb1ff62fa.json.gz",
+        "records": 5,
+        "sha256": "dff73abc6dc4702311b1e0cb2aef34e19cf71e2f1cc6912d15c7728cb1ff62fa",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:51.510Z",
+        "kind": "dataset-class-200030358",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030358\\ca9571c54021a9205d408069def0b32d86a1e664d2211d4691284f1c0b60a071.json.gz",
+        "records": 10,
+        "sha256": "ca9571c54021a9205d408069def0b32d86a1e664d2211d4691284f1c0b60a071",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:52.661Z",
+        "kind": "dataset-class-200030341",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030341\\6679fa77fcc976296ae1e6a3ff650837aa4300e7670dec83bacf41677df92f67.json.gz",
+        "records": 8,
+        "sha256": "6679fa77fcc976296ae1e6a3ff650837aa4300e7670dec83bacf41677df92f67",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:53.810Z",
+        "kind": "dataset-class-200030390",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030390\\f87fcdb9516c7e5ee6b0c24b29467cb76876fee1eb6271694c628b9928b8f1b7.json.gz",
+        "records": 3,
+        "sha256": "f87fcdb9516c7e5ee6b0c24b29467cb76876fee1eb6271694c628b9928b8f1b7",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:55.027Z",
+        "kind": "dataset-class-200030338",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030338\\9cfcfb58e51087f96936b698c878d9474486d6f0d22ff9051819b689d2102b2c.json.gz",
+        "records": 9,
+        "sha256": "9cfcfb58e51087f96936b698c878d9474486d6f0d22ff9051819b689d2102b2c",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:56.252Z",
+        "kind": "dataset-class-200030335",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030335\\21ca4f145a92405b7baad3058a2a5b4d045c8f225ee1685263f56e7618ded5f9.json.gz",
+        "records": 9,
+        "sha256": "21ca4f145a92405b7baad3058a2a5b4d045c8f225ee1685263f56e7618ded5f9",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:58.311Z",
+        "kind": "dataset-class-200030364",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030364\\aa054db1edb57a61badabdd8927be59dbbbe195d96e7ddd32f1c2f0618fb09bf.json.gz",
+        "records": 6,
+        "sha256": "aa054db1edb57a61badabdd8927be59dbbbe195d96e7ddd32f1c2f0618fb09bf",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:04:59.519Z",
+        "kind": "dataset-class-200030387",
+        "outcome": "Reused",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030387\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+        "records": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:01.114Z",
+        "kind": "dataset-class-200030328",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030328\\08a41cde05c61cae74f1882ea736ef6dd46d54e114e789c57b33402accd0d43c.json.gz",
+        "records": 3,
+        "sha256": "08a41cde05c61cae74f1882ea736ef6dd46d54e114e789c57b33402accd0d43c",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:02.777Z",
+        "kind": "dataset-class-200030377",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030377\\2b36cad35bb328b132332564cbde7211aa7af3791378a7026c3598b2ae31b5e7.json.gz",
+        "records": 8,
+        "sha256": "2b36cad35bb328b132332564cbde7211aa7af3791378a7026c3598b2ae31b5e7",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:04.868Z",
+        "kind": "dataset-class-200030413",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030413\\1ee16eee9924ad7074a50aa4b1643450d881aba9859cff8ea36be9fc64bf7db4.json.gz",
+        "records": 1,
+        "sha256": "1ee16eee9924ad7074a50aa4b1643450d881aba9859cff8ea36be9fc64bf7db4",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:06.609Z",
+        "kind": "dataset-class-200030332",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030332\\d49259007acb3eeda0e473f2536dad399b7e39adec938bf556cc5520fbf871d3.json.gz",
+        "records": 10,
+        "sha256": "d49259007acb3eeda0e473f2536dad399b7e39adec938bf556cc5520fbf871d3",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:07.875Z",
+        "kind": "dataset-class-200030329",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030329\\9538844313d90ea9027661b02d7a3465e48f32e77e541a294c0b602c017813a9.json.gz",
+        "records": 11,
+        "sha256": "9538844313d90ea9027661b02d7a3465e48f32e77e541a294c0b602c017813a9",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:09.253Z",
+        "kind": "dataset-class-200030325",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030325\\1208599494da9ecb033007500e6c6bfc1852efaa3c12e0e9b5fcb6f0907b2639.json.gz",
+        "records": 8,
+        "sha256": "1208599494da9ecb033007500e6c6bfc1852efaa3c12e0e9b5fcb6f0907b2639",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:10.427Z",
+        "kind": "dataset-class-200030319",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030319\\9991c16ceba9f23bb9ca38c9831e33bb0fdc765c23012a3772e192f1ab0267e0.json.gz",
+        "records": 7,
+        "sha256": "9991c16ceba9f23bb9ca38c9831e33bb0fdc765c23012a3772e192f1ab0267e0",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:12.892Z",
+        "kind": "dataset-class-200030322",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030322\\d273a9a8c75eedd4e28300b02cf5fb3511e3c1fb2694c77527abf856981f7850.json.gz",
+        "records": 8,
+        "sha256": "d273a9a8c75eedd4e28300b02cf5fb3511e3c1fb2694c77527abf856981f7850",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:14.110Z",
+        "kind": "dataset-class-200030243",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030243\\d7efc10191382745327e9d41458a5433b7ff8d0c7c36d422a899e2dd1b0e9d5c.json.gz",
+        "records": 3,
+        "sha256": "d7efc10191382745327e9d41458a5433b7ff8d0c7c36d422a899e2dd1b0e9d5c",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:15.458Z",
+        "kind": "dataset-class-200030013",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030013\\4a97f24a6d848e7565ae0c8bf793bb2fea283cb03d7834244b267bcf053a430f.json.gz",
+        "records": 3,
+        "sha256": "4a97f24a6d848e7565ae0c8bf793bb2fea283cb03d7834244b267bcf053a430f",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:16.668Z",
+        "kind": "dataset-class-200030014",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030014\\28aa882b75f3645cd08cf4554adb550e35fd87e6a5c2fd99c0f0693feb1b5c02.json.gz",
+        "records": 3,
+        "sha256": "28aa882b75f3645cd08cf4554adb550e35fd87e6a5c2fd99c0f0693feb1b5c02",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:17.870Z",
+        "kind": "dataset-class-200030153",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030153\\0d40d063535d54b62b51f177fd2e772a6bd84eda7a6b7130ca410c36f6b5d7a4.json.gz",
+        "records": 3,
+        "sha256": "0d40d063535d54b62b51f177fd2e772a6bd84eda7a6b7130ca410c36f6b5d7a4",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:19.135Z",
+        "kind": "dataset-class-200030154",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030154\\fc4c8612644038a745ac7cd4655fcf3fe66cccf671f38241c94a9aba238fc12a.json.gz",
+        "records": 3,
+        "sha256": "fc4c8612644038a745ac7cd4655fcf3fe66cccf671f38241c94a9aba238fc12a",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:20.378Z",
+        "kind": "dataset-class-200030133",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030133\\f60a4e439509df8f016d05c1b88eeaa60912b8a201a146dea212fb0ea7cde121.json.gz",
+        "records": 6,
+        "sha256": "f60a4e439509df8f016d05c1b88eeaa60912b8a201a146dea212fb0ea7cde121",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:21.876Z",
+        "kind": "dataset-class-200030134",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030134\\18423ebeb2f2e3cb943330548daad1ddbb0dfec7671049d16458bf8010d1d977.json.gz",
+        "records": 6,
+        "sha256": "18423ebeb2f2e3cb943330548daad1ddbb0dfec7671049d16458bf8010d1d977",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:23.192Z",
+        "kind": "dataset-class-200030254",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030254\\ea27442c300e604368b35236ff7ed8256480e2dc770d44ada2d725fcc434f3b6.json.gz",
+        "records": 4,
+        "sha256": "ea27442c300e604368b35236ff7ed8256480e2dc770d44ada2d725fcc434f3b6",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:24.389Z",
+        "kind": "dataset-class-200030281",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030281\\2ee35a164cfb1aabc5db794143616e9111ab3cd82233448b4cf98d090d7b1116.json.gz",
+        "records": 4,
+        "sha256": "2ee35a164cfb1aabc5db794143616e9111ab3cd82233448b4cf98d090d7b1116",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T17:05:25.675Z",
+        "kind": "dataset-class-200030282",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030282\\6aadcdae1802e82c0cfbfaab820cea79a74fb11a782990954a9d4d4c2d621c5c.json.gz",
+        "records": 4,
+        "sha256": "6aadcdae1802e82c0cfbfaab820cea79a74fb11a782990954a9d4d4c2d621c5c",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      }
+    ],
+    "counts": {
+      "rings": 6,
+      "groups": 18,
+      "classes": 31,
+      "entries": 180
+    },
+    "scope": {
+      "show": 200000075,
+      "customer": 15,
+      "date": "2026-10-23",
+      "authority": "rec4En9UWd6lkT1Oh",
+      "checked_at": "2026-10-23T16:44:07.249Z",
+      "active": true
+    },
+    "show_source": {
+      "base": "appCaSmL819KK7UFJ",
+      "record": "rec4En9UWd6lkT1Oh",
+      "checked_at": "2026-10-23T16:44:07.249Z"
+    },
+    "summary": "Show 200000075; 2026-10-23; 6 rings, 18 groups, 31 classes, 180 live trips. ",
+    "completed": "2026-10-23T17:05:52.735Z"
+  },
+  "log": {
+    "id": "recIdQ5YgC3uJNpol",
+    "createdTime": "2026-10-23T17:02:32.000Z",
+    "fields": {
+      "date": "2026-10-23",
+      "result": "Failed",
+      "errors": "Class 200030347: Source HTTP 502 at /classes/200030347",
+      "entry-count": 180,
+      "group-count": 18,
+      "ring-count": 6,
+      "archive-count": 68,
+      "class-count": 31,
+      "show-id": 200000075,
+      "archives": "2026-10-23T17:02:36.358Z: source-groups Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\1269cdbd05bb0f3dd9741e40a27788a57b2b910a6ba2ba03bd465cf7244dcbf3.json.gz; SHA256 1269cdbd05bb0f3dd9741e40a27788a57b2b910a6ba2ba03bd465cf7244dcbf3\n2026-10-23T17:02:37.578Z: source-widget Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\035d26d00b88725b0a402f4bd0bec6e6e1ff510f8480603a3e39b1fa07c18fc0.json.gz; SHA256 035d26d00b88725b0a402f4bd0bec6e6e1ff510f8480603a3e39b1fa07c18fc0\n2026-10-23T17:03:55.486Z: class-200030362 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030362\\09ffdf299658caae87d13d0444ab5f2a9e662670fa736fd32155eb16cb2716a2.json.gz; SHA256 09ffdf299658caae87d13d0444ab5f2a9e662670fa736fd32155eb16cb2716a2\n2026-10-23T17:03:57.141Z: class-200030393 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030393\\de46dafa79854a59c19a203864cb10fe7544a1aa6f4b1130f02483ed7947c9c8.json.gz; SHA256 de46dafa79854a59c19a203864cb10fe7544a1aa6f4b1130f02483ed7947c9c8\n2026-10-23T17:03:58.510Z: class-200030400 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030400\\efb8abeada48a19d77b551d280a6c298040d01f153f1cdec55c184737ac2a722.json.gz; SHA256 efb8abeada48a19d77b551d280a6c298040d01f153f1cdec55c184737ac2a722\n2026-10-23T17:03:59.925Z: class-200030344 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030344\\f0f86ab5a864be78de313e64be8893b7ebfa149f6bad0f9213e00475963a20a3.json.gz; SHA256 f0f86ab5a864be78de313e64be8893b7ebfa149f6bad0f9213e00475963a20a3\n2026-10-23T17:04:01.319Z: class-200030410 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030410\\73bb13cb9fce74e7ad575aaa043a280ac3b26b2fbee2d4f97133666d843df586.json.gz; SHA256 73bb13cb9fce74e7ad575aaa043a280ac3b26b2fbee2d4f97133666d843df586\n2026-10-23T17:04:02.656Z: class-200030358 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030358\\e4cbdf5457435f210a55a1ccd6cefabb8f64e2d27f109f5db3567a95c62c2249.json.gz; SHA256 e4cbdf5457435f210a55a1ccd6cefabb8f64e2d27f109f5db3567a95c62c2249\n2026-10-23T17:04:04.023Z: class-200030341 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030341\\f4426a9a4df4e333c53643ba0c1a7729d059efc55667eb70e127886ed6aad418.json.gz; SHA256 f4426a9a4df4e333c53643ba0c1a7729d059efc55667eb70e127886ed6aad418\n2026-10-23T17:04:05.458Z: class-200030390 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030390\\87902548391eb62374550889fbfd119b08767234e76eb588573ae40ff803cb5c.json.gz; SHA256 87902548391eb62374550889fbfd119b08767234e76eb588573ae40ff803cb5c\n2026-10-23T17:04:06.768Z: class-200030338 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030338\\f55d91327cc8b6e77186a75eb07d8819721849e2f89558ce686a47e9259c6d26.json.gz; SHA256 f55d91327cc8b6e77186a75eb07d8819721849e2f89558ce686a47e9259c6d26\n2026-10-23T17:04:08.138Z: class-200030335 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030335\\d945d58acd85ca3b0d835334d34d98cdec7ac4dd5d16e64f4536d3e02b3a2b97.json.gz; SHA256 d945d58acd85ca3b0d835334d34d98cdec7ac4dd5d16e64f4536d3e02b3a2b97\n2026-10-23T17:04:09.542Z: class-200030364 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030364\\1abe63625c4280b033ae3f952e5ec6dbad3251a9d1053be5cbd19845f76c31e8.json.gz; SHA256 1abe63625c4280b033ae3f952e5ec6dbad3251a9d1053be5cbd19845f76c31e8\n2026-10-23T17:04:10.879Z: class-200030387 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030387\\1667b0635e6c2f0dcfe2e33db0c0145fdea349f1c4f6401e93f4220c168425f4.json.gz; SHA256 1667b0635e6c2f0dcfe2e33db0c0145fdea349f1c4f6401e93f4220c168425f4\n2026-10-23T17:04:12.204Z: class-200030328 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030328\\7b814794e19441f80d4b849497a9182c151d2627f78573ea5a28f1dc7729f34d.json.gz; SHA256 7b814794e19441f80d4b849497a9182c151d2627f78573ea5a28f1dc7729f34d\n2026-10-23T17:04:13.617Z: class-200030377 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030377\\5ed3b809960a06884eb15a4807a51960db817da8522af8b75396e050959a45f2.json.gz; SHA256 5ed3b809960a06884eb15a4807a51960db817da8522af8b75396e050959a45f2\n2026-10-23T17:04:14.925Z: class-200030413 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030413\\cd42baced07f140c85498d44822bb0b4f5ba018a45e55b54f277f17dd055d59e.json.gz; SHA256 cd42baced07f140c85498d44822bb0b4f5ba018a45e55b54f277f17dd055d59e\n2026-10-23T17:04:16.363Z: class-200030332 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030332\\641e350e735a5f2fdc93b04e2cd862410ec630b5c66f234d216e6cc3a8722293.json.gz; SHA256 641e350e735a5f2fdc93b04e2cd862410ec630b5c66f234d216e6cc3a8722293\n2026-10-23T17:04:17.696Z: class-200030329 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030329\\b72401615c1e2f77aeee511b908fa49186e040285c96dbb8510e64b1d2616e22.json.gz; SHA256 b72401615c1e2f77aeee511b908fa49186e040285c96dbb8510e64b1d2616e22\n2026-10-23T17:04:19.002Z: class-200030325 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030325\\385718f44f1c75ef204adf7a19e27cdfa6016d4371a905ff9eda43a5b4308976.json.gz; SHA256 385718f44f1c75ef204adf7a19e27cdfa6016d4371a905ff9eda43a5b4308976\n2026-10-23T17:04:20.362Z: class-200030319 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030319\\64c8dd0a89d7ec69a7d9273ec8904dc37c66974ccc514009b0cc60fd6fae4a96.json.gz; SHA256 64c8dd0a89d7ec69a7d9273ec8904dc37c66974ccc514009b0cc60fd6fae4a96\n2026-10-23T17:04:21.718Z: class-200030322 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030322\\018d74e63e53348caf40d9485e5fa2ff8384cc766616228d879e9b631e970afc.json.gz; SHA256 018d74e63e53348caf40d9485e5fa2ff8384cc766616228d879e9b631e970afc\n2026-10-23T17:04:23.112Z: class-200030243 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030243\\6f26b7a2a4f97eb8a3098dac1ad1d3e9ed6cc586e954125e1bbc64f53e2959a0.json.gz; SHA256 6f26b7a2a4f97eb8a3098dac1ad1d3e9ed6cc586e954125e1bbc64f53e2959a0\n2026-10-23T17:04:24.501Z: class-200030013 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030013\\84ba6b18e2166b31bff321fefb04903fb08c4ac2b3319692fd752ab5bd9ee52a.json.gz; SHA256 84ba6b18e2166b31bff321fefb04903fb08c4ac2b3319692fd752ab5bd9ee52a\n2026-10-23T17:04:25.843Z: class-200030014 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030014\\c982e23a6d3982e9dc8099db0293d6516122686afbe08c2b36c389c3473eee1b.json.gz; SHA256 c982e23a6d3982e9dc8099db0293d6516122686afbe08c2b36c389c3473eee1b\n2026-10-23T17:04:27.192Z: class-200030153 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030153\\096adab6ca75a8b482362bbe1b2ec1d02ccb31665268a974965ec855733bb213.json.gz; SHA256 096adab6ca75a8b482362bbe1b2ec1d02ccb31665268a974965ec855733bb213\n2026-10-23T17:04:28.529Z: class-200030154 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030154\\a19d27cb175fe15700e0954631d243249bf0c76c948a7dd5db66a1b330318a76.json.gz; SHA256 a19d27cb175fe15700e0954631d243249bf0c76c948a7dd5db66a1b330318a76\n2026-10-23T17:04:29.859Z: class-200030133 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030133\\0238bdc4a78c873f977c6ce0b1af181a0044d73fb92cd83ece7435c8a87b5b72.json.gz; SHA256 0238bdc4a78c873f977c6ce0b1af181a0044d73fb92cd83ece7435c8a87b5b72\n2026-10-23T17:04:31.195Z: class-200030134 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030134\\0baecdf8243b1c23b36c57b52d2f36beeab615bd9182f420bb608b280e56c4e0.json.gz; SHA256 0baecdf8243b1c23b36c57b52d2f36beeab615bd9182f420bb608b280e56c4e0\n2026-10-23T17:04:32.532Z: class-200030254 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030254\\9dcacce6be518762d1fe98adbab21230aff0ed6ebdc6b183141b3a744b430cc9.json.gz; SHA256 9dcacce6be518762d1fe98adbab21230aff0ed6ebdc6b183141b3a744b430cc9\n2026-10-23T17:04:33.878Z: class-200030281 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030281\\4efabd789106a9338038ee8da1c1e1ff4eee3a0594e4f8dd8861992d648e6e2f.json.gz; SHA256 4efabd789106a9338038ee8da1c1e1ff4eee3a0594e4f8dd8861992d648e6e2f\n2026-10-23T17:04:35.160Z: class-200030282 Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030282\\e8b6e22d329561a5caa94b5ab85ab95dd64fc61c496ab7f59602a06100f02068.json.gz; SHA256 e8b6e22d329561a5caa94b5ab85ab95dd64fc61c496ab7f59602a06100f02068\n2026-10-23T17:04:36.966Z: live-rings-before Created; 6 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\live-rings-before\\f3ba31a662bcfd613220cbd4526377a7ca1438cf1c4ba0382abe84b2d785b1f6.json.gz; SHA256 f3ba31a662bcfd613220cbd4526377a7ca1438cf1c4ba0382abe84b2d785b1f6\n2026-10-23T17:04:38.534Z: live-groups-before Created; 17 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\live-groups-before\\40b809e3ae046f2d76b94da41e8e71b3a1aa9306d26cac940199098c72a08359.json.gz; SHA256 40b809e3ae046f2d76b94da41e8e71b3a1aa9306d26cac940199098c72a08359\n2026-10-23T17:04:40.067Z: live-classes-before Created; 30 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\live-classes-before\\2f3701549c336b3b3954b57d7ef5818f99e995d152c2e0d9e0ea20486d79109a.json.gz; SHA256 2f3701549c336b3b3954b57d7ef5818f99e995d152c2e0d9e0ea20486d79109a\n2026-10-23T17:04:42.135Z: live-entries-before Created; 196 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\live-entries-before\\fa8554a296740d518aafefe3b95539845cc7645691dde0d7c705eb55d6ff7ebf.json.gz; SHA256 fa8554a296740d518aafefe3b95539845cc7645691dde0d7c705eb55d6ff7ebf\n2026-10-23T17:04:43.339Z: dataset-rings-200000075 Created; 6 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-rings-200000075\\c9e86f3751706f34a062ea2d4b5ef93ea6b03884bc03a6d4e07851eba229432f.json.gz; SHA256 c9e86f3751706f34a062ea2d4b5ef93ea6b03884bc03a6d4e07851eba229432f\n2026-10-23T17:04:44.526Z: dataset-groups-200000075 Created; 18 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-groups-200000075\\3d65a2e968db69dd7ea207a56cc22071c9f7d3650e3cb31a98385d0ebdff4a1e.json.gz; SHA256 3d65a2e968db69dd7ea207a56cc22071c9f7d3650e3cb31a98385d0ebdff4a1e\n2026-10-23T17:04:45.686Z: dataset-class-200030362 Created; 2 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030362\\4496d9f4e54ed349ef8844d6467d4ade55c51dedfa00cbc11645c0033072cfa6.json.gz; SHA256 4496d9f4e54ed349ef8844d6467d4ade55c51dedfa00cbc11645c0033072cfa6\n2026-10-23T17:04:46.848Z: dataset-class-200030393 Created; 3 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030393\\9010273ef655f036530a876f8581577568e0d6efb9d4c8c0de94ee49784634b8.json.gz; SHA256 9010273ef655f036530a876f8581577568e0d6efb9d4c8c0de94ee49784634b8\n2026-10-23T17:04:48.030Z: dataset-class-200030400 Created; 14 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030400\\ec8042ca8865759f97c2d9739ca7b30c8d72b814092fd5af498c12d31f85ddb2.json.gz; SHA256 ec8042ca8865759f97c2d9739ca7b30c8d72b814092fd5af498c12d31f85ddb2\n2026-10-23T17:04:49.201Z: dataset-class-200030344 Created; 16 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030344\\6795603ea0d7245d123428e6d9ead114d28fcd263aeb364fde292e2af6eedb2c.json.gz; SHA256 6795603ea0d7245d123428e6d9ead114d28fcd263aeb364fde292e2af6eedb2c\n2026-10-23T17:04:50.343Z: dataset-class-200030410 Created; 5 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030410\\dff73abc6dc4702311b1e0cb2aef34e19cf71e2f1cc6912d15c7728cb1ff62fa.json.gz; SHA256 dff73abc6dc4702311b1e0cb2aef34e19cf71e2f1cc6912d15c7728cb1ff62fa\n2026-10-23T17:04:51.510Z: dataset-class-200030358 Created; 10 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030358\\ca9571c54021a9205d408069def0b32d86a1e664d2211d4691284f1c0b60a071.json.gz; SHA256 ca9571c54021a9205d408069def0b32d86a1e664d2211d4691284f1c0b60a071\n2026-10-23T17:04:52.661Z: dataset-class-200030341 Created; 8 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030341\\6679fa77fcc976296ae1e6a3ff650837aa4300e7670dec83bacf41677df92f67.json.gz; SHA256 6679fa77fcc976296ae1e6a3ff650837aa4300e7670dec83bacf41677df92f67\n2026-10-23T17:04:53.810Z: dataset-class-200030390 Created; 3 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030390\\f87fcdb9516c7e5ee6b0c24b29467cb76876fee1eb6271694c628b9928b8f1b7.json.gz; SHA256 f87fcdb9516c7e5ee6b0c24b29467cb76876fee1eb6271694c628b9928b8f1b7\n2026-10-23T17:04:55.027Z: dataset-class-200030338 Created; 9 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030338\\9cfcfb58e51087f96936b698c878d9474486d6f0d22ff9051819b689d2102b2c.json.gz; SHA256 9cfcfb58e51087f96936b698c878d9474486d6f0d22ff9051819b689d2102b2c\n2026-10-23T17:04:56.252Z: dataset-class-200030335 Created; 9 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030335\\21ca4f145a92405b7baad3058a2a5b4d045c8f225ee1685263f56e7618ded5f9.json.gz; SHA256 21ca4f145a92405b7baad3058a2a5b4d045c8f225ee1685263f56e7618ded5f9\n2026-10-23T17:04:58.311Z: dataset-class-200030364 Created; 6 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030364\\aa054db1edb57a61badabdd8927be59dbbbe195d96e7ddd32f1c2f0618fb09bf.json.gz; SHA256 aa054db1edb57a61badabdd8927be59dbbbe195d96e7ddd32f1c2f0618fb09bf\n2026-10-23T17:04:59.519Z: dataset-class-200030387 Reused; 0 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030387\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz; SHA256 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945\n2026-10-23T17:05:01.114Z: dataset-class-200030328 Created; 3 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030328\\08a41cde05c61cae74f1882ea736ef6dd46d54e114e789c57b33402accd0d43c.json.gz; SHA256 08a41cde05c61cae74f1882ea736ef6dd46d54e114e789c57b33402accd0d43c\n2026-10-23T17:05:02.777Z: dataset-class-200030377 Created; 8 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030377\\2b36cad35bb328b132332564cbde7211aa7af3791378a7026c3598b2ae31b5e7.json.gz; SHA256 2b36cad35bb328b132332564cbde7211aa7af3791378a7026c3598b2ae31b5e7\n2026-10-23T17:05:04.868Z: dataset-class-200030413 Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030413\\1ee16eee9924ad7074a50aa4b1643450d881aba9859cff8ea36be9fc64bf7db4.json.gz; SHA256 1ee16eee9924ad7074a50aa4b1643450d881aba9859cff8ea36be9fc64bf7db4\n2026-10-23T17:05:06.609Z: dataset-class-200030332 Created; 10 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030332\\d49259007acb3eeda0e473f2536dad399b7e39adec938bf556cc5520fbf871d3.json.gz; SHA256 d49259007acb3eeda0e473f2536dad399b7e39adec938bf556cc5520fbf871d3\n2026-10-23T17:05:07.875Z: dataset-class-200030329 Created; 11 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030329\\9538844313d90ea9027661b02d7a3465e48f32e77e541a294c0b602c017813a9.json.gz; SHA256 9538844313d90ea9027661b02d7a3465e48f32e77e541a294c0b602c017813a9\n2026-10-23T17:05:09.253Z: dataset-class-200030325 Created; 8 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030325\\1208599494da9ecb033007500e6c6bfc1852efaa3c12e0e9b5fcb6f0907b2639.json.gz; SHA256 1208599494da9ecb033007500e6c6bfc1852efaa3c12e0e9b5fcb6f0907b2639\n2026-10-23T17:05:10.427Z: dataset-class-200030319 Created; 7 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030319\\9991c16ceba9f23bb9ca38c9831e33bb0fdc765c23012a3772e192f1ab0267e0.json.gz; SHA256 9991c16ceba9f23bb9ca38c9831e33bb0fdc765c23012a3772e192f1ab0267e0\n2026-10-23T17:05:12.892Z: dataset-class-200030322 Created; 8 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030322\\d273a9a8c75eedd4e28300b02cf5fb3511e3c1fb2694c77527abf856981f7850.json.gz; SHA256 d273a9a8c75eedd4e28300b02cf5fb3511e3c1fb2694c77527abf856981f7850\n2026-10-23T17:05:14.110Z: dataset-class-200030243 Created; 3 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030243\\d7efc10191382745327e9d41458a5433b7ff8d0c7c36d422a899e2dd1b0e9d5c.json.gz; SHA256 d7efc10191382745327e9d41458a5433b7ff8d0c7c36d422a899e2dd1b0e9d5c\n2026-10-23T17:05:15.458Z: dataset-class-200030013 Created; 3 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030013\\4a97f24a6d848e7565ae0c8bf793bb2fea283cb03d7834244b267bcf053a430f.json.gz; SHA256 4a97f24a6d848e7565ae0c8bf793bb2fea283cb03d7834244b267bcf053a430f\n2026-10-23T17:05:16.668Z: dataset-class-200030014 Created; 3 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030014\\28aa882b75f3645cd08cf4554adb550e35fd87e6a5c2fd99c0f0693feb1b5c02.json.gz; SHA256 28aa882b75f3645cd08cf4554adb550e35fd87e6a5c2fd99c0f0693feb1b5c02\n2026-10-23T17:05:17.870Z: dataset-class-200030153 Created; 3 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030153\\0d40d063535d54b62b51f177fd2e772a6bd84eda7a6b7130ca410c36f6b5d7a4.json.gz; SHA256 0d40d063535d54b62b51f177fd2e772a6bd84eda7a6b7130ca410c36f6b5d7a4\n2026-10-23T17:05:19.135Z: dataset-class-200030154 Created; 3 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030154\\fc4c8612644038a745ac7cd4655fcf3fe66cccf671f38241c94a9aba238fc12a.json.gz; SHA256 fc4c8612644038a745ac7cd4655fcf3fe66cccf671f38241c94a9aba238fc12a\n2026-10-23T17:05:20.378Z: dataset-class-200030133 Created; 6 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030133\\f60a4e439509df8f016d05c1b88eeaa60912b8a201a146dea212fb0ea7cde121.json.gz; SHA256 f60a4e439509df8f016d05c1b88eeaa60912b8a201a146dea212fb0ea7cde121\n2026-10-23T17:05:21.876Z: dataset-class-200030134 Created; 6 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030134\\18423ebeb2f2e3cb943330548daad1ddbb0dfec7671049d16458bf8010d1d977.json.gz; SHA256 18423ebeb2f2e3cb943330548daad1ddbb0dfec7671049d16458bf8010d1d977\n2026-10-23T17:05:23.192Z: dataset-class-200030254 Created; 4 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030254\\ea27442c300e604368b35236ff7ed8256480e2dc770d44ada2d725fcc434f3b6.json.gz; SHA256 ea27442c300e604368b35236ff7ed8256480e2dc770d44ada2d725fcc434f3b6\n2026-10-23T17:05:24.389Z: dataset-class-200030281 Created; 4 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030281\\2ee35a164cfb1aabc5db794143616e9111ab3cd82233448b4cf98d090d7b1116.json.gz; SHA256 2ee35a164cfb1aabc5db794143616e9111ab3cd82233448b4cf98d090d7b1116\n2026-10-23T17:05:25.675Z: dataset-class-200030282 Created; 4 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\dataset-class-200030282\\6aadcdae1802e82c0cfbfaab820cea79a74fb11a782990954a9d4d4c2d621c5c.json.gz; SHA256 6aadcdae1802e82c0cfbfaab820cea79a74fb11a782990954a9d4d4c2d621c5c",
+      "completed": "2026-10-23T17:05:52.735Z",
+      "summary": "Show 200000075; 2026-10-23; 6 rings, 18 groups, 31 classes, 180 live trips. ",
+      "started": "2026-10-23T17:02:26.710Z",
+      "run-id": "56d42bff-d63c-4142-b149-b6d8928f0627"
+    }
+  },
+  "heartbeat": {
+    "id": "recMtKZTGDZAHTOL4",
+    "createdTime": "2026-10-23T14:34:34.000Z",
+    "fields": {
+      "errors": "Class 200030347: Source HTTP 502 at /classes/200030347",
+      "heartbeat-key": "wef-live",
+      "show-id": 200000075,
+      "result": "Failed",
+      "date": "2026-10-23",
+      "summary": "Show 200000075; 2026-10-23; 6 rings, 18 groups, 31 classes, 180 live trips. ",
+      "checked-at": "2026-10-23T17:05:52.735Z"
+    }
+  },
+  "archivesVerified": 68,
+  "class319": {
+    "id": "recmJjatNb3zVpO8K",
+    "createdTime": "2026-10-23T14:33:59.000Z",
+    "fields": {
+      "live-groups": [
+        "recliojnsvrxwJigj"
+      ],
+      "source-json": "{\"ID\":\"200030319\",\"recs\":7,\"ring_name\":\"EQUESTRIAN VILLAGE INTERNATIONAL RING\",\"ring_number\":\"4\",\"pt\":true,\"JAPI\":true,\"gone_trips\":\"200398189,200398118,200397835,200398322\",\"jo_gone_trips\":\"200398189,200398118,200397835,200398322\",\"r2_gone_trips\":\"\",\"curr\":\"200397835\",\"curr_updated_at\":\"23oct2026 17:04:11\"}",
+      "r2-gone": 0,
+      "current-trip-id": 200397835,
+      "collection": [
+        "reclI02Z3yzxKkP0a"
+      ],
+      "source-updated-at": "23oct2026 17:04:11",
+      "total": 7,
+      "groups": [
+        "recliojnsvrxwJigj"
+      ],
+      "ring": [
+        "rec5PjrQAXHPT9hJ7"
+      ],
+      "class-key": "200000075|2026-10-23|200030319",
+      "show-id": 200000075,
+      "class-name": "Puddle Jumper Open (.70-.80m) II2d",
+      "class-number": 783,
+      "customer-id": 15,
+      "schedules": [
+        "reccQcaHE3EjBU7x1"
+      ],
+      "last-seen": "2026-10-23T17:02:35.763Z",
+      "gone": 4,
+      "detail-available": true,
+      "class-id": 200030319,
+      "date": "2026-10-23",
+      "live-entries": [
+        "reckQPUasG3afBJ7z",
+        "recMqX0NFc7RbyCjn",
+        "reclsde485ZqEbD6Q",
+        "recB2mvDm5gqGoKqn",
+        "recVRX0zwdZttPbaw",
+        "recG1qpwdXrjsNhnX",
+        "rect1qxpmsNuJUJvg",
+        "rec5Bc66myvw6uMDU"
+      ],
+      "jo-gone": 4
+    }
+  },
+  "storedLiveEntries": 197,
+  "protectedFilesUnchanged": true
+}

@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-23T14:38:16.720Z",
+  "protectedFiles": {
+    "wef-schedules/collect.js": true,
+    "wef-schedules/settings.js": true,
+    "wef-schedules/show-rings.js": true,
+    "wef-schedules/current-store.js": true,
+    "wef-schedules/collector-core.js": true,
+    "wef-schedules/run.ps1": true,
+    "wef-schedules/show-index.js": true,
+    "wef-tenants/collector.js": true,
+    "wef-tenants/settings.js": true,
+    "wef-tenants/run.ps1": true,
+    "wef-entries/collector.js": true,
+    "workers/wef-schedules-decoded/worker.js": true
+  }
+}

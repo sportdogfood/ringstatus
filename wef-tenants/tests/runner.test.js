@@ -79,6 +79,44 @@ test('archive is compressed, read back, content addressed and collision protecte
 });
 module.exports={fixture};
 
+function consumerFixture({empty=false}={}){
+ const f=fixture(),sid=75,date='2026-10-22';
+ f.seed(config.SYNC_SCHEDULES_TABLE,[{'stage-key':'75|2026-10-22|123','show-id':sid,date,'class-id':123,ring:1}]);
+ const fields={'entry-key':'75|2026-10-22|1|123','show-id':sid,date,'entry-id':1,'class-id':123,'horse-id':33,'horse-name':'Horse','rider-id':44,'rider-name':'Rider','trainer-ids':'8778','class-name':'','ring-number':1,status:'active','schedule-key':'75|2026-10-22|123','last-seen':now};
+ f.seed('entries',empty?[]:[fields],config.ENTRIES_BASE_ID);f.seed(config.SYNC_ENTRIES_TABLE,empty?[]:[fields]);
+ const source=f.data[config.ENTRIES_BASE_ID+'|entries'];
+ f.seed('collections',['22','23','24','25'].map(d=>({'collection-id':`CWF|75|2026-10-${d}|trainer-feed|8778`,status:'complete',completed:now,'row-count':!empty&&d==='22'?1:0,entries:!empty&&d==='22'?[source[0].id]:[]})),config.ENTRIES_BASE_ID);
+ f.seed('heartbeat',[{'heartbeat-key':'CWF','show-id':75,result:'Success','checked-at':now}],config.ENTRIES_BASE_ID);
+ f.options.entrySourceMode='synced';f.options.fetchPeople=async()=>{throw Error('Duplicate people fetch forbidden');};return f;
+}
+test('synced consumption preserves old entries and helpers, links new entries, and makes zero source fetches on repeat',async()=>{
+ const f=consumerFixture();f.seed('entries',[{'entry-key':'old|74','show-id':74,horses:['oldHorse'],riders:['oldRider'],status:'active'}]);
+ f.seed('horses',[{'horse-key':'33','horse-id':33,name:'Owner horse','horse-name':'Owner horse','nick-name':'Barn horse',disabled:true}]);
+ f.seed('riders',[{'rider-key':'44','rider-id':44,name:'Owner rider','rider-name':'Owner rider','nick-name':'Barn rider',disabled:true,horses:['priorHorse']}]);
+ const before=await f.api.list('entries'),horse=await f.api.list('horses'),rider=await f.api.list('riders');
+ for(let i=0;i<2;i++){const result=await runTenant(f.options);assert.equal(result.ok,true,result.errors.join('\n'));assert.equal(result.people_fetches,0);assert.equal(result.rows,1);assert.equal(result.entry_sync.links_verified,1);assert.equal(result.entry_sync.links_updated,i===0?1:0);assert.deepEqual(await f.api.list('entries'),before);
+  const synced=(await f.api.list(config.SYNC_ENTRIES_TABLE))[0];assert.deepEqual(synced.fields.horses,[horse[0].id]);assert.deepEqual(synced.fields.riders,[rider[0].id]);for(const name of ['shows','synced-rings','schedules','trainers'])assert.equal(synced.fields[name].length,1);
+  for(const [table,old]of [['horses',horse],['riders',rider]]){const current=(await f.api.list(table))[0];for(const key of ['name','nick-name','disabled'])assert.deepEqual(current.fields[key],old[0].fields[key]);}
+  assert.ok((await f.api.list('riders'))[0].fields.horses.includes('priorHorse'));assert.match((await f.api.list('heartbeat'))[0].fields.summary,/people endpoint fetches: 0/);
+ }
+ assert.equal(f.calls.some(c=>c.t==='entries'||c.remove==='entries'||c.base===config.ENTRIES_BASE_ID),false);
+});
+test('synced zero-entry collections succeed without requiring a horse or rider',async()=>{const f=consumerFixture({empty:true});const result=await runTenant(f.options);assert.equal(result.ok,true,result.errors.join('\n'));assert.equal(result.rows,0);assert.equal(result.people_fetches,0);assert.equal(result.days.length,4);assert.equal((await f.api.list('collections')).length,4);});
+test('incomplete, stale, failed or private-contaminated sync stops consumption without source fallback or old entry edits',async()=>{
+ for(const kind of ['missing','stale','failed','private','count','duplicate','link']){const f=consumerFixture();f.seed('entries',[{'entry-key':'untouched','show-id':74}]);
+  if(kind==='missing')f.seed(config.SYNC_ENTRIES_TABLE,[]);
+  if(kind==='stale')f.data[config.BASE_ID+'|'+config.SYNC_ENTRIES_TABLE][0].fields['last-seen']='2026-10-19T00:00:00Z';
+  if(kind==='failed')f.data[config.ENTRIES_BASE_ID+'|heartbeat'][0].fields.result='Failed';
+  if(kind==='private'){const row=structuredClone(f.data[config.BASE_ID+'|'+config.SYNC_ENTRIES_TABLE][0]);row.id='private';row.fields['entry-key']='private';row.fields['trainer-ids']='';f.data[config.BASE_ID+'|'+config.SYNC_ENTRIES_TABLE].push(row);}
+  if(kind==='count')f.data[config.ENTRIES_BASE_ID+'|collections'][0].fields['row-count']=2;
+  if(kind==='duplicate')f.data[config.BASE_ID+'|'+config.SYNC_ENTRIES_TABLE].push(structuredClone(f.data[config.BASE_ID+'|'+config.SYNC_ENTRIES_TABLE][0]));
+  if(kind==='link')f.seed(config.SYNC_SCHEDULES_TABLE,[]);
+  const result=await runTenant(f.options);assert.equal(result.ok,false,kind);assert.equal(result.people_fetches,0,kind);assert.equal((await f.api.list('entries'))[0].fields['entry-key'],'untouched');assert.equal(f.calls.some(c=>c.remove||c.t==='entries'),false);
+ }
+});
+test('private-only central participation does not enter CWF helpers or synced team',async()=>{const f=consumerFixture({empty:true});f.seed('entries',[{'entry-key':'private','show-id':75,'trainer-ids':'','horse-id':999,'rider-id':888,status:'active'}],config.ENTRIES_BASE_ID);const result=await runTenant(f.options);assert.equal(result.ok,true,result.errors.join('\n'));assert.equal(result.rows,0);assert.equal((await f.api.list('horses')).length,0);});
+test('shadow validates scheduled legacy entries before cutover while still making legacy requests',async()=>{const f=consumerFixture();const fetchPeople=async()=>({people:{people_id:8778},trips:[{entry_id:1,horse_id:33,rider_id:44,class_id:123,show_date:'2026-10-22',horse:'Horse',rider_name:'Rider'}]});const result=await runTenant({...f.options,entrySourceMode:'shadow',fetchPeople});assert.equal(result.ok,true,result.errors.join('\n'));assert.equal(result.entry_sync.shadow_match,true);assert.equal(result.people_fetches,1);assert.equal((await f.api.list('entries')).length,1);});
+
 test('read-only scheduled verifier and repeat comparison accept synced links without legacy projections',async()=>{
  const f=fixture();f.seed(config.SYNC_SCHEDULES_TABLE,[{'stage-key':'75|2026-10-22|123','show-id':75,date:'2026-10-22','class-id':123,ring:1}]);
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),'wef-synced-verify-'));

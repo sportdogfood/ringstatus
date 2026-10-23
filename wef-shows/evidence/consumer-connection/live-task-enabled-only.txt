@@ -1,0 +1,1 @@
+PASS: only disabled setting removed (Windows default enabled); triggers and actions unchanged

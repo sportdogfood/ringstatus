@@ -1,0 +1,14 @@
+[
+  {
+    "Task": "wef-schedules-collector",
+    "Unchanged": true
+  },
+  {
+    "Task": "wef-entries-cwf-collector",
+    "Unchanged": true
+  },
+  {
+    "Task": "wef-tenant-cwf-collector",
+    "Unchanged": true
+  }
+]

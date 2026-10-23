@@ -1,0 +1,142 @@
+{
+  "at": "2026-10-23T14:42:34.167Z",
+  "result": "PASS",
+  "sourceBase": "appCaSmL819KK7UFJ",
+  "canonicalShowRecord": "rec4En9UWd6lkT1Oh",
+  "showId": 200000075,
+  "sourceSelectedDate": "2026-10-23",
+  "producerRuns": [
+    {
+      "id": "b14320f6-25c4-452e-9e17-5babf3ec8bda",
+      "started": "2026-10-23T14:34:02.014Z",
+      "completed": "2026-10-23T14:34:08.531Z",
+      "archives": 3
+    },
+    {
+      "id": "648dc81a-d9a0-4816-af1d-bbb8767b460a",
+      "started": "2026-10-23T14:39:02.481Z",
+      "completed": "2026-10-23T14:39:07.004Z",
+      "archives": 3
+    }
+  ],
+  "consumerRuns": [
+    {
+      "id": "c405586d-e24c-4efe-94b7-5f6c4db4a4fc",
+      "started": "2026-10-23T14:35:05.336Z",
+      "completed": "2026-10-23T14:35:59.615Z",
+      "logResult": "Warning",
+      "daysComplete": 4,
+      "daysFailed": 0,
+      "source": {
+        "base": "appCaSmL819KK7UFJ",
+        "record": "rec4En9UWd6lkT1Oh",
+        "checked_at": "2026-10-23T14:34:06.911Z"
+      },
+      "days": [
+        {
+          "date": "2026-10-23",
+          "ok": true,
+          "rows": 39
+        },
+        {
+          "date": "2026-10-24",
+          "ok": true,
+          "rows": 137
+        },
+        {
+          "date": "2026-10-25",
+          "ok": true,
+          "rows": 139
+        },
+        {
+          "date": "2026-10-22",
+          "ok": true,
+          "rows": 0
+        }
+      ]
+    },
+    {
+      "id": "64ae6a69-5694-420e-9edb-a90cc1645e3b",
+      "started": "2026-10-23T14:40:03.461Z",
+      "completed": "2026-10-23T14:40:58.357Z",
+      "logResult": "Warning",
+      "daysComplete": 4,
+      "daysFailed": 0,
+      "source": {
+        "base": "appCaSmL819KK7UFJ",
+        "record": "rec4En9UWd6lkT1Oh",
+        "checked_at": "2026-10-23T14:39:05.819Z"
+      },
+      "days": [
+        {
+          "date": "2026-10-23",
+          "ok": true,
+          "rows": 39
+        },
+        {
+          "date": "2026-10-24",
+          "ok": true,
+          "rows": 137
+        },
+        {
+          "date": "2026-10-25",
+          "ok": true,
+          "rows": 139
+        },
+        {
+          "date": "2026-10-22",
+          "ok": true,
+          "rows": 0
+        }
+      ]
+    }
+  ],
+  "preservedScheduleIds": 449,
+  "preservedRingIds": 24,
+  "preservedShowRecord": "recpjdzMqBApZ8KPs",
+  "protectedFiles": {
+    "at": "2026-10-23T14:38:16.720Z",
+    "protectedFiles": {
+      "wef-schedules/collect.js": true,
+      "wef-schedules/settings.js": true,
+      "wef-schedules/show-rings.js": true,
+      "wef-schedules/current-store.js": true,
+      "wef-schedules/collector-core.js": true,
+      "wef-schedules/run.ps1": true,
+      "wef-schedules/show-index.js": true,
+      "wef-tenants/collector.js": true,
+      "wef-tenants/settings.js": true,
+      "wef-tenants/run.ps1": true,
+      "wef-entries/collector.js": true,
+      "workers/wef-schedules-decoded/worker.js": true
+    }
+  },
+  "protectedTasks": {
+    "wef-entries-cwf-collector": true,
+    "wef-schedules-collector": true,
+    "wef-tenant-cwf-collector": true
+  },
+  "protectedSchemas": {
+    "at": "2026-10-23T14:38:17.777Z",
+    "baseline": "2026-10-23T12:03:45.491Z",
+    "bases": {
+      "cwf": {
+        "unchanged": true,
+        "tables": 17
+      },
+      "schedules": {
+        "unchanged": true,
+        "tables": 10
+      }
+    }
+  },
+  "tests": {
+    "schedules": 124,
+    "cwf": 65,
+    "handoff": 10
+  },
+  "manualCollectorRuns": 0,
+  "recordRepairs": 0,
+  "remainingWarning": "Existing source-confirmed empty October 22 schedule day",
+  "runtimeBoundary": "Canonical metadata in Airtable; full default payload handoff uses a verified archive on the same computer"
+}

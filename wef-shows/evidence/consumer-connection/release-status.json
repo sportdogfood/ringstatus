@@ -1,0 +1,37 @@
+{
+  "status": "BLOCKED: two successful normal runs not achieved",
+  "canonicalConnectionConfirmedBoth": true,
+  "offlineTestsPassed": 35,
+  "protectedFilesUnchanged": 49,
+  "entries": {
+    "run": "5619d785-165d-4493-817a-67437082decd",
+    "started": "2026-10-23T16:09:02.310Z",
+    "completed": "2026-10-23T16:09:45.503Z",
+    "errors": [
+      "trainer-feed 50121: Source HTTP 502"
+    ],
+    "existingIdsAndLinksPreserved": true
+  },
+  "live": {
+    "run": "7cf50546-148e-4b5d-8e21-56aa01508e8e",
+    "started": "2026-10-23T16:07:13.172Z",
+    "completed": "2026-10-23T16:11:22.630Z",
+    "errors": [
+      "Class 200030347: Source HTTP 502",
+      "Class 200030393: Source HTTP 502",
+      "Class 200030344: Source HTTP 502",
+      "Class 200030410: Source HTTP 502",
+      "Class 200030358: Source HTTP 502",
+      "Class 200030341: Source HTTP 502",
+      "Class 200030319: No decoded identity for trip 200398019"
+    ],
+    "classes": 30,
+    "groups": 17,
+    "validScheduleLinks": 31,
+    "existingIdentitiesPreserved": 248,
+    "task": "Disabled after failed normal-run gate"
+  },
+  "manualRuns": 0,
+  "recordRepairs": 0,
+  "nextStep": "Investigate source errors with separate owner authorization; do not retry or repair failed workflow."
+}

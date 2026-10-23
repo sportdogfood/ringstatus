@@ -1,0 +1,250 @@
+TAP version 13
+# Subtest: lost create response is read back without a second create
+ok 1 - lost create response is read back without a second create
+  ---
+  duration_ms: 3.2344
+  type: 'test'
+  ...
+# Subtest: unresolved creation is not retried in the same run
+ok 2 - unresolved creation is not retried in the same run
+  ---
+  duration_ms: 0.9822
+  type: 'test'
+  ...
+# Subtest: source class identity and explicit empty arrays are validated
+ok 3 - source class identity and explicit empty arrays are validated
+  ---
+  duration_ms: 1.1306
+  type: 'test'
+  ...
+# Subtest: independent empty collection succeeds for all five sources and all days
+ok 4 - independent empty collection succeeds for all five sources and all days
+  ---
+  duration_ms: 10.4609
+  type: 'test'
+  ...
+# Subtest: trainer overlap and both private follows collect once with separate collection associations
+ok 5 - trainer overlap and both private follows collect once with separate collection associations
+  ---
+  duration_ms: 5.3965
+  type: 'test'
+  ...
+# Subtest: repeat run preserves entry/collection IDs and adds one terminal run log
+ok 6 - repeat run preserves entry/collection IDs and adds one terminal run log
+  ---
+  duration_ms: 4.0565
+  type: 'test'
+  ...
+# Subtest: one failed producer preserves its previous entry membership and other sources refresh
+ok 7 - one failed producer preserves its previous entry membership and other sources refresh
+  ---
+  duration_ms: 3.1926
+  type: 'test'
+  ...
+# Subtest: inactive roster never excludes collection; team slice hides inactive but user-only is never team
+ok 8 - inactive roster never excludes collection; team slice hides inactive but user-only is never team
+  ---
+  duration_ms: 1.247
+  type: 'test'
+  ...
+# Subtest: schedule sync mismatch stops before source calls and retains existing participation
+ok 9 - schedule sync mismatch stops before source calls and retains existing participation
+  ---
+  duration_ms: 1.6014
+  type: 'test'
+  ...
+# Subtest: archive failure prevents entry changes
+ok 10 - archive failure prevents entry changes
+  ---
+  duration_ms: 0.6472
+  type: 'test'
+  ...
+# Subtest: explicit missing followed entry fails that owner, not an empty success
+ok 11 - explicit missing followed entry fails that owner, not an empty success
+  ---
+  duration_ms: 1.3891
+  type: 'test'
+  ...
+# Subtest: more than ten private selections blocks sources and malformed empty people fails
+ok 12 - more than ten private selections blocks sources and malformed empty people fails
+  ---
+  duration_ms: 2.079
+  type: 'test'
+  ...
+# Subtest: private-only entry has no invented trainer feed association
+ok 13 - private-only entry has no invented trainer feed association
+  ---
+  duration_ms: 2.0318
+  type: 'test'
+  ...
+# Subtest: scheduled date is respected; conflicting participation is rejected
+ok 14 - scheduled date is respected; conflicting participation is rejected
+  ---
+  duration_ms: 1.0234
+  type: 'test'
+  ...
+# Subtest: adapter rejects every CWF/shared mutation, synced destination writes and deletion
+ok 15 - adapter rejects every CWF/shared mutation, synced destination writes and deletion
+  ---
+  duration_ms: 0.9841
+  type: 'test'
+  ...
+# Subtest: log capacity archives finished slot before reuse
+ok 16 - log capacity archives finished slot before reuse
+  ---
+  duration_ms: 1.3245
+  type: 'test'
+  ...
+# Subtest: canonical show read replaces schedules mirror without changing schedule links
+ok 17 - canonical show read replaces schedules mirror without changing schedule links
+  ---
+  duration_ms: 2.3964
+  type: 'test'
+  ...
+# Subtest: canonical authority is read-only through the adapter
+ok 18 - canonical authority is read-only through the adapter
+  ---
+  duration_ms: 0.3195
+  type: 'test'
+  ...
+# Subtest: one transient source retry recovers; no retry for authentication or malformed success
+ok 19 - one transient source retry recovers; no retry for authentication or malformed success
+  ---
+  duration_ms: 3.332
+  type: 'test'
+  ...
+# Subtest: persistent 502 is bounded to two attempts and fails rather than empty success
+ok 20 - persistent 502 is bounded to two attempts and fails rather than empty success
+  ---
+  duration_ms: 0.6818
+  type: 'test'
+  ...
+# Subtest: timeout may retry once; arbitrary programming errors never retry
+ok 21 - timeout may retry once; arbitrary programming errors never retry
+  ---
+  duration_ms: 0.5382
+  type: 'test'
+  ...
+# Subtest: repeat collection keeps stable IDs, distinct ring ID/number, exact native links
+ok 22 - repeat collection keeps stable IDs, distinct ring ID/number, exact native links
+  ---
+  duration_ms: 25.3635
+  type: 'test'
+  ...
+# Subtest: untracked live entries are collected without binder matches
+ok 23 - untracked live entries are collected without binder matches
+  ---
+  duration_ms: 1.2766
+  type: 'test'
+  ...
+# Subtest: missing schedules do not prevent independent observations
+ok 24 - missing schedules do not prevent independent observations
+  ---
+  duration_ms: 1.8546
+  type: 'test'
+  ...
+# Subtest: confirmed empty is success
+ok 25 - confirmed empty is success
+  ---
+  duration_ms: 1.1985
+  type: 'test'
+  ...
+# Subtest: wrong show response preserves existing data
+ok 26 - wrong show response preserves existing data
+  ---
+  duration_ms: 1.6328
+  type: 'test'
+  ...
+# Subtest: future source-selected date does not collect live
+ok 27 - future source-selected date does not collect live
+  ---
+  duration_ms: 0.3756
+  type: 'test'
+  ...
+# Subtest: failed class identity leaves previous entries intact
+ok 28 - failed class identity leaves previous entries intact
+  ---
+  duration_ms: 2.1864
+  type: 'test'
+  ...
+# Subtest: archive failure prevents collection writes and retirement
+ok 29 - archive failure prevents collection writes and retirement
+  ---
+  duration_ms: 0.4983
+  type: 'test'
+  ...
+# Subtest: prior dates retire only after successful archive
+ok 30 - prior dates retire only after successful archive
+  ---
+  duration_ms: 1.8296
+  type: 'test'
+  ...
+# Subtest: malformed and wrong date data cannot be empty success
+ok 31 - malformed and wrong date data cannot be empty success
+  ---
+  duration_ms: 0.625
+  type: 'test'
+  ...
+# Subtest: live trips cannot be mistaken for entry IDs
+ok 32 - live trips cannot be mistaken for entry IDs
+  ---
+  duration_ms: 0.2423
+  type: 'test'
+  ...
+# Subtest: Airtable adapter refuses all writes to source and synced tables
+ok 33 - Airtable adapter refuses all writes to source and synced tables
+  ---
+  duration_ms: 4.5876
+  type: 'test'
+  ...
+# Subtest: temporary reference read failure preserves links and does not stop live observations
+ok 34 - temporary reference read failure preserves links and does not stop live observations
+  ---
+  duration_ms: 2.2947
+  type: 'test'
+  ...
+# Subtest: retirement adapter refuses missing archive and current date
+ok 35 - retirement adapter refuses missing archive and current date
+  ---
+  duration_ms: 1.7129
+  type: 'test'
+  ...
+# Subtest: multiple live groups link only their own active schedules, preserving repeat IDs
+ok 36 - multiple live groups link only their own active schedules, preserving repeat IDs
+  ---
+  duration_ms: 3.0587
+  type: 'test'
+  ...
+# Subtest: canonical authority read is direct, fresh, unique and never falls back to schedules
+ok 37 - canonical authority read is direct, fresh, unique and never falls back to schedules
+  ---
+  duration_ms: 1.7554
+  type: 'test'
+  ...
+# Subtest: canonical shows cannot be written by live adapter
+ok 38 - canonical shows cannot be written by live adapter
+  ---
+  duration_ms: 0.6117
+  type: 'test'
+  ...
+# Subtest: one mismatched live/decoded snapshot refreshes the pair with both attempts archived
+ok 39 - one mismatched live/decoded snapshot refreshes the pair with both attempts archived
+  ---
+  duration_ms: 1.0928
+  type: 'test'
+  ...
+# Subtest: persistent missing identity stays a failure after exactly one fresh pair
+ok 40 - persistent missing identity stays a failure after exactly one fresh pair
+  ---
+  duration_ms: 1.5242
+  type: 'test'
+  ...
+1..40
+# tests 40
+# suites 0
+# pass 40
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 272.4396

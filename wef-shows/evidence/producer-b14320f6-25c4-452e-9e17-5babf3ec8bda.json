@@ -1,0 +1,66 @@
+{
+  "at": "2026-10-23T14:37:13.923Z",
+  "result": "PASS",
+  "show": {
+    "id": "rec4En9UWd6lkT1Oh",
+    "createdTime": "2026-10-23T14:34:09.000Z",
+    "fields": {
+      "default-payload-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\67b814b07b3160c77aecdedb56dbffdbef636637281af6a0554acfd639b5c10e.json.gz",
+      "show_name": "2026 ESP Fall III (#261901)",
+      "start_date": "2026-10-22",
+      "default-payload-sha256": "67b814b07b3160c77aecdedb56dbffdbef636637281af6a0554acfd639b5c10e",
+      "facility_id": 516,
+      "customer_id": 15,
+      "available_dates": "2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25",
+      "last_checked": "2026-10-23T14:34:06.911Z",
+      "selected_date": "2026-10-23",
+      "show-key": "15|200000075",
+      "end_date": "2026-10-25",
+      "is_default": true,
+      "show_id": 200000075
+    }
+  },
+  "receipt": {
+    "ok": true,
+    "run_id": "b14320f6-25c4-452e-9e17-5babf3ec8bda",
+    "started": "2026-10-23T14:34:02.014Z",
+    "rows": 1,
+    "errors": [],
+    "archives": [
+      {
+        "at": "2026-10-23T14:34:06.308Z",
+        "kind": "default-ring",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-ring\\d7f60b410d0ffaae09f1090f43a787495d67c8f02f3a87755681a10ca8e3d54f.json.gz",
+        "records": 1,
+        "sha256": "d7f60b410d0ffaae09f1090f43a787495d67c8f02f3a87755681a10ca8e3d54f"
+      },
+      {
+        "at": "2026-10-23T14:34:06.513Z",
+        "kind": "default-schedule",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\67b814b07b3160c77aecdedb56dbffdbef636637281af6a0554acfd639b5c10e.json.gz",
+        "records": 1,
+        "sha256": "67b814b07b3160c77aecdedb56dbffdbef636637281af6a0554acfd639b5c10e",
+        "shows": [
+          200000075
+        ],
+        "dates": [
+          "2026-10-23"
+        ]
+      },
+      {
+        "at": "2026-10-23T14:34:06.910Z",
+        "kind": "shows-before",
+        "outcome": "Created",
+        "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\shows-before\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+        "records": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    ],
+    "show_id": 200000075,
+    "selected_date": "2026-10-23",
+    "summary": "Default show 200000075: 2026 ESP Fall III (#261901); 2026-10-22 through 2026-10-25; source-selected 2026-10-23. No downstream jobs triggered.",
+    "completed": "2026-10-23T14:34:08.531Z"
+  }
+}

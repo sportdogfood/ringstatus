@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: repeat collection keeps stable IDs, distinct ring ID/number, exact native links
+ok 1 - repeat collection keeps stable IDs, distinct ring ID/number, exact native links
+  ---
+  duration_ms: 30.9478
+  type: 'test'
+  ...
+# Subtest: untracked live entries are collected without binder matches
+ok 2 - untracked live entries are collected without binder matches
+  ---
+  duration_ms: 1.3102
+  type: 'test'
+  ...
+# Subtest: missing schedules do not prevent independent observations
+ok 3 - missing schedules do not prevent independent observations
+  ---
+  duration_ms: 1.5313
+  type: 'test'
+  ...
+# Subtest: confirmed empty is success
+ok 4 - confirmed empty is success
+  ---
+  duration_ms: 0.8703
+  type: 'test'
+  ...
+# Subtest: wrong show response preserves existing data
+ok 5 - wrong show response preserves existing data
+  ---
+  duration_ms: 1.4412
+  type: 'test'
+  ...
+# Subtest: future source-selected date does not collect live
+ok 6 - future source-selected date does not collect live
+  ---
+  duration_ms: 0.5963
+  type: 'test'
+  ...
+# Subtest: failed class identity leaves previous entries intact
+ok 7 - failed class identity leaves previous entries intact
+  ---
+  duration_ms: 3.3504
+  type: 'test'
+  ...
+# Subtest: archive failure prevents collection writes and retirement
+ok 8 - archive failure prevents collection writes and retirement
+  ---
+  duration_ms: 1.0665
+  type: 'test'
+  ...
+# Subtest: prior dates retire only after successful archive
+ok 9 - prior dates retire only after successful archive
+  ---
+  duration_ms: 2.1053
+  type: 'test'
+  ...
+# Subtest: malformed and wrong date data cannot be empty success
+ok 10 - malformed and wrong date data cannot be empty success
+  ---
+  duration_ms: 0.7565
+  type: 'test'
+  ...
+# Subtest: live trips cannot be mistaken for entry IDs
+ok 11 - live trips cannot be mistaken for entry IDs
+  ---
+  duration_ms: 0.5445
+  type: 'test'
+  ...
+# Subtest: Airtable adapter refuses all writes to source and synced tables
+ok 12 - Airtable adapter refuses all writes to source and synced tables
+  ---
+  duration_ms: 27.9778
+  type: 'test'
+  ...
+# Subtest: temporary reference read failure preserves links and does not stop live observations
+ok 13 - temporary reference read failure preserves links and does not stop live observations
+  ---
+  duration_ms: 3.3737
+  type: 'test'
+  ...
+# Subtest: retirement adapter refuses missing archive and current date
+ok 14 - retirement adapter refuses missing archive and current date
+  ---
+  duration_ms: 2.5434
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 301.887

@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-23T14:30:11.172Z",
+  "scheduleReferences": 449,
+  "entryReferences": 7,
+  "protectedFiles": 111,
+  "externalTestFileChanges": [
+    "wef-schedules/tests\\run_logs.test.js",
+    "wef-schedules/tests\\schedules_standalone.test.js"
+  ],
+  "protectedRuntimeUnchanged": true,
+  "protectedSchemaFieldsUnchanged": true,
+  "sourceViewException": "wef-entries.entries / wef-live-reference: eight identity fields; owner approved",
+  "businessRecordsWritten": 0
+}

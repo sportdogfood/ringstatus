@@ -1,0 +1,23 @@
+{
+  "tables": [
+    {
+      "id": "tblwBvigcmqRlSYUb",
+      "name": "meta",
+      "primaryFieldId": "fld0Nf0WaJ2MloqqX",
+      "fields": [
+        {
+          "type": "singleLineText",
+          "id": "fld0Nf0WaJ2MloqqX",
+          "name": "Name"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwekTmwLF9eFcjDS",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    }
+  ]
+}

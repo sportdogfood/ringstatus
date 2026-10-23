@@ -1,5 +1,15 @@
 # Independent WEF tenant collector
 
+Current entry source (23 October 2026): CWF consumes the native read-only
+`wef-entries.entries` sync (`tbl7ychn5HELB3HTr`), with
+`WEF_TENANTS_ENTRY_SOURCE_MODE=synced`. Duplicate people-endpoint entry fetching
+is stopped. The five-minute task still maintains helpers, links, collection
+archives, heartbeat and run-logs. Old `entries` records are retained unchanged;
+use `wef-entries.entries` for current participation. Two scheduled shadow runs
+passed before switching; the 13:22 and 13:27 Eastern consumer runs both passed
+with zero people fetches and nine linked entries.
+See [cutover evidence](evidence/entries-consumer/README.md).
+
 Owner authorization, 20 October 2026: build `wef-tenant-cwf`, `wef-tenant-index`
 and a shared rings helper following the schedules pattern. Existing workflows stay
 untouched. Production collection is scheduled only; no manual executions or repairs.

@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: producer owns two discovery requests; consumer reads verified show without source calls
+ok 1 - producer owns two discovery requests; consumer reads verified show without source calls
+  ---
+  duration_ms: 42.6001
+  type: 'test'
+  ...
+# Subtest: repeat discovery preserves show record ID and records each run
+ok 2 - repeat discovery preserves show record ID and records each run
+  ---
+  duration_ms: 25.648
+  type: 'test'
+  ...
+# Subtest: failed discovery preserves published show and records failure
+ok 3 - failed discovery preserves published show and records failure
+  ---
+  duration_ms: 16.445
+  type: 'test'
+  ...
+# Subtest: rollover retains old show and marks only new show default
+ok 4 - rollover retains old show and marks only new show default
+  ---
+  duration_ms: 31.1082
+  type: 'test'
+  ...
+# Subtest: archive failure prevents canonical show changes
+ok 5 - archive failure prevents canonical show changes
+  ---
+  duration_ms: 16.5657
+  type: 'test'
+  ...
+# Subtest: consumer rejects stale, multiple defaults and tampered payload before saving state
+ok 6 - consumer rejects stale, multiple defaults and tampered payload before saving state
+  ---
+  duration_ms: 19.3687
+  type: 'test'
+  ...
+# Subtest: consumer preserves show-specific manual inputs without changing canonical defaults
+ok 7 - consumer preserves show-specific manual inputs without changing canonical defaults
+  ---
+  duration_ms: 24.8937
+  type: 'test'
+  ...
+# Subtest: staged schedules collect every day using shared metadata and never call discovery endpoints
+ok 8 - staged schedules collect every day using shared metadata and never call discovery endpoints
+  ---
+  duration_ms: 45.8137
+  type: 'test'
+  ...
+# Subtest: consumer rejects archive traversal and inconsistent dates
+ok 9 - consumer rejects archive traversal and inconsistent dates
+  ---
+  duration_ms: 16.702
+  type: 'test'
+  ...
+# Subtest: producer adapter blocks changes outside shows base and all deletes
+ok 10 - producer adapter blocks changes outside shows base and all deletes
+  ---
+  duration_ms: 4.5546
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 374.3692

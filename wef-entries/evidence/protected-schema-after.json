@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-23T12:19:39.607Z",
+  "protected": {
+    "cwf": {
+      "base": "appxKPBtdl2Rdq7CS",
+      "schemaUnchanged": true,
+      "tables": 17
+    },
+    "schedules": {
+      "base": "appUq5Qz9kARqFija",
+      "schemaUnchanged": true,
+      "tables": 10
+    }
+  }
+}

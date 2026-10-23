@@ -1,0 +1,82 @@
+{
+  "verifiedAt": "2026-10-23T12:24:59.303Z",
+  "result": "PASS",
+  "runs": [
+    {
+      "id": "58c42bd3-56b0-40ff-90e0-fd8bcc549f49",
+      "started": "2026-10-23T12:19:00.907Z",
+      "completed": "2026-10-23T12:19:18.794Z",
+      "rows": 7,
+      "collections": 20,
+      "archives": 24
+    },
+    {
+      "id": "b411e05e-f899-4764-b6f4-386e00f482b9",
+      "started": "2026-10-23T12:24:01.776Z",
+      "completed": "2026-10-23T12:24:18.638Z",
+      "rows": 7,
+      "collections": 20,
+      "archives": 24
+    }
+  ],
+  "entryIdsStable": true,
+  "collectionIdsStable": true,
+  "sourceCounts": [
+    {
+      "source_kind": "trainer-feed",
+      "source_id": "8778",
+      "result": "Success",
+      "rows": 0
+    },
+    {
+      "source_kind": "trainer-feed",
+      "source_id": "50121",
+      "result": "Success",
+      "rows": 4
+    },
+    {
+      "source_kind": "trainer-feed",
+      "source_id": "80970",
+      "result": "Success",
+      "rows": 3
+    },
+    {
+      "source_kind": "user-follow",
+      "source_id": "main-user",
+      "result": "Success",
+      "rows": 0
+    },
+    {
+      "source_kind": "user-follow",
+      "source_id": "user-2",
+      "result": "Success",
+      "rows": 0
+    }
+  ],
+  "manualCollectorRuns": 0,
+  "recordRepairs": 0,
+  "protectedSchemas": {
+    "cwf": {
+      "base": "appxKPBtdl2Rdq7CS",
+      "schemaUnchanged": true,
+      "tables": 17
+    },
+    "schedules": {
+      "base": "appUq5Qz9kARqFija",
+      "schemaUnchanged": true,
+      "tables": 10
+    }
+  },
+  "protectedTasks": {
+    "wef-schedules-collector": true,
+    "wef-tenant-cwf-collector": true
+  },
+  "privateLists": "Both empty; populated selection cases verified offline only",
+  "existingCwfLatest": {
+    "ok": true,
+    "started": "2026-10-23T12:22:01.793Z",
+    "completed": "2026-10-23T12:24:08.149Z",
+    "rows": 7,
+    "errors": []
+  }
+}

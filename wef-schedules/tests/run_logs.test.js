@@ -1,6 +1,8 @@
 "use strict";
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),zlib=require('node:zlib');
-const {runStagedCollector}=require('../store');
+const {runStagedCollector:runCollector}=require('../store');
+// Retain the proven orchestration fixtures through an explicit source seam.
+const runStagedCollector=options=>runCollector({...options,resolveShow:require('../collect').discoverFocus});
 const {fixture}=require('./fixtures/schedule-collector');
 global.fetch=async()=>{throw Error('Network forbidden in run-log tests');};
 function files(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'wef-run-logs-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));return {statePath:path.join(dir,'focus.json'),lockPath:path.join(dir,'lock'),historyRoot:path.join(dir,'history')};}

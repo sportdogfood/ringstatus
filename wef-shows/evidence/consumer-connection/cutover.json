@@ -1,0 +1,15 @@
+{
+  "files": [
+    "wef-entries/settings.js",
+    "wef-entries/airtable.js",
+    "wef-entries/collector.js",
+    "wef-entries/model.js",
+    "wef-entries/tests/collector.test.js",
+    "wef-live/settings.js",
+    "wef-live/airtable.js",
+    "wef-live/collector.js",
+    "wef-live/model.js",
+    "wef-live/test/collector.test.js"
+  ],
+  "at": "2026-10-23T16:05:15.5329346Z"
+}

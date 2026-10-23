@@ -2,7 +2,9 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const s=require('../collect'),legacy=require('../collector-core');
 const {fixture,payload,NOW}=require('./fixtures/schedule-collector');
-const {runStagedCollector}=require('../store');
+const {runStagedCollector:runCollector}=require('../store');
+// Retain the proven orchestration fixtures through an explicit source seam.
+const runStagedCollector=options=>runCollector({...options,resolveShow:require('../collect').discoverFocus});
 global.fetch=async()=>{throw Error('Network forbidden');};
 function temp(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'wef-schedules-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));return {statePath:path.join(dir,'focus.json'),lockPath:path.join(dir,'collector.lock')};}
 function discovery(id=74){return {fetchJson:async url=>new URL(url).pathname==='/ring'?{show:{show_id:id}}:{show:{show_id:id,start_date:'2026-10-16',end_date:'2026-10-18',show_name:'Fixture'},show_date:'2026-10-16'}};}

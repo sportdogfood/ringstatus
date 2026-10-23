@@ -239,7 +239,7 @@ async function collectStagedSchedules({store=stageStore(),io={},shows,now=new Da
 
 }
 
-async function runStagedCollector({lockPath=settings.SCHEDULE_COLLECTION_LOCK,statePath=settings.SCHEDULE_FOCUS_FILE,runLog,references,...options}={}) {
+async function runStagedCollector({lockPath=settings.SCHEDULE_COLLECTION_LOCK,statePath=settings.SCHEDULE_FOCUS_FILE,runLog,references,resolveShow=require('./show-source').readShowFocus,...options}={}) {
 
   if(!lockPath) throw new Error("Explicit collector-only lock path required");
 
@@ -253,7 +253,7 @@ async function runStagedCollector({lockPath=settings.SCHEDULE_COLLECTION_LOCK,st
     const store=options.store||stageStore({onArchive:runLog?event=>runLog.archive(runRecord,event):undefined});
     if(runLog) runRecord=await runLog.begin();
 
-    const found=await shared.discoverFocus({statePath,io:options.io,now:options.now});
+    const found=await resolveShow({statePath,io:options.io,now:options.now});
 
     const adapters=shared.collectorIO(options.io);
     const payloads=new Map();
@@ -269,7 +269,7 @@ async function runStagedCollector({lockPath=settings.SCHEDULE_COLLECTION_LOCK,st
       }}});
 
     if(report.ok && store.finalize) await store.finalize(found.show.fields.show_id);
-    if(report.ok && references) report.references=await references.sync({show:found.show,payload:found.payload,payloads,days:report.days,now:options.now||new Date().toISOString()});
+    if(report.ok && references) report.references=await references.sync({show:found.show,payload:found.payload,payloads,days:report.days,now:found.state.show_source?.checked_at||options.now||new Date().toISOString()});
     await shared.atomicReport(statePath,{...found.state,last_collection:report});
 
     report={...report,discovery:found.state.discovery,default_show:found.state.default_show,focus_day:found.show.fields.focus_day};
