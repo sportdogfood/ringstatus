@@ -1,0 +1,49 @@
+ M docs/coordination/wef-data-boundaries-working.md
+ M docs/coordination/wef-engine-stages-working.mmd
+ D videos/RingStatus-Pro-Demo-Reel.mp4
+ M wef-entries/README.md
+ M wef-live/airtable.js
+ M wef-live/collector.js
+ M wef-live/configure.js
+ M wef-live/entry.js
+ M wef-live/evidence/schema-configured.json
+ M wef-live/schema.js
+ M wef-live/test/collector.test.js
+ M wef-live/test/entry.test.js
+ M wef-schedules/README.md
+ M wef-schedules/collect.js
+ M wef-schedules/source-manifest.json
+ M wef-shows/README.md
+ M wef-tenants/README.md
+ M wef-tenants/airtable.js
+ M wef-tenants/collector.js
+ M wef-tenants/settings.js
+ M wef-tenants/tests/runner.test.js
+?? docs/coordination/wef-cloudflare-proxies-and-decoding-20261023.md
+?? docs/coordination/wef-endpoint-decoding-assessment-20261023.md
+?? docs/coordination/wef-entry-relationship-map-20261024.md
+?? docs/coordination/wef-records-owner-acknowledgments-20261023.md
+?? outputs/
+?? wef-entries/evidence/multiple-schedules-20261024/
+?? wef-entries/evidence/readme-status-20261024.json
+?? wef-live/activity.js
+?? wef-live/evidence/activity-gate-normal-runs.json
+?? wef-live/evidence/activity-gate.md
+?? wef-live/evidence/all-class-errors-failed-verification.json
+?? wef-live/evidence/all-class-errors-release.md
+?? wef-live/evidence/logging-isolation-release.md
+?? wef-live/evidence/logging-isolation-run-1.json
+?? wef-live/evidence/logging-isolation-run-2.json
+?? wef-live/evidence/unresolved-before-next-run.json
+?? wef-live/evidence/unresolved-before.json
+?? wef-live/evidence/unresolved-identity-release.md
+?? wef-live/evidence/unresolved-normal-run.json
+?? wef-live/participation.js
+?? wef-live/test/participation.test.js
+?? wef-schedules/completion-guard.js
+?? wef-schedules/tests/completion-guard.test.js
+?? wef-tenants/configure-tenant-slices.js
+?? wef-tenants/evidence/tenant-slices-20261024/
+?? wef-tenants/tenant-slices.js
+?? wef-tenants/tests/tenant-slices.test.js
+?? wef-tenants/verify-tenant-slices.js

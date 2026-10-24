@@ -2,7 +2,7 @@ flowchart TB
     subgraph COL["Independent collectors / normalizers — recurring updates, not a run sequence"]
         SH["wef-shows<br/>Keeps updating"]
         S["wef-schedules<br/>PROVING FOUNDATION<br/>Keeps updating"]
-        E["wef-entries — INDEPENDENT RECURRING FUNCTION<br/>Own refresh; not triggered by schedules completion<br/>Normalize each selected participation once<br/>Inactive participation retained; valid empty = Success"]
+        E["wef-entries — SHARED LINKING MODULE<br/>Independent recurring collection<br/>Horse / rider / trainer / show / schedule identity<br/>Normalize each selected participation once<br/>Inactive participation retained; valid empty = Success"]
         subgraph LIVE["wef-live — independent five-minute collection<br/>Direct show authority; verification blocked by source HTTP 502"]
             L["Authority: wef-shows.shows<br/>Matched source show + TODAY only<br/>All relevant live activity; not limited to CWF entries<br/>Valid empty = Success; archive prior days before retirement"]
             LR["live-rings<br/>Ring IDs / number / name<br/>Current, next, completed groups"]
@@ -48,8 +48,9 @@ flowchart TB
     E -.->|"Available bound entries"| LINK
     B -.->|"Available timing answers"| LINK
     LINK -.->|"Collected team participation plus timing"| TEAM
-    TEAM -.->|"Future verified connection"| C
+    TEAM -.->|"Planned filtered team + timing view; distinct from current sync"| C
     S -->|"Existing read-only sync"| C
+    E -->|"Verified CWF team sync; local helper links; no duplicate fetch"| C
     H -.->|"Reference lookups"| E
     H -.->|"Reference lookups"| W
     R -.->|"Collected results linked to entries/trips"| E

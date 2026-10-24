@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-24T14:50:23.439Z",
+  "classes": [
+    {
+      "id": "recMBGMPBZzTEdzG7",
+      "createdTime": "2026-10-24T11:13:12.000Z",
+      "fields": {
+        "live-groups": [
+          "recveACHNkJIUS3Jq"
+        ],
+        "source-json": "{\"class_group_id\":\"200027997\",\"group_name\":\"1.30m Open Jumper II2b\",\"day\":\"2026-10-24\",\"group_sequence\":\"4\",\"estimated_start_time\":\"11:00:00\",\"jumper_table\":\"USEF Table II.2.b\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"3\",\"classes\":[\"200030429\"],\"classNumbers\":[\"769\"],\"classNames\":[\"1.30m Open Jumper II2b\"],\"class_numbers\":\"769\",\"status\":\"Upcoming\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":\"0\",\"total\":\"1\",\"jo_gone\":\"0\",\"jo_total\":\"0\",\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":\"0\",\"r2_total\":\"0\",\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":\"1792108157\",\"last_updated_class\":\"200030429\",\"recent_updated_classes\":[\"200030429\"],\"ring_id\":\"44\",\"ring\":\"VanKampen Covered Arena\",\"class_numbers_list\":\"769\",\"grid\":\"#Upcoming\",\"trips\":\"1\",\"time\":\"11:00 AM\"}",
+        "collection": [
+          "recn2S4X4HQTGxTwg"
+        ],
+        "source-updated-at": "1792108157",
+        "groups": [
+          "recveACHNkJIUS3Jq"
+        ],
+        "ring": [
+          "recilP5pGpxHX4tK0"
+        ],
+        "class-key": "200000075|2026-10-24|200030429",
+        "show-id": 200000075,
+        "class-name": "1.30m Open Jumper II2b",
+        "class-number": 769,
+        "customer-id": 15,
+        "schedules": [
+          "recKGhiU4vvk2yzbK"
+        ],
+        "last-seen": "2026-10-24T14:37:19.055Z",
+        "detail-available": true,
+        "class-id": 200030429,
+        "date": "2026-10-24"
+      }
+    }
+  ],
+  "entries": []
+}

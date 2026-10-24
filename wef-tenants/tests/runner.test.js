@@ -102,6 +102,13 @@ test('synced consumption preserves old entries and helpers, links new entries, a
  assert.equal(f.calls.some(c=>c.t==='entries'||c.remove==='entries'||c.base===config.ENTRIES_BASE_ID),false);
 });
 test('synced zero-entry collections succeed without requiring a horse or rider',async()=>{const f=consumerFixture({empty:true});const result=await runTenant(f.options);assert.equal(result.ok,true,result.errors.join('\n'));assert.equal(result.rows,0);assert.equal(result.people_fetches,0);assert.equal(result.days.length,4);assert.equal((await f.api.list('collections')).length,4);});
+
+test('normal synced runner keeps inactive participation and helpers while updating only the tenant slice',async()=>{
+ const f=consumerFixture();f.seed('horses',[{'horse-key':'33','horse-id':33,'horse-name':'Horse',disabled:true,'nick-name':'Retained'}]);
+ for(let i=0;i<2;i++){const result=await runTenant({...f.options,tenantSlicesEnabled:true});assert.equal(result.ok,true,result.errors.join('\n'));assert.equal(result.rows,1);assert.equal(result.people_fetches,0);assert.equal(result.tenant_slices.active,0);assert.equal(result.tenant_slices.hidden_inactive,1);const row=(await f.api.list(config.SYNC_ENTRIES_TABLE))[0];assert.equal(row.fields.status,'active');assert.equal(row.fields['active-team'],false);assert.equal(row.fields.horses.length,1);assert.equal((await f.api.list('horses'))[0].fields['nick-name'],'Retained');assert.match((await f.api.list('heartbeat'))[0].fields.summary,/0 active team; 1 hidden/);}
+ const horse=(await f.api.list('horses'))[0];await f.api.upsert('horses','horse-key',[{'horse-key':horse.fields['horse-key'],disabled:false}]);const restored=await runTenant({...f.options,tenantSlicesEnabled:true});assert.equal(restored.ok,true,restored.errors.join('\n'));assert.equal(restored.tenant_slices.active,1);assert.equal((await f.api.list(config.SYNC_ENTRIES_TABLE))[0].fields['active-team'],true);
+});
+test('enabled slices accept empty normal collections without manufacturing private or team records',async()=>{const f=consumerFixture({empty:true});const result=await runTenant({...f.options,tenantSlicesEnabled:true});assert.equal(result.ok,true,result.errors.join('\n'));assert.equal(result.tenant_slices.active,0);assert.equal((await f.api.list(config.SYNC_ENTRIES_TABLE)).length,0);});
 test('incomplete, stale, failed or private-contaminated sync stops consumption without source fallback or old entry edits',async()=>{
  for(const kind of ['missing','stale','failed','private','count','duplicate','link']){const f=consumerFixture();f.seed('entries',[{'entry-key':'untouched','show-id':74}]);
   if(kind==='missing')f.seed(config.SYNC_ENTRIES_TABLE,[]);
@@ -230,4 +237,14 @@ test('rider collision logs exact conflict before either standing table writes or
  const result=await runTenant({...f.options,standingSource,fetchPeople:async()=>{calls++;throw Error('Must not fetch');}});
  assert.equal(result.ok,false);assert.equal(calls,0);assert.equal(f.calls.some(c=>['horses','riders','entries'].includes(c.t)),false);
  const log=(await f.api.list('run-logs'))[0].fields;assert.equal(log.result,'Failed');assert.match(log.errors,/Duplicate riders.rider-name/);assert.match(log.errors,/21 and 22/);
+});
+
+test('CWF recurring plural consumption keeps local schedules/rings and inactive helpers on two fixture runs',async()=>{
+ const f=consumerFixture(),a='75|2026-10-22|123',b='75|2026-10-22|456';
+ f.seed(config.SYNC_SCHEDULES_TABLE,[a,b].map((key,i)=>({'stage-key':key,'show-id':75,date:'2026-10-22','class-id':123,ring:i+1,status:'active'})));
+ const rings=f.data[config.BASE_ID+'|'+config.SYNC_RINGS_TABLE];rings.push({id:'secondRing',fields:{...rings[0].fields,'ring-key':'ring2',ring_id:11,ring_number:2,ring_name:'Ring 2'}});
+ f.data[config.SHARED_BASE_ID+'|rings-helper'].push({id:'secondHelper',fields:{'ring-key':'15|516|id:11',customer_id:15,facility_id:516,ring_id:11,ring_number:2,ring_name:'Ring 2'}});
+ for(const [base,t]of [[config.BASE_ID,config.SYNC_ENTRIES_TABLE],[config.ENTRIES_BASE_ID,'entries']])Object.assign(f.data[base+'|'+t][0].fields,{'schedule-key':'','schedule-keys':JSON.stringify([a,b]),'observation-status':'successful','ring-number':null});
+ f.seed('horses',[{'horse-key':'33','horse-id':33,'horse-name':'Owner horse','nick-name':'Keep',disabled:true}]);
+ for(let i=0;i<2;i++){const r=await runTenant({...f.options,tenantSlicesEnabled:true});assert.equal(r.ok,true,r.errors.join('; '));assert.equal(r.people_fetches,0);assert.equal(r.tenant_slices.hidden_inactive,1);const e=(await f.api.list(config.SYNC_ENTRIES_TABLE))[0];assert.deepEqual(e.fields.schedules,(await f.api.list(config.SYNC_SCHEDULES_TABLE)).map(r=>r.id));assert.equal(e.fields['synced-rings'].length,2);assert.equal((await f.api.list('horses'))[0].fields['nick-name'],'Keep');}
 });

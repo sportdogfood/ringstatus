@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-24T17:00:38.909Z",
+  "flag": "WEF_ENTRIES_MULTIPLE_SCHEDULE_LINKS=true",
+  "readers_ready": [
+    "CWF tested and deployed",
+    "live owner confirmed"
+  ],
+  "files": [
+    {
+      "file": "wef-tenants/schedule-links.js",
+      "sha256": "1f3bf8019ee55880b537b9068813b3ad0b4b3e3efc9d478e24ee9afbe5f39ed0"
+    },
+    {
+      "file": "wef-tenants/entries-consumer.js",
+      "sha256": "d62baefbbd8484869ad52e4bcb68915502f784f4b2657c12cc5f9c3ce07cf60c"
+    },
+    {
+      "file": "wef-tenants/collector.js",
+      "sha256": "2da643cc54c69c9c4950ce792829ee1af582fbe1871a87724c216a0ff8551368"
+    },
+    {
+      "file": "wef-entries/model.js",
+      "sha256": "676894554c39ee4ec53e099cfac1f72899dc2f6c9f99084eab33504743b10bfc"
+    },
+    {
+      "file": "wef-entries/collector.js",
+      "sha256": "ea918ea24f4d9a1bc5406e69ef8fca21e2f67b30dbef53118cf426cae2c4fedf"
+    },
+    {
+      "file": "wef-entries/settings.js",
+      "sha256": "cd8c7ac6e0b9d561b99b4e53a1d2ed74600583c799539ccdcb2b6cecdbfd489c"
+    },
+    {
+      "file": "wef-entries/airtable.js",
+      "sha256": "d284bda35f081ebfb2f48f26b534e6d7008a3b8b93f6f3dcf92d767e3886ade0"
+    }
+  ]
+}

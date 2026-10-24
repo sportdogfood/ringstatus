@@ -961,6 +961,26 @@
           },
           "id": "fld8MUL16dA5pJU4a",
           "name": "entry"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldAOlf5zYAlNRxMx",
+          "name": "participation-link-status"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldGgRu9lNg1EVRju",
+          "name": "participation-link-reason"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldrAayKBHWLOeLi3",
+          "name": "participation-checked-at"
+        },
+        {
+          "type": "singleLineText",
+          "id": "fldmdCswnoWnVwuZV",
+          "name": "participation-verified-at"
         }
       ],
       "views": [

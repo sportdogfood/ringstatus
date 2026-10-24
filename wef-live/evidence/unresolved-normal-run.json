@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-10-24T15:04:06.285Z",
+  "run": "ef0750be-f8ef-4a17-986b-3af89d43bec9",
+  "started": "2026-10-24T14:57:13.096Z",
+  "completed": "2026-10-24T15:03:19.682Z",
+  "ok": true,
+  "counts": {
+    "rings": 5,
+    "groups": 26,
+    "classes": 59,
+    "entries": 267
+  },
+  "unresolved": [
+    {
+      "class_id": 200030333,
+      "message": "No decoded identity for trip 200398390"
+    },
+    {
+      "class_id": 200030429,
+      "message": "No decoded identity for trip 200398240"
+    },
+    {
+      "class_id": 200030330,
+      "message": "No decoded identity for trip 200398389"
+    }
+  ],
+  "runResult": "Partial",
+  "heartbeat": [
+    {
+      "result": "Partial",
+      "at": "2026-10-24T15:03:19.682Z"
+    }
+  ],
+  "errorMessages": [
+    "Unresolved class 200030429: No decoded identity for trip 200398240",
+    "Unresolved class 200030330: No decoded identity for trip 200398389",
+    "Unresolved class 200030333: No decoded identity for trip 200398390"
+  ],
+  "collections": [
+    {
+      "id": "200030333",
+      "status": "unresolved",
+      "message": "Unresolved identity; previous observations and links retained. Not a valid empty collection.",
+      "archive": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030333\\06222b57c9f7c708ae09d0111c8e0c10f7e297808c1a91e7c8fef8c356eed704.json.gz"
+    },
+    {
+      "id": "200030429",
+      "status": "unresolved",
+      "message": "Unresolved identity; previous observations and links retained. Not a valid empty collection.",
+      "archive": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030429\\190372371e8cd1a0a3c60ccda289f06c0f4f3f84cca378d8480b7434ac7edd65.json.gz"
+    },
+    {
+      "id": "200030330",
+      "status": "unresolved",
+      "message": "Unresolved identity; previous observations and links retained. Not a valid empty collection.",
+      "archive": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030330\\607611e9e3ec6adac65a5e738e926e2ad95248b4cc456c1834d5da0d074e112b.json.gz"
+    }
+  ],
+  "preservedClasses": 3,
+  "classesUnchanged": true,
+  "preservedEntries": 28,
+  "entriesUnchanged": true,
+  "attempts": [
+    {
+      "class": 200030333,
+      "archives": 2
+    },
+    {
+      "class": 200030429,
+      "archives": 2
+    },
+    {
+      "class": 200030330,
+      "archives": 2
+    }
+  ],
+  "retirements": 0
+}

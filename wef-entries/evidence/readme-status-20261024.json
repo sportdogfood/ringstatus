@@ -1,0 +1,50 @@
+{
+  "checked_at": "2026-10-24T15:35:20.933Z",
+  "receipt": {
+    "run_id": "d9632f0c-edfe-4027-b300-139a437c44a1",
+    "ok": true,
+    "started": "2026-10-24T15:34:01.872Z",
+    "completed": "2026-10-24T15:34:30.860Z",
+    "rows": 9,
+    "dates": [
+      "2026-10-22",
+      "2026-10-23",
+      "2026-10-24",
+      "2026-10-25"
+    ],
+    "errors": []
+  },
+  "heartbeat": [
+    {
+      "id": "rec98TzDgKwuWWShr",
+      "fields": {
+        "checked-at": "2026-10-24T15:34:30.860Z",
+        "summary": "trainer-feed 8778: Success; 0 selected participation\ntrainer-feed 50121: Success; 4 selected participation\ntrainer-feed 80970: Success; 5 selected participation\nuser-follow main-user: Success; 0 selected participation\nuser-follow user-2: Success; 0 selected participation\nCWF show 200000075; 9 unique active participation; 4 dates. Inactive horses/riders remain collected. Private selections are not team exports.",
+        "show-id": 200000075,
+        "result": "Success",
+        "selected-date": "2026-10-24",
+        "heartbeat-key": "CWF"
+      }
+    }
+  ],
+  "latest_logs": [
+    {
+      "id": "rec9i2vsy6KWnuWpo",
+      "run_id": "d9632f0c-edfe-4027-b300-139a437c44a1",
+      "started": "2026-10-24T15:34:01.872Z",
+      "completed": "2026-10-24T15:34:30.860Z",
+      "result": "Success",
+      "rows": 9,
+      "errors": ""
+    },
+    {
+      "id": "recdWce9j0EBGm1sp",
+      "run_id": "766830ff-8691-42f5-afb6-160085eeae1c",
+      "started": "2026-10-24T15:29:01.867Z",
+      "completed": "2026-10-24T15:29:30.130Z",
+      "result": "Success",
+      "rows": 9,
+      "errors": ""
+    }
+  ]
+}

@@ -42,6 +42,10 @@ const tables = {
   ],
   "live-entries": [
     "live-entry-key",
+    "participation-link-status",
+    "participation-link-reason",
+    "participation-checked-at",
+    "participation-verified-at",
     ...common,
     "trip-id",
     "entry-id",

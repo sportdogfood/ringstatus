@@ -1,0 +1,88 @@
+{
+  "checked_at": "2026-10-24T17:01:59.064Z",
+  "run": "ede4bd03-7b4a-4979-b5fc-89fb745555f0",
+  "ok": true,
+  "links": [
+    {
+      "id": "rec3oCR1w0RuH97ts",
+      "key": "200000075|2026-10-23|200245506|200030347",
+      "before": [
+        "recYjIWjVWpTXQVRS"
+      ],
+      "after": [
+        "recYjIWjVWpTXQVRS"
+      ]
+    },
+    {
+      "id": "recS9VzTKf5Qmp9NA",
+      "key": "200000075|2026-10-24|200245506|200030399",
+      "before": [
+        "reclhlEddCejQJleY"
+      ],
+      "after": [
+        "reclhlEddCejQJleY"
+      ]
+    },
+    {
+      "id": "rece7a25EJJaByJmb",
+      "key": "200000075|2026-10-23|200246109|200030400",
+      "before": [
+        "recf6hkTB6jOrAnVO"
+      ],
+      "after": [
+        "recf6hkTB6jOrAnVO"
+      ]
+    },
+    {
+      "id": "recfyPPjtuktwg40q",
+      "key": "200000075|2026-10-23|200245642|200030347",
+      "before": [
+        "recA4p4foPEkViVDe"
+      ],
+      "after": [
+        "recA4p4foPEkViVDe"
+      ]
+    },
+    {
+      "id": "recnHcn0Ufh52JBwF",
+      "key": "200000075|2026-10-23|200245636|200030347",
+      "before": [
+        "rec7p8EUHAHzTzBoB"
+      ],
+      "after": [
+        "rec7p8EUHAHzTzBoB"
+      ]
+    },
+    {
+      "id": "recq5gSEMJdSDut8s",
+      "key": "200000075|2026-10-24|200241392|200030330",
+      "before": [
+        "rectySMZkXkt0GIed"
+      ],
+      "after": [
+        "rectySMZkXkt0GIed"
+      ]
+    }
+  ],
+  "all_preserved": true,
+  "participation_errors": [
+    {
+      "id": "rec8sFPtfV728zZAr",
+      "run-id": "ede4bd03-7b4a-4979-b5fc-89fb745555f0",
+      "occurred-at": "2026-10-24T16:58:10.717Z",
+      "date": "2026-10-24",
+      "error-key": "ede4bd03-7b4a-4979-b5fc-89fb745555f0|4",
+      "message": "Participation 200000075|2026-10-24|200245506|200030399: Missing, stale or unsuccessful participation observation",
+      "show-id": 200000075
+    },
+    {
+      "id": "recXnWatvuWLU3aBG",
+      "run-id": "ede4bd03-7b4a-4979-b5fc-89fb745555f0",
+      "occurred-at": "2026-10-24T16:58:10.717Z",
+      "date": "2026-10-24",
+      "error-key": "ede4bd03-7b4a-4979-b5fc-89fb745555f0|5",
+      "message": "Participation 200000075|2026-10-24|200241392|200030330: Missing, stale or unsuccessful participation observation",
+      "show-id": 200000075
+    }
+  ]
+}

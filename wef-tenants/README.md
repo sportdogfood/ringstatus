@@ -1,5 +1,24 @@
 # Independent WEF tenant collector
 
+## Plural schedule-link reader - 24 October 2026
+
+The deployed CWF consumer accepts the existing scalar or strict `schedule-keys`
+JSON transport from entries. It resolves every key to a CWF-local synced schedule,
+derives distinct local rings from those schedules, and preserves helper fields,
+roster identities, reciprocal associations and the active-team/private boundaries.
+Array rows require `observation-status=successful`; existing current-show,
+collection, heartbeat and 30-minute participation freshness checks still apply.
+Missing/ambiguous/dropped references stop consumption without clearing prior links
+or falling back to duplicate source collection. Retained links are historical;
+a failed run is not evidence of current eligibility.
+
+Reader deployed before entries writer activation. Normal CWF runs at 13:07 and
+13:12 Eastern on 24 October verified all nine links with no duplicate source fetches;
+see [entries rollout](../wef-entries/evidence/multiple-schedules-20261024/release.md).
+Actual multiple-group source eligibility is not yet proven; no inference from class
+membership is allowed. Helpers and retired `entries` records remain protected.
+
+
 Current entry source (23 October 2026): CWF consumes the native read-only
 `wef-entries.entries` sync (`tbl7ychn5HELB3HTr`), with
 `WEF_TENANTS_ENTRY_SOURCE_MODE=synced`. Duplicate people-endpoint entry fetching
@@ -176,3 +195,15 @@ normal-run verification. Their historical links remain intact; no data is delete
 Use configure-synced-references.js for the new link fields. Do not rerun the
 original initial setup.js against a migrated base: it describes the old layout.
 See docs/coordination/wef-synced-references-20261021.md for current acceptance.
+
+## Active team and roster slices - 24 October 2026
+
+CWF consumes the existing native wef-entries.entries sync. The five-minute
+runner, with WEF_TENANTS_TENANT_SLICES_ENABLED=true, maintains local
+active-team, team-status and team-checked-at fields. Active team contains
+current trainer participation only when neither horse nor rider is disabled
+or source-inactive. All participation and helpers continue to be collected.
+Active roster views on horses and riders exclude both inactivity flags; the
+original Grid views retain everything. Personal-only follows and ownership
+are excluded from the shared CWF sync. These views are not user authentication.
+See evidence/tenant-slices-20261024/release.md for acceptance and live limits.

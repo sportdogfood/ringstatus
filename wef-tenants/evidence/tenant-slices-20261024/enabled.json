@@ -1,0 +1,7 @@
+{
+  "enabled_at": "2026-10-24T15:26:06.695092+00:00",
+  "flag": "WEF_TENANTS_TENANT_SLICES_ENABLED=true",
+  "task": "wef-tenant-cwf-collector",
+  "schedule_changed": false,
+  "manual_runs": 0
+}

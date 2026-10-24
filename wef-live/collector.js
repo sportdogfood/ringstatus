@@ -11,6 +11,7 @@ const clean = (row) =>
 async function runLive({
   api = require("./airtable").airtable(),
   get = sources.get,
+  getStatus = require('./activity').readStatus,
   clock = () => new Date().toISOString(),
   archive = (kind, rows, scope) =>
     require("../wef-tenants/archive").archiveFile(
@@ -25,12 +26,14 @@ async function runLive({
     started: clock(),
     ok: false,
     errors: [],
+    unresolved: [],
+    link_issues: [],
     warnings: [],
+    logging_errors: [],
     archives: [],
     counts: { rings: 0, groups: 0, classes: 0, entries: 0 },
   };
-  let scope,
-    logReady = false;
+  let scope;
   async function log(result) {
     await api.upsert("run-logs", "run-id", [
       {
@@ -68,12 +71,9 @@ async function runLive({
       throw e;
     }
     report.archives.push(a);
-    await log("Running");
     return a;
   }
   try {
-    await log("Running");
-    logReady = true;
     scope = model.scope(
       await api.list("shows", settings.SHOWS_BASE),
       clock(),
@@ -86,8 +86,27 @@ async function runLive({
       report.summary =
         "Success: source-selected show day is not today; no live collection requested.";
     } else {
+      collection: {
+      const liveStatus = require('./activity').statusValue(await getStatus(scope));
+      await keep('source-live-status', {liveStatus});
+      if (!liveStatus) {
+        report.ok = true;
+        report.skipped = 'live-status-false';
+        report.summary = 'Skipped detailed collection: live status is false. Five-minute checks continue.';
+        break collection;
+      }
+      const observed = clock(),
+        groupPayload = await get(sources.endpoints.groups);
+      await keep('source-groups', groupPayload);
+      const plan = model.groups(groupPayload, scope, observed);
+      if (require('./activity').allCompleted(plan.groups)) {
+        report.ok = true;
+        report.skipped = 'all-today-groups-completed';
+        report.summary = `Skipped detailed collection: all ${plan.groups.length} groups for show ${scope.show} on ${scope.date} are completed. Five-minute checks continue.`;
+        break collection;
+      }
       let scheduleRows = null,
-        binder = null;
+        binder = null, sourceSchedules = null, scheduleHealth = null, binderFields = null;
       try {
         scheduleRows = await api.list("wef-schedules.schedules");
       } catch (e) {
@@ -98,17 +117,19 @@ async function runLive({
       }
       try {
         binder = await api.list("wef-entries.entries");
+        binderFields = await api.fieldNames('wef-entries.entries');
       } catch (e) {
         report.warnings.push(
           "Entry reference unavailable; existing links retained: " + e.message,
         );
       }
-      const observed = clock(),
-        groupPayload = await get(sources.endpoints.groups),
-        widgetPayload = await get(sources.endpoints.widget);
-      await keep("source-groups", groupPayload);
+      try {
+        [sourceSchedules,scheduleHealth] = await Promise.all([
+          api.list('schedules',settings.SCHEDULES_BASE), api.list('show-collection',settings.SCHEDULES_BASE),
+        ]);
+      } catch(e) { report.warnings.push('Participation schedule health unavailable: '+e.message); }
+      const widgetPayload = await get(sources.endpoints.widget);
       await keep("source-widget", widgetPayload);
-      const plan = model.groups(groupPayload, scope, observed);
       model.ringState(widgetPayload, scope, plan);
       const entries = [],
         datasets = [];
@@ -117,11 +138,14 @@ async function runLive({
         try {
           let normalized;
           for (let attempt=0; attempt<2; attempt++) {
-            const [detail, decoded] = await Promise.all([
+            const responses = await Promise.allSettled([
               get(sources.endpoints.detail(scope, c['class-id'])),
               get(sources.endpoints.decoded(scope, c['class-id']), true),
             ]);
-            await keep('class-' + c['class-id'], {detail,decoded});
+            const [detail, decoded] = responses.map(r=>r.status==='fulfilled'?r.value:null);
+            const sourceErrors = responses.filter(r=>r.status==='rejected').map(r=>r.reason?.message || String(r.reason));
+            await keep('class-' + c['class-id'], {detail,decoded,...(sourceErrors.length?{sourceErrors}:{})});
+            if (sourceErrors.length) throw Error(sourceErrors.join('; '));
             try { normalized=model.classDetail(detail,decoded,scope,c,clock());break; }
             catch(error) {
               if(error.code!=='LIVE_IDENTITY_SNAPSHOT_MISMATCH'||attempt===1)throw error;
@@ -138,7 +162,8 @@ async function runLive({
           });
         } catch (e) {
           if (e.auditFailure) throw e;
-          report.errors.push("Class " + c["class-id"] + ": " + e.message);
+          report.unresolved.push({class_id:c['class-id'], message:e.message,
+            status:e.code === 'LIVE_IDENTITY_SNAPSHOT_MISMATCH' ? 'unresolved' : 'error'});
         }
       }
       // A failed archive or identity check prevents replacement of that class. No cleanup is inferred.
@@ -186,6 +211,18 @@ async function runLive({
             ? "Validated source data"
             : "Success: zero rows",
           errors: "",
+        });
+      }
+      for (const item of report.unresolved) {
+        const evidence = report.archives.filter(a => a.kind === 'class-' + item.class_id).at(-1);
+        collections.push({
+          'collection-id': model.key(scope.show, scope.date, 'class', item.class_id),
+          'show-id': scope.show, date: scope.date, 'source-kind': 'class',
+          'source-id': String(item.class_id), endpoint: sources.endpoints.detail(scope,item.class_id),
+          started: report.started, completed: clock(), status: item.status,
+          'archive-file': evidence.file,
+          message: `${item.status === 'unresolved' ? 'Unresolved identity' : 'Class collection error'}; previous observations and links retained. Not a valid empty collection.`,
+          errors: item.message,
         });
       }
       const savedCollections = await api.upsert(
@@ -239,12 +276,14 @@ async function runLive({
       const classRows = await api.upsert(
         "live-classes",
         "class-key",
-        plan.classes.map((c) => ({
+        plan.classes.map((c) => report.unresolved.some(u => u.class_id === c['class-id']) &&
+          old['live-classes'].some(r => r.fields['class-key'] === c['class-key'])
+          ? {'class-key': c['class-key']} : ({
           ...clean(c),
           ring: [ringId(c._ring)],
           groups: c._groups.map(groupId),
           ...(scheduleRows ? { schedules: schedules(c) } : {}),
-          collection: datasets.some(
+          collection: report.unresolved.some(u => u.class_id === c['class-id']) || datasets.some(
             (d) => d.kind === "class" && d.id === c["class-id"],
           )
             ? collection("class", c["class-id"])
@@ -253,12 +292,19 @@ async function runLive({
       );
       const classId = (k) =>
         classRows.find((r) => r.fields["class-key"] === k).id;
+      const preservedClassIds = new Set(old['live-classes']
+        .filter(r=>report.unresolved.some(u=>u.class_id===r.fields['class-id']))
+        .map(r=>r.id));
       await api.upsert(
         "live-groups",
         "group-key",
         plan.groups.map((g) => ({
           "group-key": g["group-key"],
-          classes: g._classes.map(classId),
+          classes: [...new Set([
+            ...g._classes.map(classId).filter(id=>!preservedClassIds.has(id)),
+            ...(old['live-groups'].find(r=>r.fields['group-key']===g['group-key'])?.fields.classes || [])
+              .filter(id=>preservedClassIds.has(id)),
+          ])],
           ...(scheduleRows ? {schedules: [...new Set(g._classes.flatMap(k =>
             schedules(plan.classes.find(c => c['class-key'] === k), [g['group-key']])))]} : {}),
         })),
@@ -277,23 +323,31 @@ async function runLive({
         "live-entries",
         "live-entry-key",
         entries.map((e) => {
-          const matches = (binder || []).filter(
-            (r) => r.fields["entry-key"] === e["entry-key"],
-          );
-          if (matches.length > 1)
-            report.warnings.push("Ambiguous binder " + e["entry-key"]);
+          const previous=old['live-entries'].find(r=>r.fields['live-entry-key']===e['live-entry-key'])?.fields || {};
+          const resolved=require('./participation').resolve({entry:e,previous,binder,
+            localSchedules:scheduleRows,sourceSchedules,health:scheduleHealth,
+            arrayFieldPresent:binderFields?.includes('schedule-keys'),
+            observationField:binderFields?.includes('last-seen')?'last-seen':null,
+            observationStatusField:binderFields?.includes('observation-status')?'observation-status':null,now:clock()});
+          if(resolved.issue)report.link_issues.push({entry_key:e['entry-key'],message:resolved.issue});
           return {
             ...clean(e),
             class: [classId(e._class)],
-            ...(binder
-              ? { entry: matches.length === 1 ? [matches[0].id] : [] }
-              : {}),
+            ...resolved.fields,
             collection: collection("class", Number(e._class.split("|")[2])),
           };
         }),
       );
+      const uncertain = old['live-entries'].filter(r=>r.fields.date===scope.date &&
+        Number(r.fields['show-id'])===scope.show && report.unresolved.some(u=>u.class_id===Number(String(r.fields['entry-key']).split('|')[3])));
+      if(uncertain.length) await api.upsert('live-entries','live-entry-key',uncertain.map(r=>({
+        'live-entry-key':r.fields['live-entry-key'],
+        'participation-link-status':r.fields.entry?.length?'historical':'unresolved',
+        'participation-link-reason':'Live class collection unresolved; existing observation and links retained',
+        'participation-checked-at':clock(),
+      })));
       // Retirement occurs only after all source and identity collections succeeded and archives were verified.
-      if (!report.errors.length && api.retire)
+      if (!report.errors.length && !report.unresolved.length && !report.link_issues.length && api.retire)
         for (const table of [
           "live-entries",
           "live-classes",
@@ -316,6 +370,9 @@ async function runLive({
       };
       report.ok = !report.errors.length;
       report.summary = `Show ${scope.show}; ${scope.date}; ${plan.rings.length} rings, ${plan.groups.length} groups, ${plan.classes.length} classes, ${entries.length} live trips. ${report.warnings.join("; ")}`;
+      if (report.unresolved.length) report.summary += ' Classes requiring attention: ' + report.unresolved.map(u=>`${u.class_id} (${u.status})`).join(', ') + '; existing observations and links retained.';
+      if(report.link_issues.length) report.summary += ` ${report.link_issues.length} participation links unresolved/historical; observations continue.`;
+      }
     }
   } catch (e) {
     report.errors.push(e.message);
@@ -324,23 +381,23 @@ async function runLive({
       e.message;
   }
   report.completed = clock();
-  if (logReady)
     try {
-      await log(report.ok ? "Success" : "Failed");
+      await log(report.ok ? (report.unresolved.length || report.link_issues.length ? "Partial" : report.skipped ? "Skipped" : "Success") : "Failed");
+    } catch (e) { report.logging_errors.push('run-logs: ' + e.message); }
+    try {
       await api.upsert("heartbeat", "heartbeat-key", [
         {
           "heartbeat-key": "wef-live",
           "checked-at": report.completed,
           "show-id": scope?.show ?? null,
           date: scope?.date || "",
-          result: report.ok ? "Success" : "Failed",
+          result: report.ok ? (report.unresolved.length || report.link_issues.length ? "Partial" : report.skipped ? "Skipped" : "Success") : "Failed",
           summary: report.summary,
           errors: report.errors.join("\n"),
         },
       ]);
     } catch (e) {
-      report.ok = false;
-      report.errors.push("Completion evidence: " + e.message);
+      report.logging_errors.push('heartbeat: ' + e.message);
     }
   return report;
 }

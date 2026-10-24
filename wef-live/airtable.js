@@ -15,6 +15,7 @@ function airtable({
       new Set([...writable, "wef-schedules.schedules", "wef-entries.entries"]),
     ],
     [settings.SHOWS_BASE, new Set(["shows"])],
+    [settings.SCHEDULES_BASE, new Set(['schedules','show-collection'])],
   ]);
   async function call(base, table, method = "GET", body, query = "") {
     if (!readable.get(base)?.has(table)) throw Error("Unapproved read target");
@@ -168,6 +169,16 @@ function airtable({
         throw Error("Incomplete retirement");
     }
   }
-  return { list, upsert, call, retire };
+  async function fieldNames(table) {
+    if(!readable.get(settings.BASE_ID).has(table)) throw Error('Unapproved metadata target');
+    await pause(250);
+    const r=await request(`https://api.airtable.com/v0/meta/bases/${settings.BASE_ID}/tables`,{
+      headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
+    if(!r.ok) throw Error('Reference schema HTTP '+r.status);
+    const d=await r.json(),t=d.tables.find(t=>t.name===table);
+    if(!t)throw Error('Missing reference schema');
+    return t.fields.map(f=>f.name);
+  }
+  return { list, upsert, call, retire, fieldNames };
 }
 module.exports = { airtable };

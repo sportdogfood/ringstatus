@@ -70,7 +70,7 @@
     "normalizer.js": "d3ce0403adb64799908aa6a270243558976a644b7aa6f0dfa208c6452784a3b0",
     "package-lock.json": "dfad56209c7eb6a1fc6161eafeaf2bae588505f7516af5780b6a3c64c1c0faae",
     "package.json": "f962562aebe17f715806281e61236d215419c098cfa005e8c32cdf97d90ee1fe",
-    "README.md": "515e5eb0e7181364c77e639581b51e343817216b5cc0430c8fd3f691f8b0e359",
+    "README.md": "f0e393433e8473e1f20f47a27e3aac6685509149a208f7748f16a0b2445c8b4c",
     "repeated-group-tests.txt": "7c02a3829ac49321724afcd8981812e5b0878a281221fcbdd021822adc069eee",
     "repeated-group-verification.md": "e046abc2056c4b0067a86317b906abc7eb1f0adbd883324461b269d32ef40c11",
     "run.ps1": "d9736ea25998bbcbedaaa92e20ff0c23016f343a2d2174047c166fa0e9ff8ca3",
@@ -98,7 +98,7 @@
     "tests/schedule_normalizer_machine_key.test.js": "59d194d4ce2361fde25112287a8f0bce866203e5015d1ea54e460eea0dfb7705",
     "tests/fixtures/rendered-vankampen-20261016.html": "6a5eb8e1ee25f28a7f2574fbcb1d395b6315bc01ee454cc8d53d38a78358011e",
     "tests/fixtures/schedule-collector.js": "b5a5ce7f00100585f105687108bf97821426cfdfa75aef493b0b5084e650a428",
-    "collect.js": "ca81e5dc7da4f8134c8485e961d543fe312954e0d8fce770b35d9ef41766be01",
+    "collect.js": "dc420c8b139698fe7d1275aca09df857a0bc3c802c9323b6325d21600d1985a0",
     "store.js": "36af40ab6cd7e834d8b94a1dc2e7a90e5ad2e0ac67482680bc8548c857d899ca",
     "run-logs.js": "7f7fc6090c7e3b6267302c978146c70b1b637064f5786233d4b834fa19b75ed8",
     "tests/schedules_standalone.test.js": "a98c24e924e48b491f4dd7c349cd678c99f1a1244a0681014f108bb8201339b3",
@@ -116,7 +116,9 @@
     "tests/show-index.test.js": "9659c1c0fb3fe44b070c605d46c51d72d05e00c22b5d9188c626a4eb7e821d0c",
     "airtable-read.js": "2bd48f428dc70b2915c67292d530347bddc1df05357ab484ed5713ff6b121107",
     "tests/airtable-read.test.js": "514c44b8e5f4dcc02dc6ea8f866b3652cb288d6baf8d1525d677fc4b3a106373",
-    "tests/runner-output.test.js": "fe5c0ac9e3da691bc8f2cd90e9714a4a3e940749f37e5c64a7d93f03f98626bc"
+    "tests/runner-output.test.js": "fe5c0ac9e3da691bc8f2cd90e9714a4a3e940749f37e5c64a7d93f03f98626bc",
+    "completion-guard.js": "3f74b83ba10f026fe98407261ffc1fd8052c4995d80a48c5f2c38817a9293fa5",
+    "tests/completion-guard.test.js": "c267116756492bf9734a30b3a54acb9abd0b8b3e39ab3a656ccc3041b0e0beb3"
   },
   "verification": {
     "checked_at": "2026-10-15T12:28:06.809273-04:00",
@@ -296,6 +298,20 @@
       "network_cause": "Original network interruption underlying cause not captured/unconfirmed; no network configuration or credential changes. Sustained outages still fail explicitly.",
       "source_value_comparison": "Source-owned schedule values checked against respective run archives; obsolete frozen14:22 snapshot comparison stopped without code patches.",
       "evidence": "evidence/fetch-failure-20261020"
+    },
+    "incomplete_run_release": {
+      "at": "2026-10-24T16:06:55.828Z",
+      "tests_passed": 134,
+      "normal_runs": [
+        "normal-run-1200.json",
+        "normal-run-1205.json"
+      ],
+      "evidence": "runtime/incomplete-run-release-20261024",
+      "manual_runs": 0,
+      "record_repairs": 0,
+      "task_changed": false,
+      "existing_interval": "PT5M",
+      "result": "PASS"
     }
   }
 }

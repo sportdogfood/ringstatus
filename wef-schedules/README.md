@@ -1,8 +1,103 @@
 # Independent WEF schedules staging
-Current verified deployment:15 October2026.42 local checks passed. Normal13:40 and13:45 Eastern runs completed successfully. Own five-minute Windows task remains enabled (Interactive account, IgnoreNew). No manual business runs. Existing shared workflows remain untouched.
+
+## Current operating agreement - 24 October 2026
+
+This section supersedes dated status claims below. It locks the agreed ownership
+and maintenance plan; it does not freeze live source data or authorize code changes.
+
+**Completion reporting correction deployed and verified - 24 October 2026, 12:06 Eastern.**
+The collector now defaults to exit 1 until its existing final run-log/heartbeat
+path returns a terminal report. Exiting while still pending writes an explicit
+incomplete_run error to the local runner log and returns failure to Task Scheduler.
+The guard does not retry collection or change historical Airtable records. If a
+process cannot finish reporting, its prior Running row may remain; heartbeat
+continues to represent the last verified completion. Use task result/local errors
+alongside Airtable freshness instead of treating exit 0 alone as completion proof.
+
+All 134 offline tests passed, including unresolved finalization, explicit premature
+zero exit, rejected completion and real entry-point fixtures with inert adapters.
+Normal 12:00 and 12:05 triggers completed at 12:01:48 and 12:05:57, exit 0, each
+with the new completion marker and matching finished Airtable log/heartbeat.
+Both collected 214 active rows, all four dates, zero failed dates or errors; only
+the owner-confirmed empty October 22 Warning. Fault behavior is fixture-proven;
+no production failure was induced. Collection/adapters/archive logic, launcher
+and task XML are unchanged; the observed existing cadence remains five minutes
+(PT5M), despite the approval wording referring to three minutes.
+
+Evidence: runtime/incomplete-run-release-20261024/ (tests.txt, deployment.json,
+normal-run-1200.json, normal-run-1205.json and identical task-before/task-after XML).
+No manual collector runs or record repairs. The exact network/runtime cause of
+the historical 11:20 interruption remains unproven; this release fixes its false
+successful-exit behavior, not an asserted network root cause.
+
+### Confirmed empty date - do not reopen as an unexplained error
+
+The owner confirmed on 24 October 2026 that **22 October 2026 has no scheduled
+classes for show 200000075, 2026 ESP Fall III (22-25 October)**. A validated source
+response with zero rows for that exact show/date is an accepted successful empty
+collection. The existing empty_show_day Warning is informational in this case,
+not a failed date. This confirmation does not excuse failed, invalid, missing or
+stale source responses, or apply automatically to another show/date.
+
+Normal run-logs already record the dated zero-row result and empty_show_day
+message. This README records the owner's confirmation so it need not be requested
+again. Logging behavior and historical records have not been changed.
+
+### Evidence recorded 24 October 2026, Eastern
+
+| Observation | Evidence |
+| --- | --- |
+| Confirmed Airtable completion | 11:15:05.507-11:16:00.217; run 96cfcb93-367e-4d2b-9e52-aaed637298d2; heartbeat and run-log agree; 214 active rows, four complete dates, zero failed dates, no errors, five archive entries. Only warning: confirmed empty October 22. |
+| Newest task/checkpoint | 11:20:01 scheduled trigger; wrapper 11:20:02-11:21:40, exit 0; runtime/focus.json reports valid 80/95/0/39 rows for October 24/25/22/23. |
+| Historical completion discrepancy (not repaired) | Run 26a290ac-3eb4-4863-acce-e451cc555619, Airtable record recgnCyNE4EjQjpOG, remains Running with archive details through 11:20:57; heartbeat remains on preceding run. Saved checkpoint alone does not prove final log/heartbeat publication. |
+
+Airtable: [heartbeat](https://airtable.com/appUq5Qz9kARqFija/tblj077efYbhlznOJ)
+and [run-logs](https://airtable.com/appUq5Qz9kARqFija/tbluqwuXxOvgDRUBq).
+Local evidence: runtime/focus.json and runtime/collector-2026-10-24.log.
+These are dated observations, not a promise that future runs have completed.
+
+## Responsibilities and locked plan
+
+| Owner | Responsibility |
+| --- | --- |
+| wef-shows | Canonical default show, date range and source-selected context. Schedules reads this authority; it does not rediscover or trigger shows. |
+| This wef-schedules chat | Dated schedules, groups/classes, daily rings, stable source keys and links; archive protection; collection status, heartbeat and run-logs in appUq5Qz9kARqFija. |
+| Scheduled runner | Executes the existing five-minute collector. Codex inspects evidence and makes separately approved repeatable changes; it does not substitute manual execution or record repairs. |
+| wef-entries | Tenant-selected participation and links to schedules; CWF consumption/helper migration belongs to its owner. |
+| wef-live | Independent live observations and trip identities; reads schedule/entry references without triggering their collectors. |
+| wef-records-coordinator | Records contracts, acknowledgments and cross-module gaps. |
+
+Preserve schedules.stage-key unchanged; ring is ring number, class-number is a
+display number, and status active/dropped is retention state. Source-selected day
+is not automatically TODAY. Consumers resolve native links to destination-local
+synced records. Entries' full sync parity includes retained dropped rows, while
+active participation matching excludes them. Freshness comes from completed
+collection/heartbeat evidence, not unchanged row changed-at.
+
+Remaining plan, without expanding implementation scope:
+
+- COMPLETE: fail incomplete invocations visibly, verified through two normal runs.
+  Preserve the historical 11:20 evidence; do not repair its record. A future actual
+  failure requires diagnosis before separately authorized edits or retries.
+- Keep the five-minute cadence, source keys, existing links and archive-before-delete
+  protection. No redesign or repeat deployment of completed work.
+- Next planned routine code review: Monday 26 October, 9:00 a.m. Eastern.
+- Desktop isolation remains unresolved: the task still uses Interactive logon.
+  Hidden launch arguments do not prove execution outside the desktop session.
+- Coordinate multiple valid schedule associations and consumer freshness rules
+  with entries/live owners; no guessed joins or changes to their collectors.
+
+Detailed accepted ownership and remaining downstream gaps:
+[owner acknowledgments](../docs/coordination/wef-records-owner-acknowledgments-20261023.md).
+
+## Historical deployment reference
+
+The following 15 October deployment figures are historical, not current counts.
+The then-observed current schedule count was 473; the table subsequently became
+show-collection. Later sections record the rename and subsequent releases.
 
 ## Airtable
-Base appUq5Qz9kARqFija. schedules holds one current row per show/date/existing source schedule key.473 rows currently; collections holds one latest status per show/day (4 currently), updated in place. Historical snapshots are no longer multiplied in Airtable.
+Base appUq5Qz9kARqFija. schedules holds one current row per show/date/existing source schedule key.At the 15 October checkpoint, 473 rows were present; collections held one latest status per show/day (4 then), updated in place. Historical snapshots are no longer multiplied in Airtable.
 Readable fields: show-id,date,ring,group-id,group,sequence,class-id,class-number,class-name,type,sequence-type,start-time,end-time,total-trips,completed-trips,status,changed-at. Missing source values remain blank. status is active or dropped. The existing stage-key, dataset-id and row-json provide stable addressing, complete source evidence and archive integrity; they are not extra user input requirements. Source-owned columns refresh from SGL; unrelated columns are not modified. Existing manual source overrides remain private and show-scoped.
 Check collections status before treating a day as successfully refreshed. Failed retrieval is distinct from a successful empty date; empty in-range days warn. Do not invent days between shows. Default-show logs record previous/current IDs/ranges and phase; all days of the discovered default show are collected even before its start.
 
@@ -15,7 +110,7 @@ Only this package is deployed. Never promote the superseded repository-root prot
 Token rotation is excluded from semantic comparison; full saved fingerprints still verify integrity. Latest source payload is retained in the private cache. Real changes retain archive history while updating the same Airtable record. Separate tests cover adds/drops/reactivation, failed fetches, interrupted storage, default-show gaps and archive preservation. Live proof covers the two observed normal runs, not unobserved future show transitions.
 
 ## Evidence and resume
-runtime/current-staging-verification.json is the latest acceptance evidence; runtime/deployment-verification.json is the deployment checkpoint. See docs/coordination/wef-schedules-only-activation-plan-20261015.md in the main repository for approval/failure history. Source-manifest.json contains exact private-package and protected-file hashes. The separate maintenance chat remains stopped; parent completed this release before handoff.
+runtime/current-staging-verification.json is the historical 15 October acceptance evidence; runtime/deployment-verification.json is the deployment checkpoint. See docs/coordination/wef-schedules-only-activation-plan-20261015.md in the main repository for approval/failure history. Source-manifest.json contains exact private-package and protected-file hashes. The separate maintenance chat remains stopped; parent completed this release before handoff.
 
 
 ## Heartbeat

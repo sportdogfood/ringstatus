@@ -1,0 +1,1059 @@
+<script id="lpx-shared-slider-runtime-v5">
+(function(){
+  'use strict';
+  if(window.__LPX_SHARED_SLIDER_V5__)return;
+  window.__LPX_SHARED_SLIDER_V5__=1;
+  function update(section){
+    var lane=section&&section.querySelector('[data-lpt-slider-lane]');
+    var group=section&&section.querySelector('[data-lpt-slider-controls]');
+    if(!lane||!group)return;
+    var previous=group.querySelector('[data-lpt-slider-prev]');
+    var next=group.querySelector('[data-lpt-slider-next]');
+    var overflow=lane.scrollWidth>lane.clientWidth+2;
+    var atStart=lane.scrollLeft<=2;
+    var atEnd=lane.scrollLeft+lane.clientWidth>=lane.scrollWidth-2;
+    group.hidden=!overflow;
+    if(previous){previous.hidden=!overflow||atStart;previous.setAttribute('aria-disabled',String(!overflow||atStart));}
+    if(next){next.hidden=!overflow||atEnd;next.setAttribute('aria-disabled',String(!overflow||atEnd));}
+  }
+  function init(){
+    document.querySelectorAll('.lpt-shell').forEach(function(root){
+      root.querySelectorAll('.lpt-section').forEach(function(section){
+        var lane=section.querySelector('[data-lpt-slider-lane]');
+        if(!lane)return;
+        lane.addEventListener('scroll',function(){update(section);},{passive:true});
+        update(section);
+      });
+      root.addEventListener('click',function(event){
+        var control=event.target.closest('[data-lpt-slider-prev],[data-lpt-slider-next]');
+        if(!control||!root.contains(control))return;
+        var section=control.closest('.lpt-section');
+        var lane=section&&section.querySelector('[data-lpt-slider-lane]');
+        if(!lane)return;
+        event.preventDefault();
+        var card=lane.querySelector('.lpt-card');
+        var laneStyle=getComputedStyle(lane);
+        var gap=parseFloat(laneStyle.columnGap||laneStyle.gap)||0;
+        var step=card?card.getBoundingClientRect().width+gap:lane.clientWidth;
+        lane.scrollBy({left:control.matches('[data-lpt-slider-prev]')?-step:step,behavior:'smooth'});
+      });
+    });
+    window.addEventListener('resize',function(){document.querySelectorAll('.lpt-section').forEach(update);},{passive:true});
+  }
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init,{once:true}):init();
+})();
+</script>
+<script id="lpx-shared-contact-runtime-v1">
+(function(){
+  'use strict';
+  if(window.__LPX_SHARED_CONTACT_V1__)return;
+  window.__LPX_SHARED_CONTACT_V1__=1;
+  function setOpen(root,open){
+    var panel=root&&root.querySelector('[data-lpt-contact]');
+    if(!panel)return;
+    panel.classList.toggle('lpt-contact-panel-open',open);
+    panel.setAttribute('aria-hidden',String(!open));
+    root.querySelectorAll('[data-lpt-contact-toggle]').forEach(function(toggle){toggle.setAttribute('aria-expanded',String(open));});
+  }
+  function init(){
+    document.querySelectorAll('.lpt-shell').forEach(function(root){
+      setOpen(root,false);
+      root.addEventListener('click',function(event){
+        var toggle=event.target.closest('[data-lpt-contact-toggle]');
+        var close=event.target.closest('[data-lpt-contact-close]');
+        if(!toggle&&!close)return;
+        event.preventDefault();
+        var panel=root.querySelector('[data-lpt-contact]');
+        setOpen(root,toggle?!panel.classList.contains('lpt-contact-panel-open'):false);
+      });
+    });
+    document.addEventListener('keydown',function(event){
+      if(event.key!=='Escape')return;
+      document.querySelectorAll('.lpt-shell').forEach(function(root){setOpen(root,false);});
+    });
+  }
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init,{once:true}):init();
+})();
+</script>
+<script id="lp-engine-shared-loader-v1">
+(function () {
+"use strict";
+if (window.LPEngine && window.LPEngine.version === "1.2.9") return;
+var VERSION = "1.2.9";
+var SCHEMA_VERSION = "lp-usef-classes-v1.6";
+var CACHE_KEY = "lp-usef-classes-v1";
+var SESSION_KEY = "lp-engine-session-fingerprint-v1";
+var SOURCE_PATH = "/engine-data";
+var CACHE_TTL_MS = 12 * 60 * 60 * 1000;
+var REQUIRED_REFERENCES = ["horses", "competitions", "heights", "years", "disciplines", "skills", "results", "riders", "playlists"];
+var state = "idle";
+var data = null;
+var index = null;
+var pending = null;
+function clean(value) {
+return String(value == null ? "" : value).replace(/\s+/g, " ").trim();
+}
+function normalize(value) {
+return clean(value)
+.toLowerCase()
+.replace(/&/g, " and ")
+.replace(/[^a-z0-9]+/g, " ")
+.trim()
+.replace(/\s+/g, " ");
+}
+function typeKey(value) {
+return normalize(value).replace(/\s+/g, "-");
+}
+function text(root, selector) {
+var node = root && root.querySelector(selector);
+return node ? clean(node.textContent) : "";
+}
+function attributeOrText(root, selector, attributeName) {
+if (!root) return "";
+var node = root.matches && root.matches(selector) ? root : root.querySelector(selector);
+return node ? clean(node.getAttribute(attributeName) || node.textContent) : "";
+}
+function texts(root, selector) {
+return Array.prototype.map.call(
+root ? root.querySelectorAll(selector) : [],
+function (node) { return clean(node.textContent); }
+).filter(Boolean);
+}
+function uniqueText(values) {
+var seen = Object.create(null);
+return values.filter(function (value) {
+var normalized = normalize(value);
+if (!normalized || seen[normalized]) return false;
+seen[normalized] = true;
+return true;
+});
+}
+function uniqueKeys(values) {
+var seen = Object.create(null);
+return values.filter(function (value) {
+var canonical = clean(value);
+if (!canonical || seen[canonical]) return false;
+seen[canonical] = true;
+return true;
+});
+}
+function matchToken(value) {
+return clean(value).toLowerCase();
+}
+function uniqueMatchText(values) {
+var seen = Object.create(null);
+return values.map(clean).filter(function (value) {
+var token = matchToken(value);
+if (!token || seen[token]) return false;
+seen[token] = true;
+return true;
+});
+}
+function numeric(value) {
+var match = clean(value).match(/-?\d+(?:\.\d+)?/);
+return match ? Number(match[0]) : null;
+}
+function isoDate(value) {
+var timestamp = Date.parse(clean(value));
+return Number.isFinite(timestamp) ? new Date(timestamp).toISOString().slice(0, 10) : "";
+}
+function hash(value) {
+var result = 2166136261;
+for (var i = 0; i < value.length; i += 1) {
+result ^= value.charCodeAt(i);
+result = Math.imul(result, 16777619);
+}
+return (result >>> 0).toString(36);
+}
+function readLink(root, selector) {
+var node = root && root.querySelector(selector);
+return node ? clean(node.getAttribute("href") || node.textContent) : "";
+}
+function referenceColor(node) {
+var colorNode = node && node.querySelector("[data-ref-color]");
+if (!colorNode) return "";
+var direct = clean(colorNode.getAttribute("data-ref-color") || colorNode.textContent);
+if (direct) return direct;
+var style = clean(colorNode.getAttribute("style"));
+var match = style.match(/(?:background-color|color)\s*:\s*(#[0-9a-f]{3,8}|rgba?\([^)]*\))/i);
+return match ? clean(match[1]) : "";
+}
+function parseReferenceItem(node, type, position) {
+var refKey = text(node, "[data-ref-key]");
+if (!refKey) return null;
+return {
+id: type + "-" + refKey,
+key: refKey,
+sourceKey: refKey,
+label: text(node, "[data-ref-label]"),
+display: text(node, "[data-ref-display]"),
+displaySafe: text(node, "[data-ref-display-safe]"),
+showName: text(node, "[data-ref-show-name]"),
+aliasesText: text(node,"[data-ref-aliases]"),
+aliases: uniqueText(text(node,"[data-ref-aliases]").split(/[,;|]/)),
+sort: numeric(text(node, "[data-ref-sort]")),
+usef: text(node, "[data-ref-usef]"),
+usefLink: readLink(node, "[data-ref-usef-link]"),
+usefLinkText: text(node, "[data-ref-usef-link-text]"),
+hasVideo: text(node, "[data-ref-has-video]"),
+favorite: text(node, "[data-ref-favorite]"),
+playlistId:text(node,"[data-ref-playlist-id]"),horseKey:text(node,"[data-ref-horse]"),cmsLink:readLink(node,"[data-cms-link]"),cmsLinkText:text(node,"[data-cms-link-text]"),playlistUrl:text(node,"[data-ref-link-text]"),
+color: referenceColor(node),
+sourcePosition: position
+};
+}
+function parseAggregateItem(node,position) {
+var key=text(node,"[data-agg-metric-key]");
+if(!key)return null;
+var colorNode=node.querySelector("[data-agg-color]");
+var color="";
+if(colorNode){color=clean(colorNode.getAttribute("data-agg-color")||colorNode.textContent);if(!color){var match=clean(colorNode.getAttribute("style")).match(/(?:background-color|color)\s*:\s*(#[0-9a-f]{3,8}|rgba?\([^)]*\))/i);color=match?clean(match[1]):""}}
+return{id:"aggs-"+key,key:key,sourceKey:text(node,"[data-agg-source-key]"),label:text(node,"[data-agg-label]"),display:text(node,"[data-agg-label]"),displaySafe:"",showName:"",aliases:[],sort:null,usef:"",usefLink:"",usefLinkText:"",hasVideo:"",favorite:"",color:color,calculation:text(node,"[data-agg-calculation]"),outputId:text(node,"[data-agg-output-id]"),sourcePosition:position};
+}
+function parseReferences(doc) {
+var groups = Object.create(null);
+doc.querySelectorAll("[data-lp-reference]").forEach(function (list) {
+var type = typeKey(list.getAttribute("data-lp-reference"));
+if (!type || type === "classes") return;
+if (!groups[type]) groups[type] = [];
+list.querySelectorAll('[data-ref-item="' + type + '"]').forEach(function (node) {
+var item=type==="aggs"?parseAggregateItem(node,groups[type].length):parseReferenceItem(node,type,groups[type].length);
+if (item) groups[type].push(item);
+});
+});
+REQUIRED_REFERENCES.forEach(function (type) {
+if (!groups[type]) groups[type] = [];
+});
+return groups;
+}
+function buildReferenceLookups(references) {
+return Object.keys(references).reduce(function (result, type) {
+var lookup = Object.create(null);
+references[type].forEach(function (item) {
+uniqueMatchText([item.key, item.label])
+.forEach(function (candidate) {
+var token = matchToken(candidate);
+if (!lookup[token]) lookup[token] = [];
+if (lookup[token].indexOf(item) === -1) lookup[token].push(item);
+});
+});
+result[type] = lookup;
+return result;
+}, Object.create(null));
+}
+function noteResolution(diagnostics, type, status, values) {
+if (!diagnostics[type]) diagnostics[type] = { unresolved: 0, ambiguous: 0, samples: [] };
+diagnostics[type][status] += 1;
+var sample = uniqueText(values).join(" | ");
+if (sample && diagnostics[type].samples.length < 10 && diagnostics[type].samples.indexOf(sample) === -1) {
+diagnostics[type].samples.push(sample);
+}
+}
+function resolveOne(values, type, lookups, diagnostics) {
+var candidates = uniqueMatchText(values);
+if (!candidates.length) return null;
+var lookup = lookups[type] || Object.create(null);
+var matches = [];
+candidates.forEach(function (candidate) {
+(lookup[matchToken(candidate)] || []).forEach(function (item) {
+if (matches.indexOf(item) === -1) matches.push(item);
+});
+});
+if (matches.length === 1) return matches[0];
+if (matches.length > 1) noteResolution(diagnostics, type, "ambiguous", candidates);
+return null;
+}
+function resolveMany(values, type, lookups, diagnostics) {
+return uniqueMatchText(values).map(function (value) {
+return resolveOne([value], type, lookups, diagnostics);
+}).filter(Boolean);
+}
+function parseClasses(doc, references) {
+var duplicateCounts = Object.create(null);
+var diagnostics = Object.create(null);
+var lookups = buildReferenceLookups(references);
+var classes = Array.prototype.map.call(
+doc.querySelectorAll("[data-lp-class-row]"),
+function (node, position) {
+var classRecId = attributeOrText(node, "[data-class-rec-id]", "data-class-rec-id");
+var usefId = attributeOrText(node, "[data-ref-usef]", "data-ref-usef");
+var youtubeId = attributeOrText(node, "[data-class-youtubeId]", "data-class-youtubeId");
+var title = text(node, "[data-class-title]");
+var horse = text(node, "[data-class-horse]");
+var rider = text(node, "[data-class-rider]");
+var dateRaw = text(node, "[data-class-date]");
+var resultRaw = text(node, "[data-class-result]");
+var resultLabel = text(node, "[data-class-result-ref]");
+var competition = text(node, "[data-class-competition]");
+var height = text(node, "[data-class-height]");
+var discipline = text(node, "[data-class-discipline]");
+var skill = text(node, "[data-class-skill]");
+var yearRaw = text(node, "[data-class-year]");
+var disciplineRefs = uniqueMatchText(texts(node, "[data-class-discipline-ref]"));
+var skillRefs = uniqueMatchText(texts(node, "[data-class-skill-ref]"));
+var date = isoDate(dateRaw);
+var yearCandidate = yearRaw;
+var horseRef = resolveOne([horse], "horses", lookups, diagnostics);
+var riderRef = resolveOne([rider], "riders", lookups, diagnostics);
+var competitionRef = resolveOne([competition], "competitions", lookups, diagnostics);
+var resultRef = resolveOne([resultLabel], "results", lookups, diagnostics);
+var heightRef = resolveOne([height], "heights", lookups, diagnostics);
+var yearRef = resolveOne([yearCandidate], "years", lookups, diagnostics);
+var disciplineMatches = resolveMany(disciplineRefs, "disciplines", lookups, diagnostics);
+var skillMatches = resolveMany(skillRefs, "skills", lookups, diagnostics);
+var place = resultRef && Number.isFinite(resultRef.sort) && resultRef.sort >= 1 && resultRef.sort <= 8 ? resultRef.sort : null;
+var signature = [
+classRecId, usefId, youtubeId, title, horse, rider, dateRaw, resultRaw, resultLabel, competition,
+height, discipline, skill, yearRaw,
+disciplineRefs.join("|"), skillRefs.join("|")
+].join("\u001f");
+var signatureHash = hash(signature);
+var duplicateNumber = (duplicateCounts[signatureHash] || 0) + 1;
+duplicateCounts[signatureHash] = duplicateNumber;
+return {
+id: "class-" + signatureHash + "-" + duplicateNumber,
+classRecId: classRecId,
+usefId: usefId,
+youtubeId: youtubeId,
+sourcePosition: position,
+title: title,
+usef: text(node,"[data-ref-usef]"),
+usefLink: readLink(node,"[data-ref-usef-link]"),
+usefLinkText: text(node,"[data-ref-usef-link-text]"),
+horse: horse,
+horseKey: horseRef ? horseRef.key : "",
+rider: rider,
+riderKey: riderRef ? riderRef.key : "",
+date: date,
+dateRaw: dateRaw,
+dateMs: date ? Date.parse(date + "T00:00:00Z") : null,
+year: yearRef ? clean(yearRef.display || yearRef.label || yearRef.sourceKey) : "",
+yearKey: yearRef ? yearRef.key : "",
+result: resultRaw,
+resultLabel: resultLabel,
+resultKey: resultRef ? resultRef.key : "",
+place: place,
+competition: competition,
+competitionKey: competitionRef ? competitionRef.key : "",
+height: height,
+heightKey: heightRef ? heightRef.key : "",
+discipline: discipline,
+disciplineKey: disciplineMatches.length ? disciplineMatches[0].key : "",
+disciplineRefs: disciplineRefs,
+disciplineRefKeys: uniqueKeys(disciplineMatches.map(function (item) { return item.key; })),
+skill: skill,
+skillKey: skillMatches.length ? skillMatches[0].key : "",
+skillRefs: skillRefs,
+skillRefKeys: uniqueKeys(skillMatches.map(function (item) { return item.key; }))
+};
+}
+);
+return { classes: classes, diagnostics: diagnostics };
+}
+function freezeRows(rows) {
+rows.forEach(function (row) {
+Object.keys(row).forEach(function (name) {
+if (Array.isArray(row[name])) Object.freeze(row[name]);
+});
+Object.freeze(row);
+});
+return Object.freeze(rows);
+}
+function parseDocument(doc) {
+var source = doc.querySelector(".lp-data-collections");
+if (!source) throw new Error("LPEngine: .lp-data-collections was not found");
+var references = parseReferences(source);
+var parsed = parseClasses(source, references);
+var classes = parsed.classes;
+if (!classes.length) throw new Error("LPEngine: no class records were found");
+Object.keys(references).forEach(function (type) {
+references[type] = freezeRows(references[type]);
+});
+var sourceFingerprint = hash(JSON.stringify({ classes: classes, references: references }));
+return Object.freeze({
+schemaVersion: SCHEMA_VERSION,
+sourceFingerprint: sourceFingerprint,
+source: SOURCE_PATH,
+loadedAt: new Date().toISOString(),
+classes: freezeRows(classes),
+references: Object.freeze(references),
+resolution: Object.freeze(parsed.diagnostics),
+counts: Object.freeze({
+classes: classes.length,
+references: Object.freeze(Object.keys(references).reduce(function (result, type) {
+result[type] = references[type].length;
+return result;
+}, Object.create(null)))
+})
+});
+}
+function append(bucket, bucketKey, row) {
+if (!bucketKey) return;
+if (!bucket[bucketKey]) bucket[bucketKey] = [];
+bucket[bucketKey].push(row);
+}
+function freezeBucket(bucket) {
+Object.keys(bucket).forEach(function (bucketKey) {
+Object.freeze(bucket[bucketKey]);
+});
+return Object.freeze(bucket);
+}
+function buildIndex(classes) {
+var byId = Object.create(null);
+var byHorse = Object.create(null);
+var byYear = Object.create(null);
+var byResult = Object.create(null);
+var byHeight = Object.create(null);
+var byDiscipline = Object.create(null);
+var byRider = Object.create(null);
+var byCompetition = Object.create(null);
+var bySkill = Object.create(null);
+classes.forEach(function (row) {
+byId[row.id] = row;
+append(byHorse, row.horseKey, row);
+append(byYear, row.yearKey, row);
+append(byResult, row.resultKey, row);
+append(byHeight, row.heightKey, row);
+append(byRider,row.riderKey,row);
+append(byCompetition,row.competitionKey,row);
+row.disciplineRefKeys.forEach(function (value) { append(byDiscipline, value, row); });
+row.skillRefKeys.forEach(function (value) { append(bySkill,value,row); });
+});
+return Object.freeze({
+byId: Object.freeze(byId),
+byHorse: freezeBucket(byHorse),
+byYear: freezeBucket(byYear),
+byResult: freezeBucket(byResult),
+byHeight: freezeBucket(byHeight),
+byDiscipline: freezeBucket(byDiscipline),
+byRider: freezeBucket(byRider),
+byCompetition: freezeBucket(byCompetition),
+bySkill: freezeBucket(bySkill)
+});
+}
+function validCache(payload, allowExpired) {
+if (!payload || payload.schemaVersion !== SCHEMA_VERSION || payload.engineVersion !== VERSION) return false;
+if (!Number.isFinite(payload.savedAt)) return false;
+if (!clean(payload.sourceFingerprint)) return false;
+if (!payload.data || payload.data.sourceFingerprint !== payload.sourceFingerprint) return false;
+if (!allowExpired && Date.now() - payload.savedAt > CACHE_TTL_MS) return false;
+return !!(payload.data && Array.isArray(payload.data.classes) && payload.data.classes.length);
+}
+function readCache(allowExpired) {
+try {
+var payload = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+return validCache(payload, allowExpired) ? payload : null;
+} catch (error) {
+return null;
+}
+}
+function writeCache(nextData) {
+try {
+localStorage.setItem(CACHE_KEY, JSON.stringify({
+schemaVersion: SCHEMA_VERSION,
+engineVersion: VERSION,
+savedAt: Date.now(),
+sourceFingerprint: nextData.sourceFingerprint,
+data: nextData
+}));
+} catch (error) {
+window.dispatchEvent(new CustomEvent("lp:engine-cache-error", { detail: { error: error } }));
+}
+}
+function readSessionFingerprint() {
+try { return sessionStorage.getItem(SESSION_KEY) || ""; } catch (error) { return ""; }
+}
+function writeSessionFingerprint(value) {
+try { sessionStorage.setItem(SESSION_KEY, value); } catch (error) {}
+}
+function hydrate(nextData, detail) {
+data = nextData;
+index = buildIndex(data.classes);
+state = "ready";
+window.dispatchEvent(new CustomEvent("lp:engine-ready", {
+detail: Object.assign({ engine: api, count: data.classes.length }, detail || {})
+}));
+return api;
+}
+function fetchSource() {
+return fetch(SOURCE_PATH, { credentials: "same-origin", cache: "no-cache" })
+.then(function (response) {
+if (!response.ok) throw new Error("LPEngine: source returned HTTP " + response.status);
+return response.text();
+})
+.then(function (html) {
+var doc = new DOMParser().parseFromString(html, "text/html");
+var nextData = parseDocument(doc);
+writeCache(nextData);
+writeSessionFingerprint(nextData.sourceFingerprint);
+return hydrate(nextData, { source: "network", stale: false, fingerprint: nextData.sourceFingerprint });
+});
+}
+function load(options) {
+var force = !!(options && options.force);
+if (!force && state === "ready" && data) return Promise.resolve(api);
+if (pending) return pending;
+if (!force) {
+var cached = readCache(false);
+if (cached) {
+writeSessionFingerprint(cached.sourceFingerprint);
+return Promise.resolve(hydrate(cached.data,{source:"cache",stale:false,fingerprint:cached.sourceFingerprint}));
+}
+}
+state = "loading";
+pending = fetchSource().catch(function (error) {
+state = "error";
+window.dispatchEvent(new CustomEvent("lp:engine-error", { detail: { error: error } }));
+throw error;
+}).finally(function () {
+pending = null;
+});
+return pending;
+}
+function refresh() {
+return load({ force: true });
+}
+function clearCache() {
+try {
+localStorage.removeItem(CACHE_KEY);
+localStorage.removeItem("horse-fav-aggs");
+sessionStorage.removeItem(SESSION_KEY);
+} catch (error) {}
+data = null;
+index = null;
+pending = null;
+state = "idle";
+}
+var api = {
+version: VERSION,
+schemaVersion: SCHEMA_VERSION,
+source: SOURCE_PATH,
+cacheKey: CACHE_KEY,
+cacheTtlMs: CACHE_TTL_MS,
+load: load,
+refresh: refresh,
+clearCache: clearCache,
+normalizeKey: normalize
+};
+Object.defineProperties(api, {
+ready: { enumerable: true, get: function () { return load(); } },
+state: { enumerable: true, get: function () { return state; } },
+data: { enumerable: true, get: function () { return data; } },
+index: { enumerable: true, get: function () { return index; } }
+});
+window.LPEngine = api;
+document.documentElement.setAttribute("data-lp-engine-autostart", "pending");
+load().then(function () {
+document.documentElement.setAttribute("data-lp-engine-autostart", "ready");
+}).catch(function () {
+document.documentElement.setAttribute("data-lp-engine-autostart", "error");
+});
+})();
+</script>
+<script id="lp-youtube-data-loader-v1">
+(function () {
+  "use strict";
+
+  if (window.__LP_YOUTUBE_DATA_LOADER_V1__) return;
+  window.__LP_YOUTUBE_DATA_LOADER_V1__ = true;
+
+  var SCHEMA_VERSION = "lp-youtube-videos-v1";
+  var STORAGE_KEY = "lp-youtube-videos-v1";
+  var DEFAULT_MAX_AGE_MS = 6 * 60 * 60 * 1000;
+  var DEFAULT_API_URL =
+    "https://youtube-videos.gombcg.workers.dev/videos?webflow=4";
+
+  var config = window.LPYouTubeDataConfig || {};
+  var apiUrl = config.apiUrl || DEFAULT_API_URL;
+  var maxAgeMs = Number(config.maxAgeMs);
+
+  if (!Number.isFinite(maxAgeMs) || maxAgeMs < 0) {
+    maxAgeMs = DEFAULT_MAX_AGE_MS;
+  }
+
+  function readCache() {
+    try {
+      var cache = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+
+      if (
+        !cache ||
+        cache.schemaVersion !== SCHEMA_VERSION ||
+        !Number.isFinite(Number(cache.savedAt)) ||
+        !cache.data ||
+        !Array.isArray(cache.data.videos)
+      ) {
+        return null;
+      }
+
+      return cache;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function isFresh(cache) {
+    return !!cache && Date.now() - Number(cache.savedAt) <= maxAgeMs;
+  }
+
+  function notify(cache, source, stale) {
+    var detail = {
+      storageKey: STORAGE_KEY,
+      schemaVersion: SCHEMA_VERSION,
+      source: source,
+      stale: !!stale,
+      savedAt: Number(cache.savedAt),
+      videos: cache.data.videos
+    };
+
+    window.LPYouTubeVideos = detail.videos;
+    window.dispatchEvent(
+      new CustomEvent("lp:youtube-data-ready", { detail: detail })
+    );
+
+    return detail;
+  }
+
+  function saveVideos(videos) {
+    var cache = {
+      schemaVersion: SCHEMA_VERSION,
+      savedAt: Date.now(),
+      sourceUrl: apiUrl,
+      data: {
+        videos: videos
+      }
+    };
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cache));
+    return cache;
+  }
+
+  async function fetchAndSave() {
+    var response = await fetch(apiUrl, { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("YouTube video request failed: " + response.status);
+    }
+
+    var payload = await response.json();
+
+    if (!payload || !Array.isArray(payload.videos)) {
+      throw new Error("YouTube video response did not contain a videos array.");
+    }
+
+    return saveVideos(payload.videos);
+  }
+
+  async function load(options) {
+    var force = !!(options && options.force);
+    var cache = readCache();
+
+    if (!force && isFresh(cache)) {
+      return notify(cache, "cache", false);
+    }
+
+    try {
+      var refreshed = await fetchAndSave();
+      return notify(refreshed, "network", false);
+    } catch (error) {
+      if (cache) {
+        console.warn(
+          "LPYouTubeData: refresh failed; using stale cached videos.",
+          error
+        );
+        return notify(cache, "stale-cache", true);
+      }
+
+      window.dispatchEvent(
+        new CustomEvent("lp:youtube-data-error", {
+          detail: { error: error, storageKey: STORAGE_KEY }
+        })
+      );
+      throw error;
+    }
+  }
+
+  var api = {
+    storageKey: STORAGE_KEY,
+    schemaVersion: SCHEMA_VERSION,
+    maxAgeMs: maxAgeMs,
+    read: readCache,
+    load: load,
+    refresh: function () {
+      return load({ force: true });
+    },
+    ready: null
+  };
+
+  window.LPYouTubeData = api;
+
+  api.ready = load();
+  api.ready.catch(function (error) {
+    console.error("LPYouTubeData:", error);
+  });
+})();
+</script>
+<script id="lp-transcript-data-loader-v1">
+(function(){
+"use strict";
+var VERSION="1.0.0",SCHEMA_VERSION="lp-transcript-items-v1.0",CACHE_KEY="lp-transcript-items-v1",SOURCE_URL="/engine-data",TTL_MS=43200000;
+if(window.LPTranscriptData&&window.LPTranscriptData.version===VERSION)return;
+function clean(v){return String(v==null?"":v).replace(/\s+/g," ").trim()}
+function key(v){return clean(v).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
+function textAt(root,selector){var node=root&&root.querySelector(selector);return node?clean(node.textContent):""}
+function numeric(v){var n=clean(v).replace(/,/g,"");if(!n)return null;n=Number(n);return Number.isFinite(n)?n:null}
+function isoDate(v){v=clean(v);if(!v)return"";var t=Date.parse(v);return Number.isFinite(t)?new Date(t).toISOString().slice(0,10):""}
+function hash(v){var h=2166136261;for(var i=0;i<v.length;i+=1){h^=v.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(36)}
+function readCache(){try{var p=JSON.parse(localStorage.getItem(CACHE_KEY)||"null");return p&&p.schemaVersion===SCHEMA_VERSION&&p.data&&Array.isArray(p.data.items)?p:null}catch(e){return null}}
+function fresh(p){return!!(p&&Number.isFinite(Number(p.savedAt))&&Date.now()-Number(p.savedAt)<TTL_MS)}
+function parseDocument(doc){
+var list=doc.querySelector('[data-lp-reference="transcript-items"]');
+if(!list)throw new Error('Missing data-lp-reference="transcript-items"');
+var riderKeys=new Set();
+doc.querySelectorAll('[data-lp-reference="riders"] [data-ref-item="riders"]').forEach(function(node){
+var riderKey=key(textAt(node,"[data-ref-key]"));if(riderKey)riderKeys.add(riderKey)
+});
+if(!riderKeys.size)throw new Error("Transcript source has no eligible rider helper records");
+var seen=new Set(),skipped=[],items=[];
+list.querySelectorAll('[data-ref-item="transcript-items"][data-lp-transcript-row]').forEach(function(node,sourcePosition){
+var sourceKey=textAt(node,"[data-transcript-key]");
+var riderKey=key(textAt(node,"[data-transcript-rider-key]"));
+if(!riderKey||!riderKeys.has(riderKey)){skipped.push({sourcePosition:sourcePosition,sourceKey:sourceKey,reason:"unmatched-rider"});return}
+if(!sourceKey){skipped.push({sourcePosition:sourcePosition,sourceKey:"",reason:"missing-key"});return}
+if(seen.has(sourceKey)){skipped.push({sourcePosition:sourcePosition,sourceKey:sourceKey,reason:"duplicate-key"});return}
+seen.add(sourceKey);
+var enrollmentStatus=textAt(node,"[data-transcript-enrollment-status]");
+var completionDateRaw=textAt(node,"[data-transcript-completion-date]");
+items.push({
+id:"transcript-"+key(sourceKey),key:sourceKey,sourcePosition:sourcePosition,riderKey:riderKey,
+course:textAt(node,"[data-transcript-course]"),code:textAt(node,"[data-transcript-code]"),
+type:textAt(node,"[data-transcript-type]"),schoolYear:textAt(node,"[data-transcript-school-year]"),
+status:textAt(node,"[data-transcript-status]"),enrollmentStatus:enrollmentStatus,
+enrollmentStatusKey:key(enrollmentStatus),isComplete:key(enrollmentStatus)==="complete",
+school:textAt(node,"[data-transcript-school]"),
+finalGradeValue:numeric(textAt(node,"[data-transcript-final-grade-value]")),
+finalGrade:textAt(node,"[data-transcript-final-grade]"),
+credits:numeric(textAt(node,"[data-transcript-credits]")),
+completionDate:isoDate(completionDateRaw),completionDateRaw:completionDateRaw
+})
+});
+if(!items.length)throw new Error("Transcript source produced no eligible records");
+var completed=items.filter(function(item){return item.isComplete});
+return{fingerprint:hash(JSON.stringify(items)),data:{items:items,completed:completed,counts:{all:items.length,completed:completed.length,other:items.length-completed.length},riderKeys:Array.from(riderKeys),skipped:skipped}}
+}
+async function fetchSource(){
+var response=await fetch(SOURCE_URL,{cache:"no-store"});
+if(!response.ok)throw new Error("Transcript source request failed: "+response.status);
+var doc=new DOMParser().parseFromString(await response.text(),"text/html");
+var parsed=parseDocument(doc);
+var payload={schemaVersion:SCHEMA_VERSION,loaderVersion:VERSION,source:SOURCE_URL,sourceFingerprint:parsed.fingerprint,savedAt:Date.now(),data:parsed.data};
+localStorage.setItem(CACHE_KEY,JSON.stringify(payload));return payload
+}
+function publish(payload,source){
+api.data=payload.data;api.payload=payload;api.source=source;api.readyState="ready";
+window.dispatchEvent(new CustomEvent("lp:transcripts-ready",{detail:{source:source,cacheKey:CACHE_KEY,schemaVersion:SCHEMA_VERSION,fingerprint:payload.sourceFingerprint,data:payload.data}}));
+return api
+}
+async function load(force){
+var cached=readCache();
+if(!force&&fresh(cached))return publish(cached,"cache");
+try{return publish(await fetchSource(),"network")}catch(error){
+if(cached){console.warn("LPTranscriptData using stale cache",error);return publish(cached,"stale-cache")}
+api.readyState="error";throw error
+}}
+var api={version:VERSION,schemaVersion:SCHEMA_VERSION,cacheKey:CACHE_KEY,sourceUrl:SOURCE_URL,readyState:"loading",source:"",data:null,payload:null,
+clearCache:function(){localStorage.removeItem(CACHE_KEY)},refresh:function(){return load(true)},getCached:readCache,ready:null};
+window.LPTranscriptData=api;
+api.ready=load(false);
+api.ready.catch(function(error){console.error("Unable to load transcript data",error)});
+})();
+</script>
+<script id="lp-helper-derivative-loader-v1">
+(function(){
+"use strict";
+if(window.LPHelperDerivatives&&window.LPHelperDerivatives.version==="1.0.0")return;
+var VERSION="1.0.0",TTL_MS=12*60*60*1000,pending=Object.create(null);
+function clean(value){return String(value==null?"":value).replace(/\s+/g," ").trim()}
+function normalize(value){return clean(value).toLowerCase().replace(/^horses-/,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
+function hash(value){var result=2166136261;for(var i=0;i<value.length;i+=1){result^=value.charCodeAt(i);result=Math.imul(result,16777619)}return(result>>>0).toString(36)}
+function read(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch(error){return null}}
+function helperHorses(root){var seen=Object.create(null);return Array.from(root.querySelectorAll('[data-lp-reference="horses"] [data-ref-item="horses"]')).map(function(node){var source=clean(node.querySelector("[data-ref-key]")&&node.querySelector("[data-ref-key]").textContent);var key=normalize(source);if(!key||seen[key])return null;seen[key]=true;return{key:key,outputKey:/^horses-/i.test(source)?source:"horses-"+key,label:clean(node.querySelector("[data-ref-show-name]")&&node.querySelector("[data-ref-show-name]").textContent)||clean(node.querySelector("[data-ref-label]")&&node.querySelector("[data-ref-label]").textContent)||key}}).filter(Boolean)}
+function valid(payload,parentFingerprint,helperFingerprint){return!!(payload&&payload.schemaVersion==="lp-helper-derivative-v1"&&payload.sourceFingerprint===parentFingerprint&&payload.helperFingerprint===helperFingerprint&&Number.isFinite(Number(payload.savedAt))&&Date.now()-Number(payload.savedAt)<=TTL_MS&&payload.data&&payload.data.items)}
+function rollup(rows,horse){var selected=rows.filter(function(row){return normalize(row.horseKey)===horse.key});var places=selected.map(function(row){return Number(row.place)}).filter(function(place){return place>=1&&place<=8});return{horseKey:horse.outputKey,label:horse.label,classes:selected.length,shows:new Set(selected.map(function(row){return clean(row.competitionKey)}).filter(Boolean)).size,first:places.filter(function(place){return place===1}).length,second:places.filter(function(place){return place===2}).length,third:places.filter(function(place){return place===3}).length,top3:places.filter(function(place){return place<=3}).length,top8:places.length}}
+function ensureEngine(){if(!window.LPEngine)return Promise.reject(new Error("LPEngine is unavailable"));return Promise.resolve(window.LPEngine.ready).then(function(){return window.LPEngine})}
+function build(root,force){var purpose=clean(root.getAttribute("data-purpose"));if(!purpose)return Promise.reject(new Error("Derivative container has no data-purpose"));if(pending[purpose])return pending[purpose];pending[purpose]=ensureEngine().then(function(engine){var data=engine.data;if(!data||!Array.isArray(data.classes))throw new Error("Canonical classes are unavailable");var horses=helperHorses(root);if(!horses.length){var error=new Error("No helper horses are configured for "+purpose);error.code="unavailable-helper";throw error}var helperFingerprint=hash(JSON.stringify(horses));var cached=!force&&read(purpose);if(valid(cached,data.sourceFingerprint,helperFingerprint))return cached;var items=Object.fromEntries(horses.map(function(horse){return[horse.outputKey,rollup(data.classes,horse)]}));var savedAt=Date.now();var payload={schemaVersion:"lp-helper-derivative-v1",savedAt:savedAt,sourceFingerprint:data.sourceFingerprint,helperFingerprint:helperFingerprint,data:{items:items},_meta:{loaderVersion:VERSION,purpose:purpose,parentKey:"lp-usef-classes-v1"},items:items};localStorage.setItem(purpose,JSON.stringify(payload));window.dispatchEvent(new CustomEvent("lp:derivative-ready",{detail:{purpose:purpose,payload:payload}}));return payload}).catch(function(error){window.dispatchEvent(new CustomEvent("lp:derivative-error",{detail:{purpose:purpose,error:error,code:error.code||"error"}}));throw error}).finally(function(){pending[purpose]=null});return pending[purpose]}
+function find(purpose){return Array.from(document.querySelectorAll("[data-purpose]")).filter(function(root){return!purpose||root.getAttribute("data-purpose")===purpose})}
+var api={version:VERSION,ensure:function(purpose,options){var roots=find(purpose);if(!roots.length)return Promise.reject(new Error("No derivative container found for "+purpose));return Promise.allSettled(roots.map(function(root){return build(root,!!(options&&options.force))}))},read:read,refresh:function(purpose){return api.ensure(purpose,{force:true})},scan:function(){return Promise.allSettled(find().filter(function(root){return root.querySelector('[data-lp-reference="horses"]')}).map(function(root){return build(root,false)}))}};
+window.LPHelperDerivatives=api;
+function start(){api.ready=api.scan()}
+document.readyState==="loading"?document.addEventListener("DOMContentLoaded",start,{once:true}):start();
+})();
+
+</script>
+<script id="lp-list-registry-v1">
+(function () {
+"use strict";
+
+if (window.LPLists && window.LPLists.version === "1.2.2") return;
+
+var VERSION = "1.2.2";
+var TTL_MS = 12 * 60 * 60 * 1000;
+var pending = Object.create(null);
+var states = Object.create(null);
+
+var definitions = {
+classes: {
+key: "lp-usef-classes-v1",
+schema: "lp-usef-classes-v1.6",
+selectors: ["[data-ag-list=\"classes\"]", "#lpc2-ag-grid", "#lph2-ag-grid", "[data-lp-dashboard-context]", "[data-ld2-dashboard-test]"]
+},
+horses: {
+key: "lp-horses-v1",
+schema: "lp-horses-v1.0",
+reference: "horses",
+selectors: ["[data-ag-list=\"horses\"]", "#lph2-ag-grid", "[data-lp-reference=\"horses\"]", "[data-lp-dashboard-context]", "[data-ld2-dashboard-test]"]
+},
+riders: {
+key: "lp-riders-v1",
+schema: "lp-riders-v1.0",
+reference: "riders",
+selectors: ["[data-ag-list=\"riders\"]", "[data-lp-reference=\"riders\"]", "[data-lp-dashboard-context=\"rider\"]"]
+},
+competitions: {
+key: "lp-competitions-v1",
+schema: "lp-competitions-v1.0",
+reference: "competitions",
+selectors: ["[data-ag-list=\"competitions\"]", "[data-lp-reference=\"competitions\"]"]
+},
+transcript: {
+key: "lp-transcript-items-v1",
+schema: "lp-transcript-items-v1.0",
+api: "LPTranscriptData",
+selectors: ["[data-ag-list=\"transcript\"]", "[data-lp-reference=\"transcript-items\"]", "#lm-ag-transcript-grid"]
+},
+videos: {
+key: "lp-youtube-videos-v1",
+schema: "lp-youtube-videos-v1",
+api: "LPYouTubeData",
+selectors: ["[data-ag-list=\"videos\"]", "#lvv-ag-video-grid"]
+},
+playlists:{key:"lp-youtube-playlists-v1",schema:"lp-youtube-playlists-v1",reference:"playlists",always:true,selectors:["[data-ag-list=\"playlists\"]","[data-lp-reference=\"playlists\"]","[data-lp-playlists]"]},
+"horses-favorites": {
+key: "horse-favorites",
+schema: "lp-helper-derivative-v1",
+derivativePurpose: "horse-favorites",
+selectors: ["[data-purpose=\"horse-favorites\"]", "[data-ag-list=\"horses-favorites\"]"]
+},
+"classes-favorites": {
+key: "classes-favorites",
+schema: "unavailable",
+unavailable: "unavailable-helper",
+selectors: ["[data-ag-list=\"classes-favorites\"]"]
+},
+"video-latest": { key: "list-latest", schema: "unavailable", unavailable: "unavailable-helper", selectors: ["[data-ag-list=\"video-latest\"]"] },
+"video-favorites": { key: "list-favorites", schema: "unavailable", unavailable: "unavailable-helper", selectors: ["[data-ag-list=\"video-favorites\"]"] },
+"video-training": { key: "list-training", schema: "unavailable", unavailable: "unavailable-helper", selectors: ["[data-ag-list=\"video-training\"]"] },
+"video-classes": { key: "list-classes", schema: "unavailable", unavailable: "unavailable-helper", selectors: ["[data-ag-list=\"video-classes\"]"] },
+"classes-latest": { key: "classes-latest", schema: "unavailable", unavailable: "unavailable-source", selectors: ["[data-ag-list=\"classes-latest\"]"] },
+"horses-latest": { key: "horses-latest", schema: "unavailable", unavailable: "unavailable-source", selectors: ["[data-ag-list=\"horses-latest\"]"] },
+"record-latest": { key: "record-latest", schema: "unavailable", unavailable: "unavailable-source", selectors: ["[data-ag-list=\"record-latest\"]"] }
+};
+
+Object.keys(definitions).forEach(function (name) {
+states[name] = { name: name, state: "idle", source: "", stale: false, error: null };
+});
+
+function clean(value) {
+return String(value == null ? "" : value).trim();
+}
+
+function parse(key) {
+try { return JSON.parse(localStorage.getItem(key) || "null"); }
+catch (error) { return null; }
+}
+
+function valid(name, payload, allowExpired) {
+var definition = definitions[name];
+if (!definition || !payload || payload.schemaVersion !== definition.schema) return false;
+if (!Number.isFinite(Number(payload.savedAt)) || !payload.data) return false;
+if (!allowExpired && Date.now() - Number(payload.savedAt) > TTL_MS) return false;
+if (name === "classes") return payload.engineVersion === (window.LPEngine && window.LPEngine.version) && Array.isArray(payload.data.classes) && payload.data.classes.length > 0;
+if (name === "transcript") return Array.isArray(payload.data.items);
+if (name === "videos") return Array.isArray(payload.data.videos);
+if (name === "horses-favorites") return !!payload.data.items;
+return Array.isArray(payload.data.items);
+}
+
+function read(name, options) {
+var definition = definitions[name];
+if (!definition) return null;
+var payload = parse(definition.key);
+return valid(name, payload, !!(options && options.allowExpired)) ? payload : null;
+}
+
+function setState(name, nextState, detail) {
+states[name] = Object.assign({}, states[name], detail || {}, { name: name, state: nextState });
+window.dispatchEvent(new CustomEvent("lp:list-status", { detail: states[name] }));
+return states[name];
+}
+
+function publish(name, payload, source, stale) {
+setState(name, stale ? "stale" : "ready", {
+source: source,
+stale: !!stale,
+error: null,
+savedAt: Number(payload.savedAt),
+fingerprint: clean(payload.sourceFingerprint || (payload.data && payload.data.sourceFingerprint)),
+count: name === "classes" ? payload.data.classes.length :
+name === "videos" ? payload.data.videos.length :
+Array.isArray(payload.data.items) ? payload.data.items.length :
+payload.data.items && typeof payload.data.items === "object" ? Object.keys(payload.data.items).length : 0
+});
+window.dispatchEvent(new CustomEvent("lp:list-ready", {
+detail: { name: name, payload: payload, status: states[name] }
+}));
+return payload;
+}
+
+function enginePayload() {
+var engine = window.LPEngine;
+var data = engine && engine.data;
+if (!data) throw new Error("LPEngine data is unavailable");
+return data;
+}
+
+function persistReference(name) {
+var definition = definitions[name];
+var data = enginePayload();
+var items = data.references && data.references[definition.reference];
+if (!Array.isArray(items) || !items.length) {
+var missing = new Error("Missing " + definition.reference + " helper CMS");
+missing.code = "unavailable-source";
+throw missing;
+}
+var payload = {
+schemaVersion: definition.schema,
+savedAt: Date.now(),
+source: "/engine-data",
+sourceFingerprint: data.sourceFingerprint,
+data: { items: items }
+};
+localStorage.setItem(definition.key, JSON.stringify(payload));
+return payload;
+}
+
+function ensureEngine() {
+if (!window.LPEngine) return Promise.reject(new Error("LPEngine is unavailable"));
+return Promise.resolve(window.LPEngine.ready).then(function () { return window.LPEngine; });
+}
+
+function ensureApi(name, force) {
+var definition = definitions[name];
+var api = window[definition.api];
+if (!api) return Promise.reject(new Error(definition.api + " is unavailable"));
+var task = force && typeof api.refresh === "function" ? api.refresh() : api.ready;
+return Promise.resolve(task).then(function () {
+var payload = read(name, { allowExpired: true });
+if (!payload) throw new Error(name + " loader did not produce a valid payload");
+return publish(name, payload, api.source || (force ? "network" : "loader"), api.source === "stale-cache");
+});
+}
+
+function ensure(name, options) {
+var definition = definitions[name];
+if (!definition) return Promise.reject(new Error("Unknown list: " + name));
+var force = !!(options && options.force);
+if (pending[name]) return pending[name];
+
+if (definition.unavailable) {
+var unavailableError = new Error(name + " has no approved source or helper");
+unavailableError.code = definition.unavailable;
+setState(name, definition.unavailable, { source: "", stale: false, error: unavailableError.message });
+return Promise.reject(unavailableError);
+}
+
+var cached = !force && read(name);
+if (cached) return Promise.resolve(publish(name, cached, "cache", false));
+
+setState(name, "loading", { source: "", stale: false, error: null });
+pending[name] = (function () {
+if (definition.api) return ensureApi(name, force);
+if (definition.derivativePurpose) {
+if (!window.LPHelperDerivatives) throw new Error("LPHelperDerivatives is unavailable");
+return window.LPHelperDerivatives.ensure(definition.derivativePurpose, { force: force }).then(function () {
+var derivativePayload = read(name, { allowExpired: true });
+if (!derivativePayload) throw new Error(name + " derivative did not produce a valid payload");
+return publish(name, derivativePayload, "derivative", false);
+});
+}
+return ensureEngine().then(function (engine) {
+if (name === "classes") {
+var payload = read("classes", { allowExpired: true });
+if (!payload) throw new Error("LPEngine did not produce a valid class payload");
+return publish(name, payload, engine.state === "ready" ? "engine" : "stale-cache", false);
+}
+return publish(name, persistReference(name), "engine", false);
+});
+})().catch(function (error) {
+var fallback = read(name, { allowExpired: true });
+if (fallback) return publish(name, fallback, "stale-cache", true);
+var unavailable = error && error.code === "unavailable-source" ? "unavailable-source" : "error";
+setState(name, unavailable, { source: "", stale: false, error: String(error && error.message || error) });
+window.dispatchEvent(new CustomEvent("lp:list-error", { detail: states[name] }));
+throw error;
+}).finally(function () { pending[name] = null; });
+
+return pending[name];
+}
+
+function requiredByPage() {
+return Object.keys(definitions).filter(function (name) {
+return definitions[name].always || definitions[name].selectors.some(function (selector) {
+try { return !!document.querySelector(selector); }
+catch (error) { return false; }
+});
+});
+}
+
+var api = {
+version: VERSION,
+definitions: definitions,
+has: function (name) { return !!definitions[name]; },
+read: read,
+ensure: ensure,
+refresh: function (name) { return ensure(name, { force: true }); },
+status: function (name) { return states[name] || null; },
+requiredByPage: requiredByPage,
+bootstrap: function () {
+var names = requiredByPage();
+return Promise.allSettled(names.map(function (name) { return ensure(name); }));
+}
+};
+
+window.LPLists = api;
+api.ready = api.bootstrap();
+})();
+
+</script>
+<script id="lp-ag-list-runtime-v1">
+(function(){
+"use strict";
+if(window.LPAGLists&&window.LPAGLists.version==="1.0.0")return;
+var VERSION="1.0.0",LIB="https://cdn.jsdelivr.net/npm/ag-grid-community@36.1.0/dist/ag-grid-community.min.js",instances=new WeakMap();
+var configs={
+riders:{columns:[{field:"label",headerName:"Rider",minWidth:220,flex:1},{field:"usef",headerName:"USEF",minWidth:120}]},
+competitions:{columns:[{field:"label",headerName:"Competition",minWidth:260,flex:1},{field:"display",headerName:"Display",minWidth:220,flex:1},{field:"usef",headerName:"USEF",minWidth:120}]},
+"horses-favorites":{columns:[{field:"label",headerName:"Horse",minWidth:220,flex:1},{field:"classes",headerName:"Classes",minWidth:100},{field:"shows",headerName:"Shows",minWidth:90},{field:"first",headerName:"1st",minWidth:80},{field:"second",headerName:"2nd",minWidth:80},{field:"third",headerName:"3rd",minWidth:80},{field:"top8",headerName:"Top 8",minWidth:90}]}
+};
+function loadLibrary(){if(window.agGrid&&window.agGrid.createGrid)return Promise.resolve();return new Promise(function(resolve,reject){var existing=document.querySelector("script[data-lp-ag-list-library]");if(existing){existing.addEventListener("load",resolve,{once:true});existing.addEventListener("error",reject,{once:true});return}var script=document.createElement("script");script.src=LIB;script.async=true;script.setAttribute("data-lp-ag-list-library","");script.onload=resolve;script.onerror=function(){reject(new Error("AG Grid failed to load"))};document.head.appendChild(script)})}
+function rowsFrom(payload){var items=payload&&payload.data&&payload.data.items;if(Array.isArray(items))return items.slice();if(items&&typeof items==="object")return Object.keys(items).map(function(key){return items[key]});return[]}
+function ensureList(name){if(!window.LPLists)return Promise.reject(new Error("LPLists is unavailable"));return window.LPLists.ensure(name)}
+function render(mount){var name=mount.getAttribute("data-ag-list");var config=configs[name];if(!config)return Promise.resolve({name:name,state:"unavailable-renderer"});mount.classList.add("ag-theme-quartz");mount.setAttribute("aria-busy","true");return Promise.all([ensureList(name),loadLibrary()]).then(function(values){var payload=values[0],rows=rowsFrom(payload);var existing=instances.get(mount);if(existing&&existing.destroy)existing.destroy();var api=window.agGrid.createGrid(mount,{theme:"legacy",rowData:rows,columnDefs:config.columns,defaultColDef:{sortable:true,filter:true,resizable:true},getRowId:function(params){return String(params.data.id||params.data.key||params.data.horseKey||params.rowIndex)},pagination:true,paginationPageSize:10,paginationPageSizeSelector:false,animateRows:false,ensureDomOrder:true,overlayNoRowsTemplate:'<span class="ag-overlay-no-rows-center">No records available.</span>'});instances.set(mount,api);mount.setAttribute("aria-busy","false");mount.setAttribute("data-lp-ag-state",rows.length?"ready":"empty");return{name:name,state:rows.length?"ready":"empty",count:rows.length,api:api}}).catch(function(error){mount.setAttribute("aria-busy","false");mount.setAttribute("data-lp-ag-state",error.code||"unavailable");window.dispatchEvent(new CustomEvent("lp:ag-list-error",{detail:{name:name,error:error}}));return{name:name,state:error.code||"unavailable",error:error}})}
+var api={version:VERSION,configs:configs,render:render,scan:function(){return Promise.allSettled(Array.from(document.querySelectorAll("[data-ag-list]")).map(render))},destroy:function(mount){var instance=instances.get(mount);if(instance&&instance.destroy)instance.destroy();instances.delete(mount)}};
+window.LPAGLists=api;
+function start(){api.ready=api.scan()}
+document.readyState==="loading"?document.addEventListener("DOMContentLoaded",start,{once:true}):start();
+})();
+
+</script>
+<script id="lp-overlay-scroll-lock-v1">(()=>{if(window.LPScrollLock)return;let o=new Set,s=null,d=document.documentElement,b=()=>document.body,c=x=>String(x??"").trim(),a=()=>{if(!b())return;s??={h:d.style.overflow,b:b().style.overflow,t:b().style.touchAction};d.style.overflow="hidden";b().style.overflow="hidden";b().style.touchAction="none";d.dataset.lpScrollLocked="true"},r=()=>{if(!s||!b())return;d.style.overflow=s.h;b().style.overflow=s.b;b().style.touchAction=s.t;delete d.dataset.lpScrollLocked;s=null};window.LPScrollLock=Object.freeze({version:"1.0.0",lock:x=>{x=c(x);if(!x)throw Error("LPScrollLock owner required");o.add(x);a();return x},unlock:x=>{let v=o.delete(c(x));o.size||r();return v},unlockAll:()=>{o.clear();r()},isLocked:()=>o.size>0,has:x=>o.has(c(x)),owners:()=>[...o]})})();</script>
+<script id="lp-shared-dashboard-runtime-loader-v4" src="https://cdn.prod.website-files.com/6982268b7543ac3c80151266/6aa9d2868811674aa1f6ea14_lp-shared-dashboard-runtime-v4.js" integrity="sha384-laszj+FfnuYiAwy1bs5RmzsoYvwGaVtRKhyE0253t9sY4mle7kcEpgjUY4SLcgXM" crossorigin="anonymous"></script>

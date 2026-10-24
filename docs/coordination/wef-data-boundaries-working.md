@@ -1,9 +1,296 @@
 # WEF data boundaries — working document
 
-Updated: 23 October 2026, America/New_York.
-Status: CWF entries implemented and verified through two normal scheduled runs; other downstream components remain design only.
+Updated: 24 October 2026, America/New_York.
+Status: wef-entries is the shared participation linking module. Collection and the CWF sync migration are verified; broader downstream contracts remain pending owner-chat acknowledgment and acceptance.
 
-## Implementation update — 23 October 2026
+
+## Verified entries/CWF rollout and schedules open work - 24 October 2026
+
+This update supersedes the proposal-only status below for entries/CWF plural
+transport and consumer support. It does not claim natural multi-group collection,
+shared entity migration or full downstream acceptance. Evidence was reviewed from
+saved release/readback files; no new collector runs or Airtable requests were made
+for this documentation update.
+
+### Entries/CWF: verified scope
+
+The entries owner deployed schedule-keys transport, observation-status metadata,
+successful observation handling, dated schedule-health checks, retained historical
+relationships and compatible CWF consumption. Local schedules/rings resolve exact
+keys against each destination's own synced records. Safe fields propagate through
+the existing CWF/live export views. Entries reads relevant-date
+show-collection.status/completed with a 30-minute freshness check; full source/sync
+parity retains dropped rows while current eligibility excludes dropped schedules.
+This is verified for entries/CWF, not a claim that every future timing consumer
+already implements the rule.
+
+| Normal pair (24 October, Eastern) | Entries completion | CWF completion | Verified result |
+| --- | --- | --- | --- |
+| 1 | 13:04:01-13:04:31 | 13:07:02-13:09:45 | 9 current participation, 1 historical; 9 current local links verified; zero CWF people-endpoint fetches. |
+| 2 | 13:09:02-13:09:36 | 13:12:05-13:15:18 | Same identities, relationships and slices; 9 current local links verified; zero CWF people-endpoint fetches. |
+
+Both pairs have successful heartbeat/run-log and GET-only Airtable readback
+proof. Repeat comparison confirms stable record IDs, schedule/ring/helper links,
+statuses and active slices. CWF nicknames, notes, aliases, disabled flags and
+retired original entry records were preserved; private selection ownership and
+provenance were not exported. All 110 offline tests passed. No manual runs,
+record repairs, endpoint/decoder/task/shared-entity/permission changes occurred.
+Schedules producer code/schema/stage keys/task were untouched by this rollout.
+
+Evidence: [entries/CWF release](../../wef-entries/evidence/multiple-schedules-20261024/release.md),
+[normal pair 1](../../wef-entries/evidence/multiple-schedules-20261024/run-pair-1.json),
+[normal pair 2](../../wef-entries/evidence/multiple-schedules-20261024/run-pair-2.json),
+and [repeat comparison](../../wef-entries/evidence/multiple-schedules-20261024/repeat-comparison.json).
+
+### Still open: source-supported multiple groups and downstream scope
+
+Actual runs had zero multi-schedule participation. Retained people payloads lack
+attributable participation-specific group eligibility. Production preserves unique
+singleton selection and rejects ambiguity. The plural selector/serializer and
+consumers are fixture-proven; a source adapter and natural multi-group proof
+remain open under entries ownership, coordinated with live. Class membership
+alone must not be promoted to participation eligibility. No schedules key/schema
+change is required or approved by this documentation.
+
+The entries release cites separate live-owner proof for two participation-link
+passes (13:07-13:08 and 13:12-13:13 Eastern), preserving six prior native links.
+It also reports live overall remained Partial for its pre-existing class 429
+identity issue. This is a separate live-owner limit, not an entries/CWF failure
+or a schedules-owned repair. Populated private follows remain fixture-only;
+shared entity ownership/migration, private delivery/permissions and broader tenant
+parameterization retain their separate owner decisions and acceptance gaps.
+
+### What remains open for this wef-schedules chat
+
+| Item | Owner / next action / limit |
+| --- | --- |
+| Schedules producer contract | Accepted and supplied: exact stage-key, class/group/ring/date facts and relevant-date health. Keep these stable. No producer change is pending for the verified entries/CWF transport. Participation eligibility remains entries' source responsibility. |
+| Routine review | Next planned Monday 26 October, 9:00 a.m. Eastern. Review existing code/evidence; no automatic fixes, deployment or manual collection. |
+| Desktop isolation | Last checked 24 October: task still Interactive with five-minute cadence. Running outside the desktop session remains unverified/unresolved; hidden arguments alone do not establish isolation. Any change needs the applicable authorized administrator action. No task changes in this update. |
+| Historical 11:20 interruption | Exact runtime/network trigger remains unproven. False-success behavior was corrected and verified through normal 12:00/12:05 runs (134 offline tests); do not reopen it as an unimplemented fix or repair the old Running record. Further root-cause work requires new evidence, not speculative patches. |
+| Timing handoff | Schedules accepted direct canonical reads and a proposed 30-minute relevant-date health rule for timing. Timing owner must implement/prove its consumer. Source actual starts/ends, clock and timezone are unknown unless explicit source evidence establishes them; estimates must not become invented actuals. |
+
+Confirmed empty October 22 for show 200000075 is already owner-accepted and
+recorded in schedules README/run-logs. Its empty_show_day Warning is not an open
+collection failure. Schedules' own completion-guard proof is retained in
+wef-schedules/runtime/incomplete-run-release-20261024/. No fresh operating-health
+claim is made beyond those dated saved observations.
+
+Schedules remains responsible for stable normalized schedule facts, daily rings,
+archive protection and collection/heartbeat/run-log evidence. Entries owns
+participation and CWF consumption; live owns live observations and its class
+identity issue; coordinator owns cross-chat acceptance; tenant owner decides
+shared entities/privacy. Broader timing/results/messages/Waze/publish work must
+stay with its owners. This update authorizes no production changes.
+
+## Relationship contract accepted for plan - 24 October 2026
+
+Schedules explicitly ACCEPTED FOR PLAN the coordinator's consolidated seven-point
+relationship contract. The coordinator reports that entries and live also explicitly
+accepted. This settles the proposed records-module contract; it does not establish
+implementation, tenant-owner acceptance or approval to change production.
+This section supersedes earlier descriptions of these contract points as undecided;
+earlier implementation and failure evidence remains intact.
+
+### Agreed responsibilities
+
+| Owner | Agreed responsibility |
+| --- | --- |
+| wef-shows | Canonical show identity, dates and authority freshness; independent readers do not trigger its collector. |
+| wef-schedules | Exact dated schedule/class/group/ring facts, unchanged stage-key values, and relevant-date completed collection/status evidence. Schedule class/group membership does not prove participation-specific eligibility. |
+| wef-entries | Unchanged participation entry-key; source-supported participation group eligibility; schedule-keys transport and successful observation/status evidence; compatible CWF local-link consumption. |
+| wef-live | Compatible identity/freshness validation through its synced entry reference; independent live class/group observations and their schedule links; historical/unresolved treatment without blocking unrelated observations. |
+| Tenant owner (acceptance pending) | Audit existing shared entity tables, source crosswalks, writers, records and permissions; decide shared identity ownership while preserving CWF helpers/manual fields/roster. |
+| wef-records-coordinator | Record acceptances, pending tenant/owner decisions, consumer readiness and normal-run evidence; coordinate one plan without inferring implementation approval. |
+
+### Agreed relationship rules
+
+- Keep entry-key = show|date|entry|class and every producer stage-key unchanged.
+  One eligible active schedule keeps its exact current scalar schedule-key.
+  Multiple schedules require participation-specific source group evidence and
+  exactly one active schedule for each supported group. Class membership alone
+  is insufficient; never infer all groups or choose the first match.
+- Proposed schedule-keys is text containing a sorted, unique JSON array of exact
+  stage-key values. If present it must be valid. Use legacy scalar fallback only
+  when the array field is absent. For a singleton the scalar must agree; for
+  multiple keys the scalar is blank. Malformed/conflicting values are unresolved.
+  Upgrade all readers before enabling array production; preserve singleton
+  behavior until those readers are ready. No new fields are created by this plan.
+- Central entries and CWF use their existing plural native schedules fields,
+  resolving keys to destination-local synced record IDs. Never transfer central
+  record IDs as native destination links. Live reads participation schedules
+  through its existing synced entry reference; no redundant live-entry schedules
+  field is proposed. Live class/group schedule links remain independent facts.
+  CWF derives ring links from resolved schedules; a scalar ring number must not
+  pretend to represent several rings.
+- Entries should publish per-participation successful source observation time
+  and status, refreshed only after validated successful collection, not an edit
+  or failed collection. Safe identity/status/observation fields pass to live.
+  Proposed participation and relevant-date schedule freshness is 30 minutes;
+  existing show authority freshness is 30 minutes. This is a planned consumer
+  requirement, not a claim that all current consumers enforce it. Schedule
+  freshness uses completed/status for the relevant date, not row changed-at.
+- Distinguish identified valid empty data from missing, stale, partial or failed
+  input. Partial acceptance requires proof for that participation/source/date;
+  do not infer global health. Keep dropped rows for full source/local sync parity,
+  but exclude them from current eligible matches. Missing/duplicate/ambiguous
+  eligibility or references stay unresolved. Retained previous verified links
+  are historical, not evidence of current eligibility.
+- Live validates show/date/class/entry and nonmissing source horse/rider IDs
+  against participation identity, status and freshness. Out-of-tenant-scope trips
+  remain explicitly unmatched. Conflicting/stale/dropped/malformed links retain
+  previously verified relationships as historical and log Partial/unresolved;
+  unrelated observations continue. No whole-show entries expansion, identity
+  fabrication, decoder change or resurrection of stale source eligibility.
+- Each separately approved delta needs fixtures plus two normal scheduled runs
+  proving stable identities/local links, preserved helpers/privacy/cadence and
+  readable health/log evidence. Fixtures cover multiplicity, group eligibility,
+  ambiguity, dropped/missing references, malformed arrays and stale/partial input.
+  Natural source-supported multi-group proof remains separate if no eligible
+  example occurs. No manual runs or record repairs count as normal-run proof.
+
+### Shared entity recommendation - awaiting tenant-owner audit and approval
+
+Use prepared tables in tenants (app7BXcw801n19QKF): horses tbljPvAk5EezdCQME,
+riders tbllUlTlcEMgZiW3h, sources tblRswgKjA9dt3PED and tenant-roster
+tblwcczj8lFhVcbyt. This is a recommendation only. Validate current schema,
+existing writers/records, duplicates/conflicts and the meaning of identity fields
+before implementation. Source crosswalks use source system, customer/scope,
+entity type and external ID with explicit target relationships; do not invent
+an entity_uid convention or match by name alone. Preserve existing IDs and CWF
+roster/helper keys, edits, nicknames and reciprocal links. Owner-created entities
+may lack external IDs. Rider, people and trainer identities remain distinct
+unless source evidence relates them; feed association is not trainer proof.
+
+### Remaining gaps and rollout order
+
+1. Tenant owner must accept or amend shared entity ownership after auditing the
+   prepared tables/crosswalks. Records chats cannot grant that acceptance.
+2. Entries/CWF plural transport, observation/status and relevant-date health
+   consumption are now verified for the scope in the rollout section above.
+   Separate live participation-link proof is recorded by its owner; this does
+   not prove natural multi-group eligibility or all downstream consumers.
+3. Natural multiple-group acceptance still needs genuine participation-specific
+   source evidence; fixture coverage cannot substitute for that live proof.
+4. Broader tenant parameterization, inactive-team exclusion, private user delivery,
+   permissions, helper history and timing/results/messages/Waze/publication
+   connections retain their previously documented gaps and owner decisions.
+   Continue tenant-based collection; whole-show scope remains undecided.
+5. Any new production delta needs its own owner-approved scope and verification.
+   This documentation update authorizes no code, Airtable or task changes.
+
+## Owner direction - 24 October 2026: continue the tenant-based path
+
+Whole-show versus tenant-selected collection remains undecided. Continue using
+**tenants -> tenant-cwf -> wef-entries -> tenant consumption** as the working
+collection path. Do not expand collection to every show entry or treat the
+current CWF proof as a final decision on long-term collection scope.
+
+Complete the agreed relationships end to end using this scope:
+
+| Stage | Established proof / remaining acceptance |
+| --- | --- |
+| Tenant parameters -> collection | CWF trainer feeds and empty private lists implemented. Preserve the current three-trainer configuration; broader tenant parameterization is not yet proven. |
+| Collected participation -> identities and schedules | Entries and local schedule links proven. Multiple valid group schedules, standalone trip/result relationships and complete source-supported trainer relationships still need explicit acceptance. |
+| Participation -> horse/rider roster | CWF helper growth and reciprocal links proven. Shared persistent roster ownership remains to be agreed; do not build duplicate helper directories. |
+| Participation -> tenant slices | CWF team sync proven. Inactive exclusion is not wired into its current consumer, and private user delivery/visibility is not proven. Keep collection inclusive while completing the separate slices. |
+| Participation -> live | Coordinate identity/link acceptance with the live owner. Its current class-error continuation work is separately owned; do not duplicate that implementation here. |
+| Linked data -> timing -> outputs and interaction | Timing, results, messages, publication and Waze retain their agreed responsibilities. Complete each connection with the owning chat and evidence; these connections are not made complete by the CWF sync. |
+
+The collection-scope decision must not block finishing these relationships.
+Entry work remains owned by this chat; the coordinator manages cross-chat
+handoffs. Preserve working collectors, local helpers and historical evidence.
+This direction does not authorize unrelated changes in another owner's module
+or substitute manual runs for normal scheduled verification.
+
+## Linking-module responsibility and owner acknowledgments - 23 October 2026
+
+This is the current responsibility statement. Earlier dated implementation and
+source-repair reports below remain evidence of their own releases, not a claim
+that every downstream connection is ready. Legacy supplies references only;
+the new wef-schedules implementation and the agreed downstream use cases are
+the foundation. No new base is required merely because it has been named.
+
+**wef-entries owns the shared participation linking module.** It independently
+collects tenant-selected participation, identifies the horse involved, connects
+its rider and source-supported trainer relationships, and supplies stable links
+to show, date, class, ring and schedule. Its responsibility includes deriving
+horse-roster membership and rider associations from participation and tenant
+parameters. Persistent helper identity, aliases, inactivity and history must
+survive changes of show; their final shared-table owners still need agreement.
+
+A horse identity, an entry in a show/class, and a trip are distinct. Keep the
+proven entry-key (show/date/entry/class), horse-id, rider-id, source entry-id,
+class-id and schedule-key. Do not assume one trip per entry or identify horses
+by name alone. trainer-ids currently means feed association; a confirmed trainer
+relationship requires source evidence. Never relabel a feed owner as trainer
+merely because their feed supplied a ride.
+
+Each downstream module owns its observations, calculations or output records
+and references the shared identities. Every relationship need not be a physical
+field in wef-entries. Cross-base native links target a local synced record,
+resolved by source identity; Airtable record IDs are not portable across bases.
+All modules recur independently. Missing or stale dependencies are explicit;
+a valid identified empty collection is success, not a reason to manufacture rows.
+
+### What is working, and what is not yet proven
+
+| Capability | Evidence / limit |
+| --- | --- |
+| Independent entries collection | Trainer feeds 8778, 50121 and 80970; dated collections, source IDs, native schedule links, archives, run-logs and heartbeat. Original 08:19/08:24 proof is retained below. |
+| Canonical show input | Reads wef-shows.shows directly. Source-repair history belongs to wef-shows; this chat does not independently edit overlapping source paths. |
+| CWF consumer migration | COMPLETE for the approved scope. Shadow runs at 13:12 and 13:17 passed. Cutover at 13:19:54 Eastern; normal 13:22 and 13:27 runs passed with 9 synced entries and zero CWF people-endpoint fetches. Five-minute task unchanged. |
+| CWF helpers and relationships | Native synced entries link to existing horses, riders, trainers and synced shows/rings/schedules, with reciprocal links verified. Preserved 76 horses, 37 riders, trainer settings, helper edits and 11 original entry records. The old entries table is retained and no longer refreshed after cutover. |
+| Private follows and inactivity | main-user/user-2 collections were empty; non-empty and overlapping follows tested offline only. Inactive horses/riders remain collected; active-team filtering is a separate projection. Private-only follows and collection ownership are excluded from the CWF team sync. This sync does not itself implement per-user visibility for private trainers. |
+| Broader shared roster and downstream linking | Responsibility agreed; complete cross-base roster ownership, timing/results/messages/Waze contracts and end-to-end acceptance are NOT established by the CWF migration. |
+| Live integration | Existing live identity-reference work is recorded below. Its historical source-failure/disabled status must be confirmed by the live owner before readiness is claimed. No new live acceptance is asserted here. |
+
+Latest operational snapshot checked in this chat at **14:16 Eastern**: entries
+14:14:02-14:14:18 succeeded with 9 rows; CWF 14:12:02-14:14:00 succeeded in synced
+mode with 9 rows and zero people fetches. Both tasks were enabled/Ready with exit
+result 0. These are existing local receipt/task observations, not a fresh Airtable
+readback or an assurance of future runs. Detailed migration readback is the
+13:22/13:27 proof in [CWF migration evidence](../../wef-tenants/evidence/entries-consumer/README.md).
+
+### Bases used by the proven connection
+
+| Base | Current role |
+| --- | --- |
+| wef-entries - appSxF4pYMBaxpTZd | Canonical participation; entries tblqkWmrsYMs2hyQ6; dated selection collections and independent audit tables. |
+| wef-tenant-cwf - appxKPBtdl2Rdq7CS | tenant-details/trainers supply CWF parameters; wef-entries.entries tbl7ychn5HELB3HTr consumes the team sync and links local helpers. |
+| wef-shows - appCaSmL819KK7UFJ | Canonical show identity/context. |
+| wef-schedules - appUq5Qz9kARqFija | Schedule/class/date/ring relationships; read-only local syncs resolve native links. |
+| tenants - app7BXcw801n19QKF | Existing favorites supply owner-key/entry-key selections. Final persistent membership/parameter ownership remains to reconcile with CWF. |
+
+### Acknowledgments required from module owners
+
+This chat acknowledges the wef-entries responsibility below. Other owner rows
+are **pending explicit acknowledgment recorded by the coordinator**.
+This table assigns the requested contract discussion; it does not claim those
+chats received or accepted it. No messages are sent by this documentation update.
+Where no dedicated chat exists, the coordinator must identify the owner.
+
+| Owner chat/module | What it must acknowledge before its connection is accepted |
+| --- | --- |
+| wef-entries (this chat) | Own shared participation identity and the CWF migration; publish available keys, selection provenance, freshness/status and unresolved relationships. Collection is tenant-derived; privacy reasons remain separate from common entries. This chat acknowledges this responsibility; external consumers still need acceptance. |
+| wef-shows (upstream) | Own show identity/date/source-selected context and cross-consumer source-repair history. Entries reads its authority; agree missing/stale-show behavior without triggering another collector. |
+| wef-schedules (upstream/consumer) | Own schedule/group/class/ring/date keys. Confirm show/class/date matching, group-specific keys and how multiple valid schedule associations are represented. Any future participation summaries must preserve schedule ownership. |
+| wef-live | Link live rings/groups/classes/entries and individual trips using source-backed identities and local synced entry references. A live entry outside tenant-selected collection can remain unmatched explicitly; do not fabricate binder rows or limit all live collection to CWF. Confirm fresh normal-run proof separately. |
+| wef-timing | Consume participation, schedules and live observations; own continuous calculations and answer freshness. Agree join keys and treatment of missing, stale, dropped and inactive participation. Entries supplies relationships, not calculated answers. |
+| wef-results | Independently collect/manage results and attach them to the correct show/class/entry/trip. Confirm multiple trips, corrections and history without overwriting participation identity or treating timing estimates as official results. |
+| wef-messages / wef-messaging | Own alerts and two-way messages. Resolve entry/horse/rider/class/ring/tenant context and timing answers; keep recipient subscriptions/private follows separate from shared participation. Confirm actual base name before implementation. |
+| wef-waze | Own comments, check-ins and interaction context, linked to the relevant user/tenant and entry/horse/rider/ring/location. Confirm visibility and retention; interactions do not rewrite source participation. |
+| Tenants / tenant-cwf | Own tenant selection parameters and private sharing. Confirm the synced participation slice, local helper ownership, inactive-team filtering and per-user follows; do not restart duplicate source entry collection. CWF is the proven example, not proof for every tenant. |
+| Horse/rider/trainer/location/ring helper owners | Agree the prepared authoritative tables and identity/alias/history rules. Entries derives roster associations; owners must confirm where persistent membership and helper edits live without duplicating directories or conflating feed association with confirmed trainer. |
+| wef-publish | Own Webflow, Astro and API presentation. Consume agreed participation context and timing answers with tenant scope and freshness; do not become another collector or publish private selection reasons. |
+| wef-records-coordinator | Record each acknowledgment, exact base/table/keys, writer versus reader, freshness/empty/failure behavior, privacy boundary, evidence and unresolved dependency. Reconcile historical protected-file drift with the approved CWF edit list; do not erase failed checks. |
+
+Next handoff: the coordinator gathers these acknowledgments and returns gaps to
+the owning module. Definitions can be settled without changing Airtable or
+blocking the already proven CWF collection. New production changes require their
+own approved scope; do not infer that this document authorizes implementation.
+
+## Initial collection implementation - 23 October 2026 (historical scope)
 
 This update supersedes the proposal-only status in the retained design sections
 below. The owner approved the independent recurring CWF entries function.
@@ -26,7 +313,7 @@ Private-only and overlapping selections are covered by offline tests.
 
 The central collector retains inactive participation. Its active-team projection
 applies roster inactivity only when slicing. No public export, permissions UI,
-timing/results implementation or CWF consumer switch is included. Existing CWF
+timing/results implementation or CWF consumer switch was included in that initial release. The later approved CWF switch is verified above. Existing CWF
 and schedules code, tasks and table schemas are protected. No manual collector
 runs or record repairs are part of this implementation.
 
@@ -118,7 +405,7 @@ The CWF collection parameters below are implemented for this proof. main-user
 and user-2 are sufficient placeholders, with no actual selections supplied.
 Non-empty private selection behavior is tested offline; its live proof awaits
 real owner selections. Existing schedules/CWF collectors keep their normal
-updates. No CWF consumer switch is included.
+updates. CWF now consumes the verified team sync; its duplicate entry fetching is stopped.
 
 ## Independent recurring entries function
 
@@ -134,7 +421,7 @@ collector keeps its five-minute task unchanged.
 | Persistent tenant relationships | Prepared tenants membership/roster relationships are available for the linking design. Reconcile their identities with CWF configuration before selecting a single parameter owner; do not let conflicting configurations independently control collection. |
 | Collection owner | The independent function collects and normalizes the tenant-derived participation into wef-entries. It is not another writer to CWF's existing entries during preparation. |
 | Schedule source | Read the new wef-schedules using show ID + class ID + date to identify the participation's schedule, then retain schedule-key and a valid linked reference. |
-| CWF consumer | The existing wef-tenant-cwf remains the tenant workspace: relevant entry slice, local helpers, edits and schedule references. Its existing collector/entries remain the working owner until a separately approved switch is verified. |
+| CWF consumer | The existing wef-tenant-cwf remains the tenant workspace: relevant entry slice, local helpers, edits and schedule references. Its scheduled task now consumes wef-entries.entries and maintains local helpers/links; duplicate entry fetching stopped after verified cutover. |
 
 ### Schedule matching and local links
 
@@ -155,9 +442,9 @@ The approved local sync/link schema is configured; normal-run verification is re
 
 The link to schedules is a data relationship, not the execution trigger. The
 link to CWF is scoped consumption, not permission to run both the current and
-proposed collectors against the same CWF entry records. A future transition must
-verify normal recurring runs, links, helpers and repeat behavior before changing
-the established writer or retiring duplicates.
+central collectors against the same CWF entry records. The CWF transition has
+passed normal recurring and repeat checks; old entry records remain preserved.
+Any further retirement still requires consumer/history accounting and approval.
 
 ## CWF collection parameters — agreed example
 
@@ -271,7 +558,7 @@ not prove populated records, valid keys, working collectors or enforced privacy.
 | --- | --- | --- |
 | wef-schedules: shows, show-collection, rings, schedules | Working show/date/schedule graph supplying downstream references | Keep current ownership. schedules.stage-key and class-id help identify participation. |
 | wef-schedules: rings-helper, tenants, wef-tenant-index | Existing ring helpers, tenant location/context and tenant/show/base directory | Preserve until an approved change is justified. No move required for this design. |
-| CWF: entries, horses, riders, trainers, collections | Proven new-system participation and roster links | Use its entry-key/source IDs and native links as the binder baseline. Do not switch its working owner during design. |
+| CWF: entries, horses, riders, trainers, collections | Proven new-system participation and roster links | Reuse its proven entry-key/source IDs and helper links. Current entries arrive through the verified native sync; original entry records remain retained. |
 | CWF: wef-schedules.shows, .rings, .schedules | Existing local synced references linked from entries | Keep read-only schedule data; preserve local synced record IDs. |
 | CWF: rings-helper, ring-walks | Tenant ring helpers and barn-based walking minutes | Preserve tenant edits and example-data labels. |
 | tenants: tenants, people, tenant-memberships, roles | Paying container, users, memberships and roles | Native links exist. people.recognition_person_uid is a possible identity bridge, not a verified integration. |
@@ -374,11 +661,11 @@ inactive filter only to the active team slice.
 ### CWF boundary
 
 All five destination tables belong to the independent central wef-entries function.
-CWF supplies configuration and a proven reference structure; its collector,
-records, helpers, links, run-logs and heartbeat remain untouched. No dual writer
-to CWF entries, no copying private lists into team exports and no migration or
-deprecation happens until separately approved and verified through normal runs.
-The separate five-minute task is deployed; see the implementation update for acceptance status.
+CWF supplies configuration and consumes the approved native team sync. Its task
+maintains helpers, local links, audit collections, run-logs and heartbeat without
+duplicate people-endpoint entry fetching. Original entries and links are retained.
+Private-only selections are not team exports. Migration is verified above; further
+deprecation is not authorized by this document.
 
 ## wef-entries stage and tenant-entry linking module
 
@@ -409,7 +696,7 @@ the latest design names above do not rename those Airtable bases.
 | Tenant slice | Hide inactive horses/riders from the active team slice while continuing collection. Keep private user lists separate; select relevant timing answers using the tenant parameters. |
 | Target | Read CWF's existing tenant-details/trainers for the initial configuration and use the tenant/show/base directory to confirm the destination; do not guess target identity from trainer ID alone. |
 | Schedule link | Match show ID + class ID + date; retain schedule-key and resolve a valid local native reference. Missing/ambiguous matches are explicit outcomes, not empty success. |
-| CWF output | Eventually serve CWF's relevant slice while retaining local helpers, edits and native links. Its existing collector remains the working writer until a separately approved and verified switch. Exact sync/write contract is not decided. |
+| CWF output | Verified: CWF consumes read-only wef-entries.entries; its task updates only local helper links and retained CWF functions. Original entries are preserved; broader private/user slices remain unverified. |
 | Personal follows | Keep each user's private selection separate from shared team entries. Do not expose follows to the admin through a general sync. |
 
 Appearing in a person's source feed does not by itself confirm a trainer
@@ -542,7 +829,7 @@ show/day behavior. The new function collects independently and supplies timing.
 
 ## Working diagram
 
-Solid arrow: the established schedules-to-CWF read-only sync. Dashed arrows
+Solid arrows: established schedules-to-CWF and entries-to-CWF read-only syncs. Dashed arrows
 describe proposed reads, updates and tenant-scope relationships as labeled, not
 implemented links or execution dependencies. Each collector operates independently;
 outputs read timing rather than wait to be launched by it. Schedules/CWF and the independent entries collector are established; the live
@@ -555,7 +842,7 @@ flowchart TB
     subgraph COL["Independent collectors / normalizers — recurring updates, not a run sequence"]
         SH["wef-shows<br/>Keeps updating"]
         S["wef-schedules<br/>PROVING FOUNDATION<br/>Keeps updating"]
-        E["wef-entries — INDEPENDENT RECURRING FUNCTION<br/>Own refresh; not triggered by schedules completion<br/>Normalize each selected participation once<br/>Inactive participation retained; valid empty = Success"]
+        E["wef-entries — SHARED LINKING MODULE<br/>Independent recurring collection<br/>Horse / rider / trainer / show / schedule identity<br/>Normalize each selected participation once<br/>Inactive participation retained; valid empty = Success"]
         subgraph LIVE["wef-live — independent five-minute collection<br/>Task disabled: schedule-link correction pending"]
             L["Authority: wef-schedules.shows<br/>Matched source show + TODAY only<br/>All relevant live activity; not limited to CWF entries<br/>Valid empty = Success; archive prior days before retirement"]
             LR["live-rings<br/>Ring IDs / number / name<br/>Current, next, completed groups"]
@@ -599,8 +886,9 @@ flowchart TB
     E -.->|"Available bound entries"| LINK
     B -.->|"Available timing answers"| LINK
     LINK -.->|"Collected team participation plus timing"| TEAM
-    TEAM -.->|"Future verified connection"| C
+    TEAM -.->|"Planned filtered team + timing view; distinct from current sync"| C
     S -->|"Existing read-only sync"| C
+    E -->|"Verified CWF team sync; local helper links; no duplicate fetch"| C
     H -.->|"Reference lookups"| E
     H -.->|"Reference lookups"| W
     R -.->|"Collected results linked to entries/trips"| E
@@ -621,7 +909,8 @@ flowchart TB
 
 ## Sharing and CWF transition
 
-- Keep the existing schedules -> CWF sync and working entry collector in place.
+- Keep the existing schedules -> CWF sync. CWF now consumes the verified
+  wef-entries.entries sync; do not restore duplicate collection.
 - Establish tenant-derived entry scope before implementing the central entries
   collector/linking contract; an output-only tenant filter is insufficient.
 - Share relevant schedule references read-only with the binder and live consumers
@@ -701,7 +990,7 @@ is retained only as discussion history; its legacy-driven requirements are withd
 | --- | --- |
 | TODAY | Use the current default wef-schedules.shows record as authority, match live source show/date, and guard against upcoming dates. No new wef-shows build is required. |
 | Current stage: CWF entries collection proof | Implemented: three trainer feeds plus empty main-user/user-2 lists, inactive participation retained and valid empties successful. Non-empty private lists still need actual owner selections for live proof. User-role design is not a prerequisite. |
-| Binder and linking contract | Separate five-minute Windows task and read-only local schedule sync configured. Initial params come from existing CWF configuration and tenants.favorites; keep CWF's current writer unchanged until separately approved migration. |
+| Binder and linking contract | Separate five-minute Windows task and read-only local schedule sync configured. Initial params come from existing CWF configuration and tenants.favorites. CWF migration is complete; broader downstream acknowledgment and shared roster ownership remain open. |
 | Persistent helpers | Choose owners based on actual shared lookup/history needs and prepared data, not matching base names. |
 | Time estimates | Define ring/group/class/entry inputs, formulas and refresh behavior from the new use cases. Legacy calculators are optional references. |
 | Continuous operation | Define independent refresh cadence and missing/stale-input behavior per consumer; outputs continually consult timing while unrelated producers keep updating. |
@@ -716,8 +1005,9 @@ is retained only as discussion history; its legacy-driven requirements are withd
 ## Change boundary
 
 The implementation update records the owner-approved entries-only changes.
-CWF and schedules remain protected. Other downstream work, consumer migration
-and table retirement still require separate approval. No manual collector runs
+The approved CWF migration is now complete. Schedules and unrelated CWF
+functions remain protected. Other downstream changes, additional consumer
+migrations and table retirement still require separate approval. No manual collector runs
 or record repairs are permitted.
 
 
@@ -768,3 +1058,36 @@ no missing-trip identity error remained and 68 archives verified. Live is disabl
 No production patch or manual retry followed that failed gate. Overall work is
 incomplete: persistent 502, concurrent protected drift, and two live runs remain.
 Full evidence: wef-live/evidence/source-fix/release-status.json.
+
+### Historical source-repair report reconciliation
+
+The preceding 13:11 report is retained unchanged as that release's evidence.
+Its protected-file drift includes the separately approved CWF migration edits
+to wef-tenants/airtable.js, collector.js and settings.js. The migration's later
+13:22/13:27 acceptance is documented above; it does not overwrite or retroactively
+pass the other release's hash gate, and does not resolve live's failed acceptance.
+The coordinator and source-repair owner must reconcile those scopes.
+
+## CWF active slices - 24 October 2026
+
+The approved CWF slice uses its existing native wef-entries.entries sync.
+Collection remains tenant-scoped (8778, 50121, 80970 plus separately owned
+personal follows); whole-show collection remains undecided. Inactive horses
+and riders continue to be collected and refreshed. The Active team view
+requires current trainer participation and neither participant to be disabled
+or source-inactive. Active roster views apply the same inactivity rules to
+horses and riders. Original Grid views preserve the inclusive records.
+
+CWF maintains only local active-team, team-status and team-checked-at fields
+in the sync. Source entry facts and existing links remain protected. Its
+normal heartbeat and run-logs report slice counts. The existing five-minute
+task is unchanged. No manual runs or record repairs are used.
+
+Personal-only entries and follow ownership stay out of the shared CWF sync.
+An entry may also be a team entry without disclosing who follows it.
+main-user and user-2 remain empty placeholders; user-specific authenticated
+delivery is a separate downstream responsibility, not a permission supplied
+by an Airtable filtered view. Do not grant shared-base access to personal lists.
+
+Release evidence and current verification status:
+[tenant slice acceptance](../../wef-tenants/evidence/tenant-slices-20261024/release.md).

@@ -5,6 +5,92 @@ const { runLive } = require("../collector"),
   m = require("../model"),
   { tables, links } = require("../schema");
 const clock = () => "2026-10-23T15:00:00.000Z";
+const observations = x => JSON.parse(JSON.stringify(x, (k,v)=>k.startsWith('participation-')?undefined:v));
+test('failed class retains reciprocal group membership when source moves it',async()=>{
+ const f=fixture();const a=args(f),get=a.get;await runLive(a);
+ const originalClass=structuredClone(a.store.db['live-classes'][0]);
+ const originalGroup=structuredClone(a.store.db['live-groups'][0]);
+ f.groups[0].json_data.push({...f.groups[0].json_data[0],class_group_id:'21'});
+ f.groups[0].json_data[0].classes=['31'];
+ a.get=async(url,d)=>{const p=await get(url,d);if(url.includes('cid=30'))throw Error('HTTP 502');
+ if(url.includes('cid=31')){p.ID='31';p.rows[0].class_id='31';p.rows[0].id='401';}
+ if(d&&url.includes('/31?')){p.class.class_id=31;p.trips[0].trip_id=401;}return p;};
+ const r=await runLive(a);assert.equal(r.ok,true);
+ assert.deepEqual(a.store.db['live-classes'].find(c=>c.id===originalClass.id),originalClass);
+ assert(a.store.db['live-groups'].find(g=>g.id===originalGroup.id).fields.classes.includes(originalClass.id));
+ assert(!a.store.db['live-groups'].find(g=>g.fields['class-group-id']===21).fields.classes.includes(originalClass.id));
+});
+for (const failure of ['HTTP 502', 'timeout', 'malformed', 'scope']) test(`ordinary class ${failure} is partial, preserves links and allows other classes`,async()=>{
+ const f=fixture();f.groups[0].json_data.push({...f.groups[0].json_data[0],class_group_id:'21',classes:['31']});
+ const a=args(f),get=a.get,archived=[];let fail=false;
+ const archive=a.archive;a.archive=async(k,p)=>{archived.push({k,p:structuredClone(p)});return archive(k,p);};
+ a.get=async(url,d)=>{const p=await get(url,d);const second=url.includes('cid=31')||url.includes('/31?');
+ if(url.includes('cid=31')){p.ID='31';p.rows[0].class_id='31';p.rows[0].id='401';}
+ if(d&&second){p.class.class_id=31;p.trips[0].trip_id=401;}
+ if(fail&&!second){if(url.includes('getLiveClassData')){if(failure==='HTTP 502'||failure==='timeout')throw Error(failure);if(failure==='malformed')p.rows=null;}if(d&&failure==='scope')p.class.show_id=999;}
+ return p;};
+ await runLive(a);const before=structuredClone(a.store.db['live-classes'].find(c=>c.fields['class-id']===30));
+ const beforeEntry=structuredClone(a.store.db['live-entries'].find(e=>e.fields['trip-id']===400));fail=true;
+ const r=await runLive(a);assert.equal(r.ok,true);assert.equal(r.unresolved[0].status,'error');
+ assert.equal(a.store.db.heartbeat[0].fields.result,'Partial');assert.equal(r.counts.entries,1);
+ assert.deepEqual(a.store.db['live-classes'].find(c=>c.id===before.id),before);
+ assert.deepEqual(observations(a.store.db['live-entries'].find(c=>c.id===beforeEntry.id)),observations(beforeEntry));
+ assert.equal(a.store.db.collections.find(c=>c.fields['source-id']==='30').fields.status,'error');
+ const pair=archived.filter(x=>x.k==='class-30').at(-1).p;assert(pair.decoded);
+});
+test('run-log outage cannot interrupt collection or heartbeat and does not repeat per archive',async()=>{
+ const a=args(),upsert=a.api.upsert;let attempts=0;
+ a.api.upsert=async(t,k,rows)=>{if(t==='run-logs'){attempts++;throw Error('Audit timeout');}return upsert(t,k,rows);};
+ const r=await runLive(a);assert.equal(r.ok,true);assert.equal(attempts,1);assert.equal(a.store.db['live-entries'].length,1);
+ assert.equal(a.store.db.heartbeat[0].fields.result,'Success');assert.match(r.logging_errors[0],/Audit timeout/);assert(r.archives.length>1);
+ const id=a.store.db['live-entries'][0].id;assert.equal((await runLive(a)).ok,true);assert.equal(a.store.db['live-entries'][0].id,id);
+});
+test('heartbeat outage leaves collection and final run log successful',async()=>{
+ const a=args(),upsert=a.api.upsert;a.api.upsert=async(t,k,rows)=>{if(t==='heartbeat')throw Error('Heartbeat timeout');return upsert(t,k,rows);};
+ const r=await runLive(a);assert.equal(r.ok,true);assert.equal(a.store.db['run-logs'][0].fields.result,'Success');assert.match(r.logging_errors[0],/heartbeat/);
+});
+test('unresolved class does not prevent a different class from collecting', async()=>{
+ const f=fixture();f.groups[0].json_data.push({...f.groups[0].json_data[0],class_group_id:'21',classes:['31']});
+ const a=args(f),get=a.get;
+ a.get=async(url,d)=>{const p=await get(url,d);if(url.includes('cid=31')){p.ID='31';p.rows[0].class_id='31';p.rows[0].id='401';}if(d){if(url.includes('/31?')){p.class.class_id=31;p.trips[0].trip_id=401;}else p.trips=[];}return p;};
+ const r=await runLive(a);assert.equal(r.ok,true);assert.equal(r.unresolved.length,1);
+ assert.equal(a.store.db['live-entries'].length,1);assert.equal(a.store.db['live-entries'][0].fields['trip-id'],401);
+ assert.equal(a.store.db.collections.find(c=>c.fields['source-id']==='30').fields.status,'unresolved');
+});
+test('false live status skips source details and preserves records, then resumes when true', async () => {
+  const a = args();
+  await runLive(a);
+  const before = JSON.stringify(a.store.db['live-entries']);
+  const skipped = await runLive({...a, getStatus: async () => false, get: async () => { throw Error('No source call expected'); }});
+  assert.equal(skipped.skipped, 'live-status-false');
+  assert.equal(skipped.ok, true);
+  assert.equal(JSON.stringify(a.store.db['live-entries']), before);
+  assert.equal(a.store.db.heartbeat[0].fields.result, 'Skipped');
+  assert.equal((await runLive(a)).ok, true);
+});
+test('all TODAY groups completed skips widget and class requests; another day does not affect gate', async () => {
+  const f = fixture(); f.groups[0].json_data[0].status = 'Completed';
+  f.groups[0].json_data.push({...f.groups[0].json_data[0], day:'2026-10-24', status:'Upcoming'});
+  const a = args(f); const get = a.get; const calls = [];
+  a.get = async url => { calls.push(url); return get(url); };
+  const report = await runLive(a);
+  assert.equal(report.skipped, 'all-today-groups-completed');
+  assert.equal(report.ok, true);
+  assert.equal(calls.length, 1); assert.match(calls[0], /ListAjax/);
+  assert.equal(a.store.db['live-classes'].length, 0);
+  assert.equal(a.store.db['run-logs'][0].fields.result, 'Skipped');
+});
+test('empty or mixed groups do not imply completed and invalid status fails visibly', async () => {
+  const {allCompleted, statusValue, readStatus} = require('../activity');
+  assert.equal(allCompleted([]), false);
+  assert.equal(allCompleted([{status:'Completed'}, {status:'Upcoming'}]), false);
+  for (const value of [null, {}, '', 'false', {status:null}]) assert.throws(()=>statusValue(value));
+  assert.equal(await readStatus({customer:15}, async()=>({ok:true,json:async()=>false})), false);
+  await assert.rejects(()=>readStatus({customer:15}, async()=>({ok:false,status:502})), /502/);
+  const a = args(); const report = await runLive({...a, getStatus:async()=>null});
+  assert.equal(report.ok, false); assert.equal(report.skipped, undefined);
+  assert.equal(a.store.db.heartbeat[0].fields.result, 'Failed');
+});
 function fixture() {
   const g = {
     class_group_id: "20",
@@ -82,13 +168,15 @@ function fake() {
     },
   ];
   db["wef-entries.entries"] = [
-    { id: "entry-local", fields: { "entry-key": "75|2026-10-23|200|30" } },
+    { id: "entry-local", fields: { "entry-key": "75|2026-10-23|200|30",'show-id':75,date:'2026-10-23','class-id':30,'entry-id':200,'horse-id':600,'rider-id':700,status:'active','last-seen':clock(),'observation-status':'successful','schedule-key':'75|2026-10-23|20_100' } },
   ];
+  db['show-collection']=[{fields:{'show-id':75,date:'2026-10-23',started:clock(),completed:clock(),status:'complete'}}];
   let id = 0;
   return {
     db,
     api: {
-      list: async (t) => structuredClone(db[t]),
+      list: async (t) => structuredClone(t==='schedules'?db['wef-schedules.schedules']:db[t]),
+      fieldNames: async () => ['last-seen','observation-status','schedule-key'],
       upsert: async (t, k, rows) => {
         const allowed = new Set([...tables[t], ...Object.keys(links[t] || {})]);
         for (const fields of rows) {
@@ -116,6 +204,7 @@ function args(f = fixture(), store = fake()) {
     store,
     api: store.api,
     clock,
+    getStatus: async () => true,
     archive: async (kind, v) => ({
       at: clock(),
       kind,
@@ -198,15 +287,16 @@ test("future source-selected date does not collect live", async () => {
   assert.equal(r.ok, true);
   assert.equal(r.counts.entries, 0);
 });
-test("failed class identity leaves previous entries intact", async () => {
+test("unresolved class identity leaves previous entries intact", async () => {
   const f = fixture(),
     a = args(f);
   await runLive(a);
   const before = structuredClone(a.store.db["live-entries"]);
   f.decoded.trips = [];
   const r = await runLive(a);
-  assert.equal(r.ok, false);
-  assert.deepEqual(a.store.db["live-entries"], before);
+  assert.equal(r.ok, true);
+  assert.equal(r.unresolved.length, 1);
+  assert.deepEqual(observations(a.store.db["live-entries"]), observations(before));
 });
 test("archive failure prevents collection writes and retirement", async () => {
   const a = args();
@@ -342,6 +432,15 @@ test('one mismatched live/decoded snapshot refreshes the pair with both attempts
  const archive=a.archive;a.archive=async(kind,p)=>{if(kind==='class-30')archives.push(structuredClone(p));return archive(kind,p);};
  const r=await runLive(a);assert.equal(r.ok,true);assert.equal(details,2);assert.equal(decoded,2);assert.equal(archives.length,2);assert.equal(r.snapshot_refreshes.length,1);assert.equal(a.store.db['live-entries'][0].fields['entry-id'],200);
 });
-test('persistent missing identity stays a failure after exactly one fresh pair',async()=>{
- const a=args(),get=a.get;let decoded=0;a.get=async(url,d)=>{const p=await get(url,d);if(d){decoded++;p.trips=[];}return p;};const r=await runLive(a);assert.equal(r.ok,false);assert.equal(decoded,2);assert.equal(a.store.db['live-entries'].length,0);assert(r.errors.some(e=>e.includes('No decoded identity')));
+test('persistent missing identity is unresolved after one fresh pair, preserves links and resumes',async()=>{
+ const a=args(),get=a.get;await runLive(a);
+ const before=structuredClone(a.store.db['live-entries']),classes=structuredClone(a.store.db['live-classes']);
+ let decoded=0,retire=0;a.api.retire=async()=>retire++;
+ a.get=async(url,d)=>{const p=await get(url,d);if(d){decoded++;p.trips=[];}return p;};
+ const r=await runLive(a);assert.equal(r.ok,true);assert.equal(decoded,2);
+ assert.equal(r.unresolved[0].class_id,30);assert.deepEqual(r.errors,[]);
+ assert.deepEqual(observations(a.store.db['live-entries']),observations(before));assert.deepEqual(a.store.db['live-classes'],classes);
+ assert.equal(a.store.db.heartbeat[0].fields.result,'Partial');assert.equal(retire,0);
+ const col=a.store.db.collections.find(r=>r.fields['source-id']==='30');assert.equal(col.fields.status,'unresolved');assert.equal(col.fields['row-count'],1);
+ a.get=get;const next=await runLive(a);assert.deepEqual(next.unresolved,[]);assert.equal(a.store.db.collections.find(r=>r.fields['source-id']==='30').fields.status,'complete');
 });

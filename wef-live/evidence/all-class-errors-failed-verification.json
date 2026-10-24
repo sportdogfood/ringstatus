@@ -1,0 +1,36 @@
+{
+  "run": "c06ff203-e64b-402e-88ae-6588a65f5b84",
+  "started": "2026-10-24T15:17:13.108Z",
+  "completed": "2026-10-24T15:21:40.793Z",
+  "ok": false,
+  "errors": [
+    "The operation was aborted due to timeout"
+  ],
+  "unresolved": [
+    {
+      "class_id": 200030429,
+      "message": "No decoded identity for trip 200398240",
+      "status": "unresolved"
+    },
+    {
+      "class_id": 200030330,
+      "message": "No decoded identity for trip 200398643",
+      "status": "unresolved"
+    }
+  ],
+  "checks": [
+    {
+      "table": "live-classes",
+      "before": 91,
+      "after": 91,
+      "allExistingRecordsUnchanged": true
+    },
+    {
+      "table": "live-entries",
+      "before": 501,
+      "after": 501,
+      "allExistingRecordsUnchanged": true
+    }
+  ],
+  "acceptance": "Blocked: first post-change run failed during dataset archive audit logging; two accepted normal runs not achieved."
+}

@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-10-24T15:25:59.344Z",
+  "horses": {
+    "all": 76,
+    "active": 67,
+    "inactive": 9
+  },
+  "riders": {
+    "all": 37,
+    "active": 37,
+    "inactive": 0
+  },
+  "synced_entries": 9,
+  "active_team": 0,
+  "private_only_source_entries": 0,
+  "private_only_exported": 0,
+  "views": {
+    "entries": "viwAqV0OQzzlI9qft",
+    "horses": "viwveStzE4tXrLGIT",
+    "riders": "viwDXz2D9KM04P8hK"
+  }
+}

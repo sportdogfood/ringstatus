@@ -19,26 +19,30 @@ async function scheduled({
         completed: new Date().toISOString(), ok: false, errors: [error.message] };
     }
     // Persist locally before attempting Airtable, so an Airtable outage cannot hide the error.
+    report.logging_errors ||= [];
+    const loggingError = message => { if (!report.logging_errors.includes(message)) report.logging_errors.push(message); };
     const save = () => {
-      const body = JSON.stringify(report, null, 2);
-      fs.writeFileSync(path.join(runtime, "last-run.json"), body);
-      fs.writeFileSync(path.join(runtime, report.run_id + ".json"), body);
+      for (const name of [report.run_id + '.json', 'last-run.json']) {
+        try { fs.writeFileSync(path.join(runtime, name), JSON.stringify(report, null, 2)); }
+        catch (error) { loggingError('Local receipt ' + name + ': ' + error.message); }
+      }
     };
     save();
-    if (report.errors?.length) {
-      const errors = report.errors.map((message, i) => ({
+    const messages = [...(report.errors || []), ...(report.unresolved || []).map(u => `${u.status === 'error' ? 'Class error' : 'Unresolved class'} ${u.class_id}: ${u.message}`), ...(report.link_issues||[]).map(u=>`Participation ${u.entry_key}: ${u.message}`), ...report.logging_errors];
+    if (messages.length) {
+      const errors = messages.map((message, i) => ({
         "error-key": `${report.run_id}|${i}`, "run-id": report.run_id,
         "occurred-at": report.completed, "show-id": report.scope?.show ?? null,
         date: report.scope?.date || "", message,
       }));
-      fs.appendFileSync(path.join(runtime, "errs-log.jsonl"), errors.map(e => JSON.stringify(e)).join("\n") + "\n");
+      try { fs.appendFileSync(path.join(runtime, "errs-log.jsonl"), errors.map(e => JSON.stringify(e)).join("\n") + "\n"); }
+      catch (error) { loggingError('Local errs-log: ' + error.message); }
       try { await api.upsert("errs-log", "error-key", errors); }
       catch (error) {
-        report.ok = false;
-        report.errors.push("errs-log unavailable; local receipt retained: " + error.message);
-        save();
+        loggingError("errs-log unavailable; local receipt retained where writable: " + error.message);
       }
     }
+    save();
     const body = JSON.stringify(report, null, 2);
     // A failed run remains failed, but never prevents the next scheduled invocation.
     // Older halt receipts are retained as history and no longer act as execution gates.

@@ -13,8 +13,8 @@ function airtable({token=settings.AIRTABLE_TOKEN,request=globalThis.fetch,pause=
   else if(base===settings.ENTRIES_BASE_ID){if(method!=='GET'||!['entries','collections','heartbeat'].includes(table))throw Error('Central entries are read-only and table restricted');}
   else if(![settings.BASE_ID,settings.SHARED_BASE_ID].includes(base))throw Error('Unapproved base');
   if(base===settings.BASE_ID&&[settings.SYNC_ENTRIES_TABLE,'wef-entries.entries'].includes(table)&&method!=='GET'){
-   const allowed=new Set(require('./entries-consumer').linkFields);
-   if(method!=='PATCH'||!body?.records?.length||body.records.some(r=>!r.id||Object.keys(r.fields||{}).some(k=>!allowed.has(k))))throw Error('Synced entry source fields are read-only; only local links may change');
+   const allowed=new Set([...require('./entries-consumer').linkFields,...require('./tenant-slices').fields]);
+   if(method!=='PATCH'||!body?.records?.length||body.records.some(r=>!r.id||Object.keys(r.fields||{}).some(k=>!allowed.has(k))))throw Error('Synced entry source fields are read-only; only local links and team slice fields may change');
   }
   if(method!=='GET'&&base===settings.SHARED_BASE_ID&&table!=='wef-tenant-index')throw Error('Shared schedule writes forbidden');
   if(method!=='GET'&&base===settings.BASE_ID&&readOnlyReferences.has(table))throw Error('Schedule references are read-only');

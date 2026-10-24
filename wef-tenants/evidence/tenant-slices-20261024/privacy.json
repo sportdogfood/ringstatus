@@ -1,0 +1,75 @@
+{
+  "at": "2026-10-24T15:26:48.608Z",
+  "favorites_count": 0,
+  "owners": [
+    "main-user",
+    "user-2"
+  ],
+  "private_collections": [
+    {
+      "id": "rec0iV2uxmPKiHZZG",
+      "source_id": "main-user",
+      "row_count": 0,
+      "status": "complete",
+      "completed": "2026-10-24T15:24:48.156Z"
+    },
+    {
+      "id": "rec6AaKiIUca3EPVs",
+      "source_id": "main-user",
+      "row_count": 0,
+      "status": "complete",
+      "completed": "2026-10-24T15:24:48.156Z"
+    },
+    {
+      "id": "recBqzVvuusBZxVzp",
+      "source_id": "user-2",
+      "row_count": 0,
+      "status": "complete",
+      "completed": "2026-10-24T15:24:48.156Z"
+    },
+    {
+      "id": "recQC1Juelfzdec51",
+      "source_id": "main-user",
+      "row_count": 0,
+      "status": "complete",
+      "completed": "2026-10-24T15:24:48.156Z"
+    },
+    {
+      "id": "recTF9gMdgPcOoFBg",
+      "source_id": "user-2",
+      "row_count": 0,
+      "status": "complete",
+      "completed": "2026-10-24T15:24:48.156Z"
+    },
+    {
+      "id": "recZyfCciwbTd1k5Q",
+      "source_id": "user-2",
+      "row_count": 0,
+      "status": "complete",
+      "completed": "2026-10-24T15:24:48.156Z"
+    },
+    {
+      "id": "recgeRAlhxGrHcPKz",
+      "source_id": "main-user",
+      "row_count": 0,
+      "status": "complete",
+      "completed": "2026-10-24T15:24:48.156Z"
+    },
+    {
+      "id": "recwoAYrlBjqq5bTw",
+      "source_id": "user-2",
+      "row_count": 0,
+      "status": "complete",
+      "completed": "2026-10-24T15:24:48.156Z"
+    }
+  ],
+  "source_view": {
+    "id": "viwGmsuyn4cofGwnX",
+    "verified_ui_filter": "trainer-ids is not empty",
+    "excluded_fields": [
+      "source-json",
+      "schedules",
+      "collections"
+    ]
+  }
+}

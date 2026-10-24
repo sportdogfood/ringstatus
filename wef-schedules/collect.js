@@ -268,13 +268,9 @@ async function discoverFocus({statePath=settings.SCHEDULE_FOCUS_FILE,io={},now=n
 module.exports={isoDate,selectedDays,explicitScope,acquireLock,atomicReport,localDay,collectorIO,discoverFocus};
 
 if(require.main===module) {
-  if(!settings.AIRTABLE_TOKEN) throw new Error('WEF_SCHEDULES_AIRTABLE_TOKEN required');
-
-  require('./store').runStagedCollector({runLog:require('./run-logs').runLogs({heartbeat:require('./heartbeat').heartbeat(),catalog:require('./show-index').showIndex()}),references:require('./show-rings').showRings()})
-
-    .then(r=>{console.log(JSON.stringify(r,null,2));process.exitCode=r.ok?0:1;})
-
-    .catch(error=>{console.error(error.message);process.exitCode=1;});
-
+  require('./completion-guard').runWithCompletion(()=>{
+    if(!settings.AIRTABLE_TOKEN) throw new Error('WEF_SCHEDULES_AIRTABLE_TOKEN required');
+    return require('./store').runStagedCollector({runLog:require('./run-logs').runLogs({heartbeat:require('./heartbeat').heartbeat(),catalog:require('./show-index').showIndex()}),references:require('./show-rings').showRings()});
+  });
 }
 

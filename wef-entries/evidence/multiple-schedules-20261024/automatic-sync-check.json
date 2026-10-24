@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-24T17:06:02.149Z",
+  "entries": {
+    "total": 10,
+    "arrays": 9,
+    "successful": 9,
+    "dropped": 1,
+    "privateProvenanceExposed": false
+  },
+  "cwf": {
+    "total": 10,
+    "arrays": 9,
+    "successful": 9,
+    "dropped": 1,
+    "privateProvenanceExposed": false
+  }
+}

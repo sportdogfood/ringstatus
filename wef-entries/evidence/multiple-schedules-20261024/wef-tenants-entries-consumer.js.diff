@@ -1,0 +1,35 @@
+--- wef-tenants/entries-consumer.js
++++ staged/wef-tenants/entries-consumer.js
+@@ -1,6 +1,6 @@
+ "use strict";
+ const settings=require('./settings');
+-const sourceFields=['entry-key','show-id','date','entry-id','class-id','horse-id','horse-name','rider-id','rider-name','trainer-ids','class-name','ring-number','status','schedule-key'];
++const sourceFields=['entry-key','show-id','date','entry-id','class-id','horse-id','horse-name','rider-id','rider-name','trainer-ids','class-name','ring-number','status','schedule-key','schedule-keys','observation-status'];
+ const linkFields=['horses','riders','trainers','shows','synced-rings','schedules'];
+ const ids=value=>String(value||'').split(',').map(x=>x.trim()).filter(Boolean);
+ const sorted=value=>JSON.stringify([...(value||[])].sort());
+@@ -24,18 +24,19 @@
+   }byTrainer.set(pid,rows);
+  }
+  const selected=new Set([...byTrainer.values()].flat().map(f=>f['entry-key']));
+- return{local:localTeam,rows:localTeam.filter(r=>selected.has(r.fields['entry-key'])).map(r=>({...r.fields})),byTrainer,proof:{base,table:settings.SYNC_ENTRIES_TABLE,checked_at:beats[0].fields['checked-at'],synced_rows:localTeam.length,active_rows:selected.size}};
++ return{local:localTeam,rows:localTeam.filter(r=>selected.has(r.fields['entry-key'])).map(r=>({...r.fields})),byTrainer,proof:{base,table:settings.SYNC_ENTRIES_TABLE,schedule_link_transport:'plural-ready',array_rows:localTeam.filter(r=>Object.hasOwn(r.fields,'schedule-keys')).length,checked_at:beats[0].fields['checked-at'],synced_rows:localTeam.length,active_rows:selected.size}};
+ }
+ function links(rows,{showRecord,rings,schedules,horses,riders,trainers}){
++ const scheduleLinks=require('./schedule-links');
+  const one=(matches,label)=>{if(matches.length!==1)throw Error('Synced entry '+label+' link missing or ambiguous');return[matches[0].id];};
+- return rows.map(row=>({...row,
++ return rows.map(row=>{const resolved=scheduleLinks.resolve(row,schedules);if(Object.hasOwn(row,'schedule-keys')&&row['observation-status']!=='successful')throw Error('Entry observation is historical or unresolved');return({...row,
+   shows:[showRecord.id],
+-  schedules:one(schedules.filter(r=>r.fields['stage-key']===row['schedule-key']),'schedule'),
+-  'synced-rings':one(rings.filter(r=>r.fields.ring_date===row.date&&Number(r.fields.ring_number)===Number(row['ring-number'])),'ring'),
++  schedules:resolved.map(r=>r.id),
++  'synced-rings':[...new Set(resolved.flatMap(s=>one(rings.filter(r=>r.fields.ring_date===row.date&&Number(r.fields.ring_number)===Number(s.fields.ring??row['ring-number'])),'ring')))],
+   horses:one(horses.filter(r=>Number(r.fields['horse-id'])===Number(row['horse-id'])),'horse'),
+   riders:one(riders.filter(r=>Number(r.fields['rider-id'])===Number(row['rider-id'])),'rider'),
+   trainers:trainers.filter(r=>ids(row['trainer-ids']).includes(String(r.fields['trainer-id']))).map(r=>r.id)
+- }));
++ });});
+ }
+ async function saveLinks(api,local,rows){
+  const changes=[];

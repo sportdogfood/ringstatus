@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-24T15:29:53.758Z",
+  "hashes": {
+    "wef-tenants/collector.js": "97572be7bccff4b594a59269802052960e189e747039804b199b1ebb485934c8",
+    "wef-tenants/airtable.js": "a24282009232c58e103238a682236eae37a144aea73dc416df225406257d694c",
+    "wef-tenants/settings.js": "cf9a89b979c484bcbc5d2a2ba62c5064836fc2e3c54fc1fdb9022999d0254e3f",
+    "wef-tenants/tenant-slices.js": "a192df5819eff2198de852ced34633bd4031418649add47c4e9acf0820c26692",
+    "wef-tenants/entries-consumer.js": "0abdb201dcc055be17e0487c8c2d131f32f96e7c33099e115c0a7ed9f5cf56e2",
+    "wef-tenants/run.ps1": "9baf2a075209dc58a57f79dc4a3f226ebd7bd18aeeb92ea52a103f8a3271882a",
+    "wef-tenants/entry.js": "b8fc3526ab18eedd5d2abba602713c42d289a3044951b36a9481c1ec3b8adc6e"
+  }
+}

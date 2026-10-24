@@ -1,0 +1,11 @@
+--- wef-entries/airtable.js
++++ staged/wef-entries/airtable.js
+@@ -4,7 +4,7 @@
+ const {same,unique}=require('../wef-tenants/airtable');
+ function airtable({token=settings.AIRTABLE_TOKEN,request=globalThis.fetch,pause=ms=>new Promise(r=>setTimeout(r,ms))}={}){
+  const writable=new Set(['entries','collections','run-logs','heartbeat']),unresolved=new Set();
+- const readable=new Map([[settings.BASE_ID,new Set([...writable,settings.SYNC_TABLE])],[settings.CWF_BASE_ID,new Set(['tenant-details','trainers','horses','riders'])],[settings.SHARED_BASE_ID,new Set(['schedules','wef-tenant-index'])],[settings.SHOWS_BASE_ID,new Set([settings.SHARED_SHOWS_TABLE])],[settings.TENANTS_BASE_ID,new Set([settings.FAVORITES_TABLE])]]);
++ const readable=new Map([[settings.BASE_ID,new Set([...writable,settings.SYNC_TABLE])],[settings.CWF_BASE_ID,new Set(['tenant-details','trainers','horses','riders'])],[settings.SHARED_BASE_ID,new Set(['schedules','show-collection','wef-tenant-index'])],[settings.SHOWS_BASE_ID,new Set([settings.SHARED_SHOWS_TABLE])],[settings.TENANTS_BASE_ID,new Set([settings.FAVORITES_TABLE])]]);
+  async function call(base,table,method='GET',body,query=''){
+   if(!readable.get(base)?.has(table))throw Error('Unapproved read target');
+   if(method!=='GET'&&(base!==settings.BASE_ID||!writable.has(table)||!['POST','PATCH'].includes(method)))throw Error('Read-only source or forbidden mutation');

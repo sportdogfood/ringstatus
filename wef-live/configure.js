@@ -32,11 +32,11 @@ async function configure() {
       t = await api("", "POST", { name, fields: fields.map(schema.field) });
       current.tables.push(t);
     } else
-      for (const n of fields)
-        if (
-          !t.fields.some((f) => f.name === n && f.type === schema.field(n).type)
-        )
-          throw Error("Schema conflict " + name + "." + n);
+      for (const n of fields) {
+        const existing = t.fields.find(f=>f.name===n);
+        if (!existing) await api('/'+t.id+'/fields','POST',schema.field(n));
+        else if (existing.type!==schema.field(n).type) throw Error("Schema conflict " + name + "." + n);
+      }
   }
   current = await api();
   const missing = [];

@@ -1,0 +1,44 @@
+{
+  "run": "a3770808-eb9a-427c-918a-2d5bec7131c7",
+  "started": "2026-10-24T15:37:13.117Z",
+  "completed": "2026-10-24T15:38:04.845Z",
+  "ok": true,
+  "counts": {
+    "rings": 5,
+    "groups": 26,
+    "classes": 59,
+    "entries": 292
+  },
+  "loggingErrors": [],
+  "unresolved": [
+    {
+      "class_id": 200030429,
+      "message": "No decoded identity for trip 200398240",
+      "status": "unresolved"
+    }
+  ],
+  "runLog": "Partial",
+  "heartbeat": [
+    {
+      "result": "Partial",
+      "at": "2026-10-24T15:38:04.845Z"
+    }
+  ],
+  "errsLog": [
+    "Unresolved class 200030429: No decoded identity for trip 200398240"
+  ],
+  "collections": [
+    {
+      "class": "200030429",
+      "status": "unresolved"
+    },
+    {
+      "class": "200030330",
+      "status": "complete"
+    }
+  ],
+  "preservedClasses": 1,
+  "preservedEntries": 0,
+  "classesUnchanged": true,
+  "entriesUnchanged": true
+}

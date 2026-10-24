@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-23T21:18:21.414Z",
+  "runs": [
+    {
+      "id": "0a893b83-b475-4ed1-b9ea-c7fc91e00414",
+      "started": "2026-10-23T21:12:13.326Z",
+      "completed": "2026-10-23T21:12:18.804Z",
+      "ok": true,
+      "skipped": "all-today-groups-completed",
+      "errors": [],
+      "archives": [
+        "source-live-status",
+        "source-groups"
+      ],
+      "airtable": [
+        {
+          "result": "Skipped",
+          "summary": "Skipped detailed collection: all 19 groups for show 200000075 on 2026-10-23 are completed. Five-minute checks continue."
+        }
+      ]
+    },
+    {
+      "id": "cf631314-826d-4126-824f-a567e6650892",
+      "started": "2026-10-23T21:17:29.155Z",
+      "completed": "2026-10-23T21:17:43.864Z",
+      "ok": true,
+      "skipped": "all-today-groups-completed",
+      "errors": [],
+      "archives": [
+        "source-live-status",
+        "source-groups"
+      ],
+      "airtable": [
+        {
+          "result": "Skipped",
+          "summary": "Skipped detailed collection: all 19 groups for show 200000075 on 2026-10-23 are completed. Five-minute checks continue."
+        }
+      ]
+    }
+  ],
+  "heartbeat": [
+    {
+      "heartbeat-key": "wef-live",
+      "show-id": 200000075,
+      "result": "Skipped",
+      "date": "2026-10-23",
+      "summary": "Skipped detailed collection: all 19 groups for show 200000075 on 2026-10-23 are completed. Five-minute checks continue.",
+      "checked-at": "2026-10-23T21:17:43.864Z"
+    }
+  ]
+}

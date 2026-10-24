@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-24T17:09:37.800Z",
+  "base": "appgzosUcVqA4vZdf",
+  "files": {
+    "airtable.js": "51f339edf8058271a106af07adb9dabc76c78a5c43788d7df1a8acd1fc170a77",
+    "collector.js": "4969818e9768475f123779c45de4d44861f11c0107fbfeb45a58e70814567c3c",
+    "configure.js": "c29b81c3e3e544e41ef457878201ac0af6cd0c92a6c37986548c52ef8450971a",
+    "entry.js": "1fa1514974e443b907c1ae789f58c866ad166f84494d9cc62aba9043c5faeff3",
+    "schema.js": "5ff782ac3ac0f1b4dc5f4841f9a873a0768246dcb2cbe515b13f572e5bf7de7d",
+    "participation.js": "22fb58501987e424d5cb6a3e46b81fb8c9e2e7619e8ed0e7e002c08de3cf0960",
+    "test/collector.test.js": "d15790679c79eb1904763f11d5e50881850e63b1f2c31a387e0d5e5e30658e66",
+    "test/entry.test.js": "daaa77df06d19c8a686afc0791e3a4687e83db7d8f9463c67bddccebce096fda",
+    "test/participation.test.js": "53269caf897053b0b2f5754d10c31a579095d2e39fc7b9e1e32d4e9be791931f"
+  },
+  "offline_tests": 40,
+  "independent_review": "No remaining blocking findings after full dated active schedule-key parity correction",
+  "manual_runs": false,
+  "record_repairs": false
+}
