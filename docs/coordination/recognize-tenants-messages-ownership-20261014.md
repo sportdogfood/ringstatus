@@ -1,6 +1,29 @@
 # Recognize, Tenants and Messages — owner-confirmed responsibilities
 
-**Latest authorization:** owner subsequently approved remaining corrections and restarting scoped work; [current assignments and write boundaries](three-area-corrections-resume-20261014.md) supersede historical stopped-work statements below. No publishing or deployment.
+## WEF isolation boundary — owner instruction, 26 October 2026
+
+**Keep the working Recognize rec2/IAM unchanged. All WEF access checks belong outside the recognizer.** This approves the isolation boundary, not implementation or activation of the proposed WEF viewing policy. Older task authorizations below do not restart work under this documentation instruction.
+
+| Owner | WEF integration responsibility |
+| --- | --- |
+| Recognize | Existing server-side cookie/device validation supplies canonical Recognize `person_uid` (`iamActor().id` / `profile.personUid`). Preserve phone/PIN/owner-invite, cookies, sessions, sign-out, refresh and history behavior. |
+| Tenants | Supplies current canonical Person, registered phone, active Barn, membership, role, roster/assignment and exact WEF mapping authority. Identity alone grants no WEF access. |
+| Astro | Consumes existing identity and independently enforces current canonical Tenants and approved exact WEF grants on each answer request. Missing, conflicting or unavailable authority denies the answer. Any WEF-specific identity/device freshness enforcement stays in this external access layer. |
+| Messages | Verifies provider event/signature, configured account/To and actual From; uses the separately authenticated server-only read interface. Service authentication grants no tenant access. Astro independently checks the represented person and same grants. Consent/suppression remains a separate send check. |
+
+No WEF mappings, grant matrices, answer lookup/storage, messaging credentials/provider assertions, WEF authorization caches or new WEF eligibility logic belong in Recognize. No replacement recognizer, new identity store or OTP. A denied/unavailable WEF answer must not retire devices, clear/rewrite recognition cookies, mutate IAM/sessions or interfere with normal recognition/sign-out. Recognition must not depend on WEF service health.
+
+IAM already contains snapshot eligibility information; its `barnIds` and `inputs:*` permissions are not current WEF grants. Out-of-band canonical identity/device changes require existing IAM refresh. Before WEF activation, resolve immediate revocation/freshness through an authoritative current check outside Recognize or a separately approved freshness boundary; do not modify Recognize to hide this limit.
+
+Messages sender binding reuses the existing rule read-only against current authoritative records outside Recognize: unique `person_uid` → Tenants People `recognition_person_uid`; normalized sender equals Tenants `phone_e164` and the linked identity's `primary_phone_e164` or single-identity-linked `alias_phone_e164`. Preserve US `+1` normalization, phone-claim uniqueness by Recognize identity record ID and duplicate-alias count `<2`. Profile phone alone is insufficient. Represented identity is `person_uid`, not an Airtable record ID or Tenants `entity_uid`.
+
+The proposed Owner/Groom/User matrix, assertion age/tolerance, exact WEF participation/trip joins and deployed enforcement retain their separate approval/implementation/acceptance gates. This boundary does not approve that matrix or claim joins exist. Answers remain durable in Airtable; GET does not calculate answers or send messages.
+
+Source agreement: existing `src/lib/rs-recognition-iam.js` (`remembered`, `iamActor`, `refreshIam`) and `rs-recognition-iam-refresh.js` in `C:/Users/gombc/.codex/worktrees/recognize-tenants-bindings/ringstatus/webflow-cloud-test`. Completed rec2 evidence remains dated in `recognize-rec2-staging-20261016.md`. This documentation/agent-notification request authorizes no runtime, IAM, data, credential, deployment, publishing or end-user-message changes.
+
+## Historical alerts authorization and ownership
+
+**October 14 authorization:** owner subsequently approved remaining corrections and restarting scoped work; [assignments and write boundaries](three-area-corrections-resume-20261014.md) supersede the earlier stopped-work statements below for that assignment. No publishing or deployment.
 
 Owner decision: 14 October 2026. This document supersedes earlier assignment of the alerts page to Tenants. Ownership changes do not move data, rewrite code or authorize release.
 

@@ -38,6 +38,22 @@ test('failed scheduled invocation logs errors and does not block the next invoca
   } finally { process.exitCode = 0; fs.rmSync(runtime, { recursive: true }); }
 });
 
+test('each error gets its own record and exact optional IDs without changing messages',async()=>{
+ const runtime=fs.mkdtempSync(path.join(os.tmpdir(),'wef-live-test-')),rows=[];
+ try {
+  await scheduled({runtime,lock:()=>()=>{},api:{upsert:async(t,k,v)=>rows.push(...v)},run:async()=>({run_id:'ids',completed:'2026-10-25T14:00:00Z',ok:true,errors:['General error'],unresolved:[
+   {class_id:200030349,trip_id:200398787,group_id:123,message:'No decoded identity for trip 200398787'},
+   {class_id:200030315,status:'error',message:'HTTP 502; timeout',messages:['HTTP 502','timeout']}
+  ],link_issues:[{entry_key:'200000075|2026-10-25|200241392|200030375',class_id:200030375,trip_id:456,message:'Missing, stale or incomplete dated schedule collection'}]})});
+  assert.equal(rows.length,5);assert.equal(new Set(rows.map(x=>x['error-key'])).size,5);
+  assert.equal(rows[0]['err-class'],null);assert.equal(rows[1]['err-class'],200030349);assert.equal(rows[1]['err-trip'],200398787);assert.equal(rows[1]['err-group'],123);
+  assert.equal(rows[1].message,'Unresolved class 200030349: No decoded identity for trip 200398787');
+  assert.equal(rows[2].message,'Class error 200030315: HTTP 502');assert.equal(rows[3].message,'Class error 200030315: timeout');assert.equal(rows[2]['err-trip'],null);assert.equal(rows[2]['err-group'],null);
+  assert.equal(rows[4]['err-class'],200030375);assert.equal(rows[4]['err-trip'],456);assert.equal(rows[4]['err-group'],null);
+  assert.equal(fs.readFileSync(path.join(runtime,'errs-log.jsonl'),'utf8').trim().split('\n').length,5);
+ }finally{process.exitCode=0;fs.rmSync(runtime,{recursive:true});}
+});
+
 test('unexpected collection and Airtable logging failures retain local evidence and release lock', async () => {
   const runtime = fs.mkdtempSync(path.join(os.tmpdir(), 'wef-live-test-'));
   let released = false;

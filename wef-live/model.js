@@ -221,7 +221,7 @@ function classDetail(payload, decoded, s, c, now) {
     if (Number(r.class_id) !== cid) throw Error("Live row class mismatch");
     const tid = integer(r.id, "live trip"),
       t = trips.get(tid);
-    if (!t) { const error=Error("No decoded identity for trip " + tid);error.code="LIVE_IDENTITY_SNAPSHOT_MISMATCH";throw error; }
+    if (!t) { const error=Error("No decoded identity for trip " + tid);error.code="LIVE_IDENTITY_SNAPSHOT_MISMATCH";error.trip_id=tid;throw error; }
     const eid = integer(t.entry_id, "entry ID");
     return {
       ...common(s, now, { live: r, identity: t }),

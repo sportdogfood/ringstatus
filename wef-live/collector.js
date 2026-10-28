@@ -34,6 +34,13 @@ async function runLive({
     counts: { rings: 0, groups: 0, classes: 0, entries: 0 },
   };
   let scope;
+  try {
+    await api.upsert('heartbeat','heartbeat-key',[{
+      'heartbeat-key':report.run_id,'run-id':report.run_id,
+      started:report.started,'checked-at':report.started,result:'Running',
+      summary:'Independent live collection started',
+    }]);
+  } catch(e) { report.logging_errors.push('heartbeat start: '+e.message); }
   async function log(result) {
     await api.upsert("run-logs", "run-id", [
       {
@@ -145,7 +152,7 @@ async function runLive({
             const [detail, decoded] = responses.map(r=>r.status==='fulfilled'?r.value:null);
             const sourceErrors = responses.filter(r=>r.status==='rejected').map(r=>r.reason?.message || String(r.reason));
             await keep('class-' + c['class-id'], {detail,decoded,...(sourceErrors.length?{sourceErrors}:{})});
-            if (sourceErrors.length) throw Error(sourceErrors.join('; '));
+            if (sourceErrors.length) { const error=Error(sourceErrors.join('; '));error.source_errors=sourceErrors;throw error; }
             try { normalized=model.classDetail(detail,decoded,scope,c,clock());break; }
             catch(error) {
               if(error.code!=='LIVE_IDENTITY_SNAPSHOT_MISMATCH'||attempt===1)throw error;
@@ -163,6 +170,9 @@ async function runLive({
         } catch (e) {
           if (e.auditFailure) throw e;
           report.unresolved.push({class_id:c['class-id'], message:e.message,
+            messages:e.source_errors,
+            trip_id:e.trip_id,
+            group_id:c._groups?.length===1?Number(c._groups[0].split('|')[2]):undefined,
             status:e.code === 'LIVE_IDENTITY_SNAPSHOT_MISMATCH' ? 'unresolved' : 'error'});
         }
       }
@@ -329,7 +339,7 @@ async function runLive({
             arrayFieldPresent:binderFields?.includes('schedule-keys'),
             observationField:binderFields?.includes('last-seen')?'last-seen':null,
             observationStatusField:binderFields?.includes('observation-status')?'observation-status':null,now:clock()});
-          if(resolved.issue)report.link_issues.push({entry_key:e['entry-key'],message:resolved.issue});
+          if(resolved.issue)report.link_issues.push({entry_key:e['entry-key'],class_id:Number(e._class.split('|')[2]),trip_id:e['trip-id'],message:resolved.issue});
           return {
             ...clean(e),
             class: [classId(e._class)],
@@ -387,7 +397,10 @@ async function runLive({
     try {
       await api.upsert("heartbeat", "heartbeat-key", [
         {
-          "heartbeat-key": "wef-live",
+          "heartbeat-key": report.run_id,
+          "run-id": report.run_id,
+          started: report.started,
+          completed: report.completed,
           "checked-at": report.completed,
           "show-id": scope?.show ?? null,
           date: scope?.date || "",

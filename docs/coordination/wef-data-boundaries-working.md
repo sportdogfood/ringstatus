@@ -1,8 +1,65 @@
+> Current ownership update (26 October 2026): [Six-component records workflow](wef-records-workflow-ownership-20261026.md) governs shows, all-show Data acquisition, cross-show Season stewardship, and operational schedules/selected entries/live. Existing implementations and historical evidence below are preserved; new roles do not authorize reader migrations or production changes.
+
 # WEF data boundaries — working document
 
 Updated: 24 October 2026, America/New_York.
 Status: wef-entries is the shared participation linking module. Collection and the CWF sync migration are verified; broader downstream contracts remain pending owner-chat acknowledgment and acceptance.
 
+
+## Schedules rollover responsibilities and open acceptance - 24 October 2026
+
+**Natural new-show verification remains OPEN.** Responsibility acceptance,
+fixture rollover, old ESP Fall II archives and repeated runs of the same show
+are not proof of a naturally occurring default-show transition across shows,
+schedules, entries/CWF and live. No transition is to be fabricated or triggered.
+
+This section reconciles schedules' existing scope with the coordinator's
+[rollover acceptance assignments](wef-rollover-acceptance-assignments-20261024.md).
+It records source behavior and acceptance gaps only; it authorizes no implementation,
+host migration, retention change, source calls, manual runs or record repairs.
+
+### Accountable schedules responsibilities
+
+| Responsibility | Existing behavior / remaining gap |
+| --- | --- |
+| Canonical show input | Read wef-shows, requiring exactly one customer-15 default, valid show key, matching source metadata and authority freshness within 30 minutes. Missing/stale/ambiguous authority is a failure, not a valid empty show. Schedules does not rediscover a default or trigger the producer. |
+| Same-machine producer archive | show-source.js reads default-payload-file and default-payload-sha256, requires the file under wef-shows/runtime/history, decompresses it and verifies SHA256 before using its payload. Airtable metadata alone is insufficient: producer and schedules must have the expected local archive available. Missing/unreadable/hash-invalid archives block consumption. No portable/cloud archive handoff is implemented or authorized here. |
+| New-show collection | Collect and validate the discovered show's dates; preserve exact show/date/source stage keys and date-specific completion evidence. New-show readiness must be shown through the actual scheduled collector, not inferred from old archives or a changed default flag. |
+| Old-show retirement | Existing current-store.finalize retires old-show schedules and show-collection rows only after all new-show dates succeed, with verified archive-before-removal. The call precedes final reference synchronization and terminal run reporting. There is no downstream acknowledgment gate; archive safety does not itself prove preservation of downstream native links. No retention change is authorized. |
+| Downstream native references | Assess and document actual effects of old source rows disappearing from local syncs/native links in entries, CWF and live. Stable string keys or retained prior participation do not prove native-link preservation. Do not invent replacement links, repair records or represent historical links as current eligibility. Entries/live own their consumer handling. |
+| Schedule acceptance evidence | Provide exact old/new show keys, relevant-date collection completion/dataset evidence, source/local sync readiness, archived prior state, retirement effects and terminal run-log/heartbeat outcome. Coordinator combines this with other owners' independent evidence. |
+
+### Remaining gaps and next evidence
+
+- **Same-machine dependency remains:** no host-independent archive transfer or
+  relocation acceptance is established. Any future hosting change needs explicit
+  scope and proof that schedules can read the correct verified producer payload.
+- **Natural retirement/link effects remain unverified:** successful new-show dates
+  can precede old-row removal without entries/CWF/live acknowledgment. Actual
+  source-sync lag, native-link loss/preservation and historical/current labeling
+  must be observed; no speculative code or retention correction is approved.
+- **All-four natural rollover proof remains OPEN:** at a genuine default change,
+  capture old/new customer/show keys; producer discovery/publication run IDs and
+  times; exactly one canonical default; independent schedules/entries/live run
+  IDs and relevant-date health/readiness; CWF consumption; preserved archive,
+  record/helper/private relationships; failures/Partial scopes; and actual
+  retirement effects, including other-show rows on the same date. Observe two
+  normal repeats where the approved acceptance gate requires them.
+- Shows owns its non-atomic default-publication and returned-identity validation
+  gaps. Entries owns current-show filtering, new-show parity/dated health/sync lag
+  and CWF handling. Live owns TODAY/transition guards, participation history and
+  its retirement behavior. The coordinator owns combined acceptance tracking.
+  None of these gaps may be marked resolved by schedules' same-show run proof.
+
+A missing/stale/ambiguous upstream scope must stay explicit and must not stop
+unrelated authorized work. Keep participation-specific multi-group evidence and
+live's class identity disagreement separate from rollover acceptance. Source
+timezone/UTC offset remain unknown; selected_date does not establish TODAY.
+
+Source references inspected for this update: wef-schedules/show-source.js,
+wef-schedules/current-store.js and the coordinator assignment record. Existing
+call order is recorded in wef-schedules/store.js. No new tests, production reads,
+collector runs, task changes or record repairs were performed for this update.
 
 ## Verified entries/CWF rollout and schedules open work - 24 October 2026
 

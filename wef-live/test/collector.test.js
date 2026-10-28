@@ -6,6 +6,19 @@ const { runLive } = require("../collector"),
   { tables, links } = require("../schema");
 const clock = () => "2026-10-23T15:00:00.000Z";
 const observations = x => JSON.parse(JSON.stringify(x, (k,v)=>k.startsWith('participation-')?undefined:v));
+
+test('each invocation stamps Running before source work and finalizes the same heartbeat row',async()=>{
+ const a=args(),upsert=a.api.upsert,getStatus=a.getStatus,states=[];
+ a.api.upsert=async(t,k,rows)=>{if(t==='heartbeat')states.push(structuredClone(rows[0]));return upsert(t,k,rows);};
+ a.getStatus=async(...args)=>{assert.equal(a.store.db.heartbeat.at(-1).fields.result,'Running');return getStatus(...args);};
+ const first=await runLive(a),second=await runLive(a);
+ assert.equal(a.store.db.heartbeat.length,2);assert.notEqual(first.run_id,second.run_id);
+ assert.deepEqual(states.map(x=>x.result),['Running','Success','Running','Success']);
+ for(const [i,r] of [first,second].entries()){
+  assert.equal(states[i*2]['heartbeat-key'],r.run_id);assert.equal(states[i*2+1]['heartbeat-key'],r.run_id);
+  const row=a.store.db.heartbeat[i].fields;assert.equal(row['run-id'],r.run_id);assert.equal(row.started,r.started);assert.equal(row.completed,r.completed);
+ }
+});
 test('failed class retains reciprocal group membership when source moves it',async()=>{
  const f=fixture();const a=args(f),get=a.get;await runLive(a);
  const originalClass=structuredClone(a.store.db['live-classes'][0]);
@@ -32,7 +45,7 @@ for (const failure of ['HTTP 502', 'timeout', 'malformed', 'scope']) test(`ordin
  await runLive(a);const before=structuredClone(a.store.db['live-classes'].find(c=>c.fields['class-id']===30));
  const beforeEntry=structuredClone(a.store.db['live-entries'].find(e=>e.fields['trip-id']===400));fail=true;
  const r=await runLive(a);assert.equal(r.ok,true);assert.equal(r.unresolved[0].status,'error');
- assert.equal(a.store.db.heartbeat[0].fields.result,'Partial');assert.equal(r.counts.entries,1);
+ assert.equal(a.store.db.heartbeat.at(-1).fields.result,'Partial');assert.equal(r.counts.entries,1);
  assert.deepEqual(a.store.db['live-classes'].find(c=>c.id===before.id),before);
  assert.deepEqual(observations(a.store.db['live-entries'].find(c=>c.id===beforeEntry.id)),observations(beforeEntry));
  assert.equal(a.store.db.collections.find(c=>c.fields['source-id']==='30').fields.status,'error');
@@ -42,7 +55,7 @@ test('run-log outage cannot interrupt collection or heartbeat and does not repea
  const a=args(),upsert=a.api.upsert;let attempts=0;
  a.api.upsert=async(t,k,rows)=>{if(t==='run-logs'){attempts++;throw Error('Audit timeout');}return upsert(t,k,rows);};
  const r=await runLive(a);assert.equal(r.ok,true);assert.equal(attempts,1);assert.equal(a.store.db['live-entries'].length,1);
- assert.equal(a.store.db.heartbeat[0].fields.result,'Success');assert.match(r.logging_errors[0],/Audit timeout/);assert(r.archives.length>1);
+ assert.equal(a.store.db.heartbeat.at(-1).fields.result,'Success');assert.match(r.logging_errors[0],/Audit timeout/);assert(r.archives.length>1);
  const id=a.store.db['live-entries'][0].id;assert.equal((await runLive(a)).ok,true);assert.equal(a.store.db['live-entries'][0].id,id);
 });
 test('heartbeat outage leaves collection and final run log successful',async()=>{
@@ -65,7 +78,7 @@ test('false live status skips source details and preserves records, then resumes
   assert.equal(skipped.skipped, 'live-status-false');
   assert.equal(skipped.ok, true);
   assert.equal(JSON.stringify(a.store.db['live-entries']), before);
-  assert.equal(a.store.db.heartbeat[0].fields.result, 'Skipped');
+  assert.equal(a.store.db.heartbeat.at(-1).fields.result, 'Skipped');
   assert.equal((await runLive(a)).ok, true);
 });
 test('all TODAY groups completed skips widget and class requests; another day does not affect gate', async () => {
@@ -89,7 +102,7 @@ test('empty or mixed groups do not imply completed and invalid status fails visi
   await assert.rejects(()=>readStatus({customer:15}, async()=>({ok:false,status:502})), /502/);
   const a = args(); const report = await runLive({...a, getStatus:async()=>null});
   assert.equal(report.ok, false); assert.equal(report.skipped, undefined);
-  assert.equal(a.store.db.heartbeat[0].fields.result, 'Failed');
+  assert.equal(a.store.db.heartbeat.at(-1).fields.result, 'Failed');
 });
 function fixture() {
   const g = {
@@ -439,8 +452,18 @@ test('persistent missing identity is unresolved after one fresh pair, preserves 
  a.get=async(url,d)=>{const p=await get(url,d);if(d){decoded++;p.trips=[];}return p;};
  const r=await runLive(a);assert.equal(r.ok,true);assert.equal(decoded,2);
  assert.equal(r.unresolved[0].class_id,30);assert.deepEqual(r.errors,[]);
+ assert.equal(r.unresolved[0].trip_id,400);assert.equal(r.unresolved[0].group_id,20);
  assert.deepEqual(observations(a.store.db['live-entries']),observations(before));assert.deepEqual(a.store.db['live-classes'],classes);
- assert.equal(a.store.db.heartbeat[0].fields.result,'Partial');assert.equal(retire,0);
+ assert.equal(a.store.db.heartbeat.at(-1).fields.result,'Partial');assert.equal(retire,0);
  const col=a.store.db.collections.find(r=>r.fields['source-id']==='30');assert.equal(col.fields.status,'unresolved');assert.equal(col.fields['row-count'],1);
  a.get=get;const next=await runLive(a);assert.deepEqual(next.unresolved,[]);assert.equal(a.store.db.collections.find(r=>r.fields['source-id']==='30').fields.status,'complete');
+});
+
+test('separate source failures retain separate errors and ambiguous group stays blank',async()=>{
+ const f=fixture();f.groups[0].json_data.push({...f.groups[0].json_data[0],class_group_id:'21'});
+ const a=args(f),get=a.get;
+ a.get=async(url,d)=>{if(url.includes('getLiveClassData'))throw Error('detail HTTP 502');if(d)throw Error('decoded timeout');return get(url,d);};
+ const r=await runLive(a);assert.equal(r.ok,true);assert.equal(r.unresolved.length,1);
+ assert.deepEqual(r.unresolved[0].messages,['detail HTTP 502','decoded timeout']);
+ assert.equal(r.unresolved[0].class_id,30);assert.equal(r.unresolved[0].group_id,undefined);assert.equal(r.unresolved[0].trip_id,undefined);
 });

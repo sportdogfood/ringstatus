@@ -8,7 +8,7 @@ const common = [
   "source-json",
 ];
 const tables = {
-  "errs-log": ["error-key", "run-id", "occurred-at", "show-id", "date", "message"],
+  "errs-log": ["error-key", "run-id", "occurred-at", "show-id", "date", "message", "err-class", "err-trip", "err-group"],
   "live-rings": ["ring-key", ...common, "ring-id", "ring-number", "ring-name"],
   "live-groups": [
     "group-key",
@@ -97,6 +97,9 @@ const tables = {
   ],
   heartbeat: [
     "heartbeat-key",
+    "run-id",
+    "started",
+    "completed",
     "checked-at",
     "show-id",
     "date",
@@ -106,6 +109,9 @@ const tables = {
   ],
 };
 const numeric = new Set([
+  "err-class",
+  "err-trip",
+  "err-group",
   "show-id",
   "customer-id",
   "ring-id",
