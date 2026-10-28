@@ -1,5 +1,38 @@
 # Independent WEF tenant collector
 
+## Failure reporting and incomplete-exit protection - 28 October 2026
+
+Owner-approved correction is deployed and verified. Every caught collector failure
+now attempts a Failed heartbeat even before a show is validated. Unknown show/date
+context is cleared, not invented or copied forward as current. Failed run-logs and
+terminal receipt errors remain explicit if Airtable reporting itself is unavailable.
+The independent entry point uses the proven schedules completion guard: failure is
+the default exit until the collector and receipt finish. An unfinished process
+emits incomplete_run to the local log and exits 1. The guard performs no retries,
+record repairs or extra source fetches. A forcibly stopped process may leave a
+historical Running row; that row is not repaired or treated as success.
+
+94 offline tests passed, including stale-show/pre-show failure visibility and
+actual entry-point fixtures with fully inert collection/filesystem adapters.
+Normal 18:22 and 18:27 Eastern triggers completed at 18:25:02 and 18:30:01 on
+28 October: both exit 0 with completion markers, Success heartbeat/run-logs,
+three linked entries, four complete dates, zero errors/people fetches and
+15 archive events each with verified file hashes. Repeat readback preserves
+76 horses, 37 riders, their inspected static helper fields/IDs and all three
+trainer settings. Failure branches are fixture-proven; no live failure was induced.
+
+All five inspected collector task definitions and cadences are unchanged.
+Plugged-in idle/unattended sleep and hibernation are disabled; lid close does
+nothing on AC. Battery settings are unchanged. Power configuration was read back
+and the PC was on AC; no deliberate lid-close/sleep test was performed.
+The schedules maintenance copy was aligned from the verified deployed package,
+not promoted over it. 58 inspected package files match; 134 maintenance fixtures
+passed. Runtime, credentials and history were excluded; no files were deleted.
+
+Evidence: [release proof](evidence/failure-reporting-20261028/release.md).
+No manual collector runs or business record repairs. Existing collection, roster,
+identity, sync/privacy, archive and link handling remain unchanged.
+
 ## Plural schedule-link reader - 24 October 2026
 
 The deployed CWF consumer accepts the existing scalar or strict `schedule-keys`

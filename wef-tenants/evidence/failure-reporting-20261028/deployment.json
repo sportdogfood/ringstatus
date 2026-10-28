@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-28T22:21:42.039Z",
+  "tests": 94,
+  "hashes": {
+    "completion-guard.js": "b584ab25a1de1fbf11a5861243d9641f707eab669c9c50cb60420a0a6ed374e8",
+    "collector.js": "76b7ef99eea883e3c5bd999d7e3f9097e1c0b7d0c6d83fdb3427622d4c850aee",
+    "entry.js": "4fed2feb2881a2c230739c0ca9a47c7712a8bc7b46c03d39c09f45660ea80f7a",
+    "airtable.js": "a24282009232c58e103238a682236eae37a144aea73dc416df225406257d694c",
+    "entries-consumer.js": "d62baefbbd8484869ad52e4bcb68915502f784f4b2657c12cc5f9c3ce07cf60c",
+    "schedule-links.js": "1f3bf8019ee55880b537b9068813b3ad0b4b3e3efc9d478e24ee9afbe5f39ed0",
+    "standing-roster.js": "fcbb0865db46f036c6957eaa2009aa22779ecbdee39dbb4169c184d9e6595080",
+    "tenant-slices.js": "a192df5819eff2198de852ced34633bd4031418649add47c4e9acf0820c26692",
+    "run.ps1": "9baf2a075209dc58a57f79dc4a3f226ebd7bd18aeeb92ea52a103f8a3271882a",
+    "settings.js": "cf9a89b979c484bcbc5d2a2ba62c5064836fc2e3c54fc1fdb9022999d0254e3f"
+  },
+  "normal_runs": [
+    "normal-run-1.json",
+    "normal-run-2.json"
+  ],
+  "manual_runs": 0,
+  "record_repairs": 0,
+  "accepted_at": "2026-10-28T22:31:01.218Z",
+  "result": "PASS",
+  "task_definitions_unchanged": 5,
+  "power_readback": "power-verification.json",
+  "maintenance_files": 58,
+  "maintenance_tests": 134,
+  "failure_branch": "Fixture-proven; no live failure induced",
+  "sleep_limit": "Configuration/readback and normal operation observed; no intentional sleep/lid-close test"
+}

@@ -1,5 +1,20 @@
 # Independent WEF schedules staging
 
+## Maintenance source aligned - 28 October 2026
+
+The owner-approved maintenance copy alignment is complete. The designated editable
+package at C:/Users/gombc/.codex/worktrees/wef-schedule-collector/ringstatus/wef-schedules
+now matches the verified deployed package across 58 inspected code/config/test/doc
+files, including canonical show-source consumption and completion-guard protection.
+134 local maintenance fixtures passed. The deployed schedules collector was not
+replaced or redeployed. Private runtime, credentials, dependencies and evidence
+were not copied or deleted. Exact prior files and alignment hashes are retained in
+wef-tenants/evidence/failure-reporting-20261028/maintenance-before/ and
+maintenance-alignment.json. Existing business tasks/cadences remain unchanged.
+The PC's AC-only automatic/lid sleep prevention was configured and read back in
+that same approved release; DC settings remain unchanged. This does not resolve
+future host migration, new retention design or natural all-consumer rollover gates.
+
 ## Current operating agreement - 24 October 2026
 
 This section supersedes dated status claims below. It locks the agreed ownership

@@ -1,0 +1,324 @@
+{
+  "at": "2026-10-28T22:22:08.805Z",
+  "direction": "verified deployed schedules -> designated editable maintenance copy",
+  "files": [
+    {
+      "file": ".env.example",
+      "source": "bab6f2dfd452ad954211d2c3b1d749186ffc817854b68ae53bb82345fb88c63b",
+      "old": "bab6f2dfd452ad954211d2c3b1d749186ffc817854b68ae53bb82345fb88c63b"
+    },
+    {
+      "file": ".gitignore",
+      "source": "65a2becd9e2144c4c4ab174700dd2bcbb06c64a3c3b62bffd81786e6c95c5267",
+      "old": "65a2becd9e2144c4c4ab174700dd2bcbb06c64a3c3b62bffd81786e6c95c5267"
+    },
+    {
+      "file": "airtable-read.js",
+      "source": "2bd48f428dc70b2915c67292d530347bddc1df05357ab484ed5713ff6b121107",
+      "old": "2bd48f428dc70b2915c67292d530347bddc1df05357ab484ed5713ff6b121107"
+    },
+    {
+      "file": "collect.js",
+      "source": "dc420c8b139698fe7d1275aca09df857a0bc3c802c9323b6325d21600d1985a0",
+      "old": "ca81e5dc7da4f8134c8485e961d543fe312954e0d8fce770b35d9ef41766be01"
+    },
+    {
+      "file": "collector-core.js",
+      "source": "4b2046b517eac98fcff2edc8a25aa9d4b24ad943c0894cb9167943f51855f03f",
+      "old": "4b2046b517eac98fcff2edc8a25aa9d4b24ad943c0894cb9167943f51855f03f"
+    },
+    {
+      "file": "completion-guard.js",
+      "source": "3f74b83ba10f026fe98407261ffc1fd8052c4995d80a48c5f2c38817a9293fa5",
+      "old": null
+    },
+    {
+      "file": "configure-heartbeat.js",
+      "source": "b7bae7e74545ef2ac40d7ed8df461f6c7d2088ff772988fb3252a20ea6a5b26a",
+      "old": "b7bae7e74545ef2ac40d7ed8df461f6c7d2088ff772988fb3252a20ea6a5b26a"
+    },
+    {
+      "file": "configure-shows.js",
+      "source": "6e4252f0a24a2d04c0619ce397f9a70781501de936cba28886b825c1b2c1e2bc",
+      "old": "6e4252f0a24a2d04c0619ce397f9a70781501de936cba28886b825c1b2c1e2bc"
+    },
+    {
+      "file": "current-store.js",
+      "source": "4089472168edf464556fd522d585cc4c6dd293f6b2ba379ad29aa2ff0d703093",
+      "old": "4089472168edf464556fd522d585cc4c6dd293f6b2ba379ad29aa2ff0d703093"
+    },
+    {
+      "file": "docs\\ringstatus_daily_scope_2026-05-09.md",
+      "source": "f4a7df6f66d1177e46265eaa2b5b1ce178dbdb80140ad82b31804166d51a8c28",
+      "old": "f4a7df6f66d1177e46265eaa2b5b1ce178dbdb80140ad82b31804166d51a8c28"
+    },
+    {
+      "file": "estimated-time-inheritance-verification.json",
+      "source": "d79c18bf50995aaf8ab150eeafaadae50c83ac0974897664e21ca2ee926a21ec",
+      "old": "d79c18bf50995aaf8ab150eeafaadae50c83ac0974897664e21ca2ee926a21ec"
+    },
+    {
+      "file": "estimated-time-inheritance.md",
+      "source": "9fbeea6adc266e9050af371025cb22ef1ed861a72c5238c5e51594065094796c",
+      "old": "cefba08d2cf42c30716faf82a674f9367755e1d97a0f246d4ca401cabfc4b97e"
+    },
+    {
+      "file": "estimated-times-local-verification.json",
+      "source": "9980364409c6cc6a034fba6c1cdb8bf660d5bb0f7522d2654e94d3fd712a4f9e",
+      "old": "9980364409c6cc6a034fba6c1cdb8bf660d5bb0f7522d2654e94d3fd712a4f9e"
+    },
+    {
+      "file": "estimated-times-verification.md",
+      "source": "14c863915d7789e0e60daf0e4a0c1e836f6ba994cc7a029e6999c47573222456",
+      "old": "67c696e8d19cf8f62e1d4f1655042fbf9dfb52a4f26156a39f16dd06740431e1"
+    },
+    {
+      "file": "heartbeat.js",
+      "source": "be7c378a3ee2995190e4e6059ea338b7fe0c7c129df3b6483c96219421590662",
+      "old": "be7c378a3ee2995190e4e6059ea338b7fe0c7c129df3b6483c96219421590662"
+    },
+    {
+      "file": "lib\\scope_fields.js",
+      "source": "b7d3d0601959e2715f2bcbf839e0c142dde2c0a3c1d09646f65346b37236d8e7",
+      "old": "b7d3d0601959e2715f2bcbf839e0c142dde2c0a3c1d09646f65346b37236d8e7"
+    },
+    {
+      "file": "lib\\sgl_fetch_adapter.js",
+      "source": "1b598d4e4a96b78ac343d3d3b28a75b11483cdfba4aea300bf34903236e0ef47",
+      "old": "1b598d4e4a96b78ac343d3d3b28a75b11483cdfba4aea300bf34903236e0ef47"
+    },
+    {
+      "file": "lib\\soft_payload_guard.js",
+      "source": "7fa18ca60eb258cbb4157cdcecad3fb5c37ab29b57a92f6fcdf2e9c50e6f1fb0",
+      "old": "7fa18ca60eb258cbb4157cdcecad3fb5c37ab29b57a92f6fcdf2e9c50e6f1fb0"
+    },
+    {
+      "file": "normalizer.js",
+      "source": "d3ce0403adb64799908aa6a270243558976a644b7aa6f0dfa208c6452784a3b0",
+      "old": "d3ce0403adb64799908aa6a270243558976a644b7aa6f0dfa208c6452784a3b0"
+    },
+    {
+      "file": "package-lock.json",
+      "source": "dfad56209c7eb6a1fc6161eafeaf2bae588505f7516af5780b6a3c64c1c0faae",
+      "old": "dfad56209c7eb6a1fc6161eafeaf2bae588505f7516af5780b6a3c64c1c0faae"
+    },
+    {
+      "file": "package.json",
+      "source": "f962562aebe17f715806281e61236d215419c098cfa005e8c32cdf97d90ee1fe",
+      "old": "f962562aebe17f715806281e61236d215419c098cfa005e8c32cdf97d90ee1fe"
+    },
+    {
+      "file": "README.md",
+      "source": "729c1d95dda3be50d3490b2afeb566b2fc93d6758f86f09a582c6109334445c5",
+      "old": "515e5eb0e7181364c77e639581b51e343817216b5cc0430c8fd3f691f8b0e359"
+    },
+    {
+      "file": "run-logs.js",
+      "source": "7f7fc6090c7e3b6267302c978146c70b1b637064f5786233d4b834fa19b75ed8",
+      "old": "7f7fc6090c7e3b6267302c978146c70b1b637064f5786233d4b834fa19b75ed8"
+    },
+    {
+      "file": "run.ps1",
+      "source": "d9736ea25998bbcbedaaa92e20ff0c23016f343a2d2174047c166fa0e9ff8ca3",
+      "old": "d9736ea25998bbcbedaaa92e20ff0c23016f343a2d2174047c166fa0e9ff8ca3"
+    },
+    {
+      "file": "schedule-times.js",
+      "source": "d09697eed597feb38c30dae6a917c2dcaf991f82bb823c7f0b45e075241ece30",
+      "old": "d09697eed597feb38c30dae6a917c2dcaf991f82bb823c7f0b45e075241ece30"
+    },
+    {
+      "file": "settings.js",
+      "source": "3df0d2a56b16ffe12cf9f78c19b8ba1efafca16881f45acc3c2897246292768c",
+      "old": "f2a27793f4000aa0664d9d12211db2f969b7699fc68b38278802392551580e88"
+    },
+    {
+      "file": "sgl_fetch.ps1",
+      "source": "bb9578b866415844761c11593319d2b6180bc9aea78917d0d08259fb80c307ee",
+      "old": "bb9578b866415844761c11593319d2b6180bc9aea78917d0d08259fb80c307ee"
+    },
+    {
+      "file": "show-index.js",
+      "source": "f658a0d1ff33dd092cdedc1bf28f1814ab92a1fcb74baa239d96ee3afb3eb33f",
+      "old": "f658a0d1ff33dd092cdedc1bf28f1814ab92a1fcb74baa239d96ee3afb3eb33f"
+    },
+    {
+      "file": "show-rings.js",
+      "source": "d89a63d457fd97ee922c4cc4bff486f05fa4f59db3153dfadcfb5868de3689ba",
+      "old": "d89a63d457fd97ee922c4cc4bff486f05fa4f59db3153dfadcfb5868de3689ba"
+    },
+    {
+      "file": "show-source.js",
+      "source": "e73527476cb238fd42950a3b511981d036b6e0ad422e2855e790c7890a53b6f4",
+      "old": null
+    },
+    {
+      "file": "source-manifest.json",
+      "source": "bdb8b8e3531d96e8bb4de7f437f57df1dc7505d02654a682eba2ce000eeb9222",
+      "old": "0ce80d5764b212683eb812815f12d1e05c6f44992f52ce86187dccfba16cf542"
+    },
+    {
+      "file": "STATUS.md",
+      "source": "1cd2f309b9fa12a0188ba69e2cf9f6eb04df63bfa1f1918a7a7f20ba36f7abef",
+      "old": "ca6b0a747734b3c18ee9b5a63b7bbfea6ffd67152361b7bb3bf05ce9b31dc6b9"
+    },
+    {
+      "file": "store.js",
+      "source": "33f9cb9a7c4936ff3ae6a7ed8a8c038eedbef66da9a366470f2af964b4123340",
+      "old": "36af40ab6cd7e834d8b94a1dc2e7a90e5ad2e0ac67482680bc8548c857d899ca"
+    },
+    {
+      "file": "table-ring-local-verification.json",
+      "source": "662a7d32daca8a52877359925cc1c90088f950f55c06e8db798d2decbab1698c",
+      "old": "662a7d32daca8a52877359925cc1c90088f950f55c06e8db798d2decbab1698c"
+    },
+    {
+      "file": "table-ring-verification.md",
+      "source": "95421a5ffb35223204567fc3e35d68f2ca2158736da8c6ef514d5e0ab409f350",
+      "old": "a326523d5a161ad36eaa9b3e9b9daf98cf13bc69fa4f1f23b832623228c839a0"
+    },
+    {
+      "file": "tests\\airtable-read.test.js",
+      "source": "514c44b8e5f4dcc02dc6ea8f866b3652cb288d6baf8d1525d677fc4b3a106373",
+      "old": "514c44b8e5f4dcc02dc6ea8f866b3652cb288d6baf8d1525d677fc4b3a106373"
+    },
+    {
+      "file": "tests\\completion-guard.test.js",
+      "source": "c267116756492bf9734a30b3a54acb9abd0b8b3e39ab3a656ccc3041b0e0beb3",
+      "old": null
+    },
+    {
+      "file": "tests\\current-store.test.js",
+      "source": "a2239e13c11667db90d840b5cb1c4caf27a10aecfb6a35db9c0a7334a836440d",
+      "old": "a2239e13c11667db90d840b5cb1c4caf27a10aecfb6a35db9c0a7334a836440d"
+    },
+    {
+      "file": "tests\\fixtures\\schedule-collector.js",
+      "source": "b5a5ce7f00100585f105687108bf97821426cfdfa75aef493b0b5084e650a428",
+      "old": "b5a5ce7f00100585f105687108bf97821426cfdfa75aef493b0b5084e650a428"
+    },
+    {
+      "file": "tests\\heartbeat.test.js",
+      "source": "aa8810fe5a4b2b60d0cb38a2988b7dbb6a92149a6d1187671a40fe9fe6bafc75",
+      "old": "aa8810fe5a4b2b60d0cb38a2988b7dbb6a92149a6d1187671a40fe9fe6bafc75"
+    },
+    {
+      "file": "tests\\isolation.test.js",
+      "source": "e6e61f9afc2efedc745658d7f7bf260d13ca2893a4ea8e74ca3ed3d523651fd0",
+      "old": "e6e61f9afc2efedc745658d7f7bf260d13ca2893a4ea8e74ca3ed3d523651fd0"
+    },
+    {
+      "file": "tests\\runner-output.test.js",
+      "source": "fe5c0ac9e3da691bc8f2cd90e9714a4a3e940749f37e5c64a7d93f03f98626bc",
+      "old": "fe5c0ac9e3da691bc8f2cd90e9714a4a3e940749f37e5c64a7d93f03f98626bc"
+    },
+    {
+      "file": "tests\\run_logs.test.js",
+      "source": "b4e7419f88543219ae8818aa47717f8604e70d40c674482d4eb71579009c4ea6",
+      "old": "b959b079a29d45e8102ac2daf059441189d107a6c96232bc8d62f0fad7084384"
+    },
+    {
+      "file": "tests\\schedule-times.test.js",
+      "source": "961c3a6bc42f48646a28cc7e572233c974fbfdd973045f67a5f7eba72330c25d",
+      "old": "29e19b4bbc59b736ce71acbbcc43335bb5baeeb407b293253f49f929f6d07c48"
+    },
+    {
+      "file": "tests\\schedules_daily_class_list_enrichment.test.js",
+      "source": "ef47b3801e8e826742ae07b0e9dc181830fc64126206ee9384ee50cfeaa13dcf",
+      "old": "c979b4565869081a4cd50eb13c30152dba728e5ddaf6ea4f911b772c2165df46"
+    },
+    {
+      "file": "tests\\schedules_daily_empty_ping.test.js",
+      "source": "3b495f41e140f248c38c1a20a05f2818c6f8e6617dbf999982e64f829e70a0c6",
+      "old": "3b495f41e140f248c38c1a20a05f2818c6f8e6617dbf999982e64f829e70a0c6"
+    },
+    {
+      "file": "tests\\schedules_daily_forward_schedule_dates.test.js",
+      "source": "e5adf3ae6f7d7c7e294e4964a948f0d09f3da4bd07e7ca5f6bd0c8e580dc0aa6",
+      "old": "e5adf3ae6f7d7c7e294e4964a948f0d09f3da4bd07e7ca5f6bd0c8e580dc0aa6"
+    },
+    {
+      "file": "tests\\schedules_daily_live_groups_fallback.test.js",
+      "source": "e06b963cbecd1ca21347ebf3af4ef02d551ef8d2c2aa4b959ef5ff7be8a543a2",
+      "old": "e06b963cbecd1ca21347ebf3af4ef02d551ef8d2c2aa4b959ef5ff7be8a543a2"
+    },
+    {
+      "file": "tests\\schedules_daily_night_shift_scope.test.js",
+      "source": "c098e4b4c12fccdaecef9f433419ddc9219ace69f3bbdd3b85980ce8113fe742",
+      "old": "c098e4b4c12fccdaecef9f433419ddc9219ace69f3bbdd3b85980ce8113fe742"
+    },
+    {
+      "file": "tests\\schedules_daily_schedule_fallback.test.js",
+      "source": "4e31f979565abaddece263e6dc39ebc7dcbd365dd19be9d2ecb65fb38daa9912",
+      "old": "4e31f979565abaddece263e6dc39ebc7dcbd365dd19be9d2ecb65fb38daa9912"
+    },
+    {
+      "file": "tests\\schedules_staging.test.js",
+      "source": "376344d8a9e7cc5dd1cd4895613ef5b9004c2594ce654bd149c886c7eeb70adc",
+      "old": "376344d8a9e7cc5dd1cd4895613ef5b9004c2594ce654bd149c886c7eeb70adc"
+    },
+    {
+      "file": "tests\\schedules_standalone.test.js",
+      "source": "2dab437467b3f93fa0207e51d57568c007dc091a8a511289ed7320fdfcdcc746",
+      "old": "a98c24e924e48b491f4dd7c349cd678c99f1a1244a0681014f108bb8201339b3"
+    },
+    {
+      "file": "tests\\schedule_normalizer_machine_key.test.js",
+      "source": "59d194d4ce2361fde25112287a8f0bce866203e5015d1ea54e460eea0dfb7705",
+      "old": "59d194d4ce2361fde25112287a8f0bce866203e5015d1ea54e460eea0dfb7705"
+    },
+    {
+      "file": "tests\\show-index.test.js",
+      "source": "9659c1c0fb3fe44b070c605d46c51d72d05e00c22b5d9188c626a4eb7e821d0c",
+      "old": "9659c1c0fb3fe44b070c605d46c51d72d05e00c22b5d9188c626a4eb7e821d0c"
+    },
+    {
+      "file": "tests\\show-rings.test.js",
+      "source": "a7213b0fd85c8df5ff3ae2a19464e2dd3709b4bc5436676f711cd918d6bb2b0f",
+      "old": "a7213b0fd85c8df5ff3ae2a19464e2dd3709b4bc5436676f711cd918d6bb2b0f"
+    },
+    {
+      "file": "token-utils.js",
+      "source": "0de2517a21b7d1826bfdace3d54c41336bc50d6574b0fa74e66e4bcac38ee9c0",
+      "old": "0de2517a21b7d1826bfdace3d54c41336bc50d6574b0fa74e66e4bcac38ee9c0"
+    },
+    {
+      "file": "verify-heartbeat.js",
+      "source": "4316503346367df4455cef46e980b3e812f945902d504db66c83d3966618ea33",
+      "old": "4316503346367df4455cef46e980b3e812f945902d504db66c83d3966618ea33"
+    },
+    {
+      "file": "verify-shows.js",
+      "source": "e07d3e2573d5513f8088310a1aacaefbad61e141734fed969f913697265a3501",
+      "old": "e07d3e2573d5513f8088310a1aacaefbad61e141734fed969f913697265a3501"
+    }
+  ],
+  "changed": [
+    "collect.js",
+    "completion-guard.js",
+    "estimated-time-inheritance.md",
+    "estimated-times-verification.md",
+    "README.md",
+    "settings.js",
+    "show-source.js",
+    "source-manifest.json",
+    "STATUS.md",
+    "store.js",
+    "table-ring-verification.md",
+    "tests\\completion-guard.test.js",
+    "tests\\run_logs.test.js",
+    "tests\\schedule-times.test.js",
+    "tests\\schedules_daily_class_list_enrichment.test.js",
+    "tests\\schedules_standalone.test.js"
+  ],
+  "all_equal": true,
+  "deleted": 0,
+  "excluded": [
+    "runtime",
+    "evidence",
+    "node_modules",
+    "secrets"
+  ],
+  "production_changes": 0,
+  "final_checked_at": "2026-10-28T22:31:01.239Z"
+}

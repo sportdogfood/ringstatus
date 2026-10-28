@@ -248,3 +248,20 @@ test('CWF recurring plural consumption keeps local schedules/rings and inactive 
  f.seed('horses',[{'horse-key':'33','horse-id':33,'horse-name':'Owner horse','nick-name':'Keep',disabled:true}]);
  for(let i=0;i<2;i++){const r=await runTenant({...f.options,tenantSlicesEnabled:true});assert.equal(r.ok,true,r.errors.join('; '));assert.equal(r.people_fetches,0);assert.equal(r.tenant_slices.hidden_inactive,1);const e=(await f.api.list(config.SYNC_ENTRIES_TABLE))[0];assert.deepEqual(e.fields.schedules,(await f.api.list(config.SYNC_SCHEDULES_TABLE)).map(r=>r.id));assert.equal(e.fields['synced-rings'].length,2);assert.equal((await f.api.list('horses'))[0].fields['nick-name'],'Keep');}
 });
+
+
+test('stale show failure replaces previous Success heartbeat without invented context',async()=>{
+ const f=fixture();f.seed('heartbeat',[{'heartbeat-key':'CWF',result:'Success','show-id':75,'selected-date':'2026-10-22','checked-at':now}]);
+ f.data[config.BASE_ID+'|'+config.SYNC_SHOWS_TABLE][0].fields.last_checked='2026-10-19T17:00:00Z';
+ const r=await runTenant(f.options);assert.equal(r.ok,false);
+ const h=(await f.api.list('heartbeat'))[0].fields;assert.equal(h.result,'Failed');assert.equal(h['show-id'],null);assert.equal(h['selected-date'],null);assert.match(h.errors,/stale/);assert.equal(h['checked-at'],now);
+ assert.equal((await f.api.list('run-logs'))[0].fields.result,'Failed');
+});
+test('pre-show roster failure is visible in heartbeat and logs',async()=>{
+ const f=fixture();const r=await runTenant({...f.options,standingSource:async()=>{throw Error('fixture roster read failed');}});
+ assert.equal(r.ok,false);const h=(await f.api.list('heartbeat'))[0].fields;assert.equal(h.result,'Failed');assert.equal(h['show-id'],null);assert.match(h.errors,/roster read failed/);
+});
+test('early failure preserves heartbeat publication failure in terminal report',async()=>{
+ const f=fixture();const save=f.api.upsert;f.api.upsert=async(t,...args)=>{if(t==='heartbeat')throw Error('fixture heartbeat unavailable');return save(t,...args);};
+ const r=await runTenant({...f.options,standingSource:async()=>{throw Error('fixture roster read failed');}});assert.equal(r.ok,false);assert.match(r.errors.join(';'),/Heartbeat failure could not be recorded/);
+});

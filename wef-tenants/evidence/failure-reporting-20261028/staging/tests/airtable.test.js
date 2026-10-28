@@ -1,0 +1,26 @@
+"use strict";
+const test=require('node:test'),assert=require('node:assert/strict');const {airtable}=require('../airtable'),settings=require('../settings');
+function mock({lost=false,reject=false}={}){let rows=[],posts=0,patches=0;const request=async(url,opts)=>{if(opts.method==='GET')return{ok:true,json:async()=>({records:structuredClone(rows)})};const b=JSON.parse(opts.body||'{}');if(opts.method==='POST'){posts++;if(!reject)rows.push(...b.records.map((r,i)=>({id:'rec'+(rows.length+i),fields:Object.fromEntries(Object.entries(r.fields).filter(([,v])=>v!==false&&v!==''&&v!==null&&!(Array.isArray(v)&&!v.length)))})));if(lost||reject)throw Error('Lost response');}if(opts.method==='PATCH')patches++;if(opts.method==='PATCH')for(const r of b.records){Object.assign(rows.find(old=>old.id===r.id).fields,r.fields);}return{ok:true,json:async()=>({records:structuredClone(rows)})};};return{api:airtable({request,pause:async()=>{}}),posts:()=>posts,patches:()=>patches};}
+test('Airtable omitted blank, false and empty links read back correctly; repeat creates none',async()=>{const f=mock();const rows=[{'horse-key':'one',note:'',disabled:false,links:[]}];await f.api.upsert('horses','horse-key',rows);await f.api.upsert('horses','horse-key',rows);assert.equal(f.posts(),1);});
+test('lost creation response reconciles using stable key without a second POST',async()=>{const f=mock({lost:true});await f.api.upsert('horses','horse-key',[{'horse-key':'one'}]);assert.equal(f.posts(),1);});
+test('unresolved creation cannot be resubmitted by a failure handler',async()=>{const f=mock({reject:true});await assert.rejects(f.api.upsert('horses','horse-key',[{'horse-key':'one'}]),/unresolved/);await assert.rejects(f.api.upsert('horses','horse-key',[{'horse-key':'one',result:'Failed'}]),/unresolved/);assert.equal(f.posts(),1);});
+test('API rejects writes to shared schedule tables and unknown bases',async()=>{const f=mock();await assert.rejects(f.api.upsert('rings-helper','key',[{'horse-key':'one'}],settings.SHARED_BASE_ID));await assert.rejects(f.api.list('horses','appWrong'));assert.equal(f.posts(),0);});
+test('transport settings stay inside the new runtime',()=>{const path=require('node:path');assert.equal(settings.SGL_PAYLOAD_ROOT,settings.RUNTIME);assert.equal(path.dirname(settings.SGL_FETCH_SESSION_JSON),settings.RUNTIME);assert.ok(!settings.RUNTIME.includes('wef-schedules'));});
+
+test('central entry writes and synced source edits are forbidden; only local link patches pass',async()=>{
+ const calls=[];const api=airtable({pause:async()=>{},request:async(url,options)=>{calls.push({url,options});return{ok:true,json:async()=>({records:[]})};}});
+ for(const method of ['POST','PATCH','DELETE'])await assert.rejects(api.call(settings.ENTRIES_BASE_ID,'entries',method,{records:[]}),/read-only/);
+ await assert.rejects(api.list('unknown',settings.ENTRIES_BASE_ID),/restricted/);
+ for(const table of [settings.SYNC_ENTRIES_TABLE,'wef-entries.entries']){
+  await assert.rejects(api.call(settings.BASE_ID,table,'POST',{records:[{fields:{horses:['h']}}]}),/read-only/);
+  await assert.rejects(api.call(settings.BASE_ID,table,'DELETE'),/read-only/);
+  await assert.rejects(api.call(settings.BASE_ID,table,'PATCH',{records:[{id:'r',fields:{'horse-name':'bad',horses:['h']}}]}),/read-only/);
+ }
+ assert.equal(calls.length,0);await api.call(settings.BASE_ID,settings.SYNC_ENTRIES_TABLE,'PATCH',{records:[{id:'r',fields:{horses:['h'],riders:['rider']}}]});assert.equal(calls.length,1);
+});
+test('legacy roster permits only GET on three source tables; all mutation methods fail',async()=>{const f=mock();await f.api.list('ww_horses','apptdhhNzduxm5gjn');for(const method of ['POST','PATCH','DELETE'])for(const table of ['ww_horses','ww_riders','ww_tenants'])await assert.rejects(f.api.call('apptdhhNzduxm5gjn',table,method,{records:[]}));await assert.rejects(f.api.list('watch_trips','apptdhhNzduxm5gjn'));assert.equal(f.posts(),0);});
+
+test('actual roster adapter rejects duplicate names before any mutation',async()=>{const f=mock();await assert.rejects(f.api.upsert('horses','horse-key',[{'horse-key':'a',name:'Alpha'},{'horse-key':'b',name:' ALPHA '}]),/Duplicate horses.name/);assert.equal(f.posts(),0);await f.api.upsert('horses','horse-key',[{'horse-key':'a',name:'Alpha'},{'horse-key':'b',name:'Beta'}]);const before=f.posts();await assert.rejects(f.api.upsert('horses','horse-key',[{'horse-key':'b',name:'alpha'}]),/Duplicate/);assert.equal(f.posts(),before);assert.equal(f.patches(),0);});
+test('actual rider adapter rejects show-name before creation',async()=>{const f=mock();await assert.rejects(f.api.upsert('riders','rider-key',[{'rider-key':'a','show-name':'Forbidden'}]),/do not use/);assert.equal(f.posts(),0);});
+
+test('synced and retired schedule reference tables reject all business writes by name or ID',async()=>{const f=mock();for(const table of ['wef-schedules.shows','wef-schedules.rings','wef-schedules.schedules','tblNABa50eiRKfZS4','tblK8EqyEVUktiLOI','tbl3QiMIXd6Spi336','show-details','rings','tblxutSCBQzmkJLLO','tblsVT0Poao9wKhs4'])for(const method of ['POST','PATCH','DELETE'])await assert.rejects(f.api.call(settings.BASE_ID,table,method,{records:[]}),/read-only/);assert.equal(f.posts(),0);assert.equal(f.patches(),0);});

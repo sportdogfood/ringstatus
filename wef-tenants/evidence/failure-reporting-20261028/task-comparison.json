@@ -1,0 +1,22 @@
+[
+  {
+    "task": "wef-entries-cwf-collector",
+    "unchanged": true
+  },
+  {
+    "task": "wef-live-collector",
+    "unchanged": true
+  },
+  {
+    "task": "wef-schedules-collector",
+    "unchanged": true
+  },
+  {
+    "task": "wef-shows-collector",
+    "unchanged": true
+  },
+  {
+    "task": "wef-tenant-cwf-collector",
+    "unchanged": true
+  }
+]

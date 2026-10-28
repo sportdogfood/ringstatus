@@ -1,0 +1,37 @@
+{
+  "runLog": [
+    {
+      "id": "recQAKGLzytn3VP92",
+      "fields": {
+        "archive-count": 15,
+        "completed": "2026-10-28T22:24:54.237Z",
+        "days-failed": 0,
+        "days-complete": 4,
+        "rows": 3,
+        "started": "2026-10-28T22:22:02.721Z",
+        "run-id": "adeff827-49a4-4eb7-8620-e0de1cea9aab",
+        "result": "Success"
+      }
+    }
+  ],
+  "heartbeat": [
+    {
+      "id": "recJWmC8t39z0Ih7O",
+      "fields": {
+        "heartbeat-key": "CWF",
+        "checked-at": "2026-10-28T22:24:51.994Z",
+        "summary": "Trainer 8778 (main): No entries; 0 day entries\nTrainer 50121 (additional): Success; 1 day entries\nTrainer 80970 (additional): Success; 2 day entries\nShow 200000076; source-selected 2026-10-29; 4 days; 3 active entries; 32 daily rings; 8 shared helpers.\nStanding helpers: 76 horses, 37 riders; 13 source IDs missing (source-record identity retained).\nTenant slice: 3 active team; 0 hidden for inactive horse/rider; 10 outside current team. Collection remains inclusive; personal follow ownership and private-only entries are not exported.\nEntries source: synced; people endpoint fetches: 0. Synced rows: 3; links verified: 3; source checked: 2026-10-28T22:20:00.168Z.",
+        "show-id": 200000076,
+        "result": "Success"
+      }
+    }
+  ],
+  "helperCounts": {
+    "horses": 76,
+    "riders": 37,
+    "trainers": 3
+  },
+  "taskExit": 0,
+  "wrapperEnd": "2026-10-28T18:25:02.0413682-04:00",
+  "completionMarker": true
+}
