@@ -6538,7 +6538,7 @@ const COLLECTOR_SOURCE_FIELDS = new Set((
 
   "schedule_key schedule_short full_nesting_key schedule_date sql_date live_groups show_id show_date ring_number day_number class_group_sequence " +
 
-  "group_name class_number class_name class_type schedule_sequencetype class_groupxclasses_id " +
+  "group_name class_number class_name class_type schedule_break schedule_sequencetype class_groupxclasses_id " +
 
   "class_group_id class_id schedule_show_datev2 schedule_show_display_datev2 " +
 

@@ -39,7 +39,7 @@ async function enrichTimes({rows,previous=[],showId,date,capture=captureSchedule
   const old=new Map(previous.map(row=>[row.key,row]));
   const summary={show_id:showId,date,matched:0,preserved:0,manual:0,unmatched:0,error:null};
   let items=[];
-  if(rows.length) {
+  if(rows.some(row=>!row.inactive&&!row.fields.schedule_break)) {
     try {items=parseScheduleHtmlTimeOverlay(await capture(showId,date)).parsedRows;
       if(!items.length) throw Error('No timed schedule rows found');
     } catch(error) {summary.error=String(error.message||error);}
@@ -48,7 +48,7 @@ async function enrichTimes({rows,previous=[],showId,date,capture=captureSchedule
   const groupKey=fields=>JSON.stringify([fields.ring_number,fields.class_group_id]);
   const groups=new Map();
   for(const row of rows) {
-    if(row.inactive||!inScope(row.fields)||row.fields.class_group_id==null) continue;
+    if(row.inactive||row.fields.schedule_break||!inScope(row.fields)||row.fields.class_group_id==null) continue;
     const key=groupKey(row.fields);
     if(!groups.has(key)) groups.set(key,[]);
     groups.get(key).push(row.fields.class_number);
@@ -66,6 +66,9 @@ async function enrichTimes({rows,previous=[],showId,date,capture=captureSchedule
       }
       return {...row,fields};
     }
+    // Class HTML has no class-number match for a schooling/break block. Keep
+    // its source times; the manual override above remains authoritative.
+    if(fields.schedule_break) return {...row,fields};
     const time=summary.error?null:matchTime(fields,items,groups.get(groupKey(fields))||[]);
     if(time) {fields.estimated_start_time=time;summary.matched++;}
     else {

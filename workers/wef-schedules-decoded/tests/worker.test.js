@@ -11,3 +11,17 @@ test('bad key, damaged blobs, invalid JSON, refreshed token and missing auth fai
 test('unapproved routes, methods and query parameters cannot cause upstream actions',async()=>{for(const [route,method]of [['/auth/login','GET'],['/people/50121?pid=50121&show_id=75&customer_id=15','POST'],['/schedule?date=2026-10-25&show_id=75&customer_id=15&url=https://other.test','GET']]){const r=await run(route,{}, {method});assert.ok([400,404,405].includes(r.status));assert.equal(r.calls.length,0);}});
 test('upstream failures stay failures, without retries or leaking the body',async()=>{const r=await run('/ring?customer_id=15','private upstream error',{status:401});assert.equal(r.status,401);assert.equal(r.calls.length,1);assert.doesNotMatch(r.text,/private upstream error/);});
 test('uses Workers-supported manual redirects and blocks them without forwarding credentials',async()=>{const r=await run('/ring?customer_id=15','redirect body',{status:302});assert.equal(r.calls[0].options.redirect,'manual');assert.equal(r.status,502);assert.equal(r.calls.length,1);assert.doesNotMatch(r.text,/redirect body|offline-token|test-cookie/);});
+test('entries decodes a single explicitly scoped directory page',async()=>{
+ const route='/entries?customer_id=15&show_id=76&page=2&sort_on=number&sort_type=asc&search_text=';
+ const payload={entries:[{entry_id:null,_:await blob({entry_id:123,horse_id:456})}],show_id:'76',page:2,total_entries:20,records_per_page:10,sort:{sort_on:'number',sort_type:'asc'},term:''};
+ const r=await run(route,payload);assert.equal(r.status,200);assert.equal(r.headers.get('x-rs-decoded'),'1');
+ assert.equal(JSON.parse(r.text).entries[0].entry_id,123);assert.equal(JSON.parse(r.text).entries[0].horse_id,456);
+ assert.equal(Object.hasOwn(JSON.parse(r.text).entries[0],'_'),false);assert.equal(r.calls.length,1);
+ assert.equal(new URL(r.calls[0].url).searchParams.get('page'),'2');assert.doesNotMatch(r.text,/offline-token|test-cookie/);
+});
+test('entries rejects unbounded, malformed or different-filter requests without upstream calls',async()=>{
+ for(const suffix of ['page=0','page=-1','page=1.5','page=1&all=1','page=1&sort_on=horse','page=1&sort_type=desc','page=1&search_text=abc']){
+  const route='/entries?customer_id=15&show_id=76&'+suffix;
+  const r=await run(route,{});assert.equal(r.status,400);assert.equal(r.calls.length,0);
+ }
+});

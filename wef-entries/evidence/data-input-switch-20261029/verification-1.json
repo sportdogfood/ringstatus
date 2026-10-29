@@ -1,0 +1,22 @@
+{
+  "run": "f53bcd48-c4ad-421b-b911-101f7fa3bb25",
+  "ok": true,
+  "result": "Partial",
+  "started": "2026-10-29T17:29:02.263Z",
+  "completed": "2026-10-29T17:30:15.900Z",
+  "rows": 117,
+  "scopes": 160,
+  "errors": [],
+  "data_revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+  "source_fetches": 0,
+  "tenant_reads": 0,
+  "existingIdsMissing": 0,
+  "totalRecords": 127,
+  "scheduleLinked": 113,
+  "scheduleUnresolved": 1,
+  "groupLinked": 0,
+  "logResult": "Partial",
+  "heartbeatResult": "Partial",
+  "heartbeatChecked": "2026-10-29T17:30:15.900Z",
+  "archives": 161
+}

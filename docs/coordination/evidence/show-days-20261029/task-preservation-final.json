@@ -1,0 +1,22 @@
+[
+  {
+    "task": "wef-data-collector",
+    "configurationUnchanged": true
+  },
+  {
+    "task": "wef-shows-collector",
+    "configurationUnchanged": true
+  },
+  {
+    "task": "wef-entries-cwf-collector",
+    "configurationUnchanged": true
+  },
+  {
+    "task": "wef-live-collector",
+    "configurationUnchanged": true
+  },
+  {
+    "task": "wef-schedules-collector",
+    "configurationUnchanged": true
+  }
+]

@@ -1,0 +1,324 @@
+{
+  "payload": {
+    "show_id": "200000076",
+    "class": {
+      "class_id": 200030671,
+      "class_type": "Hunters",
+      "combined_class_id": 0,
+      "customer_id": 15,
+      "fei_event_type_code": "",
+      "has_splits": false,
+      "is_team_event": false,
+      "is_under_saddle_class": false,
+      "jumper_table": "",
+      "multiphase_rule": "",
+      "name": "Add Back Hunter",
+      "number": 207,
+      "oog_status_text": "Order of Go not set",
+      "order_of_go_set": 0,
+      "order_set_date": "0000-00-00",
+      "order_set_time": "00:00:00",
+      "results_verified": 0,
+      "schedule_ring_id": 37,
+      "schedule_sequencetype": "Over Fences",
+      "show_id": 200000076,
+      "sponsor": "",
+      "verification_detail": ""
+    },
+    "class_related_data": {
+      "actual_time": "00:00:00",
+      "class_group_id": 200029536,
+      "class_prizes": [
+        {
+          "addbackpercent": 40,
+          "checkprinted": 0,
+          "class_id": 200030671,
+          "class_prizes_uuid": "9546B9CF7D34481CA15EDF30DF018E0B",
+          "customer_id": 15,
+          "place": 1,
+          "points": 10,
+          "prize_money": 0,
+          "prize_money_spent": 0,
+          "sgl_id": 13022054,
+          "splitcode": "A",
+          "sync_id": "00001584656173465750",
+          "winningnums": ""
+        },
+        {
+          "addbackpercent": 30,
+          "checkprinted": 0,
+          "class_id": 200030671,
+          "class_prizes_uuid": "2C6C7A8AFE6E4A8C85809DE1D32CD408",
+          "customer_id": 15,
+          "place": 2,
+          "points": 6,
+          "prize_money": 0,
+          "prize_money_spent": 0,
+          "sgl_id": 13022055,
+          "splitcode": "A",
+          "sync_id": "00001568220544351411",
+          "winningnums": ""
+        },
+        {
+          "addbackpercent": 20,
+          "checkprinted": 0,
+          "class_id": 200030671,
+          "class_prizes_uuid": "F80DF15E192942E9886D73EEBAAE8DA6",
+          "customer_id": 15,
+          "place": 3,
+          "points": 4,
+          "prize_money": 0,
+          "prize_money_spent": 0,
+          "sgl_id": 13022056,
+          "splitcode": "A",
+          "sync_id": "00001598554834392784",
+          "winningnums": ""
+        },
+        {
+          "addbackpercent": 10,
+          "checkprinted": 0,
+          "class_id": 200030671,
+          "class_prizes_uuid": "CD67B77A807A4B69A376738F8F07AA20",
+          "customer_id": 15,
+          "place": 4,
+          "points": 2,
+          "prize_money": 0,
+          "prize_money_spent": 0,
+          "sgl_id": 13022057,
+          "splitcode": "A",
+          "sync_id": "00001584384954103062",
+          "winningnums": ""
+        },
+        {
+          "addbackpercent": 0,
+          "checkprinted": 0,
+          "class_id": 200030671,
+          "class_prizes_uuid": "E288016B86224607ABFEEE79643BD534",
+          "customer_id": 15,
+          "place": 5,
+          "points": 1,
+          "prize_money": 0,
+          "prize_money_spent": 0,
+          "sgl_id": 13022058,
+          "splitcode": "A",
+          "sync_id": "00001515076694928412",
+          "winningnums": ""
+        },
+        {
+          "addbackpercent": 0,
+          "checkprinted": 0,
+          "class_id": 200030671,
+          "class_prizes_uuid": "5AF34839E55747E483BE779A4FCA8337",
+          "customer_id": 15,
+          "place": 6,
+          "points": 0.5,
+          "prize_money": 0,
+          "prize_money_spent": 0,
+          "sgl_id": 13022059,
+          "splitcode": "A",
+          "sync_id": "00001521264245440897",
+          "winningnums": ""
+        },
+        {
+          "addbackpercent": 0,
+          "checkprinted": 0,
+          "class_id": 200030671,
+          "class_prizes_uuid": "083AD157B86845C784B1640773F6820E",
+          "customer_id": 15,
+          "place": 7,
+          "points": 0,
+          "prize_money": 0,
+          "prize_money_spent": 0,
+          "sgl_id": 13022060,
+          "splitcode": "A",
+          "sync_id": "00001520704548200395",
+          "winningnums": ""
+        },
+        {
+          "addbackpercent": 0,
+          "checkprinted": 0,
+          "class_id": 200030671,
+          "class_prizes_uuid": "4799A2A9D6DB4D5D84A07CAD7E9D20A2",
+          "customer_id": 15,
+          "place": 8,
+          "points": 0,
+          "prize_money": 0,
+          "prize_money_spent": 0,
+          "sgl_id": 13022061,
+          "splitcode": "A",
+          "sync_id": "00001561051374972847",
+          "winningnums": ""
+        }
+      ],
+      "class_split_codes": [
+        "A"
+      ],
+      "completed_trips": 0,
+      "current_split_code": "A",
+      "date": "2026-10-30T00:00:00.000Z",
+      "default_time": "00:00:00",
+      "estimated_time": "08:00:00",
+      "grouped_class": true,
+      "has_prize_money": false,
+      "hunter_scoreby": "",
+      "hunter_type": "",
+      "is_videos_enabled": true,
+      "judges": [],
+      "judges_count": 0,
+      "order_check_in": 0,
+      "remaining_trips": 0,
+      "ring": 3,
+      "ring_name": "Rost Arena",
+      "score_fields": [],
+      "show_est_time": true,
+      "show_planned_time": false,
+      "show_results": false,
+      "show_ring_info": true,
+      "status": "Not Started",
+      "total_trips": 0,
+      "type": "",
+      "unscratched_count": 1
+    },
+    "total_entry_trips": 1,
+    "trips": [
+      {
+        "entry_id": 200246107,
+        "entryxclasses_uuid": "43020392194F4AC3B3640D43615F08FD",
+        "horse": "MASTERFUL",
+        "horse_id": 148053,
+        "rider_id": 6016,
+        "rider_name": "VINISSA BLANN",
+        "scratch_trip": 0,
+        "trainer_id": 52432,
+        "trip_id": 200397203
+      }
+    ],
+    "class_group_order_of_go": {
+      "entries": [
+        {
+          "class_id": 200030671,
+          "entry_id": 200246107,
+          "entryxclasses_uuid": "43020392194F4AC3B3640D43615F08FD",
+          "horse": "MASTERFUL",
+          "horse_id": 148053,
+          "rider_id": 6016,
+          "rider_name": "VINISSA BLANN",
+          "scratch_trip": 0,
+          "trainer_id": 52432,
+          "trip_id": 200397203
+        }
+      ]
+    }
+  },
+  "groups": [
+    {
+      "groupId": 200029536,
+      "date": "2026-10-30",
+      "ringNumber": 3,
+      "ringId": 37,
+      "classIds": [
+        200030453,
+        200030454,
+        200030671
+      ]
+    }
+  ],
+  "schedules": [
+    {
+      "id": "rec22kxIG5vVh4mdg",
+      "createdTime": "2026-10-26T16:05:40.000Z",
+      "fields": {
+        "status": "active",
+        "changed-at": "2026-10-29T15:10:21.523Z",
+        "row-json": "{\"key\":\"200029536_207\",\"fields\":{\"class_groupxclasses_id\":200044754,\"class_group_id\":200029536,\"class_id\":200030671,\"show_id\":200000076,\"show_date\":\"2026-10-30\",\"ring_number\":3,\"class_group_sequence\":3,\"group_name\":\"Green Conformation Hunter\",\"class_number\":207,\"class_name\":\"Add Back Hunter\",\"class_type\":\"Hunters\",\"schedule_sequencetype\":\"Over Fences\",\"estimated_start_time\":\"08:00:00\",\"estimated_end_time\":\"08:00:00\",\"total_trips\":1,\"completed_trips\":0,\"sgl_token_raw\":\"Mjk4ODgxMTBFQpQeUjZOf/2Nyo8v50AYGoBRDrsHkTvcfaWaSStl1TQGBPg/9r1wh0h2K512niWtUYZcHK3ehIWu8xO4aO0jjgAeswZfCvYZi6elCKUb+edwsERUumrWkGvbQ7Dm1R5MVqgc0N8hXAKQGpCja7f6yEjfMV/Yj6+7H+A2BcvQTGyjGx+SnTkH084vmmQR0lhH43XJ0Sl7rSF4E3qlqtEcqmhPLQ==\",\"sgl_token_prefix\":\"29888110E\",\"sgl_token_length\":232,\"sgl_token_hash\":\"949142b5f1297bcce1ae11303f8b6f7ab60110843af9b938e6837fe8b96bc5b3\",\"app_show_idv2\":200000076,\"app_sql_datev2\":\"2026-10-30\",\"app_dow_rawv2\":\"Fri\",\"schedule_show_datev2\":\"2026-10-30\",\"schedule_show_display_datev2\":\"10/30/26\",\"schedule_show_display_date_dayv2\":\"Friday, Oct 30, 2026\"}}",
+        "stage-key": "200000076|2026-10-30|200029536_207",
+        "completed-trips": 0,
+        "dataset-id": "0d584021-a9b9-4429-868a-0258163c8ba0",
+        "end-time": "08:00:00",
+        "date": "2026-10-30",
+        "ring": 3,
+        "show-details": [
+          "rec3DXsFtpXxx2Rr7"
+        ],
+        "sequence-type": "Over Fences",
+        "class-id": 200030671,
+        "total-trips": 1,
+        "group": "Green Conformation Hunter",
+        "class-number": 207,
+        "show-id": 200000076,
+        "type": "Hunters",
+        "sequence": 3,
+        "rings": [
+          "reccpVcedyVhXWrDu"
+        ],
+        "start-time": "08:00:00",
+        "group-id": 200029536,
+        "class-name": "Add Back Hunter"
+      }
+    },
+    {
+      "id": "rec8Z6W1CEnBmqRTn",
+      "createdTime": "2026-10-26T16:05:40.000Z",
+      "fields": {
+        "status": "active",
+        "changed-at": "2026-10-29T15:10:21.523Z",
+        "row-json": "{\"key\":\"200029536_254\",\"fields\":{\"class_groupxclasses_id\":200044756,\"class_group_id\":200029536,\"class_id\":200030454,\"show_id\":200000076,\"show_date\":\"2026-10-30\",\"ring_number\":3,\"class_group_sequence\":3,\"group_name\":\"Green Conformation Hunter\",\"class_number\":254,\"class_name\":\"Green Conformation Hunter\",\"class_type\":\"Hunters\",\"schedule_sequencetype\":\"Over Fences\",\"estimated_start_time\":\"08:00:00\",\"estimated_end_time\":\"08:00:00\",\"total_trips\":0,\"completed_trips\":0,\"sgl_token_raw\":\"Mjk4ODgxMTA/AgNEZ9rpCdUziOXHemV1jHeu7sew6bR6KDoJwm6xFvV6eZgLU3c2z/Sz0c9ZQWtfGzmoSQm50GwxXBt1ifno2Y54zO9I++l9lG1iJl0nnQWxKQAvnbd/6+ACXNsSeklh65LfI1uQ9M5MAX005Ductla1we2t6zNsBwt3Q55kgNIWqfHmiaXVF7YhXUOcTr8cfupstUUDhrCGrxYyvQZE3oSdaQ==\",\"sgl_token_prefix\":\"29888110\",\"sgl_token_length\":232,\"sgl_token_hash\":\"141804b1a6f18898f7477ff0835c78d4fe3ba86eea912671d8b5a697041fa628\",\"app_show_idv2\":200000076,\"app_sql_datev2\":\"2026-10-30\",\"app_dow_rawv2\":\"Fri\",\"schedule_show_datev2\":\"2026-10-30\",\"schedule_show_display_datev2\":\"10/30/26\",\"schedule_show_display_date_dayv2\":\"Friday, Oct 30, 2026\"}}",
+        "stage-key": "200000076|2026-10-30|200029536_254",
+        "completed-trips": 0,
+        "dataset-id": "0d584021-a9b9-4429-868a-0258163c8ba0",
+        "end-time": "08:00:00",
+        "date": "2026-10-30",
+        "ring": 3,
+        "show-details": [
+          "rec3DXsFtpXxx2Rr7"
+        ],
+        "sequence-type": "Over Fences",
+        "class-id": 200030454,
+        "total-trips": 0,
+        "group": "Green Conformation Hunter",
+        "class-number": 254,
+        "show-id": 200000076,
+        "type": "Hunters",
+        "sequence": 3,
+        "rings": [
+          "reccpVcedyVhXWrDu"
+        ],
+        "start-time": "08:00:00",
+        "group-id": 200029536,
+        "class-name": "Green Conformation Hunter"
+      }
+    },
+    {
+      "id": "receeIi1ks78rNVv9",
+      "createdTime": "2026-10-26T16:05:40.000Z",
+      "fields": {
+        "status": "active",
+        "changed-at": "2026-10-29T15:10:21.523Z",
+        "row-json": "{\"key\":\"200029536_253\",\"fields\":{\"class_groupxclasses_id\":200044755,\"class_group_id\":200029536,\"class_id\":200030453,\"show_id\":200000076,\"show_date\":\"2026-10-30\",\"ring_number\":3,\"class_group_sequence\":3,\"group_name\":\"Green Conformation Hunter\",\"class_number\":253,\"class_name\":\"Green Conformation Hunter\",\"class_type\":\"Hunters\",\"schedule_sequencetype\":\"Over Fences\",\"estimated_start_time\":\"08:00:00\",\"estimated_end_time\":\"08:00:00\",\"total_trips\":0,\"completed_trips\":0,\"sgl_token_raw\":\"Mjk4ODgxMTAdpu+a+Cro9K8H/pZLpn3z1iVVJn42GFbCOmqx1BxaXwg4LqYUsBsiPMEEZprwaVAMYH0GzFFFTV1dATLdzP/BAP1TUUO+s2O8fb5hzVg/hm6osSiysai+Op/ZKOjfSiRXSPmhJUVyVxIIW8vZw8gZ7onbbfUzJ8Eop2UekdfxSlssjGCI5uHFDDvyXOd3f7uQCu/eKr19ltqrmpV8BeXxQWpMpA==\",\"sgl_token_prefix\":\"29888110\",\"sgl_token_length\":232,\"sgl_token_hash\":\"7a8985ad5536ec2c238457e1f688c2ffc16dd586703f6efcc3c0236b33827bf0\",\"app_show_idv2\":200000076,\"app_sql_datev2\":\"2026-10-30\",\"app_dow_rawv2\":\"Fri\",\"schedule_show_datev2\":\"2026-10-30\",\"schedule_show_display_datev2\":\"10/30/26\",\"schedule_show_display_date_dayv2\":\"Friday, Oct 30, 2026\"}}",
+        "stage-key": "200000076|2026-10-30|200029536_253",
+        "completed-trips": 0,
+        "dataset-id": "0d584021-a9b9-4429-868a-0258163c8ba0",
+        "end-time": "08:00:00",
+        "date": "2026-10-30",
+        "ring": 3,
+        "show-details": [
+          "rec3DXsFtpXxx2Rr7"
+        ],
+        "sequence-type": "Over Fences",
+        "class-id": 200030453,
+        "total-trips": 0,
+        "group": "Green Conformation Hunter",
+        "class-number": 253,
+        "show-id": 200000076,
+        "type": "Hunters",
+        "sequence": 3,
+        "rings": [
+          "reccpVcedyVhXWrDu"
+        ],
+        "start-time": "08:00:00",
+        "group-id": 200029536,
+        "class-name": "Green Conformation Hunter"
+      }
+    }
+  ]
+}

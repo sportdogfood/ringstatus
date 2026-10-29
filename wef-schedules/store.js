@@ -188,7 +188,8 @@ async function collectStagedSchedules({store=stageStore(),io={},shows,now=new Da
       const {rows,changes}=reconcileRows(priorRows,observed,now.slice(0,10));
 
       const observedHash=fingerprint(rows);
-      const warnings=observed.length?[]:[{level:'WARNING',code:'empty_show_day',show_id:showId,date,message:'Successful response contains no classes within the show date range'}];
+      const counts={classes:observed.filter(row=>!row.fields.schedule_break).length,schedule_blocks:observed.filter(row=>row.fields.schedule_break).length};
+      const warnings=observed.length?[]:[{level:'WARNING',code:'empty_show_day',show_id:showId,date,message:'Successful response contains no classes, schooling sessions or breaks for this show/date'}];
       if(times.summary.error||times.summary.unmatched) warnings.push({level:'WARNING',code:'estimated_times_incomplete',...times.summary});
       const oldByKey=new Map(priorRows.map(row=>[row.key,row]));
       const rotatedRows=observed.filter(row=>{
@@ -211,17 +212,17 @@ async function collectStagedSchedules({store=stageStore(),io={},shows,now=new Da
 
       // Store metadata only; normalized rows are in schedules. Never persist runtime links.
 
-      const context={...prepared,estimated_times:times.summary,warnings,observed_fingerprint:observedHash,token_evidence:{rotated_rows:rotatedRows},changes,observed_row_count:observed.length,previous_dataset_id:previous?.fields['dataset-id']||null,chosen:{...prepared.chosen,rows:[]},datedResult:{...prepared.datedResult,rows:[]},
+      const context={...prepared,schedule_counts:counts,estimated_times:times.summary,warnings,observed_fingerprint:observedHash,token_evidence:{rotated_rows:rotatedRows},changes,observed_row_count:observed.length,previous_dataset_id:previous?.fields['dataset-id']||null,chosen:{...prepared.chosen,rows:[]},datedResult:{...prepared.datedResult,rows:[]},
 
         emptyResult:{...prepared.emptyResult,rows:[]},scheduleHtmlTimeOverlay:{...prepared.scheduleHtmlTimeOverlay,rows:[]}};
 
       completed['context-json']=JSON.stringify(context);
 
-      completed.message=JSON.stringify({added:changes.added.length,changed:changes.changed.length,dropped:changes.dropped.length,warnings});
+      completed.message=JSON.stringify({...counts,added:changes.added.length,changed:changes.changed.length,dropped:changes.dropped.length,warnings});
 
       await store.finish(record,completed);
 
-      days.push({show_id:showId,date,ok:true,dataset_id:datasetId,unchanged:datasetId!==id,changes,warnings,row_count:observed.length,token_rotated_rows:rotatedRows});
+      days.push({show_id:showId,date,ok:true,dataset_id:datasetId,unchanged:datasetId!==id,changes,warnings,row_count:observed.length,classes_count:counts.classes,schedule_blocks_count:counts.schedule_blocks,token_rotated_rows:rotatedRows});
 
     } catch(error) {
 

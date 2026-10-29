@@ -1,0 +1,170 @@
+{
+  "baseId": "appUq5Qz9kARqFija",
+  "created": {
+    "id": "tblntJGnYFpLxjFSr",
+    "name": "error-log",
+    "description": "Separate schedules error events, including early startup and lock failures. Match run-id or open run-log-url for the collection attempt. Unknown show/date stays blank. The normal scheduled collector publishes deferred new-attempt error evidence after logging access recovers. Latest 1000 errors retained here; exact older records are archived and verified before slot reuse.",
+    "primaryFieldId": "fld1iarBg8C1wPpgD",
+    "fields": [
+      {
+        "id": "fld1iarBg8C1wPpgD",
+        "name": "error-id",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldPlUEZAUJqwcVYU",
+        "name": "run-id",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldj0RRuR4DZus1Gi",
+        "name": "stage",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldfRE3IURzczDWu4",
+        "name": "recorded-at",
+        "type": "dateTime",
+        "options": {
+          "dateFormat": {
+            "name": "iso",
+            "format": "YYYY-MM-DD"
+          },
+          "timeFormat": {
+            "name": "24hour",
+            "format": "HH:mm"
+          },
+          "timeZone": "utc"
+        }
+      },
+      {
+        "id": "fldTJza1dL1DlTxNh",
+        "name": "started",
+        "type": "dateTime",
+        "options": {
+          "dateFormat": {
+            "name": "iso",
+            "format": "YYYY-MM-DD"
+          },
+          "timeFormat": {
+            "name": "24hour",
+            "format": "HH:mm"
+          },
+          "timeZone": "utc"
+        }
+      },
+      {
+        "id": "fldXOz1UbOkNGa1t8",
+        "name": "date",
+        "type": "date",
+        "options": {
+          "dateFormat": {
+            "name": "iso",
+            "format": "YYYY-MM-DD"
+          }
+        }
+      },
+      {
+        "id": "fldsKsiTvPyPOSpa6",
+        "name": "show-id",
+        "type": "number",
+        "options": {
+          "precision": 0
+        }
+      },
+      {
+        "id": "fldJtUqSIUO7cER5t",
+        "name": "message",
+        "type": "multilineText"
+      },
+      {
+        "id": "fldEea7Q2eMcxOqSr",
+        "name": "run-log-url",
+        "type": "url"
+      }
+    ],
+    "views": [
+      {
+        "id": "viwn8ZCVIvCRhB5Hc",
+        "name": "Grid view",
+        "type": "grid"
+      }
+    ]
+  },
+  "readback": {
+    "tables": [
+      {
+        "tableId": "tblntJGnYFpLxjFSr",
+        "fields": [
+          {
+            "id": "fld1iarBg8C1wPpgD",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldPlUEZAUJqwcVYU",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldj0RRuR4DZus1Gi",
+            "type": "singleLineText"
+          },
+          {
+            "id": "fldfRE3IURzczDWu4",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "id": "fldTJza1dL1DlTxNh",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "id": "fldXOz1UbOkNGa1t8",
+            "type": "date",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              }
+            }
+          },
+          {
+            "id": "fldsKsiTvPyPOSpa6",
+            "type": "number",
+            "config": {
+              "precision": 0
+            }
+          },
+          {
+            "id": "fldJtUqSIUO7cER5t",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldEea7Q2eMcxOqSr",
+            "type": "url"
+          }
+        ]
+      }
+    ]
+  }
+}

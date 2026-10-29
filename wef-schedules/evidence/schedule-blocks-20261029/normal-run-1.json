@@ -1,0 +1,52 @@
+{
+  "verified_at": "2026-10-29T12:31:49.535Z",
+  "run": {
+    "id": "recKRbcUSSPpovnoH",
+    "createdTime": "2026-10-22T19:00:04.000Z",
+    "fields": {
+      "archives": "2026-10-29T12:30:04.860Z: run-logs Created; shows 200000075; dates 2026-10-22,2026-10-23,2026-10-24,2026-10-25; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\run-logs\\70643b99-9a2a-4052-959f-c9197468925d.json.gz; SHA256 0446fa68c18f21423c73ffffa8c5c72049fd3d2f825f766d72da5a49ab1ea895\n2026-10-29T12:30:06.827Z: datasets Created; shows 200000076; dates 2026-10-29; 26 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\datasets\\67dd8889-3680-4e80-9f2c-fd806aa2d6ed.json.gz; SHA256 49d201e3bb695263419ce3a28832ff21cc21902b241b7d448f0914b4ef5f6a31\n2026-10-29T12:30:08.319Z: attempts Created; shows 200000076; dates 2026-10-29; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\67dd8889-3680-4e80-9f2c-fd806aa2d6ed-complete.json.gz; SHA256 68c623df473b80f25ebad2daa14b3bdbbe4ddec964f8fad0d5b19ba23177fe36\n2026-10-29T12:30:20.842Z: datasets Created; shows 200000076; dates 2026-10-30; 142 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\datasets\\8c4c656d-6bd1-446b-a95f-82f6ecc0afe5.json.gz; SHA256 2d0169128127c1ba8396302cfae419baa1f75788dd0c14d2a9c50960f046bf51\n2026-10-29T12:30:22.438Z: attempts Created; shows 200000076; dates 2026-10-30; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\8c4c656d-6bd1-446b-a95f-82f6ecc0afe5-complete.json.gz; SHA256 31b239f297bec5fff88d1c79f87d029a97b5fe35fd76f06ebe35b6cb8bc75ecb\n2026-10-29T12:30:38.812Z: datasets Created; shows 200000076; dates 2026-10-31; 199 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\datasets\\8674979a-6bdb-43ea-a563-65282196b489.json.gz; SHA256 6d8ca1f78dc406274bfb19563ad03b4baa07b83022b9f3c75dc3ceb04a953254\n2026-10-29T12:30:40.903Z: attempts Created; shows 200000076; dates 2026-10-31; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\8674979a-6bdb-43ea-a563-65282196b489-complete.json.gz; SHA256 d08c9b6f120325635322e3a541ed6b515f732bea092e1333eda1221088116907\n2026-10-29T12:30:58.814Z: attempts Created; shows 200000076; dates 2026-11-01; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\0952be2c-9f19-4d2c-8e98-c7335c71e904-complete.json.gz; SHA256 bbfd5a527ff542d048bbe8b7616f0b3677d664e4db3e2c5399f953d110cdd36e",
+      "summary": "2026-10-29: 26 rows; 0 classes, 26 schooling/break blocks; added 26, changed 0, dropped 0\n2026-10-30: 142 rows; 137 classes, 5 schooling/break blocks; added 5, changed 0, dropped 0\n2026-10-31: 199 rows; 197 classes, 2 schooling/break blocks; added 2, changed 0, dropped 0\n2026-11-01: 137 rows; 137 classes, 0 schooling/break blocks; added 0, changed 0, dropped 0; dataset reused\nShow/rings verified: show 200000076; source-selected date 2026-10-29; 32 daily rings (8 selected); 8 static helpers; 504 schedule links.",
+      "days-complete": 4,
+      "rows": 504,
+      "completed": "2026-10-29T12:31:07.116Z",
+      "shows": [
+        "rec3DXsFtpXxx2Rr7"
+      ],
+      "show-id": 200000076,
+      "run-id": "bcdf4cbd-572e-47ee-bf06-b0f0753fbd35",
+      "result": "Success",
+      "archive-count": 8,
+      "started": "2026-10-29T12:30:04.841Z",
+      "days-failed": 0
+    }
+  },
+  "heartbeat": {
+    "id": "recrPBYzI2s6XpW0O",
+    "createdTime": "2026-10-20T18:05:58.000Z",
+    "fields": {
+      "result": "Success",
+      "heartbeat-key": "schedules",
+      "run-id": "bcdf4cbd-572e-47ee-bf06-b0f0753fbd35",
+      "days-complete": 4,
+      "rows": 504,
+      "show-id": 200000076,
+      "checked-at": "2026-10-29T12:31:07.116Z",
+      "days-failed": 0,
+      "selected-date": "2026-10-29",
+      "summary": "2026-10-29: 26 rows; 0 classes, 26 schooling/break blocks; added 26, changed 0, dropped 0\n2026-10-30: 142 rows; 137 classes, 5 schooling/break blocks; added 5, changed 0, dropped 0\n2026-10-31: 199 rows; 197 classes, 2 schooling/break blocks; added 2, changed 0, dropped 0\n2026-11-01: 137 rows; 137 classes, 0 schooling/break blocks; added 0, changed 0, dropped 0; dataset reused\nShow/rings verified: show 200000076; source-selected date 2026-10-29; 32 daily rings (8 selected); 8 static helpers; 504 schedule links.",
+      "started": "2026-10-29T12:30:04.841Z",
+      "archive-count": 8,
+      "shows": [
+        "rec3DXsFtpXxx2Rr7"
+      ]
+    }
+  },
+  "preserved_class_records": 471,
+  "total_records": 504,
+  "today_schooling": 24,
+  "today_breaks": 2,
+  "today_reported_trips": 0,
+  "no_duplicate_keys": true,
+  "source_class_ids_and_links_preserved": true,
+  "manual_runs": 0
+}

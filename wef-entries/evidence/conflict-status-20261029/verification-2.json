@@ -1,0 +1,16 @@
+{
+  "run": "f7745e75-9005-413d-91ea-3ce0df49e512",
+  "ok": true,
+  "result": "Partial",
+  "rows": 117,
+  "errors": [],
+  "recordCount": 127,
+  "repeatChangedRows": [],
+  "duplicateKeys": 0,
+  "masterful": "Conflict",
+  "heartbeat": "Partial",
+  "log": "Partial",
+  "taskUnchanged": true,
+  "schedulesCodeChanges": [],
+  "deployedHashChanges": []
+}

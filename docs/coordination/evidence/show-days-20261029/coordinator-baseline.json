@@ -1,0 +1,168 @@
+{
+  "captured-at": "2026-10-29T13:42:16.209054+00:00",
+  "head": "03987bb58984e501252091acf97dad6915ff8365",
+  "authorization": "Schedules direct usermessage 01a187e4-52ed-7063-ac59-19f3be2e6971",
+  "files": [
+    {
+      "path": "wef-data/.gitignore",
+      "sha256": "357f7c09109c5546e25363be38f5a8dd3a44adf890697aedb314393030501d36"
+    },
+    {
+      "path": "wef-data/authored-fields.json",
+      "sha256": "449d51f0895210e4dfd315a9c7c1da6ff222c7340ac14952ba666fc30757ec6d"
+    },
+    {
+      "path": "wef-data/data_contract.py",
+      "sha256": "3bd3897a513c1c0538f8eee36c91c5d5a97a0d6e6d1639bc1fb8e71f16da50e1"
+    },
+    {
+      "path": "wef-data/data_runner.py",
+      "sha256": "ffc1cf4d828ffec8ddd65957394baa850955b22816bb8444c6ad5ab112aba53b"
+    },
+    {
+      "path": "wef-data/entry.js",
+      "sha256": "8f79eea352ade54bdc39ba184e6bc847e3f57eba98e1a67846b8b0864f4fe0c1"
+    },
+    {
+      "path": "wef-data/README.md",
+      "sha256": "5aeebdbc6b299fb6007015914fcfac76e6fdf1a4e2cdd701aed36207e001d20e"
+    },
+    {
+      "path": "wef-data/register-task.ps1",
+      "sha256": "ee147e179b8b883681ede8d0082c04fc96048d1f90893dcae9f9471b4b6c3ae6"
+    },
+    {
+      "path": "wef-data/requirements.txt",
+      "sha256": "f873ddaf5bf82a495fde7f944ef5e5079506f26af13ab0a2e2834561ce216609"
+    },
+    {
+      "path": "wef-data/run-hidden.vbs",
+      "sha256": "07aaef9dab9facfdcfcdd097679ea3a6176f158dd6fd8e2fa9ffb7b79ee32aef"
+    },
+    {
+      "path": "wef-data/run.ps1",
+      "sha256": "7305f01bd4391f25a01da413f60569b8ffd845597f955ed225a4b923cf50fada"
+    },
+    {
+      "path": "wef-data/scheduled.py",
+      "sha256": "3eca940c747d5850331ec1ff8a6c2236df764e45ac87efa564d94ed01740dc72"
+    },
+    {
+      "path": "wef-data/schema.json",
+      "sha256": "db88723ef31f7d2349cedcb7d51da1e72f2b9810454749139d9bfa07d430ee4c"
+    },
+    {
+      "path": "wef-data/source-reader.js",
+      "sha256": "a53612f8b26c27e69b81c3317c833ce3202e9d9b4834f032b07ff1db94a0bdd7"
+    },
+    {
+      "path": "wef-data/tests/entry.test.js",
+      "sha256": "880cc06d65532ecc8faf0fab275c31f65c665d9fac3ace44ea89f895901ab621"
+    },
+    {
+      "path": "wef-data/tests/source.test.js",
+      "sha256": "26e5fa75c0c1d54fb773e2c6a5e6b3d0a549b986a99f89ef844e297e56cfae63"
+    },
+    {
+      "path": "wef-data/tests/test_archive.py",
+      "sha256": "3194b4976d5aaafd17610ad6a3ba7c7296b5cd9dcc93427b9d612216ef6471a1"
+    },
+    {
+      "path": "wef-data/tests/test_contract.py",
+      "sha256": "1f6138aaf4b7795a229402da986e58dc4d1f7345cbd4a1f748b3cfa2424d6a34"
+    },
+    {
+      "path": "wef-data/tests/test_directory_reconciliation.py",
+      "sha256": "a9b0a92906e0a679b6afa608622c58cf0b05f0a8337e1f890d89b1c558958863"
+    },
+    {
+      "path": "wef-data/tests/test_historical.py",
+      "sha256": "8a3e30c5a6d4794c078cba300d70b02ba9abdb4c346f7c42ebffba88091564eb"
+    },
+    {
+      "path": "wef-data/tests/test_runner.py",
+      "sha256": "a8fd325ed2e6ea67ff281464815e2c57291cd93d1889918438f5387584e96879"
+    },
+    {
+      "path": "wef-data/tests/test_scheduled_contract.py",
+      "sha256": "ea06a175df79a51ccf68b5d248e9e32ff5c892398111ddd4ee3edff5b7a2a78f"
+    },
+    {
+      "path": "wef-data/tests/test_source_transport.py",
+      "sha256": "4d8f0b7579f3f19ef5fdb7d0d03765c194ef3749b86da7fe446aa159471a9c5f"
+    },
+    {
+      "path": "wef-data/tests/test_store.py",
+      "sha256": "a0da2ae506d78488ca284de15ddb2467a68754cd7cec4d159f42836cd665b3a0"
+    },
+    {
+      "path": "wef-data/verify.py",
+      "sha256": "4ff9443755af81571ceaa0d8cc9128a77d4194af1f79e8f1f2e37e030a99fde1"
+    },
+    {
+      "path": "wef-shows/.gitignore",
+      "sha256": "89d9ccc8b54cf386319e9daefbea7d063828dd0e18231566ead7f63b8d84a3a2"
+    },
+    {
+      "path": "wef-shows/airtable.js",
+      "sha256": "146c48478dde77d175707feccce87f2ba83ae21e570fe4e5d158fa05b943f7a8"
+    },
+    {
+      "path": "wef-shows/collector.js",
+      "sha256": "c7fde9b6a8c3e5de181023e38cd7daff08769ce87895cf9bd04c00bda89752b4"
+    },
+    {
+      "path": "wef-shows/configure.js",
+      "sha256": "d8dcc4da0a6b1c0606788feaea71a8d113ce8ff0c06a0f3362ae6ec73f223d37"
+    },
+    {
+      "path": "wef-shows/entry.js",
+      "sha256": "2ecb076a6df89cba7d0e5b80937651a3152c551a5dbccec66b4ae0f3985d2f7b"
+    },
+    {
+      "path": "wef-shows/README.md",
+      "sha256": "badd5f2da32b67f8f7d42bf3ee373cf0aaa2c8ef2742fe8743a5b71837dcbfd3"
+    },
+    {
+      "path": "wef-shows/run-hidden.vbs",
+      "sha256": "07aaef9dab9facfdcfcdd097679ea3a6176f158dd6fd8e2fa9ffb7b79ee32aef"
+    },
+    {
+      "path": "wef-shows/run.ps1",
+      "sha256": "16b54d3b9dc095ee2d76154d1f309d2e54e5139aaaed7e810d54430f47c16082"
+    },
+    {
+      "path": "wef-shows/settings.js",
+      "sha256": "2c12ce868e2b8b588a6285301795916582a3c48f49155b115093751983048a3d"
+    },
+    {
+      "path": "wef-shows/staged/preload.cjs",
+      "sha256": "59735501ea9d0411330699ed8d04168db486d3976b44cc5b5b47843b1b9e141b"
+    },
+    {
+      "path": "wef-shows/staged/store-original-paths.js",
+      "sha256": "33f9cb9a7c4936ff3ae6a7ed8a8c038eedbef66da9a366470f2af964b4123340"
+    },
+    {
+      "path": "wef-shows/staged/store.js",
+      "sha256": "2dac1e3fd23299c0c524a7d5f1fea0acd72aa83f5929cbd6f9084f0f1c6b461d"
+    },
+    {
+      "path": "wef-shows/tests/shows.test.js",
+      "sha256": "cef58883929847a3c779bbac1775a403f7d302d2f763796b7194562855fa854d"
+    },
+    {
+      "path": "wef-shows/verify-consumers.js",
+      "sha256": "0c4a0761e5ffd1a542d9934499db8a0d08a3b1429df06257dbc8ad4f0994a70a"
+    },
+    {
+      "path": "wef-shows/verify.js",
+      "sha256": "31122a40e990a229b8529a46bc42059a57f45f33b02c9ddbd0f051a04f364dad"
+    },
+    {
+      "path": "wef-schedules/tests/wef_data_handoff.py",
+      "sha256": "9b3aae8e1f59ee292595fec13f3619b926667905218c9529d4fe3e699c8150d5"
+    }
+  ],
+  "scope": "Data typed count summaries, Shows canonical days; no consumer switch/task changes"
+}

@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: Airtable timestamp readback accepts equivalent source offsets without repeated writes
+ok 1 - Airtable timestamp readback accepts equivalent source offsets without repeated writes
+  ---
+  duration_ms: 8.7732
+  type: 'test'
+  ...
+# Subtest: creates two tables and exact reciprocal relationships; repeat does not write
+ok 2 - creates two tables and exact reciprocal relationships; repeat does not write
+  ---
+  duration_ms: 24.4325
+  type: 'test'
+  ...
+# Subtest: rejects incompatible existing audit tables before writing
+ok 3 - rejects incompatible existing audit tables before writing
+  ---
+  duration_ms: 0.9643
+  type: 'test'
+  ...
+# Subtest: repeat error persistence is idempotent; previous source success survives a later failed attempt
+ok 4 - repeat error persistence is idempotent; previous source success survives a later failed attempt
+  ---
+  duration_ms: 3.329
+  type: 'test'
+  ...
+# Subtest: schema rejects changed canonical field types before writes
+ok 5 - schema rejects changed canonical field types before writes
+  ---
+  duration_ms: 4.0147
+  type: 'test'
+  ...
+# Subtest: schema creates only agreed days and reciprocal, repeat makes no writes
+ok 6 - schema creates only agreed days and reciprocal, repeat makes no writes
+  ---
+  duration_ms: 6.2886
+  type: 'test'
+  ...
+# Subtest: exact Season fixture replays through isolated Python bridge
+ok 7 - exact Season fixture replays through isolated Python bridge
+  ---
+  duration_ms: 282.0465
+  type: 'test'
+  ...
+# Subtest: real no-inventory frozen fixture publishes null asof/counts as Unknown
+ok 8 - real no-inventory frozen fixture publishes null asof/counts as Unknown
+  ---
+  duration_ms: 693.6055
+  type: 'test'
+  ...
+# Subtest: reader publishes the producer fixture and reuses only hashed collection cache
+ok 9 - reader publishes the producer fixture and reuses only hashed collection cache
+  ---
+  duration_ms: 675.7256
+  type: 'test'
+  ...
+# Subtest: tampered source parts fail before count publication
+ok 10 - tampered source parts fail before count publication
+  ---
+  duration_ms: 3.5673
+  type: 'test'
+  ...
+# Subtest: changed head fence rejects otherwise valid replay
+ok 11 - changed head fence rejects otherwise valid replay
+  ---
+  duration_ms: 151.7029
+  type: 'test'
+  ...
+# Subtest: valid subset zero publishes same day/native link on repeats; absent day stays unknown
+ok 12 - valid subset zero publishes same day/native link on repeats; absent day stays unknown
+  ---
+  duration_ms: 11.6788
+  type: 'test'
+  ...
+# Subtest: unknown coverage remains null not zero
+ok 13 - unknown coverage remains null not zero
+  ---
+  duration_ms: 2.6034
+  type: 'test'
+  ...
+# Subtest: unknown day without inventory retains null source time and does not stop remaining days
+ok 14 - unknown day without inventory retains null source time and does not stop remaining days
+  ---
+  duration_ms: 2.3829
+  type: 'test'
+  ...
+# Subtest: invalid or failed evidence preserves accepted body and original counts/time
+ok 15 - invalid or failed evidence preserves accepted body and original counts/time
+  ---
+  duration_ms: 1.2356
+  type: 'test'
+  ...
+# Subtest: scope mismatch fails before publishing counts
+ok 16 - scope mismatch fails before publishing counts
+  ---
+  duration_ms: 0.3195
+  type: 'test'
+  ...
+# Subtest: mixed projection, tampered digest and changed fence are rejected
+ok 17 - mixed projection, tampered digest and changed fence are rejected
+  ---
+  duration_ms: 4.3638
+  type: 'test'
+  ...
+# Subtest: expiry uses source time despite recent verification; exact five minutes is stale
+ok 18 - expiry uses source time despite recent verification; exact five minutes is stale
+  ---
+  duration_ms: 0.1933
+  type: 'test'
+  ...
+# Subtest: failed staged write preserves authoritative previous body; readback refuses mixed projections
+ok 19 - failed staged write preserves authoritative previous body; readback refuses mixed projections
+  ---
+  duration_ms: 1.4828
+  type: 'test'
+  ...
+# Subtest: duplicate canonical keys fail without writes
+ok 20 - duplicate canonical keys fail without writes
+  ---
+  duration_ms: 0.558
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2098.6956

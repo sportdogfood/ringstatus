@@ -6,11 +6,11 @@ const {fixture:collectionFixture}=require('../../wef-schedules/tests/fixtures/sc
 const now='2026-10-15T12:00:00Z';
 function fixture(t){
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'wef-show-proof-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));const history=path.join(dir,'history'),statePath=path.join(dir,'shows-focus.json');
- const tables={shows:[],'run-logs':[],heartbeat:[]},writes=[],requests=[];let n=0;
- const api={list:async table=>structuredClone(tables[table]),upsert:async(table,key,fields)=>{writes.push(table);for(const f of fields){let r=tables[table].find(r=>r.fields[key]===f[key]);if(!r){r={id:'rec'+(++n),fields:{}};tables[table].push(r);}Object.assign(r.fields,structuredClone(f));}return structuredClone(fields.map(f=>tables[table].find(r=>r.fields[key]===f[key])));},call:async(base,table,method,body)=>{for(const r of body.records)Object.assign(tables[table].find(x=>x.id===r.id).fields,r.fields);}};
+ const tables={shows:[],'run-logs':[],heartbeat:[],sources:[],'err-logs':[]},writes=[],requests=[];let n=0;
+ const api={list:async table=>structuredClone(tables[table]),upsert:async(table,key,fields)=>{writes.push(table);if(table==='heartbeat')for(const f of fields){if(f['selected-date']==='')throw Error('Airtable PATCH heartbeat HTTP 422');}for(const f of fields){let r=tables[table].find(r=>r.fields[key]===f[key]);if(!r){r={id:'rec'+(++n),fields:{}};tables[table].push(r);}Object.assign(r.fields,structuredClone(f));}return structuredClone(fields.map(f=>tables[table].find(r=>r.fields[key]===f[key])));},call:async(base,table,method,body)=>{for(const r of body.records)Object.assign(tables[table].find(x=>x.id===r.id).fields,r.fields);}};
  let showId=74;const c=collectionFixture();
  const source=async url=>{requests.push(url);if(new URL(url).pathname==='/ring')return{show:{show_id:showId}};const payload=await c.io.fetchJson(url);return{...payload,show:{show_id:showId,facility_id:516,show_name:'Fixture',start_date:'2026-10-15',end_date:'2026-10-17'}};};
- const options={api,clock:()=>now,statePath,fetchJson:source,archive:(...args)=>archiveFile(history,...args)};
+ const options={publishDays:async()=>({ok:true,days:[],errors:[]}),readSummaries:async()=>({days:[]}),dayStopPath:path.join(dir,'day-stop.json'),api,clock:()=>now,statePath,fetchJson:source,archive:(...args)=>archiveFile(history,...args)};
  const read=async()=>api.list('shows'),consume=extra=>readShowFocus({statePath:path.join(dir,'schedules-focus.json'),now,read,archiveRoot:history,...extra});
  return{dir,history,options,consume,tables,writes,requests,api,setShow:id=>showId=id};
 }
@@ -34,3 +34,50 @@ test('schedules collect every day using shared metadata and never call discovery
 });
 test('consumer rejects archive traversal and inconsistent dates',async t=>{const f=fixture(t);await runShows(f.options);const row=f.tables.shows[0];row.fields['default-payload-file']=path.join(f.dir,'outside.json.gz');await assert.rejects(f.consume(),/outside archive/);});
 test('producer adapter blocks changes outside shows base and all deletes',async()=>{const api=require('../airtable').airtable({request:async()=>{throw Error('Network forbidden');}});await assert.rejects(api.call('appxKPBtdl2Rdq7CS','shows','PATCH',{}));await assert.rejects(api.call(require('../settings').BASE_ID,'shows','DELETE',{}));});
+
+test('day failure preserves discovery and stops only day retries',async t=>{
+ const f=fixture(t);let attempts=0;const options={...f.options,publishDays:async()=>{attempts++;throw Error('Day failed');}};
+ const first=await runShows(options);assert.equal(first.discovery_ok,true);assert.equal(first.ok,false);assert.equal(f.tables.heartbeat[0].fields.result,'Partial');
+ const second=await runShows(options);assert.equal(second.discovery_ok,true);assert.equal(attempts,1);assert.equal(f.requests.length,4);
+});
+
+test('normal successes link attempted sources and create no error rows',async t=>{
+ const f=fixture(t);const run=await runShows({...f.options,publishDays:async({readSummaries,show})=>{await readSummaries(show);return{ok:true,days:[],errors:[]};}});
+ assert.equal(run.ok,true,run.errors.join(';'));assert.equal(f.tables.sources.length,3);assert.equal(f.tables['err-logs'].length,0);assert.equal(f.tables['run-logs'][0].fields.sources.length,3);assert.equal(f.tables.heartbeat[0].fields.result,'Success');
+});
+test('source failures create linked separate errors and do not invent a success time',async t=>{
+ const f=fixture(t);const run=await runShows({...f.options,fetchJson:async()=>{throw Error('fixture source unavailable');}});assert.equal(run.ok,false);assert.equal(f.tables['err-logs'].length,1);
+ const err=f.tables['err-logs'][0].fields;assert.deepEqual(err.run,[f.tables['run-logs'][0].id]);assert.deepEqual(err.source,[f.tables.sources[0].id]);assert.equal(err['run-id'],run.run_id);assert.equal(f.tables.sources[0].fields['last-success-at'],undefined);assert.equal(f.tables.sources[0].fields['last-result'],'Failed');
+});
+test('error-linked log rows are not reused; successful slot source links are cleared',async t=>{
+ const f=fixture(t);f.tables['run-logs'].push({id:'oldErr',fields:{'run-id':'old-error',result:'Failed',started:'2026-10-14','err-logs':['error1']}},{id:'oldOk',fields:{'run-id':'old-ok',result:'Success',started:'2026-10-14',sources:['oldSource']}});
+ const run=await runShows({...f.options,logLimit:2});assert.equal(run.ok,true,run.errors.join(';'));assert.equal(f.tables['run-logs'].find(r=>r.id==='oldErr').fields['run-id'],'old-error');assert.equal(f.tables['run-logs'].find(r=>r.id==='oldOk').fields['run-id'],run.run_id);assert.ok(!f.tables['run-logs'].find(r=>r.id==='oldOk').fields.sources.includes('oldSource'));
+});
+test('source-log failure does not undo completed discovery and is reported separately',async t=>{
+ const f=fixture(t),upsert=f.api.upsert;f.api.upsert=async(table,...args)=>{if(table==='sources')throw Error('fixture source log failure');return upsert(table,...args);};const run=await runShows(f.options);assert.equal(run.discovery_ok,true);assert.equal(f.tables.shows.length,1);assert.equal(run.ok,true);assert.equal(run.observability.ok,false);assert.equal(f.tables['err-logs'][0].fields.stage,'source-log');assert.equal(f.tables.heartbeat[0].fields.result,'Success');assert.equal(f.tables.heartbeat[0].fields.errors,'');assert.match(f.tables['run-logs'][0].fields.errors,/Source logging/);
+});
+
+test('count-source rejection links the error to Season without clearing canonical discovery',async t=>{
+ const f=fixture(t);const run=await runShows({...f.options,readSummaries:async()=>{throw Error('fixture retained hash mismatch');},publishDays:async({readSummaries,show})=>{try{await readSummaries(show);}catch(e){return{ok:false,days:[],errors:[e.message]};}}});
+ assert.equal(run.discovery_ok,true);assert.equal(run.ok,false);const source=f.tables.sources.find(r=>r.fields['source-key']==='season-counts');assert.equal(source.fields['last-result'],'Failed');assert.deepEqual(f.tables['err-logs'][0].fields.source,[source.id]);assert.equal(f.tables.heartbeat[0].fields.result,'Partial');
+});
+test('archive errors remain separate linked errors without treating transport success as failure',async t=>{
+ const f=fixture(t);const run=await runShows({...f.options,archive:async()=>{throw Error('fixture archive failure');}});assert.equal(run.ok,false);assert.equal(f.tables['err-logs'][0].fields.stage,'archive');assert.equal(f.tables.sources[0].fields['last-result'],'Success');assert.deepEqual(f.tables['err-logs'][0].fields.run,[f.tables['run-logs'][0].id]);
+});
+
+test('all protected error-linked log slots append a new attempt without blocking discovery',async t=>{
+ const f=fixture(t);f.tables['run-logs'].push({id:'protected',fields:{'run-id':'prior-error',result:'Failed',started:'2026-10-14','err-logs':['prior-error-row']}});
+ const run=await runShows({...f.options,logLimit:1});assert.equal(run.ok,true,JSON.stringify(run));assert.equal(f.requests.length,2);assert.equal(f.tables['run-logs'].length,2);assert.equal(f.tables['run-logs'][0].fields['run-id'],'prior-error');assert.equal(f.tables.heartbeat[0].fields.result,'Success');
+});
+
+test('completion evidence failure also marks telemetry health failed and saves separate error',async t=>{
+ const f=fixture(t),upsert=f.api.upsert;f.api.upsert=async(table,...args)=>{if(table==='heartbeat')throw Error('fixture heartbeat write failure');return upsert(table,...args);};const run=await runShows(f.options);assert.equal(run.ok,false);assert.equal(run.observability.ok,false);assert.equal(f.tables['err-logs'][0].fields.stage,'completion-log');assert.deepEqual(f.tables['err-logs'][0].fields.run,[f.tables['run-logs'][0].id]);
+});
+
+test('failed discovery clears absent heartbeat date with null and records its real error',async t=>{
+ const f=fixture(t);await runShows(f.options);const before=structuredClone(f.tables.shows);
+ const run=await runShows({...f.options,fetchJson:async()=>{throw Error('Show source GET /ring failed after 3 attempts: request failed [TypeError > ECONNRESET]');}});
+ assert.equal(run.ok,false);assert.equal(run.observability.ok,true);assert.deepEqual(f.tables.shows,before);
+ const heartbeat=f.tables.heartbeat[0].fields;assert.equal(heartbeat.result,'Failed');assert.equal(heartbeat['selected-date'],null);assert.equal(heartbeat['show-id'],null);assert.match(heartbeat.errors,/ECONNRESET/);
+ assert.equal(f.tables['err-logs'].length,1);assert.deepEqual(f.tables['err-logs'][0].fields.run,[f.tables['run-logs'].at(-1).id]);assert.equal(run.errors.length,1);
+});

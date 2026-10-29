@@ -1,0 +1,190 @@
+TAP version 13
+# Subtest: saved positive copies actual active schedule and supports observed group association
+ok 1 - saved positive copies actual active schedule and supports observed group association
+  ---
+  duration_ms: 16.1636
+  type: 'test'
+  ...
+# Subtest: saved same-run contradictory group retains supported entry and entity facts
+ok 2 - saved same-run contradictory group retains supported entry and entity facts
+  ---
+  duration_ms: 3.0694
+  type: 'test'
+  ...
+# Subtest: saved partial roster671 keeps class/date association and flags only group uncertainty
+ok 3 - saved partial roster671 keeps class/date association and flags only group uncertainty
+  ---
+  duration_ms: 0.9955
+  type: 'test'
+  ...
+# Subtest: missing inventory does not gate ordinary class/date linking or entity normalization
+ok 4 - missing inventory does not gate ordinary class/date linking or entity normalization
+  ---
+  duration_ms: 1.6245
+  type: 'test'
+  ...
+# Subtest: same-revision completeness is required only for group assertion
+ok 5 - same-revision completeness is required only for group assertion
+  ---
+  duration_ms: 2.7864
+  type: 'test'
+  ...
+# Subtest: ring ID is not ring number; contradictory ring identity does not become group proof
+ok 6 - ring ID is not ring number; contradictory ring identity does not become group proof
+  ---
+  duration_ms: 2.263
+  type: 'test'
+  ...
+# Subtest: duplicate group rosters are unresolved instead of selecting an arbitrary group
+ok 7 - duplicate group rosters are unresolved instead of selecting an arbitrary group
+  ---
+  duration_ms: 1.6779
+  type: 'test'
+  ...
+# Subtest: duplicate operational occurrences never fan out or erase entity facts
+ok 8 - duplicate operational occurrences never fan out or erase entity facts
+  ---
+  duration_ms: 2.0903
+  type: 'test'
+  ...
+# Subtest: source occurrence conflict and repeated source occurrence are rejected
+ok 9 - source occurrence conflict and repeated source occurrence are rejected
+  ---
+  duration_ms: 4.547
+  type: 'test'
+  ...
+# Subtest: exact own-class trip identity matters; another trip or class cannot lend eligibility
+ok 10 - exact own-class trip identity matters; another trip or class cannot lend eligibility
+  ---
+  duration_ms: 15.5486
+  type: 'test'
+  ...
+# Subtest: one bad trip group match does not stop other supported group links
+ok 11 - one bad trip group match does not stop other supported group links
+  ---
+  duration_ms: 2.6374
+  type: 'test'
+  ...
+# Subtest: empty class succeeds without needing any group or schedule data
+ok 12 - empty class succeeds without needing any group or schedule data
+  ---
+  duration_ms: 1.6669
+  type: 'test'
+  ...
+# Subtest: replay is stable, keeps observation time and does not mutate source or old links
+ok 13 - replay is stable, keeps observation time and does not mutate source or old links
+  ---
+  duration_ms: 2.7479
+  type: 'test'
+  ...
+# Subtest: conflicting required identity rejects source facts rather than guessing
+ok 14 - conflicting required identity rejects source facts rather than guessing
+  ---
+  duration_ms: 1.3982
+  type: 'test'
+  ...
+# Subtest: unknown trainer and missing trip UUID retain facts but cannot claim group eligibility
+ok 15 - unknown trainer and missing trip UUID retain facts but cannot claim group eligibility
+  ---
+  duration_ms: 1.9516
+  type: 'test'
+  ...
+# Subtest: independent writer reads no tenant or source and persists ordinary links despite group uncertainty
+ok 16 - independent writer reads no tenant or source and persists ordinary links despite group uncertainty
+  ---
+  duration_ms: 8.0791
+  type: 'test'
+  ...
+# Subtest: repeat preserves IDs, native links, helper fields and source observation time
+ok 17 - repeat preserves IDs, native links, helper fields and source observation time
+  ---
+  duration_ms: 2.4859
+  type: 'test'
+  ...
+# Subtest: initial empty scope does not bulk-drop feed-only rows
+ok 18 - initial empty scope does not bulk-drop feed-only rows
+  ---
+  duration_ms: 0.9772
+  type: 'test'
+  ...
+# Subtest: retirement is disabled even for later complete empty scope; links retained
+ok 19 - retirement is disabled even for later complete empty scope; links retained
+  ---
+  duration_ms: 2.5512
+  type: 'test'
+  ...
+# Subtest: malformed scope preserves rows and membership; other scopes continue
+ok 20 - malformed scope preserves rows and membership; other scopes continue
+  ---
+  duration_ms: 2.1147
+  type: 'test'
+  ...
+# Subtest: overdue input neither refreshes prior observation nor drops records
+ok 21 - overdue input neither refreshes prior observation nor drops records
+  ---
+  duration_ms: 1.9404
+  type: 'test'
+  ...
+# Subtest: newer existing observations never regress and scope membership stays linked
+ok 22 - newer existing observations never regress and scope membership stays linked
+  ---
+  duration_ms: 2.2534
+  type: 'test'
+  ...
+# Subtest: missing schedule reference retains old native link as history with no fresh basis
+ok 23 - missing schedule reference retains old native link as history with no fresh basis
+  ---
+  duration_ms: 2.0365
+  type: 'test'
+  ...
+# Subtest: archive failure prevents participation writes
+ok 24 - archive failure prevents participation writes
+  ---
+  duration_ms: 1.8178
+  type: 'test'
+  ...
+# Subtest: Data access is GET-only and old tenant targets are forbidden
+ok 25 - Data access is GET-only and old tenant targets are forbidden
+  ---
+  duration_ms: 1.7821
+  type: 'test'
+  ...
+# Subtest: missing canonical show logs failure using null absent date and preserves business rows
+ok 26 - missing canonical show logs failure using null absent date and preserves business rows
+  ---
+  duration_ms: 1.1269
+  type: 'test'
+  ...
+# Subtest: directory-only revision is unavailable, not empty success
+ok 27 - directory-only revision is unavailable, not empty success
+  ---
+  duration_ms: 1.0265
+  type: 'test'
+  ...
+# Subtest: applicable unfinished attempts persist on participation and scope provenance
+ok 28 - applicable unfinished attempts persist on participation and scope provenance
+  ---
+  duration_ms: 1.9638
+  type: 'test'
+  ...
+# Subtest: Airtable timestamp normalization verifies and repeats without rewriting source time
+ok 29 - Airtable timestamp normalization verifies and repeats without rewriting source time
+  ---
+  duration_ms: 2.4714
+  type: 'test'
+  ...
+# Subtest: ambiguous schedule is Conflict, preserves prior links and repeats while other scopes continue
+ok 30 - ambiguous schedule is Conflict, preserves prior links and repeats while other scopes continue
+  ---
+  duration_ms: 2.7561
+  type: 'test'
+  ...
+1..30
+# tests 30
+# suites 0
+# pass 30
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 177.0929

@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-29T17:51:06.585Z",
+  "fields": [
+    {
+      "name": "schedule-link-status",
+      "present": true,
+      "populated": 114
+    },
+    {
+      "name": "schedule-link-basis",
+      "present": true,
+      "populated": 113
+    },
+    {
+      "name": "group-link-status",
+      "present": true,
+      "populated": 114
+    },
+    {
+      "name": "link-issues",
+      "present": true,
+      "populated": 114
+    },
+    {
+      "name": "source-json",
+      "present": true,
+      "populated": 127
+    }
+  ],
+  "records": 127,
+  "newEvidence": 114
+}

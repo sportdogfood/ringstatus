@@ -1,0 +1,183 @@
+{
+  "at": "2026-10-29T17:17:17.067Z",
+  "receipt": {
+    "ok": false,
+    "run_id": "e9d04fdf-a169-4536-8138-3a4ea322acd2",
+    "started": "2026-10-29T17:14:03.713Z",
+    "rows": 0,
+    "errors": [
+      "fetch failed",
+      "Completion evidence: Airtable PATCH heartbeat HTTP 422"
+    ],
+    "archives": [],
+    "telemetry_errors": [
+      "Completion logging: Airtable PATCH heartbeat HTTP 422"
+    ],
+    "summary": "Discovery failed; last verified show retained. fetch failed",
+    "error_records": [
+      "reculDFsgNEkOQxHp",
+      "recANkaxWkifHrX0n"
+    ],
+    "observability": {
+      "sources": [
+        {
+          "key": "default-ring",
+          "at": "2026-10-29T17:14:56.605Z",
+          "result": "Failed",
+          "error": "fetch failed"
+        }
+      ],
+      "errors": [
+        {
+          "at": "2026-10-29T17:15:12.096Z",
+          "phase": "source-read",
+          "source": "default-ring",
+          "message": "fetch failed"
+        },
+        {
+          "at": "2026-10-29T17:15:49.753Z",
+          "phase": "completion-log",
+          "source": null,
+          "message": "Airtable PATCH heartbeat HTTP 422"
+        }
+      ],
+      "ok": false,
+      "logging_errors": [
+        "Completion logging: Airtable PATCH heartbeat HTTP 422"
+      ]
+    },
+    "completed": "2026-10-29T17:15:23.261Z"
+  },
+  "logs": [
+    {
+      "id": "recLCgpApaf4DPXiM",
+      "createdTime": "2026-10-29T17:14:28.000Z",
+      "fields": {
+        "started": "2026-10-29T17:14:03.713Z",
+        "result": "Failed",
+        "rows": 0,
+        "sources": [
+          "recVO4bhoqfHSWBGn"
+        ],
+        "errors": "fetch failed",
+        "run-id": "e9d04fdf-a169-4536-8138-3a4ea322acd2",
+        "err-logs": [
+          "reculDFsgNEkOQxHp",
+          "recANkaxWkifHrX0n"
+        ],
+        "summary": "Discovery failed; last verified show retained. fetch failed",
+        "completed": "2026-10-29T17:15:23.261Z",
+        "archive-count": 0
+      }
+    }
+  ],
+  "errors": [
+    {
+      "id": "recANkaxWkifHrX0n",
+      "createdTime": "2026-10-29T17:15:51.000Z",
+      "fields": {
+        "message": "Airtable PATCH heartbeat HTTP 422",
+        "run": [
+          "recLCgpApaf4DPXiM"
+        ],
+        "run-id": "e9d04fdf-a169-4536-8138-3a4ea322acd2",
+        "at": "2026-10-29T17:15:49.753Z",
+        "stage": "completion-log",
+        "error-key": "e9d04fdf-a169-4536-8138-3a4ea322acd2|2"
+      }
+    },
+    {
+      "id": "reculDFsgNEkOQxHp",
+      "createdTime": "2026-10-29T17:15:19.000Z",
+      "fields": {
+        "message": "fetch failed",
+        "source": [
+          "recVO4bhoqfHSWBGn"
+        ],
+        "run": [
+          "recLCgpApaf4DPXiM"
+        ],
+        "run-id": "e9d04fdf-a169-4536-8138-3a4ea322acd2",
+        "at": "2026-10-29T17:15:12.096Z",
+        "stage": "source-read",
+        "error-key": "e9d04fdf-a169-4536-8138-3a4ea322acd2|1",
+        "source-key": "default-ring"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "rec8pwcOzXDi0sjMO",
+      "createdTime": "2026-10-29T17:10:47.000Z",
+      "fields": {
+        "run-logs": [
+          "recRKe9pGkzKdwVRS"
+        ],
+        "last-result": "Success",
+        "location": "https://airtable.com/appdl16HJ5ETm8N69",
+        "purpose": "Read and validate completed runs and retained collections for canonical day counts.",
+        "source-key": "season-counts",
+        "last-success-at": "2026-10-29T17:09:53.700Z",
+        "last-attempt-at": "2026-10-29T17:09:38.779Z",
+        "name": "Retained Season/Data day counts",
+        "owner": "wef-season-coordinator",
+        "kind": "Airtable"
+      }
+    },
+    {
+      "id": "recVO4bhoqfHSWBGn",
+      "createdTime": "2026-10-29T17:10:47.000Z",
+      "fields": {
+        "run-logs": [
+          "recRKe9pGkzKdwVRS",
+          "recLCgpApaf4DPXiM"
+        ],
+        "err-logs": [
+          "reculDFsgNEkOQxHp"
+        ],
+        "last-result": "Failed",
+        "location": "https://wef-schedules-decoded.gombcg.workers.dev/ring?customer_id=15",
+        "last-error": "fetch failed",
+        "purpose": "Identify the source default show.",
+        "source-key": "default-ring",
+        "last-success-at": "2026-10-29T17:09:34.889Z",
+        "last-attempt-at": "2026-10-29T17:14:56.605Z",
+        "name": "Default show discovery",
+        "owner": "wef-shows",
+        "kind": "Endpoint"
+      }
+    },
+    {
+      "id": "recijgxkbeqk66BqB",
+      "createdTime": "2026-10-29T17:10:47.000Z",
+      "fields": {
+        "run-logs": [
+          "recRKe9pGkzKdwVRS"
+        ],
+        "last-result": "Success",
+        "location": "https://wef-schedules-decoded.gombcg.workers.dev/schedule?date=00/00/00&show_id={show_id}&customer_id=15",
+        "purpose": "Validate show metadata, dates and source-selected date.",
+        "source-key": "default-schedule",
+        "last-success-at": "2026-10-29T17:09:36.712Z",
+        "last-attempt-at": "2026-10-29T17:09:34.910Z",
+        "name": "Default show dates",
+        "owner": "wef-shows",
+        "kind": "Endpoint"
+      }
+    }
+  ],
+  "heartbeat": [
+    {
+      "id": "recCpv3iPc1R8eAqX",
+      "createdTime": "2026-10-23T14:34:12.000Z",
+      "fields": {
+        "show-id": 200000076,
+        "summary": "Default show 200000076: 2026 ESP Fall Finale (#6963); 2026-10-29 through 2026-11-01; source-selected 2026-10-29. No downstream jobs triggered. Show-days: 2026-10-29 Stale, 2026-10-30 Stale, 2026-10-31 Unknown, 2026-11-01 Unknown.",
+        "heartbeat-key": "WEF-default",
+        "result": "Success",
+        "checked-at": "2026-10-29T17:10:49.049Z",
+        "selected-date": "2026-10-29"
+      }
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: producer owns two discovery requests; consumer reads verified show without source calls
+ok 1 - producer owns two discovery requests; consumer reads verified show without source calls
+  ---
+  duration_ms: 52.1398
+  type: 'test'
+  ...
+# Subtest: repeat discovery preserves show record ID and records each run
+ok 2 - repeat discovery preserves show record ID and records each run
+  ---
+  duration_ms: 31.4785
+  type: 'test'
+  ...
+# Subtest: failed discovery preserves published show and records failure
+ok 3 - failed discovery preserves published show and records failure
+  ---
+  duration_ms: 19.6793
+  type: 'test'
+  ...
+# Subtest: rollover retains old show and marks only new show default
+ok 4 - rollover retains old show and marks only new show default
+  ---
+  duration_ms: 30.9865
+  type: 'test'
+  ...
+# Subtest: archive failure prevents canonical show changes
+ok 5 - archive failure prevents canonical show changes
+  ---
+  duration_ms: 17.2955
+  type: 'test'
+  ...
+# Subtest: consumer rejects stale, multiple defaults and tampered payload before saving state
+ok 6 - consumer rejects stale, multiple defaults and tampered payload before saving state
+  ---
+  duration_ms: 18.4262
+  type: 'test'
+  ...
+# Subtest: consumer preserves show-specific manual inputs without changing canonical defaults
+ok 7 - consumer preserves show-specific manual inputs without changing canonical defaults
+  ---
+  duration_ms: 19.1956
+  type: 'test'
+  ...
+# Subtest: schedules collect every day using shared metadata and never call discovery endpoints
+ok 8 - schedules collect every day using shared metadata and never call discovery endpoints
+  ---
+  duration_ms: 30.8841
+  type: 'test'
+  ...
+# Subtest: consumer rejects archive traversal and inconsistent dates
+ok 9 - consumer rejects archive traversal and inconsistent dates
+  ---
+  duration_ms: 17.6857
+  type: 'test'
+  ...
+# Subtest: producer adapter blocks changes outside shows base and all deletes
+ok 10 - producer adapter blocks changes outside shows base and all deletes
+  ---
+  duration_ms: 5.0288
+  type: 'test'
+  ...
+# Subtest: day failure preserves discovery and stops only day retries
+ok 11 - day failure preserves discovery and stops only day retries
+  ---
+  duration_ms: 28.6468
+  type: 'test'
+  ...
+# Subtest: normal successes link attempted sources and create no error rows
+ok 12 - normal successes link attempted sources and create no error rows
+  ---
+  duration_ms: 18.2452
+  type: 'test'
+  ...
+# Subtest: source failures create linked separate errors and do not invent a success time
+ok 13 - source failures create linked separate errors and do not invent a success time
+  ---
+  duration_ms: 2.0843
+  type: 'test'
+  ...
+# Subtest: error-linked log rows are not reused; successful slot source links are cleared
+ok 14 - error-linked log rows are not reused; successful slot source links are cleared
+  ---
+  duration_ms: 21.0712
+  type: 'test'
+  ...
+# Subtest: source-log failure does not undo completed discovery and is reported separately
+ok 15 - source-log failure does not undo completed discovery and is reported separately
+  ---
+  duration_ms: 17.5662
+  type: 'test'
+  ...
+# Subtest: count-source rejection links the error to Season without clearing canonical discovery
+ok 16 - count-source rejection links the error to Season without clearing canonical discovery
+  ---
+  duration_ms: 17.9775
+  type: 'test'
+  ...
+# Subtest: archive errors remain separate linked errors without treating transport success as failure
+ok 17 - archive errors remain separate linked errors without treating transport success as failure
+  ---
+  duration_ms: 1.0353
+  type: 'test'
+  ...
+# Subtest: all protected error-linked log slots append a new attempt without blocking discovery
+ok 18 - all protected error-linked log slots append a new attempt without blocking discovery
+  ---
+  duration_ms: 15.6035
+  type: 'test'
+  ...
+# Subtest: completion evidence failure also marks telemetry health failed and saves separate error
+ok 19 - completion evidence failure also marks telemetry health failed and saves separate error
+  ---
+  duration_ms: 18.9735
+  type: 'test'
+  ...
+# Subtest: failed discovery clears absent heartbeat date with null and records its real error
+ok 20 - failed discovery clears absent heartbeat date with null and records its real error
+  ---
+  duration_ms: 17.0407
+  type: 'test'
+  ...
+# Subtest: transient source failure recovers on same URL with bounded GETs
+ok 21 - transient source failure recovers on same URL with bounded GETs
+  ---
+  duration_ms: 1.2748
+  type: 'test'
+  ...
+# Subtest: exhausted source reads stop after three and retain safe nested cause
+ok 22 - exhausted source reads stop after three and retain safe nested cause
+  ---
+  duration_ms: 0.5994
+  type: 'test'
+  ...
+# Subtest: HTTP 503 recovers but 401 and 404 do not retry
+ok 23 - HTTP 503 recovers but 401 and 404 do not retry
+  ---
+  duration_ms: 0.854
+  type: 'test'
+  ...
+# Subtest: body transport failure is recovered; invalid JSON and missing decode proof are not retried
+ok 24 - body transport failure is recovered; invalid JSON and missing decode proof are not retried
+  ---
+  duration_ms: 2.9692
+  type: 'test'
+  ...
+# Subtest: unapproved endpoints and certificate errors never fall back or retry
+ok 25 - unapproved endpoints and certificate errors never fall back or retry
+  ---
+  duration_ms: 0.5368
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 429.4387

@@ -1,4 +1,4 @@
-const settings = require("./settings");
+const settings = require("./settings");
 const fs = require("fs");
 const path = require("path");
 const {
@@ -117,7 +117,10 @@ function buildScheduleMachineKey(row = {}) {
     return `${classGroupId}_${classNumber}`;
   }
 
-  return normalizeKey(pickFirst(row.class_groupxclasses_id, row.class_id));
+  const classKey = normalizeKey(pickFirst(row.class_groupxclasses_id, row.class_id));
+  if (classKey) return classKey;
+  // Explicit source breaks have a group identity, never a fabricated class ID.
+  return boolValue(row.schedule_break) && classGroupId !== null ? `block:${classGroupId}` : "";
 }
 
 function firstValue(value) {
@@ -505,6 +508,7 @@ function normalizeSchedulePayload(payload, options) {
 
   const groupsById = new Map();
   const classesById = new Map();
+  const blocksById = new Map();
 
   function liftContext(node, ctx) {
     const next = { ...ctx };
@@ -585,6 +589,14 @@ function normalizeSchedulePayload(payload, options) {
 
       const key = normalizeKey(classGroupId);
       groupsById.set(key, mergePreserveJoinKeys(groupsById.get(key), groupRow));
+      if (boolValue(node.schedule_break) && isBlank(node.class_list) && isBlank(node.classList)) {
+        blocksById.set(key, {
+          ...groupRow, schedule_break: true,
+          class_type: /school/i.test(String(groupRow.group_name || "")) ? "schooling" : "break",
+          total_trips: numOrNull(pickFirst(node.total_trips, node.totalTrips)),
+          completed_trips: numOrNull(pickFirst(node.completed_trips, node.completedTrips)),
+        });
+      }
     }
 
     if (isClassNode(node)) {
@@ -661,8 +673,13 @@ function normalizeSchedulePayload(payload, options) {
     show_date: payloadShowDate,
   });
 
+  const scheduleRows = new Map(classesById);
+  const classGroups = new Set([...classesById.values()].map(row => normalizeKey(row.class_group_id)));
+  for (const [groupId, block] of blocksById) {
+    if (!classGroups.has(groupId)) scheduleRows.set(buildScheduleMachineKey(block), block);
+  }
   const rows = [];
-  for (const [key, classRow] of classesById.entries()) {
+  for (const [key, classRow] of scheduleRows.entries()) {
     if (!key) continue;
     const groupRow = groupsById.get(normalizeKey(classRow.class_group_id));
     const merged = mergeGroupOntoClass(classRow, groupRow);
@@ -680,6 +697,7 @@ function normalizeSchedulePayload(payload, options) {
     setIfPresent(fields, "class_number", merged.class_number);
     setIfPresent(fields, "class_name", merged.class_name);
     setIfPresent(fields, "class_type", merged.class_type);
+    setIfPresent(fields, "schedule_break", merged.schedule_break);
     setIfPresent(fields, "schedule_sequencetype", merged.schedule_sequencetype);
     setIfPresent(fields, "estimated_start_time", merged.estimated_start_time || merged.start_time_default);
     setIfPresent(fields, "estimated_end_time", merged.estimated_end_time);
@@ -724,6 +742,7 @@ function normalizeSchedulePayload(payload, options) {
     schedule_show_display_date_dayv2: scheduleShowDisplayDateDay,
     groups_count: groupsById.size,
     classes_count: classesById.size,
+    schedule_blocks_count: scheduleRows.size - classesById.size,
     rows,
     keep_keys: rows.map((row) => row.key),
   };
@@ -908,7 +927,7 @@ async function main() {
   process.exit(0);
 }
 
-if (require.main === module) {
+if (require.main === module) {
   throw new Error("Private library: use collect.js only");
   main().catch((error) => {
     const payload = {

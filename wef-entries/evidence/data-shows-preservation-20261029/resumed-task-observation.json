@@ -1,0 +1,26 @@
+{
+  "observed": "2026-10-29T10:16:25.4684299-04:00",
+  "taskState": "Ready",
+  "lastTaskRun": "2026-10-29T10:12:01.0000000-04:00",
+  "taskResult": 267014,
+  "taskResultHex": "0x41306",
+  "limit": "PT4M",
+  "receipt": {
+    "ok": true,
+    "run_id": "3d468c22-b384-48ca-8648-5a96ce886a14",
+    "started": "2026-10-29T14:12:05.787Z",
+    "completed": "2026-10-29T14:16:10.202Z",
+    "errors": [],
+    "entry_sync": {
+      "base": "appSxF4pYMBaxpTZd",
+      "table": "tbl7ychn5HELB3HTr",
+      "schedule_link_transport": "plural-ready",
+      "array_rows": 3,
+      "checked_at": "2026-10-29T14:11:08.074Z",
+      "synced_rows": 3,
+      "active_rows": 3,
+      "links_updated": 0,
+      "links_verified": 3
+    }
+  }
+}

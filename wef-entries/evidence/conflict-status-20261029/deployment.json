@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-29T18:05:55.108Z",
+  "files": [
+    {
+      "file": "collector.js",
+      "sha256": "995d1f6b759bacd49f4862f05057896d2e508c05cd76cf0008a16a43f7785d99"
+    },
+    {
+      "file": "participation-linker.js",
+      "sha256": "814481cd7562a08e32b607a35cfb3480eb6914ff9999496fb4e2b245c83c08fe"
+    }
+  ]
+}

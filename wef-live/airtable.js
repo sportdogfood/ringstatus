@@ -1,7 +1,7 @@
 "use strict";
-// Adapted from wef-tenants/airtable.js. Destination-only writes; retirement requires a verified local archive.
+// Local Airtable adapter. Destination-only writes; retirement requires a verified local archive.
 const settings = require("./settings");
-const { same, unique } = require("../wef-tenants/airtable");
+const { same, unique } = require("./runtime-utils");
 function airtable({
   token = settings.AIRTABLE_TOKEN,
   request = globalThis.fetch,
@@ -125,12 +125,12 @@ function airtable({
     }
     return verify(table, key, fields);
   }
-  async function retire(table, rows, date, receipt) {
+  async function retire(table, rows, scope, receipt) {
     if (
       !["live-rings", "live-groups", "live-classes", "live-entries"].includes(
         table,
       ) ||
-      rows.some((r) => !r.fields.date || r.fields.date >= date)
+      rows.some((r) => !require('./rollover').canRetire(r.fields, scope))
     )
       throw Error("Forbidden retirement scope");
     const fs = require("node:fs"),

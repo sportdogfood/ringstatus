@@ -1,0 +1,82 @@
+{
+  "prepared": "2026-10-29T13:51:27.444Z",
+  "files": [
+    {
+      "name": "collector.js",
+      "staged": "0d62115847beb8629a352accd7b9e12de0d613f9a0f91b9ecf1832dfc05357e7",
+      "before": "c7fde9b6a8c3e5de181023e38cd7daff08769ce87895cf9bd04c00bda89752b4"
+    },
+    {
+      "name": "airtable.js",
+      "staged": "19e1921981de3f4316000df1f34859e04996468ef9ddf860873ead8d486a4618",
+      "before": "146c48478dde77d175707feccce87f2ba83ae21e570fe4e5d158fa05b943f7a8"
+    },
+    {
+      "name": "README.md",
+      "staged": "64672054830c1fdddd2146a51300fecc803b11e5aa978dc51a4851872eef29ce",
+      "before": "badd5f2da32b67f8f7d42bf3ee373cf0aaa2c8ef2742fe8743a5b71837dcbfd3"
+    },
+    {
+      "name": "day-schema.js",
+      "staged": "d2ae8a640bc1457cda72125e47bd22ccbde988175157abb04c380e6815d2737b",
+      "before": null
+    },
+    {
+      "name": "show-days.js",
+      "staged": "4b4b5c996537d623dd9d917962a6985bea512de08e973b973c142366f9e98af8",
+      "before": null
+    },
+    {
+      "name": "day-source.js",
+      "staged": "c324793ab9536afe1f8d89ca7695f89afa520d938af6f7fb6f0ff9c642a632e9",
+      "before": null
+    },
+    {
+      "name": "day-replay.py",
+      "staged": "5615c5bee21da4501011ecb944cdca87abb9fa0bbdc5de1eda23e81f735dc78f",
+      "before": null
+    },
+    {
+      "name": "verify-days.js",
+      "staged": "d6a910762e520898b1668e50f82293828dd0415af1e083da430d1b36f30a5479",
+      "before": null
+    },
+    {
+      "name": "tests/shows.test.js",
+      "staged": "8833f8a4e9db841abf04cfbe3d6ecf6d16a96b4cbde6d9e055dd71b36f2bdc9b",
+      "before": "cef58883929847a3c779bbac1775a403f7d302d2f763796b7194562855fa854d"
+    },
+    {
+      "name": "tests/adapter.test.js",
+      "staged": "5f175cb524978949290e99d262d65bb2066cb6a77b550e13663afa86b5987190",
+      "before": null
+    },
+    {
+      "name": "tests/day-schema.test.js",
+      "staged": "cbc26835f8e13356ce39f4f2f124866782bedaf1d0b75c8360672b8ef8970df0",
+      "before": null
+    },
+    {
+      "name": "tests/day-source.test.js",
+      "staged": "5187c601699d747f41ba341577fc4c112ea6e8bf7cf8f27d95a0434e3884b11c",
+      "before": null
+    },
+    {
+      "name": "tests/show-days.test.js",
+      "staged": "990edafb43a75047d2d221d95f8f12be1ed84720bb84e8b7552f867cff3ffef4",
+      "before": null
+    },
+    {
+      "name": "tests/fixtures/day-summary.json",
+      "staged": "022182aadeb259ade0991af0c9736cbf0ac9a2f7bafd43ee3975fdc3a2677784",
+      "before": null
+    },
+    {
+      "name": "tests/fixtures/day-unknown.json",
+      "staged": "cbf15c566e06f73a1bf9c7315f3931b455172bb32a9f978deb7356559fdea481",
+      "before": null
+    }
+  ],
+  "schemaCorrectionApproved": true,
+  "deployed": "2026-10-29T14:01:45.331Z"
+}

@@ -1,0 +1,28 @@
+{
+  "run": "0b494dd2-560b-499b-9360-ef36f3006369",
+  "ok": true,
+  "result": "Partial",
+  "head": "adaptive-2026-10-29T18:22:08.409536+00:00",
+  "rows": 117,
+  "scopes": 160,
+  "shared": 504,
+  "errors": [],
+  "repeatChanges": [],
+  "total": 127,
+  "duplicates": 0,
+  "groups": {
+    "linked": 103,
+    "unresolved": 11,
+    "historical": 13
+  },
+  "schedule": {
+    "linked": 113,
+    "Conflict": 1,
+    "historical": 13
+  },
+  "log": "Partial",
+  "heartbeat": "2026-10-29T18:44:46.378Z",
+  "taskUnchanged": true,
+  "scheduleCodeChanges": [],
+  "deploymentHashChanges": []
+}

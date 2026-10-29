@@ -1,0 +1,29 @@
+{
+  "run": "b92abdb6-5503-430e-a88e-b420937bd066",
+  "ok": true,
+  "result": "Partial",
+  "started": "2026-10-29T17:34:02.263Z",
+  "completed": "2026-10-29T17:34:36.311Z",
+  "rows": 117,
+  "scopes": 160,
+  "errors": [],
+  "data_revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+  "source_fetches": 0,
+  "tenant_reads": 0,
+  "totalRecords": 127,
+  "duplicateKeys": 0,
+  "repeatIdentityLinkTimeChanges": [],
+  "scheduleLinked": 113,
+  "scheduleUnresolved": 1,
+  "logResult": "Partial",
+  "heartbeatResult": "Partial",
+  "heartbeatChecked": "2026-10-29T17:34:36.311Z",
+  "archives": 161,
+  "task": {
+    "LastRunTime": "2026-10-29T13:34:01-04:00",
+    "LastTaskResult": 0,
+    "NextRunTime": "2026-10-29T13:39:00-04:00"
+  },
+  "taskConfigUnchanged": true,
+  "deployedHashMismatches": []
+}

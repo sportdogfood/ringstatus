@@ -1,0 +1,84 @@
+{
+  "name": "wef-shows-collector",
+  "actions": [
+    {
+      "Execute": "C:\\WINDOWS\\System32\\wscript.exe",
+      "Arguments": "//B //Nologo \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\run-hidden.vbs\"",
+      "WorkingDirectory": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows"
+    }
+  ],
+  "triggers": [
+    {
+      "StartBoundary": "2026-10-23T10:34:00-04:00",
+      "Repetition": {
+        "CimClass": {
+          "CimSuperClassName": null,
+          "CimSuperClass": null,
+          "CimClassProperties": [
+            {
+              "Name": "Duration",
+              "Value": null,
+              "CimType": 14,
+              "Flags": "Property, NullValue",
+              "Qualifiers": "",
+              "ReferenceClassName": null
+            },
+            {
+              "Name": "Interval",
+              "Value": null,
+              "CimType": 14,
+              "Flags": "Property, NullValue",
+              "Qualifiers": "",
+              "ReferenceClassName": null
+            },
+            {
+              "Name": "StopAtDurationEnd",
+              "Value": null,
+              "CimType": 1,
+              "Flags": "Property, NullValue",
+              "Qualifiers": "",
+              "ReferenceClassName": null
+            }
+          ],
+          "CimClassQualifiers": [],
+          "CimClassMethods": [],
+          "CimSystemProperties": {
+            "Namespace": "Root/Microsoft/Windows/TaskScheduler",
+            "ServerName": "DESKTOP-BSKUK1V",
+            "ClassName": "MSFT_TaskRepetitionPattern",
+            "Path": null
+          }
+        },
+        "CimInstanceProperties": [
+          {
+            "Name": "Duration",
+            "Value": null,
+            "CimType": 14,
+            "Flags": "Property, NotModified, NullValue",
+            "IsValueModified": false
+          },
+          {
+            "Name": "Interval",
+            "Value": "PT5M",
+            "CimType": 14,
+            "Flags": "Property, NotModified",
+            "IsValueModified": false
+          },
+          {
+            "Name": "StopAtDurationEnd",
+            "Value": true,
+            "CimType": 1,
+            "Flags": "Property, NotModified",
+            "IsValueModified": false
+          }
+        ],
+        "CimSystemProperties": {
+          "Namespace": "Root/Microsoft/Windows/TaskScheduler",
+          "ServerName": "DESKTOP-BSKUK1V",
+          "ClassName": "MSFT_TaskRepetitionPattern",
+          "Path": null
+        }
+      }
+    }
+  ]
+}

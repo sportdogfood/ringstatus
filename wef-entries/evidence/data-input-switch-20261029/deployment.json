@@ -1,0 +1,58 @@
+{
+  "deployedAt": "2026-10-29T17:27:23.119Z",
+  "review": "Records independent 36/36 pass; activation guard cleared",
+  "files": [
+    {
+      "file": "airtable.js",
+      "sha256": "55f7a37b5c4647496a98b1e5830baec6fdd7c04ac37716405ce1d2dbc02e16aa"
+    },
+    {
+      "file": "collector.js",
+      "sha256": "61859f51bb16cd6d5fc462606d9ad5a8caf35fe69c63c1a7f56cacd2e856575c"
+    },
+    {
+      "file": "configure-fields.js",
+      "sha256": "867a30a33ea1286ca500002af2779f30ef3aca7209aadd9d97fd2ce98b0b8300"
+    },
+    {
+      "file": "configure.js",
+      "sha256": "4f6b13bf3143d458988634b7cb65b3b550b5563c830c8161e0068470bf4b6860"
+    },
+    {
+      "file": "data-input.js",
+      "sha256": "87e53d0bf280c7291112c437b905c48390191950e290fca24a74f1b3bedd234a"
+    },
+    {
+      "file": "entry.js",
+      "sha256": "9639aee831af997ae3c2da83d920babbfe5da89276ac8835168bb9d965a7120f"
+    },
+    {
+      "file": "freshness.js",
+      "sha256": "0bbdfe2c3ce4e83e913b280d2d1fe135d8b564de1dd7449d26e5bcb58df968a7"
+    },
+    {
+      "file": "model.js",
+      "sha256": "cfb5907ea99792c1eb8c66fe81c3a63f59236714bbec872cea796e0cad36ff17"
+    },
+    {
+      "file": "participation-linker.js",
+      "sha256": "8b8f4bf3a329812e5cdee98d3e9b7b528322fba60e1e56dbf301c8ee234dc4c0"
+    },
+    {
+      "file": "retained-input.py",
+      "sha256": "73b53481f385b50ddc9509e84b61491de5bbf6dcf3e942fe90c2bf77c5c21e22"
+    },
+    {
+      "file": "runtime-utils.js",
+      "sha256": "c5fb3dd06182116efa5a001c028256bc97b5f18a4fbfcfeb4c615f9ceb4e28fb"
+    },
+    {
+      "file": "settings.js",
+      "sha256": "8ad3cc6c331c0e7d70b5372df930060cd0fc0af1dcb83d171db0bdbc136f10ea"
+    },
+    {
+      "file": "source.js",
+      "sha256": "1db23012d29b5075dbdb8ecb1541157ea941394771f0b445ed76ef1138b9403c"
+    }
+  ]
+}

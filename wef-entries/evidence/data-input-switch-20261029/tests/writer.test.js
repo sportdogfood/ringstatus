@@ -1,0 +1,82 @@
+"use strict";
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {runEntries}=require('../staged/collector'),settings=require('../staged/settings'),{airtable}=require('../staged/airtable');
+function fixture(){
+ const f=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../../tests/fixtures/narrow-matcher/partial.json')));
+ const date='2026-10-30',now=date+'T12:00:00Z',data=new Map(),writes=[],reads=[],archives=[];let serial=0;
+ const mapKey=(b,t)=>b+'|'+t;
+ const seed=(table,rows,base=settings.BASE_ID)=>data.set(mapKey(base,table),rows.map(r=>({id:r.id||'rec'+(++serial),fields:structuredClone(r.fields||r)})));
+ const api={list:async(t,b=settings.BASE_ID)=>{reads.push([b,t]);return structuredClone(data.get(mapKey(b,t))||[]);},upsert:async(t,k,fields)=>{writes.push(t);const rows=data.get(mapKey(settings.BASE_ID,t))||[];for(const value of fields){let r=rows.find(r=>r.fields[k]===value[k]);if(!r){r={id:'rec'+(++serial),fields:{}};rows.push(r);}Object.assign(r.fields,structuredClone(value));}data.set(mapKey(settings.BASE_ID,t),rows);return structuredClone(fields.map(value=>rows.find(r=>r.fields[k]===value[k])));},call:async()=>{throw Error('Unexpected direct mutation');}};
+ const show={'show-key':'15|200000076',show_id:200000076,customer_id:15,start_date:date,end_date:date,selected_date:date,is_default:true,last_checked:now};
+ seed(settings.SHARED_SHOWS_TABLE,[show],settings.SHOWS_BASE_ID);seed('schedules',f.schedules,settings.SHARED_BASE_ID);seed(settings.SYNC_TABLE,f.schedules);seed('show-collection',[{'show-id':show.show_id,date,status:'complete',completed:now}],settings.SHARED_BASE_ID);
+ const input={head:'accepted-fixture',attempts:[],classes:[{scopeKey:'15|200000076|2026-10-30|3|200030671',payload:f.payload,observedAt:now,sourceEvidence:{revision:'accepted-fixture',collections:[{key:'part',sha256:'fixture'}]},inventory:{revision:'accepted-fixture',complete:true,customerId:15,showId:show.show_id,groups:f.groups},producerWork:{'last-success':now,'next-due':date+'T12:30:00Z','failure-count':0}}]};
+ const options={api,clock:()=>now,readInput:async()=>structuredClone(input),archive:async(kind,value,scope)=>{const event={at:now,kind,outcome:'Created',records:Array.isArray(value)?value.length:1,file:'fixture/'+kind,sha256:'fixture',...scope};archives.push({event,value:structuredClone(value)});return event;}};
+ return{api,seed,reads,writes,archives,input,options,now};
+}
+test('independent writer reads no tenant or source and persists ordinary links despite group uncertainty',async()=>{
+ const f=fixture(),r=await runEntries(f.options);assert.equal(r.ok,true);assert.equal(r.result,'Partial');assert.equal(r.rows,1);assert.equal(r.accepted_rows,1);
+ assert(f.reads.every(([b])=>[settings.BASE_ID,settings.SHOWS_BASE_ID,settings.SHARED_BASE_ID].includes(b)));
+ const row=(await f.api.list('entries'))[0].fields;assert.equal(row['schedule-link-basis'],'class-date');assert.equal(row['group-link-status'],'unresolved');assert(row['source-trainer-ids']);assert.equal(row['trainer-ids'],undefined);
+ assert.equal((await f.api.list('heartbeat'))[0].fields['heartbeat-key'],'wef-entries');assert(f.archives.some(a=>a.event.kind==='entries-before'));assert(f.archives.some(a=>a.event.kind==='retained-class-dataset'));
+});
+test('repeat preserves IDs, native links, helper fields and source observation time',async()=>{
+ const f=fixture();await runEntries(f.options);const first=(await f.api.list('entries'))[0];await f.api.upsert('entries','entry-key',[{'entry-key':first.fields['entry-key'],nickname:'keep',horses:['helperHorse']}]);
+ await runEntries(f.options);const after=await f.api.list('entries');assert.equal(after.length,1);assert.equal(after[0].id,first.id);assert.deepEqual(after[0].fields.schedules,first.fields.schedules);assert.equal(after[0].fields.nickname,'keep');assert.deepEqual(after[0].fields.horses,['helperHorse']);assert.equal(after[0].fields['last-seen'],f.now);
+});
+test('initial empty scope does not bulk-drop feed-only rows',async()=>{
+ const f=fixture();f.seed('entries',[{'entry-key':'old-feed-only','show-id':200000076,date:'2026-10-30','class-id':200030671,status:'active','last-seen':'2026-10-30T11:00:00Z',schedules:['prior']}]);f.input.classes[0].payload.trips=[];f.input.classes[0].payload.total_entry_trips=0;
+ const r=await runEntries(f.options);assert.equal(r.ok,true);assert.equal((await f.api.list('entries'))[0].fields.status,'active');assert.equal((await f.api.list('collections'))[0].fields['row-count'],0);
+});
+test('retirement is disabled even for later complete empty scope; links retained',async()=>{
+ const f=fixture();await runEntries(f.options);const first=(await f.api.list('entries'))[0];f.input.classes[0].observedAt='2026-10-30T12:01:00Z';f.input.classes[0].producerWork['last-success']=f.input.classes[0].observedAt;f.input.classes[0].payload.trips=[];f.input.classes[0].payload.total_entry_trips=0;
+ const r=await runEntries({...f.options,clock:()=> '2026-10-30T12:02:00Z'});assert.equal(r.ok,true);const after=(await f.api.list('entries'))[0];assert.equal(after.id,first.id);assert.equal(after.fields.status,'active');assert.deepEqual(after.fields.schedules,first.fields.schedules);assert.equal(after.fields['last-seen'],first.fields['last-seen']);
+});
+test('malformed scope preserves rows and membership; other scopes continue',async()=>{
+ const f=fixture();await runEntries(f.options);const prior=(await f.api.list('entries'))[0],collection=(await f.api.list('collections'))[0];delete f.input.classes[0].payload.trips;
+ const r=await runEntries(f.options);assert.equal(r.ok,false);assert.deepEqual((await f.api.list('entries'))[0],prior);assert.deepEqual((await f.api.list('collections'))[0].fields.entries,collection.fields.entries);
+});
+test('overdue input neither refreshes prior observation nor drops records',async()=>{
+ const f=fixture();await runEntries(f.options);const before=(await f.api.list('entries'))[0];f.input.classes[0].producerWork['next-due']='2026-10-30T11:59:00Z';f.input.classes[0].payload.trips=[];f.input.classes[0].payload.total_entry_trips=0;
+ const r=await runEntries(f.options);assert.equal(r.ok,true);assert.deepEqual((await f.api.list('entries'))[0],before);
+});
+test('newer existing observations never regress and scope membership stays linked',async()=>{
+ const f=fixture();await runEntries(f.options);const before=(await f.api.list('entries'))[0];await f.api.upsert('entries','entry-key',[{'entry-key':before.fields['entry-key'],'last-seen':'2026-10-30T12:10:00Z','rider-name':'newer'}]);
+ await runEntries(f.options);const after=(await f.api.list('entries'))[0];assert.equal(after.fields['rider-name'],'newer');assert.equal(after.fields['last-seen'],'2026-10-30T12:10:00Z');assert.deepEqual((await f.api.list('collections'))[0].fields.entries,[before.id]);
+});
+test('missing schedule reference retains old native link as history with no fresh basis',async()=>{
+ const f=fixture();await runEntries(f.options);const prior=(await f.api.list('entries'))[0];f.seed(settings.SYNC_TABLE,[]);await runEntries(f.options);const after=(await f.api.list('entries'))[0];assert.deepEqual(after.fields.schedules,prior.fields.schedules);assert.equal(after.fields['schedule-link-status'],'unresolved');assert.equal(after.fields['schedule-link-basis'],'');assert.equal(after.fields['group-link-status'],'unresolved');
+});
+test('archive failure prevents participation writes',async()=>{
+ const f=fixture();const r=await runEntries({...f.options,archive:async()=>{throw Error('Archive unavailable');}});assert.equal(r.ok,false);assert.equal(f.writes.includes('entries'),false);
+});
+test('Data access is GET-only and old tenant targets are forbidden',async()=>{
+ let calls=0;const api=airtable({pause:async()=>{},request:async()=>{calls++;return{ok:true,json:async()=>({records:[]})};}});
+ await api.list('runs',settings.DATA_BASE_ID,'{status}="Verified completed revision"');assert.equal(calls,1);
+ await assert.rejects(api.call(settings.DATA_BASE_ID,'runs','PATCH',{}),/forbidden/);await assert.rejects(api.list('trainers','appxKPBtdl2Rdq7CS'),/Unapproved/);assert.equal(calls,1);
+});
+test('missing canonical show logs failure using null absent date and preserves business rows',async()=>{
+ const f=fixture();f.seed(settings.SHARED_SHOWS_TABLE,[],settings.SHOWS_BASE_ID);
+ const r=await runEntries(f.options);assert.equal(r.ok,false);assert.equal((await f.api.list('heartbeat'))[0].fields['selected-date'],null);assert.equal(f.writes.includes('entries'),false);
+});
+test('directory-only revision is unavailable, not empty success',async()=>{
+ const f=fixture();f.input.classes=[];const r=await runEntries(f.options);
+ assert.equal(r.ok,false);assert.match(r.errors.join(' '),/no retained class observations/);
+ assert.equal(f.writes.includes('entries'),false);assert.equal(f.writes.includes('collections'),false);
+});
+test('applicable unfinished attempts persist on participation and scope provenance',async()=>{
+ const f=fixture();f.input.attempts=[{key:'newer',status:'Writing',reservedClass:{'class-keys':[f.input.classes[0].scopeKey]}}];
+ const r=await runEntries(f.options);assert.equal(r.ok,true);
+ for(const [table,field] of [['entries','source-json'],['collections','message']]){
+  const evidence=JSON.parse((await f.api.list(table))[0].fields[field]);
+  assert.deepEqual(evidence.latestApplicableAttempts,f.input.attempts);assert.equal(evidence.currentness,'not-asserted');
+ }
+});
+test('Airtable timestamp normalization verifies and repeats without rewriting source time',async()=>{
+ const rows=[];let mutations=0;const api=airtable({pause:async()=>{},request:async(url,options)=>{
+  if(options.method!=='GET'){mutations++;for(const record of JSON.parse(options.body).records){const fields={...record.fields};fields['last-seen']=new Date(fields['last-seen']).toISOString();rows.push({id:'recTime',fields});}}
+  return{ok:true,json:async()=>({records:structuredClone(rows)})};
+ }});
+ const original='2026-10-29T14:11:18.894144+00:00',fields=[{'entry-key':'test','last-seen':original,'source-json':JSON.stringify({sourceAsOf:original})}];
+ await api.upsert('entries','entry-key',fields);await api.upsert('entries','entry-key',fields);
+ assert.equal(mutations,1);assert.equal(JSON.parse(rows[0].fields['source-json']).sourceAsOf,original);
+});

@@ -1,0 +1,36 @@
+{
+  "deployed_at": "2026-10-29T08:28:21.1948558-04:00",
+  "source": "C:/Users/gombc/.codex/worktrees/wef-schedule-collector/ringstatus/wef-schedules",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules",
+  "files": [
+    {
+      "file": "normalizer.js",
+      "sha256": "E02DD6548ED1D6D32FCB06675CD9CC969635E9CD6D3545414FD52A004E6D9EE6"
+    },
+    {
+      "file": "collector-core.js",
+      "sha256": "F706BAF1ED6686A61DE6F803C0F6B8B9EE79BD9EA5B71125069295BC638AE855"
+    },
+    {
+      "file": "store.js",
+      "sha256": "F04752F15416865CCFEC49FCB2D06971394BD6B860B90861AF0935AE3CD4517E"
+    },
+    {
+      "file": "schedule-times.js",
+      "sha256": "A5DF8C7F282D378F7466F36D25965C7215F906BEC30CA77A5752DC9CD64275B6"
+    },
+    {
+      "file": "run-logs.js",
+      "sha256": "FCF1568AA1C8A62D889C23F33EEB0C3E535DAFFFAD66A02DAC6C8EE05CD8A44C"
+    },
+    {
+      "file": "README.md",
+      "sha256": "156D00DA142F3823F8F0E980D3ECE7398A5E5D16A7FEB8A2D49443D15C77ABE7"
+    },
+    {
+      "file": "tests/schedule-blocks.test.js",
+      "sha256": "58C00A00CCE7A2E2471E2309F030657908D4E0FAA970A7CCDCB0C45F6E62C5A1"
+    }
+  ],
+  "manual_runs": 0
+}

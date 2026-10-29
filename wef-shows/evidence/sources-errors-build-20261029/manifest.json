@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-29T17:02:33.260Z",
+  "files": [
+    {
+      "name": "collector.js",
+      "before": "0d62115847beb8629a352accd7b9e12de0d613f9a0f91b9ecf1832dfc05357e7",
+      "staged": "628e7f9d6a36981dfba448b07c45a6a3e5b8f819124cd8f36a706881a70b7629"
+    },
+    {
+      "name": "airtable.js",
+      "before": "19e1921981de3f4316000df1f34859e04996468ef9ddf860873ead8d486a4618",
+      "staged": "f97bd4964e3b39197e284418c98f3fa1b81f8f284c7afbd514a7263d9a147154"
+    },
+    {
+      "name": "audit.js",
+      "before": null,
+      "staged": "336de81c63840d6195099c84f1004576e11991aa7e69d598681a3b433391ff18"
+    },
+    {
+      "name": "audit-schema.js",
+      "before": null,
+      "staged": "015574366da8f8f535f6340b811d58e597650585c7eb8e49b52148dcb5b44f1c"
+    },
+    {
+      "name": "verify-audit.js",
+      "before": null,
+      "staged": "b810123c1a886dbaf20d93b1b9016f9cd8ee924104e08b2e92561b81be1fc641"
+    },
+    {
+      "name": "scope.md",
+      "before": "b8ac63880ce892b21a96bf085669736a1f98a186c71d819826c553090cf27117",
+      "staged": "1b593b6d41359f37874d13af22e0c065645a564cc651be55e1c39e1bf8e1263b"
+    },
+    {
+      "name": "tests/shows.test.js",
+      "before": "8833f8a4e9db841abf04cfbe3d6ecf6d16a96b4cbde6d9e055dd71b36f2bdc9b",
+      "staged": "a0472ab7e6b46a67174cbb0b240bb35dd3a46ec955b6a9cd73f683aa7e607a0e"
+    },
+    {
+      "name": "tests/audit.test.js",
+      "before": null,
+      "staged": "ed5782d32f9eba490aa3ae8507a4319abbed368b26aa285ee96d9fde84f253f4"
+    },
+    {
+      "name": "tests/audit-schema.test.js",
+      "before": null,
+      "staged": "ffb671795f82c7791a415f282e81241c8786fb52c97c5378a076670cb9139321"
+    }
+  ]
+}

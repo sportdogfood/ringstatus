@@ -1,0 +1,2400 @@
+[
+  {
+    "date": "2026-10-29",
+    "unchanged_classes": 0,
+    "blocks": 26,
+    "schooling": 24,
+    "breaks": 2,
+    "source_block_trips": 0,
+    "top_source_count": 26,
+    "entries": []
+  },
+  {
+    "date": "2026-10-30",
+    "unchanged_classes": 137,
+    "blocks": 5,
+    "schooling": 4,
+    "breaks": 1,
+    "source_block_trips": 0,
+    "top_source_count": 142,
+    "entries": [
+      {
+        "key": "200028192_770",
+        "name": "1.30m Open Jumper II2d",
+        "total_trips": 15
+      },
+      {
+        "key": "200028193_840",
+        "name": "1.30m Young Jumper II2d",
+        "total_trips": 2
+      },
+      {
+        "key": "200028194_773",
+        "name": "1.30m Junior/Amateur Jumper II2d",
+        "total_trips": 6
+      },
+      {
+        "key": "200028195_807",
+        "name": "$10,000 1.40m Open Stake II2b",
+        "total_trips": 14
+      },
+      {
+        "key": "200028246_920",
+        "name": "$2,500 USHJA National Hunter Derby",
+        "total_trips": 2
+      },
+      {
+        "key": "200029534_251",
+        "name": "Green Conformation Hunter Model",
+        "total_trips": 0
+      },
+      {
+        "key": "200029535_260",
+        "name": "High Performance Conformation Hunter Model",
+        "total_trips": 0
+      },
+      {
+        "key": "200029536_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029536_253",
+        "name": "Green Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029536_254",
+        "name": "Green Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029537_252",
+        "name": "Green Conformation Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029538_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029538_262",
+        "name": "High Performance Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029538_263",
+        "name": "High Performance Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029539_261",
+        "name": "High Performance Conformation Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029540_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029540_267",
+        "name": "High Performance Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029540_268",
+        "name": "High Performance Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029541_266",
+        "name": "High Performance Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029542_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029542_247",
+        "name": "3'9\" Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029542_248",
+        "name": "3'9\" Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029543_246",
+        "name": "3'9\" Green Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029544_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029544_382",
+        "name": "Performance Hunter 3'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029544_383",
+        "name": "Performance Hunter 3'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029545_381",
+        "name": "Performance Hunter 3'6\" U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029546_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029546_242",
+        "name": "3'6\" Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029546_243",
+        "name": "3'6\" Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029547_241",
+        "name": "3'6\" Green Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029548_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029548_171",
+        "name": "Young Hunter 3'3\" (7 & Under)",
+        "total_trips": 0
+      },
+      {
+        "key": "200029548_172",
+        "name": "Young Hunter 3'3\" (7 & Under)",
+        "total_trips": 0
+      },
+      {
+        "key": "200029549_170",
+        "name": "Young Hunter 3'3\" (7 & Under) U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029550_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029550_387",
+        "name": "Performance Hunter 3'3\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029550_388",
+        "name": "Performance Hunter 3'3\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029551_386",
+        "name": "Performance Hunter 3'3\" U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029552_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029552_372",
+        "name": "3'3\" Green Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029552_373",
+        "name": "3'3\" Green Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029553_371",
+        "name": "3'3\" Green Hunter U/S",
+        "total_trips": 1
+      },
+      {
+        "key": "200029554_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029554_166",
+        "name": "Young Hunter 3' (6 & Under)",
+        "total_trips": 0
+      },
+      {
+        "key": "200029554_167",
+        "name": "Young Hunter 3' (6 & Under)",
+        "total_trips": 0
+      },
+      {
+        "key": "200029555_165",
+        "name": "Young Hunter 3' (6 & Under) U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029556_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029556_222",
+        "name": "USHJA Hunter 3'",
+        "total_trips": 1
+      },
+      {
+        "key": "200029556_223",
+        "name": "USHJA Hunter 3'",
+        "total_trips": 1
+      },
+      {
+        "key": "200029556_217",
+        "name": "Take2 Thoroughbred Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029556_218",
+        "name": "Take2 Thoroughbred Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029557_221",
+        "name": "USHJA Hunter 3' U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029558_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029558_202",
+        "name": "3' Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029558_203",
+        "name": "3' Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029559_201",
+        "name": "3' Green Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029560_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029560_161",
+        "name": "Young Hunter 2'9\" (5 & Under)",
+        "total_trips": 1
+      },
+      {
+        "key": "200029560_162",
+        "name": "Young Hunter 2'9\" (5 & Under)",
+        "total_trips": 1
+      },
+      {
+        "key": "200029561_160",
+        "name": "Young Hunter 2'9\" (5 & Under) U/S",
+        "total_trips": 1
+      },
+      {
+        "key": "200029562_207",
+        "name": "Add Back Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029562_126",
+        "name": "USHJA Hunter 2'9\" (First Year Shown)",
+        "total_trips": 1
+      },
+      {
+        "key": "200029562_127",
+        "name": "USHJA Hunter 2'9\" (First Year Shown)",
+        "total_trips": 1
+      },
+      {
+        "key": "200029562_187",
+        "name": "USHJA Hunter 2'9\"",
+        "total_trips": 1
+      },
+      {
+        "key": "200029562_188",
+        "name": "USHJA Hunter 2'9\"",
+        "total_trips": 1
+      },
+      {
+        "key": "200029563_125",
+        "name": "USHJA Hunter 2'9\" (First Year Shown) U/S",
+        "total_trips": 1
+      },
+      {
+        "key": "200029564_186",
+        "name": "USHJA Hunter 2'9\" U/S",
+        "total_trips": 1
+      },
+      {
+        "key": "200029565_515",
+        "name": "15-17 Equitation Flat",
+        "total_trips": 0
+      },
+      {
+        "key": "200029566_516",
+        "name": "15-17 Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200029566_517",
+        "name": "15-17 Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200029567_580",
+        "name": "WIHS Hunter Phase",
+        "total_trips": 0
+      },
+      {
+        "key": "200029568_518",
+        "name": "Adult Amateur Equitation Flat",
+        "total_trips": 0
+      },
+      {
+        "key": "200029569_519",
+        "name": "Adult Amateur Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200029569_520",
+        "name": "Adult Amateur Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200029570_575",
+        "name": "USEF Adult Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200029571_101",
+        "name": "Yearling Hunter Breeding",
+        "total_trips": 0
+      },
+      {
+        "key": "200029572_102",
+        "name": "Two Year Old Hunter Breeding",
+        "total_trips": 0
+      },
+      {
+        "key": "200029573_103",
+        "name": "Three Year Old Hunter Breeding",
+        "total_trips": 0
+      },
+      {
+        "key": "200029574_100",
+        "name": "Best Young Horse",
+        "total_trips": 0
+      },
+      {
+        "key": "200029575_105",
+        "name": "Yearling Pony Breeding",
+        "total_trips": 0
+      },
+      {
+        "key": "200029576_106",
+        "name": "Two Year Old Pony Breeding",
+        "total_trips": 0
+      },
+      {
+        "key": "200029577_107",
+        "name": "Three Year Old Pony Breeding",
+        "total_trips": 0
+      },
+      {
+        "key": "200029578_104",
+        "name": "Best Young Pony",
+        "total_trips": 0
+      },
+      {
+        "key": "200028210_780",
+        "name": "Training Jumper (1.0m) II2d",
+        "total_trips": 2
+      },
+      {
+        "key": "200028210_747",
+        "name": "Take2 Thoroughbred Jumper (1.0m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028211_825",
+        "name": "1.0m Young Jumper Table II",
+        "total_trips": 0
+      },
+      {
+        "key": "200028212_737",
+        "name": "1.0m Junior Jumper II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028212_765",
+        "name": "1.0m Amateur Jumper II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028213_751",
+        "name": "Training Jumper (.90m) II2d",
+        "total_trips": 2
+      },
+      {
+        "key": "200028214_820",
+        "name": ".90m Young Jumper Table II",
+        "total_trips": 1
+      },
+      {
+        "key": "200028215_790",
+        "name": "Hopeful Jumper (.85m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028216_783",
+        "name": "Puddle Jumper Open (.70-.80m) II2d",
+        "total_trips": 1
+      },
+      {
+        "key": "200028216_795",
+        "name": "Puddle Jumper Junior/Amateur (.70-.80m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028237_992",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028247_656",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028247_111",
+        "name": "USHJA Hunter 2' (First Year Shown)",
+        "total_trips": 1
+      },
+      {
+        "key": "200028247_112",
+        "name": "USHJA Hunter 2' (First Year Shown)",
+        "total_trips": 1
+      },
+      {
+        "key": "200028247_177",
+        "name": "USHJA Hunter 2'",
+        "total_trips": 0
+      },
+      {
+        "key": "200028247_178",
+        "name": "USHJA Hunter 2'",
+        "total_trips": 0
+      },
+      {
+        "key": "200028248_110",
+        "name": "USHJA Hunter 2' (First Year Shown) U/S",
+        "total_trips": 1
+      },
+      {
+        "key": "200028249_176",
+        "name": "USHJA Hunter 2' U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028250_656",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028250_116",
+        "name": "USHJA Hunter 2'3\" (First Year Shown)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028250_117",
+        "name": "USHJA Hunter 2'3\" (First Year Shown)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028250_182",
+        "name": "USHJA Hunter 2'3\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028250_183",
+        "name": "USHJA Hunter 2'3\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028251_115",
+        "name": "USHJA Hunter 2'3\" (First Year Shown) U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028252_181",
+        "name": "USHJA Hunter 2'3\" U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028253_656",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028253_121",
+        "name": "USHJA Hunter 2'6\" (First Year Shown)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028253_122",
+        "name": "USHJA Hunter 2'6\" (First Year Shown)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028253_232",
+        "name": "USHJA Hunter 2'6\"",
+        "total_trips": 1
+      },
+      {
+        "key": "200028253_233",
+        "name": "USHJA Hunter 2'6\"",
+        "total_trips": 1
+      },
+      {
+        "key": "200028254_120",
+        "name": "USHJA Hunter 2'6\" (First Year Shown) U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028255_231",
+        "name": "USHJA Hunter 2'6\" U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028256_994",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028257_512",
+        "name": "12-14 Equitation Flat",
+        "total_trips": 2
+      },
+      {
+        "key": "200028258_513",
+        "name": "12-14 Equitation",
+        "total_trips": 2
+      },
+      {
+        "key": "200028258_514",
+        "name": "12-14 Equitation",
+        "total_trips": 2
+      },
+      {
+        "key": "200028259_509",
+        "name": "11 & Under Equitation Flat",
+        "total_trips": 1
+      },
+      {
+        "key": "200028260_510",
+        "name": "11 & Under Equitation",
+        "total_trips": 1
+      },
+      {
+        "key": "200028260_511",
+        "name": "11 & Under Equitation",
+        "total_trips": 1
+      },
+      {
+        "key": "200028196_710",
+        "name": "1.25m Open Jumper II2d",
+        "total_trips": 2
+      },
+      {
+        "key": "200028197_787",
+        "name": "1.20m Open Jumper II2d",
+        "total_trips": 11
+      },
+      {
+        "key": "200028198_835",
+        "name": "1.20m Young Jumper II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028199_720",
+        "name": "1.20m Junior/Amateur Jumper II2d",
+        "total_trips": 2
+      },
+      {
+        "key": "200028200_744",
+        "name": "1.15m Open Jumper II2d",
+        "total_trips": 4
+      },
+      {
+        "key": "200028201_715",
+        "name": "1.10m Open Jumper II2d",
+        "total_trips": 2
+      },
+      {
+        "key": "200028202_830",
+        "name": "1.10m Young Jumper Table II",
+        "total_trips": 1
+      },
+      {
+        "key": "200028203_740",
+        "name": "1.10m Junior Jumper II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028203_760",
+        "name": "1.10m Amateur Jumper II2d",
+        "total_trips": 1
+      },
+      {
+        "key": "200028204_991",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028205_581",
+        "name": "WIHS Jumper Phase",
+        "total_trips": 0
+      },
+      {
+        "key": "200028206_545",
+        "name": "Marshall + Sterling/USHJA 3'3\" Junior Jumping Seat Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200028207_546",
+        "name": "Marshall + Sterling/USHJA 3'3\" Adult Jumping Seat Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200028208_590",
+        "name": "Platinum Performance / USEF Show Jumping Talent Search 1*",
+        "total_trips": 0
+      }
+    ]
+  },
+  {
+    "date": "2026-10-31",
+    "unchanged_classes": 197,
+    "blocks": 2,
+    "schooling": 0,
+    "breaks": 2,
+    "source_block_trips": 0,
+    "top_source_count": 199,
+    "entries": [
+      {
+        "key": "200028262_700",
+        "name": "1.40m Open Jumper II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028263_808",
+        "name": "$5,000 1.35m Stake II2b",
+        "total_trips": 8
+      },
+      {
+        "key": "200028264_771",
+        "name": "1.30m Open Jumper II2b",
+        "total_trips": 5
+      },
+      {
+        "key": "200028265_841",
+        "name": "1.30m Young Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028266_774",
+        "name": "1.30m Junior/Amateur Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028342_925",
+        "name": "$1,000 USHJA Junior/Amateur 2'6\"/2'9\" Hunter Derby",
+        "total_trips": 0
+      },
+      {
+        "key": "200029580_208",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029580_255",
+        "name": "Green Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029580_256",
+        "name": "Green Conformation Hunter Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200029581_208",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029581_264",
+        "name": "High Performance Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029581_265",
+        "name": "High Performance Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029582_208",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029582_269",
+        "name": "High Performance Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029582_270",
+        "name": "High Performance Hunter Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200029583_208",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029583_389",
+        "name": "Performance Hunter 3'3\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029583_390",
+        "name": "Performance Hunter 3'3\" Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200029584_208",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029584_384",
+        "name": "Performance Hunter 3'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029584_385",
+        "name": "Performance Hunter 3'6\" Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200029585_208",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029585_244",
+        "name": "3'6\" Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029585_245",
+        "name": "3'6\" Green Hunter Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200029585_918",
+        "name": "$1,000 USHJA Green Hunter Incentive 3'6\"/3'9\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029586_208",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029586_249",
+        "name": "3'9\" Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029586_250",
+        "name": "3'9\" Green Hunter Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200029586_918",
+        "name": "$1,000 USHJA Green Hunter Incentive 3'6\"/3'9\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029587_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029587_277",
+        "name": "Amateur Owner Hunter 3'6\" 36 & Over",
+        "total_trips": 0
+      },
+      {
+        "key": "200029587_278",
+        "name": "Amateur Owner Hunter 3'6\" 36 & Over",
+        "total_trips": 0
+      },
+      {
+        "key": "200029588_276",
+        "name": "Amateur Owner Hunter 3'6\" 36 & Over U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029589_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029589_272",
+        "name": "Amateur Owner Hunter 3'6\" 18-35",
+        "total_trips": 0
+      },
+      {
+        "key": "200029589_273",
+        "name": "Amateur Owner Hunter 3'6\" 18-35",
+        "total_trips": 0
+      },
+      {
+        "key": "200029590_271",
+        "name": "Amateur Owner Hunter 3'6\" 18-35 U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029591_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029591_307",
+        "name": "Large Junior Hunter 3'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029591_308",
+        "name": "Large Junior Hunter 3'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029592_306",
+        "name": "Large Junior Hunter 3'6\" U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029593_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029593_302",
+        "name": "Small Junior Hunter 3'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029593_303",
+        "name": "Small Junior Hunter 3'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029594_301",
+        "name": "Small Junior Hunter 3'6\" U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029595_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029595_377",
+        "name": "Amateur Owner Hunter 3'3\" 18-35",
+        "total_trips": 0
+      },
+      {
+        "key": "200029595_378",
+        "name": "Amateur Owner Hunter 3'3\" 18-35",
+        "total_trips": 0
+      },
+      {
+        "key": "200029596_376",
+        "name": "Amateur Owner Hunter 3'3\" 18-35 U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029597_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029597_392",
+        "name": "Amateur Owner Hunter 3'3\" 36 & Over",
+        "total_trips": 0
+      },
+      {
+        "key": "200029597_393",
+        "name": "Amateur Owner Hunter 3'3\" 36 & Over",
+        "total_trips": 0
+      },
+      {
+        "key": "200029598_391",
+        "name": "Amateur Owner Hunter 3'3\" 36 & Over U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029599_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029599_337",
+        "name": "Junior Hunter 3'3\" 15 & Under",
+        "total_trips": 0
+      },
+      {
+        "key": "200029599_338",
+        "name": "Junior Hunter 3'3\" 15 & Under",
+        "total_trips": 0
+      },
+      {
+        "key": "200029600_336",
+        "name": "Junior Hunter 3'3\" 15 & Under U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029601_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029601_342",
+        "name": "Junior Hunter 3'3\" 16-17",
+        "total_trips": 0
+      },
+      {
+        "key": "200029601_343",
+        "name": "Junior Hunter 3'3\" 16-17",
+        "total_trips": 0
+      },
+      {
+        "key": "200029602_341",
+        "name": "Junior Hunter 3'3\" 16-17 U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029603_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029603_173",
+        "name": "Young Hunter 3'3\" (7 & Under)",
+        "total_trips": 0
+      },
+      {
+        "key": "200029603_174",
+        "name": "Young Hunter 3'3\" (7 & Under)",
+        "total_trips": 0
+      },
+      {
+        "key": "200029604_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029604_374",
+        "name": "3'3\" Green Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029604_375",
+        "name": "3'3\" Green Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029604_915",
+        "name": "$1,000 USHJA Green Hunter Incentive 3'/3'3\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029605_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029605_168",
+        "name": "Young Hunter 3' (6 & Under)",
+        "total_trips": 0
+      },
+      {
+        "key": "200029605_169",
+        "name": "Young Hunter 3' (6 & Under)",
+        "total_trips": 0
+      },
+      {
+        "key": "200029606_209",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029606_204",
+        "name": "3' Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029606_205",
+        "name": "3' Green Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029606_915",
+        "name": "$1,000 USHJA Green Hunter Incentive 3'/3'3\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200029607_658",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029607_224",
+        "name": "USHJA Hunter 3'",
+        "total_trips": 0
+      },
+      {
+        "key": "200029607_225",
+        "name": "USHJA Hunter 3'",
+        "total_trips": 0
+      },
+      {
+        "key": "200029607_219",
+        "name": "Take2 Thoroughbred Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029607_220",
+        "name": "Take2 Thoroughbred Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029608_216",
+        "name": "Take2 Thoroughbred Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029609_560",
+        "name": "NHS/THIS Adult Medal",
+        "total_trips": 1
+      },
+      {
+        "key": "200029610_531",
+        "name": "M&S Adult Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200029611_529",
+        "name": "M&S Children's Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200029612_651",
+        "name": "Warm Up Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029612_282",
+        "name": "Adult Amateur Hunter",
+        "total_trips": 4
+      },
+      {
+        "key": "200029612_283",
+        "name": "Adult Amateur Hunter",
+        "total_trips": 4
+      },
+      {
+        "key": "200029612_904",
+        "name": "$500 Adult Amatuer Hunter Classic",
+        "total_trips": 0
+      },
+      {
+        "key": "200029613_281",
+        "name": "Adult Amateur Hunter U/S",
+        "total_trips": 4
+      },
+      {
+        "key": "200029614_651",
+        "name": "Warm Up Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029614_312",
+        "name": "Children's Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029614_313",
+        "name": "Children's Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200029614_902",
+        "name": "$500 Children's Hunter Classic",
+        "total_trips": 0
+      },
+      {
+        "key": "200029615_311",
+        "name": "Children's Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200029616_651",
+        "name": "Warm Up Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029616_163",
+        "name": "Young Hunter 2'9\" (5 & Under)",
+        "total_trips": 1
+      },
+      {
+        "key": "200029616_164",
+        "name": "Young Hunter 2'9\" (5 & Under)",
+        "total_trips": 1
+      },
+      {
+        "key": "200029617_651",
+        "name": "Warm Up Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029617_128",
+        "name": "USHJA Hunter 2'9\" (First Year Shown)",
+        "total_trips": 1
+      },
+      {
+        "key": "200029617_129",
+        "name": "USHJA Hunter 2'9\" (First Year Shown)",
+        "total_trips": 1
+      },
+      {
+        "key": "200029617_189",
+        "name": "USHJA Hunter 2'9\"",
+        "total_trips": 1
+      },
+      {
+        "key": "200029617_190",
+        "name": "USHJA Hunter 2'9\"",
+        "total_trips": 1
+      },
+      {
+        "key": "200029618_655",
+        "name": "Warm Up Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029618_317",
+        "name": "Low Children's Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029618_318",
+        "name": "Low Children's Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029619_316",
+        "name": "Low Children's Hunter U/S",
+        "total_trips": 1
+      },
+      {
+        "key": "200029620_655",
+        "name": "Warm Up Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029620_297",
+        "name": "Low Adult Amateur Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029620_298",
+        "name": "Low Adult Amateur Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200029621_296",
+        "name": "Low Adult Amateur Hunter U/S",
+        "total_trips": 1
+      },
+      {
+        "key": "200028267_694",
+        "name": "Itty Bitty Jumper Open (.60-.65m) Table II",
+        "total_trips": 0
+      },
+      {
+        "key": "200028267_697",
+        "name": "Itty Bitty Jumper Junior/Amateur (.60-.65m) Table II",
+        "total_trips": 0
+      },
+      {
+        "key": "200028268_695",
+        "name": "Itty Bitty Jumper Open (.60-.65m) II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028268_698",
+        "name": "Itty Bitty Jumper Junior/Amateur (.60-.65m) II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028269_680",
+        "name": "Pony Jumper Table II",
+        "total_trips": 0
+      },
+      {
+        "key": "200028269_681",
+        "name": "WIHS Pony Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028270_784",
+        "name": "Puddle Jumper Open (.70-.80m) II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028270_796",
+        "name": "Puddle Jumper Junior/Amateur (.70-.80m) II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028271_791",
+        "name": "Hopeful Jumper (.85m) II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028272_752",
+        "name": "Training Jumper (.90m) II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028273_821",
+        "name": ".90m Young Jumper Table II",
+        "total_trips": 1
+      },
+      {
+        "key": "200028274_781",
+        "name": "Training Jumper (1.0m) II2b",
+        "total_trips": 2
+      },
+      {
+        "key": "200028275_826",
+        "name": "1.0m Young Jumper Table II",
+        "total_trips": 0
+      },
+      {
+        "key": "200028276_748",
+        "name": "Take2 Thoroughbred Jumper (1.0m) II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028277_738",
+        "name": "1.0m Junior Jumper II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028277_766",
+        "name": "1.0m Amateur Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028288_995",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028318_540",
+        "name": "Marshall + Sterling/USEF Pony Medal",
+        "total_trips": 2
+      },
+      {
+        "key": "200028318_401",
+        "name": "Schooling Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028318_412",
+        "name": "Small Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028318_413",
+        "name": "Small Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028319_411",
+        "name": "Small Pony Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028320_540",
+        "name": "Marshall + Sterling/USEF Pony Medal",
+        "total_trips": 2
+      },
+      {
+        "key": "200028320_401",
+        "name": "Schooling Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028320_422",
+        "name": "Medium Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028320_423",
+        "name": "Medium Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028321_421",
+        "name": "Medium Pony Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028322_540",
+        "name": "Marshall + Sterling/USEF Pony Medal",
+        "total_trips": 2
+      },
+      {
+        "key": "200028322_401",
+        "name": "Schooling Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028322_432",
+        "name": "Large Pony Hunter",
+        "total_trips": 2
+      },
+      {
+        "key": "200028322_433",
+        "name": "Large Pony Hunter",
+        "total_trips": 2
+      },
+      {
+        "key": "200028323_431",
+        "name": "Large Pony Hunter U/S",
+        "total_trips": 2
+      },
+      {
+        "key": "200028324_401",
+        "name": "Schooling Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028324_442",
+        "name": "Green Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028324_443",
+        "name": "Green Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028325_441",
+        "name": "Green Pony Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028326_657",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028326_406",
+        "name": "Children's Pony Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028326_407",
+        "name": "Children's Pony Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028327_405",
+        "name": "Children's Pony Hunter U/S",
+        "total_trips": 1
+      },
+      {
+        "key": "200028328_657",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028328_113",
+        "name": "USHJA Hunter 2' (First Year Shown)",
+        "total_trips": 1
+      },
+      {
+        "key": "200028328_114",
+        "name": "USHJA Hunter 2' (First Year Shown)",
+        "total_trips": 1
+      },
+      {
+        "key": "200028328_179",
+        "name": "USHJA Hunter 2'",
+        "total_trips": 0
+      },
+      {
+        "key": "200028328_180",
+        "name": "USHJA Hunter 2'",
+        "total_trips": 0
+      },
+      {
+        "key": "200028329_657",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028329_118",
+        "name": "USHJA Hunter 2'3\" (First Year Shown)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028329_119",
+        "name": "USHJA Hunter 2'3\" (First Year Shown)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028329_184",
+        "name": "USHJA Hunter 2'3\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028329_185",
+        "name": "USHJA Hunter 2'3\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028330_657",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028330_123",
+        "name": "USHJA Hunter 2'6\" (First Year Shown)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028330_124",
+        "name": "USHJA Hunter 2'6\" (First Year Shown)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028330_234",
+        "name": "USHJA Hunter 2'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028330_235",
+        "name": "USHJA Hunter 2'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028331_653",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028331_642",
+        "name": "Modified Hunter 2'/2'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028331_643",
+        "name": "Modified Hunter 2'/2'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028332_641",
+        "name": "Modified Hunter 2'/2'6\" U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028333_600",
+        "name": "Stirrup Warm Up",
+        "total_trips": 2
+      },
+      {
+        "key": "200028333_602",
+        "name": "Short Stirrup Hunter",
+        "total_trips": 3
+      },
+      {
+        "key": "200028333_603",
+        "name": "Short Stirrup Hunter",
+        "total_trips": 3
+      },
+      {
+        "key": "200028333_616",
+        "name": "Rusty Stirrup Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028333_617",
+        "name": "Rusty Stirrup Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028334_601",
+        "name": "Short Stirrup Hunter U/S",
+        "total_trips": 3
+      },
+      {
+        "key": "200028335_615",
+        "name": "Rusty Stirrup Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028336_139",
+        "name": "Cross Rail Warm Up",
+        "total_trips": 0
+      },
+      {
+        "key": "200028336_142",
+        "name": "Younger Cross Rail Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028336_143",
+        "name": "Younger Cross Rail Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028336_148",
+        "name": "Older Cross Rail Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028336_149",
+        "name": "Older Cross Rail Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028337_141",
+        "name": "Younger Cross Rail Hunter U/S",
+        "total_trips": 1
+      },
+      {
+        "key": "200028338_147",
+        "name": "Older Cross Rail Hunter U/S",
+        "total_trips": 0
+      },
+      {
+        "key": "200028339_997",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028340_999",
+        "name": "Halloween Costume Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028278_716",
+        "name": "1.10m Open Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028279_831",
+        "name": "1.10m Young Jumper II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028280_741",
+        "name": "1.10m Junior Jumper II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028280_761",
+        "name": "1.10m Amateur Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028281_802",
+        "name": "$1,580 NAL/WIHS 1.15m Junior/Amateur Jumper Classic II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028282_745",
+        "name": "1.15m Open Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028283_788",
+        "name": "1.20m Open Jumper II2b",
+        "total_trips": 2
+      },
+      {
+        "key": "200028284_836",
+        "name": "1.20m Young Jumper II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028285_722",
+        "name": "1.20m Junior/Amateur Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028286_711",
+        "name": "1.25m Open Jumper II2b",
+        "total_trips": 3
+      },
+      {
+        "key": "200028287_769",
+        "name": "1.30m Open Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028289_996",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      }
+    ]
+  },
+  {
+    "date": "2026-11-01",
+    "unchanged_classes": 137,
+    "blocks": 0,
+    "schooling": 0,
+    "breaks": 0,
+    "source_block_trips": 0,
+    "top_source_count": 137,
+    "entries": [
+      {
+        "key": "200028343_772",
+        "name": "1.30m Open Jumper II2.1",
+        "total_trips": 3
+      },
+      {
+        "key": "200028344_842",
+        "name": "$600 1.30m Young Jumper II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028345_775",
+        "name": "$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b",
+        "total_trips": 4
+      },
+      {
+        "key": "200028346_806",
+        "name": "$24,999 ProElite Grand Prix",
+        "total_trips": 12
+      },
+      {
+        "key": "200028347_701",
+        "name": "1.40m Open Jumper II2.1",
+        "total_trips": 1
+      },
+      {
+        "key": "200028369_535",
+        "name": "IHSA/USHJA 3'3\" Hunter Seat Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200028370_530",
+        "name": "Hamel Foundation NHS 3'3\" Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200028371_585",
+        "name": "USEF / NCEA Junior Hunter Seat Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200028372_570",
+        "name": "ASPCA Maclay",
+        "total_trips": 0
+      },
+      {
+        "key": "200028373_550",
+        "name": "USEF / Valencia Saddlery Hunter Seat Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200028374_630",
+        "name": "Pleasure Horse",
+        "total_trips": 0
+      },
+      {
+        "key": "200028375_210",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028375_379",
+        "name": "Amateur Owner Hunter 3'3\" 18-35",
+        "total_trips": 0
+      },
+      {
+        "key": "200028375_380",
+        "name": "Amateur Owner Hunter 3'3\" 18-35 Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200028375_910",
+        "name": "$1,000 Amateur Owner Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028376_210",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028376_394",
+        "name": "Amateur Owner Hunter 3'3\" 36 & Over",
+        "total_trips": 0
+      },
+      {
+        "key": "200028376_395",
+        "name": "Amateur Owner Hunter 3'3\" 36 & Over Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200028376_910",
+        "name": "$1,000 Amateur Owner Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028381_210",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028381_279",
+        "name": "Amateur Owner Hunter 3'6\" 36 & Over",
+        "total_trips": 0
+      },
+      {
+        "key": "200028381_280",
+        "name": "Amateur Owner Hunter 3'6\" 36 & Over Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200028381_909",
+        "name": "$1,000 Junior Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028378_210",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028378_274",
+        "name": "Amateur Owner Hunter 3'6\" 18-35",
+        "total_trips": 0
+      },
+      {
+        "key": "200028378_275",
+        "name": "Amateur Owner Hunter 3'6\" 18-35 Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200028378_910",
+        "name": "$1,000 Amateur Owner Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028379_210",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028379_309",
+        "name": "Large Junior Hunter 3'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028379_310",
+        "name": "Large Junior Hunter 3'6\" Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200028379_909",
+        "name": "$1,000 Junior Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028380_210",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028380_304",
+        "name": "Small Junior Hunter 3'6\"",
+        "total_trips": 0
+      },
+      {
+        "key": "200028380_305",
+        "name": "Small Junior Hunter 3'6\" Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200028380_909",
+        "name": "$1,000 Junior Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028382_210",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028382_339",
+        "name": "Junior Hunter 3'3\" 15 & Under",
+        "total_trips": 0
+      },
+      {
+        "key": "200028382_340",
+        "name": "Junior Hunter 3'3\" 15 & Under Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200028382_909",
+        "name": "$1,000 Junior Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028383_210",
+        "name": "Add Back Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028383_344",
+        "name": "Junior Hunter 3'3\" 16-17",
+        "total_trips": 0
+      },
+      {
+        "key": "200028383_345",
+        "name": "Junior Hunter 3'3\" 16-17 Handy",
+        "total_trips": 0
+      },
+      {
+        "key": "200028383_909",
+        "name": "$1,000 Junior Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028384_555",
+        "name": "THIS Children's Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200028385_525",
+        "name": "SFHJA Junior Hunter Seat Medal (Flat Phase)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028386_659",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028386_314",
+        "name": "Children's Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028386_315",
+        "name": "Children's Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028387_565",
+        "name": "Ariat Adult Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200028388_527",
+        "name": "SFHJA Adult Amateur Hunter Seat Medal (Flat Phase)",
+        "total_trips": 1
+      },
+      {
+        "key": "200028389_659",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028389_284",
+        "name": "Adult Amateur Hunter",
+        "total_trips": 4
+      },
+      {
+        "key": "200028389_285",
+        "name": "Adult Amateur Hunter",
+        "total_trips": 4
+      },
+      {
+        "key": "200028390_502",
+        "name": "2'6\" Child/Adult Amateur Equitation Flat",
+        "total_trips": 0
+      },
+      {
+        "key": "200028391_650",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028391_503",
+        "name": "2'6\" Child/Adult Amateur Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200028391_504",
+        "name": "2'6\" Child/Adult Amateur Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200028392_650",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028392_319",
+        "name": "Low Children's Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028392_320",
+        "name": "Low Children's Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028393_650",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028393_299",
+        "name": "Low Adult Amateur Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028393_300",
+        "name": "Low Adult Amateur Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028394_1001",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028357_696",
+        "name": "Itty Bitty Jumper Open (.60-.65m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028357_699",
+        "name": "Itty Bitty Jumper Junior/Amateur (.60-.65m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028358_682",
+        "name": "Pony Jumper II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028359_785",
+        "name": "Puddle Jumper Open (.70-.80m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028359_797",
+        "name": "Puddle Jumper Junior/Amateur (.70-.80m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028360_792",
+        "name": "Hopeful Jumper (.85m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028361_815",
+        "name": "$250 .85m Jumper Classic II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028362_753",
+        "name": "Training Jumper (.90m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028363_822",
+        "name": ".90m Young Jumper Table II",
+        "total_trips": 1
+      },
+      {
+        "key": "200028364_782",
+        "name": "Training Jumper (1.0m) II2d",
+        "total_trips": 2
+      },
+      {
+        "key": "200028365_827",
+        "name": "1.0m Young Jumper Table II",
+        "total_trips": 0
+      },
+      {
+        "key": "200028366_749",
+        "name": "Take2 Thoroughbred Jumper (1.0m) II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028367_1000",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028368_739",
+        "name": "$1,580 1.0m Junior Jumper Classic II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028368_767",
+        "name": "$1,580 1.0m Amateur Jumper Classic II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028395_607",
+        "name": "Leadline",
+        "total_trips": 0
+      },
+      {
+        "key": "200028396_608",
+        "name": "Walk",
+        "total_trips": 0
+      },
+      {
+        "key": "200028397_609",
+        "name": "Walk/Trot",
+        "total_trips": 0
+      },
+      {
+        "key": "200028398_610",
+        "name": "Walk/Trot Pleasure",
+        "total_trips": 0
+      },
+      {
+        "key": "200028399_611",
+        "name": "Walk/Trot Jump",
+        "total_trips": 0
+      },
+      {
+        "key": "200028400_144",
+        "name": "Younger Cross Rail Equitation Flat",
+        "total_trips": 1
+      },
+      {
+        "key": "200028401_150",
+        "name": "Older Cross Rail Equitation Flat",
+        "total_trips": 0
+      },
+      {
+        "key": "200028402_140",
+        "name": "Cross Rail Warm Up",
+        "total_trips": 0
+      },
+      {
+        "key": "200028402_145",
+        "name": "Younger Cross Rail Equitation",
+        "total_trips": 1
+      },
+      {
+        "key": "200028402_146",
+        "name": "Younger Cross Rail Equitation",
+        "total_trips": 1
+      },
+      {
+        "key": "200028402_151",
+        "name": "Older Cross Rail Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200028402_152",
+        "name": "Older Cross Rail Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200028403_604",
+        "name": "Short Stirrup Equitation Flat",
+        "total_trips": 3
+      },
+      {
+        "key": "200028404_618",
+        "name": "Rusty Stirrup Equitation Flat",
+        "total_trips": 0
+      },
+      {
+        "key": "200028405_614",
+        "name": "Stirrup Warm Up",
+        "total_trips": 0
+      },
+      {
+        "key": "200028405_605",
+        "name": "Short Stirrup Equitation",
+        "total_trips": 3
+      },
+      {
+        "key": "200028405_606",
+        "name": "Short Stirrup Equitation",
+        "total_trips": 3
+      },
+      {
+        "key": "200028405_619",
+        "name": "Rusty Stirrup Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200028405_620",
+        "name": "Rusty Stirrup Equitation",
+        "total_trips": 0
+      },
+      {
+        "key": "200028406_652",
+        "name": "Warm Up Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028406_644",
+        "name": "Modified Hunter 2'/2'6\"",
+        "total_trips": 1
+      },
+      {
+        "key": "200028406_645",
+        "name": "Modified Hunter 2'/2'6\"",
+        "total_trips": 1
+      },
+      {
+        "key": "200028407_631",
+        "name": "Pleasure Pony",
+        "total_trips": 0
+      },
+      {
+        "key": "200028409_541",
+        "name": "WIHS Pony Equitation",
+        "total_trips": 1
+      },
+      {
+        "key": "200028408_526",
+        "name": "SFHJA Pony Hunter Seat Medal (Flat Phase)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028410_402",
+        "name": "Schooling Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028410_414",
+        "name": "Small Pony Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028410_415",
+        "name": "Small Pony Handy Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028410_906",
+        "name": "$500 Small Pony Hunter Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028411_402",
+        "name": "Schooling Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028411_424",
+        "name": "Medium Pony Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028411_425",
+        "name": "Medium Pony Handy Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028411_907",
+        "name": "$500 Medium Pony Hunter Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028412_402",
+        "name": "Schooling Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028412_434",
+        "name": "Large Pony Conformation Hunter",
+        "total_trips": 2
+      },
+      {
+        "key": "200028412_435",
+        "name": "Large Pony Handy Hunter",
+        "total_trips": 2
+      },
+      {
+        "key": "200028412_908",
+        "name": "$500 Large Pony Hunter Classic (2nd Rd)",
+        "total_trips": 2
+      },
+      {
+        "key": "200028413_402",
+        "name": "Schooling Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028413_444",
+        "name": "Green Pony Conformation Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028413_445",
+        "name": "Green Pony Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028413_905",
+        "name": "$500 Green Pony Hunter Classic (2nd Rd)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028414_654",
+        "name": "Warm Up Hunter",
+        "total_trips": 0
+      },
+      {
+        "key": "200028414_408",
+        "name": "Children's Pony Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028414_409",
+        "name": "Children's Pony Hunter",
+        "total_trips": 1
+      },
+      {
+        "key": "200028415_532",
+        "name": "M&S Children's Pony Medal",
+        "total_trips": 0
+      },
+      {
+        "key": "200028416_528",
+        "name": "SFHJA Children's Pony Hunter Seat Medal (Flat Phase)",
+        "total_trips": 0
+      },
+      {
+        "key": "200028417_1003",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028348_789",
+        "name": "1.20m Open Jumper II2d",
+        "total_trips": 2
+      },
+      {
+        "key": "200028349_837",
+        "name": "$600 1.20m Young Jumper II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028350_746",
+        "name": "1.15m Open Jumper II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028351_717",
+        "name": "1.10m Open Jumper II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028352_832",
+        "name": "$300 1.10m Young Jumper II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028353_742",
+        "name": "1.10m Junior Jumper II2d",
+        "total_trips": 0
+      },
+      {
+        "key": "200028353_762",
+        "name": "1.10m Amateur Jumper II2d",
+        "total_trips": 1
+      },
+      {
+        "key": "200028354_998",
+        "name": "Mulligan Class",
+        "total_trips": 0
+      },
+      {
+        "key": "200028355_743",
+        "name": "$1,580 M&S 1.10m Junior Jumper Classic II2b",
+        "total_trips": 0
+      },
+      {
+        "key": "200028355_763",
+        "name": "$1,580 M&S 1.10m Amateur Jumper Classic II2b",
+        "total_trips": 1
+      },
+      {
+        "key": "200028356_723",
+        "name": "$2,640 NAL 1.20m Junior/Amateur Jumper Classic II2b",
+        "total_trips": 2
+      }
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "files": [
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\collector.js",
+      "Hash": "93DC78D858998CAE8AF837B526A5EAE40CB2CC98CDB196CF78E8479FCB61A457"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\source-fetch.js",
+      "Hash": "7CB8260447D1F286BADD0F07DEE37B94765243CC0F1B60358AFA8147A96A8E96"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\tests\\shows.test.js",
+      "Hash": "4E6ACA79F2690A09E65384F86CD0ACEE3651BAF2D7038DF842A7582217A319F5"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\tests\\source-fetch.test.js",
+      "Hash": "C7399DC570F40AEC68804FE7CD4092E92EF6B3184F77683BC180C0C7062B6A5E"
+    }
+  ],
+  "deployed": "2026-10-29T17:46:08.0678875Z"
+}

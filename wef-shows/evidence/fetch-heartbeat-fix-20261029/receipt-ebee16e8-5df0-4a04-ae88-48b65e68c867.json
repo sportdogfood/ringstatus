@@ -1,0 +1,109 @@
+{
+  "ok": true,
+  "run_id": "ebee16e8-5df0-4a04-ae88-48b65e68c867",
+  "started": "2026-10-29T17:54:05.680Z",
+  "rows": 1,
+  "errors": [],
+  "archives": [
+    {
+      "at": "2026-10-29T17:54:24.142Z",
+      "kind": "default-ring",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-ring\\17e14677a8672639a6fea7c3e5d46260ab63603ee5a4cfdd2f68dbae57051643.json.gz",
+      "records": 1,
+      "sha256": "17e14677a8672639a6fea7c3e5d46260ab63603ee5a4cfdd2f68dbae57051643"
+    },
+    {
+      "at": "2026-10-29T17:54:24.395Z",
+      "kind": "default-schedule",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\963faccdc309a872400b94f22bc1a1db0eca24bd03ecaf40b25ac57fb64873b5.json.gz",
+      "records": 1,
+      "sha256": "963faccdc309a872400b94f22bc1a1db0eca24bd03ecaf40b25ac57fb64873b5",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-29"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:54:24.854Z",
+      "kind": "shows-before",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\shows-before\\1b78ad1bad28fb2dd2b430d52c5c6cefe66f440c7df7a5553fd866e6b22e785a.json.gz",
+      "records": 2,
+      "sha256": "1b78ad1bad28fb2dd2b430d52c5c6cefe66f440c7df7a5553fd866e6b22e785a"
+    }
+  ],
+  "telemetry_errors": [],
+  "show_id": 200000076,
+  "selected_date": "2026-10-29",
+  "summary": "Default show 200000076: 2026 ESP Fall Finale (#6963); 2026-10-29 through 2026-11-01; source-selected 2026-10-29. No downstream jobs triggered. Show-days: 2026-10-29 Stale, 2026-10-30 Stale, 2026-10-31 Unknown, 2026-11-01 Unknown.",
+  "discovery_ok": true,
+  "show_days": {
+    "ok": true,
+    "rows": 4,
+    "days": [
+      {
+        "date": "2026-10-29",
+        "status": "Stale",
+        "record": "recohTvwKk7pDGnk1",
+        "revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+        "digest": "375baf60c26440218793be855e6a4aadda3ba3c8ffe234058aa361e65020eaf6"
+      },
+      {
+        "date": "2026-10-30",
+        "status": "Stale",
+        "record": "recNKs86S27g79pl5",
+        "revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+        "digest": "e7cbaf08ae28ecd0c3b70e2be700a601feef904bd0f791c4b0089dbf1441bf7a"
+      },
+      {
+        "date": "2026-10-31",
+        "status": "Unknown",
+        "record": "recV3qjf5oJAQW8SY",
+        "revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+        "digest": "ece31e248b5f2ddc3eae8ca6468dbe28b07f4cbdb679554defcb74dbed1bd1a1"
+      },
+      {
+        "date": "2026-11-01",
+        "status": "Unknown",
+        "record": "recs1RPpDh6bGuHkY",
+        "revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+        "digest": "a9de2fbb11a0d720b4e5cc76e762fbad6925e43a3d0aeaf0f1caa8f2882b64b5"
+      }
+    ],
+    "errors": []
+  },
+  "error_records": [],
+  "observability": {
+    "sources": [
+      {
+        "key": "default-ring",
+        "at": "2026-10-29T17:54:23.720Z",
+        "result": "Success",
+        "error": "",
+        "successAt": "2026-10-29T17:54:24.129Z"
+      },
+      {
+        "key": "default-schedule",
+        "at": "2026-10-29T17:54:24.142Z",
+        "result": "Success",
+        "error": "",
+        "successAt": "2026-10-29T17:54:24.365Z"
+      },
+      {
+        "key": "season-counts",
+        "at": "2026-10-29T17:54:26.586Z",
+        "result": "Success",
+        "error": "",
+        "successAt": "2026-10-29T17:54:30.707Z"
+      }
+    ],
+    "errors": [],
+    "ok": true,
+    "logging_errors": []
+  },
+  "completed": "2026-10-29T17:54:49.488Z"
+}

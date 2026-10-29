@@ -59,6 +59,7 @@ function unique(rows, field) {
 }
 function common(s, now, raw) {
   return {
+    "scope-status": "current",
     "show-id": s.show,
     "customer-id": s.customer,
     date: s.date,
@@ -166,6 +167,8 @@ function ringState(payload, s, plan) {
     throw Error("Widget show mismatch");
   if (!shows.length) return;
   const live = shows[0].live_data;
+  // The source represents a confirmed empty widget as [] before live activity starts.
+  if (Array.isArray(live) && live.length === 0 && plan.rings.length === 0) return;
   if (!live || typeof live !== "object" || Array.isArray(live))
     throw Error("Missing ring data");
   for (const ring of plan.rings) {

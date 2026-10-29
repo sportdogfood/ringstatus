@@ -1,5 +1,6 @@
 "use strict";
 const common = [
+  "scope-status",
   "show-id",
   "customer-id",
   "date",

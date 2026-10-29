@@ -1,0 +1,244 @@
+TAP version 13
+# Subtest: creates two tables and exact reciprocal relationships; repeat does not write
+ok 1 - creates two tables and exact reciprocal relationships; repeat does not write
+  ---
+  duration_ms: 12.932
+  type: 'test'
+  ...
+# Subtest: rejects incompatible existing audit tables before writing
+ok 2 - rejects incompatible existing audit tables before writing
+  ---
+  duration_ms: 1.181
+  type: 'test'
+  ...
+# Subtest: repeat error persistence is idempotent; previous source success survives a later failed attempt
+ok 3 - repeat error persistence is idempotent; previous source success survives a later failed attempt
+  ---
+  duration_ms: 3.4609
+  type: 'test'
+  ...
+# Subtest: producer owns two discovery requests; consumer reads verified show without source calls
+ok 4 - producer owns two discovery requests; consumer reads verified show without source calls
+  ---
+  duration_ms: 88.2465
+  type: 'test'
+  ...
+# Subtest: repeat discovery preserves show record ID and records each run
+ok 5 - repeat discovery preserves show record ID and records each run
+  ---
+  duration_ms: 47.9684
+  type: 'test'
+  ...
+# Subtest: failed discovery preserves published show and records failure
+ok 6 - failed discovery preserves published show and records failure
+  ---
+  duration_ms: 37.8951
+  type: 'test'
+  ...
+# Subtest: rollover retains old show and marks only new show default
+ok 7 - rollover retains old show and marks only new show default
+  ---
+  duration_ms: 53.1355
+  type: 'test'
+  ...
+# Subtest: archive failure prevents canonical show changes
+ok 8 - archive failure prevents canonical show changes
+  ---
+  duration_ms: 29.04
+  type: 'test'
+  ...
+# Subtest: consumer rejects stale, multiple defaults and tampered payload before saving state
+ok 9 - consumer rejects stale, multiple defaults and tampered payload before saving state
+  ---
+  duration_ms: 43.1496
+  type: 'test'
+  ...
+# Subtest: consumer preserves show-specific manual inputs without changing canonical defaults
+ok 10 - consumer preserves show-specific manual inputs without changing canonical defaults
+  ---
+  duration_ms: 51.826
+  type: 'test'
+  ...
+# Subtest: schedules collect every day using shared metadata and never call discovery endpoints
+ok 11 - schedules collect every day using shared metadata and never call discovery endpoints
+  ---
+  duration_ms: 89.6516
+  type: 'test'
+  ...
+# Subtest: consumer rejects archive traversal and inconsistent dates
+ok 12 - consumer rejects archive traversal and inconsistent dates
+  ---
+  duration_ms: 52.5841
+  type: 'test'
+  ...
+# Subtest: producer adapter blocks changes outside shows base and all deletes
+ok 13 - producer adapter blocks changes outside shows base and all deletes
+  ---
+  duration_ms: 2.1883
+  type: 'test'
+  ...
+# Subtest: day failure preserves discovery and stops only day retries
+ok 14 - day failure preserves discovery and stops only day retries
+  ---
+  duration_ms: 66.8074
+  type: 'test'
+  ...
+# Subtest: normal successes link attempted sources and create no error rows
+ok 15 - normal successes link attempted sources and create no error rows
+  ---
+  duration_ms: 59.9351
+  type: 'test'
+  ...
+# Subtest: source failures create linked separate errors and do not invent a success time
+ok 16 - source failures create linked separate errors and do not invent a success time
+  ---
+  duration_ms: 2.2494
+  type: 'test'
+  ...
+# Subtest: error-linked log rows are not reused; successful slot source links are cleared
+ok 17 - error-linked log rows are not reused; successful slot source links are cleared
+  ---
+  duration_ms: 38.4032
+  type: 'test'
+  ...
+# Subtest: source-log failure does not undo completed discovery and is reported separately
+ok 18 - source-log failure does not undo completed discovery and is reported separately
+  ---
+  duration_ms: 35.1735
+  type: 'test'
+  ...
+# Subtest: count-source rejection links the error to Season without clearing canonical discovery
+ok 19 - count-source rejection links the error to Season without clearing canonical discovery
+  ---
+  duration_ms: 35.921
+  type: 'test'
+  ...
+# Subtest: archive errors remain separate linked errors without treating transport success as failure
+ok 20 - archive errors remain separate linked errors without treating transport success as failure
+  ---
+  duration_ms: 2.4356
+  type: 'test'
+  ...
+# Subtest: all protected error-linked log slots append a new attempt without blocking discovery
+ok 21 - all protected error-linked log slots append a new attempt without blocking discovery
+  ---
+  duration_ms: 29.5475
+  type: 'test'
+  ...
+# Subtest: completion evidence failure also marks telemetry health failed and saves separate error
+ok 22 - completion evidence failure also marks telemetry health failed and saves separate error
+  ---
+  duration_ms: 42.4196
+  type: 'test'
+  ...
+# Subtest: Airtable timestamp readback accepts equivalent source offsets without repeated writes
+ok 23 - Airtable timestamp readback accepts equivalent source offsets without repeated writes
+  ---
+  duration_ms: 8.565
+  type: 'test'
+  ...
+# Subtest: schema rejects changed canonical field types before writes
+ok 24 - schema rejects changed canonical field types before writes
+  ---
+  duration_ms: 2.4148
+  type: 'test'
+  ...
+# Subtest: schema creates only agreed days and reciprocal, repeat makes no writes
+ok 25 - schema creates only agreed days and reciprocal, repeat makes no writes
+  ---
+  duration_ms: 10.089
+  type: 'test'
+  ...
+# Subtest: exact Season fixture replays through isolated Python bridge
+ok 26 - exact Season fixture replays through isolated Python bridge
+  ---
+  duration_ms: 311.2571
+  type: 'test'
+  ...
+# Subtest: real no-inventory frozen fixture publishes null asof/counts as Unknown
+ok 27 - real no-inventory frozen fixture publishes null asof/counts as Unknown
+  ---
+  duration_ms: 756.4909
+  type: 'test'
+  ...
+# Subtest: reader publishes the producer fixture and reuses only hashed collection cache
+ok 28 - reader publishes the producer fixture and reuses only hashed collection cache
+  ---
+  duration_ms: 1408.5525
+  type: 'test'
+  ...
+# Subtest: tampered source parts fail before count publication
+ok 29 - tampered source parts fail before count publication
+  ---
+  duration_ms: 6.0055
+  type: 'test'
+  ...
+# Subtest: changed head fence rejects otherwise valid replay
+ok 30 - changed head fence rejects otherwise valid replay
+  ---
+  duration_ms: 573.4915
+  type: 'test'
+  ...
+# Subtest: valid subset zero publishes same day/native link on repeats; absent day stays unknown
+ok 31 - valid subset zero publishes same day/native link on repeats; absent day stays unknown
+  ---
+  duration_ms: 10.0931
+  type: 'test'
+  ...
+# Subtest: unknown coverage remains null not zero
+ok 32 - unknown coverage remains null not zero
+  ---
+  duration_ms: 1.979
+  type: 'test'
+  ...
+# Subtest: unknown day without inventory retains null source time and does not stop remaining days
+ok 33 - unknown day without inventory retains null source time and does not stop remaining days
+  ---
+  duration_ms: 2.2302
+  type: 'test'
+  ...
+# Subtest: invalid or failed evidence preserves accepted body and original counts/time
+ok 34 - invalid or failed evidence preserves accepted body and original counts/time
+  ---
+  duration_ms: 2.0916
+  type: 'test'
+  ...
+# Subtest: scope mismatch fails before publishing counts
+ok 35 - scope mismatch fails before publishing counts
+  ---
+  duration_ms: 0.5272
+  type: 'test'
+  ...
+# Subtest: mixed projection, tampered digest and changed fence are rejected
+ok 36 - mixed projection, tampered digest and changed fence are rejected
+  ---
+  duration_ms: 2.5437
+  type: 'test'
+  ...
+# Subtest: expiry uses source time despite recent verification; exact five minutes is stale
+ok 37 - expiry uses source time despite recent verification; exact five minutes is stale
+  ---
+  duration_ms: 0.2158
+  type: 'test'
+  ...
+# Subtest: failed staged write preserves authoritative previous body; readback refuses mixed projections
+ok 38 - failed staged write preserves authoritative previous body; readback refuses mixed projections
+  ---
+  duration_ms: 1.9435
+  type: 'test'
+  ...
+# Subtest: duplicate canonical keys fail without writes
+ok 39 - duplicate canonical keys fail without writes
+  ---
+  duration_ms: 0.6886
+  type: 'test'
+  ...
+1..39
+# tests 39
+# suites 0
+# pass 39
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3367.1376

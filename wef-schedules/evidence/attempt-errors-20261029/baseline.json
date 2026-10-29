@@ -1,0 +1,44 @@
+{
+  "at": "2026-10-29T14:54:05.063192+00:00",
+  "head": "03987bb58984e501252091acf97dad6915ff8365",
+  "source": "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\wef-schedules",
+  "deployed": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules",
+  "files": [
+    {
+      "file": "run-logs.js",
+      "sha256": "fcf1568aa1c8a62d889c23f33eeb0c3e535dafffad66a02dac6c8ee05cd8a44c"
+    },
+    {
+      "file": "run.ps1",
+      "sha256": "d9736ea25998bbcbedaaa92e20ff0c23016f343a2d2174047c166fa0e9ff8ca3"
+    },
+    {
+      "file": "collect.js",
+      "sha256": "dc420c8b139698fe7d1275aca09df857a0bc3c802c9323b6325d21600d1985a0"
+    },
+    {
+      "file": "completion-guard.js",
+      "sha256": "3f74b83ba10f026fe98407261ffc1fd8052c4995d80a48c5f2c38817a9293fa5"
+    },
+    {
+      "file": "store.js",
+      "sha256": "f04752f15416865ccfec49fcb2d06971394bd6b860b90861af0935ae3cd4517e"
+    },
+    {
+      "file": "settings.js",
+      "sha256": "3df0d2a56b16ffe12cf9f78c19b8ba1efafca16881f45acc3c2897246292768c"
+    },
+    {
+      "file": "README.md",
+      "sha256": "70a85a5623e522dba8b3cfe5622cb25f470362846adf6553b8bed8381efa167a"
+    },
+    {
+      "file": "scope.md",
+      "sha256": "50afedbe0a4d00f3785a3c2df8ed1007f04587fff20b9ed1a52eda9d40c17524"
+    },
+    {
+      "file": "source-manifest.json",
+      "sha256": "f0f69c599e7e0435d3006c67d778ffb3eb6b1436d75fd54f363b4a435b1be8e3"
+    }
+  ]
+}

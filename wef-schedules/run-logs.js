@@ -1,12 +1,13 @@
 "use strict";
 const crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path'),zlib=require('node:zlib');
-const settings=require('./settings'),legacy=require('./collector-core');
+const settings=require('./settings');
 
 // One row per acquired collector invocation. Keep Airtable bounded without
 // deleting records: archive the oldest finished log before reusing its slot.
-function runLogs({api=legacy,request=globalThis.fetch,limit=1000,heartbeat,catalog,
+function runLogs({api,request=globalThis.fetch,limit=1000,heartbeat,catalog,serialize=work=>work(),
   historyRoot=path.join(path.dirname(settings.SCHEDULE_FOCUS_FILE),'history','run-logs'),
   clock=()=>new Date().toISOString()}={}) {
+ api ||= require('./collector-core');
  const base=settings.SCHEDULE_STAGING_BASE_ID,table='run-logs';
  const list=()=>api.airtableList(table,{},base);
  const checked=r=>{if(r.failedRows?.length)throw Error('Run log write failed');};
@@ -20,16 +21,21 @@ function runLogs({api=legacy,request=globalThis.fetch,limit=1000,heartbeat,catal
  }
  const archiveFields=events=>({'archive-count':events.length,archives:events.map(e=>`${e.at}: ${e.kind} ${e.outcome}; shows ${(e.shows||[]).join(',')||'none'}; dates ${(e.dates||[]).join(',')||'none'}; ${e.records} records; ${e.file}; SHA256 ${e.sha256||'unverified'}${e.cleanup?'; cleanup '+e.cleanup:''}${e.error?'; '+e.error:''}`).join('\n')});
  return {
-  async archive(record,event){
+  records:list,
+  async archive(record,event){return serialize(async()=>{
    const events=record.archiveEvents||(record.archiveEvents=[]),index=events.findIndex(e=>e.file===event.file);
    if(index<0)events.push({at:clock(),...event});else events[index]={...events[index],...event};
    const fields=archiveFields(events);checked(await api.airtablePatchRecords(table,[{id:record.id,fields}],base));
    await readback(record.fields['run-id'],fields);
-  },
-  async begin(){
+  });},
+  async begin({runId=crypto.randomUUID(),started=clock()}={}){return serialize(async()=>{
+   if(!/^[A-Za-z0-9_-]{1,80}$/.test(runId)||!Number.isFinite(Date.parse(started)))throw Error('Invalid attempt identity/time');
+   started=new Date(started).toISOString();
    const previous=await list();
-   const fields={'run-id':crypto.randomUUID(),started:clock(),completed:null,result:'Running',
-    'show-id':null,rows:null,'days-complete':0,'days-failed':0,summary:'Collector started; awaiting default-show discovery.',errors:'',...archiveFields([])};
+   const retainedAttempt=previous.filter(r=>r.fields['run-id']===runId);
+   if(retainedAttempt.length){if(retainedAttempt.length!==1||retainedAttempt[0].fields.started!==started)throw Error('Ambiguous attempt identity');return retainedAttempt[0];}
+   const fields={'run-id':runId,started,completed:null,result:'Running',
+    'show-id':null,rows:null,'days-complete':0,'days-failed':0,summary:'Scheduled attempt started; collection has not begun.',errors:'',...archiveFields([])};
    let retained;
    if(previous.length>=limit){
     const oldest=previous.filter(r=>r.fields.result!=='Running').sort((a,b)=>String(a.fields.started).localeCompare(String(b.fields.started)))[0];
@@ -56,15 +62,15 @@ function runLogs({api=legacy,request=globalThis.fetch,limit=1000,heartbeat,catal
     }
    }
    const record=await readback(fields['run-id'],fields);record.archiveEvents=retained?[retained]:[];return record;
-  },
-  async finish(record,report,error){
+  });},
+  async finish(record,report,error,{completedAt}={}){return serialize(async()=>{
    const days=report?.days||[],successful=days.filter(d=>d.ok),failed=days.filter(d=>!d.ok);
    const warnings=days.flatMap(d=>d.warnings||[]);
    const errors=[...(record.archiveEvents||[]).filter(e=>e.error).map(e=>e.file+': '+e.error),...(error?[String(error.message||error)]:[]),...failed.map(d=>`${d.date}: ${d.error}${d.log_error?'; status save failed: '+d.log_error:''}`),
     ...days.flatMap(d=>(d.warnings||[]).filter(w=>w.error).map(w=>`${d.date}: ${w.error}`))];
-   const lines=days.map(d=>d.ok?`${d.date}: ${d.row_count} rows; added ${d.changes?.added.length||0}, changed ${d.changes?.changed.length||0}, dropped ${d.changes?.dropped.length||0}${d.unchanged?'; dataset reused':''}${d.warnings?.length?'; '+d.warnings.map(w=>w.code+': '+(w.message||w.error||`${w.unmatched||0} unmatched`)).join('; '):''}`:`${d.date}: FAILED; ${d.error}`);
+   const lines=days.map(d=>d.ok?`${d.date}: ${d.row_count} rows${d.classes_count!==undefined?`; ${d.classes_count} classes, ${d.schedule_blocks_count||0} schooling/break blocks`:""}; added ${d.changes?.added.length||0}, changed ${d.changes?.changed.length||0}, dropped ${d.changes?.dropped.length||0}${d.unchanged?'; dataset reused':''}${d.warnings?.length?'; '+d.warnings.map(w=>w.code+': '+(w.message||w.error||`${w.unmatched||0} unmatched`)).join('; '):''}`:`${d.date}: FAILED; ${d.error}`);
    if(report?.references){const r=report.references;lines.push(`Show/rings verified: show ${r.show_id}; source-selected date ${r.selected_date}; ${r.rings} daily rings (${r.selected_rings} selected); ${r.helpers} static helpers; ${r.schedule_links} schedule links.${r.dropped_without_ring?' '+r.dropped_without_ring+' retained dropped schedules have no source/historical ring; link left blank.':''}`);}
-   const fields={completed:clock(),result:error||report?.ok===false?'Failed':warnings.length?'Warning':'Success',
+   const fields={completed:new Date(completedAt||clock()).toISOString(),result:error||report?.ok===false?'Failed':warnings.length?'Warning':'Success',
     'show-id':report?.default_show?.current?.show_id??days[0]?.show_id??null,
     rows:days.length?successful.reduce((sum,d)=>sum+(d.row_count||0),0):null,
     'days-complete':successful.length,'days-failed':failed.length,
@@ -86,7 +92,7 @@ function runLogs({api=legacy,request=globalThis.fetch,limit=1000,heartbeat,catal
     throw Error('Heartbeat update failed: '+error.message);
    }
    return saved;
-  }
+  });}
  };
 }
 module.exports={runLogs};

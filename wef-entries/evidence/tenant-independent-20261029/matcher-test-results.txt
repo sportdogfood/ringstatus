@@ -1,0 +1,286 @@
+TAP version 13
+# Subtest: canonical scope has no tenant dependency
+ok 1 - canonical scope has no tenant dependency
+  ---
+  duration_ms: 9.852
+  type: 'test'
+  ...
+# Subtest: uncertain group retains completed class rows and ordinary schedule links
+ok 2 - uncertain group retains completed class rows and ordinary schedule links
+  ---
+  duration_ms: 4.4516
+  type: 'test'
+  ...
+# Subtest: incomplete local schedule sync does not discard source entity facts
+ok 3 - incomplete local schedule sync does not discard source entity facts
+  ---
+  duration_ms: 2.473
+  type: 'test'
+  ...
+# Subtest: one invalid source scope does not stop another or require optional consumers
+ok 4 - one invalid source scope does not stop another or require optional consumers
+  ---
+  duration_ms: 2.8628
+  type: 'test'
+  ...
+# Subtest: valid empty scope completes without group or schedule dependencies
+ok 5 - valid empty scope completes without group or schedule dependencies
+  ---
+  duration_ms: 3.2513
+  type: 'test'
+  ...
+# Subtest: lost create response is read back without a second create
+ok 6 - lost create response is read back without a second create
+  ---
+  duration_ms: 3.8404
+  type: 'test'
+  ...
+# Subtest: unresolved creation is not retried in the same run
+ok 7 - unresolved creation is not retried in the same run
+  ---
+  duration_ms: 1.7344
+  type: 'test'
+  ...
+# Subtest: source class identity and explicit empty arrays are validated
+ok 8 - source class identity and explicit empty arrays are validated
+  ---
+  duration_ms: 1.3749
+  type: 'test'
+  ...
+# Subtest: independent empty collection succeeds for all five sources and all days
+ok 9 - independent empty collection succeeds for all five sources and all days
+  ---
+  duration_ms: 17.0933
+  type: 'test'
+  ...
+# Subtest: trainer overlap and both private follows collect once with separate collection associations
+ok 10 - trainer overlap and both private follows collect once with separate collection associations
+  ---
+  duration_ms: 8.9933
+  type: 'test'
+  ...
+# Subtest: repeat run preserves entry/collection IDs and adds one terminal run log
+ok 11 - repeat run preserves entry/collection IDs and adds one terminal run log
+  ---
+  duration_ms: 7.1093
+  type: 'test'
+  ...
+# Subtest: one failed producer preserves its previous entry membership and other sources refresh
+ok 12 - one failed producer preserves its previous entry membership and other sources refresh
+  ---
+  duration_ms: 5.446
+  type: 'test'
+  ...
+# Subtest: inactive roster never excludes collection; team slice hides inactive but user-only is never team
+ok 13 - inactive roster never excludes collection; team slice hides inactive but user-only is never team
+  ---
+  duration_ms: 3.0501
+  type: 'test'
+  ...
+# Subtest: schedule sync mismatch stops before source calls and retains existing participation
+ok 14 - schedule sync mismatch stops before source calls and retains existing participation
+  ---
+  duration_ms: 4.1219
+  type: 'test'
+  ...
+# Subtest: archive failure prevents entry changes
+ok 15 - archive failure prevents entry changes
+  ---
+  duration_ms: 1.2534
+  type: 'test'
+  ...
+# Subtest: explicit missing followed entry fails that owner, not an empty success
+ok 16 - explicit missing followed entry fails that owner, not an empty success
+  ---
+  duration_ms: 1.9829
+  type: 'test'
+  ...
+# Subtest: more than ten private selections blocks sources and malformed empty people fails
+ok 17 - more than ten private selections blocks sources and malformed empty people fails
+  ---
+  duration_ms: 2.817
+  type: 'test'
+  ...
+# Subtest: private-only entry has no invented trainer feed association
+ok 18 - private-only entry has no invented trainer feed association
+  ---
+  duration_ms: 2.6305
+  type: 'test'
+  ...
+# Subtest: scheduled date is respected; conflicting participation is rejected
+ok 19 - scheduled date is respected; conflicting participation is rejected
+  ---
+  duration_ms: 1.0471
+  type: 'test'
+  ...
+# Subtest: adapter rejects every CWF/shared mutation, synced destination writes and deletion
+ok 20 - adapter rejects every CWF/shared mutation, synced destination writes and deletion
+  ---
+  duration_ms: 1.1252
+  type: 'test'
+  ...
+# Subtest: log capacity archives finished slot before reuse
+ok 21 - log capacity archives finished slot before reuse
+  ---
+  duration_ms: 2.2732
+  type: 'test'
+  ...
+# Subtest: canonical show read replaces schedules mirror without changing schedule links
+ok 22 - canonical show read replaces schedules mirror without changing schedule links
+  ---
+  duration_ms: 3.5223
+  type: 'test'
+  ...
+# Subtest: canonical authority is read-only through the adapter
+ok 23 - canonical authority is read-only through the adapter
+  ---
+  duration_ms: 0.4924
+  type: 'test'
+  ...
+# Subtest: plural writer keeps keys, local links and successful observation on two fixture runs
+ok 24 - plural writer keeps keys, local links and successful observation on two fixture runs
+  ---
+  duration_ms: 6.7281
+  type: 'test'
+  ...
+# Subtest: failed collection preserves historical links and successful timestamp
+ok 25 - failed collection preserves historical links and successful timestamp
+  ---
+  duration_ms: 4.4449
+  type: 'test'
+  ...
+# Subtest: ambiguous class groups never inferred from people feed
+ok 26 - ambiguous class groups never inferred from people feed
+  ---
+  duration_ms: 1.9898
+  type: 'test'
+  ...
+# Subtest: stale or failed date health blocks collection without refreshing observation
+ok 27 - stale or failed date health blocks collection without refreshing observation
+  ---
+  duration_ms: 3.5951
+  type: 'test'
+  ...
+# Subtest: plural empty sources succeed and disappeared participation is dropped with history
+ok 28 - plural empty sources succeed and disappeared participation is dropped with history
+  ---
+  duration_ms: 5.3045
+  type: 'test'
+  ...
+# Subtest: saved positive copies actual active schedule and supports observed group association
+ok 29 - saved positive copies actual active schedule and supports observed group association
+  ---
+  duration_ms: 38.2212
+  type: 'test'
+  ...
+# Subtest: saved same-run contradictory group retains supported entry and entity facts
+ok 30 - saved same-run contradictory group retains supported entry and entity facts
+  ---
+  duration_ms: 6.1233
+  type: 'test'
+  ...
+# Subtest: saved partial roster671 keeps class/date association and flags only group uncertainty
+ok 31 - saved partial roster671 keeps class/date association and flags only group uncertainty
+  ---
+  duration_ms: 2.5834
+  type: 'test'
+  ...
+# Subtest: missing inventory does not gate ordinary class/date linking or entity normalization
+ok 32 - missing inventory does not gate ordinary class/date linking or entity normalization
+  ---
+  duration_ms: 2.4468
+  type: 'test'
+  ...
+# Subtest: same-revision completeness is required only for group assertion
+ok 33 - same-revision completeness is required only for group assertion
+  ---
+  duration_ms: 4.3158
+  type: 'test'
+  ...
+# Subtest: ring ID is not ring number; contradictory ring identity does not become group proof
+ok 34 - ring ID is not ring number; contradictory ring identity does not become group proof
+  ---
+  duration_ms: 1.9197
+  type: 'test'
+  ...
+# Subtest: duplicate group rosters are unresolved instead of selecting an arbitrary group
+ok 35 - duplicate group rosters are unresolved instead of selecting an arbitrary group
+  ---
+  duration_ms: 2.5411
+  type: 'test'
+  ...
+# Subtest: duplicate operational occurrences never fan out or erase entity facts
+ok 36 - duplicate operational occurrences never fan out or erase entity facts
+  ---
+  duration_ms: 3.3153
+  type: 'test'
+  ...
+# Subtest: source occurrence conflict and repeated source occurrence are rejected
+ok 37 - source occurrence conflict and repeated source occurrence are rejected
+  ---
+  duration_ms: 4.239
+  type: 'test'
+  ...
+# Subtest: exact own-class trip identity matters; another trip or class cannot lend eligibility
+ok 38 - exact own-class trip identity matters; another trip or class cannot lend eligibility
+  ---
+  duration_ms: 17.3152
+  type: 'test'
+  ...
+# Subtest: one bad trip group match does not stop other supported group links
+ok 39 - one bad trip group match does not stop other supported group links
+  ---
+  duration_ms: 3.4511
+  type: 'test'
+  ...
+# Subtest: empty class succeeds without needing any group or schedule data
+ok 40 - empty class succeeds without needing any group or schedule data
+  ---
+  duration_ms: 10.1867
+  type: 'test'
+  ...
+# Subtest: replay is stable, keeps observation time and does not mutate source or old links
+ok 41 - replay is stable, keeps observation time and does not mutate source or old links
+  ---
+  duration_ms: 5.676
+  type: 'test'
+  ...
+# Subtest: conflicting required identity rejects source facts rather than guessing
+ok 42 - conflicting required identity rejects source facts rather than guessing
+  ---
+  duration_ms: 10.4061
+  type: 'test'
+  ...
+# Subtest: unknown trainer and missing trip UUID retain facts but cannot claim group eligibility
+ok 43 - unknown trainer and missing trip UUID retain facts but cannot claim group eligibility
+  ---
+  duration_ms: 4.6403
+  type: 'test'
+  ...
+# Subtest: one transient source retry recovers; no retry for authentication or malformed success
+ok 44 - one transient source retry recovers; no retry for authentication or malformed success
+  ---
+  duration_ms: 3.7526
+  type: 'test'
+  ...
+# Subtest: persistent 502 is bounded to two attempts and fails rather than empty success
+ok 45 - persistent 502 is bounded to two attempts and fails rather than empty success
+  ---
+  duration_ms: 0.6109
+  type: 'test'
+  ...
+# Subtest: timeout may retry once; arbitrary programming errors never retry
+ok 46 - timeout may retry once; arbitrary programming errors never retry
+  ---
+  duration_ms: 0.5971
+  type: 'test'
+  ...
+1..46
+# tests 46
+# suites 0
+# pass 46
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 425.2441

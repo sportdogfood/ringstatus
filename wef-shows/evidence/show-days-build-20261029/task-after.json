@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-29T10:12:19.4643195-04:00",
+  "actionUnchanged": true,
+  "startBoundaryUnchanged": true,
+  "intervalUnchanged": true,
+  "interval": "PT5M",
+  "task": "wef-shows-collector",
+  "note": "Initial comparison false-negative caused by ConvertFrom-Json automatic ISO date conversion; raw strings match."
+}

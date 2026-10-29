@@ -1,0 +1,61 @@
+{
+  "deployed_at": "2026-10-29T11:20:01.0029761-04:00",
+  "source": "C:/Users/gombc/.codex/worktrees/wef-schedule-collector/ringstatus/wef-schedules",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules",
+  "files": [
+    {
+      "file": "attempt-entry.js",
+      "sha256": "CCC22AA5BF4462C15A3AB1D7FA96513406F2C31D941788FD478C08610842382C"
+    },
+    {
+      "file": "attempts.js",
+      "sha256": "93AA8F6F71798DB1FBBE3C1A05C085D29336B2801F91BF15D9EC00DEAC2A266B"
+    },
+    {
+      "file": "attempt-api.js",
+      "sha256": "1628FB8835D99AEC010C04DCC245D2E82DD72ECD0F2DA24F6ADE906C929A9511"
+    },
+    {
+      "file": "error-logs.js",
+      "sha256": "D79F0ADBA758FF4218427B45BCD49A0159B41320F7C3357AE20DDF30CDC8B11A"
+    },
+    {
+      "file": "logging-lock.js",
+      "sha256": "F682A99F8EDFC69A058B0BFCFFCDF8030ED16EE10C8927D25D509731331EB07E"
+    },
+    {
+      "file": "run-logs.js",
+      "sha256": "A39E7D2FEA0136A07562D46DAE48140F1E91CF68D5CE5D83C7030533CDEBF12C"
+    },
+    {
+      "file": "tests/attempt-errors.test.js",
+      "sha256": "E8510DCEC0F09BB2C1FCB3F0923DF4A8CD665D4BD6D010BAEF9986BDA0AC2F25"
+    },
+    {
+      "file": "tests/attempt-entry.test.js",
+      "sha256": "2BB5006FCFFF433FF2BC10182CB376BC7A3D616D0C2AF68D7CB30A3339E08E79"
+    },
+    {
+      "file": "tests/runner-output.test.js",
+      "sha256": "AB445D2DDF780AA8A5A2EA659E8D76CE8BD2CBCF84829F88B063D8E450157842"
+    },
+    {
+      "file": "README.md",
+      "sha256": "1AEC1D36D89ABB18481A417BF1BB539C118F0D613EB9185C23617EFEAA3D4C25"
+    },
+    {
+      "file": "scope.md",
+      "sha256": "ED5932C6D18867661D6BA275D7D0BDBCCD4B84F65B06F83EF169B6BFC005E7DD"
+    },
+    {
+      "file": "source-manifest.json",
+      "sha256": "CD9FC24C0C61F15E77AF58FF06D1C03049ACD6E151FDA327F920C0068CCCA90D"
+    },
+    {
+      "file": "run.ps1",
+      "sha256": "5A79216884B5393D8FE6847CEF69B44D90C3D01C7C56891AC7EAADEB738300F2"
+    }
+  ],
+  "manual_runs": 0,
+  "task_changes": 0
+}

@@ -1,0 +1,4778 @@
+{
+  "ok": true,
+  "run_id": "0b494dd2-560b-499b-9360-ef36f3006369",
+  "started": "2026-10-29T18:44:02.364Z",
+  "rows": 117,
+  "accepted_rows": 117,
+  "collections": [
+    {
+      "scope": "data|15|200000076|2026-10-30|1|200030775",
+      "status": "complete",
+      "rows": 19,
+      "source_as_of": "2026-10-29T13:20:05.838Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|1|200030790",
+      "status": "complete",
+      "rows": 6,
+      "source_as_of": "2026-10-29T13:20:05.740Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|1|200030821",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:20:05.704Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|1|200030828",
+      "status": "complete",
+      "rows": 14,
+      "source_as_of": "2026-10-29T13:20:05.783Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|2|200030838",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:20:52.841Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030430",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:45.244Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030431",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:24.036Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030432",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:23.922Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030435",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:01.460Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030436",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:45.242Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030437",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:01.669Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030440",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:39.457Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030441",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:39.388Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030442",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:00.343Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030445",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:20:52.731Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030446",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:23.999Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030447",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:03.390Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030448",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:03.339Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030451",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:20:52.732Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030452",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:24.009Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030453",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:03.359Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030454",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:03.356Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030457",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:17.034Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030458",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:41.528Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030459",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:16.998Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030462",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:23.035Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030463",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:00.343Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030464",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:00.346Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030467",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:23.700Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030468",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:23.712Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030469",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:39.382Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030472",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:20.899Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030473",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:20.747Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030474",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:04.056Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030475",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:39.549Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030476",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:39.592Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030477",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:20.772Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030478",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:20.808Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030479",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:39.525Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030480",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:30:17.010Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030481",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:46.415Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030482",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:30:17.007Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030485",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:25:23.065Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030486",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:24:39.419Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030487",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:25:00.345Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030490",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:23.701Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030491",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:23.777Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030492",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:01.562Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030495",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:45.275Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030496",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:45.134Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030497",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:01.739Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030570",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:33:10.382Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030571",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:41.542Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030572",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:41.534Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030575",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:33:37.939Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030576",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:41.579Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030577",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:33:10.402Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030580",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:46.372Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030581",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:25:46.469Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030582",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:25:23.077Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030631",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:23.282Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030632",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:46.464Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030671",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:20:52.784Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030711",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:10.416Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030712",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:10.416Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030713",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:37.924Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030714",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:37.904Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030715",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:04.063Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030716",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:04.090Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030733",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:04.060Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030735",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:37.902Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030747",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:35:37.355Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030750",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:36:02.871Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030753",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:59.221Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030757",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:35:37.355Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030760",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:34:59.252Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030783",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:59.205Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030800",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:35:37.418Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030805",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:59.239Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030809",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:35:37.400Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030812",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:39.604Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030843",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:36:02.926Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030540",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:07.921Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030541",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:36:02.881Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030542",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:28.499Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030545",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:43:28.450Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030546",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:43:07.787Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030547",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:43:07.833Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030550",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:28.508Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030551",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:07.785Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030552",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:49.676Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030555",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:12.940Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030556",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:28.517Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030557",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:49.599Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030560",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:12.916Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030561",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:43:49.683Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030562",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:44:12.975Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030565",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:36.051Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030566",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:49.672Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030567",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:12.987Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030682",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:36:02.901Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030705",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:44:58.845Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030706",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:44:58.826Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030707",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:44:58.862Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030708",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:44:36.041Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030709",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:44:36.050Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030710",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:44:58.806Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030845",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:36.059Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030728",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:53:37.152Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030729",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:54:15.450Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030734",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:54:16.040Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030736",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:53:37.142Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030763",
+      "status": "complete",
+      "rows": 4,
+      "source_as_of": "2026-10-29T13:46:01.364Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030766",
+      "status": "complete",
+      "rows": 4,
+      "source_as_of": "2026-10-29T13:46:01.383Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030769",
+      "status": "complete",
+      "rows": 11,
+      "source_as_of": "2026-10-29T13:45:27.933Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030772",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:45:27.850Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030786",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:45:27.821Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030792",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:46:01.350Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030797",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:53:37.159Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030815",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:46:01.361Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030818",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:45:27.848Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030842",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:53:37.160Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030776",
+      "status": "complete",
+      "rows": 5,
+      "source_as_of": "2026-10-29T13:55:07.713Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030778",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:54:16.073Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030791",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:55:07.789Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030822",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:54:15.276Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030827",
+      "status": "complete",
+      "rows": 8,
+      "source_as_of": "2026-10-29T13:55:07.731Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|2|200030835",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:55:07.914Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030433",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:05:30.908Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030434",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:05:30.675Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030438",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:26.824Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030439",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:26.777Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030443",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:05:30.635Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030444",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:26.875Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030449",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:56:02.947Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030450",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:05:30.972Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030455",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:56:03.088Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030456",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:56:02.991Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030493",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:26.858Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030494",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:53.431Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030498",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:53.447Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030499",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:53.439Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030500",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:08:11.845Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030501",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:08:11.847Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030502",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:08:11.872Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030505",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:07:35.064Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030506",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:07:35.069Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030507",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:07:35.062Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030510",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:59.676Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030511",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:59.495Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030512",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:59.511Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030520",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:59.513Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030521",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:42.470Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030522",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:42.477Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030525",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:42.411Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030526",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:08:13.099Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030527",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:42.361Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030672",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:56:02.934Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030673",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:07:35.119Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030840",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:53.333Z",
+      "reason": "Accepted source observation; currentness is not asserted"
+    }
+  ],
+  "errors": [],
+  "link_issues": [
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030601|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|NaN|2",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030518|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030685|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030588|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030674|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030666|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030530|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030536|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030770|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030515|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-29|NaN|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030544|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030516|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030661|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-29|NaN|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030788|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030700|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030610|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030732|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030749|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030701|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030668|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030629|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030725|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030730|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030503|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030825|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030723|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030852|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030483|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030759|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030813|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030647|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030846|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030573|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030606|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030471|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030642|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030607|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030543|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030579|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030789|1",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030470|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-29|NaN|1",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030743|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-30|NaN|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030806|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030531|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030603|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030794|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030584|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030824|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030834|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030630|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030532|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030839|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030683|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030814|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-30|NaN|2",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030761|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030614|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030653|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030535|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030697|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030593|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030528|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030615|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-29|NaN|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030804|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030784|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030848|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030645|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030564|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030819|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030703|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030613|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030829|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030640|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030836|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030488|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030762|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030461|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030696|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030602|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030621|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030676|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030549|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030508|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030559|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030670|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030538|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030595|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030799|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030484|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030719|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030534|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030585|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030677|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030663|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030787|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030764|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030641|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030624|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030627|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-29|NaN|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030665|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030620|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030802|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030740|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030727|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030752|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030592|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030644|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030850|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030636|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030657|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030684|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030638|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030830|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030817|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030504|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030600|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030744|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030509|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030849|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030660|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030807|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030612|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030489|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030553|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030739|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030537|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030777|1",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030625|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030681|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030851|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-30|NaN|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030548|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030569|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030656|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030795|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030785|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030659|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030773|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030826|1",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030594|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030724|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030533|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030466|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030539|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030599|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030597|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030587|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030720|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030519|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030590|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030589|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030721|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030524|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030738|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030628|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030823|1",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030523|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030758|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030765|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030460|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030726|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030798|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030680|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030810|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030755|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-30|NaN|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030517|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030832|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030731|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030626|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030803|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030837|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030633|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030722|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030654|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030741|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030833|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030578|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030669|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030746|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030718|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030623|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030646|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030637|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030667|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030754|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030616|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030513|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030568|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030608|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030717|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030622|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030643|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030831|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-30|NaN|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030742|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030514|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030702|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030618|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030664|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030554|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030650|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030598|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030808|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030699|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030619|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030748|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030611|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030811|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030801|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030649|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030604|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030609|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030583|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030658|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030704|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030779|1",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030648|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030847|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030558|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030796|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030857|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030854|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030768|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030652|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030574|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030617|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030679|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030591|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030662|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030820|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030529|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030639|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030745|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030767|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030635|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030678|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030793|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030596|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030655|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030816|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030651|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030586|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030605|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030465|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030751|4",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-11-01|200030771|6",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030698|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030634|3",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "kind": "missing-class-evidence",
+      "scope": "200000076|2026-10-31|200030563|5",
+      "reason": "Shared schedule has no accepted class observation; existing links preserved"
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245507|200030775",
+      "reason": "Newer existing observation retained"
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247056|200030581",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247056|200030582",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246107|200030671",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory",
+        "schedule: Ambiguous class/date schedule"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247133|200030747",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247287|200030760",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247289|200030760",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245918|200030546",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245918|200030547",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247819|200030561",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247819|200030562",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245637|200030772",
+      "reason": "Newer existing observation retained"
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245643|200030772",
+      "reason": "Newer existing observation retained"
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247108|200030797",
+      "reasons": [
+        "group: Group order roster incomplete or contradicts parent inventory"
+      ]
+    }
+  ],
+  "archives": [
+    {
+      "at": "2026-10-29T18:44:29.836Z",
+      "kind": "entries-before",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\entries-before\\0b32d1dd8fe54cf28bf71f5d931772cc3ab42c0cc425d1002cf4a4faae00481d.json.gz",
+      "records": 127,
+      "sha256": "0b32d1dd8fe54cf28bf71f5d931772cc3ab42c0cc425d1002cf4a4faae00481d",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.329Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\fea2d7e0126f5d1d974b07aececffd836792ffe6a216019b5730d352a44d31ba.json.gz",
+      "records": 19,
+      "sha256": "fea2d7e0126f5d1d974b07aececffd836792ffe6a216019b5730d352a44d31ba",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.335Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\c5662e73cae9f89aa20bd35e13e81494ac7bf70d79b563d82f3a1a0446a18d2c.json.gz",
+      "records": 6,
+      "sha256": "c5662e73cae9f89aa20bd35e13e81494ac7bf70d79b563d82f3a1a0446a18d2c",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.340Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\3a676128e53acae8176a2e764e6ca4ca5460e44cbbe016f8534591fee0e67979.json.gz",
+      "records": 1,
+      "sha256": "3a676128e53acae8176a2e764e6ca4ca5460e44cbbe016f8534591fee0e67979",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.345Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\83b46d3057c0541df7f9b5197d04b458f71aab566cb5bb2167771071b64264e3.json.gz",
+      "records": 14,
+      "sha256": "83b46d3057c0541df7f9b5197d04b458f71aab566cb5bb2167771071b64264e3",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.350Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\bad0d951162a8ec8d02e7bb89b45c501b58b254b4bddd7d1940788f351841c40.json.gz",
+      "records": 2,
+      "sha256": "bad0d951162a8ec8d02e7bb89b45c501b58b254b4bddd7d1940788f351841c40",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.352Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.353Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.354Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.356Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.358Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.359Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.360Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.361Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.361Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.363Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.363Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.364Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.365Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.367Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.369Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.370Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.372Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.376Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\2ac5f9f6c01fb78997f27a1ee198b28d62b933bef149fa6a8caf053ff1f35ddc.json.gz",
+      "records": 1,
+      "sha256": "2ac5f9f6c01fb78997f27a1ee198b28d62b933bef149fa6a8caf053ff1f35ddc",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.381Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\155e9ba5b9087cca4f31f80c1cdb1225f78516117f637960690c4b97cdb60481.json.gz",
+      "records": 1,
+      "sha256": "155e9ba5b9087cca4f31f80c1cdb1225f78516117f637960690c4b97cdb60481",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.385Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\8a56e4ea4b77c8a7c702e31e18573f1f1314c7e07cba7ea8b8af58903037e37d.json.gz",
+      "records": 1,
+      "sha256": "8a56e4ea4b77c8a7c702e31e18573f1f1314c7e07cba7ea8b8af58903037e37d",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.386Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.387Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.388Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.389Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.390Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.391Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.392Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.393Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.394Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.396Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.397Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.398Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.398Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.399Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.400Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.401Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.402Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.406Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\48855b6dd79063501865440c1c56f9d9a71504cade2fefc89cde7d9fe6422e39.json.gz",
+      "records": 1,
+      "sha256": "48855b6dd79063501865440c1c56f9d9a71504cade2fefc89cde7d9fe6422e39",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.410Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\9df3aef0de93dbc586b90d92eecd52f660c9054f66522836df553a5c4daba53f.json.gz",
+      "records": 1,
+      "sha256": "9df3aef0de93dbc586b90d92eecd52f660c9054f66522836df553a5c4daba53f",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.416Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\50dd165fefa086db359f959ac28bc5a41148e3df98f9aa54c7ceb17f3273d264.json.gz",
+      "records": 1,
+      "sha256": "50dd165fefa086db359f959ac28bc5a41148e3df98f9aa54c7ceb17f3273d264",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.417Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.418Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.419Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.419Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.420Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.421Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.425Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\072de0104e1e5ac8a3d40a27b221cfa531c2bec5cea26dd7743dd460cedac161.json.gz",
+      "records": 1,
+      "sha256": "072de0104e1e5ac8a3d40a27b221cfa531c2bec5cea26dd7743dd460cedac161",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.431Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\075ffcb11181f83346a08de8a5be12393d56aac99d181a6f843fe6005125a881.json.gz",
+      "records": 1,
+      "sha256": "075ffcb11181f83346a08de8a5be12393d56aac99d181a6f843fe6005125a881",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.434Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\7357843a13d8060909030e2d80199170166ae8416c20a3461a5ffb8a5a7ac9cc.json.gz",
+      "records": 1,
+      "sha256": "7357843a13d8060909030e2d80199170166ae8416c20a3461a5ffb8a5a7ac9cc",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.439Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\2e04a597ab0fa043faae3bd7d61aa7678d1bb4b8b7cb4b100c823f2f492a3ed0.json.gz",
+      "records": 1,
+      "sha256": "2e04a597ab0fa043faae3bd7d61aa7678d1bb4b8b7cb4b100c823f2f492a3ed0",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.442Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\73c1eabc52645351560a3b92f65e49132ef332065f2af97a53c3989ab31a1699.json.gz",
+      "records": 1,
+      "sha256": "73c1eabc52645351560a3b92f65e49132ef332065f2af97a53c3989ab31a1699",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.447Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\0e7fbcec4d4d2875ca68c3e04b2ee4daf3a157a19719404e658056ff416bfb62.json.gz",
+      "records": 1,
+      "sha256": "0e7fbcec4d4d2875ca68c3e04b2ee4daf3a157a19719404e658056ff416bfb62",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.449Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.452Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\1fe49c1d754ca01578458ed81f86d6a0fdc5074c7587313d3fb5ddc793a42d85.json.gz",
+      "records": 1,
+      "sha256": "1fe49c1d754ca01578458ed81f86d6a0fdc5074c7587313d3fb5ddc793a42d85",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.457Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\6aa84eb6d541bfbf64154d88e665d6bbaea644a79fb8f4e134a529de96360c3a.json.gz",
+      "records": 1,
+      "sha256": "6aa84eb6d541bfbf64154d88e665d6bbaea644a79fb8f4e134a529de96360c3a",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.458Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.459Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.463Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\2572e7cf375f2e710af5f64638c6e7dd2d26d68c01994669fccbf96b30dc9403.json.gz",
+      "records": 1,
+      "sha256": "2572e7cf375f2e710af5f64638c6e7dd2d26d68c01994669fccbf96b30dc9403",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.464Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.465Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.466Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.467Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.468Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.469Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.470Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.471Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.475Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\d9d56c29147fbd3e8245a631d47f17b94be1b59ea0826f7944cc88fa9b5c0742.json.gz",
+      "records": 1,
+      "sha256": "d9d56c29147fbd3e8245a631d47f17b94be1b59ea0826f7944cc88fa9b5c0742",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.475Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.476Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.479Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\a546ed82a8db24d0139abd39091f77d5f116503497c4fb7bb30129399af7ef52.json.gz",
+      "records": 2,
+      "sha256": "a546ed82a8db24d0139abd39091f77d5f116503497c4fb7bb30129399af7ef52",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.483Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\476fb6e3b803da090a3242b4bfdb3a44d39490ea1dc810500182f840ce9e2198.json.gz",
+      "records": 2,
+      "sha256": "476fb6e3b803da090a3242b4bfdb3a44d39490ea1dc810500182f840ce9e2198",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.484Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.485Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.485Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.490Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\adc3b8ba02691aaf7de37d187fc3b917df909a6741a4faba1c4c9187530c627b.json.gz",
+      "records": 1,
+      "sha256": "adc3b8ba02691aaf7de37d187fc3b917df909a6741a4faba1c4c9187530c627b",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.491Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.492Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.492Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.493Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.494Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.497Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\1072f44c013d30ecb163c1939295a862017c755fb18c176aace5e2661ab6e8ff.json.gz",
+      "records": 1,
+      "sha256": "1072f44c013d30ecb163c1939295a862017c755fb18c176aace5e2661ab6e8ff",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.500Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\def512dd8cbf34833ffa8a8f12618a54503dcf2f89873667c47b155c5fdd2451.json.gz",
+      "records": 1,
+      "sha256": "def512dd8cbf34833ffa8a8f12618a54503dcf2f89873667c47b155c5fdd2451",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.502Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\bd886395c8b113305805c30aaa7cb4c13af63a1a46e5b933065b4fd9afe43318.json.gz",
+      "records": 1,
+      "sha256": "bd886395c8b113305805c30aaa7cb4c13af63a1a46e5b933065b4fd9afe43318",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.503Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.505Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.506Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.508Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.508Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.509Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.510Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.514Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\5a434ae1ee03cb9a7b41cbbc6422e933f3fe556f2d3efac0fb0522e0a1ef37f5.json.gz",
+      "records": 1,
+      "sha256": "5a434ae1ee03cb9a7b41cbbc6422e933f3fe556f2d3efac0fb0522e0a1ef37f5",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.517Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\f11ede267b0c37060891fc4268a2be9b40f3167390a532fca88b3427e7b9d7e2.json.gz",
+      "records": 1,
+      "sha256": "f11ede267b0c37060891fc4268a2be9b40f3167390a532fca88b3427e7b9d7e2",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.517Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.518Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.519Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.521Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.525Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\1e9bf6d0428944acb9897e42334786bc770339c2d1aaeb35b2871f554d30b131.json.gz",
+      "records": 1,
+      "sha256": "1e9bf6d0428944acb9897e42334786bc770339c2d1aaeb35b2871f554d30b131",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.528Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\f221e22f02e1d212b40b9e7be4748d02371a767eb004bbd9c2614328c49e26f8.json.gz",
+      "records": 1,
+      "sha256": "f221e22f02e1d212b40b9e7be4748d02371a767eb004bbd9c2614328c49e26f8",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.533Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\5f20d65278f32fd80394b83b1d874d84983944602df6078d0fc8b0377746e591.json.gz",
+      "records": 1,
+      "sha256": "5f20d65278f32fd80394b83b1d874d84983944602df6078d0fc8b0377746e591",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.538Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\309e07450c4e484bdfc9ac3e16ec683bb1e057f8833bf4a2cd9c8aa291fcfd6f.json.gz",
+      "records": 2,
+      "sha256": "309e07450c4e484bdfc9ac3e16ec683bb1e057f8833bf4a2cd9c8aa291fcfd6f",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.543Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\a6ab5bad1811b996ebb9563387cf6c12b0ce906ac781cb495d766c94321e1999.json.gz",
+      "records": 2,
+      "sha256": "a6ab5bad1811b996ebb9563387cf6c12b0ce906ac781cb495d766c94321e1999",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.547Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\5295cdfd8582e936298d9341c532c87a19a8602341eb9c4671ce8e0157201109.json.gz",
+      "records": 2,
+      "sha256": "5295cdfd8582e936298d9341c532c87a19a8602341eb9c4671ce8e0157201109",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.549Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.550Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.551Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.551Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.553Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.558Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4e5e721a81bff23a0531611922a961e172ff4d447a141642e47b8aeae0877c24.json.gz",
+      "records": 4,
+      "sha256": "4e5e721a81bff23a0531611922a961e172ff4d447a141642e47b8aeae0877c24",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.562Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\f7a9ca8bfd5ad7c9b34d2e68cbb9521e9c66b37af9edb1a80ad2916f4b4d6ca1.json.gz",
+      "records": 4,
+      "sha256": "f7a9ca8bfd5ad7c9b34d2e68cbb9521e9c66b37af9edb1a80ad2916f4b4d6ca1",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.567Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4cb404b42fcd50faf8face5d280a7a74b0c767ada5cc0923b4da215d5efe085c.json.gz",
+      "records": 11,
+      "sha256": "4cb404b42fcd50faf8face5d280a7a74b0c767ada5cc0923b4da215d5efe085c",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.568Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\c54e43670a704c4142ef7332deaa7a859e1cb30016fad5eca169ac1a24c54650.json.gz",
+      "records": 2,
+      "sha256": "c54e43670a704c4142ef7332deaa7a859e1cb30016fad5eca169ac1a24c54650",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.573Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\86292eb0614053c979a732020b0d18c25ed012a259ffcdc632f04799c5c4dbee.json.gz",
+      "records": 2,
+      "sha256": "86292eb0614053c979a732020b0d18c25ed012a259ffcdc632f04799c5c4dbee",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.574Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.577Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\55a81db563d0c24fc1246f6411b56fee6dc0509f77fcfc6b5d2b9a7ae1e185e0.json.gz",
+      "records": 1,
+      "sha256": "55a81db563d0c24fc1246f6411b56fee6dc0509f77fcfc6b5d2b9a7ae1e185e0",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.582Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\2d42dd993b146fcfa3d59a10c20b7368423f6b5d1213ace0fffc161517f42756.json.gz",
+      "records": 1,
+      "sha256": "2d42dd993b146fcfa3d59a10c20b7368423f6b5d1213ace0fffc161517f42756",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.583Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.584Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.587Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\f0c49781897c61537cf6be69d0c125d30b7363bb78a1b1669b05d984de93c364.json.gz",
+      "records": 5,
+      "sha256": "f0c49781897c61537cf6be69d0c125d30b7363bb78a1b1669b05d984de93c364",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.589Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.592Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\015bca61a3ba2c3564bec01366d5ef4532d3e3a15482072fd9aa2ea77299302b.json.gz",
+      "records": 1,
+      "sha256": "015bca61a3ba2c3564bec01366d5ef4532d3e3a15482072fd9aa2ea77299302b",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.596Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\1427d283fb52ed0264ae5bed70059747e3e3ff999635171de259a2c4fa596810.json.gz",
+      "records": 1,
+      "sha256": "1427d283fb52ed0264ae5bed70059747e3e3ff999635171de259a2c4fa596810",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.600Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\760e900fe4cffc26855751e9819be39575277363e1dfa5492768ca5e4fed9a33.json.gz",
+      "records": 8,
+      "sha256": "760e900fe4cffc26855751e9819be39575277363e1dfa5492768ca5e4fed9a33",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.601Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.601Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.602Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.603Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.605Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.605Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.606Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.607Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.608Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.609Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.610Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.610Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.611Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.612Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.613Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.614Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.614Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.615Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.616Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.617Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.618Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.620Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.621Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.622Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.623Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.624Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.625Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.626Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.627Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.627Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.628Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.629Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T18:44:37.630Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    }
+  ],
+  "source_fetches": 0,
+  "tenant_reads": 0,
+  "show_id": 200000076,
+  "show_source": {
+    "base": "appCaSmL819KK7UFJ",
+    "record": "recOAxMcqu1f75CQk",
+    "checked_at": "2026-10-29T18:39:20.143Z"
+  },
+  "shared_schedule_rows": 504,
+  "data_revision": "adaptive-2026-10-29T18:22:08.409536+00:00",
+  "producer_attempts": [
+    {
+      "key": "adaptive-2026-10-29T18:43:08.624367+00:00",
+      "status": "Writing; readback pending",
+      "phase": "Writing",
+      "reservedClass": null,
+      "sequence": 17
+    }
+  ],
+  "out_of_scope_classes": 0,
+  "summary": "Entries linking: 117 observed rows; 117 accepted source rows (currentness not asserted); 271 link issues; Data adaptive-2026-10-29T18:22:08.409536+00:00. No source acquisition or tenant selection.",
+  "completed": "2026-10-29T18:44:46.378Z",
+  "result": "Partial"
+}

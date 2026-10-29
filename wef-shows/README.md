@@ -130,3 +130,43 @@ unchanged. Offline checks: 124 schedules, 65 CWF and 10 handoff tests passed.
 Normal run logs/heartbeats and compressed archive SHA256 values were read back.
 No manual collector runs or record repairs. Exact receipts and checks:
 `evidence/release-verification.json`.
+
+
+## Canonical show-days publication — 29 October 2026
+
+The approved addition publishes canonical `show-days` after existing default-show
+discovery, using local native links to `shows`. It reads only Data runs/collections;
+source acquisition, Data schemas, downstream inputs and all task cadences stay as-is.
+`day-schema.js` is the focused schema configuration function; `configure.js` retains
+its original discovery schema role. No manual collector execution is part of deployment.
+
+`day-source.js` reads a completed Data head and exact predecessor/collection references,
+uses a hash-and-record-identity checked local cache, and invokes the pure Season
+`day_counts.accepted_summaries` validator through `day-replay.py`. The subprocess
+has no Airtable credentials or network operations. It uses the existing Data Python
+runtime; that deployed module and its replay helper are dependencies of this release.
+The terminal head is read again after replay. A normal canonical-context change
+before Data catches up produces Unknown days, not invented counts.
+
+`accepted-summary` is authoritative; display columns are projections. It retains
+scope, counts, original observation time, upstream revision/digest and exact summary
+part locators. Detailed membership stays in the original Data evidence. A reader
+must verify the local digest, native show/date scope, read the summary before and
+after projections, and require stable revision/digest/status plus matching projections.
+Never read just a displayed zero or publication status as a readiness decision.
+Unknown observations may have null source time and null counts. The five-minute
+age is measured from source as-of, never verification or publication time. Verified
+competition-class coverage is not whole-day attendance or a Live suppression gate.
+
+Day publication failures preserve the previous accepted summary, log Partial with
+separate discovery success, and create `runtime/show-days-stopped.json`. Later
+normal wakes continue original discovery but do not retry the failed day publisher.
+Removing this stop or fixing a failed scheduled path requires separate owner approval.
+Incomplete/unavailable coverage is a valid Unknown outcome, not an execution failure.
+A failed staged projection is nonconsumable until approved recovery; the original
+accepted body remains the preserved historical tuple.
+
+`verify-days.js` is GET-only normal-run verification: it compares each accepted body
+with an independent replay of its exact producer revision, checks display/native links
+and saved run evidence, and writes a local verification receipt. It never invokes a
+collector. Two normal producer/consumer pairs are required for deployment acceptance.

@@ -14,7 +14,7 @@ async function runLive({
   getStatus = require('./activity').readStatus,
   clock = () => new Date().toISOString(),
   archive = (kind, rows, scope) =>
-    require("../wef-tenants/archive").archiveFile(
+    require("./archive").archiveFile(
       path.join(settings.RUNTIME, "history"),
       kind,
       rows,
@@ -87,6 +87,7 @@ async function runLive({
     );
     report.scope = scope;
     report.show_source = {base: settings.SHOWS_BASE, record: scope.authority, checked_at: scope.checked_at};
+    await require('./rollover').labelHistorical(api, scope, keep, clock());
     // The canonical wef-shows record is authoritative. Calendar equality is only an upcoming-day guard.
     if (!scope.active) {
       report.ok = true;
@@ -113,7 +114,7 @@ async function runLive({
         break collection;
       }
       let scheduleRows = null,
-        binder = null, sourceSchedules = null, scheduleHealth = null, binderFields = null;
+        binder = null;
       try {
         scheduleRows = await api.list("wef-schedules.schedules");
       } catch (e) {
@@ -124,20 +125,19 @@ async function runLive({
       }
       try {
         binder = await api.list("wef-entries.entries");
-        binderFields = await api.fieldNames('wef-entries.entries');
       } catch (e) {
         report.warnings.push(
           "Entry reference unavailable; existing links retained: " + e.message,
         );
       }
-      try {
-        [sourceSchedules,scheduleHealth] = await Promise.all([
-          api.list('schedules',settings.SCHEDULES_BASE), api.list('show-collection',settings.SCHEDULES_BASE),
-        ]);
-      } catch(e) { report.warnings.push('Participation schedule health unavailable: '+e.message); }
       const widgetPayload = await get(sources.endpoints.widget);
       await keep("source-widget", widgetPayload);
       model.ringState(widgetPayload, scope, plan);
+      if (!plan.groups.length) {
+        report.ok = true;
+        report.summary = 'Success: no live activity available; existing records and links preserved.';
+        break collection;
+      }
       const entries = [],
         datasets = [];
       for (const c of plan.classes) {
@@ -335,10 +335,7 @@ async function runLive({
         entries.map((e) => {
           const previous=old['live-entries'].find(r=>r.fields['live-entry-key']===e['live-entry-key'])?.fields || {};
           const resolved=require('./participation').resolve({entry:e,previous,binder,
-            localSchedules:scheduleRows,sourceSchedules,health:scheduleHealth,
-            arrayFieldPresent:binderFields?.includes('schedule-keys'),
-            observationField:binderFields?.includes('last-seen')?'last-seen':null,
-            observationStatusField:binderFields?.includes('observation-status')?'observation-status':null,now:clock()});
+            localSchedules:scheduleRows,now:clock()});
           if(resolved.issue)report.link_issues.push({entry_key:e['entry-key'],class_id:Number(e._class.split('|')[2]),trip_id:e['trip-id'],message:resolved.issue});
           return {
             ...clean(e),
@@ -365,11 +362,11 @@ async function runLive({
           "live-rings",
         ]) {
           const prior = old[table].filter(
-            (r) => r.fields.date && r.fields.date < scope.date,
+            (r) => require('./rollover').canRetire(r.fields, scope),
           );
           if (prior.length) {
             const receipt = await keep("retired-" + table, prior);
-            await api.retire(table, prior, scope.date, receipt);
+            await api.retire(table, prior, scope, receipt);
           }
         }
       report.counts = {

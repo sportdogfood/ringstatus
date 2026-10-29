@@ -1,0 +1,19 @@
+{
+  "run": "abd9de11-bd59-4c40-8025-006c7de19f65",
+  "started": "2026-10-29T18:49:02.428Z",
+  "completed": "2026-10-29T18:49:48.911Z",
+  "head": "adaptive-2026-10-29T18:43:08.624367+00:00",
+  "producerStatus": "Verified completed revision",
+  "sequence": 17,
+  "ok": true,
+  "result": "Partial",
+  "rows": 117,
+  "errors": [],
+  "runLog": "Partial",
+  "heartbeat": "2026-10-29T18:49:48.911Z",
+  "recordCount": 127,
+  "identityLinkTimeChanges": [],
+  "publishedRevisions": [
+    "adaptive-2026-10-29T18:43:08.624367+00:00"
+  ]
+}

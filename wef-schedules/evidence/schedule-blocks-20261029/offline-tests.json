@@ -1,0 +1,9 @@
+{
+  "command": "node --test tests/*.test.js",
+  "source": "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\wef-schedules",
+  "tests": 139,
+  "passed": 139,
+  "failed": 0,
+  "manual_collector_runs": 0,
+  "scope": "Offline injected adapters and local fixtures only; saved normal source comparison preserves all 471 class rows exactly"
+}

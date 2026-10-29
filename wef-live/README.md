@@ -6,6 +6,14 @@ matcher correction on 23 October 2026. Both are deployed; the original task
 was re-enabled for its normal 12:07 Eastern run. That run encountered source
 HTTP 502 errors. The run finished Failed at 12:11 Eastern; further task starts are disabled. Two-run acceptance is blocked, and no source repair was made.
 
+## Current Entries linking — 29 October 2026
+
+Live now consumes the accepted Entries publication through the existing read-only sync, including its five status/evidence fields. It checks exact identity, original-source freshness (30 minutes), unresolved newer attempts and local schedule availability. It no longer replays upstream schedule completeness/parity. A missing/stale mapping does not stop observations; previous links stay historical. Existing class/group schedule links and logs remain unchanged. See evidence/entries-contract-20261029/release.md for acceptance and scope.md v1.3 for the current contract.
+
+## Current boundary — 29 October 2026
+
+Live has no tenant-code imports or tenant-specific collection prerequisite. Entries is a linking module using accepted Data/Season and schedules. Historical release notes below are dated evidence, not current dependencies. See scope.md and HANDOFF.md for current ownership and cadence.
+
 ## Scope and authority
 
 Read the current default record from `wef-shows.shows`: show ID, customer ID,
@@ -18,7 +26,7 @@ customer-15 default with a valid show key and a checked timestamp within thirty
 minutes. There is no schedules-show fallback and no discovery request.
 
 Collect rings/groups and each available class's live trips independently of
-CWF trainer feeds. Tenant slices happen downstream. Public ListAjax and
+tenant-specific feeds. Tenant slices happen downstream. Public ListAjax and
 LiveScoreWidget supply the show/day graph. Public getLiveClassData supplies
 trip observations; the unchanged decoded classes Worker supplies exact trip,
 entry, horse, rider and trainer identities. No proxy routes were changed.
@@ -38,7 +46,7 @@ private collection/follow associations are shared. Existing entries records,
 collector, field schema and task remain unchanged.
 
 Missing reference rows do not prevent live observations. Missing or ambiguous
-schedule matches are reported; untracked tenant entries may have no binder
+schedule matches are reported; entries without an available reference may have no binder
 link. A failed reference read preserves existing links. No names-only joins.
 
 ## Execution and verification
@@ -62,7 +70,7 @@ runtime/halt.json and stops further business execution pending owner review.
 Do not remove that stop, repair records or patch a failed production path
 without the required fresh authorization.
 
-Schemas and runtime code for schedules, entries and CWF are protected. During
+Schemas and runtime code for schedules and entries are protected. During
 preflight, two schedules test files changed outside this work; their paths are
 recorded in evidence/preflight.json. Collector runtime hashes stayed unchanged.
 
@@ -74,7 +82,7 @@ Source inspection fixtures are diagnostic inputs, never scheduled-run proof.
 Normal start: 23 October 2026, 10:32:12 Eastern; completed 10:34:30.
 Run ID: 14a119c2-f1c6-4f77-a31e-6af424a84793. Task exit code 0.
 Collected 6 rings, 17 groups, 30 classes and 195 trips; 68 archives verified.
-Heartbeat/run-log readback passed. Four exact links to today's tenant entries
+Heartbeat/run-log readback passed. Four exact links to today's entry references
 passed. Twenty-one classes linked to schedules; nine were left unlinked.
 
 The source schedules are not established as broken: the new matcher counted
@@ -112,7 +120,7 @@ investigation/correction and renewed normal-run acceptance remain outstanding.
 Approved source correction adds one bounded transient HTTP/timeout retry and
 one paired snapshot refresh for a missing trip identity, with timestamped
 public detail requests. It never substitutes guessed or historical identities.
-Forty offline/deployed tests pass. Worker, schedules and CWF are unchanged.
+Forty offline/deployed tests pass. Worker and schedules are unchanged.
 The first normal live run still encountered a persistent 502 for class
 200030347; further live starts are disabled. Full live acceptance remains blocked.
 Evidence: `evidence/source-fix/`. No additional production changes were made

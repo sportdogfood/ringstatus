@@ -1,0 +1,197 @@
+TAP version 13
+# Subtest: actual logging entry offline success
+ok 1 - actual logging entry offline success
+  ---
+  duration_ms: 110.9752
+  type: 'test'
+  ...
+# Subtest: actual logging entry offline lock
+ok 2 - actual logging entry offline lock
+  ---
+  duration_ms: 160.5436
+  type: 'test'
+  ...
+# Subtest: actual logging entry offline startup
+ok 3 - actual logging entry offline startup
+  ---
+  duration_ms: 110.0028
+  type: 'test'
+  ...
+# Subtest: actual logging entry offline dated-failure
+ok 4 - actual logging entry offline dated-failure
+  ---
+  duration_ms: 106.719
+  type: 'test'
+  ...
+# Subtest: attempt starts before startup/lock failure and writes a separate error linked by run ID
+ok 5 - attempt starts before startup/lock failure and writes a separate error linked by run ID
+  ---
+  duration_ms: 10.7752
+  type: 'test'
+  ...
+# Subtest: successful attempt uses the same run-log record, creates no error and does not repeat work
+ok 6 - successful attempt uses the same run-log record, creates no error and does not repeat work
+  ---
+  duration_ms: 1.7803
+  type: 'test'
+  ...
+# Subtest: separate errors are idempotent and redact configured secrets
+ok 7 - separate errors are idempotent and redact configured secrets
+  ---
+  duration_ms: 1.846
+  type: 'test'
+  ...
+# Subtest: receipt replay records only new wrapper attempts, preserves completed logs and never collects
+ok 8 - receipt replay records only new wrapper attempts, preserves completed logs and never collects
+  ---
+  duration_ms: 3.5342
+  type: 'test'
+  ...
+# Subtest: unclosed wrapper receipt remains unknown and never claims a completed collection
+ok 9 - unclosed wrapper receipt remains unknown and never claims a completed collection
+  ---
+  duration_ms: 2.4626
+  type: 'test'
+  ...
+# Subtest: receipt parser handles existing mixed runner encoding and ignores unrelated/historical lines
+ok 10 - receipt parser handles existing mixed runner encoding and ignores unrelated/historical lines
+  ---
+  duration_ms: 5.829
+  type: 'test'
+  ...
+# Subtest: collection failures include dated error rows; informational empty warnings do not
+ok 11 - collection failures include dated error rows; informational empty warnings do not
+  ---
+  duration_ms: 2.5419
+  type: 'test'
+  ...
+# Subtest: failed attempt-log creation prevents source work and retains the failure
+ok 12 - failed attempt-log creation prevents source work and retains the failure
+  ---
+  duration_ms: 2.2275
+  type: 'test'
+  ...
+# Subtest: seven-fraction wrapper timestamps normalize to Airtable ISO and replay identity
+ok 13 - seven-fraction wrapper timestamps normalize to Airtable ISO and replay identity
+  ---
+  duration_ms: 3.434
+  type: 'test'
+  ...
+# Subtest: recovered failure keeps original wrapper completion rather than replay time
+ok 14 - recovered failure keeps original wrapper completion rather than replay time
+  ---
+  duration_ms: 2.4003
+  type: 'test'
+  ...
+# Subtest: a terminal Failed run does not hide an error event whose earlier write failed
+ok 15 - a terminal Failed run does not hide an error event whose earlier write failed
+  ---
+  duration_ms: 2.3058
+  type: 'test'
+  ...
+# Subtest: unknown acknowledgments prevent starvation, and later finish invalidates ACK
+ok 16 - unknown acknowledgments prevent starvation, and later finish invalidates ACK
+  ---
+  duration_ms: 46.8392
+  type: 'test'
+  ...
+# Subtest: all retained receipt files remain recoverable regardless of age
+ok 17 - all retained receipt files remain recoverable regardless of age
+  ---
+  duration_ms: 11.362
+  type: 'test'
+  ...
+# Subtest: partial final receipt line is ignored until completed, without losing earlier events
+ok 18 - partial final receipt line is ignored until completed, without losing earlier events
+  ---
+  duration_ms: 4.3155
+  type: 'test'
+  ...
+# Subtest: receipt archival verifies and logs before removing only fully acknowledged old receipts
+ok 19 - receipt archival verifies and logs before removing only fully acknowledged old receipts
+  ---
+  duration_ms: 13.5629
+  type: 'test'
+  ...
+# WEF_SCHEDULES_ERROR_LOG_FAILED: offline error table
+# Subtest: shared logging lock serializes independent processes and supports safe reentry
+ok 20 - shared logging lock serializes independent processes and supports safe reentry
+  ---
+  duration_ms: 302.7297
+  type: 'test'
+  ...
+# Subtest: lost error creation response resolves by key without repeating POST
+ok 21 - lost error creation response resolves by key without repeating POST
+  ---
+  duration_ms: 2.7082
+  type: 'test'
+  ...
+# Subtest: error retention archives exact record before reusing a bounded slot
+ok 22 - error retention archives exact record before reusing a bounded slot
+  ---
+  duration_ms: 8.0628
+  type: 'test'
+  ...
+# Subtest: failed remote error write leaves durable intent recoverable after run finalization
+ok 23 - failed remote error write leaves durable intent recoverable after run finalization
+  ---
+  duration_ms: 6.2314
+  type: 'test'
+  ...
+# Subtest: explicit null show identity survives intent replay after final run gains a show
+ok 24 - explicit null show identity survives intent replay after final run gains a show
+  ---
+  duration_ms: 1.859
+  type: 'test'
+  ...
+# Subtest: dead logging lock fails visibly without deleting or reclaiming owner state
+ok 25 - dead logging lock fails visibly without deleting or reclaiming owner state
+  ---
+  duration_ms: 5.929
+  type: 'test'
+  ...
+# Subtest: wrapper journals missing-environment attempt before Node can start
+ok 26 - wrapper journals missing-environment attempt before Node can start
+  ---
+  duration_ms: 676.095
+  type: 'test'
+  ...
+# Subtest: PowerShell wrapper retains stderr and exact exit 7 fixture fetch failed: ECONNRESET
+ok 27 - PowerShell wrapper retains stderr and exact exit 7 fixture fetch failed: ECONNRESET
+  ---
+  duration_ms: 640.1504
+  type: 'test'
+  ...
+# Subtest: PowerShell wrapper retains stderr and exact exit 0 fixture warning
+ok 28 - PowerShell wrapper retains stderr and exact exit 0 fixture warning
+  ---
+  duration_ms: 660.2851
+  type: 'test'
+  ...
+# Subtest: PowerShell wrapper retains stderr and exact exit 0 
+ok 29 - PowerShell wrapper retains stderr and exact exit 0 
+  ---
+  duration_ms: 575.4845
+  type: 'test'
+  ...
+# Subtest: wrapper fails explicitly when native launch produces no exit code
+ok 30 - wrapper fails explicitly when native launch produces no exit code
+  ---
+  duration_ms: 614.6424
+  type: 'test'
+  ...
+# Subtest: wrapper keeps failure default when command returns without a native exit code
+ok 31 - wrapper keeps failure default when command returns without a native exit code
+  ---
+  duration_ms: 543.2626
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3816.9625

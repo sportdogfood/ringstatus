@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-29T13:53:33.397Z",
+  "http": 422,
+  "noTableCreated": true,
+  "url": "https://airtable.com/developers/web/api/field-model",
+  "finding": "prefersSingleRecordLink is read-only; write options allow linkedTableId and viewIdForRecordSelection",
+  "excerpt": "d: boolean` — required\n\n    Whether linked records are rendered in the reverse order from the cell value in the\n    Airtable UI (i.e. most recent first).\n\n    You generally do not need to rely on this option.\n\n  - `linkedTableId: string` — required\n\n    The ID of the table this field links to\n\n  - `prefersSingleRecordLink: boolean` — required\n\n    Whether this field prefers to only have a single linked record. While this preference\n    is enforced in the Airtable UI, it is possible for a field that prefers single linked\n    records to have multiple record links (for example, via copy-and-paste or programmatic\n    updates).\n\n  - `inverseLinkFieldId: string` — optional\n\n    The ID of the field in the linked table that links back\n    to this one\n\n  - `viewIdForRecordSelection: string` — optional\n\n    The ID of the view in the linked table to use when showing\n    a list of records to select from.\n\n**Field type and options (write)**\n\n- `type: \"multipleRecordLinks\"` — required\n\n- `options: object` — required\n\n  - `linkedTableId: string` — required\n\n    The ID of the table this field links to\n\n  - `viewIdForRecordSelection: string` — optional\n\n    The ID of the view in the linked table\n    to use when showing a list of records to select from\n\n",
+  "proposed": "Remove unsupported write option/readback requirement; publisher enforces exact one native show link; no mutation retried."
+}

@@ -1,0 +1,61 @@
+{
+  "at": "2026-10-29T17:07:38.259Z",
+  "protectedFiles": [
+    {
+      "name": ".gitignore",
+      "unchanged": true
+    },
+    {
+      "name": "configure.js",
+      "unchanged": true
+    },
+    {
+      "name": "day-replay.py",
+      "unchanged": true
+    },
+    {
+      "name": "day-schema.js",
+      "unchanged": true
+    },
+    {
+      "name": "day-source.js",
+      "unchanged": true
+    },
+    {
+      "name": "entry.js",
+      "unchanged": true
+    },
+    {
+      "name": "README.md",
+      "unchanged": true
+    },
+    {
+      "name": "run-hidden.vbs",
+      "unchanged": true
+    },
+    {
+      "name": "run.ps1",
+      "unchanged": true
+    },
+    {
+      "name": "settings.js",
+      "unchanged": true
+    },
+    {
+      "name": "show-days.js",
+      "unchanged": true
+    },
+    {
+      "name": "verify-consumers.js",
+      "unchanged": true
+    },
+    {
+      "name": "verify-days.js",
+      "unchanged": true
+    },
+    {
+      "name": "verify.js",
+      "unchanged": true
+    }
+  ]
+}

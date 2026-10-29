@@ -1,0 +1,61 @@
+{
+  "at": "2026-10-29T17:50:13.745Z",
+  "result": "PASS",
+  "showsRun": "c64f3c9a-7981-474a-9ab1-be43e661ce33",
+  "started": "2026-10-29T17:49:02.266Z",
+  "completed": "2026-10-29T17:49:41.117Z",
+  "days": [
+    {
+      "date": "2026-10-29",
+      "id": "recohTvwKk7pDGnk1",
+      "show": "recOAxMcqu1f75CQk",
+      "revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+      "digest": "375baf60c26440218793be855e6a4aadda3ba3c8ffe234058aa361e65020eaf6",
+      "sourceAsOf": "2026-10-29T14:11:21.849Z",
+      "coverage": "competition-class-participation",
+      "completeness": "complete",
+      "uniqueEntries": 0,
+      "trips": 0,
+      "status": "Stale"
+    },
+    {
+      "date": "2026-10-30",
+      "id": "recNKs86S27g79pl5",
+      "show": "recOAxMcqu1f75CQk",
+      "revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+      "digest": "e7cbaf08ae28ecd0c3b70e2be700a601feef904bd0f791c4b0089dbf1441bf7a",
+      "sourceAsOf": "2026-10-29T13:20:05.704Z",
+      "coverage": "competition-class-participation",
+      "completeness": "complete",
+      "uniqueEntries": 80,
+      "trips": 102,
+      "status": "Stale"
+    },
+    {
+      "date": "2026-10-31",
+      "id": "recV3qjf5oJAQW8SY",
+      "show": "recOAxMcqu1f75CQk",
+      "revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+      "digest": "ece31e248b5f2ddc3eae8ca6468dbe28b07f4cbdb679554defcb74dbed1bd1a1",
+      "sourceAsOf": "2026-10-29T13:54:15.276Z",
+      "coverage": "competition-class-participation",
+      "completeness": "partial",
+      "uniqueEntries": 15,
+      "trips": 15,
+      "status": "Unknown"
+    },
+    {
+      "date": "2026-11-01",
+      "id": "recs1RPpDh6bGuHkY",
+      "show": "recOAxMcqu1f75CQk",
+      "revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+      "digest": "a9de2fbb11a0d720b4e5cc76e762fbad6925e43a3d0aeaf0f1caa8f2882b64b5",
+      "sourceAsOf": "2026-10-29T14:11:21.934Z",
+      "coverage": "competition-class-participation",
+      "completeness": "unknown",
+      "uniqueEntries": null,
+      "trips": null,
+      "status": "Unknown"
+    }
+  ]
+}

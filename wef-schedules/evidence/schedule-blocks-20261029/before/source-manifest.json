@@ -1,0 +1,317 @@
+{
+  "sources": {
+    "collect.js": {
+      "copied_from": "schedules_standalone.js",
+      "source_sha256": "d321dfbaf2c8f69ef29a12aa54b499f29eb4828f1079ce645c27e8ea6cd52fc0"
+    },
+    "store.js": {
+      "copied_from": "schedules_staging.js",
+      "source_sha256": "3cdcc04832ed4794dec8de0308610826bd667b6cdeafd5a4a2edd51ad9b219f8"
+    },
+    "collector-core.js": {
+      "copied_from": "schedules_dailyv2.js",
+      "source_sha256": "7d1a1b2f293137a3de4f66b391284e5a66be2db09de54d966f983fee6767878a"
+    },
+    "normalizer.js": {
+      "copied_from": "schedule_normalizer_v2.js",
+      "source_sha256": "402cc7b70a80d68db690d9534301f1b79278db419ee26cc28d70a594e1f09d90"
+    },
+    "token-utils.js": {
+      "copied_from": "sgl_token_utils.js",
+      "source_sha256": "5df524c6decd12f90306da56b9e093b0814349c11a7cebf82556126d895de916"
+    },
+    "sgl_fetch.ps1": {
+      "copied_from": "sgl_fetch.ps1",
+      "source_sha256": "07b176f114f264a24f6e0cb20078b0495b26978b1ff8cfb0eb147ffc7871b15c"
+    },
+    "lib/sgl_fetch_adapter.js": {
+      "copied_from": "lib/sgl_fetch_adapter.js",
+      "source_sha256": "eaf70f6003a9004eb49f74487c639206610952b3a4d35a3b74df3edbba88e7b7"
+    },
+    "lib/soft_payload_guard.js": {
+      "copied_from": "lib/soft_payload_guard.js",
+      "source_sha256": "0655c3b24e414759222cdd4a8f53a18366b18d37f0619f0bb5e5dfbe34bc1df5"
+    },
+    "lib/scope_fields.js": {
+      "copied_from": "lib/scope_fields.js",
+      "source_sha256": "44a6eb0479a379cb59836c39c27a98017d3827277aeea9fe6aafa5b854de2737"
+    }
+  },
+  "protected_files_before": {
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\schedules_standalone.js": "d321dfbaf2c8f69ef29a12aa54b499f29eb4828f1079ce645c27e8ea6cd52fc0",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\schedules_staging.js": "3cdcc04832ed4794dec8de0308610826bd667b6cdeafd5a4a2edd51ad9b219f8",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\schedules_dailyv2.js": "7d1a1b2f293137a3de4f66b391284e5a66be2db09de54d966f983fee6767878a",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\schedule_normalizer_v2.js": "402cc7b70a80d68db690d9534301f1b79278db419ee26cc28d70a594e1f09d90",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\sgl_token_utils.js": "5df524c6decd12f90306da56b9e093b0814349c11a7cebf82556126d895de916",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\sgl_fetch.ps1": "07b176f114f264a24f6e0cb20078b0495b26978b1ff8cfb0eb147ffc7871b15c",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\lib\\sgl_fetch_adapter.js": "eaf70f6003a9004eb49f74487c639206610952b3a4d35a3b74df3edbba88e7b7",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\lib\\soft_payload_guard.js": "0655c3b24e414759222cdd4a8f53a18366b18d37f0619f0bb5e5dfbe34bc1df5",
+    "C:\\Users\\gombc\\.codex\\worktrees\\wef-schedule-collector\\ringstatus\\lib\\scope_fields.js": "44a6eb0479a379cb59836c39c27a98017d3827277aeea9fe6aafa5b854de2737",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedules_dailyv2.js": "088041c4b55d9820ded9aba9b3bb89aeae3deb2686beb5518a3d6070230fee08",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\schedule_normalizer_v2.js": "0e7e0626510cfbd1bc16f18811253a6ba50cef4b1aafdac3f61e4229a9ea80e5",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\sgl_token_utils.js": "d1787b66ade4a5ce0ef9de225ae4e04758df3bcee3fbb0712d3e354fabea43c3",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\sgl_fetch.ps1": "4b7818890c9ab7426d90e66200d67411bddf7e5d356a616a8569f2b3cca3e3cc",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\lib\\sgl_fetch_adapter.js": "b056f195630c2b8e352f25421ea3b801c2cb1302ce668898771cc7425122592f",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\lib\\soft_payload_guard.js": "d7e8aba034da91eac812a1df00d16c49ea619dc13c01265d9bb97fef751b11cb",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\lib\\scope_fields.js": "40b464355c612a55a243af4ef5d42af644690df0601a06b255cd454dd4a5c9f0"
+  },
+  "package_sha256": {
+    ".env.example": "bab6f2dfd452ad954211d2c3b1d749186ffc817854b68ae53bb82345fb88c63b",
+    ".gitignore": "65a2becd9e2144c4c4ab174700dd2bcbb06c64a3c3b62bffd81786e6c95c5267",
+    "collector-core.js": "4b2046b517eac98fcff2edc8a25aa9d4b24ad943c0894cb9167943f51855f03f",
+    "current-store.js": "4089472168edf464556fd522d585cc4c6dd293f6b2ba379ad29aa2ff0d703093",
+    "default-day-tests.txt": "879ee6d809cb26ac4f32ac4a9be7474234ad81f5a3fdf6eb044fc03b10157413",
+    "default-day-verification.md": "437093b3a8eba22d7cf8230e856b3ba832b1b4bc95433c537127b0c53f7ead85",
+    "estimated-time-inheritance-tests.txt": "3e898b37783961494ba6b0f72b11022f9e5a6747fa0f842090b89e7cdca4aaff",
+    "estimated-time-inheritance-verification.json": "d79c18bf50995aaf8ab150eeafaadae50c83ac0974897664e21ca2ee926a21ec",
+    "estimated-time-inheritance.md": "cefba08d2cf42c30716faf82a674f9367755e1d97a0f246d4ca401cabfc4b97e",
+    "estimated-times-local-verification.json": "9980364409c6cc6a034fba6c1cdb8bf660d5bb0f7522d2654e94d3fd712a4f9e",
+    "estimated-times-verification.md": "67c696e8d19cf8f62e1d4f1655042fbf9dfb52a4f26156a39f16dd06740431e1",
+    "normalizer.js": "d3ce0403adb64799908aa6a270243558976a644b7aa6f0dfa208c6452784a3b0",
+    "package-lock.json": "dfad56209c7eb6a1fc6161eafeaf2bae588505f7516af5780b6a3c64c1c0faae",
+    "package.json": "f962562aebe17f715806281e61236d215419c098cfa005e8c32cdf97d90ee1fe",
+    "README.md": "729c1d95dda3be50d3490b2afeb566b2fc93d6758f86f09a582c6109334445c5",
+    "repeated-group-tests.txt": "7c02a3829ac49321724afcd8981812e5b0878a281221fcbdd021822adc069eee",
+    "repeated-group-verification.md": "e046abc2056c4b0067a86317b906abc7eb1f0adbd883324461b269d32ef40c11",
+    "run.ps1": "d9736ea25998bbcbedaaa92e20ff0c23016f343a2d2174047c166fa0e9ff8ca3",
+    "schedule-times.js": "d09697eed597feb38c30dae6a917c2dcaf991f82bb823c7f0b45e075241ece30",
+    "settings.js": "f2a27793f4000aa0664d9d12211db2f969b7699fc68b38278802392551580e88",
+    "sgl_fetch.ps1": "bb9578b866415844761c11593319d2b6180bc9aea78917d0d08259fb80c307ee",
+    "table-ring-local-verification.json": "662a7d32daca8a52877359925cc1c90088f950f55c06e8db798d2decbab1698c",
+    "table-ring-tests.txt": "ca1bb57821c65bb41cc530f2c351caea425f6973d222b04c0a22b1eda1978427",
+    "table-ring-verification.md": "a326523d5a161ad36eaa9b3e9b9daf98cf13bc69fa4f1f23b832623228c839a0",
+    "token-utils.js": "0de2517a21b7d1826bfdace3d54c41336bc50d6574b0fa74e66e4bcac38ee9c0",
+    "docs/ringstatus_daily_scope_2026-05-09.md": "f4a7df6f66d1177e46265eaa2b5b1ce178dbdb80140ad82b31804166d51a8c28",
+    "lib/scope_fields.js": "b7d3d0601959e2715f2bcbf839e0c142dde2c0a3c1d09646f65346b37236d8e7",
+    "lib/sgl_fetch_adapter.js": "1b598d4e4a96b78ac343d3d3b28a75b11483cdfba4aea300bf34903236e0ef47",
+    "lib/soft_payload_guard.js": "7fa18ca60eb258cbb4157cdcecad3fb5c37ab29b57a92f6fcdf2e9c50e6f1fb0",
+    "tests/current-store.test.js": "a2239e13c11667db90d840b5cb1c4caf27a10aecfb6a35db9c0a7334a836440d",
+    "tests/isolation.test.js": "e6e61f9afc2efedc745658d7f7bf260d13ca2893a4ea8e74ca3ed3d523651fd0",
+    "tests/schedule-times.test.js": "29e19b4bbc59b736ce71acbbcc43335bb5baeeb407b293253f49f929f6d07c48",
+    "tests/schedules_daily_class_list_enrichment.test.js": "c979b4565869081a4cd50eb13c30152dba728e5ddaf6ea4f911b772c2165df46",
+    "tests/schedules_daily_empty_ping.test.js": "3b495f41e140f248c38c1a20a05f2818c6f8e6617dbf999982e64f829e70a0c6",
+    "tests/schedules_daily_forward_schedule_dates.test.js": "e5adf3ae6f7d7c7e294e4964a948f0d09f3da4bd07e7ca5f6bd0c8e580dc0aa6",
+    "tests/schedules_daily_live_groups_fallback.test.js": "e06b963cbecd1ca21347ebf3af4ef02d551ef8d2c2aa4b959ef5ff7be8a543a2",
+    "tests/schedules_daily_night_shift_scope.test.js": "c098e4b4c12fccdaecef9f433419ddc9219ace69f3bbdd3b85980ce8113fe742",
+    "tests/schedules_daily_schedule_fallback.test.js": "4e31f979565abaddece263e6dc39ebc7dcbd365dd19be9d2ecb65fb38daa9912",
+    "tests/schedules_staging.test.js": "376344d8a9e7cc5dd1cd4895613ef5b9004c2594ce654bd149c886c7eeb70adc",
+    "tests/schedule_normalizer_machine_key.test.js": "59d194d4ce2361fde25112287a8f0bce866203e5015d1ea54e460eea0dfb7705",
+    "tests/fixtures/rendered-vankampen-20261016.html": "6a5eb8e1ee25f28a7f2574fbcb1d395b6315bc01ee454cc8d53d38a78358011e",
+    "tests/fixtures/schedule-collector.js": "b5a5ce7f00100585f105687108bf97821426cfdfa75aef493b0b5084e650a428",
+    "collect.js": "dc420c8b139698fe7d1275aca09df857a0bc3c802c9323b6325d21600d1985a0",
+    "store.js": "36af40ab6cd7e834d8b94a1dc2e7a90e5ad2e0ac67482680bc8548c857d899ca",
+    "run-logs.js": "7f7fc6090c7e3b6267302c978146c70b1b637064f5786233d4b834fa19b75ed8",
+    "tests/schedules_standalone.test.js": "a98c24e924e48b491f4dd7c349cd678c99f1a1244a0681014f108bb8201339b3",
+    "tests/run_logs.test.js": "b959b079a29d45e8102ac2daf059441189d107a6c96232bc8d62f0fad7084384",
+    "STATUS.md": "1cd2f309b9fa12a0188ba69e2cf9f6eb04df63bfa1f1918a7a7f20ba36f7abef",
+    "show-rings.js": "d89a63d457fd97ee922c4cc4bff486f05fa4f59db3153dfadcfb5868de3689ba",
+    "tests/show-rings.test.js": "a7213b0fd85c8df5ff3ae2a19464e2dd3709b4bc5436676f711cd918d6bb2b0f",
+    "heartbeat.js": "be7c378a3ee2995190e4e6059ea338b7fe0c7c129df3b6483c96219421590662",
+    "configure-heartbeat.js": "b7bae7e74545ef2ac40d7ed8df461f6c7d2088ff772988fb3252a20ea6a5b26a",
+    "verify-heartbeat.js": "4316503346367df4455cef46e980b3e812f945902d504db66c83d3966618ea33",
+    "tests/heartbeat.test.js": "aa8810fe5a4b2b60d0cb38a2988b7dbb6a92149a6d1187671a40fe9fe6bafc75",
+    "show-index.js": "f658a0d1ff33dd092cdedc1bf28f1814ab92a1fcb74baa239d96ee3afb3eb33f",
+    "configure-shows.js": "6e4252f0a24a2d04c0619ce397f9a70781501de936cba28886b825c1b2c1e2bc",
+    "verify-shows.js": "e07d3e2573d5513f8088310a1aacaefbad61e141734fed969f913697265a3501",
+    "tests/show-index.test.js": "9659c1c0fb3fe44b070c605d46c51d72d05e00c22b5d9188c626a4eb7e821d0c",
+    "airtable-read.js": "2bd48f428dc70b2915c67292d530347bddc1df05357ab484ed5713ff6b121107",
+    "tests/airtable-read.test.js": "514c44b8e5f4dcc02dc6ea8f866b3652cb288d6baf8d1525d677fc4b3a106373",
+    "tests/runner-output.test.js": "fe5c0ac9e3da691bc8f2cd90e9714a4a3e940749f37e5c64a7d93f03f98626bc",
+    "completion-guard.js": "3f74b83ba10f026fe98407261ffc1fd8052c4995d80a48c5f2c38817a9293fa5",
+    "tests/completion-guard.test.js": "c267116756492bf9734a30b3a54acb9abd0b8b3e39ab3a656ccc3041b0e0beb3"
+  },
+  "verification": {
+    "checked_at": "2026-10-15T12:28:06.809273-04:00",
+    "private_suite_passed": 42,
+    "detached_functional_checks_passed": 22,
+    "protected_files_changed": [],
+    "deployment": false,
+    "business_runs": false,
+    "line_ending_correction": "Private PowerShell LF restored; AST verifies all five Invoke-WebRequest parameters without execution.",
+    "detached_functional_checks": 25,
+    "approved_correction": "Semantic schedule comparison excludes rotating tokens; full stored fingerprints retained. Empty-day and default-show logs added. Reviewed delta, local tests passed.",
+    "current_staging": "One row per scoped source key; compressed local history verified before archive cleanup; one collection status per day; scheduled migration only",
+    "run_logs_release": {
+      "checked_at": "2026-10-20T09:18:15.017573-04:00",
+      "private_suite_passed": 75,
+      "review": "No material findings; duplicate POST retry eliminated; archive callbacks verified",
+      "changed_files": [
+        "collect.js",
+        "store.js",
+        "current-store.js",
+        "run-logs.js",
+        "tests/run_logs.test.js",
+        "tests/current-store.test.js"
+      ],
+      "protected_files_changed": [],
+      "acceptance": "Two normal runs PASS; eight live attempt archives verified; no schedule changes"
+    },
+    "duplicate_key_release": {
+      "checked_at": "2026-10-20T09:41:04.993481-04:00",
+      "private_suite_passed": 80,
+      "targeted_passed": 14,
+      "review": "No material findings",
+      "changed_files": {
+        "current-store.js": "9c9093c0ea46dccbf6b8b5ef377e5ac2d8d5e2ecd44d50feadf8a61624726f0d",
+        "tests/current-store.test.js": "079de6af8acd3a7fedaa3bfe3b755fda02b975177c095d8bab2d56ec0102fb5e"
+      },
+      "protected_files_changed": [],
+      "acceptance": "PASS: two normal runs, 435 stable IDs/values, zero duplicates, eight archives verified"
+    },
+    "show_rings_release": {
+      "deployed_at": "2026-10-20T11:33:41.504534-04:00",
+      "tests_passed": 97,
+      "review": "No material findings",
+      "acceptance": "PASS: two normal scheduled runs; stable IDs/data; zero duplicates; all 435 links; eight archives verified",
+      "evidence": "runtime/show-rings-release-20261020",
+      "manual_runs": 0,
+      "normal_runs": [
+        {
+          "id": "recdFSbrp8NRET2iC",
+          "run_id": "e0311fc6-f5b0-4af1-8441-3afe17507d07",
+          "started": "2026-10-20T15:35:02.641Z",
+          "completed": "2026-10-20T15:36:14.292Z",
+          "result": "Warning",
+          "rows": 435,
+          "archive_count": 4
+        },
+        {
+          "id": "recRoY49kjHKXsxBP",
+          "run_id": "a108aa1f-7476-4488-854c-af2ad92a939c",
+          "started": "2026-10-20T15:40:02.407Z",
+          "completed": "2026-10-20T15:40:49.753Z",
+          "result": "Warning",
+          "rows": 435,
+          "archive_count": 4
+        }
+      ]
+    },
+    "heartbeat_release": {
+      "checked_at": "2026-10-20T18:11:55.853389+00:00",
+      "acceptance": "PASS: two normal scheduled runs, one stable heartbeat row matching terminal run-logs,435 preserved schedules,8 verified archive events",
+      "tests_passed": 102,
+      "source_focused_tests_passed": 18,
+      "normal_runs": [
+        {
+          "run_id": "6867ae7a-6a76-44b3-a3ee-c006269cbf52",
+          "completed": "2026-10-20T18:05:57.292Z",
+          "result": "Warning"
+        },
+        {
+          "run_id": "94059842-a96a-42e6-887b-5aabe6039704",
+          "completed": "2026-10-20T18:10:45.906Z",
+          "result": "Warning"
+        }
+      ],
+      "manual_runs": 0,
+      "existing_workflows_changed": false,
+      "evidence": "evidence/heartbeat-20261020",
+      "heartbeat_table": "tblj077efYbhlznOJ"
+    },
+    "show_index_release": {
+      "checked_at": "2026-10-20T18:37:39.466067+00:00",
+      "status": "DEPLOYED_ACCEPTANCE_INCOMPLETE",
+      "acceptance": "1 of2 full schedules normal runs verified; required second14:35 exited1 fetch failed. Verification path stopped.",
+      "schedules_tests_passed": 113,
+      "source_tests_passed": 116,
+      "tenant_tests_passed": 42,
+      "first_schedule_run": {
+        "run_id": "cc63fbd3-dd95-479f-8ec5-810c98b31445",
+        "completed": "2026-10-20T18:30:46.499Z",
+        "result": "Warning",
+        "pass": true
+      },
+      "second_schedule_run": {
+        "started": "2026-10-20T18:35:01-00:00",
+        "task_exit": 1,
+        "error": "fetch failed",
+        "windows_event_at_eastern": "2026-10-20T14:35:25-04:00",
+        "new_run_log_observed": false,
+        "pass": false
+      },
+      "tenant_normal_runs_verified": [
+        "7ae7cce6-4c65-4ef7-85c6-2db17840c3cc",
+        "0b6ad1b6-0a63-46df-92e7-ac8bbbd1dafc"
+      ],
+      "historical_show": {
+        "id": 200000074,
+        "record": "recNXbBZ94kin9R3d",
+        "name": "ESP Fall II",
+        "dates": "2026-10-15/2026-10-18",
+        "archived_schedules": 499,
+        "archived_collections": 4,
+        "verified_files": 2
+      },
+      "manual_runs": 0,
+      "record_repairs": 0,
+      "patches_after_failure": 0,
+      "task_definitions_changed": false,
+      "evidence": "evidence/show-index-20261020",
+      "recovery_acceptance": {
+        "status": "PASS_AFTER_SEPARATE_OWNER_APPROVAL",
+        "normal_runs": [
+          {
+            "run_id": "66a332a1-f19f-4dd7-ae07-d2519aca9f1d",
+            "completed": "2026-10-20T19:10:47.154Z",
+            "result": "Warning",
+            "task_exit": 0
+          },
+          {
+            "run_id": "8ed835ef-f19e-4df7-a8ca-f2a37966ebfb",
+            "completed": "2026-10-20T19:15:46.783Z",
+            "result": "Warning",
+            "task_exit": 0
+          }
+        ],
+        "evidence": "evidence/fetch-failure-20261020",
+        "original_failure_preserved": true
+      }
+    },
+    "fetch_failure_release": {
+      "checked_at": "2026-10-20T19:17:42.512262+00:00",
+      "status": "PASS",
+      "scope": "Airtable GET response/body recovery and accurate wrapper error logging; existing retry limits and mutation paths preserved",
+      "tests_passed": 124,
+      "source_tests_passed": 127,
+      "normal_runs": [
+        {
+          "run_id": "66a332a1-f19f-4dd7-ae07-d2519aca9f1d",
+          "completed": "2026-10-20T19:10:47.154Z",
+          "result": "Warning",
+          "task_exit": 0
+        },
+        {
+          "run_id": "8ed835ef-f19e-4df7-a8ca-f2a37966ebfb",
+          "completed": "2026-10-20T19:15:46.783Z",
+          "result": "Warning",
+          "task_exit": 0
+        }
+      ],
+      "rows_verified_per_run": 435,
+      "current_archive_events_verified": 8,
+      "historical_archive_files_verified_per_run": 2,
+      "record_ids_and_static_helpers_preserved": true,
+      "prior_logs_unchanged": true,
+      "manual_runs": 0,
+      "record_repairs": 0,
+      "task_definitions_changed": false,
+      "network_cause": "Original network interruption underlying cause not captured/unconfirmed; no network configuration or credential changes. Sustained outages still fail explicitly.",
+      "source_value_comparison": "Source-owned schedule values checked against respective run archives; obsolete frozen14:22 snapshot comparison stopped without code patches.",
+      "evidence": "evidence/fetch-failure-20261020"
+    },
+    "incomplete_run_release": {
+      "at": "2026-10-24T16:06:55.828Z",
+      "tests_passed": 134,
+      "normal_runs": [
+        "normal-run-1200.json",
+        "normal-run-1205.json"
+      ],
+      "evidence": "runtime/incomplete-run-release-20261024",
+      "manual_runs": 0,
+      "record_repairs": 0,
+      "task_changed": false,
+      "existing_interval": "PT5M",
+      "result": "PASS"
+    }
+  }
+}

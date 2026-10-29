@@ -1,0 +1,20 @@
+{
+  "run": "5ca0b0c7-fca9-44f3-9f74-143a472a7da1",
+  "ok": true,
+  "result": "Partial",
+  "rows": 117,
+  "errors": [],
+  "changes": [],
+  "groups": {
+    "linked": 103,
+    "unresolved": 11,
+    "historical": 13
+  },
+  "schedule": {
+    "linked": 113,
+    "Conflict": 1,
+    "historical": 13
+  },
+  "heartbeat": "2026-10-29T18:39:44.597Z",
+  "log": "Partial"
+}

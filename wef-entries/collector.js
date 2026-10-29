@@ -1,51 +1,113 @@
 "use strict";
 const path=require('node:path'),crypto=require('node:crypto');
-const settings=require('./settings'),model=require('./model');
+const settings=require('./settings'),model=require('./model'),{archiveFile}=require('./runtime-utils');
 const hash=v=>crypto.createHash('sha256').update(JSON.stringify(v)).digest('hex');
-const entryFields=['entry-key','show-id','date','entry-id','class-id','horse-id','horse-name','rider-id','rider-name','trainer-ids','class-name','ring-number','status','source-json','schedule-key','schedule-keys','observation-status','last-seen','schedules'];
-const project=f=>Object.fromEntries(entryFields.filter(k=>f[k]!=null).map(k=>[k,f[k]]));
-async function runEntries({api=require('./airtable').airtable(),fetchPeople=require('./source').fetchPeople,fetchClass=require('./source').fetchClass,clock=()=>new Date().toISOString(),archive=(kind,value,scope)=>require('../wef-tenants/archive').archiveFile(path.join(settings.RUNTIME,'history'),kind,value,scope),logLimit=1000,multipleScheduleLinks=settings.MULTIPLE_SCHEDULE_LINKS}={}){
- const report={ok:false,run_id:crypto.randomUUID(),started:clock(),rows:0,collections:[],errors:[],archives:[]};let log={'run-id':report.run_id,started:report.started,result:'Running',summary:'Independent CWF entries collection started.',errors:'','archive-count':0,archives:''},logReady=false,show;
- async function keep(kind,value,scope={}){try{const event=await archive(kind,value,scope);report.archives.push(event);return event;}catch(e){report.archives.push({kind,outcome:'Failed',error:e.message});e.auditFailure=true;throw e;}}
- async function saveLog(){log={...log,'archive-count':report.archives.length,archives:report.archives.map(a=>`${a.at||clock()}: ${a.kind} ${a.outcome}; ${(a.dates||[]).join(',')}; ${a.records??0} records; ${a.file||'no file'}; SHA256 ${a.sha256||'unverified'}${a.error?'; '+a.error:''}`).join('\n')};await api.upsert('run-logs','run-id',[log]);}
- try{
-  const logs=await api.list('run-logs');if(logs.length>=logLimit){const oldest=logs.filter(r=>r.fields.result!=='Running').sort((a,b)=>String(a.fields.started).localeCompare(String(b.fields.started)))[0];if(!oldest)throw Error('No finished run-log slot available');await keep('run-logs',[oldest]);await api.call(settings.BASE_ID,'run-logs','PATCH',{records:[{id:oldest.id,fields:{...log,completed:null,'show-id':null,rows:null}}]});}
-  await saveLog();logReady=true;
-  const [tenants,trainers,shows,sourceSchedules,synced,favorites]=await Promise.all([api.list('tenant-details',settings.CWF_BASE_ID),api.list('trainers',settings.CWF_BASE_ID),api.list(settings.SHARED_SHOWS_TABLE,settings.SHOWS_BASE_ID),api.list('schedules',settings.SHARED_BASE_ID),api.list(settings.SYNC_TABLE),api.list(settings.FAVORITES_TABLE,settings.TENANTS_BASE_ID)]);
-  const scope=model.scope(tenants,trainers,shows,clock());show=scope.show;report.show_source={base:settings.SHOWS_BASE_ID,record:shows.find(r=>r.fields===show).id,checked_at:show.last_checked};const sid=Number(show.show_id),schedules=model.schedulesFor(show,sourceSchedules,synced),follow=model.selections(favorites,show,scope.dates);report.show_id=sid;report.dates=scope.dates;log['show-id']=sid;await saveLog();
-  if(multipleScheduleLinks)require('../wef-tenants/schedule-links').health(await api.list('show-collection',settings.SHARED_BASE_ID),show,scope.dates,clock());
-  report.multiple_schedule_links=multipleScheduleLinks;
-  const oldEntries=await api.list('entries'),oldCollections=await api.list('collections');
-  const sources=[...scope.trainers.map(t=>({kind:'trainer-feed',id:String(t.fields['trainer-id'])})),...model.owners.map(id=>({kind:'user-follow',id}))];
-  const plans=[],classCache=new Map();
-  for(const source of sources){const record={source_kind:source.kind,source_id:source.id,result:'Failed',rows:0};report.collections.push(record);
-   try{
-    let rows;
-    if(source.kind==='trainer-feed'){const payload=await fetchPeople(Number(source.id),show);await keep('people-'+source.id,payload,{shows:[sid],dates:scope.dates});rows=model.normalize(model.validatePeople(payload,source.id,sid),source.id,show,schedules,{multipleScheduleLinks});}
-    else{rows=[];for(const item of follow[source.id]){if(!classCache.has(item.classId)){const payload=await fetchClass(item.classId,show);await keep('class-'+item.classId,payload,{shows:[sid],dates:scope.dates});classCache.set(item.classId,payload);}const trips=require('./source').classEntries(classCache.get(item.classId),item.classId,sid).filter(t=>Number(t.entry_id)===item.entry&&Number(t.class_id)===item.classId);const selected=model.normalize(trips,'',show,schedules,{multipleScheduleLinks}).filter(r=>r['entry-key']===item.key);if(selected.length!==1)throw Error('Follow selection unresolved: '+item.key);rows.push(...selected);}}
-    record.rows=rows.length;const datasets=[];for(const date of scope.dates){const selected=rows.filter(r=>r.date===date),event=await keep('dataset-'+source.kind+'-'+source.id,selected,{shows:[sid],dates:[date]});datasets.push({date,rows:selected,event});}
-    record.result='Success';plans.push({source,record,datasets});
-   }catch(e){if(e.auditFailure)throw e;record.error=e.message;report.errors.push(source.kind+' '+source.id+': '+e.message);plans.push({source,record});}
-   await saveLog();
+const fields=['entry-key','show-id','date','entry-id','class-id','horse-id','horse-name','rider-id','rider-name','class-name','ring-number','status','observation-status','last-seen','schedule-key','schedule-keys','schedules','schedule-link-status','schedule-link-basis','group-link-status'];
+const project=row=>Object.fromEntries(fields.filter(k=>row[k]!=null).map(k=>[k,row[k]]));
+async function runEntries({api=require('./airtable').airtable(),readInput,readLive=require('./live-input').readLive,clock=()=>new Date().toISOString(),assess=require('./freshness').evaluate,archive=(kind,value,scope)=>archiveFile(path.join(settings.RUNTIME,'history'),kind,value,scope),logLimit=1000}={}){
+ const report={ok:false,run_id:crypto.randomUUID(),started:clock(),rows:0,accepted_rows:0,collections:[],errors:[],link_issues:[],archives:[],source_fetches:0,tenant_reads:0};
+ let show,log={'run-id':report.run_id,started:report.started,result:'Running',summary:'Linking accepted Data records.',errors:'','archive-count':0,archives:''},logReady=false;
+ async function keep(kind,value,scope={}){try{const event=await archive(kind,value,scope);report.archives.push(event);return event;}catch(e){report.archives.push({kind,outcome:'Failed',error:e.message});throw e;}}
+ async function saveLog(){
+  let references=report.archives.map(a=>`${a.at||clock()}: ${a.kind} ${a.outcome}; ${(a.dates||[]).join(',')}; ${a.records??0} records; ${a.file||'no file'}; SHA256 ${a.sha256||'unverified'}${a.error?'; '+a.error:''}`).join('\n');
+  if(Buffer.byteLength(references,'utf8')>80000){
+   const events=report.archives.slice(),index=await keep('run-archive-index',{run_id:report.run_id,archives:events},{shows:show?[Number(show.show_id)]:[]});
+   references=`Full archive index: ${events.length} events; ${index.file}; SHA256 ${index.sha256}. All original archive evidence retained.`;
   }
-  const collectionKey=(source,date)=>['CWF',sid,date,source.kind,source.id].join('|');
-  const retained=[];for(const plan of plans.filter(p=>!p.datasets)){for(const date of scope.dates){const old=oldCollections.find(c=>c.fields['collection-id']===collectionKey(plan.source,date));for(const id of old?.fields.entries||[]){const row=oldEntries.find(e=>e.id===id);if(!row)throw Error('Missing retained collection entry');retained.push(project(row.fields));}}}
-  const observedRows=model.merge(plans.flatMap(p=>(p.datasets||[]).flatMap(d=>d.rows)));
-  for(const old of retained){const current=observedRows.find(r=>r['entry-key']===old['entry-key']);if(current){for(const k of ['show-id','date','entry-id','class-id','horse-id','rider-id'])if(current[k]!==old[k])throw Error('Conflicting retained entry identity '+old['entry-key']);current['trainer-ids']=[...new Set((current['trainer-ids']+','+old['trainer-ids']).split(',').filter(Boolean))].sort((a,b)=>Number(a)-Number(b)).join(',');}}
-  const merged=model.merge([...observedRows,...retained.filter(r=>!observedRows.some(o=>o['entry-key']===r['entry-key']))]);
-  // Archive all pre-change participation, including inactive and historical associations.
-  await keep('entries-before',oldEntries,{shows:[sid],dates:scope.dates});
-  const incoming=new Map(merged.map(r=>[r['entry-key'],r]));const wanted=merged.map(r=>{const observed=observedRows.some(x=>x['entry-key']===r['entry-key']);if(multipleScheduleLinks&&!observed)return{...r,'observation-status':'failed'};const matches=multipleScheduleLinks?require('../wef-tenants/schedule-links').resolve(r,schedules):schedules.filter(s=>s.fields['stage-key']===r['schedule-key']);if(!matches.length||(!multipleScheduleLinks&&matches.length!==1))throw Error('Entry schedule identity unresolved');return{...r,status:'active',...(multipleScheduleLinks?{'observation-status':'successful'}:{}),'last-seen':observed?clock():r['last-seen'],schedules:matches.map(s=>s.id)};});
-  // Entries no longer selected are retained as dropped; never delete or repair records.
-  for(const old of oldEntries.filter(r=>Number(r.fields['show-id'])===sid&&!incoming.has(r.fields['entry-key'])))wanted.push({...project(old.fields),status:'dropped',...(multipleScheduleLinks?{'observation-status':'dropped'}:{})});
-  const saved=wanted.length?await api.upsert('entries','entry-key',wanted):[];const updates=[];
-  for(const plan of plans){for(const date of scope.dates){const key=collectionKey(plan.source,date),common={'collection-id':key,'tenant-key':'CWF','source-kind':plan.source.kind,'source-id':plan.source.id,'show-id':sid,date,started:report.started,completed:clock()};if(plan.datasets){const d=plan.datasets.find(d=>d.date===date);updates.push({...common,status:'complete','row-count':d.rows.length,'dataset-id':hash(d.rows),fingerprint:hash(d.rows),message:d.rows.length?'Validated selected participation':'Success: zero entries'+(plan.source.kind==='user-follow'&&!follow[plan.source.id].length?' (no private selections configured)':''),'archive-file':d.event.file,entries:d.rows.map(r=>{const record=saved.find(x=>x.fields['entry-key']===r['entry-key']);if(!record)throw Error('Missing saved collection entry');return record.id;})});}else updates.push({...common,status:'failed',message:plan.record.error});}}
-  await api.upsert('collections','collection-id',updates);
-  if(multipleScheduleLinks)report.schedule_links={current:wanted.filter(r=>r['observation-status']==='successful').length,multiple:wanted.filter(r=>r['observation-status']==='successful'&&require('../wef-tenants/schedule-links').keys(r).length>1).length,historical:wanted.filter(r=>r['observation-status']!=='successful').length};
-  report.rows=wanted.filter(r=>r.status==='active').length;report.ok=report.errors.length===0;report.summary=report.collections.map(r=>`${r.source_kind} ${r.source_id}: ${r.result}; ${r.rows} selected participation${r.error?'; '+r.error:''}`).join('\n')+`\nCWF show ${sid}; ${report.rows} unique active participation; ${scope.dates.length} dates. Inactive horses/riders remain collected. Private selections are not team exports.`+(multipleScheduleLinks?`\nSchedule links: ${report.schedule_links.current} current, ${report.schedule_links.multiple} multiple, ${report.schedule_links.historical} historical. Multiple groups require attributable participation evidence; ambiguous groups are not inferred.`:'');
- }catch(e){report.errors.push(e.message);report.ok=false;report.summary='Collection stopped; prior unverified data preserved. '+e.message;}
- report.completed=clock();
- if(logReady){log={...log,completed:report.completed,result:report.ok?'Success':'Failed',rows:report.rows,summary:report.summary,errors:report.errors.join('\n')};try{await saveLog();await api.upsert('heartbeat','heartbeat-key',[{'heartbeat-key':'CWF','checked-at':report.completed,'selected-date':show?.selected_date||'','show-id':show?Number(show.show_id):null,result:report.ok?'Success':'Failed',summary:report.summary,errors:report.errors.join('\n')}]);}catch(e){report.ok=false;report.errors.push('Completion evidence failed: '+e.message);}}
+  log={...log,'archive-count':report.archives.length,archives:references};await api.upsert('run-logs','run-id',[log]);
+ }
+ try{
+  const logs=await api.list('run-logs');
+  if(logs.length>=logLimit){const oldest=logs.filter(r=>r.fields.result!=='Running').sort((a,b)=>String(a.fields.started).localeCompare(String(b.fields.started)))[0];if(!oldest)throw Error('No finished run-log slot available');await keep('run-logs',[oldest]);await api.call(settings.BASE_ID,'run-logs','PATCH',{records:[{id:oldest.id,fields:{...log,completed:null,'show-id':null,rows:null}}]});}
+  await saveLog();logReady=true;
+  const shows=await api.list(settings.SHARED_SHOWS_TABLE,settings.SHOWS_BASE_ID);
+  const authority=model.scope(shows,clock());show=authority.show;
+  report.show_id=Number(show.show_id);report.show_source={base:settings.SHOWS_BASE_ID,record:authority.showRecord,checked_at:show.last_checked};log['show-id']=report.show_id;
+  const local=await api.list(settings.SYNC_TABLE);
+  const schedules=model.schedulesFor(show,local);
+  const sharedKeys=new Set(schedules.map(r=>model.sharedClassKey(r.fields['show-id'],r.fields.date,r.fields['class-id'],r.fields.ring)));
+  report.shared_schedule_rows=schedules.length;
+  const [oldEntries,oldCollections]=await Promise.all([api.list('entries'),api.list('collections')]);
+  const before=new Map(oldEntries.map(r=>[r.fields['entry-key'],r]));if(before.size!==oldEntries.length)throw Error('Duplicate existing participation key');
+  const [dataResult,liveResult]=await Promise.allSettled([(readInput||require('./data-input').reader(api))(shows.find(r=>r.id===authority.showRecord)),readLive(api,show,clock())]);
+  const live=liveResult.status==='fulfilled'?liveResult.value:{status:'skipped',reason:liveResult.reason.message,evidence:new Map()};
+  report.live={status:live.status,reason:live.reason,issues:live.issues||[],memberships:live.evidence?.size||0};
+  if(dataResult.status!=='fulfilled'){
+   // Live can enrich already established participation while multi-day Data is
+   // unavailable. It cannot create participation or refresh its Data timestamp.
+   const patches=[];
+   for(const old of oldEntries){
+    const evidence=require('./live-input').forParticipation(old.fields,live.evidence?.get(old.fields['entry-key']));
+    if(!evidence)continue;
+    let source;try{source=JSON.parse(old.fields['source-json']);}catch{continue;}
+    if(source?.format!=='wef-entry-link-v1')continue;
+    patches.push({'entry-key':old.fields['entry-key'],'source-json':JSON.stringify({...source,liveEvidence:evidence})});
+   }
+   if(patches.length){await keep('entries-before',oldEntries,{shows:[report.show_id],dates:authority.dates});await api.upsert('entries','entry-key',patches);report.live.enriched=patches.length;}
+   throw dataResult.reason;
+  }
+  const input=dataResult.value;
+  const dataSchedules=(input.schedules||[]).map(row=>({...row,sourceEvidence:row.sourceEvidence||input.scheduleEvidence?.[row.sourceEvidenceIndex]}));
+  if(!input.head||!Array.isArray(input.classes))throw Error('Accepted Data input unavailable');
+  report.data_revision=input.head;report.producer_attempts=input.attempts||[];
+  const selected=input.classes.map(item=>({...item,inventory:item.inventory||input.inventories?.[item.inventoryDate]}));
+  report.out_of_scope_classes=(input.classes||[]).length-selected.length;
+  const observedKeys=new Set(selected.map(item=>model.sharedClassKey(item.payload?.show_id,item.payload?.class_related_data?.date,item.payload?.class?.class_id,item.payload?.class_related_data?.ring)));
+  for(const key of sharedKeys)if(!observedKeys.has(key))report.link_issues.push({kind:'missing-class-evidence',scope:key,reason:'Shared schedule has no accepted class observation; existing links preserved'});
+  const plans=[],wanted=new Map();
+  for(const item of selected){
+   const date=String(item.payload?.class_related_data?.date||'').slice(0,10),ring=item.payload?.class_related_data?.ring,cid=item.payload?.class?.class_id;
+   const id=['data',show.customer_id,show.show_id,date,ring,cid].join('|');
+   if(plans.some(p=>p.id===id))throw Error('Duplicate retained class scope');
+   const plan={id,item,date,rows:[],current:false,pending:new Map()};plans.push(plan);
+   try{
+    const freshness=assess(item,input,clock());plan.current=false;plan.canRetire=freshness.canRetire===true;plan.reason=freshness.reason;plan.affectedAttempts=freshness.affectedAttempts||[];
+    const linked=model.linkClass(item.payload,show,schedules,item.observedAt,{inventory:item.inventory,sourceEvidence:item.sourceEvidence});
+    for(const row of linked){
+     const old=before.get(row['entry-key']);
+     if(old&&Date.parse(old.fields['last-seen'])>Date.parse(item.observedAt)){report.link_issues.push({'entry-key':row['entry-key'],reason:'Newer existing observation retained'});plan.rows.push(old.fields);continue;}
+     const issues=['group','schedule'].filter(k=>['unresolved','Conflict'].includes(row[k+'-link-status'])).map(k=>`${k}: ${row[k+'-link-reason']}`);
+     if(freshness.affectedAttempts?.length)issues.push('source: '+plan.reason);
+     const value={...project(row),'source-trainer-ids':row['source-trainer-ids'].join(','),'link-issues':issues.join('\n')};
+     // Success describes accepted observation, not freshness.
+     if(row['schedule-link-status']!=='linked')value['schedule-link-basis']='';
+     let prior;try{prior=JSON.parse(old?.fields['source-json']||'null');}catch{prior={unparsed:true};}
+     value['source-json']=JSON.stringify({...prior,format:'wef-entry-link-v1',revision:input.head,scope:item.scopeKey,sourceAsOf:item.observedAt,sourceEvidence:item.sourceEvidence,currentness:'not-asserted',latestApplicableAttempts:freshness.affectedAttempts,inventoryEvidence:item.inventory?{revision:item.inventory.revision,observedAt:item.inventory.observedAt,collections:item.inventory.collections}:null,trips:row['source-trips'],groupId:row['source-group-id']??null,groupEvidence:row['group-link-evidence']??null,seasonReference:'unavailable',priorLink:row['schedule-link-status']==='linked'?prior?.priorLink:(prior?.priorLink||{keys:old?.fields['schedule-keys'],scalar:old?.fields['schedule-key'],observedAt:old?.fields['last-seen']})});
+     const source=JSON.parse(value['source-json']);
+     source.laneAssociations={schedules:model.scheduleAssociation(row),data:model.dataAssociation(row,show,dataSchedules)};
+     const liveEvidence=require('./live-input').forParticipation(row,live.evidence?.get(row['entry-key']));
+     if(liveEvidence)source.liveEvidence=liveEvidence;
+     else if(prior?.liveEvidence)source.liveEvidence={...prior.liveEvidence,status:'historical',reason:'No matching fresh verified Live observation this pass'};
+     value['source-json']=JSON.stringify(source);
+     if(wanted.has(value['entry-key'])||plan.pending.has(value['entry-key']))throw Error('Repeated participation across class scopes');
+     plan.pending.set(value['entry-key'],value);plan.rows.push(value);
+     if(issues.length)report.link_issues.push({'entry-key':row['entry-key'],reasons:issues});
+    }
+    // Retire only membership previously established by this Data scope, never
+    // old feed-only rows or all entries absent from the current projection.
+    if(plan.canRetire){const oldScope=oldCollections.filter(r=>r.fields['collection-id']===id);if(oldScope.length>1)throw Error('Duplicate previous class scope');
+     for(const ref of oldScope[0]?.fields.entries||[]){const old=oldEntries.find(r=>r.id===ref);if(!old)throw Error('Missing previous scope member');
+      if(old.fields.date!==date||Number(old.fields['class-id'])!==Number(cid)||Number(old.fields['show-id'])!==report.show_id)throw Error('Previous scope identity mismatch');
+      if(linked.some(r=>r['entry-key']===old.fields['entry-key'])||Date.parse(old.fields['last-seen'])>=Date.parse(item.observedAt))continue;
+      plan.pending.set(old.fields['entry-key'],{'entry-key':old.fields['entry-key'],status:'dropped','observation-status':'dropped','schedule-link-status':'unresolved','schedule-link-basis':'','group-link-status':'unresolved','link-issues':'Absent from a later complete accepted class observation; prior links retained as history.'});
+     }
+    }
+    plan.status='complete';for(const [key,value]of plan.pending)wanted.set(key,value);report.rows+=plan.rows.length;report.accepted_rows+=plan.rows.length;
+   }catch(error){plan.rows=[];plan.status='failed';plan.reason=error.message;report.errors.push(id+': '+error.message);}
+   report.collections.push({scope:id,status:plan.status,rows:plan.rows.length,source_as_of:item.observedAt,reason:plan.reason});
+  }
+  await keep('entries-before',oldEntries,{shows:[report.show_id],dates:authority.dates});
+  const saved=wanted.size?await api.upsert('entries','entry-key',[...wanted.values()]):[];
+  const updates=[];
+  for(const plan of plans){const common={'collection-id':plan.id,'source-kind':'retained-class','source-id':plan.item.scopeKey,'show-id':report.show_id,date:plan.date,started:report.started,completed:clock(),status:plan.status,message:JSON.stringify({reason:plan.reason,revision:input.head,sourceAsOf:plan.item.observedAt,sourceEvidence:plan.item.sourceEvidence,currentness:'not-asserted',latestApplicableAttempts:plan.affectedAttempts||[]})};
+   if(plan.status!=='failed'){const event=await keep('retained-class-dataset',plan.rows,{shows:[report.show_id],dates:[plan.date]});Object.assign(common,{'row-count':plan.rows.length,'dataset-id':input.head,fingerprint:hash(plan.rows),'archive-file':event.file,entries:plan.rows.map(r=>{const s=saved.find(x=>x.fields['entry-key']===r['entry-key'])||before.get(r['entry-key']);if(!s)throw Error('Saved class membership missing');return s.id;})});}
+   updates.push(common);
+  }
+  if(updates.length)await api.upsert('collections','collection-id',updates);
+  report.ok=report.errors.length===0;report.summary=`Entries linking: ${report.rows} observed rows; ${report.accepted_rows} accepted source rows (currentness not asserted); ${report.link_issues.length} link issues; Data ${input.head}. No source acquisition or tenant selection.`;
+ }catch(error){report.errors.push(error.message);report.summary='Linking stopped; prior unverified scopes preserved. '+error.message;report.ok=false;}
+ report.completed=clock();report.result=report.ok?(report.link_issues.length||report.collections.some(c=>c.status==='historical')?'Partial':'Success'):'Failed';
+ if(logReady){log={...log,completed:report.completed,result:report.result,rows:report.rows,summary:report.summary,errors:report.errors.join('\n')};try{await saveLog();await api.upsert('heartbeat','heartbeat-key',[{'heartbeat-key':'wef-entries','checked-at':report.completed,'selected-date':show?.selected_date||null,'show-id':show?Number(show.show_id):null,result:report.result,summary:report.summary,errors:report.errors.join('\n')}]);}catch(error){report.ok=false;report.result='Failed';report.errors.push('Completion evidence failed: '+error.message);}}
  return report;
 }
 module.exports={runEntries};

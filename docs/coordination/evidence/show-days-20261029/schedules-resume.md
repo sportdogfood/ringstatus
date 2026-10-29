@@ -1,0 +1,13 @@
+# Schedules checkpoint - October 29, 2026
+
+ACTIVE authorization: direct owner approved Data/Shows build, show-days schema, deployment and two normal scheduled pairs. After Shows schema HTTP422 (unsupported read-only link option prefersSingleRecordLink; no table created), direct human replied APPROVED TO EDIT - correct and continue to the exact correction/retest/table/deployment/verification question. Records independently received the same direct permission. Corrective path authorized; do NOT ask again. Preserve one-show-link validation. No manual business runs, record repairs, task/cadence changes, Live gate or Entries input switch.
+
+Scope: docs/coordination/wef-smallest-implementation-plan-20261029.md. Local Season owns Data, Shows canonical publication, Records coordinates/reviews. Data deployed 09:51:44 Eastern after 52 tests/independent review. Manifest: C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/wef-data-count-deployment-20261029.json. First typed normal run passed 13:57:35.935 UTC, truthful scoped/stale/unknown as applicable; all 7786 old IDs and 1024 receipt hashes preserved. Second Data active at last report. Shows correction/table/deployment continuing. Two combined normal Data-to-Shows pairs NOT yet accepted.
+
+Unknown schooling/classless coverage cannot establish complete daily unique-entry zero. Existing 26 source trip zeros are not attendance proof. Five-minute zero validity from source observation only; existing workflows keep running. No synthetic acceptance or record repairs.
+
+Thread IDs: Records01a169bc-e58a-7de0-94c6-5d3931fcf745; Shows01a16976-f0a6-72a1-a75f-75de7f19a815; Local Season01a169c8-a4cc-7f52-b9f9-ef0a769aab58; Entries01a1691d-3bd7-7eb2-af17-b9ba39a7501e; Schedules01a14082-b22f-73b1-bba7-16781892a55d. Last Records cursor1985f4da-2e45-4044-a555-9b19054539c7:88. Last Season cursorf878cd70-7b46-4257-8607-c092730cee93:52. Await compact Records progress; owner-authorized coordination active, no new chats/automations.
+
+Evidence: docs/coordination/evidence/show-days-20261029/acceptance.md and review.md; wef-shows/evidence/show-days-build-20261029/. Next verify actual table/fields, deployment, two normal producer-to-canonical revision matches, Entries/CWF protection and unchanged task XML; read final receipts before completion. If new approved runner failure occurs, stop affected path per AGENTS; this correction approval is not blanket future repair authority. Root has no product code changes.
+
+Context check performed on actual schedules rollout; latest input251153, account remaining74 percent. This checkpoint prepared; no transfer/new chat performed.

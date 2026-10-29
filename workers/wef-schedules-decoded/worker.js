@@ -51,13 +51,18 @@ export default {
     if(pathname==="/health") return reply({ok:true,worker:"wef-schedules-decoded"});
     const isPeople=/^\/people\/\d+$/.test(pathname);
     const isClasses=/^\/classes(?:\/\d+)?$/.test(pathname);
-    if(!["/ring","/schedule"].includes(pathname)&&!isPeople&&!isClasses)
+    const isEntries=pathname==="/entries";
+    if(!["/ring","/schedule"].includes(pathname)&&!isPeople&&!isClasses&&!isEntries)
       return reply({message:"Route not found"},404);
-    const allowed=pathname==="/ring"?["customer_id"]:pathname==="/schedule"?["date","show_id","customer_id"]:isPeople?["pid","show_id","customer_id"]:["show_id","customer_id","cgid"];
+    const allowed=pathname==="/ring"?["customer_id"]:pathname==="/schedule"?["date","show_id","customer_id"]:isPeople?["pid","show_id","customer_id"]:isEntries?["show_id","customer_id","page","sort_on","sort_type","search_text"]:["show_id","customer_id","cgid"];
     if([...url.searchParams.keys()].some(k=>!allowed.includes(k)) ||
        url.searchParams.get("customer_id")!=="15" ||
        (pathname!=="/ring"&&!/^\d+$/.test(url.searchParams.get("show_id")||"")) ||
        (isPeople&&url.searchParams.get("pid")!==pathname.split("/")[2]) ||
+       (isEntries&&(!/^[1-9]\d*$/.test(url.searchParams.get("page")||"") ||
+          (url.searchParams.has("sort_on")&&url.searchParams.get("sort_on")!=="number") ||
+          (url.searchParams.has("sort_type")&&url.searchParams.get("sort_type")!=="asc") ||
+          (url.searchParams.has("search_text")&&url.searchParams.get("search_text")!==""))) ||
        (pathname==="/schedule"&&!/^(?:\d{4}-\d{2}-\d{2}|00\/00\/00)$/.test(url.searchParams.get("date")||"")))
       return reply({message:"Invalid source parameters"},400);
     if(!env.SGL_TOKEN) return reply({message:"Source authentication not configured"},503);

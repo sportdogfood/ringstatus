@@ -1,5 +1,76 @@
 # Independent WEF schedules staging
 
+## Collection attempts and separate err-logs - 29 October 2026
+
+The existing task still calls run.ps1 every five minutes. The wrapper now assigns
+an attempt ID and writes start/end receipts before private-environment loading
+or Node startup. attempt-entry.js creates the matching Airtable run-log before
+collector imports or the business lock, then invokes the unchanged collection.
+Normal completion, warnings and row/archive counts stay on that same run record.
+
+The err-logs table (tblntJGnYFpLxjFSr) records deterministic error IDs, attempt/run ID, stage,
+recording/start times, optional show/date, redacted message and a direct run-log
+link. Informational empty-day warnings are not errors. Error rows are bounded to
+1000, with verified archive-before-slot-reuse and readable archive receipts.
+
+If credentials, Node or Airtable are unavailable, the wrapper's local metadata
+receipts remain under runtime/attempt-receipts/<attempt-id>.jsonl. A later normal
+invocation publishes only these newly marked attempt/error receipts; it never
+reruns collection or repairs old historical log rows. Interrupted receipts retain
+unknown outcome until actual completion evidence exists. Recovery acknowledges
+exact remotely verified evidence and handles at most ten pending attempts per
+invocation. Older fully finished, acknowledged, inactive receipts are compressed,
+read back and archive-logged before removal. A missing ACK is not success.
+
+Logging mutations have a separate short-lived serialization lock. Invalid/dead
+logging locks fail visibly and require inspection; they are not automatically
+cleared. The existing business lock/collection/archive logic is unchanged.
+A suppressed Windows trigger or a sleeping/unavailable PC is not a launched
+collection attempt. If even local storage is unwritable, no software log write
+can be guaranteed; task/process failure remains a separate signal.
+
+Operational acceptance: the normal 11:20 and 11:25 Eastern starts on 29 October
+completed Success at 11:20:57.900 and 11:25:49.008 respectively. Both wrappers
+returned exit0; attempt IDs/start times match Airtable, latest heartbeat matches,
+and the second normal process acknowledged the first receipt without collection
+replay. All504 existing schedules,56 rings,3 local shows and14 helpers/links were
+preserved.165 offline tests and independent review passed. Err-logs remained
+empty because both observed normal runs were healthy; failure paths are fixture
+proof only. Eleven logged archive files matched their decompressed SHA256.
+Task XML/five-minute cadence and protected collection/store/guard/settings files
+are unchanged. No manual business runs or historical record repairs.
+
+See evidence/attempt-errors-20261029/ for source baseline, tests, review, schema,
+deployment and two normal scheduled-run receipts. Offline failure tests do not
+claim production failures were induced. No manual runs or record repairs.
+
+## Schooling sessions and breaks - 29 October 2026
+
+Explicit source schedule_break groups with empty class lists now appear in
+schedules alongside classes. Their keys are block:<source group ID>, scoped by
+the existing show/date stage-key. Class IDs/numbers remain blank; type is
+schooling or break, and group retains the source label. Existing class keys,
+record identities and downstream links are preserved. Source counts and times
+are retained; no attendance or times are inferred from labels or top-level counts.
+Class-only browser time enrichment does not run for block-only days. Manual
+time overrides, archive-before-delete and destructive-empty guards remain.
+
+Normal run-logs and show-collection distinguish class and schooling/break counts.
+The empty_show_day message applies only when no classes, schooling sessions or
+breaks were returned for the specific show/date. A schooling-only day is not empty.
+
+139 offline tests passed, including repeat collection and preserved entry links.
+Saved-source replay preserved all 471 existing class rows and keys exactly and
+identified 26 blocks on October 29, five on October 30 and two on October 31.
+Normal 08:30 and 08:35 scheduled runs passed on 29 October, completing at
+08:31:07 and 08:36:04 Eastern with matching heartbeat/run-logs and wrapper exit 0.
+All 471 existing class record IDs and show/ring links were retained; 33 source
+blocks were added across the show, including 24 schooling sessions and two breaks
+on October 29. All 504 record IDs remained stable on repeat. Today reports zero
+source entries/trips, not measured open-schooling attendance. No empty-day warning,
+manual collector runs, record repairs, schema or task/cadence changes.
+Acceptance: evidence/schedule-blocks-20261029/.
+
 ## Maintenance source aligned - 28 October 2026
 
 The owner-approved maintenance copy alignment is complete. The designated editable

@@ -1,5 +1,66 @@
 # wef-live workflow handoff
 
+Version: 1.3
+Date: 29 October 2026 (America/New_York)
+
+## Entries publication consumer — 29 October 2026
+
+Approved simplification: the existing read-only Entries reference now syncs schedule-link-status, schedule-link-basis, group-link-status, link-issues and source-json. Automatic sync and editing restrictions are unchanged. Source reference view exposes only the existing twelve plus these five fields; no records were repaired or collectors manually invoked.
+
+Live consumes the producer's accepted mapping rather than rereading source schedules/show-collection or comparing the entire source/synced dataset. It retains exact scoped identity, uniqueness, active/successful status, local schedule-key availability and prior-link preservation. Both original sourceAsOf and last-seen must agree and be within 30 minutes, retaining the existing one-minute future-clock tolerance. Publication/heartbeat times cannot renew freshness. Missing evidence or any newer applicable unfinished/failed attempt prevents current qualification. Ordinary class-date mapping requires one schedule; observed-group mapping additionally requires linked group status, matching group ID and same-revision evidence. Live does not infer group eligibility from class-date association.
+
+Live ring/group/class schedule links, collection, archive protection and all three logging tables are unchanged. Missing/stale/unresolved references preserve prior links as historical and record issues while observations continue. The checks described in older release sections below are historical where superseded by this consumer contract.
+
+Verification: 54 tests passed. Normal 13:50 and 13:53 Eastern runs completed Success with matching heartbeat/run-logs, no errors, verified archives and all 397 records/links unchanged. Both had empty live activity; fresh populated qualification remains offline-tested rather than naturally demonstrated. See evidence/entries-contract-20261029/release.md.
+
+## Tenant-code removal — 29 October 2026
+
+Approved Live-only implementation: runtime comparison, uniqueness and overlap-lock helpers now live in `runtime-utils.js`; verified archive creation now lives in `archive.js`. Their behavior is preserved from the deployed baseline, with tenant lock-error labels renamed for Live. Runtime and verification imports no longer load tenant modules. The unmatched-participation explanation now says “No available validated entry reference.” Existing identity matching, links, archive protection, cadence and upstream collectors are unchanged.
+
+All 49 existing tests and three focused dependency/utility tests passed. Two normal scheduled runs at 13:11 and 13:14 Eastern completed successfully; heartbeat/run-logs agreed, errors were absent, verified archives were readable, and all 397 business records and links were unchanged. Both were no-live-activity outcomes; populated collection behavior is covered offline, not newly demonstrated by these runs. See `evidence/tenant-decoupling-20261029.md` for exact acceptance. Earlier documentation-only statements below describe the prior correction, not this separately approved implementation.
+
+## Workflow correction â€” CWF removed
+
+CWF is removed from all workflow responsibilities, collection parameters, dependencies, linking requirements and acceptance checks. Shows supplies authority; schedules and Data collect their owned sources; the local Season coordinator owns Data collection/retention and Season stewardship. Entries is a linking module only, consuming accepted Data/Season and schedules without independent source acquisition. Live independently collects current observations. Tenant filtering is downstream and does not control collection. No tenant-specific feed or consuming run is a prerequisite for core acceptance. Historical evidence remains intact in its original files but is not a current workflow requirement.
+
+This update changes documentation only. It does not claim that deployed code has been changed or audited for remaining references. Code, Airtable, existing records and scheduled tasks are unchanged.
+
+The minimal proposed Entries schedule association uses exact show/class/date only when exactly one active schedule matches. Ambiguous matches remain unresolved; do not fan out to groups. Verified group eligibility is separate and retains its own source-evidence requirements. This proposal does not change the existing Live reader or authorize its migration.
+
+## Proposed canonical readiness gate - 29 October 2026
+
+**Planning only; not implemented or operationally verified.** wef-shows remains the sole canonical show authority and owns new/default show discovery. The proposed contract has Shows publish dated counts/readiness derived from Season-owned Data verified evidence. Live consumes that publication; it must not independently rediscover shows. Publication schema, count policy, coverage, freshness/revision rules and consumer gating still need agreement and proof. This section authorizes no code, schema, record, task or source changes.
+
+Current Live behavior remains unchanged: three-minute canonical authority checks, TODAY guard, live-status check, completed-group gate and successful empty-response handling. There is no implemented Shows dated readiness gate and no producer-revision-driven suppression/resumption policy.
+
+### Required before Live may skip covered source polling
+
+1. Shows must expose explicit accepted **complete dated evidence with count zero**, matching customer/show/date, with an approved count policy, declared coverage and a fresh valid evidence revision. These are semantic requirements, not invented Airtable field names. Absence of a record or value is never zero.
+2. Coverage must support the exact Live acquisition being suppressed. Live covers all TODAY activity, independently of downstream tenant slices. Zero filtered entries, zero trips or no competition classes cannot suppress the whole live workflow. Schooling/classless attendance or live activity of unknown coverage must remain unknown. If the evidence covers competition entries only, it cannot authorize skipping uncovered rings/groups or schooling activity.
+3. Missing, stale, partial, error, ambiguous or mismatched evidence must never become a zero-day skip. Fall back to existing approved collection behavior and its existing guards; do not declare empty success from invalid readiness.
+4. Separate lightweight canonical context/readiness rechecks from costly source polling. Agree the producer refresh and consumer recheck policies, revision invalidation and correction handling. Later entries, corrected counts, changed default/date, expired evidence or withdrawn readiness must release the readiness suppression at the approved next check; existing collection guards still apply. No permanent day shutdown. No cadence change is authorized.
+5. A readiness skip must retain heartbeat/run-log visibility and record the reason, evidence scope/revision and covered acquisition skipped, while preserving observations and links. A skip is not permission for cleanup or proof of fresh live observations. Historical labeling and verified archive-before-delete rules remain independent.
+6. After separate implementation approval, test accepted zero, positive/revised counts, missing/stale/partial/error evidence, wrong scope, ambiguous authority and incomplete schooling/classless coverage. Then verify normal scheduled skip and resumption behavior, record/link preservation and repeat behavior. No seeded production records, forced revisions, manual runs or record repairs to manufacture proof.
+
+Ownership/dependencies: Shows publishes canonical authority/readiness; Season/Data supplies verified complete evidence and coverage; the coordinator settles the cross-owner count/revision/recheck contract; Live implements only its consumer gate after approval. No existing reader switches or collector replacements are authorized. Until these requirements are satisfied, readiness-based suppression remains unavailable.
+
+Keep this proposed gate separate from same-date old-show deletion (implemented, natural deletion proof pending), populated new-show link/sync-lag acceptance, historical class 200030429 identity issue, natural multi-group proof and the unchanged timing-input boundaries. Documentation updated from the agreed planning exchange, not a fresh operational check.
+
+## Rollover update - 29 October 2026
+
+Old-show/date observations now receive scope-status historical after canonical authority validation, including empty/upcoming runs. Prior current participation labels become historical; native links and observation evidence are retained. Same-date other-show retirement selection and deletion guard are implemented with existing verified archive protection and populated clean-run gates. This supersedes the implementation-gap statement below, but natural same-date deletion acceptance remains open. Normal 08:26 and 08:29 Eastern runs verified historical labeling of 397 rows, preserved IDs/data/links and repeat no-op; 49 offline tests passed. See [rollover evidence](evidence/rollover-labeling-20261029.md). Populated new-show links, sync-lag behavior, natural same-date deletion and all-owner rollover acceptance are not claimed.
+
+Confirmed empty live responses now complete successfully without business cleanup; see [empty-response evidence](evidence/empty-response-20261029.md). Subsequent rollover authorization adds historical labeling to those runs. Three-minute cadence remains unchanged.
+
+### Coordinator acceptance handoff
+
+- Normal run `d0db13e4-9987-4935-b080-6825a909c778`, 08:26:14â€“08:27:16 Eastern: archived and labeled 5 rings, 31 groups, 56 classes and 305 entries historical. Two formerly current participation labels became historical. Heartbeat and run-logs Success; no collection/logging errors or errs-log rows.
+- Repeat `bb35e0f3-92f0-4151-8c70-f8773814ffe7`, 08:29:13â€“08:29:33 Eastern: Success, no repeat labeling archives, unchanged record IDs/source data/native links. No business deletions in either run.
+- **Same-date old-show deletion still needs natural proof.** The code and offline deletion/archive guards are tested, but no qualifying same-date old-show records and populated new-show run were available. At a natural qualifying run, verify the exact old-show rows, archive hash/content, deletion outcome and retained current-show records/links. Do not seed records, trigger a run or repair records to obtain proof.
+- Remaining gates are separate: populated new-show links; sync-lag handling; cross-owner rollover acceptance; historical class 200030429 identity issue; natural participation-specific multi-group proof. This handoff does not authorize fixes or change timing-input boundaries.
+
+This coordinator update uses the saved verification above; it is documentation and communication only, with no new code/Airtable changes or collector runs.
+
 ## Operational update - 25 October 2026
 
 Owner changed wef-live-collector to every three minutes (PT3M); hidden launcher retained. Owner also approved one heartbeat row per invocation: new row keyed by run ID, stamped started/checked-at with Running before source work, then the same row receives completed/checked-at and terminal result. Existing legacy heartbeat row is preserved. This supersedes the older five-minute cadence and latest-row-only heartbeat description below. Startup/final heartbeat failures remain isolated from collection. 43 offline tests passed; normal-run evidence is in evidence/heartbeat-per-invocation-20261025.md.
@@ -8,7 +69,7 @@ errs-log also now has err-class, err-trip and err-group. Each error gets a separ
 
 Prepared 24 October 2026. Operational evidence verified through the 13:12 ET scheduled run, completed 13:13:05 ET. This is a handoff document, not authorization for further changes.
 
-Updated 24 October 2026 with entries/CWF acceptance through 13:15:18 ET and the agreed live-to-timing planning boundaries. This documentation update did not refresh live operational status or run any collectors.
+Updated 24 October 2026 with historical upstream acceptance evidence and the agreed live-to-timing planning boundaries. The tenant-consumer acceptance requirement is superseded by the 29 October correction above. This documentation update did not refresh live operational status or run any collectors.
 
 Further updated 24 October 2026 with the saved timing-payload investigation and assigned natural-rollover acceptance gaps. Findings below are retained-evidence findings, not a fresh operational check or implementation approval.
 
@@ -16,7 +77,7 @@ Further updated 24 October 2026 with the saved timing-payload investigation and 
 
 The independent TODAY-only live collector is deployed. The participation-link contract passed 40 offline tests, independent review, and two normal scheduled runs. Existing native links were preserved. No manual collector runs or record repairs were used.
 
-Own only wef-live: live observations, local reference links, archives, collections and operational logs. Shows supplies canonical show/date authority; schedules supplies schedule identity and dated collection health; entries supplies tenant-selected participation identity and eligible schedule references. CWF remains tenant-owned. Do not edit those collectors or the shared decoding/source modules as part of live work.
+Own only wef-live: live observations, local reference links, archives, collections and operational logs. Shows supplies canonical show/date authority; schedules supplies schedule identity and dated collection health; entries links accepted Data/Season participation identities to schedules and local records; it does not independently acquire source entries. Tenant consumers are downstream and do not control collection. Do not edit those collectors or the shared decoding/source modules as part of live work.
 
 Timing is a downstream consumer, not implemented here. It must distinguish current validated observations from retained historical data. Live does not infer timing predictions, official result readiness or participation group eligibility.
 
@@ -38,7 +99,6 @@ Timing is a downstream consumer, not implemented here. It must distinguish curre
 | wef-shows | appCaSmL819KK7UFJ | Read canonical shows |
 | wef-schedules | appUq5Qz9kARqFija | Read schedules and show-collection health |
 | wef-entries | appSxF4pYMBaxpTZd | Receive restricted native entry sync |
-| wef-tenant-cwf | appxKPBtdl2Rdq7CS | Protected; no live writes |
 
 [Open wef-live](https://airtable.com/appgzosUcVqA4vZdf).
 
@@ -86,7 +146,7 @@ Prior-state/source archives are compressed, hashed and verified before relevant 
 - `schedule-keys` is sorted, unique JSON. Singleton scalar `schedule-key` must agree; multiple keys require blank scalar. Scalar fallback applies only when the plural field is absent, not when it is present but empty/malformed.
 - Require complete fresh dated `show-collection` health, using completion time rather than schedule changed-at. Compare full active source/local stage-key sets for the date; listed keys must each resolve uniquely to active matching schedules. Dropped rows are historical, not eligible.
 - Consume participation schedules through the existing synced entry reference. No redundant live-entry schedules link. Do not infer that every class group is eligible for every trip.
-- `participation-link-status`: current, historical, unresolved or unmatched. A failed check preserves a previous native link as historical; a rejected candidate without a prior link is unresolved; out-of-tenant-scope unlinked observations are unmatched.
+- `participation-link-status`: current, historical, unresolved or unmatched. A failed check preserves a previous native link as historical; a rejected candidate without a prior link is unresolved; observations without an available validated entry reference are unmatched.
 - Audit fields: `participation-link-reason`, `participation-checked-at`, `participation-verified-at`. A failed check does not erase the prior verified timestamp. Consumers must require current status and appropriate freshness, not timestamp presence alone.
 
 Implementation: `participation.js`, integrated by `collector.js`; error delivery is in `entry.js`. Destination write restrictions/read targets are in `airtable.js`. Metadata setup is `configure.js`; do not rerun setup merely to inspect status.
@@ -107,25 +167,11 @@ Each run collected 5 rings, 26 groups, 59 classes and 287 live entries. Both had
 - [Saved automatic/read-only sync settings](evidence/participation-sync-settings.png)
 - Prior continuation baseline: `evidence/logging-isolation-release.md`, `logging-isolation-run-1.json`, `logging-isolation-run-2.json`.
 
-## Upstream entries/CWF verification
+## Historical upstream evidence â€” not a tenant dependency
 
-The entries/CWF owner's saved release records two successful ordinary scheduled pairs. These are separate upstream acceptance results, not additional live runs. All times below are America/New_York on 24 October 2026.
+The earlier upstream release evidence is retained at [release](../wef-entries/evidence/multiple-schedules-20261024/release.md), [pair 1](../wef-entries/evidence/multiple-schedules-20261024/run-pair-1.json), [pair 2](../wef-entries/evidence/multiple-schedules-20261024/run-pair-2.json), and [repeat comparison](../wef-entries/evidence/multiple-schedules-20261024/repeat-comparison.json). These are historical records only. Their tenant-consumer checks do not define current collection scope, dependencies or acceptance requirements.
 
-| Pair | Entries run | CWF consuming run | Verified result |
-|---|---|---|---|
-| 1 | 13:04:01-13:04:31 | 13:07:02-13:09:45 | 9 current, 1 historical; 9 local links verified; zero duplicate people fetches |
-| 2 | 13:09:02-13:09:36 | 13:12:05-13:15:18 | Same identities, links and counts; zero duplicate people fetches |
-
-Repeat comparison confirms stable record IDs, schedule/ring/helper links, statuses and active slices. Nicknames, notes, aliases and disabled flags were preserved; retired CWF entry records were unchanged. No private owner/source provenance was exported. Array/status fields arrived through automatic sync. Task definitions remained unchanged. No manual collector runs or record repairs were used.
-
-Evidence owned by entries/CWF:
-
-- [Release](../wef-entries/evidence/multiple-schedules-20261024/release.md)
-- [Pair 1](../wef-entries/evidence/multiple-schedules-20261024/run-pair-1.json)
-- [Pair 2](../wef-entries/evidence/multiple-schedules-20261024/run-pair-2.json)
-- [Repeat comparison](../wef-entries/evidence/multiple-schedules-20261024/repeat-comparison.json)
-
-This proves plural transport/consumer compatibility with the naturally available singleton records. It does not prove participation-specific multi-group eligibility. Both private follow lists remained empty; populated private-follow behavior is fixture-only.
+That evidence demonstrated plural-field transport with naturally available singleton records. It does not prove the new independent Entries matcher or participation-specific multi-group eligibility. Current acceptance must use independent producer evidence and normal scheduled behavior, without a tenant-specific consuming run.
 
 ## Agreed timing-input boundaries - accepted for plan
 
@@ -186,7 +232,7 @@ Live's accountable scope:
 - **New-show sync lag:** verify new-show schedule/participation readiness and preserve existing links while references lag. Prove current versus historical labeling on the actual transition, not merely repeated same-show runs.
 - **Archive/preservation and retirement:** verify archived prior state and native-link preservation. Current date-only retirement covers earlier dates, not rows for another show on the same date; this is an identified acceptance/implementation gap, not a completed fix. Retirement also requires clean source/identity/participation checks.
 
-Cross-owner dependencies remain separate: shows tracks non-atomic default publication and returned identity checks; schedules owns its same-machine verified archive dependency and upstream retirement effects without a downstream acknowledgment gate; entries/CWF owns current-show filtering of retained prior-show participation, dated health/parity and sync-lag handling. Live must not implement changes in those owners' areas under this handoff.
+Cross-owner dependencies remain separate: shows tracks non-atomic default publication and returned identity checks; schedules owns its same-machine verified archive dependency and upstream retirement effects without a downstream acknowledgment gate; entries owns current-show filtering of retained prior-show participation, dated health/parity and sync-lag handling. Live must not implement changes in those owners' areas under this handoff.
 
 Required natural proof: exact old/new customer/show keys; producer publication run IDs/times and canonical default cardinality; independent schedules/entries/live run IDs/times; relevant-date source/local sync readiness; scoped complete/Partial/failed outcomes; archived old state and preserved record/helper/private links; actual retirement effects, including same-date other-show rows. Observe two normal repeats where repeat acceptance is required. Do not trigger collectors, seed a default, force sync/convergence or repair records to obtain proof.
 

@@ -1,69 +1,68 @@
 flowchart TB
-    subgraph COL["Independent collectors / normalizers — recurring updates, not a run sequence"]
-        SH["wef-shows<br/>Keeps updating"]
-        S["wef-schedules<br/>PROVING FOUNDATION<br/>Keeps updating"]
-        E["wef-entries — SHARED LINKING MODULE<br/>Independent recurring collection<br/>Horse / rider / trainer / show / schedule identity<br/>Normalize each selected participation once<br/>Inactive participation retained; valid empty = Success"]
-        subgraph LIVE["wef-live — independent five-minute collection<br/>Direct show authority; verification blocked by source HTTP 502"]
-            L["Authority: wef-shows.shows<br/>Matched source show + TODAY only<br/>All relevant live activity; not limited to CWF entries<br/>Valid empty = Success; archive prior days before retirement"]
-            LR["live-rings<br/>Ring IDs / number / name<br/>Current, next, completed groups"]
-            LG["live-groups<br/>Group ID / status / counts<br/>Ring, classes and schedule links"]
-            LC["live-classes<br/>Class ID / counts / current trip<br/>Group, ring and schedule links"]
-            LE["live-entries<br/>Trip + entry + horse + rider + trainer IDs<br/>Order, scratch, gone, position<br/>Decoded trip-to-entry mapping"]
-            LO["collections / run-logs / heartbeat<br/>Scope, freshness, counts, errors and archives"]
-            LS["Read-only local sync<br/>wef-schedules.schedules"]
-            LB["Read-only local sync<br/>wef-entries.entries<br/>Identity fields only; no private selection reasons"]
-        end
+    LEG["Documentation only<br/>Solid arrows: EXISTING data handoffs<br/>Dashed arrows: PROPOSED or OPTIONAL, explicitly labeled<br/>No arrow triggers execution; proposed lanes are not deployed"]
+    subgraph CURRENT["EXISTING wiring — inspected dependencies, not the target lanes"]
+        SH["wef-shows<br/>Canonical shows + show-days<br/>sources / heartbeat / run-logs / err-logs<br/>Retain show and day records"]
+        S["wef-schedules — all current-show dates<br/>Existing shows / schedules / dated rings / show-collection<br/>Proposed references: groups / classes / types / sequence-types / statuses<br/>Preserve stage-keys, IDs and owner helper data"]
+        D["wef-data — independent acquisition<br/>Local wef-season-coordinator owns this module<br/>Collected schedules, entries and verified source evidence"]
+        E["wef-entries — LINKING ONLY<br/>Current: accepted Data evidence limited by synced Schedules scopes<br/>This currently couples the alternatives<br/>No source acquisition; ownership ends at publication"]
+        L["wef-live — independent TODAY acquisition<br/>Canonical show/date scope; retained rows may be historical<br/>Owns live-rings / live-groups / live-classes / live-entries"]
+        LB["EXISTING local wef-entries.entries reference in Live<br/>Identities / original times / scalar and plural schedule keys<br/>schedule-link-status / schedule-link-basis<br/>group-link-status / link-issues / source-json<br/>Live owns qualification and consumption"]
+        LS["EXISTING local wef-schedules.schedules reference in Live<br/>Schedule occurrence links; preserve native destination IDs"]
+        SE["wef-season-* — RETENTION ONLY<br/>Local wef-season-coordinator owns retention separately<br/>Retain / merge / deduplicate / index history and entities<br/>Never a prerequisite for current collection"]
+        SH -->|"EXISTING canonical authority"| S
+        SH -->|"EXISTING canonical authority"| D
+        SH -->|"EXISTING canonical authority"| E
+        SH -->|"EXISTING canonical authority"| L
+        S -->|"EXISTING local synced schedule scopes"| E
+        D -->|"EXISTING verified runs and retained collections"| E
+        S -->|"EXISTING read-only sync"| LS
+        LS -->|"EXISTING schedule references"| L
+        E -->|"EXISTING read-only data handoff; no job trigger"| LB
+        LB -->|"EXISTING participation reference; migrate before removal"| L
+        D -->|"EXISTING verified retained-file handoff"| SE
+    D -->|"EXISTING verified day-count evidence; no discovery gate"| SH
+    RG["CURRENT exception: Data retirement/backoff precedes acquisition<br/>Season acknowledgment can therefore defer collection today"]
+    SE -->|"EXISTING archive acknowledgment, retirement only in target"| RG
+    RG -->|"EXISTING Data control-path dependency"| D
+    RF["PROPOSED Data fix: isolate retirement readiness/backoff<br/>Only positively identified PRE-MUTATION waiting may continue<br/>Include outgoing archive readiness in Runner.tick<br/>Log waiting; preserve rows; acquisition retains its own guards<br/>Keep archive, acknowledgment, exact-ID and current/shared protections<br/>Unknown delete/reload/invariant failure remains a safety stop<br/>Do not clear or repair existing Source holds"]
+    D -.->|"PROPOSED data_runner.py + retirement.py and focused tests"| RF
     end
-    B["wef-timing — BRAIN<br/>Continually calculates from available normalized data"]
-    subgraph OUT["Independent outputs — continually look to timing for answers"]
-        P["wef-publish<br/>Webflow / Astro / endpoint APIs"]
-        R["wef-results<br/>Independent source-result collection and management"]
-        M["wef-messaging<br/>Alerts and two-way"]
+    subgraph TARGET["PROPOSED approval-ready first release — not deployed"]
+        A["Lane A: Schedules occurrence comparison<br/>Published stage-key; local native schedule links"]
+        B["Lane B: Data occurrence comparison<br/>Accepted retained schedule-key; evidence only<br/>Original inventory request time; not projection last-success<br/>Never a Schedules native record ID"]
+        CP["Common accepted Data participation<br/>Multi-day show|date|entry|class<br/>Schedules does not independently collect entries"]
+        EN["Entries-owned additive publication<br/>Keep source-json format wef-entry-link-v1 and existing evidence<br/>Add laneAssociations.schedules / laneAssociations.data / liveEvidence<br/>Existing scalar/plural schedule fields remain Schedules-only"]
+        LI["Optional TODAY Live reader in Entries<br/>GET live-entries / live-classes / collections only<br/>Verified normalized class archive hash + exact membership + evidence fence<br/>Original observation freshness: 30 minutes<br/>Exclude entry and participation-link-* derived fields<br/>No operational group-attribution claim"]
+        MIG["FIRST RELEASE: Entries readers + Data retirement-wait isolation<br/>No Shows / Schedules / Live / Season retention deployment<br/>No schema, sync, task, record repair or new deletion scope<br/>Existing Entries-to-Live reference and native links stay<br/>Reverse cutover requires later separate approval"]
+        S -.->|"PROPOSED independent schedule comparison"| A
+        D -.->|"PROPOSED verified retained schedule projection"| B
+        D -.->|"EXISTING common facts; proposed wider lane coverage"| CP
+        CP -.->|"PROPOSED multiday participation, bypass TODAY Live"| EN
+        A -.->|"PROPOSED separate association"| EN
+        B -.->|"PROPOSED separate association"| EN
+        L -.->|"PROPOSED three-table GET + existing local archive"| LI
+        LI -.->|"PROPOSED enrichment only; absence never gates multiday linking"| EN
+        SE -.->|"OPTIONAL retained enrichment; no readiness gate"| EN
+        EN -.->|"PROPOSED bounded release and two normal runs"| MIG
     end
-    T["wef-tenants — CWF parameters<br/>Trainer feeds 8778 / 50121 / 80970<br/>Show and retained dates<br/>Plus private user selections"]
-    U1["main-user — placeholder<br/>Up to 10 private selections: M1–M10"]
-    U2["user-2 — placeholder<br/>Up to 10 private selections: U1–U10"]
-    LINK["Tenant linking contract<br/>Collect the union; normalize participation once<br/>Retain separate selection reasons<br/>Slice data and timing by tenant params"]
-    TEAM["Active team slice<br/>Hide inactive horses/riders here<br/>Personal followed lists remain separate"]
-    C["wef-tenants-cwf — existing wef-tenant-cwf<br/>Input: tenant-details / trainers configuration<br/>Workspace: tenant slice, edits and helpers<br/>Current collector continues unchanged"]
-    H["Helpers<br/>Rings / horses / riders / locations"]
-    W["wef-waze<br/>Interaction — comments and check-ins"]
-    SH -->|"Verified default show and dates; existing schedule links retained"| S
-    SH -->|"Default show and dates; direct read"| E
-    SH -->|"Default show and selected date; direct read"| L
-    SH -.->|"Normalized updates"| B
-    S -.->|"Normalized updates"| B
-    E -.->|"Normalized updates"| B
-    L -.->|"Normalized updates"| B
-    P -.->|"Continually reads answers"| B
-    R -.->|"Continually reads answers"| B
-    M -.->|"Continually reads answers"| B
-    T -.->|"Tenant params"| LINK
-    C -.->|"Initial CWF configuration input"| LINK
-    U1 -.->|"Private selections; may overlap trainer entries"| LINK
-    U2 -.->|"Private selections; may overlap either list"| LINK
-    LINK -.->|"Which entries to collect"| E
-    E -.->|"Own five-minute task; normal-run proof"| E
-    E -.->|"Reads available schedules: show ID + class ID + date"| S
-    E -.->|"Available bound entries"| LINK
-    B -.->|"Available timing answers"| LINK
-    LINK -.->|"Collected team participation plus timing"| TEAM
-    TEAM -.->|"Planned filtered team + timing view; distinct from current sync"| C
-    S -->|"Existing read-only sync"| C
-    E -->|"Verified CWF team sync; local helper links; no duplicate fetch"| C
-    H -.->|"Reference lookups"| E
-    H -.->|"Reference lookups"| W
-    R -.->|"Collected results linked to entries/trips"| E
-    S -.->|"Read-only reference sync; no execution trigger"| LS
-    E -.->|"Read-only identity reference sync"| LB
-    L -.->|"Independent source observations"| LR
-    L -.->|"Independent source observations"| LG
-    L -.->|"Independent source observations"| LC
-    L -.->|"Independent source observations"| LE
-    L -.->|"Every run and archive"| LO
-    LG -.->|"ring link"| LR
-    LC -.->|"groups and ring links"| LG
-    LC -.->|"show + date + class ID"| LS
-    LG -.->|"Schedules of its classes"| LS
-    LE -.->|"class link"| LC
-    LE -.->|"Exact entry-key when present; unmatched untracked entries allowed"| LB
+    IDS["Identifiers are distinct<br/>entry-id = show entry<br/>participation = show|date|entry|class<br/>live-entry-key = show|date|class|trip-id<br/>None is a schedule occurrence or stage-key"]
+    Q["Observation freshness and participation-link qualification are separate<br/>Filter canonical customer/show/date and observation scope<br/>Historical rows are not TODAY activity<br/>Unresolved links do not suppress valid independent observations"]
+    LO["EXISTING Live logging: collections / heartbeat / run-logs / errs-log<br/>heartbeat: each invocation; run-logs: overall outcome<br/>errs-log: individual errors; no table rename"]
+    L -->|"EXISTING observation and link identities"| IDS
+    L -->|"EXISTING logging"| LO
+    subgraph VIEWS["PROPOSED optional read-only browsing — not permanent history"]
+        SHV["Inside Shows: live-rings / live-groups / live-classes / live-entries<br/>Canonical show-day and qualified observations"]
+        SV["Inside Schedules: same four Live tables<br/>Validated dated ring/group/class identity and actual stage-key"]
+    end
+    L -.->|"PROPOSED filtered read-only sync"| SHV
+    L -.->|"PROPOSED filtered read-only sync"| SV
+    Q -.->|"PROPOSED browsing qualification"| SHV
+    Q -.->|"PROPOSED browsing qualification"| SV
+    LA["EXISTING Live retirement safeguards<br/>Later clean qualifying populated run only<br/>Archive and verify exact observations before eligible retirement<br/>No midnight / empty / skipped / failed / unresolved cleanup<br/>Protect current scope and future dates"]
+    SA["EXISTING Schedules old-show retirement<br/>All new-show dates succeed first<br/>Archive and verify old schedules + show-collection before retirement<br/>Local history/retired; index in local shows and run-logs"]
+    NOTE["Show-days and current-show multi-day schedules remain<br/>Source retirement may remove synced rows and destination links<br/>Do not assume native-link survival<br/>Permanent browsable history and Live archive-catalog remain separate proposals"]
+    L -->|"EXISTING archive-before-retirement"| LA
+    S -->|"EXISTING old-show rollover, separate from day end"| SA
+    LA -->|"Retention limitation"| NOTE
+    OUT["Downstream: wef-engine / wef-timing / wef-messages / wef-results / wef-waze / wef-publish<br/>Consumers own their reads; no automatic readiness or completed integration claim<br/>CWF is downstream only, never a core collection gate"]
+    MIG -.->|"PROPOSED consumer handoffs; not Entries-owned execution"| OUT

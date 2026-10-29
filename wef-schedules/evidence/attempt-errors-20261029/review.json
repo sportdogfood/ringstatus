@@ -1,0 +1,23 @@
+{
+  "result": "PASS - no remaining Critical or Important findings",
+  "reviewer": "attempt_logging_review",
+  "independent_offline_tests_passed": 31,
+  "files": {
+    "attempt-entry.js": "CCC22AA5BF4462C15A3AB1D7FA96513406F2C31D941788FD478C08610842382C",
+    "attempts.js": "93AA8F6F71798DB1FBBE3C1A05C085D29336B2801F91BF15D9EC00DEAC2A266B",
+    "attempt-api.js": "1628FB8835D99AEC010C04DCC245D2E82DD72ECD0F2DA24F6ADE906C929A9511",
+    "error-logs.js": "D79F0ADBA758FF4218427B45BCD49A0159B41320F7C3357AE20DDF30CDC8B11A",
+    "logging-lock.js": "F682A99F8EDFC69A058B0BFCFFCDF8030ED16EE10C8927D25D509731331EB07E",
+    "run-logs.js": "A39E7D2FEA0136A07562D46DAE48140F1E91CF68D5CE5D83C7030533CDEBF12C",
+    "run.ps1": "5A79216884B5393D8FE6847CEF69B44D90C3D01C7C56891AC7EAADEB738300F2"
+  },
+  "resolved": [
+    "timestamp normalization",
+    "terminal failed-run error recovery",
+    "all-retained-file recovery",
+    "acknowledged unknown avoids starvation",
+    "cross-process retention serialization",
+    "explicit-null show identity",
+    "dead-owner lock fails closed without removal"
+  ]
+}

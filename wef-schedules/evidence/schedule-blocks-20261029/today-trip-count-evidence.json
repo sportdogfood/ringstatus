@@ -1,0 +1,264 @@
+{
+  "documented_at": "2026-10-29T08:38:34.242901-04:00",
+  "show_id": 200000076,
+  "date": "2026-10-29",
+  "source_file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\cache\\schedule\\schedule_2026-10-29_show_200000076_1793276109.json",
+  "source_sha256": "faca57c1363034c1b95d156e20b47ecf44c6680f589b9750e3d05fd3a6f28f18",
+  "method": "Read explicitly present numeric total_trips from each rings[].classes[] group; do not substitute zero for missing or null fields. Sum those group values.",
+  "group_count": 26,
+  "explicit_zero_fields": 26,
+  "missing_or_null_fields": 0,
+  "sum_reported_trips": 0,
+  "top_level_total_trips_count": 26,
+  "limits": "Source-reported trips only. Not an enumeration of horse entries, unique horses or attendance. Empty class_list alone does not establish zero trips. Top-level total_trips_count=26 has not been independently established as participant count; exclude it from trip sum. CWF empty tenant slices do not establish all-show attendance.",
+  "scheduled_receipts": [
+    {
+      "run-id": "bcdf4cbd-572e-47ee-bf06-b0f0753fbd35",
+      "started": "2026-10-29T12:30:04.841Z",
+      "completed": "2026-10-29T12:31:07.116Z",
+      "result": "Success"
+    },
+    {
+      "run-id": "9d6f6acb-c49e-4d0a-8d95-7d6bc3ef5dc6",
+      "started": "2026-10-29T12:35:03.787Z",
+      "completed": "2026-10-29T12:36:04.950Z",
+      "result": "Success"
+    }
+  ],
+  "groups": [
+    {
+      "source_path": "rings[0].classes[0].total_trips",
+      "group_id": 200028178,
+      "group": "1.40-1.45m Fall Back # Schooling 9-10:15am",
+      "ring": "International Ring",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[0].classes[1].total_trips",
+      "group_id": 200028179,
+      "group": "1.30-1.35m Fall Back # Schooling 10:20-12:05pm",
+      "ring": "International Ring",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[0].classes[2].total_trips",
+      "group_id": 200028180,
+      "group": "1.20-1.25m Fall Back # Schooling 12:10-2:20pm",
+      "ring": "International Ring",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[0].classes[3].total_trips",
+      "group_id": 200028181,
+      "group": "1.10-1.15m Fall Back # Schooling 2:25-4pm",
+      "ring": "International Ring",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[2].classes[0].total_trips",
+      "group_id": 200029521,
+      "group": "3'6\" Back Number Schooling From 9:00am to 10:00am",
+      "ring": "Rost Arena",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[2].classes[1].total_trips",
+      "group_id": 200029522,
+      "group": "3'3\" Back Number Schooling From 10:05am to 11:05am",
+      "ring": "Rost Arena",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[2].classes[2].total_trips",
+      "group_id": 200029523,
+      "group": "3' Back Number Schooling From 11:10am 12:05pm",
+      "ring": "Rost Arena",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[2].classes[3].total_trips",
+      "group_id": 200029524,
+      "group": "Drag Break 12:50pm to 1:00pm",
+      "ring": "Rost Arena",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[2].classes[4].total_trips",
+      "group_id": 200029525,
+      "group": "2'9\" Back Number Schooling From 1:00pm to 2:25pm",
+      "ring": "Rost Arena",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[2].classes[5].total_trips",
+      "group_id": 200029526,
+      "group": "2'6\" Open Schooling From 2:30pm to 4:00pm",
+      "ring": "Rost Arena",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[3].classes[0].total_trips",
+      "group_id": 200028187,
+      "group": ".70-.80m Fall Back # Schooling 9-10am",
+      "ring": "Mogavero",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[3].classes[1].total_trips",
+      "group_id": 200028188,
+      "group": ".90-.95m Fall Back # Schooling 10-11am",
+      "ring": "Mogavero",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[3].classes[2].total_trips",
+      "group_id": 200028189,
+      "group": "1.0m Fall Back # Schooling 11:15-12:45pm",
+      "ring": "Mogavero",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[3].classes[3].total_trips",
+      "group_id": 200028190,
+      "group": "1.10m Fall Back # Schooling 12:50-1:50pm",
+      "ring": "Mogavero",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[3].classes[4].total_trips",
+      "group_id": 200028191,
+      "group": "1.15m Fall Back # Schooling 2:25-3:40pm",
+      "ring": "Mogavero",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[4].classes[0].total_trips",
+      "group_id": 200028174,
+      "group": "2'9\"-3' Fall Back # Schooling 9-11am",
+      "ring": "Ring 6",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[4].classes[1].total_trips",
+      "group_id": 200028175,
+      "group": "2'6\"-2'9\" Fall Back # Schooling 11-12:30pm",
+      "ring": "Ring 6",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[4].classes[2].total_trips",
+      "group_id": 200028176,
+      "group": "2'3\"-2'6\" Fall Back # Schooling 12:40-3pm",
+      "ring": "Ring 6",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[4].classes[3].total_trips",
+      "group_id": 200028177,
+      "group": "18\"-2' Fall Back # Schooling 3-4pm",
+      "ring": "Ring 6",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[5].classes[0].total_trips",
+      "group_id": 200029527,
+      "group": "1.15m Jumper Schooling From 9:00am to 10:15am",
+      "ring": "Ring 7",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[5].classes[1].total_trips",
+      "group_id": 200029528,
+      "group": "1.10m Jumper Schooling From 11:00am to 12:05pm",
+      "ring": "Ring 7",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[5].classes[2].total_trips",
+      "group_id": 200029529,
+      "group": "1.10 Jumper Schooling From 12:00pm to 1:00pm",
+      "ring": "Ring 7",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[5].classes[3].total_trips",
+      "group_id": 200029530,
+      "group": "Drag Break From 1:00pm to 1:15pm",
+      "ring": "Ring 7",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[5].classes[4].total_trips",
+      "group_id": 200029531,
+      "group": ".90 to .95 Jumper Schooling From 1:15pm to 2:15pm",
+      "ring": "Ring 7",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[5].classes[5].total_trips",
+      "group_id": 200029532,
+      "group": ".70 to .80 Jumper Schooling From 2:25pm to 3:30pm",
+      "ring": "Ring 7",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    },
+    {
+      "source_path": "rings[5].classes[6].total_trips",
+      "group_id": 200029533,
+      "group": ".60 to .70 Jumper Schooling From 3:30pm to 4:15pm",
+      "ring": "Ring 7",
+      "schedule_break": 1,
+      "class_list": "",
+      "total_trips": 0
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "workflows": {
+    "wef-data": {
+      "base": "appdl16HJ5ETm8N69",
+      "workflow": "wef-data",
+      "tables": {
+        "run-logs": "tblKMNAtvvIFSvgLh",
+        "err-logs": "tblhPcSD6UPp5jkCa",
+        "heartbeat": "tbl2r6hhTnlZh3leX"
+      }
+    },
+    "wef-season-trainers": {
+      "base": "appzZsd3UqMRR2CNc",
+      "workflow": "wef-season-trainers",
+      "tables": {
+        "run-logs": "tbl3pnpgmhxYX1IHB",
+        "err-logs": "tbl7Q4ZpA0E7fcK11",
+        "heartbeat": "tbl0KH3p6Xzo956aA"
+      }
+    },
+    "wef-season-riders": {
+      "base": "appkWkm9rFLrkUvaD",
+      "workflow": "wef-season-riders",
+      "tables": {
+        "run-logs": "tblij7G8aBQBZz4OD",
+        "err-logs": "tblfdIdLsqIYDugAf",
+        "heartbeat": "tblAt5xXFQ7csoVG6"
+      }
+    },
+    "wef-season-horses": {
+      "base": "appETrjio9Yj9Pv17",
+      "workflow": "wef-season-horses",
+      "tables": {
+        "run-logs": "tblSF8zFpykvRFdDT",
+        "err-logs": "tblc2X4rDk97qZBYj",
+        "heartbeat": "tblTAnUc3Ep3nD5nQ"
+      }
+    },
+    "wef-season-rings": {
+      "base": "appxMk9wfbBHEvC5e",
+      "workflow": "wef-season-rings",
+      "tables": {
+        "run-logs": "tblXvV0cCJOWrDH3H",
+        "err-logs": "tblqOm2bonpArnu4T",
+        "heartbeat": "tblO9jrYgOlZRsHQj"
+      }
+    }
+  }
+}

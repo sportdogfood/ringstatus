@@ -35,7 +35,7 @@ async function verify() {
     heartbeat: "heartbeat-key",
   };
   for (const [table, key] of Object.entries(keys))
-    require("../wef-tenants/airtable").unique(data[table], key);
+    require("./runtime-utils").unique(data[table], key);
   const log = data["run-logs"].find(
     (r) => r.fields["run-id"] === receipt.run_id,
   );

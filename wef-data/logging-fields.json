@@ -1,0 +1,186 @@
+{
+  "run-logs": [
+    {
+      "name": "attempt-id",
+      "type": "singleLineText"
+    },
+    {
+      "name": "workflow",
+      "type": "singleLineText"
+    },
+    {
+      "name": "status",
+      "type": "singleLineText"
+    },
+    {
+      "name": "started",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso"
+        },
+        "timeFormat": {
+          "name": "24hour"
+        },
+        "timeZone": "utc"
+      }
+    },
+    {
+      "name": "completed",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso"
+        },
+        "timeFormat": {
+          "name": "24hour"
+        },
+        "timeZone": "utc"
+      }
+    },
+    {
+      "name": "elapsed-seconds",
+      "type": "number",
+      "options": {
+        "precision": 3
+      }
+    },
+    {
+      "name": "run-key",
+      "type": "singleLineText"
+    },
+    {
+      "name": "source-revision",
+      "type": "singleLineText"
+    },
+    {
+      "name": "show-key",
+      "type": "singleLineText"
+    },
+    {
+      "name": "stage",
+      "type": "singleLineText"
+    },
+    {
+      "name": "counts-json",
+      "type": "multilineText"
+    },
+    {
+      "name": "reason",
+      "type": "multilineText"
+    }
+  ],
+  "err-logs": [
+    {
+      "name": "error-id",
+      "type": "singleLineText"
+    },
+    {
+      "name": "occurred-at",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso"
+        },
+        "timeFormat": {
+          "name": "24hour"
+        },
+        "timeZone": "utc"
+      }
+    },
+    {
+      "name": "stage",
+      "type": "singleLineText"
+    },
+    {
+      "name": "category",
+      "type": "singleLineText"
+    },
+    {
+      "name": "operation",
+      "type": "singleLineText"
+    },
+    {
+      "name": "target",
+      "type": "singleLineText"
+    },
+    {
+      "name": "message",
+      "type": "multilineText"
+    },
+    {
+      "name": "write-outcome",
+      "type": "singleLineText"
+    }
+  ],
+  "heartbeat": [
+    {
+      "name": "heartbeat-key",
+      "type": "singleLineText"
+    },
+    {
+      "name": "workflow",
+      "type": "singleLineText"
+    },
+    {
+      "name": "status",
+      "type": "singleLineText"
+    },
+    {
+      "name": "last-wake",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso"
+        },
+        "timeFormat": {
+          "name": "24hour"
+        },
+        "timeZone": "utc"
+      }
+    },
+    {
+      "name": "last-attempt",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso"
+        },
+        "timeFormat": {
+          "name": "24hour"
+        },
+        "timeZone": "utc"
+      }
+    },
+    {
+      "name": "last-success",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso"
+        },
+        "timeFormat": {
+          "name": "24hour"
+        },
+        "timeZone": "utc"
+      }
+    },
+    {
+      "name": "last-error",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso"
+        },
+        "timeFormat": {
+          "name": "24hour"
+        },
+        "timeZone": "utc"
+      }
+    },
+    {
+      "name": "message",
+      "type": "multilineText"
+    }
+  ]
+}

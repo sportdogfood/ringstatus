@@ -1,0 +1,153 @@
+--- before/normalizer.js
++++ after/normalizer.js
+@@ -117,7 +117,10 @@
+     return `${classGroupId}_${classNumber}`;
+   }
+ 
+-  return normalizeKey(pickFirst(row.class_groupxclasses_id, row.class_id));
++  const classKey = normalizeKey(pickFirst(row.class_groupxclasses_id, row.class_id));
++  if (classKey) return classKey;
++  // Explicit source breaks have a group identity, never a fabricated class ID.
++  return boolValue(row.schedule_break) && classGroupId !== null ? `block:${classGroupId}` : "";
+ }
+ 
+ function firstValue(value) {
+@@ -505,6 +508,7 @@
+ 
+   const groupsById = new Map();
+   const classesById = new Map();
++  const blocksById = new Map();
+ 
+   function liftContext(node, ctx) {
+     const next = { ...ctx };
+@@ -585,6 +589,14 @@
+ 
+       const key = normalizeKey(classGroupId);
+       groupsById.set(key, mergePreserveJoinKeys(groupsById.get(key), groupRow));
++      if (boolValue(node.schedule_break) && isBlank(node.class_list) && isBlank(node.classList)) {
++        blocksById.set(key, {
++          ...groupRow, schedule_break: true,
++          class_type: /school/i.test(String(groupRow.group_name || "")) ? "schooling" : "break",
++          total_trips: numOrNull(pickFirst(node.total_trips, node.totalTrips)),
++          completed_trips: numOrNull(pickFirst(node.completed_trips, node.completedTrips)),
++        });
++      }
+     }
+ 
+     if (isClassNode(node)) {
+@@ -661,8 +673,13 @@
+     show_date: payloadShowDate,
+   });
+ 
++  const scheduleRows = new Map(classesById);
++  const classGroups = new Set([...classesById.values()].map(row => normalizeKey(row.class_group_id)));
++  for (const [groupId, block] of blocksById) {
++    if (!classGroups.has(groupId)) scheduleRows.set(buildScheduleMachineKey(block), block);
++  }
+   const rows = [];
+-  for (const [key, classRow] of classesById.entries()) {
++  for (const [key, classRow] of scheduleRows.entries()) {
+     if (!key) continue;
+     const groupRow = groupsById.get(normalizeKey(classRow.class_group_id));
+     const merged = mergeGroupOntoClass(classRow, groupRow);
+@@ -680,6 +697,7 @@
+     setIfPresent(fields, "class_number", merged.class_number);
+     setIfPresent(fields, "class_name", merged.class_name);
+     setIfPresent(fields, "class_type", merged.class_type);
++    setIfPresent(fields, "schedule_break", merged.schedule_break);
+     setIfPresent(fields, "schedule_sequencetype", merged.schedule_sequencetype);
+     setIfPresent(fields, "estimated_start_time", merged.estimated_start_time || merged.start_time_default);
+     setIfPresent(fields, "estimated_end_time", merged.estimated_end_time);
+@@ -724,6 +742,7 @@
+     schedule_show_display_date_dayv2: scheduleShowDisplayDateDay,
+     groups_count: groupsById.size,
+     classes_count: classesById.size,
++    schedule_blocks_count: scheduleRows.size - classesById.size,
+     rows,
+     keep_keys: rows.map((row) => row.key),
+   };
+--- before/collector-core.js
++++ after/collector-core.js
+@@ -6538,7 +6538,7 @@
+ 
+   "schedule_key schedule_short full_nesting_key schedule_date sql_date live_groups show_id show_date ring_number day_number class_group_sequence " +
+ 
+-  "group_name class_number class_name class_type schedule_sequencetype class_groupxclasses_id " +
++  "group_name class_number class_name class_type schedule_break schedule_sequencetype class_groupxclasses_id " +
+ 
+   "class_group_id class_id schedule_show_datev2 schedule_show_display_datev2 " +
+ 
+--- before/store.js
++++ after/store.js
+@@ -188,7 +188,8 @@
+       const {rows,changes}=reconcileRows(priorRows,observed,now.slice(0,10));
+ 
+       const observedHash=fingerprint(rows);
+-      const warnings=observed.length?[]:[{level:'WARNING',code:'empty_show_day',show_id:showId,date,message:'Successful response contains no classes within the show date range'}];
++      const counts={classes:observed.filter(row=>!row.fields.schedule_break).length,schedule_blocks:observed.filter(row=>row.fields.schedule_break).length};
++      const warnings=observed.length?[]:[{level:'WARNING',code:'empty_show_day',show_id:showId,date,message:'Successful response contains no classes, schooling sessions or breaks for this show/date'}];
+       if(times.summary.error||times.summary.unmatched) warnings.push({level:'WARNING',code:'estimated_times_incomplete',...times.summary});
+       const oldByKey=new Map(priorRows.map(row=>[row.key,row]));
+       const rotatedRows=observed.filter(row=>{
+@@ -211,17 +212,17 @@
+ 
+       // Store metadata only; normalized rows are in schedules. Never persist runtime links.
+ 
+-      const context={...prepared,estimated_times:times.summary,warnings,observed_fingerprint:observedHash,token_evidence:{rotated_rows:rotatedRows},changes,observed_row_count:observed.length,previous_dataset_id:previous?.fields['dataset-id']||null,chosen:{...prepared.chosen,rows:[]},datedResult:{...prepared.datedResult,rows:[]},
++      const context={...prepared,schedule_counts:counts,estimated_times:times.summary,warnings,observed_fingerprint:observedHash,token_evidence:{rotated_rows:rotatedRows},changes,observed_row_count:observed.length,previous_dataset_id:previous?.fields['dataset-id']||null,chosen:{...prepared.chosen,rows:[]},datedResult:{...prepared.datedResult,rows:[]},
+ 
+         emptyResult:{...prepared.emptyResult,rows:[]},scheduleHtmlTimeOverlay:{...prepared.scheduleHtmlTimeOverlay,rows:[]}};
+ 
+       completed['context-json']=JSON.stringify(context);
+ 
+-      completed.message=JSON.stringify({added:changes.added.length,changed:changes.changed.length,dropped:changes.dropped.length,warnings});
++      completed.message=JSON.stringify({...counts,added:changes.added.length,changed:changes.changed.length,dropped:changes.dropped.length,warnings});
+ 
+       await store.finish(record,completed);
+ 
+-      days.push({show_id:showId,date,ok:true,dataset_id:datasetId,unchanged:datasetId!==id,changes,warnings,row_count:observed.length,token_rotated_rows:rotatedRows});
++      days.push({show_id:showId,date,ok:true,dataset_id:datasetId,unchanged:datasetId!==id,changes,warnings,row_count:observed.length,classes_count:counts.classes,schedule_blocks_count:counts.schedule_blocks,token_rotated_rows:rotatedRows});
+ 
+     } catch(error) {
+ 
+--- before/schedule-times.js
++++ after/schedule-times.js
+@@ -39,7 +39,7 @@
+   const old=new Map(previous.map(row=>[row.key,row]));
+   const summary={show_id:showId,date,matched:0,preserved:0,manual:0,unmatched:0,error:null};
+   let items=[];
+-  if(rows.length) {
++  if(rows.some(row=>!row.inactive&&!row.fields.schedule_break)) {
+     try {items=parseScheduleHtmlTimeOverlay(await capture(showId,date)).parsedRows;
+       if(!items.length) throw Error('No timed schedule rows found');
+     } catch(error) {summary.error=String(error.message||error);}
+@@ -48,7 +48,7 @@
+   const groupKey=fields=>JSON.stringify([fields.ring_number,fields.class_group_id]);
+   const groups=new Map();
+   for(const row of rows) {
+-    if(row.inactive||!inScope(row.fields)||row.fields.class_group_id==null) continue;
++    if(row.inactive||row.fields.schedule_break||!inScope(row.fields)||row.fields.class_group_id==null) continue;
+     const key=groupKey(row.fields);
+     if(!groups.has(key)) groups.set(key,[]);
+     groups.get(key).push(row.fields.class_number);
+@@ -66,6 +66,9 @@
+       }
+       return {...row,fields};
+     }
++    // Class HTML has no class-number match for a schooling/break block. Keep
++    // its source times; the manual override above remains authoritative.
++    if(fields.schedule_break) return {...row,fields};
+     const time=summary.error?null:matchTime(fields,items,groups.get(groupKey(fields))||[]);
+     if(time) {fields.estimated_start_time=time;summary.matched++;}
+     else {
+--- before/run-logs.js
++++ after/run-logs.js
+@@ -62,7 +62,7 @@
+    const warnings=days.flatMap(d=>d.warnings||[]);
+    const errors=[...(record.archiveEvents||[]).filter(e=>e.error).map(e=>e.file+': '+e.error),...(error?[String(error.message||error)]:[]),...failed.map(d=>`${d.date}: ${d.error}${d.log_error?'; status save failed: '+d.log_error:''}`),
+     ...days.flatMap(d=>(d.warnings||[]).filter(w=>w.error).map(w=>`${d.date}: ${w.error}`))];
+-   const lines=days.map(d=>d.ok?`${d.date}: ${d.row_count} rows; added ${d.changes?.added.length||0}, changed ${d.changes?.changed.length||0}, dropped ${d.changes?.dropped.length||0}${d.unchanged?'; dataset reused':''}${d.warnings?.length?'; '+d.warnings.map(w=>w.code+': '+(w.message||w.error||`${w.unmatched||0} unmatched`)).join('; '):''}`:`${d.date}: FAILED; ${d.error}`);
++   const lines=days.map(d=>d.ok?`${d.date}: ${d.row_count} rows${d.classes_count!==undefined?`; ${d.classes_count} classes, ${d.schedule_blocks_count||0} schooling/break blocks`:""}; added ${d.changes?.added.length||0}, changed ${d.changes?.changed.length||0}, dropped ${d.changes?.dropped.length||0}${d.unchanged?'; dataset reused':''}${d.warnings?.length?'; '+d.warnings.map(w=>w.code+': '+(w.message||w.error||`${w.unmatched||0} unmatched`)).join('; '):''}`:`${d.date}: FAILED; ${d.error}`);
+    if(report?.references){const r=report.references;lines.push(`Show/rings verified: show ${r.show_id}; source-selected date ${r.selected_date}; ${r.rings} daily rings (${r.selected_rings} selected); ${r.helpers} static helpers; ${r.schedule_links} schedule links.${r.dropped_without_ring?' '+r.dropped_without_ring+' retained dropped schedules have no source/historical ring; link left blank.':''}`);}
+    const fields={completed:clock(),result:error||report?.ok===false?'Failed':warnings.length?'Warning':'Success',
+     'show-id':report?.default_show?.current?.show_id??days[0]?.show_id??null,

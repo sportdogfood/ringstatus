@@ -1,0 +1,607 @@
+{
+  "entities": {
+    "trainers": {
+      "base": "appzZsd3UqMRR2CNc",
+      "fields": {
+        "shows": [
+          {
+            "name": "show-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "show-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "customer-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "facility-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "show-name",
+            "type": "singleLineText"
+          },
+          {
+            "name": "start-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "end-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "selected-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          }
+        ],
+        "show-days": [
+          {
+            "name": "day-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "name": "show",
+            "type": "multipleRecordLinks",
+            "target": "shows"
+          }
+        ],
+        "trainers": [
+          {
+            "name": "trainer-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "trainer-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "trainer-name",
+            "type": "singleLineText"
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "name": "shows",
+            "type": "multipleRecordLinks",
+            "target": "shows"
+          },
+          {
+            "name": "show-days",
+            "type": "multipleRecordLinks",
+            "target": "show-days"
+          }
+        ]
+      }
+    },
+    "riders": {
+      "base": "appkWkm9rFLrkUvaD",
+      "fields": {
+        "shows": [
+          {
+            "name": "show-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "show-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "customer-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "facility-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "show-name",
+            "type": "singleLineText"
+          },
+          {
+            "name": "start-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "end-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "selected-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          }
+        ],
+        "show-days": [
+          {
+            "name": "day-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "name": "show",
+            "type": "multipleRecordLinks",
+            "target": "shows"
+          }
+        ],
+        "riders": [
+          {
+            "name": "rider-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "rider-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "rider-name",
+            "type": "singleLineText"
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "name": "shows",
+            "type": "multipleRecordLinks",
+            "target": "shows"
+          },
+          {
+            "name": "show-days",
+            "type": "multipleRecordLinks",
+            "target": "show-days"
+          }
+        ]
+      }
+    },
+    "horses": {
+      "base": "appETrjio9Yj9Pv17",
+      "fields": {
+        "shows": [
+          {
+            "name": "show-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "show-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "customer-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "facility-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "show-name",
+            "type": "singleLineText"
+          },
+          {
+            "name": "start-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "end-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "selected-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          }
+        ],
+        "show-days": [
+          {
+            "name": "day-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "name": "show",
+            "type": "multipleRecordLinks",
+            "target": "shows"
+          }
+        ],
+        "horses": [
+          {
+            "name": "horse-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "horse-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "horse-name",
+            "type": "singleLineText"
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "name": "shows",
+            "type": "multipleRecordLinks",
+            "target": "shows"
+          },
+          {
+            "name": "show-days",
+            "type": "multipleRecordLinks",
+            "target": "show-days"
+          }
+        ]
+      }
+    },
+    "rings": {
+      "base": "appxMk9wfbBHEvC5e",
+      "fields": {
+        "shows": [
+          {
+            "name": "show-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "show-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "customer-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "facility-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "show-name",
+            "type": "singleLineText"
+          },
+          {
+            "name": "start-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "end-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "selected-date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          }
+        ],
+        "show-days": [
+          {
+            "name": "day-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "date",
+            "type": "date",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              }
+            }
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "name": "show",
+            "type": "multipleRecordLinks",
+            "target": "shows"
+          }
+        ],
+        "rings": [
+          {
+            "name": "ring-key",
+            "type": "singleLineText"
+          },
+          {
+            "name": "ring-id",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "ring-number",
+            "type": "number",
+            "options": {
+              "precision": 0
+            }
+          },
+          {
+            "name": "ring-name",
+            "type": "singleLineText"
+          },
+          {
+            "name": "last-success",
+            "type": "dateTime",
+            "options": {
+              "dateFormat": {
+                "name": "iso"
+              },
+              "timeFormat": {
+                "name": "24hour"
+              },
+              "timeZone": "utc"
+            }
+          },
+          {
+            "name": "shows",
+            "type": "multipleRecordLinks",
+            "target": "shows"
+          },
+          {
+            "name": "show-days",
+            "type": "multipleRecordLinks",
+            "target": "show-days"
+          }
+        ]
+      }
+    }
+  }
+}

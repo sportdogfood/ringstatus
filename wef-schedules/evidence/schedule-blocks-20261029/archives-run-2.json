@@ -1,0 +1,32 @@
+[
+  {
+    "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\run-logs\\167cdcd1-9887-4db6-afb4-bdb22c3ae334.json.gz",
+    "sha256": "0e2719656ebf54e9579e8212d7948dfd304027e6274c1dd9a9c05f8f6ea77cd7",
+    "verified": true
+  },
+  {
+    "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\f8de8598-2ec9-46f0-b31e-13bc206ef73f-complete.json.gz",
+    "sha256": "e682f97fbe611096184843e3a187e9c13ee3d153956211621ee57db70e3e835f",
+    "verified": true
+  },
+  {
+    "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\datasets\\32cfb297-438e-471c-b1d3-d0cd347ce00f.json.gz",
+    "sha256": "d043736fb7c1c8fe49f5e0b81751c36469ee785f4eb535c068b3307dd5810a3c",
+    "verified": true
+  },
+  {
+    "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\32cfb297-438e-471c-b1d3-d0cd347ce00f-complete.json.gz",
+    "sha256": "2dcb8e89158b3ab71caaaac03bce0de53a6748f9672fc3a261c91413943fbcb6",
+    "verified": true
+  },
+  {
+    "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\019e30ad-42d7-4f7d-b925-7f1aae44e665-complete.json.gz",
+    "sha256": "78fe3503bdc78cff039e7dde1178e8cf0831e1d18a321760747c81d0a13600ba",
+    "verified": true
+  },
+  {
+    "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\82c9d3ec-1ea2-4b2d-8511-42591f8b2431-complete.json.gz",
+    "sha256": "f965bb505bface90ab9a5344e6a5b88611ed83db4a50d310892adc604511b575",
+    "verified": true
+  }
+]

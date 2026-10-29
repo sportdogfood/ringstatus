@@ -1,0 +1,132 @@
+{
+  "at": "2026-10-29T14:11:57.996Z",
+  "result": "PASS",
+  "scope": "Shows canonical count publication only; no Live gate and CWF acceptance separate",
+  "pairs": [
+    {
+      "at": "2026-10-29T14:06:25.524Z",
+      "result": "PASS",
+      "showsRun": "5ba1dfd2-88bb-4b6e-93e3-8a78e2b01a3e",
+      "started": "2026-10-29T14:04:02.406Z",
+      "completed": "2026-10-29T14:05:31.614Z",
+      "days": [
+        {
+          "date": "2026-10-29",
+          "id": "recohTvwKk7pDGnk1",
+          "show": "recOAxMcqu1f75CQk",
+          "revision": "adaptive-2026-10-29T13:59:22.057563+00:00",
+          "digest": "9f9dfc8f316d6eff16fd90f00bd3a75342bd85886824217a77be8057ab387e5d",
+          "sourceAsOf": "2026-10-29T13:59:24.939Z",
+          "coverage": "competition-class-participation",
+          "completeness": "complete",
+          "uniqueEntries": 0,
+          "trips": 0,
+          "status": "Stale"
+        },
+        {
+          "date": "2026-10-30",
+          "id": "recNKs86S27g79pl5",
+          "show": "recOAxMcqu1f75CQk",
+          "revision": "adaptive-2026-10-29T13:59:22.057563+00:00",
+          "digest": "dc95fba24f0acdee4deeb4301864a8179cbefe238703e477ba59499d75877ce7",
+          "sourceAsOf": "2026-10-29T13:20:05.704Z",
+          "coverage": "competition-class-participation",
+          "completeness": "complete",
+          "uniqueEntries": 80,
+          "trips": 102,
+          "status": "Stale"
+        },
+        {
+          "date": "2026-10-31",
+          "id": "recV3qjf5oJAQW8SY",
+          "show": "recOAxMcqu1f75CQk",
+          "revision": "adaptive-2026-10-29T13:59:22.057563+00:00",
+          "digest": "ea48c85d79b5001be740e79cb7555e03e6949895d00011c6d2047e597bf791f1",
+          "sourceAsOf": "2026-10-29T13:54:15.276Z",
+          "coverage": "competition-class-participation",
+          "completeness": "partial",
+          "uniqueEntries": 15,
+          "trips": 15,
+          "status": "Unknown"
+        },
+        {
+          "date": "2026-11-01",
+          "id": "recs1RPpDh6bGuHkY",
+          "show": "recOAxMcqu1f75CQk",
+          "revision": "adaptive-2026-10-29T13:59:22.057563+00:00",
+          "digest": "fcf187e6f9e90c92e4f48e2fd9da065e65c6cfecd55c5f842e556b3afbb354c0",
+          "sourceAsOf": "2026-10-29T13:59:24.964Z",
+          "coverage": "competition-class-participation",
+          "completeness": "unknown",
+          "uniqueEntries": null,
+          "trips": null,
+          "status": "Unknown"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-29T14:11:33.574Z",
+      "result": "PASS",
+      "showsRun": "f725bbdc-2df5-4045-b7f8-e3eeccfa9bd2",
+      "started": "2026-10-29T14:09:10.301Z",
+      "completed": "2026-10-29T14:10:31.614Z",
+      "days": [
+        {
+          "date": "2026-10-29",
+          "id": "recohTvwKk7pDGnk1",
+          "show": "recOAxMcqu1f75CQk",
+          "revision": "adaptive-2026-10-29T14:05:26.330921+00:00",
+          "digest": "8db4f76754a405dea4a16af6f0c15a055661bdc53e52614b9cd4d0c07d735f22",
+          "sourceAsOf": "2026-10-29T13:59:24.939Z",
+          "coverage": "competition-class-participation",
+          "completeness": "complete",
+          "uniqueEntries": 0,
+          "trips": 0,
+          "status": "Stale"
+        },
+        {
+          "date": "2026-10-30",
+          "id": "recNKs86S27g79pl5",
+          "show": "recOAxMcqu1f75CQk",
+          "revision": "adaptive-2026-10-29T14:05:26.330921+00:00",
+          "digest": "a8b81b0a938671af26765d5d20761046522331ce2962aba973a743f8dc0dd3cc",
+          "sourceAsOf": "2026-10-29T13:20:05.704Z",
+          "coverage": "competition-class-participation",
+          "completeness": "complete",
+          "uniqueEntries": 80,
+          "trips": 102,
+          "status": "Stale"
+        },
+        {
+          "date": "2026-10-31",
+          "id": "recV3qjf5oJAQW8SY",
+          "show": "recOAxMcqu1f75CQk",
+          "revision": "adaptive-2026-10-29T14:05:26.330921+00:00",
+          "digest": "ab263a693ee5babab423eae84fdab93b535e3d1f48e634201a5977a446b2edad",
+          "sourceAsOf": "2026-10-29T13:54:15.276Z",
+          "coverage": "competition-class-participation",
+          "completeness": "partial",
+          "uniqueEntries": 15,
+          "trips": 15,
+          "status": "Unknown"
+        },
+        {
+          "date": "2026-11-01",
+          "id": "recs1RPpDh6bGuHkY",
+          "show": "recOAxMcqu1f75CQk",
+          "revision": "adaptive-2026-10-29T14:05:26.330921+00:00",
+          "digest": "5262942ff21a4b699a7afa0b1d2e1901d0c79d22b8b72eef94b83cc6a1987732",
+          "sourceAsOf": "2026-10-29T13:59:24.964Z",
+          "coverage": "competition-class-participation",
+          "completeness": "unknown",
+          "uniqueEntries": null,
+          "trips": null,
+          "status": "Unknown"
+        }
+      ]
+    }
+  ],
+  "stableDayIds": true,
+  "stableNativeShowLinks": true,
+  "distinctProducerHeads": true
+}

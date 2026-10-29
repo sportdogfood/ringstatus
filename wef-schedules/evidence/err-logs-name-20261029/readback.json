@@ -1,0 +1,21 @@
+{
+  "table_id": "tblntJGnYFpLxjFSr",
+  "before_name": "error-log",
+  "after_name": "err-logs",
+  "fields_preserved": true,
+  "logging_tables": [
+    {
+      "id": "tbluqwuXxOvgDRUBq",
+      "name": "run-logs"
+    },
+    {
+      "id": "tblj077efYbhlznOJ",
+      "name": "heartbeat"
+    },
+    {
+      "id": "tblntJGnYFpLxjFSr",
+      "name": "err-logs"
+    }
+  ],
+  "offline_tests_passed": 31
+}

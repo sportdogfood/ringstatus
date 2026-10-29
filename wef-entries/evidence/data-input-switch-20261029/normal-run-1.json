@@ -1,0 +1,4223 @@
+{
+  "ok": true,
+  "run_id": "f53bcd48-c4ad-421b-b911-101f7fa3bb25",
+  "started": "2026-10-29T17:29:02.263Z",
+  "rows": 117,
+  "accepted_rows": 117,
+  "collections": [
+    {
+      "scope": "data|15|200000076|2026-10-30|1|200030775",
+      "status": "complete",
+      "rows": 19,
+      "source_as_of": "2026-10-29T13:20:05.838Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|1|200030790",
+      "status": "complete",
+      "rows": 6,
+      "source_as_of": "2026-10-29T13:20:05.740Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|1|200030821",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:20:05.704Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|1|200030828",
+      "status": "complete",
+      "rows": 14,
+      "source_as_of": "2026-10-29T13:20:05.783Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|2|200030838",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:20:52.841Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030430",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:45.244Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030431",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:24.036Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030432",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:23.922Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030435",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:01.460Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030436",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:45.242Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030437",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:01.669Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030440",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:39.457Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030441",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:39.388Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030442",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:00.343Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030445",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:20:52.731Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030446",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:23.999Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030447",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:03.390Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030448",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:03.339Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030451",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:20:52.732Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030452",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:24.009Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030453",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:03.359Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030454",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:03.356Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030457",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:17.034Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030458",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:41.528Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030459",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:16.998Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030462",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:23.035Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030463",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:00.343Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030464",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:00.346Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030467",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:23.700Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030468",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:23.712Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030469",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:39.382Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030472",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:20.899Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030473",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:20.747Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030474",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:04.056Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030475",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:39.549Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030476",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:39.592Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030477",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:20.772Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030478",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:20.808Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030479",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:39.525Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030480",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:30:17.010Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030481",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:46.415Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030482",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:30:17.007Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030485",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:25:23.065Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030486",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:24:39.419Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030487",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:25:00.345Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030490",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:23.701Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030491",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:23.777Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030492",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:01.562Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030495",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:45.275Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030496",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:23:45.134Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030497",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:24:01.739Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030570",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:33:10.382Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030571",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:41.542Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030572",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:41.534Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030575",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:33:37.939Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030576",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:30:41.579Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030577",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:33:10.402Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030580",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:46.372Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030581",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:25:46.469Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030582",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:25:23.077Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030631",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:23.282Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030632",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:25:46.464Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030671",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:20:52.784Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030711",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:10.416Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030712",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:10.416Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030713",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:37.924Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030714",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:37.904Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030715",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:04.063Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030716",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:04.090Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030733",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:04.060Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|3|200030735",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:33:37.902Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030747",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:35:37.355Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030750",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:36:02.871Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030753",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:59.221Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030757",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:35:37.355Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030760",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:34:59.252Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030783",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:59.205Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030800",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:35:37.418Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030805",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:59.239Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030809",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:35:37.400Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030812",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:34:39.604Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|4|200030843",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:36:02.926Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030540",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:07.921Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030541",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:36:02.881Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030542",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:28.499Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030545",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:43:28.450Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030546",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:43:07.787Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030547",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:43:07.833Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030550",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:28.508Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030551",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:07.785Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030552",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:49.676Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030555",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:12.940Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030556",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:28.517Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030557",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:49.599Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030560",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:12.916Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030561",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:43:49.683Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030562",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:44:12.975Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030565",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:36.051Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030566",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:43:49.672Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030567",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:12.987Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030682",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:36:02.901Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030705",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:44:58.845Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030706",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:44:58.826Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030707",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:44:58.862Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030708",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:44:36.041Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030709",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:44:36.050Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030710",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:44:58.806Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|5|200030845",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:44:36.059Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030728",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:53:37.152Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030729",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:54:15.450Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030734",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:54:16.040Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030736",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:53:37.142Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030763",
+      "status": "complete",
+      "rows": 4,
+      "source_as_of": "2026-10-29T13:46:01.364Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030766",
+      "status": "complete",
+      "rows": 4,
+      "source_as_of": "2026-10-29T13:46:01.383Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030769",
+      "status": "complete",
+      "rows": 11,
+      "source_as_of": "2026-10-29T13:45:27.933Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030772",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:45:27.850Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030786",
+      "status": "complete",
+      "rows": 2,
+      "source_as_of": "2026-10-29T13:45:27.821Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030792",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:46:01.350Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030797",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:53:37.159Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030815",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:46:01.361Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030818",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:45:27.848Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-30|6|200030842",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:53:37.160Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030776",
+      "status": "complete",
+      "rows": 5,
+      "source_as_of": "2026-10-29T13:55:07.713Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030778",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:54:16.073Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030791",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:55:07.789Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030822",
+      "status": "complete",
+      "rows": 1,
+      "source_as_of": "2026-10-29T13:54:15.276Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|1|200030827",
+      "status": "complete",
+      "rows": 8,
+      "source_as_of": "2026-10-29T13:55:07.731Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|2|200030835",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:55:07.914Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030433",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:05:30.908Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030434",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:05:30.675Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030438",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:26.824Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030439",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:26.777Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030443",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:05:30.635Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030444",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:26.875Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030449",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:56:02.947Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030450",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:05:30.972Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030455",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:56:03.088Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030456",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:56:02.991Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030493",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:26.858Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030494",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:53.431Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030498",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:53.447Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030499",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:53.439Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030500",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:08:11.845Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030501",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:08:11.847Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030502",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:08:11.872Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030505",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:07:35.064Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030506",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:07:35.069Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030507",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:07:35.062Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030510",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:59.676Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030511",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:59.495Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030512",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:59.511Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030520",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:59.513Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030521",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:42.470Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030522",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:42.477Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030525",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:42.411Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030526",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:08:13.099Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030527",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:13:42.361Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030672",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T13:56:02.934Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030673",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:07:35.119Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    },
+    {
+      "scope": "data|15|200000076|2026-10-31|3|200030840",
+      "status": "complete",
+      "rows": 0,
+      "source_as_of": "2026-10-29T14:06:53.333Z",
+      "reason": "Accepted observation retained; newer unfinished applicable attempt exists"
+    }
+  ],
+  "errors": [],
+  "link_issues": [
+    {
+      "entry-key": "200000076|2026-10-30|200242439|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243514|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243520|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243851|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200244708|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200244714|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200244813|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245507|200030775",
+      "reason": "Newer existing observation retained"
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245732|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247112|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247235|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247236|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247256|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247408|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247442|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247443|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247473|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247778|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247783|200030775",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247306|200030790",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247356|200030790",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247415|200030790",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247670|200030790",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247804|200030790",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247867|200030790",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247402|200030821",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243858|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245709|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245755|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245875|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246141|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246363|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246421|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246502|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247208|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247234|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247401|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247418|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247455|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247864|200030828",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243116|200030838",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243829|200030838",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247266|200030457",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247266|200030458",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247266|200030459",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247324|200030485",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247324|200030486",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247324|200030487",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247266|200030570",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247266|200030571",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247266|200030572",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246107|200030575",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246107|200030576",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246107|200030577",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247056|200030581",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247056|200030582",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246107|200030671",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "schedule: Ambiguous class/date schedule",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247133|200030747",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243213|200030757",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247353|200030757",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247287|200030760",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247289|200030760",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247831|200030809",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245918|200030545",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245918|200030546",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245918|200030547",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247819|200030561",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247819|200030562",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247819|200030705",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247819|200030706",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247819|200030707",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247353|200030708",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247391|200030708",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247353|200030709",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247391|200030709",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247353|200030710",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247391|200030710",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200242738|200030763",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200246033|200030763",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247476|200030763",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247928|200030763",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200244353|200030766",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245802|200030766",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247204|200030766",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247672|200030766",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200242700|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243241|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243548|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200243833|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200244807|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200244837|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245746|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245926|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247114|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247352|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247683|200030769",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245637|200030772",
+      "reason": "Newer existing observation retained"
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245643|200030772",
+      "reason": "Newer existing observation retained"
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200245796|200030786",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247416|200030786",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247108|200030797",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-30|200247106|200030815",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200243502|200030776",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200244837|200030776",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200245732|200030776",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200247331|200030776",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200247669|200030776",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200247867|200030791",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200247402|200030822",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200243234|200030827",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200243508|200030827",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200243520|200030827",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200243538|200030827",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200247236|200030827",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200247356|200030827",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200247473|200030827",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    },
+    {
+      "entry-key": "200000076|2026-10-31|200247675|200030827",
+      "reasons": [
+        "group: Complete same-revision group inventory unavailable",
+        "source: Accepted observation retained; newer unfinished applicable attempt exists"
+      ]
+    }
+  ],
+  "archives": [
+    {
+      "at": "2026-10-29T17:29:41.566Z",
+      "kind": "entries-before",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\entries-before\\8c6707d9b1128ad96c952ab52600570febbebb96881ca5c28d8943a6aaa9c332.json.gz",
+      "records": 13,
+      "sha256": "8c6707d9b1128ad96c952ab52600570febbebb96881ca5c28d8943a6aaa9c332",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-29",
+        "2026-10-30",
+        "2026-10-31",
+        "2026-11-01"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.161Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\25d3a57c777ae7cc74ca8213cc111d9bee7b5ad49533c4860cb06ccf04acaad4.json.gz",
+      "records": 19,
+      "sha256": "25d3a57c777ae7cc74ca8213cc111d9bee7b5ad49533c4860cb06ccf04acaad4",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.166Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4829a4c461997dd211278d0b5910ebb261b6015fcca3add6faa1b3dd73099969.json.gz",
+      "records": 6,
+      "sha256": "4829a4c461997dd211278d0b5910ebb261b6015fcca3add6faa1b3dd73099969",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.170Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\8efa3d83c5b63a921d30e48b51bfb1ccc3d6ed44b062150f89966713c7891ab1.json.gz",
+      "records": 1,
+      "sha256": "8efa3d83c5b63a921d30e48b51bfb1ccc3d6ed44b062150f89966713c7891ab1",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.175Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\2b4545f497384a1cf0990d0643e343a8a3d2917353b76ca73a8f567b21356bcf.json.gz",
+      "records": 14,
+      "sha256": "2b4545f497384a1cf0990d0643e343a8a3d2917353b76ca73a8f567b21356bcf",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.178Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\68835324e4431ecd3dee648d5d0bdf271b576367890480435aef606f066ad777.json.gz",
+      "records": 2,
+      "sha256": "68835324e4431ecd3dee648d5d0bdf271b576367890480435aef606f066ad777",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.183Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.184Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.185Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.186Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.187Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.188Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.189Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.190Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.191Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.192Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.193Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.193Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.194Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.195Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.195Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.196Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.197Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.200Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\5d1e10f0b13bd8c8dc9234e2e2a089d7565bed9b4f3f0029e80ec29a5e4f221e.json.gz",
+      "records": 1,
+      "sha256": "5d1e10f0b13bd8c8dc9234e2e2a089d7565bed9b4f3f0029e80ec29a5e4f221e",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.204Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\d841ab068a922e7d8a1e3a2c2adee42c19c0baf6f00b7fac0529bbcfb6fcb33f.json.gz",
+      "records": 1,
+      "sha256": "d841ab068a922e7d8a1e3a2c2adee42c19c0baf6f00b7fac0529bbcfb6fcb33f",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.208Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\dd486c3d0e0eea125da97407a045bed2a1f1f36cc47daf3f8661a6988f7cb6f4.json.gz",
+      "records": 1,
+      "sha256": "dd486c3d0e0eea125da97407a045bed2a1f1f36cc47daf3f8661a6988f7cb6f4",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.209Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.210Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.211Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.212Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.213Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.214Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.215Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.216Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.216Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.217Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.218Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.219Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.219Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.220Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.221Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.221Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.222Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.226Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\48fa9391f8955a16b491d82eaead230a2351c3f9794ae51e3117135c98e4746f.json.gz",
+      "records": 1,
+      "sha256": "48fa9391f8955a16b491d82eaead230a2351c3f9794ae51e3117135c98e4746f",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.229Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\2fa0949ee4f415870e2cb7a81978d52ebdab03b5ecb4878cb269878bfd30d8c5.json.gz",
+      "records": 1,
+      "sha256": "2fa0949ee4f415870e2cb7a81978d52ebdab03b5ecb4878cb269878bfd30d8c5",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.233Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\f698107637491e327da71d3ead25066ed876722b4ed101472259c7919da92803.json.gz",
+      "records": 1,
+      "sha256": "f698107637491e327da71d3ead25066ed876722b4ed101472259c7919da92803",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.234Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.235Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.236Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.237Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.238Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.239Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.243Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\983fcd6f0cc1d3cf046369f53642db62bacc4a7ddb046b276a29d23975a9c07b.json.gz",
+      "records": 1,
+      "sha256": "983fcd6f0cc1d3cf046369f53642db62bacc4a7ddb046b276a29d23975a9c07b",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.246Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\fe923d91265f76640a02e6a99ff214edb89de4b41628fa312f1054e97578a6cd.json.gz",
+      "records": 1,
+      "sha256": "fe923d91265f76640a02e6a99ff214edb89de4b41628fa312f1054e97578a6cd",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.249Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\931ed22482025791651805b8c61b8645b63e09a0641d2f648fa2fbdf79043182.json.gz",
+      "records": 1,
+      "sha256": "931ed22482025791651805b8c61b8645b63e09a0641d2f648fa2fbdf79043182",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.253Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\de1cbdc7017fbf615ff7006389d929a6c16330cedbcd91d673cea2e786b66cee.json.gz",
+      "records": 1,
+      "sha256": "de1cbdc7017fbf615ff7006389d929a6c16330cedbcd91d673cea2e786b66cee",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.257Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\6dcc7f4c674edcda4930e2a7193ce62f54a0a08e128aba3c1cb5f7f043239b15.json.gz",
+      "records": 1,
+      "sha256": "6dcc7f4c674edcda4930e2a7193ce62f54a0a08e128aba3c1cb5f7f043239b15",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.261Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\658a01d1bb6681cf6e7cca468ace4c946183560400bfb475d4f84dd81668cd19.json.gz",
+      "records": 1,
+      "sha256": "658a01d1bb6681cf6e7cca468ace4c946183560400bfb475d4f84dd81668cd19",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.262Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.267Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\52fd3836b945678cd1a8868cbd21bc0a0daea4ab6b26cc0b63e9619ec8e58a23.json.gz",
+      "records": 1,
+      "sha256": "52fd3836b945678cd1a8868cbd21bc0a0daea4ab6b26cc0b63e9619ec8e58a23",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.270Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\ba865b75c86c9539fc2f1456b785fc4debd5abada25c8e28af153e85895b000c.json.gz",
+      "records": 1,
+      "sha256": "ba865b75c86c9539fc2f1456b785fc4debd5abada25c8e28af153e85895b000c",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.271Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.273Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.276Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\81a6144ea76e597d5ff1d667caa17f56c185aecf434e545019d7054be19a70a5.json.gz",
+      "records": 1,
+      "sha256": "81a6144ea76e597d5ff1d667caa17f56c185aecf434e545019d7054be19a70a5",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.277Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.278Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.279Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.280Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.281Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.282Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.283Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.284Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.287Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\525ba8dcadb10a797bf9b22e46c6be5c593237da25eca3e082f6f11f60aa249a.json.gz",
+      "records": 1,
+      "sha256": "525ba8dcadb10a797bf9b22e46c6be5c593237da25eca3e082f6f11f60aa249a",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.289Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.290Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.293Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\b9ccb6e06e78aa4fb7ce81a32cc151eb831dfd56613559e5eaee7c891abdec2f.json.gz",
+      "records": 2,
+      "sha256": "b9ccb6e06e78aa4fb7ce81a32cc151eb831dfd56613559e5eaee7c891abdec2f",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.296Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\0ff3af26313541361fa491606d72b6bd0f842d361713967eeb4ca246b14804c6.json.gz",
+      "records": 2,
+      "sha256": "0ff3af26313541361fa491606d72b6bd0f842d361713967eeb4ca246b14804c6",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.296Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.297Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.298Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.301Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\7e0d951615e441172becde883b4b90711b2c11fe314d6b1310c792e006b55a2c.json.gz",
+      "records": 1,
+      "sha256": "7e0d951615e441172becde883b4b90711b2c11fe314d6b1310c792e006b55a2c",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.302Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.303Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.303Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.304Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.305Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.309Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\cc9de075541d61feb67f323dcc80ca6bc201afd80d85b4fda94ac32e2e0f2630.json.gz",
+      "records": 1,
+      "sha256": "cc9de075541d61feb67f323dcc80ca6bc201afd80d85b4fda94ac32e2e0f2630",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.312Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\f8807ccf384f467219aa02eddcdfbfd758f80e74e2ee3ed6ab16c5eab8612655.json.gz",
+      "records": 1,
+      "sha256": "f8807ccf384f467219aa02eddcdfbfd758f80e74e2ee3ed6ab16c5eab8612655",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.315Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\0408c153e22ee09551bbb898b9c66e3abf069f788227102ee38dec3b455e4000.json.gz",
+      "records": 1,
+      "sha256": "0408c153e22ee09551bbb898b9c66e3abf069f788227102ee38dec3b455e4000",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.316Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.317Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.318Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.319Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.320Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.320Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.321Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.325Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\220c756506c837d324dccef5cab637046e07bd7df791fd94b02feff8514e1f9b.json.gz",
+      "records": 1,
+      "sha256": "220c756506c837d324dccef5cab637046e07bd7df791fd94b02feff8514e1f9b",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.328Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\16cf967846a2c9248a8c285a6fdd1b305e7d5ab7785bd5a61adcd5c14ef72ac1.json.gz",
+      "records": 1,
+      "sha256": "16cf967846a2c9248a8c285a6fdd1b305e7d5ab7785bd5a61adcd5c14ef72ac1",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.330Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.331Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.332Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.333Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.336Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\5b8bb9250ed2926cd5621094a82d451b43d2105eb8442366e295e5c9fa87bebb.json.gz",
+      "records": 1,
+      "sha256": "5b8bb9250ed2926cd5621094a82d451b43d2105eb8442366e295e5c9fa87bebb",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.339Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4cea8ae7def2bb6c6a5e275dcaea29e4e209483271fe62f94c24ecc1b7600bfc.json.gz",
+      "records": 1,
+      "sha256": "4cea8ae7def2bb6c6a5e275dcaea29e4e209483271fe62f94c24ecc1b7600bfc",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.342Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\10c632186ea39b20af02dd960cc99adf070f483112d642a3e03f08b60e2caa83.json.gz",
+      "records": 1,
+      "sha256": "10c632186ea39b20af02dd960cc99adf070f483112d642a3e03f08b60e2caa83",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.346Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\5795e9e36e2915af9518e6528fb32cca03d8278af7fd3b78290585419eba5413.json.gz",
+      "records": 2,
+      "sha256": "5795e9e36e2915af9518e6528fb32cca03d8278af7fd3b78290585419eba5413",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.351Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\d6dbaae53bf191b347840adc8bbb33730f6d3fb35624a63d098943ba6012b115.json.gz",
+      "records": 2,
+      "sha256": "d6dbaae53bf191b347840adc8bbb33730f6d3fb35624a63d098943ba6012b115",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.355Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\25a3a56e05eed47e253e783d3d1b1a22dd3a023340932ea65c72e04ad4bb364a.json.gz",
+      "records": 2,
+      "sha256": "25a3a56e05eed47e253e783d3d1b1a22dd3a023340932ea65c72e04ad4bb364a",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.357Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.358Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.359Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.360Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.361Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.367Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\3e7987ac53e907475e81413036a682745ffcc8840794cf90fc6e7acb85c47cad.json.gz",
+      "records": 4,
+      "sha256": "3e7987ac53e907475e81413036a682745ffcc8840794cf90fc6e7acb85c47cad",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.371Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\65d770fbfee540370e7a4a4eeded775c72439569c237c3d696c57d74d4dfbd47.json.gz",
+      "records": 4,
+      "sha256": "65d770fbfee540370e7a4a4eeded775c72439569c237c3d696c57d74d4dfbd47",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.375Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\890c842499b1a888fa6dcdbb530612a5c1b7a9e7e03b4e576b92d7312f142a55.json.gz",
+      "records": 11,
+      "sha256": "890c842499b1a888fa6dcdbb530612a5c1b7a9e7e03b4e576b92d7312f142a55",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.380Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\5f0059c518ae22803e04a3cfd1d616e89edf75490628a7c87e63da721eee2ad8.json.gz",
+      "records": 2,
+      "sha256": "5f0059c518ae22803e04a3cfd1d616e89edf75490628a7c87e63da721eee2ad8",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.385Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\41f3ce10f168aaae19722b01eb8349dda7cb1b2ed16bb4f8ef83532d16eb0ecb.json.gz",
+      "records": 2,
+      "sha256": "41f3ce10f168aaae19722b01eb8349dda7cb1b2ed16bb4f8ef83532d16eb0ecb",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.386Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.389Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\e8b9cb5f22723851f76d7905d460f9484b329d11e9d9fc62f8c135d74e9065d0.json.gz",
+      "records": 1,
+      "sha256": "e8b9cb5f22723851f76d7905d460f9484b329d11e9d9fc62f8c135d74e9065d0",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.393Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\c295b1b3d868880c94dabd537006a883e4e986af6fd3c316a56cbda5a4e15fa2.json.gz",
+      "records": 1,
+      "sha256": "c295b1b3d868880c94dabd537006a883e4e986af6fd3c316a56cbda5a4e15fa2",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.394Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.395Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.400Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\acd335e31a4df42dfd9264e016552c38980292fd5b2d24d6abee087d455d509c.json.gz",
+      "records": 5,
+      "sha256": "acd335e31a4df42dfd9264e016552c38980292fd5b2d24d6abee087d455d509c",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.401Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.404Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\2cc7cfebbb8c5bd068837d4f936f53ab88a1bbb06e6eff28bb1cd52501502bb5.json.gz",
+      "records": 1,
+      "sha256": "2cc7cfebbb8c5bd068837d4f936f53ab88a1bbb06e6eff28bb1cd52501502bb5",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.408Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\c199aca805c5a9fb06df1fc06f209527a5d0b36c921b47a7cc2eaffc9f695b66.json.gz",
+      "records": 1,
+      "sha256": "c199aca805c5a9fb06df1fc06f209527a5d0b36c921b47a7cc2eaffc9f695b66",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.411Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\a8742887ec2c11486781f61dc4f66da881c801045e2b2fc070ee74b63e0760bf.json.gz",
+      "records": 8,
+      "sha256": "a8742887ec2c11486781f61dc4f66da881c801045e2b2fc070ee74b63e0760bf",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.412Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.413Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.415Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.416Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.417Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.418Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.419Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.420Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.420Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.421Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.422Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.423Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.424Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.425Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.425Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.426Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.427Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.428Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.429Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.429Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.430Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.431Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.432Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.433Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.434Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.434Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.435Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.436Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.437Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.438Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.439Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.440Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    },
+    {
+      "at": "2026-10-29T17:29:56.442Z",
+      "kind": "retained-class-dataset",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\retained-class-dataset\\4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json.gz",
+      "records": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-31"
+      ]
+    }
+  ],
+  "source_fetches": 0,
+  "tenant_reads": 0,
+  "show_id": 200000076,
+  "show_source": {
+    "base": "appCaSmL819KK7UFJ",
+    "record": "recOAxMcqu1f75CQk",
+    "checked_at": "2026-10-29T17:24:25.085Z"
+  },
+  "data_revision": "adaptive-2026-10-29T14:11:18.894144+00:00",
+  "producer_attempts": [
+    {
+      "key": "adaptive-2026-10-29T14:17:37.008934+00:00",
+      "status": "Failed; prior accepted state retained",
+      "phase": "Writing",
+      "reservedClass": null,
+      "sequence": 14
+    }
+  ],
+  "summary": "Entries linking: 117 observed rows; 117 accepted source rows (currentness not asserted); 117 link issues; Data adaptive-2026-10-29T14:11:18.894144+00:00. No source acquisition or tenant selection.",
+  "completed": "2026-10-29T17:30:15.900Z",
+  "result": "Partial"
+}

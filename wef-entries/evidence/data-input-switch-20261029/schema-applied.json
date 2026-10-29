@@ -1,0 +1,31 @@
+{
+  "base": "appSxF4pYMBaxpTZd",
+  "table": "tblqkWmrsYMs2hyQ6",
+  "fields": [
+    {
+      "type": "singleLineText",
+      "id": "fldwqwk6BUEuXXtK5",
+      "name": "source-trainer-ids"
+    },
+    {
+      "type": "singleLineText",
+      "id": "fldqt97trA8OUSRwf",
+      "name": "schedule-link-status"
+    },
+    {
+      "type": "singleLineText",
+      "id": "fld98aUNgI82s77MV",
+      "name": "schedule-link-basis"
+    },
+    {
+      "type": "singleLineText",
+      "id": "fldCwjSriRaOACXg8",
+      "name": "group-link-status"
+    },
+    {
+      "type": "multilineText",
+      "id": "fldkTeIX1XGQGN6UP",
+      "name": "link-issues"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-29T18:35:17.501Z",
+  "files": [
+    {
+      "file": "collector.js",
+      "sha256": "01e610baa400fd9c1ef724f6ad412ee55089771187a443e00673bdb14cd7c29d"
+    },
+    {
+      "file": "model.js",
+      "sha256": "47d5360435e5087d946e09a98483fcb1b8b5e4b57c1cb6e97296cb410a13d371"
+    },
+    {
+      "file": "freshness.js",
+      "sha256": "e8efe6825a44043fdcdb3f498de2b446acc7cc446162742f4feda819233c9e12"
+    },
+    {
+      "file": "participation-linker.js",
+      "sha256": "16b834dbcafdd88424eb2a1353f0bbfa2a6e9c300e353326c616b3369bbb4ed1"
+    }
+  ]
+}

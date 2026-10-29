@@ -1,5 +1,50 @@
 # Recognize — overview and expected workflow
 
+## Current design contract — 29 October 2026, independent User
+
+### Verified prototype baseline supplied by coordinator — 29 October
+
+The coordinator (`01a169c2-de92-71e1-9857-084838862ae7`) independently inspected live authenticated Site assets and request traces. This specialist received that evidence; it did not repeat the browser inspection.
+
+| Current Site | Exact inspected version | Observed implementation |
+| --- | --- | --- |
+| Recognize Only | `appgprj_6adfb02df0148191926193d78c24ee02`, v7, commit `9e2cfb85f1cce4e7ee4b2ff34d27e732db68918c`, `/app.js?v=9` | Fixed sample credentials checked locally; recognized flag in localStorage `rs-recognize-only-v1`. No `person_uid`, product recognition API, recognition cookie implementation or Team membership check. |
+| Profile Widget | `appgprj_6ad0e6be23848191b16edc09134e5045`, v29, commit `90022e40c7d925c9e3f7cf9c22fe69552b52164e`, `/app.js?v=back-links-28` importing `/model.js` and `/store.js` | Seeded Alex/Jamie/Barn123 demo; localStorage `ringstatus_profile_widget_v1`. `tenant_id`, `isTenantOwner`, `canView` and `saveTenantUser` are browser-local demo rules, not Astro handlers. |
+
+Observed load traffic was static assets/fonts and Sites editor configuration, with no product API request. The outer ChatGPT/Sites sign-in is hosting access, not product recognition. The two forms use separate origins/storage keys; no shared identity/data handoff is implemented in the inspected assets. No live product connection is established by these prototypes.
+
+**Owner's current instruction is verify-only: pause form changes and retain drafts separately.** Integration with a real identity/profile service remains proposed. Do not infer a needed backend adapter from the historical bindings worktree or present that worktree as these Sites' runtime. Historical rec2 proof remains intact for its earlier distinct implementation. No production/runtime/schema changes are authorized by this correction.
+
+Owner direction relayed by `wef-tenants-coordinator` (`01a169c2-de92-71e1-9857-084838862ae7`): User identity/profile is independent of a Team. This section supersedes older Team-dependent recognition requirements for the new design; it does not claim that backend separation is implemented or reopen historical releases.
+
+Recognize receives the existing stable User identity and recognition credentials, checks a remembered browser or the single phone/PIN/recognition-invite input, and returns the stable `person_uid`. Preserve cookie/device validation, collision handling, invitation expiry/one-use behavior, sessions, sign-out, silent return and background history. GeoIP is context only. A profile consumer uses server-validated identity to load that User's own profile; local cache or caller-supplied ID is not authorization.
+
+Independent and Preferred are User levels. Team Member and Team Owner are roles; a Preferred User may also be a Team Member. Levels, membership, roles, permissions and feature access resolve outside Recognize. An inactive Team membership must not, by itself, remove an otherwise valid independent User identity. Team invitation acceptance/decline is separate from recognition invitation redemption; recognition must not create or accept Team membership.
+
+For the new Team workflow, the creator is Owner; Owner invites and marks memberships active/inactive; the User accepts/declines. V1 has at most one Team membership, no Team browsing/selection/switching. Personal hiding changes no membership or permission. Team does not own User identity. These are consumer responsibilities, not recognition decisions. Creating a Team while already a member is unresolved; do not silently implement a policy or invent billing, entitlements or ownership transitions.
+
+### Historical source findings — withdrawn as evidence of current forms
+
+**Owner correction, 29 October:** Recognize does not require active Team membership. The bindings worktree inspected below is historical and is not the verified baseline for current `publish-recognize/profile`. Withdraw the earlier characterization of these findings as a current compatibility gap or required current-backend changes. Do not infer current form behavior, propose dependent corrections or change workflow logic from this source. The coordinator is verifying the actual current forms, requests and destinations. No current-form backend change is established by this review.
+
+Inspected source is `C:/Users/gombc/.codex/worktrees/recognize-tenants-bindings/ringstatus/webflow-cloud-test`, working-tree HEAD `bf9a93531209212f303d7e8175af5c9fb01ba2bd` with later local changes. HEAD alone does not identify the current working files or deployed release. Existing rec2 DONE evidence is `recognize-rec2-staging-20261016.md`, release `e9b1c453f196f2d86fe62254577eab916ff24641`; it proves the earlier bounded workflow, not this independent User design.
+
+- Historical `src/lib/rs-recognition-iam.js`: inspected `refreshIam` filters identity projection through active Team/enabled membership and derives Owner/roles/assigned Teams; invitation projection depends on that Owner calculation. This applies only to those historical bytes, not current forms.
+- Historical `src/lib/rs-recognition-iam-refresh.js`: inspected refresh loads membership/role data and checks Team Owner eligibility. This does not establish the current identity refresh contract.
+- Historical `src/assets/rs-recognition/native-client.js`: inspected `finishIdentity` requires Inputs access before navigation. This does not establish current recognition/profile entry behavior.
+
+No backend correction, new store/index, schema/data write, live identity test or deployment is authorized by this documentation update. Current source remains unchanged.
+
+Inspected working-file SHA256 values (29 October; not a deployment claim): IAM `a94e6f2a8762b3b1e622e2bc7bd1f7276457f2165cfb1bc826e67d366ae7198f`; refresh `bd52b003c470840277e431a42a395110ad01863bc151a0913db52f2c4301b0dd`; native client `10c27d14c350b0e688265aa99d7642cdc2657dac5d2e56352133efa6d6c5b529`.
+
+### Routes, graphics and evidence discipline
+
+The exact current prototype assets/versions are recorded above from coordinator-supplied browser evidence. This specialist performed no rendered/graphic inspection. Do not substitute the old `/rs-recognize`, `/rs-member`, assigned-Team setup route, SMS/code demonstration, static diagrams or rec2 screenshots as current form acceptance. `/rec2` is the documented proven earlier entry, not proof that the current Sites are wired to it.
+
+The route maps, implementation status, UI proofs and graphics linked below remain dated historical references. Current source/consumer identity and actual new-form acceptance must be recorded by the responsible form owner before delivery. This documentation review performed no rendered/graphic checks and changed no image or live page. The current Recognize skill's October 15 active-Team/enabled-membership wording likewise describes the prior scope; the October 29 owner direction above controls this new design.
+
+## Historical workflow and implementation notes
+
 Latest owner-requested workflow review: [shared native/API-agent workflow and exact change register, 14 October](recognize-shared-workflow-review-20261014.md). Read it before the dated implementation notes below. It records the staging-only recognition page, silent public entry, shared inputs and Tenants handoff; unresolved credential/retry decisions are explicit. Documentation only: it does not establish a new deployment or authorize edits.
 
 Additional proven source: [Recognize frontend-agent demonstration](recognize-frontend-agent-proof-20261013.md), 13 October 2026, owner-confirmed phone/code to `/rs-member` using the existing native workflow. Its local implementation and exact source turns are indexed there. For later shared release evidence see [October 11 resume checkpoint](resume-recognize-tenants-20261011.md); the earlier checkpoint below does not supersede that later evidence.

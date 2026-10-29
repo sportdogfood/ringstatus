@@ -2,7 +2,7 @@
 const fs = require("node:fs"),
   path = require("node:path"),
   settings = require("./settings");
-const { acquireLock } = require("../wef-tenants/entry");
+const { acquireLock } = require("./runtime-utils");
 async function scheduled({
   runtime = settings.RUNTIME,
   run = () => require("./collector").runLive(),
