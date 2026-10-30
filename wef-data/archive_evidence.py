@@ -40,9 +40,17 @@ def archived_row(body,reference):
     if part.get('retained-sha256')!=reference['sha256'] or digest(part['retained-json'])!=reference['sha256']:raise ValueError('Archive retained payload mismatch')
     return {**part,'collection-key':reference['key'],'scope':reference.get('scope'),'status':'Verified retained observation','_archive':proof}
 
-def publish_bundle(repository,prefix,files,allowed_remotes=REMOTES):
+def publish_bundle(repository,prefix,files,allowed_remotes=REMOTES,pending_bundles=None):
     """Publish without rewriting history; reconcile only this producer's local commits."""
-    repository=pathlib.Path(repository)
+    repository=pathlib.Path(repository);primary_count=len(files);files=dict(files);prefixes=[prefix]
+    for pending,parts in (pending_bundles or {}).items():
+        if pending==prefix:
+            if parts!=files:raise ValueError('Conflicting pending archive bundle')
+            continue
+        prefixes.append(pending)
+        for name,body in parts.items():
+            if not name.startswith(pending+'/') or name in files:raise ValueError('Pending archive scope conflict')
+            checked_path(repository,name);files[name]=body
     def git(*args,binary=False):
         try:return subprocess.check_output(['git','-C',str(repository),*args],stderr=subprocess.PIPE,timeout=60,text=not binary)
         except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:raise ArchiveDeferred('Archive Git '+args[0]+' did not complete; saved evidence retained') from error
@@ -60,25 +68,26 @@ def publish_bundle(repository,prefix,files,allowed_remotes=REMOTES):
         if name not in files:raise ValueError('Archive checkout has unrelated changes')
     git('fetch','origin','main')
     ahead,behind=map(int,git('rev-list','--left-right','--count','HEAD...origin/main').split())
-    if ahead and behind:
+    if ahead:
         # Inspect every unpublished commit, including changes later reverted.
         # A merge-tree preview rejects conflicts without changing the checkout.
         for commit in git('rev-list','origin/main..HEAD').splitlines():
             names=git('diff-tree','--root','--no-commit-id','--name-only','-r',commit).splitlines()
-            if any(not name.startswith(prefix+'/') for name in names):raise ValueError('Unpublished archive history has unrelated changes')
+            if any(not any(name.startswith(scope+'/') for scope in prefixes) for name in names):raise ValueError('Unpublished archive history has unrelated changes')
+    if ahead and behind:
         git('merge-tree','--write-tree','HEAD','origin/main')
         git('merge','--no-edit','origin/main')
     else:git('merge','--ff-only','origin/main')
     for name,body in files.items():
-        if not name.startswith(prefix+'/'):raise ValueError('Evidence file outside approved show prefix')
+        if not any(name.startswith(scope+'/') for scope in prefixes):raise ValueError('Evidence file outside approved show prefix')
         immutable(checked_path(repository,name),body)
-    git('add','--',prefix)
+    git('add','--',*prefixes)
     staged=git('diff','--cached','--name-only').splitlines()
     if any(name not in files for name in staged):raise ValueError('Unrelated staged archive changes')
     if staged:git('commit','-m','Retain verified Data observation evidence '+prefix.split('/')[3])
     commit=git('rev-parse','HEAD').strip();git('push','origin','HEAD:main');git('fetch','origin','main')
     remote_commit=git('rev-parse','origin/main').strip();git('merge-base','--is-ancestor',commit,remote_commit)
-    with tarfile.open(fileobj=io.BytesIO(git('archive',remote_commit,'--',prefix,binary=True))) as archive:
+    with tarfile.open(fileobj=io.BytesIO(git('archive',remote_commit,'--',*prefixes,binary=True))) as archive:
         remaining=set(files)
         for member in archive:
             if member.name not in files:continue
@@ -87,7 +96,30 @@ def publish_bundle(repository,prefix,files,allowed_remotes=REMOTES):
             if body!=files[member.name]:raise ValueError('Remote retained evidence differs')
             remaining.remove(member.name)
         if remaining:raise ValueError('Remote retained evidence is incomplete')
-    return {'commit':commit,'verified_remote_commit':remote_commit,'path':prefix,'files':len(files)}
+    return {'commit':commit,'verified_remote_commit':remote_commit,'path':prefix,'files':primary_count}
+
+def outgoing_snapshot(runtime,key):
+    """Validate exact saved native/readback evidence; never recapture a retry."""
+    runtime=pathlib.Path(runtime);prefix_for(key)
+    control=runtime/'outgoing-publications'/(key.replace('|','-')+'.json')
+    if not control.exists():return None
+    pin=json.loads(control.read_text(encoding='utf-8'))
+    if pin.get('show-key')!=key or pin.get('folder')!='outgoing-'+key.replace('|','-'):raise ValueError('Pending outgoing owner mismatch')
+    folder=checked_path(runtime,pin['folder'])
+    from data_runner import archiver
+    prefix,parts=archiver.build(folder)
+    if prefix.parent.as_posix()!=prefix_for(key).rsplit('/',1)[0]:raise ValueError('Pending outgoing show scope mismatch')
+    proof={name:{'bytes':len(body),'sha256':hashlib.sha256(body).hexdigest()} for name,body in parts.items()}
+    if prefix.as_posix()!=pin.get('path') or proof!=pin.get('files'):raise ValueError('Pending outgoing evidence changed')
+    return pin,folder,{(prefix/name).as_posix():body for name,body in parts.items()}
+
+def pending_outgoing(runtime):
+    output={};runtime=pathlib.Path(runtime)
+    for control in sorted((runtime/'outgoing-publications').glob('*.json')):
+        pin=json.loads(control.read_text(encoding='utf-8'));key=pin['show-key']
+        if control.name!=key.replace('|','-')+'.json':raise ValueError('Pending outgoing control mismatch')
+        saved=outgoing_snapshot(runtime,key);output[saved[0]['path']]=saved[2]
+    return output
 
 class EvidenceStore:
     def __init__(self,root,repository,publisher=publish_bundle):
@@ -134,6 +166,13 @@ class EvidenceStore:
         from wef_data_handoff import revision_chain
         prefix=prefix_for(state['show-key']);files={};runs=copy.deepcopy(repo.graph['runs'])
         runs[runkey].update({'status':'Verified completed revision','state-json':packed(state)})
+        # The runner key retains the original start value; Airtable may round its
+        # dateTime readback. Freeze that original spelling, without changing rows.
+        if runkey.startswith(('adaptive-','archive-')):
+            from wef_data_store import equivalent
+            started=runkey.split('-',1)[1]
+            if not equivalent(runs[runkey].get('started'),started,{'type':'dateTime'}):raise ValueError('Archive run start identity conflict')
+            runs[runkey]['started']=started
         collections=collection_rows(repo,state)
         chain=revision_chain(runkey,runs,collections)
         manifests={'runs':{},'legacy-collections':{},'observations':[]}
@@ -158,9 +197,38 @@ class EvidenceStore:
         manifest={'format':FORMAT,'show-key':state['show-key'],'run-key':runkey,'state-sha256':digest(packed(state)),
                   'authority':state['authority'],'records':manifests,'files':{n:{'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in sorted(files.items())}}
         name=prefix+'/revisions/'+manifest['state-sha256']+'.json';files[name]=packed(manifest).encode('utf-8')
+        # Keep interrupted same-run candidate bytes without rewriting the frozen
+        # revision manifest or allowing unrelated dirty files into publication.
+        attempts={}
+        for path in sorted((self.repository/prefix/'runs').glob('*.json.gz')):
+            relative=path.relative_to(self.repository).as_posix()
+            if relative in files:continue
+            body=checked_path(self.repository,relative).read_bytes()
+            try:row=json.loads(gzip.decompress(body))
+            except (ValueError,OSError,EOFError):continue
+            if not isinstance(row,dict) or row.get('run-key')!=runkey:continue
+            if path.name!=hashlib.sha256(body).hexdigest()+'.json.gz':raise ValueError('Archive attempt content address mismatch')
+            prior=json.loads(row['state-json'])
+            if row.get('_record-id')!=repo.inventory['runs'][runkey]['id'] or prior.get('run-record-id')!=state.get('run-record-id') or prior.get('show-key')!=state['show-key'] or prior.get('sequence')!=state['sequence'] or prior.get('observations')!=state['observations'] or prior.get('predecessor')!=state.get('predecessor') or prior.get('phase')!='Complete':raise ValueError('Archive attempt identity mismatch')
+            files[relative]=body;attempts[relative]={'bytes':len(body),'sha256':hashlib.sha256(body).hexdigest(),'record-id':row['_record-id'],'candidate-state-sha256':digest(row['state-json'])}
+        if attempts:
+            note=packed({'format':'wef-data-unaccepted-archive-attempts-v1','classification':'Unaccepted prior archive publication candidates','show-key':state['show-key'],'run-key':runkey,'files':attempts}).encode('utf-8')
+            files[prefix+'/unaccepted-attempts/'+hashlib.sha256(note).hexdigest()+'.json']=note
+        for path in sorted((self.repository/prefix/'unaccepted-attempts').glob('*.json')):
+            relative=path.relative_to(self.repository).as_posix()
+            if relative in files:continue
+            body=checked_path(self.repository,relative).read_bytes()
+            try:note=json.loads(body)
+            except ValueError:continue
+            if not isinstance(note,dict) or note.get('run-key')!=runkey:continue
+            if path.name!=hashlib.sha256(body).hexdigest()+'.json' or note.get('format')!='wef-data-unaccepted-archive-attempts-v1' or note.get('show-key')!=state['show-key']:raise ValueError('Archive attempt note identity mismatch')
+            for saved,proof in note['files'].items():
+                if not saved.startswith(prefix+'/runs/') or saved not in files or proof.get('record-id')!=repo.inventory['runs'][runkey]['id'] or proof.get('sha256')!=hashlib.sha256(files[saved]).hexdigest() or proof.get('bytes')!=len(files[saved]):raise ValueError('Archive attempt note evidence mismatch')
+            files[relative]=body
         return prefix,name,files
     def publish(self,repo,state,runkey):
         prefix,manifest,files=self.bundle(repo,state,runkey)
-        result=self.publisher(self.repository,prefix,files)
+        pending=pending_outgoing(self.root.parent)
+        result=self.publisher(self.repository,prefix,files,**({'pending_bundles':pending} if pending else {}))
         if not result.get('verified_remote_commit'):raise ValueError('Missing remote evidence verification')
         return {**result,'manifest':manifest,'state-sha256':digest(packed(state)),'format':FORMAT}

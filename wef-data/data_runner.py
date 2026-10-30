@@ -17,6 +17,46 @@ def module(name):
     value=importlib.util.module_from_spec(spec);spec.loader.exec_module(value);return value
 
 planner=module('wef-data-adaptive-trial')
+
+COUNT_FRESH_SECONDS=300
+COUNT_REFRESH_SECONDS=150
+
+def active_class_keys(state):
+    """Legacy lists and lossless compact journal controls contain the same keys."""
+    value=state['active-classes']
+    if not isinstance(value,list):
+        import base64,zlib
+        try:
+            if value['encoding']!='zlib-base64-json':raise ValueError('Unknown control encoding')
+            decoder=zlib.decompressobj()
+            raw=decoder.decompress(base64.b64decode(value['data'],validate=True),1000001)
+            if len(raw)>1000000 or not decoder.eof or decoder.unused_data or decoder.unconsumed_tail:raise ValueError('Invalid control size')
+            if digest(raw.decode('utf-8'))!=value['sha256']:raise ValueError('Control digest mismatch')
+            keys=json.loads(raw)
+            if len(keys)!=value['count']:raise ValueError('Control count mismatch')
+        except (KeyError,TypeError,ValueError,zlib.error) as error:
+            raise ValueError('Invalid active-class journal control') from error
+    else:keys=value
+    if not isinstance(keys,list) or any(not isinstance(k,str) or not k.startswith(state['show-key']+'|') for k in keys) or len(set(keys))!=len(keys):
+        raise ValueError('Invalid active-class keys')
+    return keys
+
+def count_due(states,policies,at,limit=4,slot=0):
+    """Refresh today's original count inputs first, with a bounded other-day turn."""
+    from zoneinfo import ZoneInfo
+    today=datetime.datetime.fromtimestamp(at,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()
+    limit=max(0,min(40,limit));due=[]
+    for state in states:
+        if state['day']!=today or state.get('inflight'):continue
+        last=planner.epoch(state['last_success']) if state.get('last_success') else 0
+        deadline=min(state.get('next_due',last+state['interval']),last+COUNT_REFRESH_SECONDS)
+        if deadline<=at:due.append((last,state['class_key'],state))
+    due.sort(key=lambda item:item[:2])
+    chosen=[item[2] for item in due[:limit]]
+    other=planner.due([s for s in states if s['day']!=today],policies,at,min(4,limit))
+    if chosen and other and len(chosen)==limit and slot%4==3:
+        chosen=chosen[:-1]
+    return chosen+other[:limit-len(chosen)]
 archiver=module('archive-wef-data')
 KEYS=archiver.TABLE_KEYS
 
@@ -76,7 +116,10 @@ def pending_candidate(plan):
     graph['requests']=requests
     frozen={'show-key':plan['show-key'],'scope':scope,'source':plan['source'],'metric':plan['metric'],'graph':graph,'next-state':plan['next-state']}
     frozen['verification']=plan.get('verification')
-    parts=freeze(frozen);records=[]
+    budget=plan.get('retained-budget',60000)
+    if budget not in (60000,1000000) or budget>60000 and not plan.get('evidence-storage'):
+        raise ValueError('Invalid retained part budget')
+    parts=freeze(frozen,budget=budget);records=[]
     for i,part in enumerate(parts,start):
         records.append({'collection-key':run+f'|observation-{i:03}','run':refs('runs',run),'show':refs('shows',plan['show-key']),
             'scope':scope,'status':'Writing; readback pending','started':plan['metric']['started'],'completed':plan['metric']['completed'],
@@ -273,6 +316,12 @@ class Runner:
         receipt=self.repo.stage({'runs':[run]})
         self.state['run-record-id']=receipt['record_map']['runs'][self.runkey];self.journal()
     def journal(self):
+        value=self.state.get('active-classes')
+        if isinstance(value,list) and len(packed(value).encode('utf-8'))>8000:
+            import base64,zlib
+            raw=packed(active_class_keys(self.state))
+            self.state['active-classes']={'encoding':'zlib-base64-json','sha256':digest(raw),'count':len(value),
+                'data':base64.b64encode(zlib.compress(raw.encode('utf-8'))).decode('ascii')}
         text=packed(self.state)
         if len(text.encode())>60000:raise ValueError('Run journal exceeds accepted cell budget')
         self.repo.patch('runs',self.runkey,{'state-json':text})
@@ -312,7 +361,8 @@ class Runner:
     def observation(self,scope,payload,metric,graph,next_state=None):
         plan={'run-key':self.runkey,'show-key':self.show,'scope':scope,'source':payload,'metric':metric,
             'graph':graph,'next-state':next_state or {},'start':len(self.state['observations'])+1,'request-start':self.state.get('requests',0)+1}
-        if self.state.get('evidence-storage'):plan['evidence-storage']=self.state['evidence-storage']
+        if self.state.get('evidence-storage'):
+            plan['evidence-storage']=self.state['evidence-storage'];plan['retained-budget']=1000000
         atomic(self.runtime/'pending.json',plan)
         return self.apply_pending(plan)
     def apply_pending(self,plan):
@@ -469,6 +519,15 @@ class Runner:
         (folder/'adaptive').mkdir(exist_ok=True)
         for index,(old,(p,m)) in enumerate(zip(selected,batch)):
             state,reason=planner.decide(old,p,planner.epoch(m['completed']),policies)
+            observed=planner.epoch(m['completed'])
+            today=datetime.datetime.fromtimestamp(observed,datetime.timezone.utc).astimezone(__import__('zoneinfo').ZoneInfo('America/New_York')).date().isoformat()
+            if state['day']==today:
+                state['interval']=min(state['interval'],COUNT_REFRESH_SECONDS)
+                state['next_due']=min(state['next_due'],observed+COUNT_REFRESH_SECONDS)
+                reason+='; current-day count inputs next due within 150 seconds of source observation'
+            elif state['interval']<policies[state['lane']]['minimum-seconds']:
+                state['interval']=policies[state['lane']]['minimum-seconds']
+                state['next_due']=observed+state['interval']
             filename=str(index)+'.json';(folder/'adaptive'/filename).write_text(packed(p),encoding='utf-8')
             observations.append({'class_key':old['class_key'],'source_file':filename,'metric':m,'new':state,'old':old,'reason':reason,'error':None,'slot':slot})
         trial={'status':'PASS','errors':[],'show_key':self.show,'run_key':self.runkey,'started':self.at,'completed':stamp(),
@@ -481,8 +540,10 @@ class Runner:
         graph.pop('runs',None);graph.pop('collections',None)
         graph.pop('requests',None)
         for row in graph.get('slots',[]):
-            row['sequence']=sequence;row['summary']='Scheduled due-driven source batch; at most four requests; persistence time reported separately.'
-        self.observation('class',{'classes':[p for p,m in batch]}, {'started':min(m['started'] for p,m in batch),'completed':stamp(),'requests':[m for p,m in batch]},graph,{'slots':sequence,'reserved-class':None})
+            row['sequence']=sequence;row['summary']='Scheduled due-driven source batch; at most four concurrent requests; persistence time reported separately.'
+        next_state={'slots':sequence,'reserved-class':None,'count-turn':self.state.get('count-turn',0)+1}
+        if len(selected)>4:next_state['count-pass-run']=self.runkey
+        self.observation('class',{'classes':[p for p,m in batch]}, {'started':min(m['started'] for p,m in batch),'completed':stamp(),'requests':[m for p,m in batch]},graph,next_state)
         duration=time.monotonic()-batch_begin
         timing=self.state.setdefault('timing',{});timing['last-class-batch-seconds']=duration;timing['last-class-batch-size']=len(selected)
         timing['class-batch-seconds-per-class']=duration/len(selected)
@@ -653,6 +714,9 @@ class Runner:
 
     def archive_outgoing(self,key,authority):
         from full_archive import operational,coverage,retained_checkpoints,include_reserved
+        from archive_evidence import outgoing_snapshot
+        saved=outgoing_snapshot(self.runtime,key)
+        if saved:return self.publish_outgoing(key,*saved[:2])
         config=json.loads((pathlib.Path(__file__).parent/'logging-schema.json').read_text(encoding='utf-8'))
         current=next(r['show-key'] for r in authority['records'] if r['default'])
         ops,accounting,global_ops=operational(self.repo,key,config)
@@ -685,18 +749,31 @@ class Runner:
         for name,body in parts.items():
             target=folder/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(body)
         (folder/'evidence-manifest.json').write_text(packed(list(evidence)+list(parts)),encoding='utf-8')
-        receipt=archiver.archive(folder,self.data_repo,publish=True)
+        prefix,files=archiver.build(folder)
+        pin={'show-key':key,'folder':folder.name,'path':prefix.as_posix(),'coverage-sha256':signature,'files':{name:{'bytes':len(body),'sha256':__import__('hashlib').sha256(body).hexdigest()} for name,body in files.items()}}
+        atomic(self.runtime/'outgoing-publications'/(key.replace('|','-')+'.json'),pin)
+        return self.publish_outgoing(key,pin,folder)
+
+    def publish_outgoing(self,key,pin,folder):
+        from archive_evidence import pending_outgoing
+        pending=pending_outgoing(self.runtime);pending.pop(pin['path'],None)
+        receipt=archiver.archive(folder,self.data_repo,publish=True,**({'pending_bundles':pending} if pending else {}))
+        if receipt['path']!=pin['path']:raise ValueError('Outgoing publication identity changed')
         # The publication receipt is local immutable control evidence, not a new
         # old-show Airtable row that would escape its own completed snapshot.
         manifest=json.loads((self.data_repo/receipt['path']/'manifest.json').read_text(encoding='utf-8'))
-        receipt.update({'show-key':key,'coverage-sha256':signature,'verified-files':list(manifest['files'])+['manifest.json'],'counts':manifest['counts'],'operational-counts':manifest['operational_counts'],'closed-at':stamp()})
-        atomic(checkpoint,receipt)
+        receipt.update({'show-key':key,'coverage-sha256':pin['coverage-sha256'],'verified-files':list(manifest['files'])+['manifest.json'],'counts':manifest['counts'],'operational-counts':manifest['operational_counts'],'closed-at':stamp()})
+        atomic(self.runtime/'outgoing-receipts'/(key.replace('|','-')+'.json'),receipt)
         if self.repo.graph['shows'][key].get('status')!='Archived retained snapshot':self.repo.patch('shows',key,{'status':'Archived retained snapshot'})
+        (self.runtime/'outgoing-publications'/(key.replace('|','-')+'.json')).unlink()
         return receipt
 
     def retain_outgoing(self,key,authority):
         from retirement import RetentionWait
+        from archive_evidence import ArchiveDeferred
         try:return self.archive_outgoing(key,authority)
+        except ArchiveDeferred as error:
+            wait_error=RetentionWait('Outgoing archive publication deferred: '+str(error))
         except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:
             # Only unavailable remote publication is a readiness wait. Invalid
             # archives, wrong targets, failed local readbacks and IDs stay fatal.
@@ -774,7 +851,7 @@ class Runner:
             first=False
             directory_work=self.collect_directory(context,seconds=max(0,min(90,180-(time.monotonic()-start))))
             states=[]
-            active=set(self.state['active-classes'])
+            active=set(active_class_keys(self.state))
             for key,row in self.repo.graph['work-items'].items():
                 if key in active and row.get('status')=='Waiting':
                     s=json.loads(row['state-json']);s['next_due']=planner.epoch(row['next-due'])
@@ -783,7 +860,10 @@ class Runner:
                     if wanted!=s['lane']:s['next_due']=0
                     if not s.get('last_success') or planner.epoch(s['last_success'])<self.state['reconcile-start']:s['next_due']=0
                     states.append(s)
-            selected=planner.due(states,policies,time.time(),4)
+            # Coalesce one bounded current-day pass; existing capture still uses
+            # four concurrent requests and saves each response before persistence.
+            limit=4 if self.state.get('count-pass-run')==self.runkey else 40
+            selected=count_due(states,policies,time.time(),limit,self.state.get('count-turn',0))
             if selected and time.monotonic()-start<180:self.class_batch(selected,self.repo.scoped(self.show),policies)
             pending=[s for s in states if not s.get('last_success') or planner.epoch(s['last_success'])<self.state['reconcile-start']]
             if not pending:self.state['reconciled-at']=time.time()
@@ -792,6 +872,11 @@ class Runner:
                 'directory-pages':__import__('math').ceil(remaining/max(1,self.state.get('directory',{}).get('size',1))),
                 'class-estimate-seconds':len(pending)*self.state.get('timing',{}).get('class-batch-seconds-per-class',0),
                 'measured':bool(self.state.get('timing',{})),'scheduler-wake-seconds':60,'admission-budget-seconds':180}
+            today_states=[s for s in states if s['day']==datetime.datetime.now(__import__('zoneinfo').ZoneInfo('America/New_York')).date().isoformat()]
+            measured=self.state.get('timing',{}).get('class-batch-seconds-per-class')
+            estimate=len(today_states)*measured if measured else None
+            self.state['capacity'].update({'today-count-scopes':len(today_states),'today-count-target-seconds':COUNT_FRESH_SECONDS,
+                'today-class-work-estimate-seconds':estimate,'today-target-infeasible-before-publication':estimate>=COUNT_FRESH_SECONDS if estimate is not None else None})
             self.journal()
             if not selected and not directory_work:break
         from retained_feed import dependencies

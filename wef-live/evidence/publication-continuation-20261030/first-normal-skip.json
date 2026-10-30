@@ -1,0 +1,50 @@
+{
+  "run": "6a729be2-fbb4-481b-803b-b6a70f197e6b",
+  "started": "2026-10-30T17:02:13.514Z",
+  "completed": "2026-10-30T17:02:26.567Z",
+  "scope": {
+    "show": 200000076,
+    "customer": 15,
+    "date": "2026-10-30",
+    "authority": "recOAxMcqu1f75CQk",
+    "checked_at": "2026-10-30T16:59:15.179Z",
+    "active": true
+  },
+  "ok": true,
+  "skip": "all-today-groups-completed",
+  "counts": {
+    "rings": 0,
+    "groups": 0,
+    "classes": 0,
+    "entries": 0
+  },
+  "publication": {
+    "lanes": {
+      "schedules": {
+        "status": "Skipped",
+        "planned": 0,
+        "attempted": 0,
+        "patched": 0,
+        "unchanged": 0,
+        "deferred": 0,
+        "uncertain": 0,
+        "pending": 0,
+        "issues": []
+      },
+      "data": {
+        "status": "Skipped",
+        "planned": 0,
+        "attempted": 0,
+        "patched": 0,
+        "unchanged": 0,
+        "deferred": 0,
+        "uncertain": 0,
+        "pending": 0,
+        "issues": []
+      }
+    },
+    "errors": []
+  },
+  "loggingErrors": [],
+  "audits": []
+}

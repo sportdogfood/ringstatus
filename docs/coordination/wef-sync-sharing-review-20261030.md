@@ -12,11 +12,8 @@ The owner reports using **Publish to Data Library**, rather than configuring des
 | wef-season-horses / appETrjio9Yj9Pv17 | w-horses | PUBLISHED - owner reported |
 | wef-season-trainers / appzZsd3UqMRR2CNc | w-trainers | PUBLISHED - owner reported |
 | wef-season-rings / appxMk9wfbBHEvC5e | w-rings | PLANNED - not published yet |
-| New intended wef-season-people / app6uHgUYCCKTVlJE | w-people | PLANNED - not published yet |
 
-The intended People scope is **all riders, trainers and owners**, as stated by the owner. Base discovery resolves `app6uHgUYCCKTVlJE`, currently named **wef-seaon-people** in Airtable. Read-only table metadata currently shows only `meta` (`tblwBvigcmqRlSYUb`); no populated people table, collection/retention implementation, role mapping or outgoing library was verified. Keep the separately existing `wef-people` base distinct. No base was renamed and no new collector/owner responsibility was assigned by this note.
-
-The People library is a proposed combined person directory. Existing rider/trainer sources remain available; this update does not retire or replace them. Preserve original source IDs and role evidence; one person may have multiple roles. Exact identity, deduplication and overlap/replacement rules require a separate confirmed contract; do not merge names or invent new person keys. Horses and rings remain separate entity types.
+**Owner cancellation, October 30, 2026:** People is removed from managed scope, backlog and this sharing proposal. The former `w-people` proposal is withdrawn; no destination needs it under this plan. Do not implement or revive People management. Existing People bases and dated inspection/preparation evidence remain untouched. Separate riders, trainers, horses and rings sources and workflows continue unchanged.
 
 Publishing a library source and importing it into a destination are tracked separately. This update does not certify which entity/parent tables or fields the three library publications include. Retained shows/show-days remain historical membership context, not canonical current-show authority. Review the actual library source scope before any consumer change.
 

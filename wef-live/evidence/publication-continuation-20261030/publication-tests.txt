@@ -1,0 +1,277 @@
+TAP version 13
+# {
+#   "run_id": "offline-first",
+#   "ok": true,
+#   "completed": "2026-10-29T15:00:00Z",
+#   "errors": [],
+#   "publication_errors": [
+#     {
+#       "lane": "schedules",
+#       "message": "Journal intent: EPERM journal"
+#     },
+#     {
+#       "lane": "data",
+#       "message": "Journal intent: EPERM journal"
+#     }
+#   ],
+#   "logging_errors": [
+#     "errs-log unavailable; local receipt retained where writable: Airtable log unavailable"
+#   ]
+# }
+# {
+#   "run_id": "offline-next",
+#   "ok": true,
+#   "completed": "2026-10-29T15:00:00Z",
+#   "errors": [],
+#   "logging_errors": []
+# }
+# Subtest: seven existing targets receive only observed JSON, all original facts and links preserved
+ok 1 - seven existing targets receive only observed JSON, all original facts and links preserved
+  ---
+  duration_ms: 39.5095
+  type: 'test'
+  ...
+# Subtest: fresh detail required independently of refreshed group/class discovery
+ok 2 - fresh detail required independently of refreshed group/class discovery
+  ---
+  duration_ms: 3.4823
+  type: 'test'
+  ...
+# Subtest: future/missing timestamps and absent values do not become current zeros
+ok 3 - future/missing timestamps and absent values do not become current zeros
+  ---
+  duration_ms: 1.3495
+  type: 'test'
+  ...
+# Subtest: empty/outside TODAY performs no destination inventory or writes
+ok 4 - empty/outside TODAY performs no destination inventory or writes
+  ---
+  duration_ms: 0.7429
+  type: 'test'
+  ...
+# Subtest: ambiguous class occurrences never duplicate class counts
+ok 5 - ambiguous class occurrences never duplicate class counts
+  ---
+  duration_ms: 4.0141
+  type: 'test'
+  ...
+# Subtest: one unavailable lane cannot stop the other or change source success
+ok 6 - one unavailable lane cannot stop the other or change source success
+  ---
+  duration_ms: 3.7417
+  type: 'test'
+  ...
+# Subtest: unknown PATCH retains durable intent, next invocation reads back before any retry
+ok 7 - unknown PATCH retains durable intent, next invocation reads back before any retry
+  ---
+  duration_ms: 7.1809
+  type: 'test'
+  ...
+# Subtest: intent archive failure prevents PATCH and preserves destination values
+ok 8 - intent archive failure prevents PATCH and preserves destination values
+  ---
+  duration_ms: 2.8418
+  type: 'test'
+  ...
+# Subtest: rider conflict without same stable UUID is withheld, parent/native links untouched
+ok 9 - rider conflict without same stable UUID is withheld, parent/native links untouched
+  ---
+  duration_ms: 3.0085
+  type: 'test'
+  ...
+# Subtest: new collected unchanged observation may advance time; retry may not
+ok 10 - new collected unchanged observation may advance time; retry may not
+  ---
+  duration_ms: 6.8779
+  type: 'test'
+  ...
+# Subtest: publication transport only writes one field by existing record ID
+ok 11 - publication transport only writes one field by existing record ID
+  ---
+  duration_ms: 3.0604
+  type: 'test'
+  ...
+# Subtest: multiple source groups with only one destination cannot attribute class counters
+ok 12 - multiple source groups with only one destination cannot attribute class counters
+  ---
+  duration_ms: 3.4188
+  type: 'test'
+  ...
+# Subtest: exact trip suffix and raw UUID must agree
+ok 13 - exact trip suffix and raw UUID must agree
+  ---
+  duration_ms: 9.9684
+  type: 'test'
+  ...
+# Subtest: unknown write archives outcome immediately while preserving pending
+ok 14 - unknown write archives outcome immediately while preserving pending
+  ---
+  duration_ms: 2.7482
+  type: 'test'
+  ...
+# Subtest: detail flag preserves missing versus explicit false
+ok 15 - detail flag preserves missing versus explicit false
+  ---
+  duration_ms: 0.2512
+  type: 'test'
+  ...
+# Subtest: expired lane budget prevents reconciliation inventory and writes
+ok 16 - expired lane budget prevents reconciliation inventory and writes
+  ---
+  duration_ms: 0.4028
+  type: 'test'
+  ...
+# Subtest: transport bounds pagination by lane deadline
+ok 17 - transport bounds pagination by lane deadline
+  ---
+  duration_ms: 1.1808
+  type: 'test'
+  ...
+# Subtest: intent archive delay cannot publish expired observations
+ok 18 - intent archive delay cannot publish expired observations
+  ---
+  duration_ms: 1.5827
+  type: 'test'
+  ...
+# Subtest: transport rechecks freshness after pacing and before PATCH dispatch
+ok 19 - transport rechecks freshness after pacing and before PATCH dispatch
+  ---
+  duration_ms: 0.2725
+  type: 'test'
+  ...
+# Subtest: saved source has_JSON casing preserves true false and missing without alias guessing
+ok 20 - saved source has_JSON casing preserves true false and missing without alias guessing
+  ---
+  duration_ms: 2.1804
+  type: 'test'
+  ...
+# Subtest: uncertain record continues other work and retains readback-before-retry
+ok 21 - uncertain record continues other work and retains readback-before-retry
+  ---
+  duration_ms: 5.6096
+  type: 'test'
+  ...
+# Subtest: safe pre-intent failure counts deferred and patch cap counts untouched
+ok 22 - safe pre-intent failure counts deferred and patch cap counts untouched
+  ---
+  duration_ms: 1.6568
+  type: 'test'
+  ...
+# Subtest: producer metadata changes before and during PATCH remain audited and preserved
+ok 23 - producer metadata changes before and during PATCH remain audited and preserved
+  ---
+  duration_ms: 4.4081
+  type: 'test'
+  ...
+# Subtest: pre-PATCH identity native-link overlay and trip source changes still withhold
+ok 24 - pre-PATCH identity native-link overlay and trip source changes still withhold
+  ---
+  duration_ms: 19.8501
+  type: 'test'
+  ...
+# Subtest: post-PATCH changed identity or native link preserves pending and continues safe lane work
+ok 25 - post-PATCH changed identity or native link preserves pending and continues safe lane work
+  ---
+  duration_ms: 11.3774
+  type: 'test'
+  ...
+# Subtest: trip source cosmetic updates allowed but timestamp supporting a contradiction is protected
+ok 26 - trip source cosmetic updates allowed but timestamp supporting a contradiction is protected
+  ---
+  duration_ms: 6.3814
+  type: 'test'
+  ...
+# Subtest: intent save failure dispatches nothing unsafe, preserves intent and lets other lane proceed
+ok 27 - intent save failure dispatches nothing unsafe, preserves intent and lets other lane proceed
+  ---
+  duration_ms: 3.2088
+  type: 'test'
+  ...
+# Subtest: journal completion failure retains confirmed result and deferred remainder, future reconcile safe
+ok 28 - journal completion failure retains confirmed result and deferred remainder, future reconcile safe
+  ---
+  duration_ms: 3.3736
+  type: 'test'
+  ...
+# Subtest: cursor-save EPERM after verified write cannot hide remaining plans
+ok 29 - cursor-save EPERM after verified write cannot hide remaining plans
+  ---
+  duration_ms: 1.2268
+  type: 'test'
+  ...
+# Subtest: pending conflict and reconciliation audit failure block only their record
+ok 30 - pending conflict and reconciliation audit failure block only their record
+  ---
+  duration_ms: 5.5514
+  type: 'test'
+  ...
+# Subtest: outcome audit failure preserves pending, continues other records and recovers next invocation
+ok 31 - outcome audit failure preserves pending, continues other records and recovers next invocation
+  ---
+  duration_ms: 3.1822
+  type: 'test'
+  ...
+# Subtest: budget boundary retains exact unsent cursor then naturally reconciles before progressing
+ok 32 - budget boundary retains exact unsent cursor then naturally reconciles before progressing
+  ---
+  duration_ms: 3.2522
+  type: 'test'
+  ...
+# Subtest: budget exhaustion before intent retains cursor with accurate deferred count
+ok 33 - budget exhaustion before intent retains cursor with accurate deferred count
+  ---
+  duration_ms: 2.5812
+  type: 'test'
+  ...
+# Subtest: exact source group selects one occurrence among six saved multi-occurrence shapes
+ok 34 - exact source group selects one occurrence among six saved multi-occurrence shapes
+  ---
+  duration_ms: 14.2984
+  type: 'test'
+  ...
+# Subtest: exact group filter never borrows other date ring group or duplicate same-group occurrence
+ok 35 - exact group filter never borrows other date ring group or duplicate same-group occurrence
+  ---
+  duration_ms: 14.5922
+  type: 'test'
+  ...
+# Subtest: uncertain persistence acknowledgement before dispatch is safe across process restart
+ok 36 - uncertain persistence acknowledgement before dispatch is safe across process restart
+  ---
+  duration_ms: 6.9665
+  type: 'test'
+  ...
+# Subtest: publication journal errors use existing local log fallback without halting next scheduled fixture
+ok 37 - publication journal errors use existing local log fallback without halting next scheduled fixture
+  ---
+  duration_ms: 20.2604
+  type: 'test'
+  ...
+# Subtest: all six saved exact occurrence keys resolve using their actual group and native links
+not ok 38 - all six saved exact occurrence keys resolve using their actual group and native links
+  ---
+  duration_ms: 2.2115
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\publication-continuation-20261030\\staged\\test\\publication.test.js:255:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading '0')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-live\evidence\publication-continuation-20261030\staged\test\publication.test.js:258:45)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 37
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 382.7233

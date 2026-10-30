@@ -3,7 +3,8 @@
 This section is current; older dated sections below are historical evidence,
 not active assignments. Scope **v1.4 remains LOCKED**. Runtime release:
 `count-replay-fix-20261030`; [exact hashes and acceptance](evidence/count-replay-fix-20261030/README.md).
-This update is documentation only.
+This update is documentation only. Reconciled October 30 at 11:27 Eastern:
+source/runtime hashes unchanged; existing schedules reused, not recreated.
 
 ## Instructions, hierarchy and authority
 
@@ -53,6 +54,18 @@ predecessors, count replay and Data archive evidence. Canonical `show-key` remai
 Schedules/Entries/Live and Data/Season consume canonical context independently;
 Shows never triggers their jobs. Existing default-payload file/hash handoff stays.
 
+Canonical show fields are `customer_id`, `show_id`, `facility_id`, `show_name`,
+`start_date`, `end_date`, `selected_date`, `available_dates`, `is_default`,
+`last_checked` and `show-key`; archive `default-payload-file`/SHA256 are a technical
+handoff, not a portable data-sync replacement. Show-days publish `show-day-key`,
+`show`, `date`, count values/coverage/policy/source time, `publication-status`,
+`accepted-summary`, evidence reference and attempt status/time/reason. Native
+links are local: consumers resolve portable keys to destination-local references,
+never copy cross-base native IDs or join by name. Sharing both tables everywhere
+is proposed design, not implemented or required: canonical context needs shows;
+show-days is conditional on a confirmed daily-count/readiness use. Preserve old
+links and historical parents; current sync configuration does not decide design.
+
 Shared files physically under `wef-schedules` support discovery, transport,
 locking/reporting and Python chain validation. Their location is not Schedules
 collector ownership or a reason to delete them. Shows archives are under
@@ -74,12 +87,20 @@ readback. There is no separate Shows archive timer. At 1,000 run-log rows, the
 collector archives an eligible old non-Running row before reusing its slot;
 error-linked rows are protected. If all slots are protected it appends, making
 1,000 a soft limit. No automatic local-file expiry/deletion is implemented here.
+Heartbeat is a single latest-state upsert (`heartbeat-key=WEF-default`), not an
+append-only history or a separately archived stream. Sources similarly retain
+latest per-source state. Error records are keyed by `error-key`; no automatic
+error-log expiry is implemented in the inspected Shows code. Historical show/day
+records are not purged by these log-slot rules. No claim of bounded total base
+size or full-table archival follows from the 1,000-row log threshold.
 This is Shows evidence/log retention, not Season's broader Data archival cadence.
 
 Sunday 16:00-20:00 America/New_York is an expected rollover window, not the only
 polling window; the five-minute task continues. Latest local receipt inspected:
-`986d18b2-4a29-484a-bb00-98b779eea6b7`, October 30 09:14:02-09:15:18 Eastern,
-success, four day publications and four archives. Dated acceptance remains the
+`050b7f67-c11a-4bfc-8514-54df0b69d3aa`, October 30 11:24:02-11:24:57 Eastern,
+success, four day publications; Task Scheduler exit 0, no day-stop file, and all
+four local archive hashes verified at inspection. Show 200000076 remains selected
+with source date October 30. Dated acceptance remains the
 08:44 and 08:49 actual replay runs in the locked release; this local receipt is
 not a new independent Airtable acceptance test.
 
@@ -110,15 +131,16 @@ never turn every collector invocation into a review. Records owns review automat
 and review-record writes for this task; preserve dated review history.
 
 Records created **wef-shows-monday-code-review**, independently inspected ACTIVE
-on October 30 at 09:19 Eastern. It targets Shows chat
+on October 30 at 09:19 Eastern and rechecked ACTIVE at 11:07. It targets Shows chat
 `01a16976-f0a6-72a1-a75f-75de7f19a815`, **Mondays 09:30 America/New_York**, bounded
 at 20 minutes. First scheduled review: **November 2, 2026**. Its existing routine
 record **recZTORMGcgsAaezQ** in `appCaSmL819KK7UFJ/tblYDJfIh17xCCtIP` is Pending
 first review, not an executed result. Release record `recjXg1esmui5DGOs` remains
 separate dated evidence. Future scheduled wakes permit only the named review-record
 updates and GET readback; preserve dated history and all runtime boundaries.
-The default-show notification monitor remains unchanged and separate. No duplicate
-review job is needed. Reviews are best effort when host/app are available.
+The owner removed business observers; do not recreate or replace them. The
+existing periodic code review is unchanged. No duplicate review job is needed.
+Reviews are best effort when host/app are available.
 
 Actually READ: installed RingStatus Operating Skills **0.2.0** full
 `instruction-loader`, `context-compact`, `code-review`, `rebalancer` skill files at
@@ -133,18 +155,49 @@ runtime hashes checked. Reading a skill is not proof every optional procedure ra
 
 At boundaries and first tool boundary after 30 minutes of active work, use
 [context-check procedure](../docs/coordination/context-check-procedure.md) with this
-chat's actual rollout/telemetry; unknown measurements stay unknown. Before compaction,
+chat's actual rollout/telemetry; unknown measurements stay unknown. The owner's
+**65% context preparation threshold** overrides the skill's 70% default; it does
+not authorize forced compaction or resuming stopped work. Before compaction,
 prepare a concise authorized private resume with objective, role, approvals/stops,
 paths, evidence, blockers and next action; do not copy raw history into Git/Airtable.
 No compaction or private history transfer is claimed by this documentation update.
 On resume read AGENTS, owner block, this current section, scope and exact release;
 reconcile later owner instructions before dependent work.
 
-**Next authorized action:** the first periodic review is scheduled for November 2,
-2026 at 09:30 Eastern under its bounded review-only prompt. No setup gap or runtime
-task is open in Shows; preserve the lock. Do not run the review early as collector
-proof. Freshness and local shared-file dependencies remain real limitations, not
-authorization for migration, repair or cadence changes.
+## Current task reconciliation and lock readiness
+
+| State | Item | Next action / authority |
+|---|---|---|
+| Complete | Count-replay recovery, two actual replay runs at 08:44/08:49, independent review and Records review readback | Keep locked v1.4/count-replay-fix-20261030. No additional repair is currently authorized here. |
+| Active operation | Existing five-minute Shows collection and archive/log handling | Continue unchanged under existing approval. This scope/code lock does not disable the collector or revoke independently approved work. |
+| Blocked readiness | Published counts are Stale, despite successful replay/publication | Do not assert fresh zero readiness. Data owns producing newer evidence; Shows evaluates the original source age and coverage normally. No producer repair approval is inferred. |
+| Awaiting natural proof | Next genuine default-show rollover after this release and matching canonical/day evidence | Current proof is for show 200000076. A future rollover is not proven by same-show repeats or fixtures. Inspect naturally produced evidence when available under existing authority; do not force a show change, run a collector or add an observer. |
+| Awaiting scheduled review | First periodic Shows code review, November 2 at 09:30 Eastern | Existing ACTIVE wef-shows-monday-code-review, 20-minute bound; setup is complete, execution is not yet proven. |
+| Proposed / owner decision | Sharing shows-only versus shows plus show-days | Keep [decision map](../docs/coordination/wef-sync-sharing-review-20261030.md) as a proposal. Count consumers, history scope, optional parent-key lookup and final sync wiring remain undecided; no implementation approved. |
+| Deferred, not a current blocker | Archive portability and count-replay simplification | Existing local archive handoff and full replay remain protected. Neither removal nor migration is approved. |
+| Superseded | Stop discovery after Sunday rollover; old failed release acceptance treated as current | Five-minute discovery continues all week. Preserve dated failures as history; the approved recoveries have their own dated acceptance. Do not restart old work. |
+
+**Lock readiness:** canonical identity/default/date authority, qualified show-days,
+current runtime and completed repair scope stay locked now. Future natural rollover
+and first periodic-review execution remain explicitly unverified; they are not
+retroactively claimed by the existing release acceptance. No open Shows code fix
+or failed Shows publication stop was found at this inspection. Freshness limits
+and future proof remain real, rather than an instruction to reopen code.
+
+Owner correction, October 30: **no WEF business observers**. Records removed
+`watch-wef-default-show-changes` and `wef-running-lanes-october-15-observation`;
+`verify-live-natural-same-date-rollover` was already absent. All three local
+automation definitions were confirmed absent during this documentation correction.
+Do not recreate observers or replacement polling reminders. Natural rollover
+acceptance remains unverified; inspect scheduled evidence during authorized work
+or on request. Existing collectors, business tasks and periodic code reviews are
+unchanged. Context bookkeeping is separate. Observer removal does not stop a
+collector or revoke independently approved fixes.
+
+**Next authorized action:** allow the existing scheduled collection/review paths
+to operate, retain their real evidence, and review natural rollover evidence when
+it exists. Owner decisions are required before sharing implementation or any new
+fix, deployment, task/cadence change, record repair or stopped-path resumption.
 
 ---
 

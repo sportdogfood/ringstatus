@@ -1,0 +1,15 @@
+[
+  {
+    "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+    "at": "2026-10-30T16:21:59.548Z",
+    "kind": "publication-data-intent",
+    "key": "15|200000076|2026-10-30|6"
+  },
+  {
+    "run": "9a6cbcc1-b2f0-4d27-90ad-059f9caecf71",
+    "at": "2026-10-30T16:24:00.209Z",
+    "kind": "publication-data-reconcile",
+    "outcome": "NotApplied",
+    "readbackObservedAt": "2026-10-30T15:35:23.706Z"
+  }
+]

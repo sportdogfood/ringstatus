@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: proved order estimates from class start, never from entry number
+ok 1 - proved order estimates from class start, never from entry number
+  ---
+  duration_ms: 6.0213
+  type: 'test'
+  ...
+# Subtest: scratch and gone are excluded and never get a go time
+ok 2 - scratch and gone are excluded and never get a go time
+  ---
+  duration_ms: 2.325
+  type: 'test'
+  ...
+# Subtest: unknown phase, missing eligibility, partial actual order and duplicate order withhold
+ok 3 - unknown phase, missing eligibility, partial actual order and duplicate order withhold
+  ---
+  duration_ms: 3.7522
+  type: 'test'
+  ...
+# Subtest: progress conflict, stale and future observations withhold
+ok 4 - progress conflict, stale and future observations withhold
+  ---
+  duration_ms: 3.0217
+  type: 'test'
+  ...
+# Subtest: countdown-only reevaluation keeps hash; expiry produces a new revision
+ok 5 - countdown-only reevaluation keeps hash; expiry produces a new revision
+  ---
+  duration_ms: 1.8737
+  type: 'test'
+  ...
+# Subtest: only today is accepted
+ok 6 - only today is accepted
+  ---
+  duration_ms: 1.1947
+  type: 'test'
+  ...
+# Subtest: actual Data/class adapter preserves missing readback and phase, repeat run writes nothing
+ok 7 - actual Data/class adapter preserves missing readback and phase, repeat run writes nothing
+  ---
+  duration_ms: 9.5505
+  type: 'test'
+  ...
+# Subtest: ambiguous source occurrence is an explicit skip, never guessed
+ok 8 - ambiguous source occurrence is an explicit skip, never guessed
+  ---
+  duration_ms: 2.7685
+  type: 'test'
+  ...
+# Subtest: publication persists intent before write and independently reads back
+ok 9 - publication persists intent before write and independently reads back
+  ---
+  duration_ms: 7.9159
+  type: 'test'
+  ...
+# Subtest: write failure preserves durable intent and blocks reuse
+ok 10 - write failure preserves durable intent and blocks reuse
+  ---
+  duration_ms: 4.4979
+  type: 'test'
+  ...
+# Subtest: transport forbids upstream writes and meta writes without HTTP
+ok 11 - transport forbids upstream writes and meta writes without HTTP
+  ---
+  duration_ms: 1.2336
+  type: 'test'
+  ...
+# Subtest: retention protects today, future, young and synced records, deletion stays disabled
+ok 12 - retention protects today, future, young and synced records, deletion stays disabled
+  ---
+  duration_ms: 2.2124
+  type: 'test'
+  ...
+# Subtest: matching phase proof supports pre-progress estimate without whole-class completion
+ok 13 - matching phase proof supports pre-progress estimate without whole-class completion
+  ---
+  duration_ms: 1.607
+  type: 'test'
+  ...
+# Subtest: observation time cannot become an in-progress anchor
+ok 14 - observation time cannot become an in-progress anchor
+  ---
+  duration_ms: 0.589
+  type: 'test'
+  ...
+# Subtest: malformed second occurrence and unknown raw class prevent false singleton
+ok 15 - malformed second occurrence and unknown raw class prevent false singleton
+  ---
+  duration_ms: 2.9226
+  type: 'test'
+  ...
+# Subtest: saved class material and provenance are independently checked
+ok 16 - saved class material and provenance are independently checked
+  ---
+  duration_ms: 13.9969
+  type: 'test'
+  ...
+# Subtest: worker accepts verified class bytes but never invents phase from unknown coverage
+ok 17 - worker accepts verified class bytes but never invents phase from unknown coverage
+  ---
+  duration_ms: 2.8676
+  type: 'test'
+  ...
+# Subtest: entry preflight rejects saved uncertain intent before business publication
+ok 18 - entry preflight rejects saved uncertain intent before business publication
+  ---
+  duration_ms: 0.7433
+  type: 'test'
+  ...
+# Subtest: independent answer readback mismatch leaves intent and failed checkpoint
+ok 19 - independent answer readback mismatch leaves intent and failed checkpoint
+  ---
+  duration_ms: 5.1635
+  type: 'test'
+  ...
+# Subtest: Live-first matched frozen roster can override stale Data values without renewing their age
+ok 20 - Live-first matched frozen roster can override stale Data values without renewing their age
+  ---
+  duration_ms: 5.9172
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 412.8271

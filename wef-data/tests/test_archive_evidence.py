@@ -17,6 +17,60 @@ class Publisher:
         return {'commit':'fixture-commit','verified_remote_commit':'fixture-commit','path':prefix,'files':len(files)}
 
 class EvidenceTests(unittest.TestCase):
+    def test_same_frozen_revision_survives_airtable_started_roundtrip_without_byte_changes(self):
+        from archive_evidence import immutable
+        with tempfile.TemporaryDirectory() as folder:
+            api,source,root,publisher,store=self.setup_run(folder)
+            runner=Runner(Repository(api,SCHEMA,AUTHORED),source,root/'runtime',root/'git',evidence=store)
+            started='2026-10-30T14:18:27.351204+00:00'
+            with patch('data_runner.stamp',return_value=started):runner.begin(SHOW,latest_state(list(runner.repo.graph['runs'].values()),SHOW))
+            runner.observation('same-frozen-source',{'exact':'preserved'},{'started':started,'completed':started},{})
+            state={**runner.state,'phase':'Complete','authority':runner.state.get('authority-before',[]),'completed':started}
+            prefix,manifest,first=store.bundle(runner.repo,state,runner.runkey)
+            publisher(root/'git',prefix,first)
+            runner.repo.graph['runs'][runner.runkey]['started']='2026-10-30T14:18:27.351Z'
+            original=copy.deepcopy(runner.repo.graph)
+            _,second_manifest,second=store.bundle(runner.repo,state,runner.runkey)
+            self.assertEqual(manifest,second_manifest);self.assertEqual(first,second)
+            for name,body in second.items():immutable(root/'git'/name,body)
+            self.assertEqual(runner.repo.graph,original)
+
+    def test_actual_started_identity_change_is_rejected_not_normalized(self):
+        with tempfile.TemporaryDirectory() as folder:
+            api,source,root,publisher,store=self.setup_run(folder)
+            runner=Runner(Repository(api,SCHEMA,AUTHORED),source,root/'runtime',root/'git',evidence=store)
+            with patch('data_runner.stamp',return_value='2026-10-30T14:18:27.351204+00:00'):runner.begin(SHOW,latest_state(list(runner.repo.graph['runs'].values()),SHOW))
+            runner.repo.graph['runs'][runner.runkey]['started']='2026-10-30T14:18:28.351Z'
+            with self.assertRaisesRegex(ValueError,'start identity'):store.bundle(runner.repo,runner.state,runner.runkey)
+
+    def test_prior_same_run_publish_attempt_is_preserved_without_changing_revision_manifest(self):
+        import gzip,hashlib
+        from data_contract import packed
+        with tempfile.TemporaryDirectory() as folder:
+            api,source,root,publisher,store=self.setup_run(folder)
+            runner=Runner(Repository(api,SCHEMA,AUTHORED),source,root/'runtime',root/'git',evidence=store)
+            runner.begin(SHOW,latest_state(list(runner.repo.graph['runs'].values()),SHOW))
+            runner.observation('saved-attempt',{'exact':'source'},{'started':runner.at,'completed':runner.at},{})
+            state={**runner.state,'phase':'Complete','authority':[],'completed':runner.at}
+            prefix,manifest,first=store.bundle(runner.repo,state,runner.runkey);publisher(root/'git',prefix,first)
+            original=json.loads(first[manifest]);runpath=original['records']['runs'][runner.runkey]['path']
+            attempt=json.loads(gzip.decompress(first[runpath]));attempt['started']='2026-10-30T14:18:27.351Z'
+            body=gzip.compress(packed(attempt).encode(),mtime=0);name=prefix+'/runs/'+hashlib.sha256(body).hexdigest()+'.json.gz'
+            (root/'git'/name).write_bytes(body)
+            _,same_manifest,second=store.bundle(runner.repo,state,runner.runkey)
+            self.assertEqual(first[manifest],second[same_manifest]);self.assertEqual(second[name],body)
+            sidecars=[v for k,v in second.items() if '/unaccepted-attempts/' in k]
+            self.assertEqual(len(sidecars),1);note=json.loads(sidecars[0]);self.assertEqual(note['classification'],'Unaccepted prior archive publication candidates')
+            self.assertIn(name,note['files']);self.assertNotIn(name,json.loads(second[manifest])['files'])
+            publisher(root/'git',prefix,second);self.assertEqual(store.bundle(runner.repo,state,runner.runkey)[2],second)
+            later=copy.deepcopy(state);later['authorized-resumptions']=[{'approval':'fixture exact checkpoint'}]
+            _,_,later_files=store.bundle(runner.repo,later,runner.runkey)
+            for saved in second:
+                if '/unaccepted-attempts/' in saved:self.assertEqual(later_files[saved],second[saved])
+            attempt['_record-id']='different-native-id';bad=gzip.compress(packed(attempt).encode(),mtime=0)
+            (root/'git'/prefix/'runs'/(hashlib.sha256(bad).hexdigest()+'.json.gz')).write_bytes(bad)
+            with self.assertRaisesRegex(ValueError,'attempt identity'):store.bundle(runner.repo,state,runner.runkey)
+
     def test_incomplete_journal_bytes_survive_later_same_show_bundle(self):
         with tempfile.TemporaryDirectory() as folder:
             api,source,root,publisher,store=self.setup_run(folder)
@@ -50,7 +104,7 @@ class EvidenceTests(unittest.TestCase):
                 prefix,files=archiver.build(evidence);captured.update(files)
                 target=repository/prefix;target.mkdir(parents=True,exist_ok=True)
                 for name,body in files.items():(target/name).parent.mkdir(parents=True,exist_ok=True);(target/name).write_bytes(body)
-                return {'path':str(prefix),'verified_remote_commit':'offline-proof'}
+                return {'path':prefix.as_posix(),'verified_remote_commit':'offline-proof'}
             ops={'run-logs':[],'err-logs':[],'heartbeat':[],'meta':[]}
             with patch('full_archive.operational',return_value=(ops,{},{})),patch.object(archiver,'archive',side_effect=archive):
                 runner.archive_outgoing(SHOW,api.canonical_context())

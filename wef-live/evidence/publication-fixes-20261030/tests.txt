@@ -1,0 +1,857 @@
+TAP version 13
+# Subtest: each invocation stamps Running before source work and finalizes the same heartbeat row
+ok 1 - each invocation stamps Running before source work and finalizes the same heartbeat row
+  ---
+  duration_ms: 94.5522
+  type: 'test'
+  ...
+# Subtest: failed class retains reciprocal group membership when source moves it
+ok 2 - failed class retains reciprocal group membership when source moves it
+  ---
+  duration_ms: 6.2178
+  type: 'test'
+  ...
+# Subtest: ordinary class HTTP 502 is partial, preserves links and allows other classes
+ok 3 - ordinary class HTTP 502 is partial, preserves links and allows other classes
+  ---
+  duration_ms: 8.6318
+  type: 'test'
+  ...
+# Subtest: ordinary class timeout is partial, preserves links and allows other classes
+ok 4 - ordinary class timeout is partial, preserves links and allows other classes
+  ---
+  duration_ms: 6.6927
+  type: 'test'
+  ...
+# Subtest: ordinary class malformed is partial, preserves links and allows other classes
+ok 5 - ordinary class malformed is partial, preserves links and allows other classes
+  ---
+  duration_ms: 5.3597
+  type: 'test'
+  ...
+# Subtest: ordinary class scope is partial, preserves links and allows other classes
+ok 6 - ordinary class scope is partial, preserves links and allows other classes
+  ---
+  duration_ms: 6.3997
+  type: 'test'
+  ...
+# Subtest: run-log outage cannot interrupt collection or heartbeat and does not repeat per archive
+ok 7 - run-log outage cannot interrupt collection or heartbeat and does not repeat per archive
+  ---
+  duration_ms: 5.556
+  type: 'test'
+  ...
+# Subtest: heartbeat outage leaves collection and final run log successful
+ok 8 - heartbeat outage leaves collection and final run log successful
+  ---
+  duration_ms: 6.4834
+  type: 'test'
+  ...
+# Subtest: unresolved class does not prevent a different class from collecting
+ok 9 - unresolved class does not prevent a different class from collecting
+  ---
+  duration_ms: 8.8157
+  type: 'test'
+  ...
+# Subtest: false live status skips source details and preserves records, then resumes when true
+ok 10 - false live status skips source details and preserves records, then resumes when true
+  ---
+  duration_ms: 16.6389
+  type: 'test'
+  ...
+# Subtest: all TODAY groups completed skips widget and class requests; another day does not affect gate
+ok 11 - all TODAY groups completed skips widget and class requests; another day does not affect gate
+  ---
+  duration_ms: 1.4698
+  type: 'test'
+  ...
+# Subtest: empty or mixed groups do not imply completed and invalid status fails visibly
+ok 12 - empty or mixed groups do not imply completed and invalid status fails visibly
+  ---
+  duration_ms: 4.0246
+  type: 'test'
+  ...
+# Subtest: repeat collection keeps stable IDs, distinct ring ID/number, exact native links
+ok 13 - repeat collection keeps stable IDs, distinct ring ID/number, exact native links
+  ---
+  duration_ms: 3.4082
+  type: 'test'
+  ...
+# Subtest: untracked live entries are collected without binder matches
+ok 14 - untracked live entries are collected without binder matches
+  ---
+  duration_ms: 1.7744
+  type: 'test'
+  ...
+# Subtest: missing schedules do not prevent independent observations
+ok 15 - missing schedules do not prevent independent observations
+  ---
+  duration_ms: 1.6668
+  type: 'test'
+  ...
+# Subtest: confirmed empty is success
+ok 16 - confirmed empty is success
+  ---
+  duration_ms: 0.9488
+  type: 'test'
+  ...
+# Subtest: empty source arrays preserve current and future records and links across repeated runs
+ok 17 - empty source arrays preserve current and future records and links across repeated runs
+  ---
+  duration_ms: 4.3358
+  type: 'test'
+  ...
+# Subtest: empty widget with expected rings and malformed empty widgets still fail
+ok 18 - empty widget with expected rings and malformed empty widgets still fail
+  ---
+  duration_ms: 2.5345
+  type: 'test'
+  ...
+# Subtest: wrong show response preserves existing data
+ok 19 - wrong show response preserves existing data
+  ---
+  duration_ms: 3.9182
+  type: 'test'
+  ...
+# Subtest: empty successful rollover archives and retires old show once, preserving current rows
+ok 20 - empty successful rollover archives and retires old show once, preserving current rows
+  ---
+  duration_ms: 5.5268
+  type: 'test'
+  ...
+# Subtest: old rows retire on successful false skip
+ok 21 - old rows retire on successful false skip
+  ---
+  duration_ms: 4.0821
+  type: 'test'
+  ...
+# Subtest: old rows retire on successful completed skip
+ok 22 - old rows retire on successful completed skip
+  ---
+  duration_ms: 3.5649
+  type: 'test'
+  ...
+# Subtest: rollover labeling requires valid authority and successful archive
+ok 23 - rollover labeling requires valid authority and successful archive
+  ---
+  duration_ms: 10.4446
+  type: 'test'
+  ...
+# Subtest: future source-selected date does not collect live
+ok 24 - future source-selected date does not collect live
+  ---
+  duration_ms: 0.9315
+  type: 'test'
+  ...
+# Subtest: unresolved class identity leaves previous entries intact
+ok 25 - unresolved class identity leaves previous entries intact
+  ---
+  duration_ms: 3.322
+  type: 'test'
+  ...
+# Subtest: archive failure prevents collection writes and retirement
+ok 26 - archive failure prevents collection writes and retirement
+  ---
+  duration_ms: 0.7441
+  type: 'test'
+  ...
+# Subtest: prior dates retire only after successful archive
+ok 27 - prior dates retire only after successful archive
+  ---
+  duration_ms: 2.4533
+  type: 'test'
+  ...
+# Subtest: malformed and wrong date data cannot be empty success
+ok 28 - malformed and wrong date data cannot be empty success
+  ---
+  duration_ms: 0.3182
+  type: 'test'
+  ...
+# Subtest: live trips cannot be mistaken for entry IDs
+ok 29 - live trips cannot be mistaken for entry IDs
+  ---
+  duration_ms: 0.3317
+  type: 'test'
+  ...
+# Subtest: Airtable adapter refuses all writes to source and synced tables
+ok 30 - Airtable adapter refuses all writes to source and synced tables
+  ---
+  duration_ms: 4.2901
+  type: 'test'
+  ...
+# Subtest: temporary reference read failure preserves links and does not stop live observations
+ok 31 - temporary reference read failure preserves links and does not stop live observations
+  ---
+  duration_ms: 11.231
+  type: 'test'
+  ...
+# Subtest: retirement adapter refuses missing archive and current date
+ok 32 - retirement adapter refuses missing archive and current date
+  ---
+  duration_ms: 3.9246
+  type: 'test'
+  ...
+# Subtest: multiple live groups link only their own active schedules, preserving repeat IDs
+ok 33 - multiple live groups link only their own active schedules, preserving repeat IDs
+  ---
+  duration_ms: 6.6567
+  type: 'test'
+  ...
+# Subtest: canonical authority read is direct, fresh, unique and never falls back to schedules
+ok 34 - canonical authority read is direct, fresh, unique and never falls back to schedules
+  ---
+  duration_ms: 3.1334
+  type: 'test'
+  ...
+# Subtest: canonical shows cannot be written by live adapter
+ok 35 - canonical shows cannot be written by live adapter
+  ---
+  duration_ms: 1.4012
+  type: 'test'
+  ...
+# Subtest: one mismatched live/decoded snapshot refreshes the pair with both attempts archived
+ok 36 - one mismatched live/decoded snapshot refreshes the pair with both attempts archived
+  ---
+  duration_ms: 2.254
+  type: 'test'
+  ...
+# Subtest: persistent missing identity is unresolved after one fresh pair, preserves links and resumes
+ok 37 - persistent missing identity is unresolved after one fresh pair, preserves links and resumes
+  ---
+  duration_ms: 4.4597
+  type: 'test'
+  ...
+# Subtest: separate source failures retain separate errors and ambiguous group stays blank
+ok 38 - separate source failures retain separate errors and ambiguous group stays blank
+  ---
+  duration_ms: 1.5083
+  type: 'test'
+  ...
+# Subtest: populated repeat collection never reads Entries or discovers its schema
+ok 39 - populated repeat collection never reads Entries or discovers its schema
+  ---
+  duration_ms: 6.3177
+  type: 'test'
+  ...
+# Subtest: existing participation link survives with original verification time, not renewed qualification
+ok 40 - existing participation link survives with original verification time, not renewed qualification
+  ---
+  duration_ms: 23.533
+  type: 'test'
+  ...
+# Subtest: adapter rejects Entries reference reads before making a request
+ok 41 - adapter rejects Entries reference reads before making a request
+  ---
+  duration_ms: 1.8727
+  type: 'test'
+  ...
+# Subtest: publisher receives only successfully validated class details with original detail time
+ok 42 - publisher receives only successfully validated class details with original detail time
+  ---
+  duration_ms: 2.5709
+  type: 'test'
+  ...
+# Subtest: publication failures do not invalidate collection or recurring old-data retirement
+ok 43 - publication failures do not invalidate collection or recurring old-data retirement
+  ---
+  duration_ms: 2.2297
+  type: 'test'
+  ...
+# Subtest: no current source details on empty runs means no publication input
+ok 44 - no current source details on empty runs means no publication input
+  ---
+  duration_ms: 1.0779
+  type: 'test'
+  ...
+# Subtest: publication deferred and uncertain counts remain separate in persisted run summary
+ok 45 - publication deferred and uncertain counts remain separate in persisted run summary
+  ---
+  duration_ms: 1.8702
+  type: 'test'
+  ...
+# {
+#   "run_id": "logging-1",
+#   "ok": true,
+#   "errors": [],
+#   "completed": "2026-10-30T15:40:33.487Z",
+#   "logging_errors": [
+#     "run-logs timeout",
+#     "errs-log unavailable; local receipt retained where writable: Airtable down"
+#   ]
+# }
+# {
+#   "run_id": "logging-2",
+#   "ok": true,
+#   "errors": [],
+#   "completed": "2026-10-30T15:40:33.500Z",
+#   "logging_errors": [
+#     "run-logs timeout",
+#     "errs-log unavailable; local receipt retained where writable: Airtable down"
+#   ]
+# }
+# {
+#   "run_id": "logging-3",
+#   "ok": true,
+#   "errors": [],
+#   "completed": "2026-10-30T15:40:33.512Z",
+#   "logging_errors": [
+#     "run-logs timeout",
+#     "Local receipt logging-3.json: ENOENT: no such file or directory, open 'C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\wef-live-test-7i8gQE\\\\not-a-directory\\\\logging-3.json'",
+#     "Local receipt last-run.json: ENOENT: no such file or directory, open 'C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\wef-live-test-7i8gQE\\\\not-a-directory\\\\last-run.json'",
+#     "Local errs-log: ENOENT: no such file or directory, open 'C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\wef-live-test-7i8gQE\\\\not-a-directory\\\\errs-log.jsonl'",
+#     "errs-log unavailable; local receipt retained where writable: Airtable down"
+#   ]
+# }
+# {
+#   "run_id": "partial",
+#   "completed": "2026-10-30T15:40:33.517Z",
+#   "ok": true,
+#   "errors": [],
+#   "unresolved": [
+#     {
+#       "class_id": 30,
+#       "message": "No decoded identity for trip 400"
+#     },
+#     {
+#       "class_id": 31,
+#       "status": "error",
+#       "message": "HTTP 502"
+#     }
+#   ],
+#   "logging_errors": []
+# }
+# {
+#   "run_id": "run-1",
+#   "completed": "2026-10-23T18:00:00Z",
+#   "ok": false,
+#   "errors": [
+#     "Source HTTP 502"
+#   ],
+#   "logging_errors": []
+# }
+# {
+#   "run_id": "run-2",
+#   "completed": "2026-10-23T18:00:00Z",
+#   "ok": true,
+#   "errors": [],
+#   "logging_errors": []
+# }
+# {
+#   "run_id": "ids",
+#   "completed": "2026-10-25T14:00:00Z",
+#   "ok": true,
+#   "errors": [
+#     "General error"
+#   ],
+#   "unresolved": [
+#     {
+#       "class_id": 200030349,
+#       "trip_id": 200398787,
+#       "group_id": 123,
+#       "message": "No decoded identity for trip 200398787"
+#     },
+#     {
+#       "class_id": 200030315,
+#       "status": "error",
+#       "message": "HTTP 502; timeout",
+#       "messages": [
+#         "HTTP 502",
+#         "timeout"
+#       ]
+#     }
+#   ],
+#   "link_issues": [
+#     {
+#       "entry_key": "200000075|2026-10-25|200241392|200030375",
+#       "class_id": 200030375,
+#       "trip_id": 456,
+#       "message": "Missing, stale or incomplete dated schedule collection"
+#     }
+#   ],
+#   "logging_errors": []
+# }
+# {
+#   "run_id": "154c085c-5750-4a8b-a8df-20df83b6ef44",
+#   "started": "2026-10-30T15:40:33.540Z",
+#   "completed": "2026-10-30T15:40:33.550Z",
+#   "ok": false,
+#   "errors": [
+#     "collection unavailable"
+#   ],
+#   "logging_errors": [
+#     "errs-log unavailable; local receipt retained where writable: Airtable unavailable"
+#   ]
+# }
+# Subtest: logging outages do not fail a completed collection or prevent next invocation
+ok 46 - logging outages do not fail a completed collection or prevent next invocation
+  ---
+  duration_ms: 31.4178
+  type: 'test'
+  ...
+# Subtest: partial run writes unresolved identity to errs-log without failing the invocation
+ok 47 - partial run writes unresolved identity to errs-log without failing the invocation
+  ---
+  duration_ms: 4.9141
+  type: 'test'
+  ...
+# Subtest: failed scheduled invocation logs errors and does not block the next invocation
+ok 48 - failed scheduled invocation logs errors and does not block the next invocation
+  ---
+  duration_ms: 11.1325
+  type: 'test'
+  ...
+# Subtest: each error gets its own record and exact optional IDs without changing messages
+ok 49 - each error gets its own record and exact optional IDs without changing messages
+  ---
+  duration_ms: 5.7926
+  type: 'test'
+  ...
+# Subtest: unexpected collection and Airtable logging failures retain local evidence and release lock
+ok 50 - unexpected collection and Airtable logging failures retain local evidence and release lock
+  ---
+  duration_ms: 26.8408
+  type: 'test'
+  ...
+# {
+#   "run_id": "22222222-2222-4222-8222-222222222222",
+#   "ok": true,
+#   "errors": [],
+#   "archives": [
+#     {
+#       "at": "source-time",
+#       "kind": "source-proof",
+#       "outcome": "Reused",
+#       "records": 7,
+#       "file": "kept.gz",
+#       "sha256": "kept-hash",
+#       "cleanup": "Retired"
+#     },
+#     {
+#       "at": "2026-10-30T15:40:33.892Z",
+#       "kind": "retired-log-heartbeat",
+#       "outcome": "Created",
+#       "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\retired-log-heartbeat\\\\6a7eb38b5ce36275ee83d1f340e8e65b7c2c73994f7cb945d0590ff4aaddc055.json.gz",
+#       "records": 1,
+#       "sha256": "6a7eb38b5ce36275ee83d1f340e8e65b7c2c73994f7cb945d0590ff4aaddc055"
+#     },
+#     {
+#       "at": "2026-10-30T15:40:33.900Z",
+#       "kind": "log-retention-manifest-heartbeat",
+#       "outcome": "Created",
+#       "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\log-retention-manifest-heartbeat\\\\172b558a1d4ecbf857b3c6a051a7be8398b58ad780d0d6c4b6478ada6869636b.json.gz",
+#       "records": 1,
+#       "sha256": "172b558a1d4ecbf857b3c6a051a7be8398b58ad780d0d6c4b6478ada6869636b"
+#     },
+#     {
+#       "at": "2026-10-30T15:40:33.908Z",
+#       "kind": "retired-log-run-logs",
+#       "outcome": "Created",
+#       "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\retired-log-run-logs\\\\af408c6317ad0e351b16dac187a671394fc57c6f0b07cf83d1ec3bf861efce47.json.gz",
+#       "records": 1,
+#       "sha256": "af408c6317ad0e351b16dac187a671394fc57c6f0b07cf83d1ec3bf861efce47"
+#     },
+#     {
+#       "at": "2026-10-30T15:40:33.914Z",
+#       "kind": "log-retention-manifest-run-logs",
+#       "outcome": "Created",
+#       "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\log-retention-manifest-run-logs\\\\acada99d3ed2eb0ed2abae9e59d9139e68e85ea1fb16267c22d4a5479c8d10ee.json.gz",
+#       "records": 1,
+#       "sha256": "acada99d3ed2eb0ed2abae9e59d9139e68e85ea1fb16267c22d4a5479c8d10ee"
+#     },
+#     {
+#       "at": "2026-10-30T15:40:33.927Z",
+#       "kind": "retired-log-errs-log",
+#       "outcome": "Created",
+#       "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\retired-log-errs-log\\\\9ac51c48c4afb402e7ca0a1dcfd2c60f3325d0ca923851ef8b2e197441abca04.json.gz",
+#       "records": 1,
+#       "sha256": "9ac51c48c4afb402e7ca0a1dcfd2c60f3325d0ca923851ef8b2e197441abca04"
+#     },
+#     {
+#       "at": "2026-10-30T15:40:33.933Z",
+#       "kind": "log-retention-manifest-errs-log",
+#       "outcome": "Created",
+#       "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\log-retention-manifest-errs-log\\\\40ee575c4293c6a161557602c63f739a0e6361a4089fe365ff2d59c47e340706.json.gz",
+#       "records": 1,
+#       "sha256": "40ee575c4293c6a161557602c63f739a0e6361a4089fe365ff2d59c47e340706"
+#     }
+#   ],
+#   "completed": "2026-10-30T15:40:33.867Z",
+#   "summary": "Collected Log retention: Success, 3 completed records removed.",
+#   "logging_errors": [],
+#   "log_retention": {
+#     "status": "Success",
+#     "cutoff": "2026-10-29T15:40:33.869Z",
+#     "tables": [
+#       {
+#         "table": "heartbeat",
+#         "archived": 1,
+#         "deleted": 1,
+#         "batch": {
+#           "at": "2026-10-30T15:40:33.892Z",
+#           "kind": "retired-log-heartbeat",
+#           "outcome": "Created",
+#           "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\retired-log-heartbeat\\\\6a7eb38b5ce36275ee83d1f340e8e65b7c2c73994f7cb945d0590ff4aaddc055.json.gz",
+#           "records": 1,
+#           "sha256": "6a7eb38b5ce36275ee83d1f340e8e65b7c2c73994f7cb945d0590ff4aaddc055"
+#         },
+#         "manifest": {
+#           "at": "2026-10-30T15:40:33.900Z",
+#           "kind": "log-retention-manifest-heartbeat",
+#           "outcome": "Created",
+#           "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\log-retention-manifest-heartbeat\\\\172b558a1d4ecbf857b3c6a051a7be8398b58ad780d0d6c4b6478ada6869636b.json.gz",
+#           "records": 1,
+#           "sha256": "172b558a1d4ecbf857b3c6a051a7be8398b58ad780d0d6c4b6478ada6869636b"
+#         },
+#         "catalog": "log-archive|heartbeat"
+#       },
+#       {
+#         "table": "run-logs",
+#         "archived": 1,
+#         "deleted": 1,
+#         "batch": {
+#           "at": "2026-10-30T15:40:33.908Z",
+#           "kind": "retired-log-run-logs",
+#           "outcome": "Created",
+#           "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\retired-log-run-logs\\\\af408c6317ad0e351b16dac187a671394fc57c6f0b07cf83d1ec3bf861efce47.json.gz",
+#           "records": 1,
+#           "sha256": "af408c6317ad0e351b16dac187a671394fc57c6f0b07cf83d1ec3bf861efce47"
+#         },
+#         "manifest": {
+#           "at": "2026-10-30T15:40:33.914Z",
+#           "kind": "log-retention-manifest-run-logs",
+#           "outcome": "Created",
+#           "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\log-retention-manifest-run-logs\\\\acada99d3ed2eb0ed2abae9e59d9139e68e85ea1fb16267c22d4a5479c8d10ee.json.gz",
+#           "records": 1,
+#           "sha256": "acada99d3ed2eb0ed2abae9e59d9139e68e85ea1fb16267c22d4a5479c8d10ee"
+#         },
+#         "catalog": "log-archive|run-logs"
+#       },
+#       {
+#         "table": "errs-log",
+#         "archived": 1,
+#         "deleted": 1,
+#         "batch": {
+#           "at": "2026-10-30T15:40:33.927Z",
+#           "kind": "retired-log-errs-log",
+#           "outcome": "Created",
+#           "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\retired-log-errs-log\\\\9ac51c48c4afb402e7ca0a1dcfd2c60f3325d0ca923851ef8b2e197441abca04.json.gz",
+#           "records": 1,
+#           "sha256": "9ac51c48c4afb402e7ca0a1dcfd2c60f3325d0ca923851ef8b2e197441abca04"
+#         },
+#         "manifest": {
+#           "at": "2026-10-30T15:40:33.933Z",
+#           "kind": "log-retention-manifest-errs-log",
+#           "outcome": "Created",
+#           "file": "C:\\\\Users\\\\gombc\\\\AppData\\\\Local\\\\Temp\\\\live-retain-ONLMtB\\\\history\\\\log-retention-manifest-errs-log\\\\40ee575c4293c6a161557602c63f739a0e6361a4089fe365ff2d59c47e340706.json.gz",
+#           "records": 1,
+#           "sha256": "40ee575c4293c6a161557602c63f739a0e6361a4089fe365ff2d59c47e340706"
+#         },
+#         "catalog": "log-archive|errs-log"
+#       }
+#     ],
+#     "deleted": 3
+#   }
+# }
+# Subtest: all three logs archive exactly before delete, existing catalog preserved and repeat is no-op
+ok 51 - all three logs archive exactly before delete, existing catalog preserved and repeat is no-op
+  ---
+  duration_ms: 144.5859
+  type: 'test'
+  ...
+# Subtest: running, incomplete, current invocation and exact24h records stay
+ok 52 - running, incomplete, current invocation and exact24h records stay
+  ---
+  duration_ms: 7.1301
+  type: 'test'
+  ...
+# Subtest: error requires terminal parent; archived parent local completion remains usable
+ok 53 - error requires terminal parent; archived parent local completion remains usable
+  ---
+  duration_ms: 22.4902
+  type: 'test'
+  ...
+# Subtest: uncertain deletion blocks future retention without retry, source catalog stays
+ok 54 - uncertain deletion blocks future retention without retry, source catalog stays
+  ---
+  duration_ms: 34.2397
+  type: 'test'
+  ...
+# Subtest: catalog readback failure prevents deletion
+ok 55 - catalog readback failure prevents deletion
+  ---
+  duration_ms: 23.9345
+  type: 'test'
+  ...
+# Subtest: interrupted in-progress marker is protected and blocks retries
+ok 56 - interrupted in-progress marker is protected and blocks retries
+  ---
+  duration_ms: 2.1149
+  type: 'test'
+  ...
+# Subtest: budget defers only before a table and preserves rows without stop
+ok 57 - budget defers only before a table and preserves rows without stop
+  ---
+  duration_ms: 4.2778
+  type: 'test'
+  ...
+# Subtest: fixed catalog chains immutable batches without adding more catalog rows
+ok 58 - fixed catalog chains immutable batches without adding more catalog rows
+  ---
+  duration_ms: 105.9679
+  type: 'test'
+  ...
+# Subtest: adapter requires exact archive and reread, deletion IDs and absent readback
+ok 59 - adapter requires exact archive and reread, deletion IDs and absent readback
+  ---
+  duration_ms: 25.1233
+  type: 'test'
+  ...
+# Subtest: error pagination skips protected page and reaches eligible later rows
+ok 60 - error pagination skips protected page and reaches eligible later rows
+  ---
+  duration_ms: 3.2643
+  type: 'test'
+  ...
+# Subtest: scheduled entry records retention archives without altering collection outcome
+ok 61 - scheduled entry records retention archives without altering collection outcome
+  ---
+  duration_ms: 83.954
+  type: 'test'
+  ...
+# Subtest: preservation never creates links or renews historical qualification
+ok 62 - preservation never creates links or renews historical qualification
+  ---
+  duration_ms: 2.9423
+  type: 'test'
+  ...
+# Subtest: seven existing targets receive only observed JSON, all original facts and links preserved
+ok 63 - seven existing targets receive only observed JSON, all original facts and links preserved
+  ---
+  duration_ms: 62.8548
+  type: 'test'
+  ...
+# Subtest: fresh detail required independently of refreshed group/class discovery
+ok 64 - fresh detail required independently of refreshed group/class discovery
+  ---
+  duration_ms: 4.584
+  type: 'test'
+  ...
+# Subtest: future/missing timestamps and absent values do not become current zeros
+ok 65 - future/missing timestamps and absent values do not become current zeros
+  ---
+  duration_ms: 0.6208
+  type: 'test'
+  ...
+# Subtest: empty/outside TODAY performs no destination inventory or writes
+ok 66 - empty/outside TODAY performs no destination inventory or writes
+  ---
+  duration_ms: 0.8414
+  type: 'test'
+  ...
+# Subtest: ambiguous class occurrences never duplicate class counts
+ok 67 - ambiguous class occurrences never duplicate class counts
+  ---
+  duration_ms: 6.4887
+  type: 'test'
+  ...
+# Subtest: one unavailable lane cannot stop the other or change source success
+ok 68 - one unavailable lane cannot stop the other or change source success
+  ---
+  duration_ms: 4.9049
+  type: 'test'
+  ...
+# Subtest: unknown PATCH retains durable intent, next invocation reads back before any retry
+ok 69 - unknown PATCH retains durable intent, next invocation reads back before any retry
+  ---
+  duration_ms: 7.4678
+  type: 'test'
+  ...
+# Subtest: intent archive failure prevents PATCH and preserves destination values
+ok 70 - intent archive failure prevents PATCH and preserves destination values
+  ---
+  duration_ms: 4.5285
+  type: 'test'
+  ...
+# Subtest: rider conflict without same stable UUID is withheld, parent/native links untouched
+ok 71 - rider conflict without same stable UUID is withheld, parent/native links untouched
+  ---
+  duration_ms: 8.3157
+  type: 'test'
+  ...
+# Subtest: new collected unchanged observation may advance time; retry may not
+ok 72 - new collected unchanged observation may advance time; retry may not
+  ---
+  duration_ms: 13.7231
+  type: 'test'
+  ...
+# Subtest: publication transport only writes one field by existing record ID
+ok 73 - publication transport only writes one field by existing record ID
+  ---
+  duration_ms: 3.3141
+  type: 'test'
+  ...
+# Subtest: multiple source groups with only one destination cannot attribute class counters
+ok 74 - multiple source groups with only one destination cannot attribute class counters
+  ---
+  duration_ms: 7.3028
+  type: 'test'
+  ...
+# Subtest: exact trip suffix and raw UUID must agree
+ok 75 - exact trip suffix and raw UUID must agree
+  ---
+  duration_ms: 25.0144
+  type: 'test'
+  ...
+# Subtest: unknown write archives outcome immediately while preserving pending
+ok 76 - unknown write archives outcome immediately while preserving pending
+  ---
+  duration_ms: 3.0159
+  type: 'test'
+  ...
+# Subtest: detail flag preserves missing versus explicit false
+ok 77 - detail flag preserves missing versus explicit false
+  ---
+  duration_ms: 0.3962
+  type: 'test'
+  ...
+# Subtest: expired lane budget prevents reconciliation inventory and writes
+ok 78 - expired lane budget prevents reconciliation inventory and writes
+  ---
+  duration_ms: 0.6658
+  type: 'test'
+  ...
+# Subtest: transport bounds pagination by lane deadline
+ok 79 - transport bounds pagination by lane deadline
+  ---
+  duration_ms: 0.8487
+  type: 'test'
+  ...
+# Subtest: intent archive delay cannot publish expired observations
+ok 80 - intent archive delay cannot publish expired observations
+  ---
+  duration_ms: 1.7076
+  type: 'test'
+  ...
+# Subtest: transport rechecks freshness after pacing and before PATCH dispatch
+ok 81 - transport rechecks freshness after pacing and before PATCH dispatch
+  ---
+  duration_ms: 0.4982
+  type: 'test'
+  ...
+# Subtest: saved source has_JSON casing preserves true false and missing without alias guessing
+ok 82 - saved source has_JSON casing preserves true false and missing without alias guessing
+  ---
+  duration_ms: 42.962
+  type: 'test'
+  ...
+# Subtest: uncertain early exit counts all untouched plans and retains readback-before-retry
+ok 83 - uncertain early exit counts all untouched plans and retains readback-before-retry
+  ---
+  duration_ms: 22.7954
+  type: 'test'
+  ...
+# Subtest: safe pre-intent failure counts deferred and patch cap counts untouched
+ok 84 - safe pre-intent failure counts deferred and patch cap counts untouched
+  ---
+  duration_ms: 2.6357
+  type: 'test'
+  ...
+# Subtest: producer metadata changes before and during PATCH remain audited and preserved
+ok 85 - producer metadata changes before and during PATCH remain audited and preserved
+  ---
+  duration_ms: 6.3735
+  type: 'test'
+  ...
+# Subtest: pre-PATCH identity native-link overlay and trip source changes still withhold
+ok 86 - pre-PATCH identity native-link overlay and trip source changes still withhold
+  ---
+  duration_ms: 44.1559
+  type: 'test'
+  ...
+# Subtest: post-PATCH changed identity or native link preserves pending audit and stops lane
+ok 87 - post-PATCH changed identity or native link preserves pending audit and stops lane
+  ---
+  duration_ms: 10.1951
+  type: 'test'
+  ...
+# Subtest: trip source cosmetic updates allowed but timestamp supporting a contradiction is protected
+ok 88 - trip source cosmetic updates allowed but timestamp supporting a contradiction is protected
+  ---
+  duration_ms: 10.3999
+  type: 'test'
+  ...
+# Subtest: all snapshots and catalogs precede child-first retirement, catalog survives repeat
+ok 89 - all snapshots and catalogs precede child-first retirement, catalog survives repeat
+  ---
+  duration_ms: 47.4963
+  type: 'test'
+  ...
+# Subtest: archive failure prevents every deletion
+ok 90 - archive failure prevents every deletion
+  ---
+  duration_ms: 1.0025
+  type: 'test'
+  ...
+# Subtest: catalog failure prevents every deletion
+ok 91 - catalog failure prevents every deletion
+  ---
+  duration_ms: 0.8044
+  type: 'test'
+  ...
+# Subtest: readback failure prevents every deletion
+ok 92 - readback failure prevents every deletion
+  ---
+  duration_ms: 0.765
+  type: 'test'
+  ...
+# Subtest: uncertain deletion stops immediately, records uncertainty, no retry
+ok 93 - uncertain deletion stops immediately, records uncertainty, no retry
+  ---
+  duration_ms: 1.1321
+  type: 'test'
+  ...
+# Subtest: upcoming canonical date protects today and future even for other shows
+ok 94 - upcoming canonical date protects today and future even for other shows
+  ---
+  duration_ms: 1.0776
+  type: 'test'
+  ...
+# Subtest: retirement scope permits old dates and same-date other shows only
+ok 95 - retirement scope permits old dates and same-date other shows only
+  ---
+  duration_ms: 2.2214
+  type: 'test'
+  ...
+# Subtest: same-date old-show adapter deletion requires an exact verified archive
+ok 96 - same-date old-show adapter deletion requires an exact verified archive
+  ---
+  duration_ms: 66.3227
+  type: 'test'
+  ...
+# Subtest: Live modules load with tenant imports forbidden
+ok 97 - Live modules load with tenant imports forbidden
+  ---
+  duration_ms: 139.0042
+  type: 'test'
+  ...
+# Subtest: local helpers preserve blank comparison, uniqueness and overlap protection
+ok 98 - local helpers preserve blank comparison, uniqueness and overlap protection
+  ---
+  duration_ms: 9.1968
+  type: 'test'
+  ...
+# Subtest: local archives reuse verified content and reject corruption
+ok 99 - local archives reuse verified content and reject corruption
+  ---
+  duration_ms: 15.1272
+  type: 'test'
+  ...
+1..99
+# tests 99
+# suites 0
+# pass 99
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 916.387

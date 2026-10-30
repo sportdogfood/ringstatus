@@ -1,0 +1,743 @@
+{
+  "checkedAt": "2026-10-30T16:45:40.105Z",
+  "lastRun": {
+    "id": "44177c49-61a2-4c2e-9c9b-f6bcf1abe2c9",
+    "started": "2026-10-30T16:43:02.760Z",
+    "completed": "2026-10-30T16:44:55.687Z",
+    "scope": {
+      "show": 200000076,
+      "customer": 15,
+      "date": "2026-10-30",
+      "authority": "recOAxMcqu1f75CQk",
+      "checked_at": "2026-10-30T16:39:31.136Z",
+      "active": true
+    },
+    "unresolved": []
+  },
+  "runs": 19,
+  "perLane": {
+    "schedules": {
+      "planned": 35,
+      "distinctVerifiedSinceDeploy": 35,
+      "allCurrentMatchedEverVerified": true,
+      "missing": [],
+      "issues": [
+        "200000076|2026-10-30|200030671: Ambiguous source group attribution"
+      ],
+      "oldestPublished": [
+        {
+          "table": "rings",
+          "id": "recABnRS96tTYBh4w",
+          "key": "15|200000076|2026-10-30|1",
+          "level": "ring",
+          "observedAt": "2026-10-30T16:35:26.321Z",
+          "ageMs": 613784
+        },
+        {
+          "table": "rings",
+          "id": "rec51CDjZPAY1OaqU",
+          "key": "15|200000076|2026-10-30|2",
+          "level": "ring",
+          "observedAt": "2026-10-30T16:35:26.321Z",
+          "ageMs": 613784
+        },
+        {
+          "table": "rings",
+          "id": "reccpVcedyVhXWrDu",
+          "key": "15|200000076|2026-10-30|3",
+          "level": "ring",
+          "observedAt": "2026-10-30T16:35:26.321Z",
+          "ageMs": 613784
+        }
+      ],
+      "deferred": 30,
+      "currentlyFreshDeferred": 30,
+      "oldestDeferred": [
+        {
+          "key": "15|200000076|2026-10-30|1",
+          "table": "rings",
+          "id": "recABnRS96tTYBh4w",
+          "level": "ring",
+          "sourceAt": "2026-10-30T16:43:18.720Z",
+          "destinationAt": "2026-10-30T16:35:26.321Z",
+          "sourceAgeMs": 141385,
+          "destinationAgeMs": 613784,
+          "freshNow": true
+        },
+        {
+          "key": "15|200000076|2026-10-30|2",
+          "table": "rings",
+          "id": "rec51CDjZPAY1OaqU",
+          "level": "ring",
+          "sourceAt": "2026-10-30T16:43:18.720Z",
+          "destinationAt": "2026-10-30T16:35:26.321Z",
+          "sourceAgeMs": 141385,
+          "destinationAgeMs": 613784,
+          "freshNow": true
+        },
+        {
+          "key": "15|200000076|2026-10-30|3",
+          "table": "rings",
+          "id": "reccpVcedyVhXWrDu",
+          "level": "ring",
+          "sourceAt": "2026-10-30T16:43:18.720Z",
+          "destinationAt": "2026-10-30T16:35:26.321Z",
+          "sourceAgeMs": 141385,
+          "destinationAgeMs": 613784,
+          "freshNow": true
+        }
+      ],
+      "oldestSource": {
+        "sourceKey": "200000076|2026-10-30|51",
+        "ageMs": 141385
+      },
+      "ambiguous": []
+    },
+    "data": {
+      "planned": 269,
+      "distinctVerifiedSinceDeploy": 268,
+      "allCurrentMatchedEverVerified": false,
+      "missing": [
+        {
+          "table": "rings",
+          "id": "recdZ8XOWfTJOW4t3",
+          "key": "15|200000076|2026-10-30|6"
+        }
+      ],
+      "issues": [
+        "200000076|2026-10-30|200030671 occurrence: Ambiguous source group attribution",
+        "200000076|2026-10-30|200030805 occurrence: class occurrence: 2 matches",
+        "200000076|2026-10-30|200030682 occurrence: class occurrence: 4 matches",
+        "200000076|2026-10-30|200030786 occurrence: class occurrence: 3 matches",
+        "200000076|2026-10-30|200030818 occurrence: class occurrence: 2 matches",
+        "200000076|2026-10-30|200030797 occurrence: class occurrence: 2 matches",
+        "200000076|2026-10-30|200030815 occurrence: class occurrence: 2 matches"
+      ],
+      "oldestPublished": [
+        {
+          "table": "rings",
+          "id": "recdZ8XOWfTJOW4t3",
+          "key": "15|200000076|2026-10-30|6",
+          "level": "ring",
+          "observedAt": "2026-10-30T15:35:23.706Z",
+          "ageMs": 4216399
+        },
+        {
+          "table": "classes",
+          "id": "rec9TE0ZyNEjpQv7j",
+          "key": "15|200000076|2026-10-30|5|200030710",
+          "level": "class",
+          "observedAt": "2026-10-30T15:59:29.114Z",
+          "ageMs": 2770991
+        },
+        {
+          "table": "trips",
+          "id": "rec1UKWUfvqEUvZYb",
+          "key": "15|200000076|2026-10-30|1|200030775|200245507|758466C37BF14400AF7597051852B1D6",
+          "level": "trip",
+          "observedAt": "2026-10-30T16:02:25.916Z",
+          "ageMs": 2594189
+        }
+      ],
+      "deferred": 254,
+      "currentlyFreshDeferred": 254,
+      "oldestDeferred": [
+        {
+          "key": "15|200000076|2026-10-30|6",
+          "table": "rings",
+          "id": "recdZ8XOWfTJOW4t3",
+          "level": "ring",
+          "sourceAt": "2026-10-30T16:43:18.720Z",
+          "destinationAt": "2026-10-30T15:35:23.706Z",
+          "sourceAgeMs": 141385,
+          "destinationAgeMs": 4216399,
+          "freshNow": true
+        },
+        {
+          "key": "15|200000076|2026-10-30|5|200030710",
+          "table": "classes",
+          "id": "rec9TE0ZyNEjpQv7j",
+          "level": "class",
+          "sourceAt": "2026-10-30T16:43:28.528Z",
+          "destinationAt": "2026-10-30T15:59:29.114Z",
+          "sourceAgeMs": 131577,
+          "destinationAgeMs": 2770991,
+          "freshNow": true
+        },
+        {
+          "key": "15|200000076|2026-10-30|1|200030775|200245507|758466C37BF14400AF7597051852B1D6",
+          "table": "trips",
+          "id": "rec1UKWUfvqEUvZYb",
+          "level": "trip",
+          "sourceAt": "2026-10-30T16:43:24.313Z",
+          "destinationAt": "2026-10-30T16:02:25.916Z",
+          "sourceAgeMs": 135792,
+          "destinationAgeMs": 2594189,
+          "freshNow": true
+        }
+      ],
+      "oldestSource": {
+        "sourceKey": "200000076|2026-10-30|200028192",
+        "ageMs": 141385
+      },
+      "ambiguous": [
+        {
+          "classId": 200030805,
+          "classes": [
+            {
+              "id": "recQ8CwlEWx0wq9jj",
+              "key": "15|200000076|2026-10-30|4|200030805"
+            }
+          ],
+          "occurrences": [
+            {
+              "id": "rec1jx4Oe5ufvJOJ1",
+              "key": "15|200000076|2026-10-30|4|200047352",
+              "ring": [
+                "recjj27A38DpPSKxh"
+              ],
+              "group": [
+                "recA0alxtZTdPfof5"
+              ],
+              "class": [
+                "recQ8CwlEWx0wq9jj"
+              ]
+            },
+            {
+              "id": "recZJDFUGPyjcGp4Y",
+              "key": "15|200000076|2026-10-30|4|200042559",
+              "ring": [
+                "recjj27A38DpPSKxh"
+              ],
+              "group": [
+                "reclqHSUgIbt4hd0c"
+              ],
+              "class": [
+                "recQ8CwlEWx0wq9jj"
+              ]
+            }
+          ]
+        },
+        {
+          "classId": 200030682,
+          "classes": [
+            {
+              "id": "recdewYqNc1ugZ7Vp",
+              "key": "15|200000076|2026-10-30|5|200030682"
+            }
+          ],
+          "occurrences": [
+            {
+              "id": "rec86VszJqDfTMFOE",
+              "key": "15|200000076|2026-10-30|5|200047359",
+              "ring": [
+                "recyOYxz15GAmAbc7"
+              ],
+              "group": [
+                "rec0jsrFF1fGfCQSv"
+              ],
+              "class": [
+                "recdewYqNc1ugZ7Vp"
+              ]
+            },
+            {
+              "id": "recKHltigvOUWHNG6",
+              "key": "15|200000076|2026-10-30|5|200042646",
+              "ring": [
+                "recyOYxz15GAmAbc7"
+              ],
+              "group": [
+                "rec9FrN301MitpbCl"
+              ],
+              "class": [
+                "recdewYqNc1ugZ7Vp"
+              ]
+            },
+            {
+              "id": "recQg1Fd7WffDGdqS",
+              "key": "15|200000076|2026-10-30|5|200042632",
+              "ring": [
+                "recyOYxz15GAmAbc7"
+              ],
+              "group": [
+                "recTvVB4Uavk99TXF"
+              ],
+              "class": [
+                "recdewYqNc1ugZ7Vp"
+              ]
+            },
+            {
+              "id": "recyRnAGU7rebmcVT",
+              "key": "15|200000076|2026-10-30|5|200042639",
+              "ring": [
+                "recyOYxz15GAmAbc7"
+              ],
+              "group": [
+                "recnjIhXUIM0P7EsI"
+              ],
+              "class": [
+                "recdewYqNc1ugZ7Vp"
+              ]
+            }
+          ]
+        },
+        {
+          "classId": 200030786,
+          "classes": [
+            {
+              "id": "recusUMVk6aPeo1ym",
+              "key": "15|200000076|2026-10-30|6|200030786"
+            }
+          ],
+          "occurrences": [
+            {
+              "id": "recMZkATBycXrudW5",
+              "key": "15|200000076|2026-10-30|6|200042544",
+              "ring": [
+                "recdZ8XOWfTJOW4t3"
+              ],
+              "group": [
+                "recAeXk5kFmmsV95Z"
+              ],
+              "class": [
+                "recusUMVk6aPeo1ym"
+              ]
+            },
+            {
+              "id": "recjsgeeSSpIQejz0",
+              "key": "15|200000076|2026-10-30|6|200047354",
+              "ring": [
+                "recdZ8XOWfTJOW4t3"
+              ],
+              "group": [
+                "reciy5Y7MZ9oXnFuM"
+              ],
+              "class": [
+                "recusUMVk6aPeo1ym"
+              ]
+            },
+            {
+              "id": "recn2McU2oOogN8k9",
+              "key": "15|200000076|2026-10-30|6|200047356",
+              "ring": [
+                "recdZ8XOWfTJOW4t3"
+              ],
+              "group": [
+                "recPpjeqlN55U3FCS"
+              ],
+              "class": [
+                "recusUMVk6aPeo1ym"
+              ]
+            }
+          ]
+        },
+        {
+          "classId": 200030818,
+          "classes": [
+            {
+              "id": "recA4bzmf0oqyuuDF",
+              "key": "15|200000076|2026-10-30|6|200030818"
+            }
+          ],
+          "occurrences": [
+            {
+              "id": "rec4hdZZbbnAq3eyZ",
+              "key": "15|200000076|2026-10-30|6|200042543",
+              "ring": [
+                "recdZ8XOWfTJOW4t3"
+              ],
+              "group": [
+                "reciy5Y7MZ9oXnFuM"
+              ],
+              "class": [
+                "recA4bzmf0oqyuuDF"
+              ]
+            },
+            {
+              "id": "recbRcUKEdK8a2YTj",
+              "key": "15|200000076|2026-10-30|6|200047355",
+              "ring": [
+                "recdZ8XOWfTJOW4t3"
+              ],
+              "group": [
+                "recPpjeqlN55U3FCS"
+              ],
+              "class": [
+                "recA4bzmf0oqyuuDF"
+              ]
+            }
+          ]
+        },
+        {
+          "classId": 200030797,
+          "classes": [
+            {
+              "id": "recaGo5qPN4zq37vy",
+              "key": "15|200000076|2026-10-30|6|200030797"
+            }
+          ],
+          "occurrences": [
+            {
+              "id": "recEU7QbvxHByTxf4",
+              "key": "15|200000076|2026-10-30|6|200047358",
+              "ring": [
+                "recdZ8XOWfTJOW4t3"
+              ],
+              "group": [
+                "recUzWB1jCaV4H6f0"
+              ],
+              "class": [
+                "recaGo5qPN4zq37vy"
+              ]
+            },
+            {
+              "id": "recn4vDIeJFBYxSOY",
+              "key": "15|200000076|2026-10-30|6|200042549",
+              "ring": [
+                "recdZ8XOWfTJOW4t3"
+              ],
+              "group": [
+                "rec5IrUst71PF6uIc"
+              ],
+              "class": [
+                "recaGo5qPN4zq37vy"
+              ]
+            }
+          ]
+        },
+        {
+          "classId": 200030815,
+          "classes": [
+            {
+              "id": "recXyas8NLXF4Ua7R",
+              "key": "15|200000076|2026-10-30|6|200030815"
+            }
+          ],
+          "occurrences": [
+            {
+              "id": "recDT0RtoIpIR2tY5",
+              "key": "15|200000076|2026-10-30|6|200047357",
+              "ring": [
+                "recdZ8XOWfTJOW4t3"
+              ],
+              "group": [
+                "recUzWB1jCaV4H6f0"
+              ],
+              "class": [
+                "recXyas8NLXF4Ua7R"
+              ]
+            },
+            {
+              "id": "recwRUz6lsBLrcG8M",
+              "key": "15|200000076|2026-10-30|6|200042547",
+              "ring": [
+                "recdZ8XOWfTJOW4t3"
+              ],
+              "group": [
+                "reckHMFqMNgQlJV4O"
+              ],
+              "class": [
+                "recXyas8NLXF4Ua7R"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "natural": {
+    "groupFlags": [
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "reckHQrUE6qSs8W1L",
+        "value": true,
+        "at": "2026-10-30T16:00:12.543Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recCXu5LmQNKN5fl6",
+        "value": true,
+        "at": "2026-10-30T16:00:13.631Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recqeLes41tQFXK3I",
+        "value": true,
+        "at": "2026-10-30T16:00:14.895Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "reczaESd0BbwGaOcq",
+        "value": true,
+        "at": "2026-10-30T16:00:15.998Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recfWtAQL8Fo1Rs2O",
+        "value": true,
+        "at": "2026-10-30T16:00:17.260Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recX6mWONra3fkKYG",
+        "value": true,
+        "at": "2026-10-30T16:00:18.353Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recuJLBpGzbQXYeLu",
+        "value": true,
+        "at": "2026-10-30T16:00:19.501Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recA0alxtZTdPfof5",
+        "value": true,
+        "at": "2026-10-30T16:00:20.652Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recGoLSATeDAWm9RX",
+        "value": true,
+        "at": "2026-10-30T16:00:21.820Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "rec8eLICOYFZ0XYNY",
+        "value": true,
+        "at": "2026-10-30T16:00:22.894Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recoVVmLCZTHiNfdy",
+        "value": true,
+        "at": "2026-10-30T16:00:24.104Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "rec9FrN301MitpbCl",
+        "value": true,
+        "at": "2026-10-30T16:00:26.521Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recLJzaB1QVsbZXKc",
+        "value": true,
+        "at": "2026-10-30T16:00:28.040Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "rec0jsrFF1fGfCQSv",
+        "value": true,
+        "at": "2026-10-30T16:00:29.143Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "rec2YDkfmBAMbLEE5",
+        "value": true,
+        "at": "2026-10-30T16:00:30.258Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recPpjeqlN55U3FCS",
+        "value": true,
+        "at": "2026-10-30T16:00:31.522Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recEPJJCtaiVZq2Mf",
+        "value": true,
+        "at": "2026-10-30T16:00:32.994Z"
+      },
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "id": "recUzWB1jCaV4H6f0",
+        "value": true,
+        "at": "2026-10-30T16:00:34.208Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "reckHQrUE6qSs8W1L",
+        "value": true,
+        "at": "2026-10-30T16:21:30.531Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recCXu5LmQNKN5fl6",
+        "value": true,
+        "at": "2026-10-30T16:21:31.560Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recqeLes41tQFXK3I",
+        "value": true,
+        "at": "2026-10-30T16:21:32.634Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "reczaESd0BbwGaOcq",
+        "value": true,
+        "at": "2026-10-30T16:21:35.355Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recfWtAQL8Fo1Rs2O",
+        "value": true,
+        "at": "2026-10-30T16:21:36.802Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recX6mWONra3fkKYG",
+        "value": true,
+        "at": "2026-10-30T16:21:37.844Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recuJLBpGzbQXYeLu",
+        "value": true,
+        "at": "2026-10-30T16:21:38.926Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recA0alxtZTdPfof5",
+        "value": true,
+        "at": "2026-10-30T16:21:39.954Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recGoLSATeDAWm9RX",
+        "value": true,
+        "at": "2026-10-30T16:21:41.027Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "rec8eLICOYFZ0XYNY",
+        "value": true,
+        "at": "2026-10-30T16:21:42.167Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recoVVmLCZTHiNfdy",
+        "value": true,
+        "at": "2026-10-30T16:21:43.238Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "rec9FrN301MitpbCl",
+        "value": true,
+        "at": "2026-10-30T16:21:45.588Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recLJzaB1QVsbZXKc",
+        "value": true,
+        "at": "2026-10-30T16:21:48.705Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "rec0jsrFF1fGfCQSv",
+        "value": true,
+        "at": "2026-10-30T16:21:49.787Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "rec2YDkfmBAMbLEE5",
+        "value": true,
+        "at": "2026-10-30T16:21:50.874Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recPpjeqlN55U3FCS",
+        "value": true,
+        "at": "2026-10-30T16:21:51.943Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recEPJJCtaiVZq2Mf",
+        "value": true,
+        "at": "2026-10-30T16:21:52.982Z"
+      },
+      {
+        "run": "92fc8147-3a4a-4bcc-ad53-8a2dded73e97",
+        "id": "recUzWB1jCaV4H6f0",
+        "value": true,
+        "at": "2026-10-30T16:21:54.013Z"
+      }
+    ],
+    "metadataChanges": [
+      {
+        "run": "c78da21b-36b4-49aa-b5eb-da9e76fd9069",
+        "lane": "schedules",
+        "id": "rec03KepRD475DZtf",
+        "changes": [
+          "changed-at",
+          "row-json",
+          "dataset-id"
+        ]
+      },
+      {
+        "run": "95b1eaa4-8d3f-4ce9-b484-5ce9cc2fef73",
+        "lane": "schedules",
+        "id": "recQMOZOv5dqZI7Pq",
+        "changes": [
+          "changed-at",
+          "row-json",
+          "dataset-id"
+        ]
+      }
+    ],
+    "failedReceipts": [
+      {
+        "run": "7423105b-149e-41b8-a999-e6cf7c155577",
+        "lane": "schedules",
+        "stats": {
+          "status": "Partial",
+          "planned": 35,
+          "attempted": 27,
+          "patched": 27,
+          "unchanged": 0,
+          "deferred": 0,
+          "uncertain": 0,
+          "issues": [
+            "200000076|2026-10-30|200030671: Ambiguous source group attribution",
+            "EPERM: operation not permitted, rename 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\publication-state.json.tmp' -> 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\publication-state.json'"
+          ]
+        }
+      },
+      {
+        "run": "eddbe87e-40f8-47ec-9e47-257feb0b0db0",
+        "lane": "data",
+        "stats": {
+          "status": "Partial",
+          "planned": 268,
+          "attempted": 29,
+          "patched": 29,
+          "unchanged": 0,
+          "deferred": 0,
+          "uncertain": 0,
+          "issues": [
+            "200000076|2026-10-30|200030671 occurrence: Ambiguous source group attribution",
+            "200000076|2026-10-30|200030805 occurrence: class occurrence: 2 matches",
+            "200000076|2026-10-30|200030682 occurrence: class occurrence: 4 matches",
+            "200000076|2026-10-30|200030786 occurrence: class occurrence: 3 matches",
+            "200000076|2026-10-30|200030818 occurrence: class occurrence: 2 matches",
+            "200000076|2026-10-30|200030797 occurrence: class occurrence: 2 matches",
+            "200000076|2026-10-30|200030815 occurrence: class occurrence: 2 matches",
+            "200000076|2026-10-30|200030790|200399568: trip: 0 matches",
+            "EPERM: operation not permitted, rename 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\publication-state.json.tmp' -> 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\publication-state.json'"
+          ]
+        }
+      }
+    ]
+  },
+  "sourceAmbiguity": [
+    {
+      "classId": 200030671,
+      "groups": [
+        "200000076|2026-10-30|200029550",
+        "200000076|2026-10-30|200029556"
+      ],
+      "ring": "200000076|2026-10-30|37"
+    }
+  ]
+}

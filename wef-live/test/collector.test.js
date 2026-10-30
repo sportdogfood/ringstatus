@@ -584,3 +584,11 @@ test('no current source details on empty runs means no publication input',async(
  a.publish=async opts=>{assert.equal(opts.input,undefined);return {lanes:{},errors:[]}};
  assert.equal((await runLive(a)).ok,true);
 });
+
+
+test('publication deferred and uncertain counts remain separate in persisted run summary',async()=>{
+ const a=args();a.publish=async()=>({lanes:{data:{status:'Partial',patched:2,unchanged:1,deferred:4,uncertain:1}},errors:[{lane:'data',message:'pending response'}]});
+ const r=await runLive(a);assert.equal(r.ok,true);assert.match(r.summary,/4 deferred, 1 uncertain/);
+ assert.match(a.store.db['run-logs'].at(-1).fields.summary,/4 deferred, 1 uncertain/);
+ assert.match(a.store.db.heartbeat.at(-1).fields.summary,/4 deferred, 1 uncertain/);
+});

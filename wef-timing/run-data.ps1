@@ -22,10 +22,6 @@ try {
         try { Add-Content -LiteralPath $paceLog -Value ('END ' + (Get-Date -Format o) + ' exit=' + $paceExit) }
         catch { $paceExit = 1; [Console]::Error.WriteLine('Timing launcher log write failed') }
     }
-    if ($paceExit -ne 0) {
-        # Stop this new task only, even when initialization or diagnostic logging fails.
-        try { Disable-ScheduledTask -TaskName 'wef-timing-data' -ErrorAction Stop | Out-Null }
-        catch { [Console]::Error.WriteLine('Unable to disable wef-timing-data: ' + $_.Exception.Message) }
-    }
+    # Keep the normal schedule enabled; report failure through the receipt and exit code.
 }
 exit $paceExit

@@ -1,0 +1,330 @@
+{
+  "at": "2026-10-30T16:46:22.840Z",
+  "run": "44177c49-61a2-4c2e-9c9b-f6bcf1abe2c9",
+  "evidence": [
+    {
+      "classId": 200030805,
+      "sourceGroups": [
+        "200000076|2026-10-30|200028210"
+      ],
+      "occurrences": [
+        {
+          "key": "15|200000076|2026-10-30|4|200047352",
+          "groupKey": "15|200000076|2026-10-30|4|200028210",
+          "groupId": 200028210,
+          "matchesSourceGroup": true,
+          "id": "rec1jx4Oe5ufvJOJ1",
+          "ring": [
+            "recjj27A38DpPSKxh"
+          ],
+          "group": [
+            "recA0alxtZTdPfof5"
+          ],
+          "class": [
+            "recQ8CwlEWx0wq9jj"
+          ]
+        },
+        {
+          "key": "15|200000076|2026-10-30|4|200042559",
+          "groupKey": "15|200000076|2026-10-30|4|200028212",
+          "groupId": 200028212,
+          "matchesSourceGroup": false,
+          "id": "recZJDFUGPyjcGp4Y",
+          "ring": [
+            "recjj27A38DpPSKxh"
+          ],
+          "group": [
+            "reclqHSUgIbt4hd0c"
+          ],
+          "class": [
+            "recQ8CwlEWx0wq9jj"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "id": "recQ8CwlEWx0wq9jj",
+          "key": "15|200000076|2026-10-30|4|200030805"
+        }
+      ]
+    },
+    {
+      "classId": 200030682,
+      "sourceGroups": [
+        "200000076|2026-10-30|200031050"
+      ],
+      "occurrences": [
+        {
+          "key": "15|200000076|2026-10-30|5|200047359",
+          "groupKey": "15|200000076|2026-10-30|5|200031050",
+          "groupId": 200031050,
+          "matchesSourceGroup": true,
+          "id": "rec86VszJqDfTMFOE",
+          "ring": [
+            "recyOYxz15GAmAbc7"
+          ],
+          "group": [
+            "rec0jsrFF1fGfCQSv"
+          ],
+          "class": [
+            "recdewYqNc1ugZ7Vp"
+          ]
+        },
+        {
+          "key": "15|200000076|2026-10-30|5|200042646",
+          "groupKey": "15|200000076|2026-10-30|5|200028253",
+          "groupId": 200028253,
+          "matchesSourceGroup": false,
+          "id": "recKHltigvOUWHNG6",
+          "ring": [
+            "recyOYxz15GAmAbc7"
+          ],
+          "group": [
+            "rec9FrN301MitpbCl"
+          ],
+          "class": [
+            "recdewYqNc1ugZ7Vp"
+          ]
+        },
+        {
+          "key": "15|200000076|2026-10-30|5|200042632",
+          "groupKey": "15|200000076|2026-10-30|5|200028247",
+          "groupId": 200028247,
+          "matchesSourceGroup": false,
+          "id": "recQg1Fd7WffDGdqS",
+          "ring": [
+            "recyOYxz15GAmAbc7"
+          ],
+          "group": [
+            "recTvVB4Uavk99TXF"
+          ],
+          "class": [
+            "recdewYqNc1ugZ7Vp"
+          ]
+        },
+        {
+          "key": "15|200000076|2026-10-30|5|200042639",
+          "groupKey": "15|200000076|2026-10-30|5|200028250",
+          "groupId": 200028250,
+          "matchesSourceGroup": false,
+          "id": "recyRnAGU7rebmcVT",
+          "ring": [
+            "recyOYxz15GAmAbc7"
+          ],
+          "group": [
+            "recnjIhXUIM0P7EsI"
+          ],
+          "class": [
+            "recdewYqNc1ugZ7Vp"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "id": "recdewYqNc1ugZ7Vp",
+          "key": "15|200000076|2026-10-30|5|200030682"
+        }
+      ]
+    },
+    {
+      "classId": 200030786,
+      "sourceGroups": [
+        "200000076|2026-10-30|200028197"
+      ],
+      "occurrences": [
+        {
+          "key": "15|200000076|2026-10-30|6|200042544",
+          "groupKey": "15|200000076|2026-10-30|6|200028199",
+          "groupId": 200028199,
+          "matchesSourceGroup": false,
+          "id": "recMZkATBycXrudW5",
+          "ring": [
+            "recdZ8XOWfTJOW4t3"
+          ],
+          "group": [
+            "recAeXk5kFmmsV95Z"
+          ],
+          "class": [
+            "recusUMVk6aPeo1ym"
+          ]
+        },
+        {
+          "key": "15|200000076|2026-10-30|6|200047354",
+          "groupKey": "15|200000076|2026-10-30|6|200028198",
+          "groupId": 200028198,
+          "matchesSourceGroup": false,
+          "id": "recjsgeeSSpIQejz0",
+          "ring": [
+            "recdZ8XOWfTJOW4t3"
+          ],
+          "group": [
+            "reciy5Y7MZ9oXnFuM"
+          ],
+          "class": [
+            "recusUMVk6aPeo1ym"
+          ]
+        },
+        {
+          "key": "15|200000076|2026-10-30|6|200047356",
+          "groupKey": "15|200000076|2026-10-30|6|200028197",
+          "groupId": 200028197,
+          "matchesSourceGroup": true,
+          "id": "recn2McU2oOogN8k9",
+          "ring": [
+            "recdZ8XOWfTJOW4t3"
+          ],
+          "group": [
+            "recPpjeqlN55U3FCS"
+          ],
+          "class": [
+            "recusUMVk6aPeo1ym"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "id": "recusUMVk6aPeo1ym",
+          "key": "15|200000076|2026-10-30|6|200030786"
+        }
+      ]
+    },
+    {
+      "classId": 200030818,
+      "sourceGroups": [
+        "200000076|2026-10-30|200028197"
+      ],
+      "occurrences": [
+        {
+          "key": "15|200000076|2026-10-30|6|200042543",
+          "groupKey": "15|200000076|2026-10-30|6|200028198",
+          "groupId": 200028198,
+          "matchesSourceGroup": false,
+          "id": "rec4hdZZbbnAq3eyZ",
+          "ring": [
+            "recdZ8XOWfTJOW4t3"
+          ],
+          "group": [
+            "reciy5Y7MZ9oXnFuM"
+          ],
+          "class": [
+            "recA4bzmf0oqyuuDF"
+          ]
+        },
+        {
+          "key": "15|200000076|2026-10-30|6|200047355",
+          "groupKey": "15|200000076|2026-10-30|6|200028197",
+          "groupId": 200028197,
+          "matchesSourceGroup": true,
+          "id": "recbRcUKEdK8a2YTj",
+          "ring": [
+            "recdZ8XOWfTJOW4t3"
+          ],
+          "group": [
+            "recPpjeqlN55U3FCS"
+          ],
+          "class": [
+            "recA4bzmf0oqyuuDF"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "id": "recA4bzmf0oqyuuDF",
+          "key": "15|200000076|2026-10-30|6|200030818"
+        }
+      ]
+    },
+    {
+      "classId": 200030797,
+      "sourceGroups": [
+        "200000076|2026-10-30|200028201"
+      ],
+      "occurrences": [
+        {
+          "key": "15|200000076|2026-10-30|6|200047358",
+          "groupKey": "15|200000076|2026-10-30|6|200028201",
+          "groupId": 200028201,
+          "matchesSourceGroup": true,
+          "id": "recEU7QbvxHByTxf4",
+          "ring": [
+            "recdZ8XOWfTJOW4t3"
+          ],
+          "group": [
+            "recUzWB1jCaV4H6f0"
+          ],
+          "class": [
+            "recaGo5qPN4zq37vy"
+          ]
+        },
+        {
+          "key": "15|200000076|2026-10-30|6|200042549",
+          "groupKey": "15|200000076|2026-10-30|6|200028203",
+          "groupId": 200028203,
+          "matchesSourceGroup": false,
+          "id": "recn4vDIeJFBYxSOY",
+          "ring": [
+            "recdZ8XOWfTJOW4t3"
+          ],
+          "group": [
+            "rec5IrUst71PF6uIc"
+          ],
+          "class": [
+            "recaGo5qPN4zq37vy"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "id": "recaGo5qPN4zq37vy",
+          "key": "15|200000076|2026-10-30|6|200030797"
+        }
+      ]
+    },
+    {
+      "classId": 200030815,
+      "sourceGroups": [
+        "200000076|2026-10-30|200028201"
+      ],
+      "occurrences": [
+        {
+          "key": "15|200000076|2026-10-30|6|200047357",
+          "groupKey": "15|200000076|2026-10-30|6|200028201",
+          "groupId": 200028201,
+          "matchesSourceGroup": true,
+          "id": "recDT0RtoIpIR2tY5",
+          "ring": [
+            "recdZ8XOWfTJOW4t3"
+          ],
+          "group": [
+            "recUzWB1jCaV4H6f0"
+          ],
+          "class": [
+            "recXyas8NLXF4Ua7R"
+          ]
+        },
+        {
+          "key": "15|200000076|2026-10-30|6|200042547",
+          "groupKey": "15|200000076|2026-10-30|6|200028202",
+          "groupId": 200028202,
+          "matchesSourceGroup": false,
+          "id": "recwRUz6lsBLrcG8M",
+          "ring": [
+            "recdZ8XOWfTJOW4t3"
+          ],
+          "group": [
+            "reckHMFqMNgQlJV4O"
+          ],
+          "class": [
+            "recXyas8NLXF4Ua7R"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "id": "recXyas8NLXF4Ua7R",
+          "key": "15|200000076|2026-10-30|6|200030815"
+        }
+      ]
+    }
+  ]
+}

@@ -40,6 +40,10 @@ Preserve current discovery/source checks, count replay, original observation tim
 Unknown/Stale/verified-zero semantics, native IDs/links, archives and failure stops.
 Schedules remains running. Retirement/Data-only migration is planning only; no
 ownership transfer or shared-helper deletion is implied by directory names.
+Owner correction: no WEF business observers or replacement polling reminders.
+Inspect natural acceptance evidence only during authorized work or on request;
+leave unobserved gates unverified. Existing collectors and periodic code reviews
+continue unchanged. Context bookkeeping is separate, not a business observer.
 
 Codex is not the runner. No manual collector/provider substitute, record repair,
 failed-path retry, stop-file clearing, task/cadence change, deployment or code fix
@@ -60,6 +64,9 @@ freshness separate.
 At task boundaries and first tool boundary after 30 minutes of active work, follow
 `../docs/coordination/context-check-procedure.md` and the context-compact skill.
 Use this chat's real telemetry/rollout only; unknown is not a fabricated percentage.
+The owner's **65% context preparation threshold** overrides the packaged skill's
+70% default. Prepare continuity at that threshold when supported by real telemetry;
+do not invent usage, force compaction or restart stopped work.
 Save an authorized concise private checkpoint before compaction, never raw chat
 history in this repository/Airtable; do not claim compaction or restored continuity
 without observing and checking it. Resume from current README/scope/release,

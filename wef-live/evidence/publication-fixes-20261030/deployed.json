@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-30T15:42:28.363Z",
+  "route": "Existing registered wef-live-collector task; guarded between normal invocations; no task changes or manual invocation",
+  "files": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication.js",
+      "sha256": "d7dce9fc11c11738a658769ce28463ac09dd047eaf40a59530329200ea2f22a3"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\collector.js",
+      "sha256": "8cd0247371f17a9c6552e104329fc00f9197612d0feee6ab74bd2bbd731915ae"
+    }
+  ],
+  "protected": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\activity.js",
+      "sha256": "31a61dcbc9229bf1a6f34a838084391710cccf34413f39614eaaacf071ff0c42"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\airtable.js",
+      "sha256": "4f83de8f6ff4ebad6baff3b00b63a59ff85f1e25c86a54dd395b2bf9224cccec"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\archive.js",
+      "sha256": "03326e694b7e7f06dccd6a73318d1a807aa4ef06cc4f3ea6e7510f2627c6f18c"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\configure.js",
+      "sha256": "c29b81c3e3e544e41ef457878201ac0af6cd0c92a6c37986548c52ef8450971a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\entry.js",
+      "sha256": "ed488350367bd346f6d3b81b94494a3926a24b01c32e051bf46d0843ab7203b1"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\log-retention.js",
+      "sha256": "7d351cb97b711acdfa3d90120e4287e55f252a1ff1972693980f08b5d325f897"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\model.js",
+      "sha256": "3b41423c3448795c41a5922fdd91ec9cea1fa452f55a7722a4ef3b508f467f6a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\participation.js",
+      "sha256": "bb42027bea9eaa9557e53e63f39eeb9403760fb491dd77a971a3e6a01a0a69f8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication-api.js",
+      "sha256": "e756795e90946a9bf99b26677da49e6a8b670d78729b86a4cad5d2157241b2ae"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication-journal.js",
+      "sha256": "f97762d89fadba3f49c568e73b697d3ae4b2c1863cf210ad85bab391ea849809"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\retirement.js",
+      "sha256": "19b568342c893cafe333088fc6736e3296933b244231d270fc7a7a467b87801e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\rollover.js",
+      "sha256": "5da578299c557e8dd541a6266640836feafa0243ee523631e521e30fe93e5180"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime-utils.js",
+      "sha256": "d9cf17a572611705fa2854f9648382969bd8f10297d540a367446101a1a7344b"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\schema.js",
+      "sha256": "97696e34551b6eed9b676910940cb037937ebb930dd805edfada1300ea9a42ec"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\settings.js",
+      "sha256": "c577cad3b11cb8db0970da2a2092c0f21cc8c26eafd028f2308ca7bc5bb7ae35"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\source.js",
+      "sha256": "1430300ace41917b0557c0f852731da344931b637ac4719a314e111717cb7b6e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\verify.js",
+      "sha256": "c0483558419c9d9ea90bd2741981da85136e509e666a0467f1048e1ae97e7976"
+    }
+  ]
+}

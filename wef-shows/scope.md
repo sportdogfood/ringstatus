@@ -119,6 +119,31 @@ Subsequent correction: the owner separately approved fixing the source fetch and
 
 ## Open items and boundaries
 
+Current reconciliation (October 30, 11:27 Eastern): see the
+[README task/status record](README.md#current-task-reconciliation-and-lock-readiness).
+Locked runtime hashes remain unchanged. Normal run
+`050b7f67-c11a-4bfc-8514-54df0b69d3aa` succeeded at 11:24 with four day
+publications; all four local archive hashes checked. This local status refresh
+does not replace the independently verified 08:44/08:49 release acceptance.
+
+Complete: approved count-replay recovery and independent review. Active: existing
+five-minute collector and archival behavior. Blocked: fresh count/zero readiness
+while source counts are Stale. Awaiting natural proof: the next genuine default-show
+rollover under this locked release; current same-show receipts do not prove it.
+Awaiting scheduled execution: first Monday review, November 2 at 09:30 Eastern.
+Proposed only: sync-sharing destinations, history scope and optional parent-key
+lookup. Deferred: archive portability and any count-replay replacement.
+
+The lock is a scope/code-change boundary, not a collector shutdown or revocation
+of independently approved downstream work. No open Shows fix or publication stop
+was found in this inspection. Preserve existing failure stops wherever present.
+Owner correction: no WEF business observers. The daily Season transition monitor
+and old paused October 15 observation were removed; the hourly Live rollover
+observer was already absent. Do not recreate or replace them. Natural rollover
+proof stays unverified until scheduled evidence is inspected during authorized
+work or on request. Collectors, periodic reviews and independently approved fixes
+are unchanged; context bookkeeping is separate.
+
 ### Code-review procedure — owner direction, 30 October 2026
 
 Review material authorized changes before deployment and review after observed

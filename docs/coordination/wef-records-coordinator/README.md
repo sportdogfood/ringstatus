@@ -19,7 +19,7 @@ Coordinate the WEF records workflow so each owner stays in its lane, producers p
 
 Records coordinates these owners; it does not replace their ownership. The owner approves scope and material changes. Data acquisition and Season retention remain distinct responsibilities even while one local coordinator owns both.
 
-The retained Season families are riders, horses, trainers and rings. The new intended Season People directory covers riders, trainers and owners, but its implementation, identity contract and ownership expansion must be confirmed separately; a new base or library name does not establish a working collector.
+The retained Season families are riders, horses, trainers and rings. Owner cancelled People management on October 30, 2026. People is removed from Records/Data/Season scope and backlog; do not implement, collect, review or revive it. Existing bases and historical preparation evidence are preserved, not deleted.
 
 ## My responsibilities
 
@@ -40,7 +40,7 @@ Timing, Engine, Results, Messages, Waze, Publish and tenant consumers use only t
 
 Entries consumes evidence to create links. Shows, Data and Live do not acquire data on behalf of Entries or wait for Entries to continue. Live's specifically approved publication is an explicit interface, not permission for modules to cross lanes or write arbitrary fields.
 
-The Season Data Library names are `w-riders`, `w-horses` and `w-trainers` (published according to the owner), with `w-rings` and `w-people` planned. Publication settings and destination imports require separate verification. These historical references are optional by consumer need, not new prerequisites for current collection. Keep private operational logs/control state, raw payloads, credentials, tenant choices, permissions, consent and contact details out of general library views.
+The Season Data Library names are `w-riders`, `w-horses` and `w-trainers` (published according to the owner), with `w-rings` planned. `w-people` is withdrawn from the managed sharing plan following the owner's cancellation. Publication settings and destination imports require separate verification. These historical references are optional by consumer need, not new prerequisites for current collection. Keep private operational logs/control state, raw payloads, credentials, tenant choices, permissions, consent and contact details out of general library views.
 
 ## Execution and approval rules
 

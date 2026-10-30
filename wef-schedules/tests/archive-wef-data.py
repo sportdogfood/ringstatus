@@ -132,17 +132,28 @@ def verify(repo, prefix, files, ref=None):
             raise ValueError('Archive readback mismatch: '+name)
 
 
-def archive(evidence, repo, publish=False):
+def archive(evidence, repo, publish=False, pending_bundles=None):
+    if publish:
+        # Data owns this helper. Reuse the proven guarded/history-preserving
+        # publisher; do not introduce another merge/retry implementation.
+        import sys
+        data_root=str(pathlib.Path(__file__).resolve().parents[2]/'wef-data')
+        if data_root not in sys.path:sys.path.insert(0,data_root)
+        from archive_evidence import publish_bundle,ArchiveDeferred
+        prefix,files=build(evidence)
+        try:
+            return publish_bundle(repo,prefix.as_posix(),{(prefix/name).as_posix():body for name,body in files.items()},**({'pending_bundles':pending_bundles} if pending_bundles else {}))
+        except ArchiveDeferred as error:
+            cause=error.__cause__
+            if isinstance(cause,subprocess.CalledProcessError) and cause.returncode==1 and 'merge-tree' in cause.cmd:
+                raise ValueError('Conflicting outgoing archive history; immutable evidence retained') from error
+            raise
     remote = git(repo, 'remote', 'get-url', 'origin').removesuffix('.git')
     if remote not in ('https://github.com/sportdogfood/ringstatus-data',
                       'git@github.com:sportdogfood/ringstatus-data'):
         raise ValueError('Wrong archive repository')
     if git(repo, 'status', '--porcelain'):
         raise ValueError('Archive checkout has unrelated changes')
-    if publish:
-        if git(repo,'branch','--show-current')!='main':raise ValueError('Archive publication requires existing main')
-        git(repo,'fetch','origin','main')
-        git(repo,'merge','--ff-only','origin/main')
     prefix, files = build(evidence)
     for name, body in files.items():
         dest = repo/prefix/name
@@ -151,23 +162,6 @@ def archive(evidence, repo, publish=False):
             raise ValueError('Immutable archive collision')
         dest.write_bytes(body)
     verify(repo, prefix, files)
-    if publish:
-        branch = git(repo, 'branch', '--show-current')
-        if branch != 'main':
-            raise ValueError('Archive publication requires the existing main branch')
-        git(repo, 'add', '--', prefix.as_posix())
-        if git(repo, 'diff', '--cached', '--name-only'):
-            show_key=json.loads(files['manifest.json'])['show_key']
-            git(repo, 'commit', '-m', 'Archive verified wef-data show '+show_key+' retained snapshot')
-        commit = git(repo, 'rev-parse', 'HEAD')
-        git(repo, 'push', 'origin', 'HEAD:main')
-        git(repo, 'fetch', 'origin', 'main')
-        # Read every byte from the fetched remote commit, never from staging alone.
-        remote_commit = git(repo, 'rev-parse', 'origin/main')
-        git(repo, 'merge-base', '--is-ancestor', commit, remote_commit)
-        verify(repo, prefix, files, remote_commit)
-        return {'commit': commit, 'verified_remote_commit': remote_commit,
-                'path': prefix.as_posix(), 'files': len(files)}
     return {'path': prefix.as_posix(), 'files': len(files), 'published': False}
 
 

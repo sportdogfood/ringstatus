@@ -1,0 +1,132 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "phase": "intent",
+      "afterPersist": false,
+      "first": {
+        "status": "Partial",
+        "planned": 5,
+        "attempted": 1,
+        "patched": 0,
+        "unchanged": 0,
+        "deferred": 5,
+        "uncertain": 0,
+        "pending": 1,
+        "issues": [
+          "Journal intent: reviewer persistence acknowledgement failure"
+        ]
+      },
+      "second": {
+        "status": "Success",
+        "planned": 5,
+        "attempted": 5,
+        "patched": 5,
+        "unchanged": 0,
+        "deferred": 0,
+        "uncertain": 0,
+        "pending": 0,
+        "issues": []
+      }
+    },
+    {
+      "phase": "intent",
+      "afterPersist": true,
+      "first": {
+        "status": "Partial",
+        "planned": 5,
+        "attempted": 1,
+        "patched": 0,
+        "unchanged": 0,
+        "deferred": 5,
+        "uncertain": 0,
+        "pending": 1,
+        "issues": [
+          "Journal intent: reviewer persistence acknowledgement failure"
+        ]
+      },
+      "second": {
+        "status": "Success",
+        "planned": 5,
+        "attempted": 5,
+        "patched": 5,
+        "unchanged": 0,
+        "deferred": 0,
+        "uncertain": 0,
+        "pending": 0,
+        "issues": []
+      }
+    },
+    {
+      "phase": "completion",
+      "afterPersist": false,
+      "first": {
+        "status": "Partial",
+        "planned": 5,
+        "attempted": 1,
+        "patched": 1,
+        "unchanged": 0,
+        "deferred": 4,
+        "uncertain": 0,
+        "pending": 1,
+        "issues": [
+          "Journal completion: reviewer persistence acknowledgement failure"
+        ]
+      },
+      "second": {
+        "status": "Success",
+        "planned": 5,
+        "attempted": 5,
+        "patched": 4,
+        "unchanged": 1,
+        "deferred": 0,
+        "uncertain": 0,
+        "pending": 0,
+        "issues": []
+      }
+    },
+    {
+      "phase": "completion",
+      "afterPersist": true,
+      "first": {
+        "status": "Partial",
+        "planned": 5,
+        "attempted": 1,
+        "patched": 1,
+        "unchanged": 0,
+        "deferred": 4,
+        "uncertain": 0,
+        "pending": 1,
+        "issues": [
+          "Journal completion: reviewer persistence acknowledgement failure"
+        ]
+      },
+      "second": {
+        "status": "Success",
+        "planned": 5,
+        "attempted": 5,
+        "patched": 4,
+        "unchanged": 1,
+        "deferred": 0,
+        "uncertain": 0,
+        "pending": 0,
+        "issues": []
+      }
+    },
+    {
+      "phase": "deadline during planning before first candidate",
+      "stats": {
+        "status": "Deferred",
+        "planned": 5,
+        "attempted": 0,
+        "patched": 0,
+        "unchanged": 0,
+        "deferred": 5,
+        "uncertain": 0,
+        "pending": 0,
+        "issues": []
+      },
+      "cursor": 2
+    }
+  ]
+}

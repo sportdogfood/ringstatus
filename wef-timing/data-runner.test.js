@@ -1,16 +1,18 @@
 "use strict";
 const test=require('node:test'),assert=require('node:assert/strict');
-const {run,writeAnswers}=require('./data-runner'),{TIMING,SHOWS,LIVE,DATA_TABLES:T,api}=require('./api');
+const {run,writeAnswers}=require('./data-runner'),{TIMING,SHOWS,LIVE,DATA_TABLES:T,CLASS_TIMING,CLASS_ANSWERS,api}=require('./api');
 const {evaluate}=require('./pace'),purge=require('./purge');
 function fixture(){
   const now='2026-10-29T14:25:00Z',show={id:'canonical',fields:{'show-key':'15|76',show_id:76,customer_id:15,is_default:true,start_date:'2026-10-29',end_date:'2026-11-01',selected_date:'2026-10-29',last_checked:'2026-10-29T14:24:00Z'}};
   const identity={customer:15,show:76,date:'2026-10-29',ring:6,group:19},row={'stage-key':'15|76|2026-10-29|6|occ','class-id':30,'start-time':'08:06:00','end-time':'08:39:00','total-trips':11,type:'class'};
   const source={proof:{'run-key':'head','state-sha256':'hash'},inventories:{'2026-10-29':{observed_at:'2026-10-29T14:24:00Z',inventory_complete:true,refs:[{base:'appdl16HJ5ETm8N69',table:'collections',record:'retained',sha256:'hash'}],groups:[{identity,rows:[row],class_keys:['76|2026-10-29|30']}]}}};
-  const db={[T.answers]:[],[T.checkpoint]:[]},calls=[],live=[];
+  const db={[T.answers]:[],[T.checkpoint]:[],[CLASS_ANSWERS]:[]},calls=[],live=[];
   const transport={clockVerified:true,list:async(base,table,formula)=>{calls.push({base,table,method:'GET',formula});if(base===TIMING){const rows=structuredClone(db[table]);if(!formula)return rows;assert.match(formula,/^OR\(RECORD_ID\(\)=/);const ids=[...formula.matchAll(/RECORD_ID\(\)='(rec[A-Za-z0-9]{14})'/g)].map(m=>m[1]);return rows.filter(r=>ids.includes(r.id));}if(base===SHOWS)return[structuredClone(show)];if(base===LIVE)return structuredClone(live);throw Error('Unexpected source');},
     upsert:async(table,key,rows)=>{calls.push({base:TIMING,table,method:'PATCH'});for(const f of rows){const old=db[table].find(r=>r.fields[key]===f[key]);if(old)old.fields=structuredClone(f);else db[table].push({id:'rec'+String(db[table].length).padStart(14,'0'),fields:structuredClone(f)});}return{records:structuredClone(rows.map(f=>db[table].find(r=>r.fields[key]===f[key])))};},
     removeSnapshots:async(ids)=>{calls.push({base:TIMING,table:T.answers,method:'DELETE'});db[T.answers]=db[T.answers].filter(r=>!ids.includes(r.id));return ids;}};
-  return{api:transport,clock:()=>now,show,source,db,calls,live,readData:async()=>structuredClone(source),readPointer:()=>({head:'head'}),readLive:async()=>({classes:new Map(),issues:[]}),prepareClassBatch:()=>({outputs:[],writes:[],unchanged:0}),identity,row};
+  const classApi={list:async(base,table,formula)=>{assert.equal(base,CLASS_TIMING);assert.equal(table,CLASS_ANSWERS);calls.push({base,table,method:'GET',formula});const rows=structuredClone(db[table]);if(!formula)return rows;const ids=[...formula.matchAll(/RECORD_ID\(\)='(rec[A-Za-z0-9]{14})'/g)].map(m=>m[1]);return rows.filter(r=>ids.includes(r.id));},
+    upsert:async(table,key,rows)=>{assert.equal(table,CLASS_ANSWERS);calls.push({base:CLASS_TIMING,table,method:'PATCH'});for(const f of rows){const old=db[table].find(r=>r.fields[key]===f[key]);if(old)old.fields=structuredClone(f);else db[table].push({id:'rec'+String(db[table].length).padStart(14,'0'),fields:structuredClone(f)});}return{records:structuredClone(rows.map(f=>db[table].find(r=>r.fields[key]===f[key])))};}};
+  return{api:transport,classApi,clock:()=>now,show,source,db,calls,live,readData:async()=>structuredClone(source),readPointer:()=>({head:'head'}),readLive:async()=>({classes:new Map(),issues:[]}),prepareClassBatch:()=>({outputs:[],writes:[],unchanged:0}),identity,row};
 }
 test('written-record readback covers all batches without scanning unrelated history',async()=>{
  const f=fixture(),writes=Array.from({length:227},(_,i)=>({'answer-key':'new-'+i,'content-hash':'hash-'+i}));
@@ -78,7 +80,7 @@ test('Data and Schedules use identical arithmetic but isolated output identities
   const a=evaluate(args).fields,b=evaluate({...args,sourceLane:'data_live'}).fields;
   assert.equal(a['pace-minutes-per-trip'],3);assert.equal(b['pace-minutes-per-trip'],3);assert.notEqual(a['scope-key'],b['scope-key']);
 });
-test('one normal Data invocation saves pace and each eligible class in the same destination',async()=>{
+test('one normal Data invocation saves pace and each eligible class in its destination',async()=>{
  const f=fixture();delete f.prepareClassBatch;
  f.source.source_lane='data_live';f.source.context={'customer-id':15,'show-id':76,'show-key':'15|76','start-date':'2026-10-29','end-date':'2026-11-01','selected-date':'2026-10-29'};
  f.source.proof={'run-key':'head','show-key':'15|76','state-sha256':'d'.repeat(64)};
@@ -86,12 +88,23 @@ test('one normal Data invocation saves pace and each eligible class in the same 
  const result=await run({...f,runId:'integration'});assert(result.ok,JSON.stringify(result));
  assert.equal(result.counts.evaluated,1);assert.equal(result.counts.classes_evaluated,1);
  assert.equal(f.db[T.answers].filter(r=>r.fields['answer-kind']==='ring-pace').length,1);
- assert.equal(f.db[T.answers].filter(r=>r.fields['answer-kind']==='class-timing').length,1);
+ assert.equal(f.db[CLASS_ANSWERS].filter(r=>r.fields['answer-kind']==='class-timing').length,1);
+});
+test('class snapshots use the class base and only the selected current day, including repeat runs',async()=>{
+ const f=fixture();delete f.prepareClassBatch;
+ f.source.source_lane='data_live';f.source.context={'customer-id':15,'show-id':76,'show-key':'15|76','start-date':'2026-10-29','end-date':'2026-11-01','selected-date':'2026-10-29'};
+ f.source.proof={'run-key':'head','show-key':'15|76','state-sha256':'d'.repeat(64)};
+ const today=f.source.inventories['2026-10-29'];today.refs=[{base:'appdl16HJ5ETm8N69',table:'collections',key:'part',record:'rec1',sha256:'a'.repeat(64)}];
+ const future=structuredClone(today);future.groups[0].identity.date='2026-10-30';future.groups[0].rows[0]['stage-key']='15|76|2026-10-30|6|occ';future.groups[0].class_keys=['76|2026-10-30|30'];f.source.inventories['2026-10-30']=future;
+ for(const id of ['one','two']){const r=await run({...f,runId:id});assert(r.ok,JSON.stringify(r));assert.equal(r.counts.classes_evaluated,1);}
+ assert.equal(f.db[CLASS_ANSWERS].length,1);assert.equal(f.db[CLASS_ANSWERS][0].fields.date,'2026-10-29');
+ assert.equal(f.db[T.answers].filter(r=>r.fields['answer-kind']==='class-timing').length,0);
+ f.show.fields.selected_date='2026-10-30';const upcoming=await run({...f,runId:'upcoming'});assert(upcoming.ok,JSON.stringify(upcoming));assert.equal(upcoming.counts.classes_evaluated,0);
 });
 test('Data inventory covers missing Live classes and repeats without duplicate snapshots',async()=>{
   const f=fixture(),a=await run({...f,runId:'one'});assert(a.ok,JSON.stringify(a));assert.equal(a.counts.written,1);assert.equal(f.db[T.answers][0].fields['pace-method'],'schedule_window');
   const b=await run({...f,runId:'two'});assert(b.ok);assert.equal(b.counts.written,0);assert.equal(b.counts.unchanged,1);
-  assert(f.calls.every(c=>c.method==='GET'||c.base===TIMING));assert(!f.calls.some(c=>c.base==='appam4opFT4NeL4mn'));
+  assert(f.calls.every(c=>c.method==='GET'||[TIMING,CLASS_TIMING].includes(c.base)));assert(!f.calls.some(c=>c.base==='appam4opFT4NeL4mn'));
 });
 test('Data original source time remains stale despite a new completed head',async()=>{
   const f=fixture();f.source.inventories['2026-10-29'].observed_at='2026-10-29T12:00:00Z';
@@ -188,7 +201,7 @@ test('failed class readback prevents rollover deletion',async()=>{
  assert((await run({...f,runId:'confirm'})).ok);
  f.source.inventories['2026-10-29'].groups[0].rows[0]['total-trips']=12;
  f.prepareClassBatch=()=>({outputs:[{fields:{availability:'partial'}}],unchanged:0,writes:[{'answer-key':'class-new','scope-key':'class','answer-kind':'class-timing'}]});
- const list=f.api.list;let answerReads=0;f.api.list=async(base,table,...args)=>{const rows=await list(base,table,...args);if(base===TIMING&&table===T.answers&&++answerReads===3)return rows.filter(r=>r.fields['answer-key']!=='class-new');return rows;};
+ const list=f.classApi.list;f.classApi.list=async(base,table,...args)=>{const rows=await list(base,table,...args);if(args[0])return rows.filter(r=>r.fields['answer-key']!=='class-new');return rows;};
  const r=await run({...f,runId:'readback-failure'});assert.equal(r.ok,false);assert.match(r.errors[0],/readback missing/);
  assert(f.db[T.answers].some(r=>r.id==='past'));assert(!f.calls.some(c=>c.method==='DELETE'));
 });

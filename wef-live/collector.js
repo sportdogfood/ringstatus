@@ -372,7 +372,7 @@ async function runLive({
         if(!current.active||current.show!==expected.show||current.date!==expected.date||current.customer!==expected.customer)throw Error('Canonical scope changed before publication');
       }});
       report.publication_errors=report.publication.errors;
-      report.summary+=' Publication: '+Object.entries(report.publication.lanes).map(([lane,r])=>`${lane} ${r.status}, ${r.patched} patched, ${r.unchanged} unchanged, ${r.deferred} deferred`).join('; ')+'.';
+      report.summary+=' Publication: '+Object.entries(report.publication.lanes).map(([lane,r])=>`${lane} ${r.status}, ${r.patched} patched, ${r.unchanged} unchanged, ${r.deferred} deferred, ${r.uncertain ?? 0} uncertain`).join('; ')+'.';
     }catch(error){report.publication_errors=[{lane:'publication',message:error.message}];report.summary+=' Publication failed; collection retained.';}
   }
   if (report.ok && !report.unresolved.length && api.retire) {

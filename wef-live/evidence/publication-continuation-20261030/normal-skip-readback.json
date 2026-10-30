@@ -1,0 +1,45 @@
+{
+  "run": "6a729be2-fbb4-481b-803b-b6a70f197e6b",
+  "checkedAt": "2026-10-30T17:05:02.921Z",
+  "tables": {
+    "heartbeat": [
+      {
+        "id": "recbrppJh7PyHNgMI",
+        "createdTime": "2026-10-30T17:02:17.000Z",
+        "fields": {
+          "started": "2026-10-30T17:02:13.514Z",
+          "run-id": "6a729be2-fbb4-481b-803b-b6a70f197e6b",
+          "heartbeat-key": "6a729be2-fbb4-481b-803b-b6a70f197e6b",
+          "show-id": 200000076,
+          "result": "Skipped",
+          "date": "2026-10-30",
+          "summary": "Skipped detailed collection: all 18 groups for show 200000076 on 2026-10-30 are completed. Three-minute checks continue. Publication: schedules Skipped, 0 patched, 0 unchanged, 0 deferred, 0 uncertain; data Skipped, 0 patched, 0 unchanged, 0 deferred, 0 uncertain. Log retention: Success, 2 completed records removed.",
+          "checked-at": "2026-10-30T17:02:26.567Z",
+          "completed": "2026-10-30T17:02:26.567Z"
+        }
+      }
+    ],
+    "run-logs": [
+      {
+        "id": "recmB3SiLM1s7VFDk",
+        "createdTime": "2026-10-30T17:02:31.000Z",
+        "fields": {
+          "date": "2026-10-30",
+          "result": "Skipped",
+          "entry-count": 0,
+          "group-count": 0,
+          "ring-count": 0,
+          "archive-count": 6,
+          "class-count": 0,
+          "show-id": 200000076,
+          "archives": "2026-10-30T17:02:23.048Z: source-live-status Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-live-status\\7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e.json.gz; SHA256 7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e\n2026-10-30T17:02:23.563Z: source-groups Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\a45fa83c5f80528f43314360744394e2fb0aee93aabb0f78db56488e6ea4265c.json.gz; SHA256 a45fa83c5f80528f43314360744394e2fb0aee93aabb0f78db56488e6ea4265c\n2026-10-30T17:02:44.118Z: retired-log-heartbeat Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-log-heartbeat\\aa2c7c1d1499ec0aad23e6595cf54c4346acb0090a173762e10c060be912bef9.json.gz; SHA256 aa2c7c1d1499ec0aad23e6595cf54c4346acb0090a173762e10c060be912bef9\n2026-10-30T17:02:44.122Z: log-retention-manifest-heartbeat Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\log-retention-manifest-heartbeat\\5403d398cd1a72375e1545a0a35a127816226a8f59a8faaf762033f4fc6c58d5.json.gz; SHA256 5403d398cd1a72375e1545a0a35a127816226a8f59a8faaf762033f4fc6c58d5\n2026-10-30T17:02:48.341Z: retired-log-run-logs Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-log-run-logs\\879efc2ff4231a48772ee6cdf6a29b23917e9c733ccdeaa187043f40d8b006ba.json.gz; SHA256 879efc2ff4231a48772ee6cdf6a29b23917e9c733ccdeaa187043f40d8b006ba\n2026-10-30T17:02:48.346Z: log-retention-manifest-run-logs Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\log-retention-manifest-run-logs\\65d6f9e30c0fe8a905f81d78303f82a30e7da7fcc9998b67efb2d2a0bc9b4514.json.gz; SHA256 65d6f9e30c0fe8a905f81d78303f82a30e7da7fcc9998b67efb2d2a0bc9b4514",
+          "completed": "2026-10-30T17:02:26.567Z",
+          "summary": "Skipped detailed collection: all 18 groups for show 200000076 on 2026-10-30 are completed. Three-minute checks continue. Publication: schedules Skipped, 0 patched, 0 unchanged, 0 deferred, 0 uncertain; data Skipped, 0 patched, 0 unchanged, 0 deferred, 0 uncertain. Log retention: Success, 2 completed records removed.",
+          "started": "2026-10-30T17:02:13.514Z",
+          "run-id": "6a729be2-fbb4-481b-803b-b6a70f197e6b"
+        }
+      }
+    ],
+    "errs-log": []
+  }
+}

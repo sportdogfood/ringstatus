@@ -72,14 +72,16 @@ function paceEvidence(rows,identity,group,inventory,now,issues){
 
 // Input is the verified data-input.py projection; the worker owns authority
 // rereads and revision publication, including A -> B -> A.
-function adapt({lane='data_live',now,data,paceRows=[],liveClasses=new Map(),schedules}){
+function adapt({lane='data_live',now,data,paceRows=[],liveClasses=new Map(),schedules,onIssue}){
  if(lane!=='data_live'||schedules!=null)throw Error('Only Data+Live class timing is supported');
  if(instant(now)===null||data?.source_lane!=='data_live'||!data.context||!data.proof)throw Error('Data authority missing');
  const c=data.context;
  if(!positive(c['customer-id'])||!positive(c['show-id'])||c['show-key']!==c['customer-id']+'|'+c['show-id']
   ||data.proof['show-key']!==c['show-key']||!sha(data.proof['state-sha256'])||!data.proof['run-key'])throw Error('Data authority mismatch');
  if(!data.inventories?.[c['selected-date']])throw Error('Selected Data date coverage missing');
- const records=[],seen=new Set(),multiplicity=new Map();
+ const records=[],seen=new Set(),multiplicity=new Map(),occurrences=new Map(),unknownClassGroups=new Set();
+ for(const inv of Object.values(data.inventories))for(const g of inv.groups||[])for(const r of g.rows||[])if(r&&typeof r['stage-key']==='string')occurrences.set(r['stage-key'],(occurrences.get(r['stage-key'])||0)+1);
+ const reject=(identity,message)=>{if(!onIssue)throw Error(message);onIssue(identity,message);};
  for(const [date,inventory] of Object.entries(data.inventories)){
   if(date<c['start-date']||date>c['end-date']||inventory.inventory_complete!==true||!Array.isArray(inventory.groups)
    ||!Array.isArray(inventory.refs)||!inventory.refs.length||inventory.refs.some(r=>r.base!==DATA||!r.key||!sha(r.sha256)||(!r.record&&!r.archive)))throw Error('Data inventory evidence invalid');
@@ -88,10 +90,15 @@ function adapt({lane='data_live',now,data,paceRows=[],liveClasses=new Map(),sche
    if(i.customer!==c['customer-id']||i.show!==c['show-id']||i.date!==date||!positive(i.ring)||!positive(i.group)||!Array.isArray(group.rows))throw Error('Data group identity mismatch');
    for(const row of group.rows){
     if(['schooling','break'].includes(String(row.type).toLowerCase()))continue;
-    if(!positive(row['class-id'])||typeof row['stage-key']!=='string'||!row['stage-key']||/\|position-\d+$/.test(row['stage-key']))throw Error('Exact Data class occurrence missing');
+    // Count the complete roster before rejecting occurrence identities. Skipping
+    // malformed rows must not turn an ambiguous Live match into a unique one.
+    if(positive(row['class-id'])){const fullKey=key({...i,class:row['class-id']});multiplicity.set(fullKey,(multiplicity.get(fullKey)||0)+1);}
+    else unknownClassGroups.add(key({...i,class:null}));
+    if(!positive(row['class-id'])||typeof row['stage-key']!=='string'||!row['stage-key']||/\|position-\d+$/.test(row['stage-key'])){reject({...i,class:row['class-id']??null,occurrence:row['stage-key']??null},'Exact Data class occurrence missing');continue;}
+    if(occurrences.get(row['stage-key'])>1){reject({...i,class:row['class-id'],occurrence:row['stage-key']},'Duplicate Data occurrence');continue;}
     if(seen.has(row['stage-key']))throw Error('Duplicate Data occurrence');seen.add(row['stage-key']);
     const identity={...i,class:row['class-id'],occurrence:row['stage-key'],phase:'base'};
-    records.push({identity,row,group,inventory});multiplicity.set(key(identity),(multiplicity.get(key(identity))||0)+1);
+    records.push({identity,row,group,inventory});
    }
   }
  }
@@ -105,7 +112,7 @@ function adapt({lane='data_live',now,data,paceRows=[],liveClasses=new Map(),sche
    ...(group.rows.length===1?{counts:{scope:'class',total:row['total-trips'],completed:row['completed-trips']??null,completion_scope:'unknown'}}:{})};
   let live=liveClasses.get(key(identity))??null;
   if(live){
-   if(ageReason(inventory.observed_at,now,1800000)||multiplicity.get(key(identity))!==1||!['customer','show','date','ring','group','class'].every(k=>live.identity?.[k]===identity[k])){
+   if(ageReason(inventory.observed_at,now,1800000)||multiplicity.get(key(identity))!==1||unknownClassGroups.has(key({...identity,class:null}))||!['customer','show','date','ring','group','class'].every(k=>live.identity?.[k]===identity[k])){
     issues.push('live_occurrence_ambiguous');live=null;
    }else live={...live,identity:{...live.identity,occurrence:identity.occurrence,phase:'base'},source_lane:lane,
     ref:{...live.ref,occurrence_match:{stage_key:identity.occurrence,method:'unique_class_group_in_complete_data_inventory',parts:inventory.refs}}};

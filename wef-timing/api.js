@@ -2,14 +2,15 @@
 const ENGINE='appam4opFT4NeL4mn',SCHEDULES='appUq5Qz9kARqFija',LIVE='appgzosUcVqA4vZdf';
 const TABLES={answers:'tblHnV5iEJ13DOsBF',checkpoint:'tblepakByOH4G4ruV'};
 const TIMING='appYOykKIy1kAquhP',SHOWS='appCaSmL819KK7UFJ',DATA_TABLES={answers:'tblhIjSjeGs5td23c',checkpoint:'tblfWyTqeyvIvhAjb'};
+const CLASS_TIMING='appeqxxJyPGS1iqdm',CLASS_ANSWERS='tblmoBFySYW2TkDHf';
 const allowed=new Map([[ENGINE,new Set(Object.values(TABLES))],[SCHEDULES,new Set(['shows','rings','schedules','show-collection'])],[LIVE,new Set(['collections','live-classes','live-groups'])]]);
 function api({token,deadline,request=fetch,lane='schedules_live'}) {
-  if(!['schedules_live','data_live'].includes(lane))throw Error('Unsupported API lane');
-  const destination=lane==='data_live'?TIMING:ENGINE,tables=lane==='data_live'?DATA_TABLES:TABLES;
-  const targets=lane==='data_live'?new Map([[TIMING,new Set(Object.values(DATA_TABLES))],[SHOWS,new Set(['shows'])],[LIVE,new Set(['collections','live-classes','live-groups'])]]):allowed;
+  if(!['schedules_live','data_live','class_live'].includes(lane))throw Error('Unsupported API lane');
+  const destination=lane==='class_live'?CLASS_TIMING:lane==='data_live'?TIMING:ENGINE,tables=lane==='class_live'?{answers:CLASS_ANSWERS}:lane==='data_live'?DATA_TABLES:TABLES;
+  const targets=lane==='class_live'?new Map([[CLASS_TIMING,new Set([CLASS_ANSWERS])]]):lane==='data_live'?new Map([[TIMING,new Set(Object.values(DATA_TABLES))],[SHOWS,new Set(['shows'])],[LIVE,new Set(['collections','live-classes','live-groups'])]]):allowed;
   let clockVerified=false;
   async function call(base,table,method='GET',body,query='') {
-    const writable=base===destination&&(method==='PATCH'||(method==='DELETE'&&table===tables.answers));
+    const writable=base===destination&&(method==='PATCH'||(lane!=='class_live'&&method==='DELETE'&&table===tables.answers));
     if (!targets.get(base)?.has(table) || (method!=='GET'&&!writable)) throw Error('Forbidden Airtable target/method');
     const remaining=deadline-Date.now();if(remaining<1500)throw Error('Deadline exhausted before request');
     await new Promise(r=>setTimeout(r,210));
@@ -40,4 +41,4 @@ function api({token,deadline,request=fetch,lane='schedules_live'}) {
   }
   return{list,upsert,removeSnapshots,get clockVerified(){return clockVerified;}};
 }
-module.exports={api,ENGINE,SCHEDULES,LIVE,TABLES,TIMING,SHOWS,DATA_TABLES};
+module.exports={api,ENGINE,SCHEDULES,LIVE,TABLES,TIMING,SHOWS,DATA_TABLES,CLASS_TIMING,CLASS_ANSWERS};

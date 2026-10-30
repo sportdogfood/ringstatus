@@ -41,7 +41,7 @@ test('one unavailable lane cannot stop the other or change source success',async
 });
 test('unknown PATCH retains durable intent, next invocation reads back before any retry',async()=>{
  const f=fixture(),patch=f.api.patch;let fail=true;f.api.patch=async(...args)=>{await patch(...args);if(args[0]==='schedules'&&fail){fail=false;throw Error('lost response')}};
- const r=await publish(f.args);assert.equal(r.lanes.schedules.status,'Partial');assert.equal(Object.keys(f.state.data.schedules.pending).length,1);const count=f.writes.length;await publish(f.args);assert.equal(f.writes.length,count+1);assert(f.audits.some(a=>a.kind==='publication-schedules-reconcile'&&a.value.outcome==='Verified'));assert.equal(Object.keys(f.state.data.schedules.pending).length,0);
+ const r=await publish(f.args);assert.equal(r.lanes.schedules.status,'Partial');assert.equal(Object.keys(f.state.data.schedules.pending).length,1);const count=f.writes.length;await publish(f.args);assert.equal(f.writes.length,count);assert(f.audits.some(a=>a.kind==='publication-schedules-reconcile'&&a.value.outcome==='Verified'));assert.equal(Object.keys(f.state.data.schedules.pending).length,0);
 });
 test('intent archive failure prevents PATCH and preserves destination values',async()=>{
  const f=fixture(),archive=f.args.archive;f.args.archive=async(k,v)=>{if(k.endsWith('-intent'))throw Error('disk failure');return archive(k,v);};const r=await publish(f.args);assert(r.errors.length);assert.equal(f.writes.length,0);
@@ -66,7 +66,7 @@ test('unknown write archives outcome immediately while preserving pending',async
  const f=fixture();f.api.patch=async()=>{throw Error('timeout')};await publish(f.args);assert(f.audits.some(a=>a.kind.endsWith('-outcome')&&a.value.outcome==='Unknown'));assert(Object.keys(f.state.data.data.pending).length);
 });
 test('detail flag preserves missing versus explicit false',()=>{
- const f=fixture();let o=observations(f.input,{file:'a',sha256:'h'});assert.equal(o.groups[0].component.values.hasJson,null);const s=JSON.parse(f.input.groups[0]['source-json']);s.has_json=false;f.input.groups[0]['source-json']=JSON.stringify(s);o=observations(f.input,{file:'a',sha256:'h'});assert.equal(o.groups[0].component.values.hasJson,false);
+ const f=fixture();let o=observations(f.input,{file:'a',sha256:'h'});assert.equal(o.groups[0].component.values.hasJson,null);const s=JSON.parse(f.input.groups[0]['source-json']);s.has_JSON=false;f.input.groups[0]['source-json']=JSON.stringify(s);o=observations(f.input,{file:'a',sha256:'h'});assert.equal(o.groups[0].component.values.hasJson,false);
 });
 test('expired lane budget prevents reconciliation inventory and writes',async()=>{
  const f=fixture();let reads=0;f.api.get=f.api.list=async()=>{reads++;throw Error('unexpected')};const r=await publish({...f.args,budgetMs:0});assert.equal(reads,0);assert.equal(f.writes.length,0);assert(r.errors.every(e=>e.message.includes('budget')));
@@ -80,4 +80,195 @@ test('intent archive delay cannot publish expired observations',async()=>{
 });
 test('transport rechecks freshness after pacing and before PATCH dispatch',async()=>{
  let calls=0;const api=transport({pause:async()=>{},request:async()=>{calls++;return{ok:true,json:async()=>({})}}});await assert.rejects(()=>api.patch('data','trips','recABC','{}',{beforeDispatch(){throw Error('expired')}}),/expired/);assert.equal(calls,0);
+});
+
+
+test('saved source has_JSON casing preserves true false and missing without alias guessing',()=>{
+ const evidence=require('./publication-source-evidence.json');assert(Object.hasOwn(evidence.group,'has_JSON'));
+ for(const source of [evidence.group,{has_JSON:true},{has_JSON:false},{},{has_json:true}]){
+  const f=fixture();f.input.groups[0]['source-json']=JSON.stringify(source);
+  assert.equal(observations(f.input,{file:'a',sha256:'h'}).groups[0].component.values.hasJson,source.has_JSON??null);
+ }
+});
+
+test('uncertain record continues other work and retains readback-before-retry',async()=>{
+ const f=fixture(),patch=f.api.patch;let once=true;
+ f.api.patch=async(...args)=>{await patch(...args);if(args[0]==='data'&&once){once=false;throw Error('lost response');}};
+ const first=await publish(f.args),s=first.lanes.data;
+ assert.equal(s.planned,5);assert.equal(s.attempted,5);assert.equal(s.patched,4);assert.equal(s.uncertain,1);assert.equal(s.deferred,0);
+ assert.equal(f.state.data.data.cursor,0);const count=f.writes.length;
+ const next=await publish(f.args);assert.equal(next.lanes.data.uncertain,0);assert.equal(f.writes.length,count);
+ assert(f.audits.some(a=>a.kind==='publication-data-reconcile'&&a.value.outcome==='Verified'));
+});
+
+test('safe pre-intent failure counts deferred and patch cap counts untouched',async()=>{
+ const f=fixture(),get=f.api.get;
+ f.api.get=async(l,t,id)=>{if(l==='data'&&t==='classes')throw Error('read failed');return get(l,t,id);};
+ const r=await publish({...f.args,maxPatches:1});
+ assert.equal(r.lanes.data.planned,5);assert.equal(r.lanes.data.patched,1);assert.equal(r.lanes.data.deferred,4);assert.equal(r.lanes.data.uncertain,0);
+});
+
+test('producer metadata changes before and during PATCH remain audited and preserved',async()=>{
+ const evidence=require('./publication-source-evidence.json'),f=fixture(),get=f.api.get,patch=f.api.patch;
+ f.api.get=async(l,t,id)=>{const row=f.db[l][t].find(x=>x.id===id);row.fields['last-success']='2026-10-29T15:01:00Z';for(const key of evidence.concurrentFields)row.fields[key]='independent-before';return get(l,t,id);};
+ f.api.patch=async(l,t,id,v)=>{await patch(l,t,id,v);const row=f.db[l][t].find(x=>x.id===id);row.fields['acquisition-counter']=123;row.fields.notes='independent-after';};
+ const r=await publish(f.args);assert.deepEqual(r.errors,[]);assert.equal(f.writes.length,7);
+ assert.equal(r.lanes.data.status,'Success');assert.equal(r.lanes.schedules.status,'Success');
+ for(const lane of Object.values(f.db))for(const rows of Object.values(lane))for(const row of rows){assert.equal(row.fields.notes,'independent-after');assert.equal(row.fields['acquisition-counter'],123);}
+ assert(f.audits.some(a=>a.kind.endsWith('-outcome')&&a.value.readback.fields['acquisition-counter']===123));
+});
+
+test('pre-PATCH identity native-link overlay and trip source changes still withhold',async()=>{
+ const cases=[
+  ['schedules','schedules',f=>f['class-id']=999],
+  ['schedules','schedules',f=>f.rings=['recOther']],
+  ['data','trips',f=>{const src=JSON.parse(f['source-json']);src.rider_id=99;f['source-json']=JSON.stringify(src);}],
+  ['data','trips',f=>f.horse=['recOther']],
+  ['data','groups',f=>f['group-key']+='wrong'],
+  ['data','classes',f=>f[FIELD]='unexpected']
+ ];
+ for(const [lane,table,change]of cases){const f=fixture(),get=f.api.get;f.api.get=async(l,t,id)=>{if(l===lane&&t===table)change(f.db[l][t].find(x=>x.id===id).fields);return get(l,t,id);};
+  const r=await publish(f.args);assert(!f.writes.some(w=>w.l===lane&&w.t===table));assert(r.lanes[lane].issues.some(x=>/changed/.test(x)));assert(r.lanes[lane].deferred>0);
+ }
+});
+
+test('post-PATCH changed identity or native link preserves pending and continues safe lane work',async()=>{
+ for(const change of [f=>f['class-id']=999,f=>f.ring=['recOther'],f=>f.newLinks=['recNew']]){
+  const f=fixture(),patch=f.api.patch;f.api.patch=async(l,t,id,v)=>{await patch(l,t,id,v);if(l==='data')change(f.db[l][t].find(r=>r.id===id).fields);};
+  const r=await publish(f.args);assert(r.lanes.data.uncertain>=1);assert.equal(r.lanes.data.deferred,0);assert.equal(r.lanes.data.status,'Partial');assert.equal(r.lanes.schedules.status,'Success');
+ }
+});
+
+test('trip source cosmetic updates allowed but timestamp supporting a contradiction is protected',async()=>{
+ const f=fixture(),get=f.api.get;f.api.get=async(l,t,id)=>{if(l==='data'&&t==='trips'){const row=f.db[l][t][0],src=JSON.parse(row.fields['source-json']);src.token='new';row.fields['source-json']=JSON.stringify(src);}return get(l,t,id);};
+ assert.equal((await publish(f.args)).lanes.data.status,'Success');
+ const g=fixture(),src=JSON.parse(g.db.data.trips[0].fields['source-json']);src.rider_id=99;g.db.data.trips[0].fields['source-json']=JSON.stringify(src);g.db.data.trips[0].fields['last-success']='2026-10-29T14:59:00Z';const get2=g.api.get;
+ g.api.get=async(l,t,id)=>{if(l==='data'&&t==='trips')g.db.data.trips[0].fields['last-success']='2026-10-29T15:01:00Z';return get2(l,t,id);};
+ const r=await publish(g.args);assert(!g.writes.some(w=>w.t==='trips'));assert(r.lanes.data.deferred>0);
+});
+
+
+function conserved(stats){assert.equal(stats.planned,stats.patched+stats.unchanged+stats.deferred+stats.uncertain);}
+
+test('intent save failure dispatches nothing unsafe, preserves intent and lets other lane proceed',async()=>{
+ const f=fixture();let failures=0;
+ f.state.save=()=>{if(Object.keys(f.state.data.data.pending).length){failures++;throw Error('EPERM intent save');}};
+ const r=await publish(f.args);assert.equal(r.lanes.data.patched,0);assert.equal(r.lanes.data.deferred,5);assert.equal(r.lanes.data.uncertain,0);assert.equal(r.lanes.data.pending,1);
+ assert(!f.writes.some(w=>w.l==='data'));assert(r.errors.some(x=>x.message.includes('EPERM')));conserved(r.lanes.data);
+ // The shared sink may also reject the independent lane; no immediate retries in either lane.
+ assert(failures<=2);assert.equal(f.state.data.data.cursor,0);
+ f.state.save=()=>{};const next=await publish(f.args);assert.equal(next.lanes.data.patched,5);assert.equal(next.lanes.data.pending,0);
+ assert(f.audits.some(a=>a.kind==='publication-data-reconcile'&&a.value.outcome==='NotApplied'));
+});
+
+test('journal completion failure retains confirmed result and deferred remainder, future reconcile safe',async()=>{
+ const f=fixture();let applied=false;
+ const patch=f.api.patch;f.api.patch=async(...a)=>{await patch(...a);if(a[0]==='data')applied=true;};
+ f.state.save=()=>{if(applied&&!Object.keys(f.state.data.data.pending).length)throw Error('EPERM completion save');};
+ const r=await publish(f.args);assert.equal(r.lanes.data.patched,1);assert.equal(r.lanes.data.deferred,4);assert.equal(r.lanes.data.uncertain,0);assert.equal(r.lanes.data.pending,1);conserved(r.lanes.data);
+ assert(f.audits.some(a=>a.kind==='publication-data-outcome'&&a.value.outcome==='Verified'));
+ f.state.save=()=>{};const next=await publish(f.args);assert.equal(next.lanes.data.patched,4);assert.equal(next.lanes.data.pending,0);assert(f.audits.some(a=>a.kind==='publication-data-reconcile'&&a.value.outcome==='Verified'));
+});
+
+test('cursor-save EPERM after verified write cannot hide remaining plans',async()=>{
+ const f=fixture();f.state.save=()=>{if(f.state.data.data.cursor===1)throw Error('EPERM cursor save');};
+ const r=await publish(f.args);assert.equal(r.lanes.data.patched,1);assert.equal(r.lanes.data.deferred,4);assert.equal(r.lanes.data.uncertain,0);conserved(r.lanes.data);assert.equal(r.lanes.data.status,'Partial');
+});
+
+test('pending conflict and reconciliation audit failure block only their record',async()=>{
+ for(const failure of ['conflict','audit']){
+  const f=fixture();f.state.data.data.pending['classes|recDC']={table:'classes',id:'recDC',before:'',after:'expected',intent:{file:'old',sha256:'old'}};
+  if(failure==='conflict')f.db.data.classes[0].fields[FIELD]='conflicting';
+  else{const archive=f.args.archive;f.args.archive=async(k,v)=>{if(k==='publication-data-reconcile')throw Error('audit unavailable');return archive(k,v);};}
+  const r=await publish(f.args);assert.equal(r.lanes.data.patched,4);assert.equal(r.lanes.data.uncertain,1);assert.equal(r.lanes.data.pending,1);assert.equal(r.lanes.schedules.status,'Success');conserved(r.lanes.data);
+  assert(!f.writes.some(w=>w.t==='classes'&&w.l==='data'));
+ }
+});
+
+test('outcome audit failure preserves pending, continues other records and recovers next invocation',async()=>{
+ const f=fixture(),archive=f.args.archive;let once=true;
+ f.args.archive=async(k,v)=>{if(k==='publication-data-outcome'&&once){once=false;throw Error('audit sink failure');}return archive(k,v);};
+ const r=await publish(f.args);assert.equal(r.lanes.data.patched,4);assert.equal(r.lanes.data.uncertain,1);assert.equal(r.lanes.data.deferred,0);assert.equal(r.lanes.schedules.status,'Success');conserved(r.lanes.data);
+ const next=await publish(f.args);assert.equal(next.lanes.data.pending,0);assert.equal(next.lanes.data.unchanged,5);
+});
+
+test('budget boundary retains exact unsent cursor then naturally reconciles before progressing',async()=>{
+ const f=fixture(),patch=f.api.patch;let once=true;const budget=()=>Object.assign(Error('Publication lane budget exhausted'),{code:'PUBLICATION_BUDGET'});
+ f.state.data.data.cursor=2;
+ f.api.patch=async(...args)=>{if(args[0]==='data'&&once){once=false;throw budget();}return patch(...args);};
+ const first=await publish(f.args);assert.equal(f.state.data.data.cursor,2);assert.equal(first.lanes.data.uncertain,1);assert.equal(first.lanes.data.deferred,4);conserved(first.lanes.data);
+ const start=f.audits.length;const second=await publish(f.args);assert.equal(second.lanes.data.patched,5);assert.equal(second.lanes.data.pending,0);
+ const events=f.audits.slice(start).filter(a=>a.kind.startsWith('publication-data-'));
+ assert.equal(events[0].kind,'publication-data-reconcile');assert.equal(events[0].value.outcome,'NotApplied');
+ assert.equal(f.writes.find(w=>w.l==='data').id,'recDR');
+});
+
+test('budget exhaustion before intent retains cursor with accurate deferred count',async()=>{
+ const f=fixture(),get=f.api.get;f.state.data.data.cursor=2;let fail=true;
+ f.api.get=async(l,t,id)=>{if(l==='data'&&fail){fail=false;throw Object.assign(Error('budget'),{code:'PUBLICATION_BUDGET'});}return get(l,t,id);};
+ const r=await publish(f.args);assert.equal(r.lanes.data.deferred,5);assert.equal(r.lanes.data.uncertain,0);assert.equal(f.state.data.data.cursor,2);assert.equal(r.lanes.schedules.status,'Success');
+});
+
+test('exact source group selects one occurrence among six saved multi-occurrence shapes',async()=>{
+ for(const count of [2,4,3,2,2,2]){
+  const f=fixture();for(let n=1;n<count;n++){
+   f.db.data.groups.push({id:'recOtherG'+n,fields:{'group-key':'15|76|2026-10-29|3|'+(20+n),'group-id':20+n,ring:['recDR']}});
+   f.db.data.schedules.push({id:'recOtherS'+n,fields:{'schedule-key':'15|76|2026-10-29|3|'+(100+n),class:['recDC'],ring:['recDR'],group:['recOtherG'+n]}});
+   f.db.schedules.schedules.push({id:'recOtherLegacy'+n,fields:{...f.db.schedules.schedules[0].fields,'stage-key':'76|2026-10-29|other'+n,'group-id':20+n}});
+  }
+  const r=await publish(f.args);assert.deepEqual(r.errors,[]);assert(f.writes.some(w=>w.id==='recDS'));assert(f.writes.some(w=>w.id==='recSS'));
+  assert(!f.writes.some(w=>w.id.startsWith('recOther')));
+ }
+});
+
+test('exact group filter never borrows other date ring group or duplicate same-group occurrence',async()=>{
+ for(const mutate of [f=>f['schedule-key']='15|76|2026-10-28|3|100',f=>f.ring=['recOther'],f=>f.group=['recOther'],f=>f.class=['recOther']]){
+  const f=fixture();mutate(f.db.data.schedules[0].fields);const r=await publish(f.args);assert(!f.writes.some(w=>w.id==='recDS'));assert(r.lanes.data.issues.some(x=>x.includes('occurrence')));assert(f.writes.some(w=>w.t==='trips'));
+ }
+ const f=fixture();f.db.data.schedules.push({...structuredClone(f.db.data.schedules[0]),id:'recDuplicate'});const r=await publish(f.args);assert(r.lanes.data.issues.some(x=>x.includes('2 matches')));assert(!f.writes.some(w=>w.t==='schedules'&&w.l==='data'));
+});
+
+
+test('uncertain persistence acknowledgement before dispatch is safe across process restart',async()=>{
+ for(const persistedBeforeError of [false,true]){
+  const f=fixture(),list=f.api.list;let disk=structuredClone(f.state.data),fail=true;
+  f.api.list=async(l,...rest)=>{if(l==='schedules')throw Error('independent unavailable fixture');return list(l,...rest);};
+  f.state.save=()=>{if(fail&&Object.keys(f.state.data.data.pending).length){fail=false;if(persistedBeforeError)disk=structuredClone(f.state.data);throw Error('persist acknowledgement unavailable');}disk=structuredClone(f.state.data);};
+  const first=await publish(f.args);assert.equal(first.lanes.data.patched,0);assert.equal(first.lanes.data.deferred,5);assert.equal(f.writes.length,0);
+  f.state.data=structuredClone(disk);f.state.save=()=>{disk=structuredClone(f.state.data);};
+  const next=await publish(f.args);assert.equal(next.lanes.data.patched,5);assert.equal(next.lanes.data.pending,0);assert.equal(f.writes.length,5);
+ }
+});
+
+test('publication journal errors use existing local log fallback without halting next scheduled fixture',async()=>{
+ const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),{scheduled}=require('../entry');
+ const runtime=fs.mkdtempSync(path.join(os.tmpdir(),'live-publication-log-test-'));
+ try{
+  const f=fixture();f.state.save=()=>{throw Error('EPERM journal');};const publication=await publish(f.args);assert(publication.errors.length);
+  const first=await scheduled({runtime,lock:()=>()=>{},api:{upsert:async()=>{throw Error('Airtable log unavailable');}},run:async()=>({run_id:'offline-first',ok:true,completed:NOW,errors:[],publication_errors:publication.errors})});
+  assert.equal(first.ok,true);assert.match(fs.readFileSync(path.join(runtime,'errs-log.jsonl'),'utf8'),/EPERM journal/);assert.match(fs.readFileSync(path.join(runtime,'last-run.json'),'utf8'),/Airtable log unavailable/);
+  const next=await scheduled({runtime,lock:()=>()=>{},api:{upsert:async()=>{}},run:async()=>({run_id:'offline-next',ok:true,completed:NOW,errors:[]})});assert.equal(next.ok,true);assert(!fs.existsSync(path.join(runtime,'halt.json')));
+ }finally{process.exitCode=0;fs.rmSync(runtime,{recursive:true});}
+});
+
+
+test('all six saved exact occurrence keys resolve using their actual group and native links',()=>{
+ const saved=require('./publication-occurrence-evidence.json');
+ for(const item of saved.evidence){
+  const f=fixture(),classRecord=item.classes[0],parts=classRecord.key.split('|'),[customer,show,date,ringNumber]=parts;
+  const scope={customer:Number(customer),show:Number(show),date,active:true},ringId=item.occurrences[0].ring[0];
+  f.input.scope=scope;f.input.rings[0]['ring-key']=show+'|'+date+'|44';f.input.rings[0]['ring-number']=Number(ringNumber);
+  const cls=f.input.classes[0];cls['class-id']=item.classId;cls['class-key']=show+'|'+date+'|'+item.classId;cls._ring=f.input.rings[0]['ring-key'];cls._groups=item.sourceGroups;
+  f.input.groups=[];f.input.details[0].entries=[];f.input.sourceArchives=[{kind:'source-groups',file:'a',sha256:'h'},{kind:'class-'+item.classId,file:'a',sha256:'h'}];
+  const db={rings:[{id:ringId,fields:{'ring-key':parts.slice(0,4).join('|'),'ring-id':44,'ring-number':Number(ringNumber)}}],classes:[{id:classRecord.id,fields:{'class-key':classRecord.key,'class-id':item.classId,ring:[ringId]}}],groups:[],schedules:[],trips:[]};
+  for(const occ of item.occurrences){const groupId=Number(occ.groupKey.split('|').at(-1));const groupRecord=occ.group[0];db.groups.push({id:groupRecord,fields:{'group-key':occ.groupKey,'group-id':groupId,ring:[ringId]}});db.schedules.push({id:occ.id||'recSchedule'+groupId,fields:{'schedule-key':occ.key,class:[classRecord.id],ring:[ringId],group:[groupRecord]}});}
+  const planned=plans('data',f.input,observations(f.input,{file:'a',sha256:'h'}),db);
+  assert.deepEqual(planned.issues,[]);const chosen=planned.plans.filter(p=>p.table==='schedules');assert.equal(chosen.length,1);assert.equal(chosen[0].key,item.occurrences.find(o=>o.matchesSourceGroup).key);
+ }
+});
+
+
+test('uncertain writes consume unchanged per-lane patch budget',async()=>{
+ const f=fixture();let dataCalls=0;f.api.patch=async(l)=>{if(l==='data')dataCalls++;throw Error('unknown network result');};
+ const r=await publish({...f.args,maxPatches:1});assert.equal(dataCalls,1);assert.equal(r.lanes.data.uncertain,1);assert.equal(r.lanes.data.deferred,4);assert.equal(f.state.data.data.cursor,1);conserved(r.lanes.data);
 });
