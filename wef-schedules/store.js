@@ -271,6 +271,10 @@ async function runStagedCollector({lockPath=settings.SCHEDULE_COLLECTION_LOCK,st
 
     if(report.ok && store.finalize) await store.finalize(found.show.fields.show_id);
     if(report.ok && references) report.references=await references.sync({show:found.show,payload:found.payload,payloads,days:report.days,now:found.state.show_source?.checked_at||options.now||new Date().toISOString()});
+    if(report.ok && options.entryCollector){
+     try {report.entries=await options.entryCollector({show:found.show,payloads,runId:runRecord?.fields['run-id']||require('node:crypto').randomUUID(),onArchive:runLog?event=>runLog.archive(runRecord,event):undefined});if(!report.entries.ok)report.ok=false;}
+     catch(error){report.entries={ok:false,error:String(error.message||error),errors:[]};report.ok=false;}
+    }
     await shared.atomicReport(statePath,{...found.state,last_collection:report});
 
     report={...report,discovery:found.state.discovery,default_show:found.state.default_show,focus_day:found.show.fields.focus_day};

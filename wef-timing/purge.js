@@ -17,11 +17,14 @@ function authority(show,scopeProblems,now){
 function eligible(row,context){
   const f=row.fields;
   const lane=context.source_lane||'schedules_live';
-  if(f['answer-kind']!=='ring-pace'||f['source-lane']!==lane||!validDay(f.date)||!Number.isSafeInteger(f['show-id']))return false;
+  if(!['ring-pace','class-timing'].includes(f['answer-kind'])||f['source-lane']!==lane||!validDay(f.date)||!Number.isSafeInteger(f['show-id']))return false;
   let p;try{p=JSON.parse(f['payload-json']);}catch{return false;}
   const i=p.identity;
   if(!i||i.customer!==context.customer||i.show!==f['show-id']||i.date!==f.date||i.ring!==f['ring-number']||i.group!==f['group-id'])return false;
-  const scope=[lane,i.show,i.date,i.ring,i.group,'base'].join('|');
+  const scope=f['answer-kind']==='class-timing'
+    ? JSON.stringify([lane,'class-timing',i.customer,i.show,i.date,i.ring,i.group,i.class,i.occurrence,i.phase])
+    : [lane,i.show,i.date,i.ring,i.group,'base'].join('|');
+  if(f['answer-kind']==='class-timing'&&(!Number.isSafeInteger(i.class)||i.class<=0||typeof i.occurrence!=='string'||!i.occurrence||i.phase!=='base'))return false;
   if(f['scope-key']!==scope||!String(f['answer-key']).startsWith(scope+'|'))return false;
   return i.show===context.show?i.date<context.day:(context.retired_shows||[]).includes(i.show);
 }

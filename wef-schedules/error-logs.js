@@ -32,7 +32,7 @@ function errorLogs({api=require('./attempt-api').attemptAPI(),request=globalThis
    for(const [name,value] of Object.entries(fields))if(JSON.stringify(saved[0].fields[name]??null)!==JSON.stringify(value??null))throw Error('Error log readback mismatch '+name);
    return saved[0];
   });},
-  async report(record,report){for(const day of report?.days||[]){if(!day.ok)await this.record(record,{stage:'collection',date:day.date,showId:day.show_id,message:day.error||'Dated collection failed'});for(const warning of day.warnings||[])if(warning.error)await this.record(record,{stage:'enrichment',date:day.date,showId:day.show_id,message:warning.error});}},
+  async report(record,report){if(report?.entries?.error)await this.record(record,{stage:'entry-collection',showId:report.entries.show_id,message:report.entries.error});for(const e of report?.entries?.errors||[])await this.record(record,{stage:'entry-collection',date:e.date,showId:report.entries.show_id,message:e.kind+' '+e.id+': '+e.error});for(const day of report?.days||[]){if(!day.ok)await this.record(record,{stage:'collection',date:day.date,showId:day.show_id,message:day.error||'Dated collection failed'});for(const warning of day.warnings||[])if(warning.error)await this.record(record,{stage:'enrichment',date:day.date,showId:day.show_id,message:warning.error});}},
  };
 }
 module.exports={errorLogs,ERROR_FIELDS,safeMessage};

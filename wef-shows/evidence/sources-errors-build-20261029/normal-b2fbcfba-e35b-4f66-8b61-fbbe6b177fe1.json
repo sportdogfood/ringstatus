@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-30T12:50:30.931Z",
+  "result": "PASS",
+  "run": "b2fbcfba-e35b-4f66-8b61-fbbe6b177fe1",
+  "started": "2026-10-30T12:49:04.640Z",
+  "completed": "2026-10-30T12:50:01.666Z",
+  "runRecord": "recwr1RCynfuLUeZ2",
+  "sourceRecords": [
+    {
+      "id": "rec8pwcOzXDi0sjMO",
+      "key": "season-counts",
+      "lastAttempt": "2026-10-30T12:49:22.882Z",
+      "lastSuccess": "2026-10-30T12:49:39.238Z"
+    },
+    {
+      "id": "recVO4bhoqfHSWBGn",
+      "key": "default-ring",
+      "lastAttempt": "2026-10-30T12:49:18.906Z",
+      "lastSuccess": "2026-10-30T12:49:19.180Z"
+    },
+    {
+      "id": "recijgxkbeqk66BqB",
+      "key": "default-schedule",
+      "lastAttempt": "2026-10-30T12:49:19.186Z",
+      "lastSuccess": "2026-10-30T12:49:19.482Z"
+    }
+  ],
+  "errors": 0,
+  "heartbeat": "recCpv3iPc1R8eAqX",
+  "showDays": [
+    {
+      "date": "2026-10-29",
+      "status": "Stale",
+      "record": "recohTvwKk7pDGnk1",
+      "revision": "adaptive-2026-10-30T12:38:17.247751+00:00",
+      "digest": "25a6695f2e894e9927957f5ad0b1afd680051b9604bc44dd1ae533b8de56552b"
+    },
+    {
+      "date": "2026-10-30",
+      "status": "Stale",
+      "record": "recNKs86S27g79pl5",
+      "revision": "adaptive-2026-10-30T12:38:17.247751+00:00",
+      "digest": "f33333e4af8df711e864dda0857c2aec8589f214bfe435ee5d3edda954438c33"
+    },
+    {
+      "date": "2026-10-31",
+      "status": "Stale",
+      "record": "recV3qjf5oJAQW8SY",
+      "revision": "adaptive-2026-10-30T12:38:17.247751+00:00",
+      "digest": "7f95c27c2badec5b31297e9ce9d03475525ca16baf33816b6194d6177d559216"
+    },
+    {
+      "date": "2026-11-01",
+      "status": "Stale",
+      "record": "recs1RPpDh6bGuHkY",
+      "revision": "adaptive-2026-10-30T12:38:17.247751+00:00",
+      "digest": "defa15561bc12883850861f18f0db01a7ca5a4190c382fc2f849067ffc5ac2ff"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+# WEF Timing coordinator
+
+Updated October 30, 2026. Coordinate contracts, approved work, independent reviews and scheduled proof; Codex is not the runner. This document does not authorize implementation, scheduling, deployment or record changes.
+
+## Ownership
+
+The six calculation/evaluation owners established in the existing chats are ring-pace, class-calculator, entry-calculator, state-and-condition-trigger-evaluator-agent, timing conflict-calculator agent, and input-validity-and-answer-freshness-agent. Their respective exclusive areas are ring pace/delay; class/group timing; entry go-time/order; condition transitions; participation conflicts; and input identity/freshness. They are not all implemented. An earlier results-contract-agent also exists; the owner subsequently assigned Results contract coordination to this coordinator with wef-results-coordinator. Answer publishing has a separate historical planning chat and is not active under the current Timing scope. A five-owner roster is not supported by the available assignments; do not silently drop an owner.
+
+## Current Data + Live contract
+
+| Area | Inputs and ownership | Outputs and consumers | Status and failure behavior |
+| --- | --- | --- | --- |
+| Authority and coverage | wef-shows `shows`: unique default record, `show-key`, customer/show IDs, `start_date`, `end_date`, `selected_date`, `last_checked`. Data retained immutable handoff supplies verified show/day group and class membership and schedule evidence. | Exact customer/show/date/ring/group and occurrence identities; source pointer/proof. | Shows and Data evidence under 30 minutes; stale, incomplete or changed authority is withheld. Shows is authority, not a Schedules lane. |
+| Ring pace | Data group members, windows/counts and verified Live `collections`/`live-groups`; Live freshness under 10 minutes. | wef-timing `timing-answers`: `answer-kind`, `source-lane`, `scope-key`, `answer-key`, `evaluated-at`, `content-hash`, `input-refs-json`, `reason-codes-json`, `payload-json`, availability and pace. Class timing consumes compatible pace. | Missing evidence produces partial/unavailable reasons. Scope includes lane, show, date, ring and group. |
+| Class timing | Data class occurrence and group identity, compatible ring pace, validated Live class evidence where present; three-minute fallback when pace unavailable. | Same answer table, `answer-kind=class-timing`; class and occurrence/phase are in scope key and payload. | Unavailable evidence remains explicit. Calculated completion candidate does not establish authoritative whole-class completion across rounds. |
+| Runner and rollover | Existing `wef-timing-data` scheduled task; source checks, verified answers and persisted checkpoints. | `engine-checkpoints` holds state, source proof and purge intent/receipts. Current implementation evaluates before deleting but has no Timing archive. | **Gap:** previously observed retired shows can have current/future records selected for deletion. The revised policy below requires protection. The runner is disabled after the 09:55 scheduled deadline failure. |
+| Entry, state, conflict and shared freshness | Previous planning only; require current approved source contracts. | No verified active Timing output or handoff established by this document. | Do not activate on the basis of historical plans. Messages delivery, Results and publishing remain separately owned; no verified Timing integration is claimed here. |
+
+Destination base `wef-timing` is `appYOykKIy1kAquhP`; `timing-answers` is `tblhIjSjeGs5td23c` and `engine-checkpoints` is `tblfWyTqeyvIvhAjb`. The Data lane reads Data's verified local retained handoff, Shows authority and allowed Live tables. It does not use a Schedules data lane, legacy data/calculators or SQLite. See `wef-timing/data-runner.js`, `pace.js`, `class-timing.js`, `purge.js` and `api.js` for exact current implementation and field details.
+
+## Required retention and archival policy — October 30
+
+This is the owner's required policy, **not yet implemented or verified**. Apply it to `timing-answers`, `engine-checkpoints`, and the required `run-logs`, `heartbeat`, `errs-log`, and `code-reviews` tables. Record appropriate retention and archive handling for each, including operational/control records; never purge any category merely because another category is eligible. Retention periods for operational and review records are not yet decided.
+
+- Preserve full source records, record IDs, fields and links in compressed content-hashed local archives; verify complete readback and hash before deletion. Keep a durable wef-timing Airtable archive index with path, scope, count, hash, verification and cleanup status. Index structure remains to be selected.
+- Protect current and future show-day answers for every show. Require fresh verified show/date authority, complete relevant Data coverage and successful calculation/readback before retirement. A failed run, unresolved identities, failed archive or failed index readback must block affected deletions.
+- Preserve existing exact deletion intents, response and absence readback; an uncertain deletion stops for owner review. Never blindly retry or repair records. Archives already owned by Live or Data are input evidence and do not substitute for archiving Timing outputs.
+- Retain the approved every-three-minute, all-eligible-group/class coverage and evaluate before cleanup. The question of calculating only today's date versus future show days is pending the owner's decision; do not silently change scope. No caps, SQLite, Schedules lane, legacy changes or manual production runs.
+- On October 30 ring-pace reported creation and schema readback of `run-logs` (`tblpWjnTv7S0CBKLV`), `heartbeat` (`tblOeNxsfjCawlEmu`), `errs-log` (`tbliHowblBdSL51ov`), and `code-reviews` (`tblZ9hOKkfGMAPp8v`). `errs-log` uses `occurred-at`; Live's computed `Created` field was unavailable through the connector. Writer wiring and archival behavior are unimplemented and unverified. Table creation alone does not implement retention.
+
+## Review and evidence
+
+- Apply `C:/Users/gombc/.agents/skills/code-review/SKILL.md` to actual changes, baseline, failure paths and downstream consumers. Record findings and verification gaps separately from deployment and scheduled proof.
+- Independent read-only ring-pace review on October 30 covered the Data authority fence and purge diagnostics. The source Shows refresh was supported as the earlier deferral cause, but the original receipt could not distinguish all fences.
+- Two normal scheduled runs on October 30 at 09:43 and 09:46 Eastern were independently checked against pinned Data and Airtable: 201 groups and 371 classes each. The second purged 50 older snapshots and deferred 243; 143 group answers and 239 class answers were unavailable. Evidence: `wef-timing/evidence/data-normal-73cdaa6e-37e1-4fe6-8f84-6feddcb1bb80.json` and `data-normal-bd2ec742-01a8-4efe-9ef7-e0ab0760c982.json`. These are dated proof, not current health.
+- No Timing-specific recurring code review was found among local automation files on October 30. The registered Records reviews do not establish Timing coverage. A proposed bounded read-only Timing review would inspect current implementation, deployment/version evidence, changed contracts, scheduled receipts and open findings, report only; its schedule and creation require direct owner authorization.
+
+## Operating boundaries
+
+Preserve approved scope, protected changes and stops. No manual production runs, substitute endpoints, record repairs, task/cadence changes, deployment or publication through this document. After an approved scheduled path fails, stop that path; a separate `APPROVED TO EDIT` is required before patching or retrying. Require normal scheduled proof and Airtable readback when specified. Recheck instructions at resume, direction change and handoff; distinguish loaded skills, actual review, offline tests and live verification.
+
+For continuity, inspect exact-session telemetry at task boundaries and the first tool boundary after 30 active minutes. The owner-requested preparation threshold is 65% estimated input/context window; unavailable telemetry is unknown. Use the canonical context-compact procedure, preserve private archives outside committed Git, and never claim compaction without an observed event. A heartbeat is only supplementary, not a workflow runner.

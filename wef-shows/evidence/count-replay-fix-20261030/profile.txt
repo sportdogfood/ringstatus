@@ -1,0 +1,30 @@
+         596242 function calls (596081 primitive calls) in 8.684 seconds
+
+   Ordered by: cumulative time
+   List reduced from 248 to 22 due to restriction <22>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.006    0.006    8.687    8.687 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\day_counts.py:130(accepted_summaries)
+     1090    0.050    0.000    7.064    0.006 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\data_contract.py:76(thaw)
+    10606    0.027    0.000    6.119    0.001 C:\Python311\Lib\json\__init__.py:299(loads)
+    10606    0.035    0.000    5.992    0.001 C:\Python311\Lib\json\decoder.py:332(decode)
+    10606    5.929    0.001    5.929    0.001 C:\Python311\Lib\json\decoder.py:343(raw_decode)
+       48    0.014    0.000    4.202    0.088 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\day_counts.py:116(retained_units)
+      545    0.004    0.000    3.888    0.007 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\day_counts.py:120(append)
+        1    0.001    0.001    3.585    3.585 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-schedules\tests\wef_data_handoff.py:114(revision_chain)
+       48    0.077    0.002    3.581    0.075 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-schedules\tests\wef_data_handoff.py:86(completed_revision)
+     1090    0.016    0.000    0.903    0.001 C:\Python311\Lib\base64.py:65(b64decode)
+     1090    0.831    0.001    0.831    0.001 {built-in method binascii.a2b_base64}
+     1708    0.004    0.000    0.623    0.000 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\data_contract.py:4(packed)
+     1708    0.007    0.000    0.619    0.000 C:\Python311\Lib\json\__init__.py:183(dumps)
+       48    0.000    0.000    0.617    0.013 {built-in method builtins.next}
+       96    0.005    0.000    0.617    0.006 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\day_counts.py:138(<genexpr>)
+     1708    0.007    0.000    0.611    0.000 C:\Python311\Lib\json\encoder.py:183(encode)
+     1708    0.602    0.000    0.602    0.000 C:\Python311\Lib\json\encoder.py:205(iterencode)
+     9508    0.023    0.000    0.497    0.000 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\data_contract.py:7(digest)
+     9555    0.410    0.000    0.410    0.000 {built-in method _hashlib.openssl_sha256}
+     4734    0.018    0.000    0.276    0.000 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\data_contract.py:10(validate_reference)
+        4    0.132    0.033    0.251    0.063 C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\day_counts.py:15(summaries)
+    10645    0.103    0.000    0.103    0.000 {method 'encode' of 'str' objects}
+
+

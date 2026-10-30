@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-30",
+  "standard": "wef-code-review-v1",
+  "purpose": "Owner-requested independent review documentation; seven new release review records and six missing administrative tables",
+  "records": [
+    {
+      "module": "wef-shows",
+      "base": "appCaSmL819KK7UFJ",
+      "table": "tblYDJfIh17xCCtIP",
+      "record": "recjXg1esmui5DGOs",
+      "readbackMatches": true,
+      "result": "Review PASS; scheduled acceptance PASS; source freshness Stale",
+      "url": "https://airtable.com/appCaSmL819KK7UFJ/tblYDJfIh17xCCtIP/recjXg1esmui5DGOs"
+    },
+    {
+      "module": "wef-live",
+      "base": "appgzosUcVqA4vZdf",
+      "table": "tbl1jEtJusopJGC6O",
+      "record": "rec5fLj3xEqkYBpxA",
+      "readbackMatches": true,
+      "result": "Review FAIL: 3 P2 defects; offline PASS; populated acceptance PARTIAL",
+      "url": "https://airtable.com/appgzosUcVqA4vZdf/tbl1jEtJusopJGC6O/rec5fLj3xEqkYBpxA"
+    },
+    {
+      "module": "wef-data",
+      "base": "appdl16HJ5ETm8N69",
+      "table": "tblrpt7ZqoUGr2VFj",
+      "record": "receKH1C8dQIxPiDV",
+      "readbackMatches": true,
+      "result": "PARTIAL: P2 outgoing-archive race; current-show scheduled proof PASS",
+      "url": "https://airtable.com/appdl16HJ5ETm8N69/tblrpt7ZqoUGr2VFj/receKH1C8dQIxPiDV"
+    },
+    {
+      "module": "wef-season-trainers",
+      "base": "appzZsd3UqMRR2CNc",
+      "table": "tbluWs084sVApiWyZ",
+      "record": "recyQXvJZbYFCwwsJ",
+      "readbackMatches": true,
+      "result": "PASS within Season scope; scheduled PASS; upstream/shared/rollover limits recorded",
+      "url": "https://airtable.com/appzZsd3UqMRR2CNc/tbluWs084sVApiWyZ/recyQXvJZbYFCwwsJ"
+    },
+    {
+      "module": "wef-season-riders",
+      "base": "appkWkm9rFLrkUvaD",
+      "table": "tbl1yR7TBkb9qGKNs",
+      "record": "rececydkDBe3pq0nO",
+      "readbackMatches": true,
+      "result": "PASS within Season scope; scheduled PASS; upstream/shared/rollover limits recorded",
+      "url": "https://airtable.com/appkWkm9rFLrkUvaD/tbl1yR7TBkb9qGKNs/rececydkDBe3pq0nO"
+    },
+    {
+      "module": "wef-season-horses",
+      "base": "appETrjio9Yj9Pv17",
+      "table": "tbl6q1qxN2KgdbIaE",
+      "record": "recjyJucOJKkhDKQv",
+      "readbackMatches": true,
+      "result": "PASS within Season scope; scheduled PASS; upstream/shared/rollover limits recorded",
+      "url": "https://airtable.com/appETrjio9Yj9Pv17/tbl6q1qxN2KgdbIaE/recjyJucOJKkhDKQv"
+    },
+    {
+      "module": "wef-season-rings",
+      "base": "appxMk9wfbBHEvC5e",
+      "table": "tblZa00dMCVYFo46K",
+      "record": "rec3CSKz1au3Xs6XZ",
+      "readbackMatches": true,
+      "result": "PASS within Season scope; scheduled PASS; upstream/shared/rollover limits recorded",
+      "url": "https://airtable.com/appxMk9wfbBHEvC5e/tblZa00dMCVYFo46K/rec3CSKz1au3Xs6XZ"
+    }
+  ],
+  "allSevenExactFieldReadbacks": true,
+  "preservedMondayReview": {
+    "base": "appdl16HJ5ETm8N69",
+    "record": "rec3DITcZqf1uAP1L",
+    "status": "Pending first scheduled review",
+    "next": "2026-11-02",
+    "cadence": "Every Monday, 09:00 America/New_York",
+    "unchanged": true
+  },
+  "newReviewSchedulesCreated": 0,
+  "businessRecordRepairs": 0,
+  "collectorOrTaskChanges": 0,
+  "fixesAuthorizedOrPerformedByReview": false
+}

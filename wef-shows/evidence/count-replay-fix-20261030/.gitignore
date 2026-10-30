@@ -1,0 +1,4 @@
+# Large immutable diagnostic snapshots remain local, not repository source.
+*-input.json
+runs.json
+staged/

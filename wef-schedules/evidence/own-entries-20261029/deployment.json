@@ -1,0 +1,64 @@
+{
+  "at": "2026-10-30T02:07:48.353Z",
+  "files": [
+    {
+      "file": "entries-source.js",
+      "sha256": "aaa035ab8345d86c1f4ebb7a250f6a2c956556007ee27179ba572280d5beadaf"
+    },
+    {
+      "file": "entries-model.js",
+      "sha256": "eb3411f71110d7c2f5cb617b218e02f6f5c34876372d792a149021532c12698c"
+    },
+    {
+      "file": "entries-api.js",
+      "sha256": "5a36ec1f4b436839e2ba0c58f9e61cdb529dd417b35f96a000884d1772187618"
+    },
+    {
+      "file": "entries-schema.js",
+      "sha256": "baca4f615fd2280f853213cf2f535cdd94d7e5ae51eba8e2f4c940f86a52410d"
+    },
+    {
+      "file": "entries-collector.js",
+      "sha256": "34e7958f829ab1fc9867fa62815c7a5fef64c684594c301edff977d43e5508f5"
+    },
+    {
+      "file": "tests/own-entries.test.js",
+      "sha256": "826d44a9cd8d51c9548fd1957abd30174a90e309ab918ca1f3cf1a086cf708b0"
+    },
+    {
+      "file": "tests/fixtures/own-entries-class.json",
+      "sha256": "f390b591013e5e3e0a04896e035d0c43d75560aff6e0af4527bc7f3c5348d7ac"
+    },
+    {
+      "file": "store.js",
+      "sha256": "989fe06e4293dad86f82cbc75414d7ea308cb9ed71d278e4d96a7ffa15bd271b"
+    },
+    {
+      "file": "attempt-entry.js",
+      "sha256": "3f782a402521a07c426f69ce9865c56e845c9ef249cd01a18bf9a2d33fe1aa18"
+    },
+    {
+      "file": "run-logs.js",
+      "sha256": "857a2ca7f56d3f7513c5e3d2428d385bec4d606b5cdbf12c40b7e2a4ef596ad7"
+    },
+    {
+      "file": "error-logs.js",
+      "sha256": "4faa80d9793d04bec1ea150ae56c99a33eb6a64efc58c5dbb5056ab8431809c5"
+    },
+    {
+      "file": "README.md",
+      "sha256": "8ebf467ce2524ac9dc97dabf0194b32c2e67f0b27e5115f93eb8e12215881e90"
+    },
+    {
+      "file": "scope.md",
+      "sha256": "fe1a9f58e7470844509c3360dea754e8b9bc90dadee949519eee34ba92b045cc"
+    },
+    {
+      "file": "source-manifest.json",
+      "sha256": "ea9fb6cdbccb90f402e68324060677f9c43b17cde6f45bce8208035806332aa1"
+    }
+  ],
+  "manualRuns": 0,
+  "recordRepairs": 0,
+  "taskChanges": 0
+}

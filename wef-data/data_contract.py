@@ -7,6 +7,16 @@ def packed(value):
 def digest(value):
     return hashlib.sha256(value.encode('utf-8')).hexdigest()
 
+def validate_reference(reference,row,completed=False):
+    if 'archive' in reference:
+        if reference.get('record-id') is not None or row.get('_archive')!=reference['archive']:
+            raise ValueError('Archive observation provenance changed')
+    elif not reference.get('record-id') or reference['record-id']!=row.get('_record-id'):
+        raise ValueError('Retained collection record ID changed')
+    if row['retained-sha256']!=reference['sha256'] or digest(row['retained-json'])!=reference['sha256']:
+        raise ValueError('Retained observation hash changed')
+    if completed and row.get('status')!='Verified retained observation':raise ValueError('Completed collection mismatch')
+
 class DirectoryDrift(ValueError):
     """Valid scoped listing changed; requires a new coherent pass, never deletion."""
     def __init__(self,reason,expected,received):

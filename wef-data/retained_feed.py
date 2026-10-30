@@ -2,6 +2,22 @@
 import copy,json,pathlib,sys,hashlib
 from data_contract import packed,digest
 
+def collection_rows(repo,state=None):
+    """Legacy native IDs and archive objects share validation, never fabricated IDs."""
+    references={}
+    for row in repo.graph['runs'].values():
+        for ref in json.loads(row.get('state-json') or '{}').get('observations',[]):
+            if 'archive' in ref:references[ref['key']]=ref
+    for ref in (state or {}).get('observations',[]):
+        if 'archive' in ref:references[ref['key']]=ref
+    class Rows(dict):
+        def __missing__(self,key):
+            if key not in references:raise KeyError(key)
+            store=getattr(repo,'evidence',None)
+            if store is None:raise ValueError('Archive-backed observation requires retained evidence reader')
+            row=store.read(references[key]);self[key]=row;return row
+    return Rows({k:{**v,'_record-id':repo.inventory['collections'][k]['id']} for k,v in repo.graph['collections'].items()})
+
 def replay(units):
     from wef_data_handoff import TABLE_KEYS
     facts={}
@@ -15,7 +31,7 @@ def replay(units):
 def facts_for_state(repo,state):
     from wef_data_handoff import revision_chain
     from day_counts import retained_units
-    collections={k:{**v,'_record-id':repo.inventory['collections'][k]['id']} for k,v in repo.graph['collections'].items()}
+    collections=collection_rows(repo,state)
     units=[];previous=state.get('predecessor')
     if previous:
         for _,saved in revision_chain(previous['run-key'],repo.graph['runs'],collections):units.extend(saved)
@@ -49,13 +65,20 @@ def put(root,name,value):
 def publish(repo,state,root,authority):
     from wef_data_handoff import revision_chain
     runs=repo.graph['runs'];head=next(k for k,r in runs.items() if r.get('state-json')==packed(state))
-    collections={k:{**v,'_record-id':repo.inventory['collections'][k]['id']} for k,v in repo.graph['collections'].items()}
+    collections=collection_rows(repo,state)
     chain=revision_chain(head,runs,collections);run_names={}
     for journal,_ in chain:
         key=next(k for k,r in runs.items() if r.get('state-json')==packed(journal));sha=digest(runs[key]['state-json'])
         put(root,'objects/run-'+sha+'.json',{n:runs[key][n] for n in ('run-key','status','state-json')});run_names[key]=sha
         # Equal frozen bytes can belong to distinct existing collection records.
-        for ref in journal['observations']:put(root,'objects/part-'+ref['record-id']+'-'+ref['sha256']+'.json',{n:collections[ref['key']][n] for n in ('collection-key','status','retained-json','retained-sha256','_record-id')})
+        for ref in journal['observations']:
+            if 'archive' in ref:
+                from archive_evidence import immutable
+                store=repo.evidence;local=store.local_path(ref)
+                source=local if local.exists() else store.repository/ref['archive']['path']
+                store.read(ref)
+                immutable(pathlib.Path(root)/'objects'/('part-archive-'+ref['archive']['sha256']+'.json.gz'),source.read_bytes())
+            else:put(root,'objects/part-'+ref['record-id']+'-'+ref['sha256']+'.json',{n:collections[ref['key']][n] for n in ('collection-key','status','retained-json','retained-sha256','_record-id')})
     from data_runner import atomic
     atomic(pathlib.Path(root)/('head-'+state['show-key'].replace('|','-')+'.json'),{'head':head,'run-sha256':run_names[head],'show-key':state['show-key'],'authority':authority})
 
@@ -68,7 +91,10 @@ def load(root,pointer):
         if row['run-key']!=key or digest(row['state-json'])!=sha:raise ValueError('Retained run hash/key mismatch')
         runs[key]=row;state=json.loads(row['state-json'])
         for ref in state['observations']:
-            part=json.loads((root/'objects'/('part-'+ref['record-id']+'-'+ref['sha256']+'.json')).read_text(encoding='utf-8'))
+            if 'archive' in ref:
+                from archive_evidence import archived_row
+                part=archived_row((root/'objects'/('part-archive-'+ref['archive']['sha256']+'.json.gz')).read_bytes(),ref)
+            else:part=json.loads((root/'objects'/('part-'+ref['record-id']+'-'+ref['sha256']+'.json')).read_text(encoding='utf-8'))
             if part['collection-key']!=ref['key']:raise ValueError('Retained part key mismatch')
             collections[ref['key']]=part
         previous=state.get('predecessor');key=previous['run-key'] if previous else None;sha=previous['state-sha256'] if previous else None

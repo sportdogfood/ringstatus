@@ -1,3 +1,15 @@
+# Schedules-owned entry/trip collection - 29 October 2026
+
+Owner-approved: collect every source entry and dated trip independently inside Schedules, without trainer filters or artificial total-row caps. Use existing decoded endpoints; four concurrent class requests are only an in-flight bound. No other collector is an input, output or runtime dependency. The existing five-minute task and schedule collection remain unchanged.
+
+New tables: entries (customer/show/entry), trips (customer/show/date/class/entry/source UUID or trip ID), entry-collection (scoped complete/Failed status, original source timestamps/counts and archive pointer). Native links resolve only local show, ring, entry and unique schedule records. Ambiguous schedule matches are Conflict. Prior links/records are archived as history before current links change. No new-table rows are deleted; only confirmed complete class disappearance marks old trips dropped.
+
+New source-sweep archives under runtime/history/entry-collection/<run-id>.json.gz contain raw payloads, read receipts, errors and old entry/trip/collection records. They are compressed/read back/hash verified before publication and logged in run-logs. Source failure remains visible in run-log, heartbeat and err-logs; completed schedule work is retained. Directory registration facts and actual trip trainer/rider identities remain separate. No decoded Worker or legacy routes change.
+
+Review and 179 offline checks passed. Implementation and additive schema accepted through normal22:10/22:15Eastern scheduled runs:877entries,475trips,320classes,10Conflictlinks; no errors. See evidence/own-entries-20261029/acceptance.json. No manual collector/source runs or record repairs. Historical sections below are dated evidence, not proof of this addition.
+
+---
+
 # wef-schedules scope
 
 Version: 1.3  

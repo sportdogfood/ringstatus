@@ -7,7 +7,7 @@ ROOT=pathlib.Path(__file__).resolve().parent
 def main():
     try:
         with worker_lock(ROOT/'runtime'):
-            result=run(ROOT/'runtime',ROOT/'schema.json',ROOT/'authored-fields.json',ROOT/'runtime/archive-repository')
+            result=run(ROOT/'runtime',ROOT/'schema.json',ROOT/'authored-fields.json',ROOT/'runtime/archive-repository',archive_storage=True)
         print(json.dumps(result));return 0 if result['ok'] or result.get('state')=='Deferred' else 1
     except WorkerBusy as error:
         print(json.dumps({'ok':False,'state':'Deferred','source-requests':0,'error':str(error),'write-outcome':'NotSent'}));return 0

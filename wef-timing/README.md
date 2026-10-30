@@ -1,4 +1,8 @@
-# Ring pace
+# WEF Timing
+
+**Current Data + Live lane (October 30, 2026):** See [Timing coordinator](../docs/coordination/wef-timing-coordinator/README.md) for ownership, scope and dated proof. The Data runner writes ring-pace and class-timing snapshots to `wef-timing`; it evaluates all eligible groups and classes before rollover cleanup. The 80-group cap, one-minute cadence and Schedules/Engine destination described below are historical and do not describe this lane. Do not revive the retired lane.
+
+## Historical Schedules/Engine implementation
 
 Owner-approved first Timing build, 29 October 2026. This folder is the deployed
 package; Windows task `wef-timing` invokes run-hidden.vbs -> run.ps1 -> entry.js

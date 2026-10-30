@@ -1,6 +1,7 @@
 "use strict";
 const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:child_process');
 const {hash}=require('./show-days');
+const {archivedRow}=require('./day-archive');
 const BASE='appdl16HJ5ETm8N69';
 const quote=value=>JSON.stringify(String(value));
 function bridge(input,{root=path.resolve(__dirname,'..'),script=path.join(__dirname,'day-replay.py'),python=path.join(root,'wef-data/.venv/Scripts/python.exe')}={}){
@@ -8,7 +9,9 @@ function bridge(input,{root=path.resolve(__dirname,'..'),script=path.join(__dirn
   const env={PYTHONDONTWRITEBYTECODE:'1',PYTHONIOENCODING:'utf-8'};for(const k of ['SystemRoot','WINDIR','PATH','TEMP','TMP'])if(process.env[k])env[k]=process.env[k];
   const child=spawn(python,['-B',script,root],{env,windowsHide:true,stdio:['pipe','pipe','pipe']});let output='',error='',settled=false;
   function fail(e){if(!settled){settled=true;clearTimeout(timer);child.kill();reject(e);}}
-  const timer=setTimeout(()=>fail(Error('Count replay timed out')),45000);
+  // Historical evidence grows within a show. Keep replay bounded, with room
+  // for the full validated chain and transient local contention.
+  const timer=setTimeout(()=>fail(Error('Count replay timed out')),90000);
   child.on('error',fail);child.stdin.on('error',fail);
   child.stdout.on('data',b=>{output+=b;if(output.length>8000000)fail(Error('Count replay output too large'));});
   child.stderr.on('data',b=>{error+=b;if(error.length>10000)fail(Error('Count replay diagnostic too large'));});
@@ -16,7 +19,7 @@ function bridge(input,{root=path.resolve(__dirname,'..'),script=path.join(__dirn
   child.stdin.end(JSON.stringify(input));
  });
 }
-function reader(api,{runtime=path.join(__dirname,'runtime'),replay=bridge,headKey}={}){
+function reader(api,{runtime=path.join(__dirname,'runtime'),replay=bridge,headKey,archiveRoot=path.resolve(__dirname,'../wef-data/runtime/retained-evidence')}={}){
  return async show=>{
   const f=show.fields,context={'show-key':f['show-key'],'customer-id':f.customer_id,'show-id':f.show_id,'start-date':f.start_date,'end-date':f.end_date,'selected-date':f.selected_date};
   const filter=`AND({status}="Verified completed revision",FIND(${quote('"show-key":'+JSON.stringify(f['show-key']))},{state-json}))`;
@@ -32,7 +35,7 @@ function reader(api,{runtime=path.join(__dirname,'runtime'),replay=bridge,headKe
   let key=head,expected;
   while(key){if(seen.has(key))throw Error('Retained revision cycle');seen.add(key);const run=runs[key];if(!run||(expected&&hash(run['state-json'])!==expected))throw Error('Retained predecessor missing or changed');const s=JSON.parse(run['state-json']);if(s.phase!=='Complete'||s.pending||s['show-key']!==context['show-key'])throw Error('Incomplete retained journal');refs.push(...s.observations);key=s.predecessor?.['run-key'];expected=s.predecessor?.['state-sha256'];}
   const cache=path.join(runtime,'day-evidence-cache');fs.mkdirSync(cache,{recursive:true});const missing=[];
-  for(const ref of refs){if(!/^[a-f0-9]{64}$/.test(ref.sha256))throw Error('Invalid retained hash');const file=path.join(cache,cacheName(ref));let row;try{row=JSON.parse(fs.readFileSync(file,'utf8'));}catch(e){if(e.code!=='ENOENT')throw Error('Invalid retained cache');}
+  for(const ref of refs){if(!/^[a-f0-9]{64}$/.test(ref.sha256))throw Error('Invalid retained hash');if(ref.archive){collections[ref.key]=archivedRow(archiveRoot,ref,context['show-key']);continue;}const file=path.join(cache,cacheName(ref));let row;try{row=JSON.parse(fs.readFileSync(file,'utf8'));}catch(e){if(e.code!=='ENOENT')throw Error('Invalid retained cache');}
    if(row){if(row.id!==ref['record-id']||row.fields['collection-key']!==ref.key||hash(row.fields['retained-json'])!==ref.sha256||row.fields.status!=='Verified retained observation')throw Error('Retained cache mismatch');collections[ref.key]={...row.fields,'_record-id':row.id};}else missing.push(ref);
   }
   for(let i=0;i<missing.length;i+=20){const batch=missing.slice(i,i+20),got=await api.list('collections',BASE,`OR(${batch.map(r=>`{collection-key}=${quote(r.key)}`).join(',')})`);

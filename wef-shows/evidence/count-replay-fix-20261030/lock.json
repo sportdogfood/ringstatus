@@ -1,0 +1,14 @@
+{
+  "status": "LOCKED",
+  "release": "count-replay-fix-20261030",
+  "manualRuns": false,
+  "normalReplayRuns": [
+    "e899a0c3-b9a0-4ad4-90a4-51028448b408",
+    "b2fbcfba-e35b-4f66-8b61-fbbe6b177fe1"
+  ],
+  "scope": "1.4",
+  "review": "PASS - no actionable findings",
+  "recordRepairs": false,
+  "manifestSha256": "f61ab5d60867a87be6bb2fe21b83cc782e2f59f893003ed056de281fe3f2a3f4",
+  "at": "2026-10-30T08:52:12.7083104-04:00"
+}

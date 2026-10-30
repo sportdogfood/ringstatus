@@ -27,7 +27,7 @@ async function main({envFile=path.join(__dirname,'runtime/collector.env')}={}){
     if(error)await scopedErrors.record(r,{stage:'collection',message:error});
     return operational.finish(r,report,error);
    }};
-   const result=await require('./store').runStagedCollector({runLog:log,references:require('./show-rings').showRings()});
+   const result=await require('./store').runStagedCollector({runLog:log,references:require('./show-rings').showRings(),entryCollector:require('./entries-collector').collectEntries});
    return result;
   }});
  }catch(error){

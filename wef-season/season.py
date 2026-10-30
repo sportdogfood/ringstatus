@@ -9,6 +9,7 @@ from wef_data_handoff import verify_snapshot,assignment_evidence
 from retained_feed import load
 from season_projection import project
 from season_store import SeasonStore
+from ring_helpers import sync as sync_ring_helpers
 
 def sources(context):
     runtime=PARENT/'wef-data/runtime';show=context['show-key'];path=runtime/'handoff'/('head-'+show.replace('|','-')+'.json')
@@ -38,12 +39,15 @@ def process(entity,config,client,source,authority,assessments=None):
     row=rows[0];field=heartbeat['checkpoint-field'];checkpoints=json.loads(row['fields'].get(field) or '{}')
     assessments={} if assessments is None else assessments
     counters={'records-added':0,'records-updated':0,'records-unchanged':0};changed=False;last_ref=None;assignment_counts={}
+    helper_sources=[];helper_stale=False
     for facts,reference in source:
         show=reference['show-key'];last_ref=reference
-        if checkpoints.get(show,{}).get('revision')==reference['revision']:continue
         old=checkpoints.get(show,{})
         if reference.get('kind')=='retained' and old.get('kind')=='retained':
-            if reference['sequence']<old.get('sequence',0):continue
+            if reference['sequence']<old.get('sequence',0):helper_stale=True;continue
+        helper_sources.append((facts,reference))
+        if old.get('revision')==reference['revision']:continue
+        if reference.get('kind')=='retained' and old.get('kind')=='retained':
             if reference['sequence']==old.get('sequence',0):raise ValueError('Conflicting Season source revision at same sequence')
         identity=(show,reference['revision'])
         if identity not in assessments:assessments[identity]=assignment_evidence(facts)
@@ -57,6 +61,14 @@ def process(entity,config,client,source,authority,assessments=None):
         actual=client.records(config['base'],heartbeat['id'],fields=[field],formula='{heartbeat-key}='+json.dumps(workflow))
         if len(actual)!=1 or actual[0]['id']!=row['id'] or json.loads(actual[0]['fields'].get(field) or '{}')!=updated:raise ValueError('Season checkpoint readback mismatch')
         checkpoints=updated;changed=True
+    if config.get('ring-helpers') and not helper_stale:
+        # Independent additive projection also backfills already-accepted revisions.
+        helpers=sync_ring_helpers(client,config['ring-helpers'],helper_sources,runtime)
+        if canonical_fence(client.canonical_context())!=canonical_fence(authority):raise TransportDeferred('GET','appCaSmL819KK7UFJ','tblJA5CUon5s1sWib')
+        counters.update({'ring-helper-'+name:value for name,value in helpers.items()})
+        changed=changed or bool(helpers['records-added'] or helpers['records-updated'])
+    if config.get('ring-helpers') and helper_stale:
+        return {'status':'Deferred','stage':'RingHelpers','reason':'Helper updates withheld: retained input older than accepted checkpoint','counts':counters,'source-revision':last_ref['revision'] if last_ref else None,'show-key':last_ref['show-key'] if last_ref else None}
     if assignment_counts:
         counters['assignment-source']={'show-key':assignment_counts['show-key'],'revision':assignment_counts['source-revision']}
         counters.update({'complete-trip-assignments':assignment_counts['complete-trips'],'incomplete-trip-assignments':assignment_counts['incomplete-trips'],'withheld-entry-assignments':assignment_counts['withheld-entries']})

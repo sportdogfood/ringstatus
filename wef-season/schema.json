@@ -950,6 +950,149 @@
       "heartbeat": {
         "id": "tblO9jrYgOlZRsHQj",
         "checkpoint-field": "fldxudVk3Ayl8gyrp"
+      },
+      "ring-helpers": {
+        "base": "appxMk9wfbBHEvC5e",
+        "tables": {
+          "rings-helper": {
+            "id": "tblF2LM7ZSEdsCqsM",
+            "name": "rings-helper",
+            "primaryFieldId": "fldM2tEmkEyBvlQbo",
+            "fields": [
+              {
+                "id": "fldM2tEmkEyBvlQbo",
+                "name": "ring-key",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fldYeejm5aOD2MXSx",
+                "name": "ring-number",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldLFrNbx2yM9GuqU",
+                "name": "ring-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldrFqHsXJBXQKlJx",
+                "name": "name",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fld3d4BLuzDsI3Dck",
+                "name": "ring-nickname",
+                "type": "singleLineText"
+              }
+            ]
+          }
+        },
+        "existing-identities": [
+          {
+            "ring-key": "15|500|id:9",
+            "ring-id": 9,
+            "ring-number": 2,
+            "customer-id": 15,
+            "facility-id": 500
+          },
+          {
+            "ring-key": "15|500|id:51",
+            "ring-id": 51,
+            "ring-number": 1,
+            "customer-id": 15,
+            "facility-id": 500
+          },
+          {
+            "ring-key": "15|500|id:53",
+            "ring-id": 53,
+            "ring-number": 8,
+            "customer-id": 15,
+            "facility-id": 500
+          },
+          {
+            "ring-key": "15|500|id:37",
+            "ring-id": 37,
+            "ring-number": 3,
+            "customer-id": 15,
+            "facility-id": 500
+          },
+          {
+            "ring-key": "15|500|id:25",
+            "ring-id": 25,
+            "ring-number": 5,
+            "customer-id": 15,
+            "facility-id": 500
+          },
+          {
+            "ring-key": "15|500|id:52",
+            "ring-id": 52,
+            "ring-number": 4,
+            "customer-id": 15,
+            "facility-id": 500
+          },
+          {
+            "ring-key": "15|500|id:58",
+            "ring-id": 58,
+            "ring-number": 7,
+            "customer-id": 15,
+            "facility-id": 500
+          },
+          {
+            "ring-key": "15|500|id:56",
+            "ring-id": 56,
+            "ring-number": 6,
+            "customer-id": 15,
+            "facility-id": 500
+          },
+          {
+            "ring-key": "15|516|id:48",
+            "ring-id": 48,
+            "ring-number": 5,
+            "customer-id": 15,
+            "facility-id": 516
+          },
+          {
+            "ring-key": "15|516|id:10",
+            "ring-id": 10,
+            "ring-number": 1,
+            "customer-id": 15,
+            "facility-id": 516
+          },
+          {
+            "ring-key": "15|516|id:13",
+            "ring-id": 13,
+            "ring-number": 4,
+            "customer-id": 15,
+            "facility-id": 516
+          },
+          {
+            "ring-key": "15|516|id:3",
+            "ring-id": 3,
+            "ring-number": 2,
+            "customer-id": 15,
+            "facility-id": 516
+          },
+          {
+            "ring-key": "15|516|id:44",
+            "ring-id": 44,
+            "ring-number": 3,
+            "customer-id": 15,
+            "facility-id": 516
+          },
+          {
+            "ring-key": "15|516|id:45",
+            "ring-id": 45,
+            "ring-number": 6,
+            "customer-id": 15,
+            "facility-id": 516
+          }
+        ]
       }
     }
   }

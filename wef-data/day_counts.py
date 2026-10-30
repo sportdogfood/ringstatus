@@ -115,13 +115,13 @@ def validate_summary(envelope,context):
 
 def retained_units(state,collections):
     """Verify exact current reservation or completed journal; do not query a service."""
-    from data_contract import thaw
+    from data_contract import thaw,validate_reference
     output=[];parts=[];references=[]
     def append():
         if parts:output.append((thaw(parts),list(references)))
     for reference in state['observations']:
         row=collections[reference['key']]
-        if row['_record-id']!=reference['record-id'] or row['retained-sha256']!=reference['sha256'] or digest(row['retained-json'])!=reference['sha256']:raise ValueError('Count input reference mismatch')
+        validate_reference(reference,row)
         if json.loads(row['retained-json'])['part']==0 and parts:append();parts=[];references=[]
         parts.append(row);references.append(reference)
     append()

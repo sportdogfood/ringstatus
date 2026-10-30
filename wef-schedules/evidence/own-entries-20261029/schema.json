@@ -1,0 +1,355 @@
+{
+  "base": "appUq5Qz9kARqFija",
+  "verified": true,
+  "tables": [
+    {
+      "id": "tblLBWEZylv4FRxuc",
+      "name": "entries",
+      "description": "Schedules-owned all-show source entry directory, collected independently through decoded endpoints. No trainer filter or dependency on another entry collector. Source times, identity and archive evidence retained; owner fields preserved.",
+      "primaryFieldId": "fld4nYvGk96hDyPJf",
+      "fields": [
+        {
+          "id": "fld4nYvGk96hDyPJf",
+          "name": "entry-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldyXrnL7F4vbRVR0",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "flda3OheQYPeWoXGb",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldRa7w8HR1RTjfsu",
+          "name": "entry-id",
+          "type": "number"
+        },
+        {
+          "id": "fldtgTI8PFE0ehDYG",
+          "name": "entry-number",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldGNZPIfcRcmCFRq",
+          "name": "horse-id",
+          "type": "number"
+        },
+        {
+          "id": "fldHCS7NbBJiFBkCt",
+          "name": "horse-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld6bE1bkBL4Gp4FT",
+          "name": "rider-ids",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldynKZKpd2DqgjiO",
+          "name": "trainer-ids",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldIm01DUKlfQuUfP",
+          "name": "trainer-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldjtbM1AO965rqww",
+          "name": "status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldRqOVjhm09NFFqJ",
+          "name": "observed-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldT5hREs14HI8DWd",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldA0iwlSMcaSNlrS",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldxBMZorz6Dxo8Rd",
+          "name": "shows",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldwAJRuwLF2NPTYg",
+          "name": "trips",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tbltVPpKPJY3UuGsI",
+      "name": "trips",
+      "description": "Schedules-owned decoded class trips across every date of the current show. One source trip identity per show/date/class/entry; exact local entry/ring/show references, unique schedule links or Conflict. No total-row cap or trainer selection. Verified archive precedes publication.",
+      "primaryFieldId": "fldfzGs7qBE8tPQfJ",
+      "fields": [
+        {
+          "id": "fldfzGs7qBE8tPQfJ",
+          "name": "trip-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld44bwyEgy4xt7wI",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldwv7EWI6qCNV0hd",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fld6shHrRdmP8bc5M",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldfpVKFKXQa8HMyW",
+          "name": "ring-number",
+          "type": "number"
+        },
+        {
+          "id": "fldIB9tLBabj7t5DB",
+          "name": "class-id",
+          "type": "number"
+        },
+        {
+          "id": "fldWRqP6DBd4igUKd",
+          "name": "class-number",
+          "type": "number"
+        },
+        {
+          "id": "fldFpMBQbM7uGYqjb",
+          "name": "class-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldmCPtJS4SYVgtue",
+          "name": "entry-id",
+          "type": "number"
+        },
+        {
+          "id": "fldAsgIEKmr58FOaU",
+          "name": "horse-id",
+          "type": "number"
+        },
+        {
+          "id": "fld7p3WUbYURiNHXb",
+          "name": "horse-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld6EUYMPzDmnjmDe",
+          "name": "rider-id",
+          "type": "number"
+        },
+        {
+          "id": "fldLFuFBk7U5ykHHt",
+          "name": "rider-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldGygfaJCdLEPDii",
+          "name": "trainer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldHE1Cwy9xVvxCrR",
+          "name": "trainer-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldkl9L3t2wAPx3I5",
+          "name": "trip-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldEGx2TNxfGDN2Wv",
+          "name": "source-uuid",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldg5N0pU2fA8sXCM",
+          "name": "order-of-go",
+          "type": "number"
+        },
+        {
+          "id": "fldNwvhWG7XTVXqsU",
+          "name": "actual-order",
+          "type": "number"
+        },
+        {
+          "id": "fld3bx9NZDF055rSk",
+          "name": "gone-in",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld1M1sJZ3yTFTzCx",
+          "name": "scratch",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldX0msJmq2kt8XEW",
+          "name": "placing",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldzvNg1w5a8AIzRr",
+          "name": "estimated-go-time",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldVjMXy2HTU8ZQ4F",
+          "name": "status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldq34O2Cna0QzYuL",
+          "name": "observed-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldwBupJr19O9lFvJ",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldsJRulWQYAExz6Y",
+          "name": "schedule-link-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldIp6iiWR2HKma6G",
+          "name": "schedule-keys",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldtyFephBCsOLwda",
+          "name": "link-issues",
+          "type": "multilineText"
+        },
+        {
+          "id": "flddBGS1nXxrBmsBp",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldZGWvuw4nMYPPd3",
+          "name": "entries",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldP11EA28cFSkRPV",
+          "name": "shows",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldVsLvwdIMP0M88e",
+          "name": "rings",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldzBqMiUHm7Ku6JP",
+          "name": "schedules",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tblarajGIoNGAEWFW",
+      "name": "entry-collection",
+      "description": "Schedules-owned directory/class collection status. Complete validated empty is zero; failed source retains prior success fields and records. Each source scope carries run ID, original observation time, count and verified local source archive evidence. Normal scheduled invocations only.",
+      "primaryFieldId": "fldEeVwgqsGVD04DA",
+      "fields": [
+        {
+          "id": "fldEeVwgqsGVD04DA",
+          "name": "collection-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldFIPZrzfnlbtTko",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldeqVoZuvkBau8RQ",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fld3gry1MCTPY8iA6",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldOTNoujgFR70MKK",
+          "name": "source-kind",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldgM0zLjIheFdJjD",
+          "name": "source-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldLt15FRFbCCxqbI",
+          "name": "status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldj5rIHDpL36oZms",
+          "name": "started",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldF96XCLxyCEKhxn",
+          "name": "checked-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld7M1HEalsfyv5qB",
+          "name": "observed-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldjZ4MSwKHgH8tYg",
+          "name": "row-count",
+          "type": "number"
+        },
+        {
+          "id": "fld0pJTOXHLuQiF41",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldJhJBnKBYAWPC2B",
+          "name": "fingerprint",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldG2ib4k2TlSHjqi",
+          "name": "archive-file",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldqhSVDL8gzafPB1",
+          "name": "message",
+          "type": "multilineText"
+        }
+      ]
+    }
+  ]
+}

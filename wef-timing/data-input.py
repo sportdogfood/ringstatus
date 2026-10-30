@@ -3,12 +3,33 @@ import datetime,hashlib,json,pathlib,sys
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 sys.path[:0]=[str(ROOT/'wef-data'),str(ROOT/'wef-schedules/tests')]
 from retained_feed import load
+from archive_evidence import archived_row
 from wef_data_handoff import completed_revision
 from day_counts import retained_units,instant
 
 def read(path):return json.loads(path.read_text(encoding='utf-8'))
 def positive(value):return type(value) is int and value>0
+def read_part(root,reference):
+    """Read the producer's exact native/archive handoff object, without ID synthesis."""
+    if 'archive' in reference:
+        body=(root/'objects'/('part-archive-'+reference['archive']['sha256']+'.json.gz')).read_bytes()
+        part=archived_row(body,reference)
+    else:
+        part=read(root/'objects'/('part-'+reference['record-id']+'-'+reference['sha256']+'.json'))
+    if part['collection-key']!=reference['key']:raise ValueError('Data retained part key mismatch')
+    return part
+
+def source_reference(reference):
+    # collections is the producer's logical observation namespace. Only native
+    # Airtable observations have a record ID; archives retain their exact proof.
+    result={'base':'appdl16HJ5ETm8N69','table':'collections','key':reference['key'],'sha256':reference['sha256']}
+    if 'archive' in reference:result['archive']=dict(reference['archive'])
+    else:result['record']=reference['record-id']
+    if 'scope' in reference:result['scope']=reference['scope']
+    return result
+
 def project(root,pointer,context):
+    root=pathlib.Path(root)
     fence=[context[k] for k in ('show-key','start-date','end-date','selected-date')]
     if pointer.get('authority')!=fence or pointer.get('show-key')!=context['show-key']:raise ValueError('Data canonical authority mismatch')
     # Reuse the producer's full immutable-chain/readback validator.
@@ -21,7 +42,7 @@ def project(root,pointer,context):
         state=json.loads(run['state-json']);parts={}
         if key==pointer['head'] and (state.get('authority')!=fence or state.get('authority-before')!=fence):raise ValueError('Data completed-head authority mismatch')
         for ref in state['observations']:
-            part=read(root/'objects'/('part-'+ref['record-id']+'-'+ref['sha256']+'.json'));parts[ref['key']]=part
+            parts[ref['key']]=read_part(root,ref)
         completed_revision(run,parts)
         for unit,unit_refs in retained_units(state,parts):
             if unit['scope']!='dated-inventory-page':continue
@@ -43,7 +64,7 @@ def project(root,pointer,context):
                     group['rows'].append({'stage-key':source_key,'class-id':cid if positive(cid) else None,
                         'start-time':row.get('estimated_start_time') or row.get('start_time_default'),'end-time':row.get('estimated_end_time'),
                         'total-trips':row.get('total_trips'),'type':'break' if row.get('schedule_break') else row.get('class_type') or 'class'})
-            refs=[{'base':'appdl16HJ5ETm8N69','table':'collections','key':ref['key'],'record':ref['record-id'],'sha256':ref['sha256']} for ref in unit_refs]
+            refs=[source_reference(ref) for ref in unit_refs]
             for group in groups.values():group['class_keys']=sorted(set(group['class_keys']))
             inventories[day]={'observed_at':at,'groups':list(groups.values()),'refs':refs,'inventory_complete':True}
         prior=state.get('predecessor');key=prior['run-key'] if prior else None;sha=prior['state-sha256'] if prior else None

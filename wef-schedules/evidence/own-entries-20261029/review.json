@@ -1,0 +1,11 @@
+{
+  "reviewer": "own_entries_review",
+  "result": "No remaining blockers",
+  "resolved_findings": [
+    "blank-cell readback",
+    "current links on ambiguous repeat"
+  ],
+  "independent_tests": 14,
+  "full_offline_tests": 179,
+  "manual_runs": 0
+}

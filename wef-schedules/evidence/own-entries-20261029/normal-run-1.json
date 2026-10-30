@@ -1,0 +1,42 @@
+{
+  "run_log": {
+    "id": "recZdB2z7dV3i83F3",
+    "createdTime": "2026-10-23T20:05:04.000Z",
+    "fields": {
+      "archives": "2026-10-30T02:10:04.877Z: run-logs Created; shows 200000075; dates 2026-10-23,2026-10-24,2026-10-25,2026-10-22; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\run-logs\\e8886606-3075-4062-83f6-750a526f944a.json.gz; SHA256 ffa79652ee5b36ac19f46af90f57f800e5ec2e69281e95af177dc41c7bc4e179\n2026-10-30T02:10:21.473Z: attempts Created; shows 200000076; dates 2026-10-29; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\6402bead-2464-4420-b47d-28fc18b60a86-complete.json.gz; SHA256 8b5c67673ccbb0a65e1c0047f5028ee3f720f8a2553a36b58bad19a173c189c3\n2026-10-30T02:10:35.372Z: attempts Created; shows 200000076; dates 2026-10-30; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\3a36cfd5-ebab-4d11-bf7d-969d0d7c77e6-complete.json.gz; SHA256 0dcb15be1993c0918f1c2342ec007ac5c777720e2135675e7c16c8dd7931f75f\n2026-10-30T02:10:49.882Z: attempts Created; shows 200000076; dates 2026-10-31; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\8f6106b4-cc28-4f0e-b849-31f308904150-complete.json.gz; SHA256 bb35c62db2b3a95cfab1ef84d1cc1b443c273e1a0531eb0f0bda67f1ae9a1d28\n2026-10-30T02:11:06.401Z: attempts Created; shows 200000076; dates 2026-11-01; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\attempts\\fff355cb-b9b3-41de-9635-404022cab48e-complete.json.gz; SHA256 ea636b354be75830dd61d7c32130e12fbb883d8ad3a429a8281d5c2e6311a5a6\n2026-10-30T02:12:11.543Z: entry-collection Created; shows 200000076; dates 2026-10-29,2026-10-30,2026-10-31,2026-11-01; 409 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\entry-collection\\19f039c7-dd55-4c55-8e0e-338c21a1f684.json.gz; SHA256 e390e55485b2116c9f8e9328d3b540b128383e8453005df5dba31e2fb82c322e",
+      "summary": "2026-10-29: 26 rows; 0 classes, 26 schooling/break blocks; added 0, changed 0, dropped 0; dataset reused\n2026-10-30: 43 rows; 37 classes, 6 schooling/break blocks; added 0, changed 0, dropped 0; dataset reused\n2026-10-31: 199 rows; 197 classes, 2 schooling/break blocks; added 0, changed 0, dropped 0; dataset reused\n2026-11-01: 137 rows; 137 classes, 0 schooling/break blocks; added 0, changed 0, dropped 0; dataset reused\nShow/rings verified: show 200000076; source-selected date 2026-10-29; 32 daily rings (8 selected); 8 static helpers; 512 schedule links.\nEntry/trip collection: 877 entries; 475 trips; 320/320 classes; 10 ambiguous schedule links; 409 decoded source reads; complete.",
+      "days-complete": 4,
+      "rows": 405,
+      "completed": "2026-10-30T02:13:54.227Z",
+      "shows": [
+        "rec3DXsFtpXxx2Rr7"
+      ],
+      "show-id": 200000076,
+      "run-id": "19f039c7-dd55-4c55-8e0e-338c21a1f684",
+      "result": "Success",
+      "archive-count": 6,
+      "started": "2026-10-30T02:10:02.880Z",
+      "days-failed": 0
+    }
+  },
+  "receipt": {
+    "runId": "19f039c7-dd55-4c55-8e0e-338c21a1f684",
+    "completed": "2026-10-30T02:13:59.6042907Z",
+    "version": 1,
+    "started": "2026-10-30T02:10:02.8803140Z",
+    "state": "finished",
+    "pid": 31040,
+    "exitCode": 0
+  },
+  "evidence": {
+    "id": "19f039c7-dd55-4c55-8e0e-338c21a1f684",
+    "started": "2026-10-30T02:10:02.880Z",
+    "completed": "2026-10-30T02:13:54.227Z",
+    "result": "Success",
+    "source_requests": 409,
+    "classes": 320,
+    "source_trips": 475,
+    "archive": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\runtime\\history\\entry-collection\\19f039c7-dd55-4c55-8e0e-338c21a1f684.json.gz",
+    "sha256": "e390e55485b2116c9f8e9328d3b540b128383e8453005df5dba31e2fb82c322e"
+  }
+}

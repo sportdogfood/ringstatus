@@ -6,6 +6,13 @@ const now='2026-10-30T00:10:00Z'; // Still October 29 in New York.
 const show={id:'show',fields:{'show-key':'15|76',show_id:76,customer_id:15,is_default:true,selected_date:'2026-10-29',start_date:'2026-10-29',end_date:'2026-11-01',last_checked:'2026-10-30T00:09:00Z'}};
 const scopes=new Map([['2026-10-29',null]]);
 const context={customer:15,show:76,day:'2026-10-29',show_record:'show',retired_shows:[75]};
+test('class snapshots purge only their verified old Data scope',()=>{
+  const c={...context,source_lane:'data_live'},i={customer:15,show:76,date:'2026-10-28',ring:6,group:19,class:20,occurrence:'data-key',phase:'base'};
+  const scope=JSON.stringify(['data_live','class-timing',15,76,i.date,6,19,20,'data-key','base']);
+  const row={fields:{'answer-kind':'class-timing','source-lane':'data_live','show-id':76,date:i.date,'ring-number':6,'group-id':19,'scope-key':scope,'answer-key':scope+'|run|hash','payload-json':JSON.stringify({identity:i})}};
+  assert(eligible(row,c));assert(!eligible({...row,fields:{...row.fields,date:'2026-10-29'}},c));
+  assert(!eligible({...row,fields:{...row.fields,'scope-key':'foreign'}},c));
+});
 function snapshot(sid,date,customer=15){const scope=['schedules_live',sid,date,6,19,'base'].join('|');return{id:'rec00000000000001',fields:{'answer-kind':'ring-pace','source-lane':'schedules_live','show-id':sid,date,'ring-number':6,'group-id':19,'scope-key':scope,'answer-key':scope+'|run|hash','content-hash':'hash','payload-json':JSON.stringify({identity:{customer,show:sid,date,ring:6,group:19}})}};}
 test('authority uses New York date, not UTC midnight; requires fresh completed scope',()=>{
   assert.equal(localDay(now),'2026-10-29');assert.equal(authority(show,scopes,now).reason,null);

@@ -72,6 +72,7 @@ def pending_candidate(plan):
         requests.append({'request-key':run+f'|{i:04}','run':refs('runs',run),'collection':refs('collections',first),
             'route':metric['route'],'params':packed(metric['params']),'http':metric['http'],'bytes':metric['bytes'],
             'elapsed-seconds':metric['elapsed_seconds'],'sha256':metric['sha256'],'started':metric['started'],'completed':metric['completed'],'status':'Validated'})
+        if plan.get('evidence-storage'):requests[-1].pop('collection')
     graph['requests']=requests
     frozen={'show-key':plan['show-key'],'scope':scope,'source':plan['source'],'metric':plan['metric'],'graph':graph,'next-state':plan['next-state']}
     frozen['verification']=plan.get('verification')
@@ -256,12 +257,17 @@ class Source:
         return planner.safe(payload),metric
 
 class Runner:
-    def __init__(self,repo,source,runtime,data_repo):
+    def __init__(self,repo,source,runtime,data_repo,evidence=None):
         self.repo=repo;self.client=repo.client;self.source=source;self.runtime=pathlib.Path(runtime);self.data_repo=pathlib.Path(data_repo)
+        self.evidence=evidence;self.repo.evidence=evidence
     def begin(self,show,state,mode='Scheduled Data acquisition'):
         self.at=stamp();self.runkey=('archive-' if mode=='Historical archive closure' else 'adaptive-')+self.at
         self.show=show;self.state=copy.deepcopy(state);self.state.update({'show-key':show,'sequence':state.get('sequence',0)+1,'phase':'Writing','pending':None,'observations':[],'requests':0})
         self.state['predecessor']=self.state.pop('_head',None);self.state['slots']=0
+        self.state.pop('completion-at',None)
+        if self.evidence:
+            from archive_evidence import FORMAT
+            self.state['evidence-storage']=FORMAT
         run={'run-key':self.runkey,'mode':mode,'status':'Writing; readback pending','started':self.at,'state-json':packed(self.state)}
         atomic(self.runtime/'active.json',{'run-key':self.runkey,'reserved-run':run})
         receipt=self.repo.stage({'runs':[run]})
@@ -306,15 +312,18 @@ class Runner:
     def observation(self,scope,payload,metric,graph,next_state=None):
         plan={'run-key':self.runkey,'show-key':self.show,'scope':scope,'source':payload,'metric':metric,
             'graph':graph,'next-state':next_state or {},'start':len(self.state['observations'])+1,'request-start':self.state.get('requests',0)+1}
+        if self.state.get('evidence-storage'):plan['evidence-storage']=self.state['evidence-storage']
         atomic(self.runtime/'pending.json',plan)
         return self.apply_pending(plan)
     def apply_pending(self,plan):
         candidate=pending_candidate(plan);records=candidate['collections']
         self.state['pending']={'keys':[r['collection-key'] for r in records],'hashes':[r['retained-sha256'] for r in records]};self.journal()
-        receipt=self.repo.stage(candidate)
+        archived=bool(plan.get('evidence-storage'))
+        receipt=self.repo.stage({t:rows for t,rows in candidate.items() if t!='collections'} if archived else candidate)
         if not plan.get('verification'):
             wanted={t:{str(r[KEYS[t]]) for r in rows} for t,rows in candidate.items() if t not in ('runs','collections')}
-            for rows in candidate.values():
+            for table,rows in candidate.items():
+                if archived and table=='collections':continue
                 for row in rows:
                     for value in row.values():
                         if isinstance(value,dict) and '$links' in value:
@@ -323,10 +332,14 @@ class Runner:
             atomic(self.runtime/'pending.json',plan)
             candidate=pending_candidate(plan);records=candidate['collections']
             self.state['pending']={'keys':[r['collection-key'] for r in records],'hashes':[r['retained-sha256'] for r in records]};self.journal()
-            receipt=self.repo.stage({t:candidate[t] for t in ('runs','collections')})
-        for row in records:self.repo.patch('collections',row['collection-key'],{'readback-records':row['expected-records']})
+            if not archived:receipt=self.repo.stage({t:candidate[t] for t in ('runs','collections')})
+        if archived:
+            references=self.evidence.stage(self.show,records)
+        else:
+            for row in records:self.repo.patch('collections',row['collection-key'],{'readback-records':row['expected-records']})
+            references=[{'key':r['collection-key'],'sha256':r['retained-sha256'],'record-id':receipt['record_map']['collections'][r['collection-key']]} for r in records]
         self.state.update(plan['next-state'])
-        self.state['observations'].extend({'key':r['collection-key'],'sha256':r['retained-sha256'],'record-id':receipt['record_map']['collections'][r['collection-key']]} for r in records)
+        self.state['observations'].extend(references)
         self.state['requests']=plan['request-start']-1+len(candidate.get('requests',[]))
         self.state['pending']=None;self.journal();(self.runtime/'pending.json').unlink(missing_ok=True)
         return receipt
@@ -334,10 +347,13 @@ class Runner:
         after=self.client.canonical_context()
         if canonical_fence(authority)!=canonical_fence(after):raise CanonicalTransition('Canonical scope changed; completion withheld')
         # Read the immutable candidate itself, never just mutable business rows.
-        rows=self.repo.store.inventory('collections',refresh=True,keys=[i['key'] for i in self.state['observations']]);parts=[]
+        archived=bool(self.state.get('evidence-storage'))
+        from retained_feed import collection_rows
+        logical=collection_rows(self.repo,self.state)
+        rows={} if archived else self.repo.store.inventory('collections',refresh=True,keys=[i['key'] for i in self.state['observations']]);parts=[]
         for item in self.state['observations']:
-            row=rows[item['key']]['fields'];fs=self.repo.store.fields['collections']
-            got={n:row.get(fs[n]['id']) for n in ('retained-json','retained-sha256')}
+            fs=self.repo.store.fields['collections']
+            got=logical[item['key']] if archived else {n:rows[item['key']]['fields'].get(fs[n]['id']) for n in ('retained-json','retained-sha256')}
             if got['retained-sha256']!=item['sha256'] or digest(got['retained-json'])!=item['sha256']:raise ValueError('Completion evidence changed')
             part=json.loads(got['retained-json'])
             if part['part']==0 and parts:thaw(parts);parts=[]
@@ -346,21 +362,31 @@ class Runner:
         from retained_feed import facts_for_state
         from wef_data_handoff import assignment_evidence
         assignment_counts=assignment_evidence(facts_for_state(self.repo,self.state))['summary']
-        for item in self.state['observations']:
+        for item in ([] if archived else self.state['observations']):
             status=rows[item['key']]['fields'].get(self.repo.store.fields['collections']['status']['id'])
             if status!='Verified retained observation':self.repo.patch('collections',item['key'],{'status':'Verified retained observation'})
-        self.state.update({'phase':'Complete','authority':list(canonical_fence(after)),'completed':stamp()});self.journal()
+        evidence_receipt=None
+        if archived:
+            self.state.setdefault('completion-at',stamp());self.journal()
+            completed={**self.state,'phase':'Complete','authority':list(canonical_fence(after)),'completed':self.state['completion-at']}
+            evidence_receipt=self.evidence.publish(self.repo,completed,self.runkey)
+            if canonical_fence(after)!=canonical_fence(self.client.canonical_context()):raise CanonicalTransition('Canonical scope changed during archive publication')
+            self.state=completed
+        else:self.state.update({'phase':'Complete','authority':list(canonical_fence(after)),'completed':stamp()})
+        self.journal()
         self.repo.patch('runs',self.runkey,{'status':'Verified completed revision','completed':self.state['completed'],
             'elapsed-seconds':(datetime.datetime.now(datetime.timezone.utc)-datetime.datetime.fromisoformat(self.at)).total_seconds(),
             'summary':packed({'show-key':self.show,'coverage':self.state.get('coverage','Verified bounded observations'),
                 'observations':len(self.state['observations']),'directory-complete':self.state.get('directory',{}).get('complete',False),
                 'identity-conflicts':self.state.get('directory-conflicts',[]),
-                'timing':self.state.get('timing',{}),'capacity':self.state.get('capacity',{}),'assignment-counts':assignment_counts}),
+                'timing':self.state.get('timing',{}),'capacity':self.state.get('capacity',{}),'assignment-counts':assignment_counts,
+                **({'evidence-archive':evidence_receipt} if evidence_receipt else {})}),
             'source-requests':self.state.get('requests',0),'errors':len(self.state.get('directory-conflicts',[]))})
         (self.runtime/'active.json').unlink(missing_ok=True)
         return {'ok':True,'show-key':self.show,'run-key':self.runkey,'observations':len(self.state['observations']),
                 'identity-conflicts':self.state.get('directory-conflicts',[]),
-                'retention-waits':getattr(self,'retention_waits',[]),'assignment-counts':assignment_counts}
+                'retention-waits':getattr(self,'retention_waits',[]),'assignment-counts':assignment_counts,
+                **({'evidence-archive':evidence_receipt} if evidence_receipt else {})}
 
     def close75(self,authority):
         key='15|200000075';row=self.repo.graph['shows'].get(key)
@@ -469,9 +495,10 @@ class Runner:
         if completed['dates']!=dates:raise ValueError('Inventory date range changed during pass')
         payloads=[];metrics=[]
         for first in completed['units']:
-            rows=self.repo.store.inventory('collections');part=json.loads(self.repo.graph['collections'][first]['retained-json'])
+            from retained_feed import collection_rows
+            rows=collection_rows(self.repo,self.state);part=json.loads(rows[first]['retained-json'])
             number=int(first.rsplit('-',1)[1]);prefix=first.rsplit('-',1)[0]
-            unit=thaw([self.repo.graph['collections'][prefix+f'-{i:03}'] for i in range(number,number+part['parts'])])
+            unit=thaw([rows[prefix+f'-{i:03}'] for i in range(number,number+part['parts'])])
             payloads.append(unit['source']);metrics.append(unit['metric'])
         remaining=dates[completed['next']:]
         capture_start=int(completed['units'][0].rsplit('-',1)[1]) if completed['units'] else len(self.state['observations'])+1
@@ -631,8 +658,10 @@ class Runner:
         ops,accounting,global_ops=operational(self.repo,key,config)
         # Take and verify a fresh retained projection; no recollection or deletion.
         checkpoints=retained_checkpoints(self.runtime,key)
+        retained,parts=self.evidence.retained(self.repo,key) if self.evidence else ({},{})
         graph=include_reserved(self.repo,self.repo.scoped(key),checkpoints)
         signature=coverage(self.repo,key,graph,ops,current)
+        if retained:signature=digest(packed({'coverage':signature,'retained-journals':retained,'parts':{n:__import__('hashlib').sha256(b).hexdigest() for n,b in parts.items()}}))
         checkpoint=self.runtime/'outgoing-receipts'/(key.replace('|','-')+'.json')
         if checkpoint.exists():
             old=json.loads(checkpoint.read_text(encoding='utf-8'))
@@ -651,8 +680,11 @@ class Runner:
             'schema-final.json':self.repo.schema,'archive-context.json':{'scope':'Verified retained outgoing show projection; all existing records retained',
                 'coverage':'Verified retained projection at cutoff, not fresh source completeness; interrupted observations remain incomplete','directory-checkpoint':{n:directory.get(n) for n in ('complete','total','next','size')},'accounting':accounting}}
         if key=='15|200000075':evidence['historical-source-reference.json']={'commit':'ddcde068ca3323242ec1fe81d96f20aee82fa6a3','path':'wef-data/shows/15/200000075/4c88a40a2a03efa5d1e48c6be92f528139061f7bbb4d16bee26d3731df323d16','scope':'Original October24 raw source/evidence, preserved unchanged'}
+        if retained:evidence['retained-evidence-journals.json']=retained
         for name,value in evidence.items():(folder/name).write_text(packed(value),encoding='utf-8')
-        (folder/'evidence-manifest.json').write_text(packed(list(evidence)),encoding='utf-8')
+        for name,body in parts.items():
+            target=folder/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(body)
+        (folder/'evidence-manifest.json').write_text(packed(list(evidence)+list(parts)),encoding='utf-8')
         receipt=archiver.archive(folder,self.data_repo,publish=True)
         # The publication receipt is local immutable control evidence, not a new
         # old-show Airtable row that would escape its own completed snapshot.
@@ -706,9 +738,12 @@ class Runner:
             self.begin(context['show-key'],latest_state(list(self.repo.graph['runs'].values()),context['show-key']))
             self.state['authority-before']=list(canonical_fence(authority));self.journal()
         if self.show!=context['show-key']:raise ValueError('Active acquisition show differs from canonical show')
+        if recovered and self.state.get('completion-at'):return self.finish(authority)
         # Once summary publication starts, close that exact generation before new
         # source admission, even when a crash made inventory/class work due again.
-        if recovered and any(self.repo.graph['collections'][r['key']].get('scope','').startswith('day-count-summary|') for r in self.state['observations']):
+        from retained_feed import collection_rows
+        recovered_rows=collection_rows(self.repo,self.state)
+        if recovered and any((recovered_rows[r['key']].get('scope') or '').startswith('day-count-summary|') for r in self.state['observations']):
             self.day_summaries(context)
             return self.finish(authority)
         if recovered and self.state.get('directory-reservation'):
@@ -768,7 +803,8 @@ class Runner:
     def day_summaries(self,context):
         from day_counts import summaries,retained_units
         from wef_data_handoff import revision_chain
-        collections={k:{**v,'_record-id':self.repo.inventory['collections'][k]['id']} for k,v in self.repo.graph['collections'].items()}
+        from retained_feed import collection_rows
+        collections=collection_rows(self.repo,self.state)
         units=[]
         previous=self.state.get('predecessor')
         if previous:
@@ -781,9 +817,13 @@ class Runner:
             if scope in existing:continue
             self.observation(scope,envelope,{'started':body['verified-at'],'completed':body['verified-at']},{})
 
-def run(runtime,schema_file,authored_file,data_repo):
+def run(runtime,schema_file,authored_file,data_repo,archive_storage=False):
     runtime=pathlib.Path(runtime);runtime.mkdir(parents=True,exist_ok=True)
     if (runtime/'stopped.json').exists():return {'ok':False,'state':'Stopped; owner authorization required','source-requests':0}
+    from archive_evidence import EvidenceStore,ArchiveDeferred
+    archive_deferred=runtime/'archive-deferred.json'
+    archive_prior=json.loads(archive_deferred.read_text(encoding='utf-8')) if archive_deferred.exists() else {}
+    if archive_prior and time.time()<archive_prior['next-due']:return {'ok':False,'state':'Deferred','source-requests':0,'error':'Saved archive publication awaiting bounded recovery time'}
     source_deferred=runtime/'source-deferred.json'
     source_prior=json.loads(source_deferred.read_text(encoding='utf-8')) if source_deferred.exists() else None
     if source_prior and time.time()<source_prior.get('next-due',0):return {'ok':False,'state':'Deferred','source-requests':0,'error':'Source checkpoint awaiting bounded recovery time'}
@@ -837,8 +877,8 @@ def run(runtime,schema_file,authored_file,data_repo):
                     if operation['base']!=repo.schema['base'] or len(set(wanted))!=len(wanted) or not set(wanted)<=allowed:raise ValueError('Deferred reservation differs from saved owner')
                     repo.store.reserve(table,wanted)
                     repo.reload()
-        runner=Runner(repo,Source(),runtime,data_repo)
-        result=runner.tick();deferred.unlink(missing_ok=True);source_deferred.unlink(missing_ok=True)
+        runner=Runner(repo,Source(),runtime,data_repo,evidence=EvidenceStore(runtime/'retained-evidence',data_repo) if archive_storage else None)
+        result=runner.tick();deferred.unlink(missing_ok=True);source_deferred.unlink(missing_ok=True);archive_deferred.unlink(missing_ok=True)
         result['retention-waits']=retention_waits+result.get('retention-waits',[])
         if retired:result['retirement']=retired
         try:
@@ -847,6 +887,15 @@ def run(runtime,schema_file,authored_file,data_repo):
         except Exception as error:
             result['handoff-error']=type(error).__name__+': '+str(error)
         return result
+    except ArchiveDeferred as error:
+        failures=archive_prior.get('failures',0)+1
+        if failures>3:
+            report={'ok':False,'state':'Stopped','run-key':getattr(runner,'runkey',None),'at':stamp(),'error':'Archive recovery exhausted after three scheduled retries: '+str(error)}
+            atomic(runtime/'stopped.json',report)
+            if getattr(runner,'runkey',None):repo.patch('runs',runner.runkey,{'status':'Failed; prior accepted state retained','errors':1,'summary':packed(report)})
+            return report
+        atomic(archive_deferred,{'at':stamp(),'run-key':getattr(runner,'runkey',None),'failures':failures,'next-due':time.time()+min(300,60*2**(failures-1))})
+        return {'ok':False,'state':'Deferred','run-key':getattr(runner,'runkey',None),'error':str(error),'operation':'Archive','target':'ringstatus-data','source-requests':getattr(runner,'state',{}).get('requests',0),'write-outcome':'Unknown'}
     except TransportDeferred as error:
         failures=((retirement_prior if retiring else prior) or {}).get('failures',0)+1
         operation=error.operation

@@ -1,0 +1,8 @@
+"use strict";
+const text=name=>({name,type:'singleLineText'}),multi=name=>({name,type:'multilineText'}),num=name=>({name,type:'number',options:{precision:0}}),link=(name,table)=>({name,type:'multipleRecordLinks',options:{linkedTableId:table}});
+function schema(entryTable){return{
+ entries:[text('entry-key'),num('customer-id'),num('show-id'),num('entry-id'),text('entry-number'),num('horse-id'),text('horse-name'),text('rider-ids'),text('trainer-ids'),text('trainer-name'),text('status'),text('observed-at'),text('run-id'),multi('source-json'),link('shows','tblBq3gXC0TYBCmMZ')],
+ trips:[text('trip-key'),num('customer-id'),num('show-id'),text('date'),num('ring-number'),num('class-id'),num('class-number'),text('class-name'),num('entry-id'),num('horse-id'),text('horse-name'),num('rider-id'),text('rider-name'),num('trainer-id'),text('trainer-name'),text('trip-id'),text('source-uuid'),num('order-of-go'),num('actual-order'),text('gone-in'),text('scratch'),text('placing'),text('estimated-go-time'),text('status'),text('observed-at'),text('run-id'),text('schedule-link-status'),multi('schedule-keys'),multi('link-issues'),multi('source-json'),link('entries',entryTable||'entries'),link('shows','tblBq3gXC0TYBCmMZ'),link('rings','tbliUwvXYdMhvJ3Fm'),link('schedules','tblqiTFqqO3zk2KJC')],
+ 'entry-collection':[text('collection-key'),num('customer-id'),num('show-id'),text('date'),text('source-kind'),text('source-id'),text('status'),text('started'),text('checked-at'),text('observed-at'),num('row-count'),text('run-id'),text('fingerprint'),multi('archive-file'),multi('message')]
+};}
+module.exports={schema};

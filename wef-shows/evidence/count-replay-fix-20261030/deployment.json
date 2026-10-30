@@ -1,0 +1,11 @@
+{
+  "manualRun": false,
+  "task": "wef-shows-collector",
+  "at": "2026-10-30T08:36:29.8116071-04:00",
+  "stopCleared": true,
+  "files": [
+    "day-archive.js",
+    "day-replay.py",
+    "day-source.js"
+  ]
+}

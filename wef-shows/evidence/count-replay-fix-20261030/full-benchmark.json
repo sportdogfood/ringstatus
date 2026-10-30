@@ -1,0 +1,14 @@
+[
+  {
+    "label": "original",
+    "seconds": 9.989,
+    "days": 4,
+    "equal": true
+  },
+  {
+    "label": "optimized",
+    "seconds": 7.005,
+    "days": 4,
+    "equal": true
+  }
+]

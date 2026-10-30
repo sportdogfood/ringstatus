@@ -91,13 +91,11 @@ def completed_revision(run,collections):
     # The contract helper is deliberately inert and independent of collector IO.
     import sys
     sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[2]/'wef-data'))
-    from data_contract import thaw,digest
+    from data_contract import thaw,digest,validate_reference
     units=[];parts=[]
     for reference in state['observations']:
         row=collections[reference['key']]
-        if reference.get('record-id')!=row.get('_record-id'):raise ValueError('Retained collection record ID changed')
-        if row.get('status')!='Verified retained observation' or row['retained-sha256']!=reference['sha256'] or digest(row['retained-json'])!=reference['sha256']:
-            raise ValueError('Completed collection mismatch')
+        validate_reference(reference,row,completed=True)
         part=json.loads(row['retained-json'])
         if part['part']==0 and parts:units.append(thaw(parts));parts=[]
         parts.append(row)

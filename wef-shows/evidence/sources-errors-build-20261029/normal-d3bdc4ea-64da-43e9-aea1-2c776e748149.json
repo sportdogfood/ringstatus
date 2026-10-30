@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-30T12:39:46.396Z",
+  "result": "PASS",
+  "run": "d3bdc4ea-64da-43e9-aea1-2c776e748149",
+  "started": "2026-10-30T12:39:02.618Z",
+  "completed": "2026-10-30T12:39:25.882Z",
+  "runRecord": "recBNmE2bjTuyDmGi",
+  "sourceRecords": [
+    {
+      "id": "rec8pwcOzXDi0sjMO",
+      "key": "season-counts",
+      "lastAttempt": "2026-10-30T12:39:18.194Z",
+      "lastSuccess": "2026-10-30T12:39:18.765Z"
+    },
+    {
+      "id": "recVO4bhoqfHSWBGn",
+      "key": "default-ring",
+      "lastAttempt": "2026-10-30T12:39:15.645Z",
+      "lastSuccess": "2026-10-30T12:39:15.907Z"
+    },
+    {
+      "id": "recijgxkbeqk66BqB",
+      "key": "default-schedule",
+      "lastAttempt": "2026-10-30T12:39:15.920Z",
+      "lastSuccess": "2026-10-30T12:39:16.244Z"
+    }
+  ],
+  "errors": 0,
+  "heartbeat": "recCpv3iPc1R8eAqX",
+  "showDays": [
+    {
+      "date": "2026-10-29",
+      "status": "Unknown",
+      "retained": true
+    },
+    {
+      "date": "2026-10-30",
+      "status": "Unknown",
+      "retained": true
+    },
+    {
+      "date": "2026-10-31",
+      "status": "Unknown",
+      "retained": true
+    },
+    {
+      "date": "2026-11-01",
+      "status": "Unknown",
+      "retained": true
+    }
+  ]
+}

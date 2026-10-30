@@ -1,0 +1,264 @@
+TAP version 13
+# Subtest: local schedule times resolve using the show timezone; DST ambiguity is rejected
+ok 1 - local schedule times resolve using the show timezone; DST ambiguity is rejected
+  ---
+  duration_ms: 2.3359
+  type: 'test'
+  ...
+# Subtest: data and schedule evidence remain distinct and class counts use schedules fallback
+ok 2 - data and schedule evidence remain distinct and class counts use schedules fallback
+  ---
+  duration_ms: 6.2705
+  type: 'test'
+  ...
+# Subtest: multi-class absent counts remain unknown
+ok 3 - multi-class absent counts remain unknown
+  ---
+  duration_ms: 1.2257
+  type: 'test'
+  ...
+# Subtest: returns exact source scope, validated singleton counts, original times and no secrets
+ok 4 - returns exact source scope, validated singleton counts, original times and no secrets
+  ---
+  duration_ms: 21.7661
+  type: 'test'
+  ...
+# Subtest: reads all rows without a 500/80 row cap
+ok 5 - reads all rows without a 500/80 row cap
+  ---
+  duration_ms: 170.8192
+  type: 'test'
+  ...
+# Subtest: no Live dependency; empty complete date remains usable evidence
+ok 6 - no Live dependency; empty complete date remains usable evidence
+  ---
+  duration_ms: 1.3541
+  type: 'test'
+  ...
+# Subtest: stale, future and incomplete date scopes never expose usable rows
+ok 7 - stale, future and incomplete date scopes never expose usable rows
+  ---
+  duration_ms: 1.4373
+  type: 'test'
+  ...
+# Subtest: completed projection, frozen archive, dataset and retention conflicts reject the date
+ok 8 - completed projection, frozen archive, dataset and retention conflicts reject the date
+  ---
+  duration_ms: 2.4314
+  type: 'test'
+  ...
+# Subtest: parallel classes retain exact rows but do not duplicate group counters as class counts
+ok 9 - parallel classes retain exact rows but do not duplicate group counters as class counts
+  ---
+  duration_ms: 1.0082
+  type: 'test'
+  ...
+# Subtest: dropped rows excluded and blocks cannot supply class counts
+ok 10 - dropped rows excluded and blocks cannot supply class counts
+  ---
+  duration_ms: 1.4818
+  type: 'test'
+  ...
+# Subtest: invalid completed counts are withheld even when projection agrees
+ok 11 - invalid completed counts are withheld even when projection agrees
+  ---
+  duration_ms: 0.9536
+  type: 'test'
+  ...
+# Subtest: ring identity ambiguity fails closed
+ok 12 - ring identity ambiguity fails closed
+  ---
+  duration_ms: 1.2765
+  type: 'test'
+  ...
+# Subtest: show, collection and ring changes after reading invalidate the whole adapter result
+ok 13 - show, collection and ring changes after reading invalidate the whole adapter result
+  ---
+  duration_ms: 3.0263
+  type: 'test'
+  ...
+# Subtest: duplicate stage keys and wrong default identity are rejected
+ok 14 - duplicate stage keys and wrong default identity are rejected
+  ---
+  duration_ms: 0.6399
+  type: 'test'
+  ...
+# Subtest: freshness is checked again after archive work
+ok 15 - freshness is checked again after archive work
+  ---
+  duration_ms: 0.7597
+  type: 'test'
+  ...
+# Subtest: unchanged evidence does not generate a new snapshot just from clock movement
+ok 16 - unchanged evidence does not generate a new snapshot just from clock movement
+  ---
+  duration_ms: 49.5069
+  type: 'test'
+  ...
+# Subtest: schedules_live: missing Live uses schedule and three minutes; candidate is not actual
+ok 17 - schedules_live: missing Live uses schedule and three minutes; candidate is not actual
+  ---
+  duration_ms: 2.1082
+  type: 'test'
+  ...
+# Subtest: data_live: missing Live uses schedule and three minutes; candidate is not actual
+ok 18 - data_live: missing Live uses schedule and three minutes; candidate is not actual
+  ---
+  duration_ms: 0.8818
+  type: 'test'
+  ...
+# Subtest: matching group pace changes duration without copying group counts
+ok 19 - matching group pace changes duration without copying group counts
+  ---
+  duration_ms: 1.1972
+  type: 'test'
+  ...
+# Subtest: invalid pace, wrong lane, wrong class roster, expiry and missing provenance use default
+ok 20 - invalid pace, wrong lane, wrong class roster, expiry and missing provenance use default
+  ---
+  duration_ms: 8.546
+  type: 'test'
+  ...
+# Subtest: no arbitrary pace maximum and no input mutation
+ok 21 - no arbitrary pace maximum and no input mutation
+  ---
+  duration_ms: 2.4891
+  type: 'test'
+  ...
+# Subtest: Live class evidence overrides schedule independently for counts and start
+ok 22 - Live class evidence overrides schedule independently for counts and start
+  ---
+  duration_ms: 2.1021
+  type: 'test'
+  ...
+# Subtest: wrong occurrence, future observation and stale Live cannot contaminate fallback
+ok 23 - wrong occurrence, future observation and stale Live cannot contaminate fallback
+  ---
+  duration_ms: 3.0651
+  type: 'test'
+  ...
+# Subtest: group-scoped counts never become class counts; missing is not zero
+ok 24 - group-scoped counts never become class counts; missing is not zero
+  ---
+  duration_ms: 1.1281
+  type: 'test'
+  ...
+# Subtest: completion requires positive complete whole-class counts and end reached
+not ok 25 - completion requires positive complete whole-class counts and end reached
+  ---
+  duration_ms: 8.4839
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-timing.test.js:101:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\class-timing.test.js:109:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: explicit fresh all-phase Live completion is distinguished from estimated completion
+ok 26 - explicit fresh all-phase Live completion is distinguished from estimated completion
+  ---
+  duration_ms: 4.7729
+  type: 'test'
+  ...
+# Subtest: full date arithmetic crosses midnight without wrapping or losing a day
+ok 27 - full date arithmetic crosses midnight without wrapping or losing a day
+  ---
+  duration_ms: 5.6346
+  type: 'test'
+  ...
+# Subtest: DST rollover uses elapsed minutes, not local clock subtraction
+ok 28 - DST rollover uses elapsed minutes, not local clock subtraction
+  ---
+  duration_ms: 2.4364
+  type: 'test'
+  ...
+# Subtest: offsetless, impossible and wrong local date starts stay unknown
+ok 29 - offsetless, impossible and wrong local date starts stay unknown
+  ---
+  duration_ms: 2.8985
+  type: 'test'
+  ...
+# Subtest: invalid identity, lane, timezone and clock fail explicitly
+ok 30 - invalid identity, lane, timezone and clock fail explicitly
+  ---
+  duration_ms: 0.8054
+  type: 'test'
+  ...
+# Subtest: same inputs give identical output; different class occurrence and lanes have separate keys
+ok 31 - same inputs give identical output; different class occurrence and lanes have separate keys
+  ---
+  duration_ms: 2.4194
+  type: 'test'
+  ...
+# Subtest: all missing observations produce explicit unavailable output with no completion
+ok 32 - all missing observations produce explicit unavailable output with no completion
+  ---
+  duration_ms: 0.4575
+  type: 'test'
+  ...
+# Subtest: both complete runs evaluate all discovered classes and keep repeat identities
+not ok 33 - both complete runs evaluate all discovered classes and keep repeat identities
+  ---
+  duration_ms: 12.9367
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-worker.test.js:4:1'
+  failureType: 'testCodeFailure'
+  error: `{"run_id":"first","started":"2026-10-29T12:05:00Z","source_lane":"schedules_live","ok":false,"errors":["Expected values to be strictly equal:\\n+ actual - expected\\n\\n+ 'appgzosUcVqA4vZdf'\\n- 'appam4opFT4NeL4mn'\\n      ^\\n"],"counts":{"evaluated":0,"written":0,"unchanged":0,"unavailable":0},"completed":"2026-10-29T12:05:00Z"}`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\class-worker.test.js:9:127)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: missing source coverage fails rather than declaring full evaluation
+ok 34 - missing source coverage fails rather than declaring full evaluation
+  ---
+  duration_ms: 2.1031
+  type: 'test'
+  ...
+# Subtest: Data lane evaluates Data classes and missing classes from Schedules
+not ok 35 - Data lane evaluates Data classes and missing classes from Schedules
+  ---
+  duration_ms: 5.4337
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-worker.test.js:17:1'
+  failureType: 'testCodeFailure'
+  error: '{"run_id":"data","started":"2026-10-29T12:05:00Z","source_lane":"data_live","ok":false,"errors":["unexpected base"],"counts":{"evaluated":0,"written":0,"unchanged":0,"unavailable":0},"completed":"2026-10-29T12:05:00Z"}'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\class-worker.test.js:26:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 32
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 523.6353

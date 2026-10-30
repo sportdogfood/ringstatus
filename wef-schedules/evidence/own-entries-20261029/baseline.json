@@ -1,0 +1,65 @@
+{
+  "head": "1737335ece1634f5652313e677b5d7e42ca96e68",
+  "files": [
+    {
+      "file": "store.js",
+      "deployed": "f04752f15416865ccfec49fcb2d06971394bd6b860b90861af0935ae3cd4517e",
+      "maintenance": "f04752f15416865ccfec49fcb2d06971394bd6b860b90861af0935ae3cd4517e"
+    },
+    {
+      "file": "attempt-entry.js",
+      "deployed": "ccc22aa5bf4462c15a3ab1d7fa96513406f2c31d941788fd478c08610842382c",
+      "maintenance": "ccc22aa5bf4462c15a3ab1d7fa96513406f2c31d941788fd478c08610842382c"
+    },
+    {
+      "file": "run-logs.js",
+      "deployed": "a39e7d2fea0136a07562d46dae48140f1e91cf68d5ce5d83c7030533cdebf12c",
+      "maintenance": "a39e7d2fea0136a07562d46dae48140f1e91cf68d5ce5d83c7030533cdebf12c"
+    },
+    {
+      "file": "error-logs.js",
+      "deployed": "7f8a4af9142c4b4b5ceef7afb20e6a449496005d088bc29b54b901da23dc4227",
+      "maintenance": "7f8a4af9142c4b4b5ceef7afb20e6a449496005d088bc29b54b901da23dc4227"
+    },
+    {
+      "file": "current-store.js",
+      "deployed": "4089472168edf464556fd522d585cc4c6dd293f6b2ba379ad29aa2ff0d703093",
+      "maintenance": "4089472168edf464556fd522d585cc4c6dd293f6b2ba379ad29aa2ff0d703093"
+    },
+    {
+      "file": "show-rings.js",
+      "deployed": "d89a63d457fd97ee922c4cc4bff486f05fa4f59db3153dfadcfb5868de3689ba",
+      "maintenance": "d89a63d457fd97ee922c4cc4bff486f05fa4f59db3153dfadcfb5868de3689ba"
+    },
+    {
+      "file": "normalizer.js",
+      "deployed": "e02dd6548ed1d6d32fcb06675cd9cc969635e9cd6d3545414fd52a004e6d9ee6",
+      "maintenance": "e02dd6548ed1d6d32fcb06675cd9cc969635e9cd6d3545414fd52a004e6d9ee6"
+    },
+    {
+      "file": "settings.js",
+      "deployed": "3df0d2a56b16ffe12cf9f78c19b8ba1efafca16881f45acc3c2897246292768c",
+      "maintenance": "3df0d2a56b16ffe12cf9f78c19b8ba1efafca16881f45acc3c2897246292768c"
+    },
+    {
+      "file": "run.ps1",
+      "deployed": "5a79216884b5393d8fe6847cef69b44d90c3d01c7c56891ac7eaadeb738300f2",
+      "maintenance": "5a79216884b5393d8fe6847cef69b44d90c3d01c7c56891ac7eaadeb738300f2"
+    },
+    {
+      "file": "README.md",
+      "deployed": "eb557f1060a722c22f16b821c73457a38dfe536960efd603f884fddfa476be5b",
+      "maintenance": "eb557f1060a722c22f16b821c73457a38dfe536960efd603f884fddfa476be5b"
+    },
+    {
+      "file": "scope.md",
+      "deployed": "aa9f1b172da6f459bcf619f94626880658488ef150e9b6a7196b0ffecaed813e",
+      "maintenance": "aa9f1b172da6f459bcf619f94626880658488ef150e9b6a7196b0ffecaed813e"
+    },
+    {
+      "file": "source-manifest.json",
+      "deployed": "fd4d20d4e0d9ddfa501900d0fd10c25c730af66c4a25e209ea49edb556546651",
+      "maintenance": "fd4d20d4e0d9ddfa501900d0fd10c25c730af66c4a25e209ea49edb556546651"
+    }
+  ]
+}

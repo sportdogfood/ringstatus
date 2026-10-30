@@ -1,0 +1,622 @@
+TAP version 13
+# Subtest: local times reject both DST gaps and ambiguity and invalid calendar dates
+ok 1 - local times reject both DST gaps and ambiguity and invalid calendar dates
+  ---
+  duration_ms: 3.2454
+  type: 'test'
+  ...
+# Subtest: Data only fallback retains all native/archive parts and authority
+ok 2 - Data only fallback retains all native/archive parts and authority
+  ---
+  duration_ms: 8.9515
+  type: 'test'
+  ...
+# Subtest: existing producer pace hash and precise unrounded value are consumed
+ok 3 - existing producer pace hash and precise unrounded value are consumed
+  ---
+  duration_ms: 5.626
+  type: 'test'
+  ...
+# Subtest: tampered pace identity, fields, hash, members, provenance or original freshness defaults
+ok 4 - tampered pace identity, fields, hash, members, provenance or original freshness defaults
+  ---
+  duration_ms: 12.5429
+  type: 'test'
+  ...
+# Subtest: newer invalid pace does not revive older good snapshot
+ok 5 - newer invalid pace does not revive older good snapshot
+  ---
+  duration_ms: 1.5379
+  type: 'test'
+  ...
+# Subtest: Live identity preserved and class counts preferred only for unique occurrence
+ok 6 - Live identity preserved and class counts preferred only for unique occurrence
+  ---
+  duration_ms: 3.1615
+  type: 'test'
+  ...
+# Subtest: wrong Live customer and stale Live do not contaminate Data fallback
+ok 7 - wrong Live customer and stale Live do not contaminate Data fallback
+  ---
+  duration_ms: 2.4537
+  type: 'test'
+  ...
+# Subtest: multi-class group never repeats group counts
+ok 8 - multi-class group never repeats group counts
+  ---
+  duration_ms: 2.1349
+  type: 'test'
+  ...
+# Subtest: no admission cap: all 501 exact occurrences are represented
+ok 9 - no admission cap: all 501 exact occurrences are represented
+  ---
+  duration_ms: 529.325
+  type: 'test'
+  ...
+# Subtest: coverage, proof, exact occurrence, duplicates and forbidden Schedules fail explicitly
+ok 10 - coverage, proof, exact occurrence, duplicates and forbidden Schedules fail explicitly
+  ---
+  duration_ms: 1.6
+  type: 'test'
+  ...
+# Subtest: stale Data stays enumerated but unavailable; missing data never becomes completed
+ok 11 - stale Data stays enumerated but unavailable; missing data never becomes completed
+  ---
+  duration_ms: 1.257
+  type: 'test'
+  ...
+# Subtest: verified empty selected inventory is explicit zero coverage, not missing coverage
+ok 12 - verified empty selected inventory is explicit zero coverage, not missing coverage
+  ---
+  duration_ms: 3.0927
+  type: 'test'
+  ...
+# Subtest: observed ring pace carries original endpoints and is consumed without identity invention
+ok 13 - observed ring pace carries original endpoints and is consumed without identity invention
+  ---
+  duration_ms: 4.8372
+  type: 'test'
+  ...
+# Subtest: stale supporting evidence is rejected even if its content hash is internally consistent
+ok 14 - stale supporting evidence is rejected even if its content hash is internally consistent
+  ---
+  duration_ms: 1.7494
+  type: 'test'
+  ...
+# Subtest: unrelated Data head advances preserve material hash while receipts retain exact validation proof
+ok 15 - unrelated Data head advances preserve material hash while receipts retain exact validation proof
+  ---
+  duration_ms: 2.9919
+  type: 'test'
+  ...
+# Subtest: populated Live fixture returns exact source class/group identity and archived class counts
+ok 16 - populated Live fixture returns exact source class/group identity and archived class counts
+  ---
+  duration_ms: 27.8238
+  type: 'test'
+  ...
+# Subtest: wrong legacy link name does not silently bind a class
+ok 17 - wrong legacy link name does not silently bind a class
+  ---
+  duration_ms: 1.7555
+  type: 'test'
+  ...
+# Subtest: raw header cannot fabricate completed trips against frozen trip evidence
+ok 18 - raw header cannot fabricate completed trips against frozen trip evidence
+  ---
+  duration_ms: 1.4573
+  type: 'test'
+  ...
+# Subtest: missing gone list stays unknown rather than zero
+ok 19 - missing gone list stays unknown rather than zero
+  ---
+  duration_ms: 1.3538
+  type: 'test'
+  ...
+# Subtest: archive tampering is rejected even with injected reader
+ok 20 - archive tampering is rejected even with injected reader
+  ---
+  duration_ms: 0.9505
+  type: 'test'
+  ...
+# Subtest: group projection must match frozen archive, not current mutable source-json alone
+ok 21 - group projection must match frozen archive, not current mutable source-json alone
+  ---
+  duration_ms: 0.7269
+  type: 'test'
+  ...
+# Subtest: fresh class cannot borrow stale group evidence
+ok 22 - fresh class cannot borrow stale group evidence
+  ---
+  duration_ms: 0.7114
+  type: 'test'
+  ...
+# Subtest: known additional rounds remain phase counts, never whole-class confirmation
+ok 23 - known additional rounds remain phase counts, never whole-class confirmation
+  ---
+  duration_ms: 1.0302
+  type: 'test'
+  ...
+# Subtest: duplicate class identity invalidates all duplicates
+ok 24 - duplicate class identity invalidates all duplicates
+  ---
+  duration_ms: 1.1136
+  type: 'test'
+  ...
+# Subtest: class, group and collection mutations during reads each reject the snapshot
+ok 25 - class, group and collection mutations during reads each reject the snapshot
+  ---
+  duration_ms: 4.6704
+  type: 'test'
+  ...
+# Subtest: empty Live is a valid missing-Live input; unavailable source read fails explicitly
+ok 26 - empty Live is a valid missing-Live input; unavailable source read fails explicitly
+  ---
+  duration_ms: 1.0312
+  type: 'test'
+  ...
+# Subtest: unchanged evidence does not generate a new snapshot just from clock movement
+ok 27 - unchanged evidence does not generate a new snapshot just from clock movement
+  ---
+  duration_ms: 48.5342
+  type: 'test'
+  ...
+# Subtest: data_live: missing Live uses schedule and three minutes; candidate is not actual
+ok 28 - data_live: missing Live uses schedule and three minutes; candidate is not actual
+  ---
+  duration_ms: 2.3473
+  type: 'test'
+  ...
+# Subtest: matching group pace changes duration without copying group counts
+ok 29 - matching group pace changes duration without copying group counts
+  ---
+  duration_ms: 1.0594
+  type: 'test'
+  ...
+# Subtest: invalid pace, wrong lane, wrong class roster, expiry and missing provenance use default
+ok 30 - invalid pace, wrong lane, wrong class roster, expiry and missing provenance use default
+  ---
+  duration_ms: 12.2323
+  type: 'test'
+  ...
+# Subtest: no arbitrary pace maximum and no input mutation
+ok 31 - no arbitrary pace maximum and no input mutation
+  ---
+  duration_ms: 1.1957
+  type: 'test'
+  ...
+# Subtest: Live class evidence overrides schedule independently for counts and start
+ok 32 - Live class evidence overrides schedule independently for counts and start
+  ---
+  duration_ms: 0.9344
+  type: 'test'
+  ...
+# Subtest: wrong occurrence, future observation and stale Live cannot contaminate fallback
+ok 33 - wrong occurrence, future observation and stale Live cannot contaminate fallback
+  ---
+  duration_ms: 2.8235
+  type: 'test'
+  ...
+# Subtest: group-scoped counts never become class counts; missing is not zero
+ok 34 - group-scoped counts never become class counts; missing is not zero
+  ---
+  duration_ms: 0.8111
+  type: 'test'
+  ...
+# Subtest: completion requires positive complete whole-class counts and end reached
+ok 35 - completion requires positive complete whole-class counts and end reached
+  ---
+  duration_ms: 5.5418
+  type: 'test'
+  ...
+# Subtest: explicit fresh all-phase Live completion is distinguished from estimated completion
+ok 36 - explicit fresh all-phase Live completion is distinguished from estimated completion
+  ---
+  duration_ms: 3.3498
+  type: 'test'
+  ...
+# Subtest: full date arithmetic crosses midnight without wrapping or losing a day
+ok 37 - full date arithmetic crosses midnight without wrapping or losing a day
+  ---
+  duration_ms: 1.2597
+  type: 'test'
+  ...
+# Subtest: DST rollover uses elapsed minutes, not local clock subtraction
+ok 38 - DST rollover uses elapsed minutes, not local clock subtraction
+  ---
+  duration_ms: 0.9162
+  type: 'test'
+  ...
+# Subtest: offsetless, impossible and wrong local date starts stay unknown
+ok 39 - offsetless, impossible and wrong local date starts stay unknown
+  ---
+  duration_ms: 1.3939
+  type: 'test'
+  ...
+# Subtest: invalid identity, lane, timezone and clock fail explicitly
+ok 40 - invalid identity, lane, timezone and clock fail explicitly
+  ---
+  duration_ms: 0.9092
+  type: 'test'
+  ...
+# Subtest: same inputs give identical output; different class occurrence and lanes have separate keys
+ok 41 - same inputs give identical output; different class occurrence and lanes have separate keys
+  ---
+  duration_ms: 2.331
+  type: 'test'
+  ...
+# Subtest: all missing observations produce explicit unavailable output with no completion
+ok 42 - all missing observations produce explicit unavailable output with no completion
+  ---
+  duration_ms: 0.5339
+  type: 'test'
+  ...
+# Subtest: unknown round coverage produces only the owner-requested calculated candidate
+ok 43 - unknown round coverage produces only the owner-requested calculated candidate
+  ---
+  duration_ms: 0.7015
+  type: 'test'
+  ...
+# Subtest: Schedules input is explicitly rejected and unbounded freshness is not accepted
+ok 44 - Schedules input is explicitly rejected and unbounded freshness is not accepted
+  ---
+  duration_ms: 0.8159
+  type: 'test'
+  ...
+# Subtest: writes changed class snapshots and reuses unchanged current evidence
+ok 45 - writes changed class snapshots and reuses unchanged current evidence
+  ---
+  duration_ms: 10.2271
+  type: 'test'
+  ...
+# Subtest: a return to prior content creates a new revision instead of reviving history
+ok 46 - a return to prior content creates a new revision instead of reviving history
+  ---
+  duration_ms: 4.3985
+  type: 'test'
+  ...
+# Subtest: failed checkpoint only resumes the specifically authorized run, never pending purge
+ok 47 - failed checkpoint only resumes the specifically authorized run, never pending purge
+  ---
+  duration_ms: 9.922
+  type: 'test'
+  ...
+# Subtest: every discovered group is evaluated on consecutive runs
+ok 48 - every discovered group is evaluated on consecutive runs
+  ---
+  duration_ms: 110.0369
+  type: 'test'
+  ...
+# Subtest: Data and Schedules use identical arithmetic but isolated output identities
+ok 49 - Data and Schedules use identical arithmetic but isolated output identities
+  ---
+  duration_ms: 0.5873
+  type: 'test'
+  ...
+# Subtest: one normal Data invocation saves pace and each eligible class in the same destination
+ok 50 - one normal Data invocation saves pace and each eligible class in the same destination
+  ---
+  duration_ms: 7.4072
+  type: 'test'
+  ...
+# Subtest: Data inventory covers missing Live classes and repeats without duplicate snapshots
+ok 51 - Data inventory covers missing Live classes and repeats without duplicate snapshots
+  ---
+  duration_ms: 2.9938
+  type: 'test'
+  ...
+# Subtest: Data original source time remains stale despite a new completed head
+ok 52 - Data original source time remains stale despite a new completed head
+  ---
+  duration_ms: 2.2575
+  type: 'test'
+  ...
+# Subtest: source crossing freshness limit during a run cannot authorize pace or purge
+ok 53 - source crossing freshness limit during a run cannot authorize pace or purge
+  ---
+  duration_ms: 0.927
+  type: 'test'
+  ...
+# Subtest: expired source cannot advance retirement authority when no old rows exist
+ok 54 - expired source cannot advance retirement authority when no old rows exist
+  ---
+  duration_ms: 1.9911
+  type: 'test'
+  ...
+# Subtest: Live class source changing defers class work without losing recorded ring counts
+ok 55 - Live class source changing defers class work without losing recorded ring counts
+  ---
+  duration_ms: 1.7321
+  type: 'test'
+  ...
+# Subtest: a class-only change records a complete checkpoint
+ok 56 - a class-only change records a complete checkpoint
+  ---
+  duration_ms: 2.5543
+  type: 'test'
+  ...
+# Subtest: changed pinned head withholds output and never picks another show
+ok 57 - changed pinned head withholds output and never picks another show
+  ---
+  duration_ms: 0.8417
+  type: 'test'
+  ...
+# Subtest: new-show handoff absence is deferred rather than a collector invocation or old-head fallback
+ok 58 - new-show handoff absence is deferred rather than a collector invocation or old-head fallback
+  ---
+  duration_ms: 0.5074
+  type: 'test'
+  ...
+# Subtest: Data purge cannot remove the original Schedules lane
+ok 59 - Data purge cannot remove the original Schedules lane
+  ---
+  duration_ms: 0.3949
+  type: 'test'
+  ...
+# Subtest: Data transport cannot write Engine, Data, Live or Shows
+ok 60 - Data transport cannot write Engine, Data, Live or Shows
+  ---
+  duration_ms: 1.2717
+  type: 'test'
+  ...
+# Subtest: Data Live exact roster creates interval pace; a different roster falls back
+ok 61 - Data Live exact roster creates interval pace; a different roster falls back
+  ---
+  duration_ms: 4.8505
+  type: 'test'
+  ...
+# Subtest: Data purge confirms across runs, preserves current/future and unrelated lanes
+ok 62 - Data purge confirms across runs, preserves current/future and unrelated lanes
+  ---
+  duration_ms: 2.927
+  type: 'test'
+  ...
+# Subtest: unrelated completed Data head advancement does not duplicate consumed evidence
+ok 63 - unrelated completed Data head advancement does not duplicate consumed evidence
+  ---
+  duration_ms: 1.7391
+  type: 'test'
+  ...
+# Subtest: saved 33-minute eleven-trip schedule yields three minutes; no invented actual
+ok 64 - saved 33-minute eleven-trip schedule yields three minutes; no invented actual
+  ---
+  duration_ms: 3.2849
+  type: 'test'
+  ...
+# Subtest: zero, missing, invalid windows, blocks and multi-class groups never divide or double-count
+ok 65 - zero, missing, invalid windows, blocks and multi-class groups never divide or double-count
+  ---
+  duration_ms: 0.4576
+  type: 'test'
+  ...
+# Subtest: interval throughput uses compatible dated observations, including holds
+ok 66 - interval throughput uses compatible dated observations, including holds
+  ---
+  duration_ms: 0.4274
+  type: 'test'
+  ...
+# Subtest: reset/membership change/out-of-order/gap/stale/future/count-conflict cannot produce pace
+ok 67 - reset/membership change/out-of-order/gap/stale/future/count-conflict cannot produce pace
+  ---
+  duration_ms: 0.2847
+  type: 'test'
+  ...
+# Subtest: no-progress does not advance baseline; repeated source preserves measured interval without new measurement
+ok 68 - no-progress does not advance baseline; repeated source preserves measured interval without new measurement
+  ---
+  duration_ms: 1.0976
+  type: 'test'
+  ...
+# Subtest: fresh evaluation clock alone does not renew stale observation
+ok 69 - fresh evaluation clock alone does not renew stale observation
+  ---
+  duration_ms: 1.336
+  type: 'test'
+  ...
+# Subtest: a new observation without progress never represents the previous interval as a new measurement
+ok 70 - a new observation without progress never represents the previous interval as a new measurement
+  ---
+  duration_ms: 0.7046
+  type: 'test'
+  ...
+# Subtest: source-invalid scope does not publish numeric schedule fallback
+ok 71 - source-invalid scope does not publish numeric schedule fallback
+  ---
+  duration_ms: 0.2899
+  type: 'test'
+  ...
+# Subtest: readback rejects duplicate identities and mismatched content
+ok 72 - readback rejects duplicate identities and mismatched content
+  ---
+  duration_ms: 1.3931
+  type: 'test'
+  ...
+# Subtest: transport forbids source writes and unsupported targets before any network action
+ok 73 - transport forbids source writes and unsupported targets before any network action
+  ---
+  duration_ms: 1.3276
+  type: 'test'
+  ...
+# Subtest: transport uses existing-key performUpsert and validates server clock
+ok 74 - transport uses existing-key performUpsert and validates server clock
+  ---
+  duration_ms: 255.612
+  type: 'test'
+  ...
+# Subtest: class snapshots purge only their verified old Data scope
+ok 75 - class snapshots purge only their verified old Data scope
+  ---
+  duration_ms: 4.0898
+  type: 'test'
+  ...
+# Subtest: authority uses New York date, not UTC midnight; requires fresh completed scope
+ok 76 - authority uses New York date, not UTC midnight; requires fresh completed scope
+  ---
+  duration_ms: 29.761
+  type: 'test'
+  ...
+# Subtest: discovering a future working day does not retire current day
+ok 77 - discovering a future working day does not retire current day
+  ---
+  duration_ms: 0.5729
+  type: 'test'
+  ...
+# Subtest: only owned prior-show and past-day pace snapshots qualify
+ok 78 - only owned prior-show and past-day pace snapshots qualify
+  ---
+  duration_ms: 0.8141
+  type: 'test'
+  ...
+# Subtest: two distinct normal invocations confirm authority; first observation never deletes
+ok 79 - two distinct normal invocations confirm authority; first observation never deletes
+  ---
+  duration_ms: 1.2518
+  type: 'test'
+  ...
+# Subtest: delete transport only targets exact Engine snapshot IDs and reads back absence
+ok 80 - delete transport only targets exact Engine snapshot IDs and reads back absence
+  ---
+  duration_ms: 468.5396
+  type: 'test'
+  ...
+# Subtest: lost delete response is not retried; a retained row fails verification
+ok 81 - lost delete response is not retried; a retained row fails verification
+  ---
+  duration_ms: 660.2731
+  type: 'test'
+  ...
+# Subtest: duplicated delete response IDs cannot masquerade as an exact successful batch
+ok 82 - duplicated delete response IDs cannot masquerade as an exact successful batch
+  ---
+  duration_ms: 223.368
+  type: 'test'
+  ...
+# Subtest: normal repeat retains snapshot identities and writes only runner status on unchanged input
+ok 83 - normal repeat retains snapshot identities and writes only runner status on unchanged input
+  ---
+  duration_ms: 11.4886
+  type: 'test'
+  ...
+# Subtest: bad structured projection cannot borrow frozen numeric pace
+ok 84 - bad structured projection cannot borrow frozen numeric pace
+  ---
+  duration_ms: 2.5499
+  type: 'test'
+  ...
+# Subtest: an active projection cannot admit a frozen dropped schedule
+ok 85 - an active projection cannot admit a frozen dropped schedule
+  ---
+  duration_ms: 2.3249
+  type: 'test'
+  ...
+# Subtest: changing producer collection defers publication without inventing snapshot
+ok 86 - changing producer collection defers publication without inventing snapshot
+  ---
+  duration_ms: 1.3913
+  type: 'test'
+  ...
+# Subtest: scope failure is recorded, no automatic successful retry or baseline advancement
+ok 87 - scope failure is recorded, no automatic successful retry or baseline advancement
+  ---
+  duration_ms: 4.033
+  type: 'test'
+  ...
+# Subtest: budget deferral is explicit rather than partial snapshot publication
+ok 88 - budget deferral is explicit rather than partial snapshot publication
+  ---
+  duration_ms: 2.0673
+  type: 'test'
+  ...
+# Subtest: new evidence creates a snapshot even when pace is unchanged
+ok 89 - new evidence creates a snapshot even when pace is unchanged
+  ---
+  duration_ms: 2.8678
+  type: 'test'
+  ...
+# Subtest: checkpoint failure cannot report successful execution
+ok 90 - checkpoint failure cannot report successful execution
+  ---
+  duration_ms: 1.5353
+  type: 'test'
+  ...
+# Subtest: normal interval retains both endpoints and absolute counts; same observation is not a second interval
+ok 91 - normal interval retains both endpoints and absolute counts; same observation is not a second interval
+  ---
+  duration_ms: 5.2334
+  type: 'test'
+  ...
+# Subtest: future observation and mismatched class roster cannot yield interval pace
+ok 92 - future observation and mismatched class roster cannot yield interval pace
+  ---
+  duration_ms: 7.0036
+  type: 'test'
+  ...
+# Subtest: malformed later archive member invalidates the entire candidate collection
+ok 93 - malformed later archive member invalidates the entire candidate collection
+  ---
+  duration_ms: 3.9134
+  type: 'test'
+  ...
+# Subtest: two normal fixture invocations purge only prior show/past day and keep today/future
+ok 94 - two normal fixture invocations purge only prior show/past day and keep today/future
+  ---
+  duration_ms: 41.8653
+  type: 'test'
+  ...
+# Subtest: a source change before delete fences purge and requires new confirmation
+ok 95 - a source change before delete fences purge and requires new confirmation
+  ---
+  duration_ms: 3.9294
+  type: 'test'
+  ...
+# Subtest: unknown deletion stops with exact retained intent, without retry or business source mutation
+ok 96 - unknown deletion stops with exact retained intent, without retry or business source mutation
+  ---
+  duration_ms: 5.2608
+  type: 'test'
+  ...
+# Subtest: pending partial deletion blocks replanning and preserves original intent
+ok 97 - pending partial deletion blocks replanning and preserves original intent
+  ---
+  duration_ms: 2.1586
+  type: 'test'
+  ...
+# Subtest: a fully absent pending batch reconciles before new work without another delete
+ok 98 - a fully absent pending batch reconciles before new work without another delete
+  ---
+  duration_ms: 2.1341
+  type: 'test'
+  ...
+# Subtest: confirmed retired days cannot be recreated after authority becomes stale
+ok 99 - confirmed retired days cannot be recreated after authority becomes stale
+  ---
+  duration_ms: 5.2789
+  type: 'test'
+  ...
+# Subtest: acceptance checks every expected scope, including unchanged answers
+ok 100 - acceptance checks every expected scope, including unchanged answers
+  ---
+  duration_ms: 12.2811
+  type: 'test'
+  ...
+# Subtest: acceptance rejects corrupted unchanged answer and changed provenance
+ok 101 - acceptance rejects corrupted unchanged answer and changed provenance
+  ---
+  duration_ms: 3.5051
+  type: 'test'
+  ...
+# Subtest: valid unavailable stale class is accepted without fabricated data provenance
+ok 102 - valid unavailable stale class is accepted without fabricated data provenance
+  ---
+  duration_ms: 2.3671
+  type: 'test'
+  ...
+1..102
+# tests 102
+# suites 0
+# pass 102
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1845.9788

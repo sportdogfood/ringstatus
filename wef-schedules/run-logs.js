@@ -66,10 +66,11 @@ function runLogs({api,request=globalThis.fetch,limit=1000,heartbeat,catalog,seri
   async finish(record,report,error,{completedAt}={}){return serialize(async()=>{
    const days=report?.days||[],successful=days.filter(d=>d.ok),failed=days.filter(d=>!d.ok);
    const warnings=days.flatMap(d=>d.warnings||[]);
-   const errors=[...(record.archiveEvents||[]).filter(e=>e.error).map(e=>e.file+': '+e.error),...(error?[String(error.message||error)]:[]),...failed.map(d=>`${d.date}: ${d.error}${d.log_error?'; status save failed: '+d.log_error:''}`),
+   const errors=[...(record.archiveEvents||[]).filter(e=>e.error).map(e=>e.file+': '+e.error),...(error?[String(error.message||error)]:[]),...(report?.entries?.error?[report.entries.error]:[]),...(report?.entries?.errors||[]).map(e=>'Entries '+e.kind+' '+e.id+': '+e.error),...failed.map(d=>`${d.date}: ${d.error}${d.log_error?'; status save failed: '+d.log_error:''}`),
     ...days.flatMap(d=>(d.warnings||[]).filter(w=>w.error).map(w=>`${d.date}: ${w.error}`))];
    const lines=days.map(d=>d.ok?`${d.date}: ${d.row_count} rows${d.classes_count!==undefined?`; ${d.classes_count} classes, ${d.schedule_blocks_count||0} schooling/break blocks`:""}; added ${d.changes?.added.length||0}, changed ${d.changes?.changed.length||0}, dropped ${d.changes?.dropped.length||0}${d.unchanged?'; dataset reused':''}${d.warnings?.length?'; '+d.warnings.map(w=>w.code+': '+(w.message||w.error||`${w.unmatched||0} unmatched`)).join('; '):''}`:`${d.date}: FAILED; ${d.error}`);
    if(report?.references){const r=report.references;lines.push(`Show/rings verified: show ${r.show_id}; source-selected date ${r.selected_date}; ${r.rings} daily rings (${r.selected_rings} selected); ${r.helpers} static helpers; ${r.schedule_links} schedule links.${r.dropped_without_ring?' '+r.dropped_without_ring+' retained dropped schedules have no source/historical ring; link left blank.':''}`);}
+   if(report?.entries){const e=report.entries;lines.push(e.error?'Entry/trip collection FAILED: '+e.error:`Entry/trip collection: ${e.entries||0} entries; ${e.trips||0} trips; ${e.completed_classes||0}/${e.classes||0} classes; ${e.conflicts||0} ambiguous schedule links; ${e.source_requests||0} decoded source reads; ${e.ok?'complete':'FAILED'}.`);}
    const fields={completed:new Date(completedAt||clock()).toISOString(),result:error||report?.ok===false?'Failed':warnings.length?'Warning':'Success',
     'show-id':report?.default_show?.current?.show_id??days[0]?.show_id??null,
     rows:days.length?successful.reduce((sum,d)=>sum+(d.row_count||0),0):null,

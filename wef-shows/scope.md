@@ -1,5 +1,12 @@
 ## LOCKED - wef-shows verified scope v1.4 - 29 October 2026
 
+Runtime reverified and relocked **30 October 2026** after the separately approved
+count-replay timeout repair. Two normal runs at 08:44 and 08:49 Eastern exercised
+replay and published all four show-days; independent code review passed. Scope
+v1.4 is unchanged. Exact runtime hashes, review and acceptance are in the
+[locked release](evidence/count-replay-fix-20261030/README.md). Counts remain
+subject to their original freshness/coverage rules; Stale is not fresh readiness.
+
 Owner directs this module to remain locked. This is a scope lock, not a disabled collector or filesystem restriction. Preserve the five-minute task, canonical shows/show-days, discovery and source checks, Data count reader and protected replay, accepted local archive handoff, keys/links and verified logs/heartbeat. No build or preparation for Entries is pending.
 
 Dependency direction: Entries reads canonical Shows; scheduled Shows does not read, write, qualify or trigger Entries. Count evidence comes directly from wef-data; the Season coordinator owns that producer separately. Season retention is not an intermediary or readiness gate. Older descriptions of Season-supplied summaries below are historical coordinator wording, superseded by this inspected direct-reader clarification. No count replay or archive check is removed.
@@ -111,6 +118,23 @@ Release verification: **PARTIAL**, October 29. All 39 offline/deployed tests pas
 Subsequent correction: the owner separately approved fixing the source fetch and heartbeat failures. The deployed correction passed 45 tests and two normal scheduled runs at 1:49 and 1:54 p.m. Eastern on October 29, with Airtable readback and count replay verification. Records acknowledged that bounded correction as COMPLETE. The preceding PARTIAL paragraph describes the original failed release, not current acceptance. The original network cause was not retained; failure/recovery paths were tested offline. See [verified correction](evidence/fetch-heartbeat-fix-20261029/release.md).
 
 ## Open items and boundaries
+
+### Code-review procedure — owner direction, 30 October 2026
+
+Review material authorized changes before deployment and review after observed
+behavior or verification failures. Use the Code Review skill, actual baseline and
+deployed hashes, independent implementation review, actionable findings and
+separate offline/deployment/normal-run gates. Reuse an unchanged reviewed release
+after verifying its hashes and boundaries; do not repeat review per collector run
+or create review timers/monitors. A failed review does not authorize fixes.
+
+Record module/base/release/baseline/hash manifest, reviewer/date/scope, findings
+with severity/trigger/consequence/smallest correction, tests actually run or
+inspected, scheduled evidence, gate results, risks and the exact next authorized
+action. Runtime scope remains locked v1.4. For this request, Records alone creates
+or updates the Airtable review schema/records and verifies readback in Shows base
+`appCaSmL819KK7UFJ`; Shows supplies the report, not Airtable writes. Current report:
+[review handoff](evidence/count-replay-fix-20261030/review-handoff.md).
 
 - Discovery cadence is resolved. The local archive arrangement is separately accepted; portability is deferred and is not a current workflow blocker.
 - Live count consumption or suppression requires its own approved implementation and verification; Shows publication alone does not activate it.

@@ -1,0 +1,28 @@
+{
+  "verified_at": "2026-10-30T13:16:54.102Z",
+  "run": "e752ceee-39f2-482b-bb39-fef247b21c00",
+  "started": "2026-10-30T13:13:04.830Z",
+  "completed": "2026-10-30T13:15:29.527Z",
+  "ok": true,
+  "counts": {
+    "evaluated": 201,
+    "written": 201,
+    "unchanged": 0,
+    "deferred": 0,
+    "available": 0,
+    "partial": 60,
+    "unavailable": 141,
+    "purged": 0,
+    "purge_deferred": 0,
+    "classes_evaluated": 371,
+    "classes_unchanged": 0,
+    "classes_unavailable": 239,
+    "classes_written": 371
+  },
+  "groups": 201,
+  "classes": 371,
+  "validated_latest": 572,
+  "total_snapshots": 5138,
+  "checkpoint_outcome": "complete",
+  "purge_status": "purge_confirmation_pending"
+}

@@ -1,0 +1,298 @@
+TAP version 13
+# Subtest: replay still rejects a changed hash after valid input
+ok 1 - replay still rejects a changed hash after valid input
+  ---
+  duration_ms: 951.6656
+  type: 'test'
+  ...
+# Subtest: replay rejects missing retained evidence and changed provenance
+ok 2 - replay rejects missing retained evidence and changed provenance
+  ---
+  duration_ms: 736.3088
+  type: 'test'
+  ...
+# Subtest: archive reader validates bytes, payload, show and path before replay
+ok 3 - archive reader validates bytes, payload, show and path before replay
+  ---
+  duration_ms: 31.9594
+  type: 'test'
+  ...
+# Subtest: Airtable timestamp readback accepts equivalent source offsets without repeated writes
+ok 4 - Airtable timestamp readback accepts equivalent source offsets without repeated writes
+  ---
+  duration_ms: 6.6058
+  type: 'test'
+  ...
+# Subtest: creates two tables and exact reciprocal relationships; repeat does not write
+ok 5 - creates two tables and exact reciprocal relationships; repeat does not write
+  ---
+  duration_ms: 16.0162
+  type: 'test'
+  ...
+# Subtest: rejects incompatible existing audit tables before writing
+ok 6 - rejects incompatible existing audit tables before writing
+  ---
+  duration_ms: 1.0737
+  type: 'test'
+  ...
+# Subtest: repeat error persistence is idempotent; previous source success survives a later failed attempt
+ok 7 - repeat error persistence is idempotent; previous source success survives a later failed attempt
+  ---
+  duration_ms: 3.0596
+  type: 'test'
+  ...
+# Subtest: schema rejects changed canonical field types before writes
+ok 8 - schema rejects changed canonical field types before writes
+  ---
+  duration_ms: 3.4755
+  type: 'test'
+  ...
+# Subtest: schema creates only agreed days and reciprocal, repeat makes no writes
+ok 9 - schema creates only agreed days and reciprocal, repeat makes no writes
+  ---
+  duration_ms: 5.8546
+  type: 'test'
+  ...
+# Subtest: exact Season fixture replays through isolated Python bridge
+ok 10 - exact Season fixture replays through isolated Python bridge
+  ---
+  duration_ms: 364.4147
+  type: 'test'
+  ...
+# Subtest: real no-inventory frozen fixture publishes null asof/counts as Unknown
+ok 11 - real no-inventory frozen fixture publishes null asof/counts as Unknown
+  ---
+  duration_ms: 583.6238
+  type: 'test'
+  ...
+# Subtest: reader publishes the producer fixture and reuses only hashed collection cache
+ok 12 - reader publishes the producer fixture and reuses only hashed collection cache
+  ---
+  duration_ms: 1008.0547
+  type: 'test'
+  ...
+# Subtest: tampered source parts fail before count publication
+ok 13 - tampered source parts fail before count publication
+  ---
+  duration_ms: 4.8166
+  type: 'test'
+  ...
+# Subtest: changed head fence rejects otherwise valid replay
+ok 14 - changed head fence rejects otherwise valid replay
+  ---
+  duration_ms: 322.9224
+  type: 'test'
+  ...
+# Subtest: valid subset zero publishes same day/native link on repeats; absent day stays unknown
+ok 15 - valid subset zero publishes same day/native link on repeats; absent day stays unknown
+  ---
+  duration_ms: 10.6443
+  type: 'test'
+  ...
+# Subtest: unknown coverage remains null not zero
+ok 16 - unknown coverage remains null not zero
+  ---
+  duration_ms: 1.5986
+  type: 'test'
+  ...
+# Subtest: unknown day without inventory retains null source time and does not stop remaining days
+ok 17 - unknown day without inventory retains null source time and does not stop remaining days
+  ---
+  duration_ms: 2.2349
+  type: 'test'
+  ...
+# Subtest: invalid or failed evidence preserves accepted body and original counts/time
+ok 18 - invalid or failed evidence preserves accepted body and original counts/time
+  ---
+  duration_ms: 1.6902
+  type: 'test'
+  ...
+# Subtest: scope mismatch fails before publishing counts
+ok 19 - scope mismatch fails before publishing counts
+  ---
+  duration_ms: 0.4447
+  type: 'test'
+  ...
+# Subtest: mixed projection, tampered digest and changed fence are rejected
+ok 20 - mixed projection, tampered digest and changed fence are rejected
+  ---
+  duration_ms: 2.1513
+  type: 'test'
+  ...
+# Subtest: expiry uses source time despite recent verification; exact five minutes is stale
+ok 21 - expiry uses source time despite recent verification; exact five minutes is stale
+  ---
+  duration_ms: 0.1939
+  type: 'test'
+  ...
+# Subtest: failed staged write preserves authoritative previous body; readback refuses mixed projections
+ok 22 - failed staged write preserves authoritative previous body; readback refuses mixed projections
+  ---
+  duration_ms: 1.4982
+  type: 'test'
+  ...
+# Subtest: duplicate canonical keys fail without writes
+ok 23 - duplicate canonical keys fail without writes
+  ---
+  duration_ms: 0.6098
+  type: 'test'
+  ...
+# Subtest: producer owns two discovery requests; consumer reads verified show without source calls
+ok 24 - producer owns two discovery requests; consumer reads verified show without source calls
+  ---
+  duration_ms: 107.3755
+  type: 'test'
+  ...
+# Subtest: repeat discovery preserves show record ID and records each run
+ok 25 - repeat discovery preserves show record ID and records each run
+  ---
+  duration_ms: 42.5409
+  type: 'test'
+  ...
+# Subtest: failed discovery preserves published show and records failure
+ok 26 - failed discovery preserves published show and records failure
+  ---
+  duration_ms: 30.4999
+  type: 'test'
+  ...
+# Subtest: rollover retains old show and marks only new show default
+ok 27 - rollover retains old show and marks only new show default
+  ---
+  duration_ms: 71.217
+  type: 'test'
+  ...
+# Subtest: archive failure prevents canonical show changes
+ok 28 - archive failure prevents canonical show changes
+  ---
+  duration_ms: 31.7577
+  type: 'test'
+  ...
+# Subtest: consumer rejects stale, multiple defaults and tampered payload before saving state
+ok 29 - consumer rejects stale, multiple defaults and tampered payload before saving state
+  ---
+  duration_ms: 34.4426
+  type: 'test'
+  ...
+# Subtest: consumer preserves show-specific manual inputs without changing canonical defaults
+ok 30 - consumer preserves show-specific manual inputs without changing canonical defaults
+  ---
+  duration_ms: 31.0763
+  type: 'test'
+  ...
+# Subtest: schedules collect every day using shared metadata and never call discovery endpoints
+ok 31 - schedules collect every day using shared metadata and never call discovery endpoints
+  ---
+  duration_ms: 49.506
+  type: 'test'
+  ...
+# Subtest: consumer rejects archive traversal and inconsistent dates
+ok 32 - consumer rejects archive traversal and inconsistent dates
+  ---
+  duration_ms: 22.8233
+  type: 'test'
+  ...
+# Subtest: producer adapter blocks changes outside shows base and all deletes
+ok 33 - producer adapter blocks changes outside shows base and all deletes
+  ---
+  duration_ms: 7.083
+  type: 'test'
+  ...
+# Subtest: day failure preserves discovery and stops only day retries
+ok 34 - day failure preserves discovery and stops only day retries
+  ---
+  duration_ms: 40.7823
+  type: 'test'
+  ...
+# Subtest: normal successes link attempted sources and create no error rows
+ok 35 - normal successes link attempted sources and create no error rows
+  ---
+  duration_ms: 28.3385
+  type: 'test'
+  ...
+# Subtest: source failures create linked separate errors and do not invent a success time
+ok 36 - source failures create linked separate errors and do not invent a success time
+  ---
+  duration_ms: 1.8643
+  type: 'test'
+  ...
+# Subtest: error-linked log rows are not reused; successful slot source links are cleared
+ok 37 - error-linked log rows are not reused; successful slot source links are cleared
+  ---
+  duration_ms: 35.9955
+  type: 'test'
+  ...
+# Subtest: source-log failure does not undo completed discovery and is reported separately
+ok 38 - source-log failure does not undo completed discovery and is reported separately
+  ---
+  duration_ms: 23.5185
+  type: 'test'
+  ...
+# Subtest: count-source rejection links the error to Season without clearing canonical discovery
+ok 39 - count-source rejection links the error to Season without clearing canonical discovery
+  ---
+  duration_ms: 50.5491
+  type: 'test'
+  ...
+# Subtest: archive errors remain separate linked errors without treating transport success as failure
+ok 40 - archive errors remain separate linked errors without treating transport success as failure
+  ---
+  duration_ms: 1.8039
+  type: 'test'
+  ...
+# Subtest: all protected error-linked log slots append a new attempt without blocking discovery
+ok 41 - all protected error-linked log slots append a new attempt without blocking discovery
+  ---
+  duration_ms: 22.0949
+  type: 'test'
+  ...
+# Subtest: completion evidence failure also marks telemetry health failed and saves separate error
+ok 42 - completion evidence failure also marks telemetry health failed and saves separate error
+  ---
+  duration_ms: 51.0662
+  type: 'test'
+  ...
+# Subtest: failed discovery clears absent heartbeat date with null and records its real error
+ok 43 - failed discovery clears absent heartbeat date with null and records its real error
+  ---
+  duration_ms: 27.1949
+  type: 'test'
+  ...
+# Subtest: transient source failure recovers on same URL with bounded GETs
+ok 44 - transient source failure recovers on same URL with bounded GETs
+  ---
+  duration_ms: 3.958
+  type: 'test'
+  ...
+# Subtest: exhausted source reads stop after three and retain safe nested cause
+ok 45 - exhausted source reads stop after three and retain safe nested cause
+  ---
+  duration_ms: 1.3833
+  type: 'test'
+  ...
+# Subtest: HTTP 503 recovers but 401 and 404 do not retry
+ok 46 - HTTP 503 recovers but 401 and 404 do not retry
+  ---
+  duration_ms: 2.3081
+  type: 'test'
+  ...
+# Subtest: body transport failure is recovered; invalid JSON and missing decode proof are not retried
+ok 47 - body transport failure is recovered; invalid JSON and missing decode proof are not retried
+  ---
+  duration_ms: 30.3997
+  type: 'test'
+  ...
+# Subtest: unapproved endpoints and certificate errors never fall back or retry
+ok 48 - unapproved endpoints and certificate errors never fall back or retry
+  ---
+  duration_ms: 0.8179
+  type: 'test'
+  ...
+1..48
+# tests 48
+# suites 0
+# pass 48
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2660.992

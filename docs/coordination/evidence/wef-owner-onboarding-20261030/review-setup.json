@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-30",
+  "skills": {
+    "plugin": "RingStatus Operating Skills",
+    "version": "0.2.0",
+    "verifiedBy": "rs-skills; remote and cache30files agree",
+    "recipients": "Shows, Live, local Season coordinator for Data and Season; applicable skill reads acknowledged",
+    "pluginInstallOrUpgradePerformed": false
+  },
+  "periodicReviews": [
+    {
+      "module": "wef-shows",
+      "base": "appCaSmL819KK7UFJ",
+      "table": "tblYDJfIh17xCCtIP",
+      "record": "recZTORMGcgsAaezQ",
+      "automation": "wef-shows-monday-code-review",
+      "localTime": "09:30",
+      "status": "ACTIVE configured; first scheduled review Pending",
+      "firstScheduledDate": "2026-11-02",
+      "metadataExactReadback": true
+    },
+    {
+      "module": "wef-live",
+      "base": "appgzosUcVqA4vZdf",
+      "table": "tbl1jEtJusopJGC6O",
+      "record": "recYUERW7D8RF2OXS",
+      "automation": "wef-live-monday-code-review",
+      "localTime": "10:00",
+      "status": "ACTIVE configured; first scheduled review Pending",
+      "firstScheduledDate": "2026-11-02",
+      "metadataExactReadback": true
+    },
+    {
+      "module": "wef-season-trainers",
+      "base": "appzZsd3UqMRR2CNc",
+      "table": "tbluWs084sVApiWyZ",
+      "record": "recd56FCNbiq4Tumf",
+      "automation": "wef-season-monday-code-review",
+      "localTime": "10:30",
+      "status": "ACTIVE configured; first scheduled review Pending",
+      "firstScheduledDate": "2026-11-02",
+      "metadataExactReadback": true
+    },
+    {
+      "module": "wef-season-riders",
+      "base": "appkWkm9rFLrkUvaD",
+      "table": "tbl1yR7TBkb9qGKNs",
+      "record": "recPrdL0LPFAcDTwa",
+      "automation": "wef-season-monday-code-review",
+      "localTime": "10:30",
+      "status": "ACTIVE configured; first scheduled review Pending",
+      "firstScheduledDate": "2026-11-02",
+      "metadataExactReadback": true
+    },
+    {
+      "module": "wef-season-horses",
+      "base": "appETrjio9Yj9Pv17",
+      "table": "tbl6q1qxN2KgdbIaE",
+      "record": "recTSbpVGaYTTMII2",
+      "automation": "wef-season-monday-code-review",
+      "localTime": "10:30",
+      "status": "ACTIVE configured; first scheduled review Pending",
+      "firstScheduledDate": "2026-11-02",
+      "metadataExactReadback": true
+    },
+    {
+      "module": "wef-season-rings",
+      "base": "appxMk9wfbBHEvC5e",
+      "table": "tblZa00dMCVYFo46K",
+      "record": "recl01Hjtwk9gilnP",
+      "automation": "wef-season-monday-code-review",
+      "localTime": "10:30",
+      "status": "ACTIVE configured; first scheduled review Pending",
+      "firstScheduledDate": "2026-11-02",
+      "metadataExactReadback": true
+    }
+  ],
+  "existingDataReview": {
+    "id": "wef-data-monday-code-review",
+    "base": "appdl16HJ5ETm8N69",
+    "record": "rec3DITcZqf1uAP1L",
+    "localTime": "Monday09:00America/New_York",
+    "identityTargetStatusTimingPreserved": true,
+    "promptGuidanceRefreshed": true
+  },
+  "newHeartbeatReviewJobs": 3,
+  "collectorOrBusinessTaskChanges": 0,
+  "productFixes": 0,
+  "recordRepairs": 0,
+  "firstFutureReviewExecutionVerified": false,
+  "preservation": {
+    "rootAGENTSUnchanged": true,
+    "dataSeasonAndSharedRuntimeHashesUnchanged": 36,
+    "showsLockedRuntimeHashesMatched": 19,
+    "liveDeployedRuntimeHashesMatched": 6,
+    "dataSeasonBusinessTaskDefinitionsUnchanged": true,
+    "privateSeasonOwnerInstructionCopyByteIdentical": true
+  },
+  "index": "docs/coordination/wef-agent-operating-index-20261030.md",
+  "privateContinuityCheckpointPrepared": true,
+  "compactionInvoked": false
+}

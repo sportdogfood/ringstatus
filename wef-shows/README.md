@@ -1,4 +1,163 @@
+# Current Shows operating record - 30 October 2026
+
+This section is current; older dated sections below are historical evidence,
+not active assignments. Scope **v1.4 remains LOCKED**. Runtime release:
+`count-replay-fix-20261030`; [exact hashes and acceptance](evidence/count-replay-fix-20261030/README.md).
+This update is documentation only.
+
+## Instructions, hierarchy and authority
+
+Load [module AGENTS.md](AGENTS.md), repository instructions and the physical
+[owner instruction block](../docs/coordination/wef-owner-operating-instructions.md).
+All were read here on October 30. Owner approves; Records coordinates contracts
+and evidence; Shows owns canonical show identity/default discovery/show-days.
+Canonical Shows supplies Data acquisition; Season separately retains accepted
+Data history. The local Season coordinator owns both Data and Season; the temporary
+Data fork transfer was reversed. Live independently observes TODAY; Entries links
+accepted records only. Schedules still runs; retirement/migration is planning only.
+
+Shows is authoritative for its validated canonical show context, not every entry,
+current participation, universal source completeness, timing or live truth.
+
+## Exact base and tables
+
+Owned base: **appCaSmL819KK7UFJ**.
+
+| Table | ID | Responsibility |
+|---|---|---|
+| shows | tblJA5CUon5s1sWib | Canonical show/default/date context |
+| show-days | tbl14MaCCDw6dAywH | Validated day-count publication and native show links |
+| heartbeat | tbl7RhSu6a83ev76G | Latest completed collector result |
+| run-logs | tblchw5nYX0BhE9DH | Attempts, outcomes, archive and source links |
+| sources | tbld8rqxkXyRzCeVK | Input access/validation health, not count freshness |
+| err-logs | tblhQWyblTduQHV7c | Actual errors and run/source references |
+| code-reviews | tblYDJfIh17xCCtIP | Dated administrative reviews; Records writes for this task |
+
+`meta` (tblwBvigcmqRlSYUb) also exists; the scheduled writer does not manage it.
+Do not infer permission to retire it. Verified review record:
+[recjXg1esmui5DGOs](https://airtable.com/appCaSmL819KK7UFJ/tblYDJfIh17xCCtIP/recjXg1esmui5DGOs),
+exact GET readback PASS reported by Records; [review handoff](evidence/count-replay-fix-20261030/review-handoff.md).
+
+## Inputs, outputs and preserved contracts
+
+Discovery uses the existing decoded Worker `/ring?customer_id=15`, then
+`/schedule?date=00/00/00&show_id={show_id}&customer_id=15`; Worker origin is
+`https://wef-schedules-decoded.gombcg.workers.dev`. Preserve decoded-response proof,
+matching show identity and source-selected date validation; no new endpoint.
+
+Counts come directly from Data **appdl16HJ5ETm8N69**: runs
+`tblSxcmUcmB0W9Vhu` and collections `tbl8fQXTGJmv5esNj`. Preserve completed revision,
+canonical authority fence, exact retained keys/native references, hashes,
+predecessors, count replay and Data archive evidence. Canonical `show-key` remains
+`customer_id|show_id`; day key adds date, with native local link to Shows.
+Schedules/Entries/Live and Data/Season consume canonical context independently;
+Shows never triggers their jobs. Existing default-payload file/hash handoff stays.
+
+Shared files physically under `wef-schedules` support discovery, transport,
+locking/reporting and Python chain validation. Their location is not Schedules
+collector ownership or a reason to delete them. Shows archives are under
+`wef-shows/runtime/history`; Data retained evidence under
+`wef-data/runtime/retained-evidence`. Preserve paths, hashes and all consumers.
+
+## Real cadence, archival and deployment
+
+Inspected Windows Task Scheduler task **wef-shows-collector** repeats every five
+minutes, anchored at :04/:09/:14 etc., with a four-minute execution limit. Its
+established action is `wscript.exe //B //Nologo .../wef-shows/run-hidden.vbs` ->
+`run.ps1` -> Node `entry.js`, in this checkout. Runtime configuration is private
+`runtime/collector.env`; do not publish credentials. Deploy only authorized changes
+through this existing checkout/route and verify normal scheduled runs.
+
+Each successful discovery archives default-ring, default-schedule and shows-before
+within the collector; identical content can reuse its compressed SHA256 file after
+readback. There is no separate Shows archive timer. At 1,000 run-log rows, the
+collector archives an eligible old non-Running row before reusing its slot;
+error-linked rows are protected. If all slots are protected it appends, making
+1,000 a soft limit. No automatic local-file expiry/deletion is implemented here.
+This is Shows evidence/log retention, not Season's broader Data archival cadence.
+
+Sunday 16:00-20:00 America/New_York is an expected rollover window, not the only
+polling window; the five-minute task continues. Latest local receipt inspected:
+`986d18b2-4a29-484a-bb00-98b779eea6b7`, October 30 09:14:02-09:15:18 Eastern,
+success, four day publications and four archives. Dated acceptance remains the
+08:44 and 08:49 actual replay runs in the locked release; this local receipt is
+not a new independent Airtable acceptance test.
+
+## Source age, empty outcomes and failures
+
+Source-selected date is not automatically TODAY. Count age uses original accepted
+source observation time, never replay, publication or review time. Complete counts
+at least five minutes old are Stale; incomplete/missing evidence is Unknown.
+Missing current canonical Data context is a successful Unknown publication, with
+prior accepted evidence retained. Missing/incomplete data is never verified zero.
+Competition-class coverage does not prove schooling/classless attendance or whole-day
+emptiness. Review PASS and collection Success do not override these limits.
+
+Publication failure preserves accepted summaries, records Partial and writes
+`runtime/show-days-stopped.json`; later normal wakes continue discovery but skip
+stopped publication. Do not clear it or retry the failed path without approval.
+Source/telemetry failures retain their actual logs; startup/forced termination may
+prevent Airtable logging, so local receipt/execution log is fallback evidence.
+Count replay timeout recovery is accepted, but its original timeout was not
+reproduced; current acceptance does not promise unlimited replay capacity.
+
+## Review schedule, skills and continuity
+
+Review actual authorized material changes before deployment and after observed
+behavior/verification failures, plus the separately authorized periodic owner
+review. Reuse unchanged independent reviews after checking hashes/contracts;
+never turn every collector invocation into a review. Records owns review automation
+and review-record writes for this task; preserve dated review history.
+
+Records created **wef-shows-monday-code-review**, independently inspected ACTIVE
+on October 30 at 09:19 Eastern. It targets Shows chat
+`01a16976-f0a6-72a1-a75f-75de7f19a815`, **Mondays 09:30 America/New_York**, bounded
+at 20 minutes. First scheduled review: **November 2, 2026**. Its existing routine
+record **recZTORMGcgsAaezQ** in `appCaSmL819KK7UFJ/tblYDJfIh17xCCtIP` is Pending
+first review, not an executed result. Release record `recjXg1esmui5DGOs` remains
+separate dated evidence. Future scheduled wakes permit only the named review-record
+updates and GET readback; preserve dated history and all runtime boundaries.
+The default-show notification monitor remains unchanged and separate. No duplicate
+review job is needed. Reviews are best effort when host/app are available.
+
+Actually READ: installed RingStatus Operating Skills **0.2.0** full
+`instruction-loader`, `context-compact`, `code-review`, `rebalancer` skill files at
+`C:/Users/gombc/.codex/plugins/cache/created-by-me-remote/ringstatus-operating-skills/0.2.0/skills/`.
+Owner `$rebalance` maps to packaged `rebalancer`. Local
+`C:/Users/gombc/.agents/skills/code-review/SKILL.md` was also read. Records relayed
+rs-skills' package/version verification; no install/update was performed here.
+APPLIED: scope/authority loading, reconciliation to the locked baseline, reuse of
+unchanged reviewed evidence, and documentation-only boundaries. VERIFIED: physical
+owner block is readable here, task/cadence inspected, review evidence linked and
+runtime hashes checked. Reading a skill is not proof every optional procedure ran.
+
+At boundaries and first tool boundary after 30 minutes of active work, use
+[context-check procedure](../docs/coordination/context-check-procedure.md) with this
+chat's actual rollout/telemetry; unknown measurements stay unknown. Before compaction,
+prepare a concise authorized private resume with objective, role, approvals/stops,
+paths, evidence, blockers and next action; do not copy raw history into Git/Airtable.
+No compaction or private history transfer is claimed by this documentation update.
+On resume read AGENTS, owner block, this current section, scope and exact release;
+reconcile later owner instructions before dependent work.
+
+**Next authorized action:** the first periodic review is scheduled for November 2,
+2026 at 09:30 Eastern under its bounded review-only prompt. No setup gap or runtime
+task is open in Shows; preserve the lock. Do not run the review early as collector
+proof. Freshness and local shared-file dependencies remain real limitations, not
+authorization for migration, repair or cadence changes.
+
+---
+
+## Prior dated implementation and verification notes
+
 ## LOCKED - wef-shows verified scope v1.4 - 29 October 2026
+
+30 October 2026: count-replay recovery verified and relocked. Normal 08:44 and
+08:49 Eastern runs each replayed counts and published four show-days, with
+independent Airtable/evidence readback and zero errors. Independent code review
+passed. See [release, exact deployed hashes and review](evidence/count-replay-fix-20261030/README.md).
+Scope v1.4, cadence, archives, count replay and existing handoffs remain protected.
+Stale count status remains a source-freshness limit, not a run failure.
 
 Owner directs this module to remain locked. This is a scope lock, not a disabled collector or filesystem restriction. Preserve the five-minute task, canonical shows/show-days, discovery and source checks, Data count reader and protected replay, accepted local archive handoff, keys/links and verified logs/heartbeat. No build or preparation for Entries is pending.
 
@@ -189,3 +348,14 @@ accepted body remains the preserved historical tuple.
 with an independent replay of its exact producer revision, checks display/native links
 and saved run evidence, and writes a local verification receipt. It never invokes a
 collector. Two normal producer/consumer pairs are required for deployment acceptance.
+
+## Code-review requirement - 30 October 2026
+
+Review authorized material changes before deployment and after observed behavior
+or verification failures. Reuse unchanged reviews only after checking hashes and
+scope; no per-run reviews. Records manages separately authorized periodic reviews. Keep offline review, deployment and
+normal scheduled acceptance separate. Review failure does not authorize a fix.
+For this request Records alone writes and verifies Airtable review records in
+Shows base appCaSmL819KK7UFJ; Shows supplies evidence. See the
+[standard review report](evidence/count-replay-fix-20261030/review-handoff.md) and
+[scope procedure](scope.md). Runtime remains locked v1.4.
