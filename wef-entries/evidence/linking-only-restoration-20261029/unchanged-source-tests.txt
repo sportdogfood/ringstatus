@@ -1,0 +1,11 @@
+✔ one transient source retry recovers; no retry for authentication or malformed success (4.2053ms)
+✔ persistent 502 is bounded to two attempts and fails rather than empty success (0.7531ms)
+✔ timeout may retry once; arbitrary programming errors never retry (1.0179ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 219.5275

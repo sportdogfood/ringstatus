@@ -53,5 +53,27 @@ class CheckpointTests(unittest.TestCase):
             with patch.object(season,'ROOT',root),patch.object(season,'Airtable',return_value=api),patch.object(season,'sources',return_value=self.source()),patch.object(season,'process',side_effect=process):result=season.run()
             self.assertEqual(result['horses']['status'],'Failed');self.assertTrue((root/'runtime/horses/stopped.json').exists())
             self.assertTrue(all(result[e]['status']=='Succeeded' for e in ['riders','trainers','rings']))
+    def test_assignment_assessment_is_shared_between_entity_consumers(self):
+        from test_trip_assignments import fixture
+        facts=fixture();source=[(facts,{'show-key':CONTEXT['show-key'],'revision':'assignment-fixture','kind':'retained','sequence':1})];api=API();cache={}
+        with tempfile.TemporaryDirectory() as folder,patch.object(season,'ROOT',pathlib.Path(folder)),patch.object(season,'project',return_value=graph()),patch.object(season,'assignment_evidence',wraps=season.assignment_evidence) as assess:
+            season.process('horses',self.config(),api,source,api.canonical_context(),cache)
+            api.db['tblHeart'][0]['fields'].pop('fldCheckpoint')
+            season.process('horses',self.config(),api,source,api.canonical_context(),cache)
+            self.assertEqual(assess.call_count,1)
+    def test_invalid_trip_revision_does_not_write_or_advance_checkpoint(self):
+        from test_trip_assignments import fixture
+        facts=fixture();next(iter(facts['trips'].values()))['rider']={'$links':[['riders','1000001274']]};api=API()
+        with tempfile.TemporaryDirectory() as folder,patch.object(season,'ROOT',pathlib.Path(folder)):
+            before=copy.deepcopy(api.db)
+            with self.assertRaisesRegex(ValueError,'source identity conflict'):
+                season.process('horses',self.config(),api,[(facts,{'show-key':CONTEXT['show-key'],'revision':'invalid','kind':'retained','sequence':1})],api.canonical_context())
+            self.assertEqual(api.db,before);self.assertNotIn('fldCheckpoint',api.db['tblHeart'][0]['fields'])
+    def test_assignment_counts_name_applied_source_when_later_current_source_is_skipped(self):
+        api=API();api.db['tblHeart'][0]['fields']['fldCheckpoint']=json.dumps({'15|76':{'revision':'already-applied','kind':'archive'}})
+        source=[({}, {'show-key':'15|75','revision':'historical-update','kind':'archive'}),({}, {'show-key':'15|76','revision':'already-applied','kind':'archive'})]
+        with tempfile.TemporaryDirectory() as folder,patch.object(season,'ROOT',pathlib.Path(folder)),patch.object(season,'project',return_value=graph()):
+            result=season.process('horses',self.config(),api,source,api.canonical_context())
+            self.assertEqual(result['counts']['assignment-source'],{'show-key':'15|75','revision':'historical-update'})
 
 if __name__=='__main__':unittest.main()

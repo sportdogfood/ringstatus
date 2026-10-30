@@ -24,5 +24,9 @@ test('same-date old-show adapter deletion requires an exact verified archive',as
     assert.equal(calls.length,0);
     await api.retire('live-entries',rows,{show:75,date:'2026-10-23'},receipt);
     assert.deepEqual(calls,['DELETE']);
+    const wrong=require('../airtable').airtable({pause:async()=>{},request:async()=>({ok:true,json:async()=>({records:[{id:'wrong-id',deleted:true}]})})});
+    await assert.rejects(()=>wrong.retire('live-entries',rows,{show:75,date:'2026-10-23'},receipt),/Incomplete retirement/);
+    await assert.rejects(()=>api.retire('collections',[{id:'catalog',fields:{'show-id':74,date:'2026-10-23','source-kind':'archive-catalog'}}],{show:75,date:'2026-10-23'},receipt),/Forbidden/);
+
   }finally{fs.unlinkSync(file);fs.rmdirSync(dir);}
 });

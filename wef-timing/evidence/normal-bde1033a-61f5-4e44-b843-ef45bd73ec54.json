@@ -1,0 +1,38 @@
+{
+  "verified_at": "2026-10-30T00:18:17.696Z",
+  "run": "bde1033a-61f5-4e44-b843-ef45bd73ec54",
+  "started": "2026-10-30T00:17:01.880Z",
+  "completed": "2026-10-30T00:17:21.124Z",
+  "ok": true,
+  "counts": {
+    "evaluated": 80,
+    "written": 80,
+    "unchanged": 0,
+    "deferred": 147,
+    "available": 0,
+    "partial": 21,
+    "unavailable": 59,
+    "purged": 0,
+    "purge_deferred": 0
+  },
+  "total_snapshots": 1455,
+  "covered_group_scopes": 227,
+  "expected_group_scopes": 227,
+  "checkpoint_outcome": "partial",
+  "checkpoint_duration_ms": 19244,
+  "duplicates": 0,
+  "verified_hashes": 80,
+  "clock_verified": true,
+  "numeric_created": 21,
+  "observed_interval_created": 0,
+  "example": {
+    "show-id": 200000076,
+    "date": "2026-10-31",
+    "pace-minutes-per-trip": 3,
+    "pace-method": "schedule_window",
+    "answer-key": "schedules_live|200000076|2026-10-31|4|200028272|base|bde1033a-61f5-4e44-b843-ef45bd73ec54|1c25d6d497fcaca2",
+    "ring-number": 4,
+    "group-id": 200028272,
+    "observed-at": "2026-10-30T00:15:36.936Z"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "label": "before",
+  "run": "218efaaa-c1c4-49e0-8fa4-c7f05fe46f75",
+  "started": "2026-10-29T23:34:02.317Z",
+  "completed": "2026-10-29T23:36:26.052Z",
+  "ok": true,
+  "result": "Partial",
+  "rows": 489,
+  "accepted": 489,
+  "outside": 0,
+  "entries": 513,
+  "errors": [],
+  "checks": {
+    "uniqueKeys": true
+  }
+}

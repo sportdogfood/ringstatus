@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-10-29T23:43:54.693Z",
+  "changed_timing_files": [
+    "run.ps1"
+  ],
+  "protected_differences": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\airtable.js",
+      "status": "changed_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\collector.js",
+      "status": "changed_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\verify.js",
+      "status": "changed_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\participation.js",
+      "status": "changed_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\settings.js",
+      "status": "changed_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\live-input.js",
+      "status": "missing_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\collector.js",
+      "status": "changed_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\settings.js",
+      "status": "changed_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\model.js",
+      "status": "changed_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\retained-input.py",
+      "status": "changed_since_original_deployment"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\airtable.js",
+      "status": "changed_since_original_deployment"
+    }
+  ],
+  "note": "No protected path was written by Timing; differences are observations, not authorization to restore."
+}

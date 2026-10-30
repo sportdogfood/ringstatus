@@ -10,6 +10,7 @@ const clean = (row) =>
   Object.fromEntries(Object.entries(row).filter(([k]) => !k.startsWith("_")));
 async function runLive({
   api = require("./airtable").airtable(),
+  publish = api.publicationEnabled ? require('./publication').publish : null,
   get = sources.get,
   getStatus = require('./activity').readStatus,
   clock = () => new Date().toISOString(),
@@ -33,7 +34,7 @@ async function runLive({
     archives: [],
     counts: { rings: 0, groups: 0, classes: 0, entries: 0 },
   };
-  let scope;
+  let scope, publicationInput;
   try {
     await api.upsert('heartbeat','heartbeat-key',[{
       'heartbeat-key':report.run_id,'run-id':report.run_id,
@@ -60,7 +61,7 @@ async function runLive({
         archives: report.archives
           .map(
             (a) =>
-              `${a.at}: ${a.kind} ${a.outcome}; ${a.records} records; ${a.file}; SHA256 ${a.sha256}`,
+              `${a.at}: ${a.kind} ${a.outcome}; ${a.records} records; ${a.file}; SHA256 ${a.sha256}${a.cleanup ? '; cleanup '+a.cleanup : ''}`,
           )
           .join("\n"),
       },
@@ -100,7 +101,7 @@ async function runLive({
       if (!liveStatus) {
         report.ok = true;
         report.skipped = 'live-status-false';
-        report.summary = 'Skipped detailed collection: live status is false. Five-minute checks continue.';
+        report.summary = 'Skipped detailed collection: live status is false. Three-minute checks continue.';
         break collection;
       }
       const observed = clock(),
@@ -110,11 +111,10 @@ async function runLive({
       if (require('./activity').allCompleted(plan.groups)) {
         report.ok = true;
         report.skipped = 'all-today-groups-completed';
-        report.summary = `Skipped detailed collection: all ${plan.groups.length} groups for show ${scope.show} on ${scope.date} are completed. Five-minute checks continue.`;
+        report.summary = `Skipped detailed collection: all ${plan.groups.length} groups for show ${scope.show} on ${scope.date} are completed. Three-minute checks continue.`;
         break collection;
       }
-      let scheduleRows = null,
-        binder = null;
+      let scheduleRows = null;
       try {
         scheduleRows = await api.list("wef-schedules.schedules");
       } catch (e) {
@@ -123,19 +123,12 @@ async function runLive({
             e.message,
         );
       }
-      try {
-        binder = await api.list("wef-entries.entries");
-      } catch (e) {
-        report.warnings.push(
-          "Entry reference unavailable; existing links retained: " + e.message,
-        );
-      }
       const widgetPayload = await get(sources.endpoints.widget);
       await keep("source-widget", widgetPayload);
       model.ringState(widgetPayload, scope, plan);
       if (!plan.groups.length) {
         report.ok = true;
-        report.summary = 'Success: no live activity available; existing records and links preserved.';
+        report.summary = 'Success: no live activity available; current records and links preserved.';
         break collection;
       }
       const entries = [],
@@ -143,7 +136,7 @@ async function runLive({
       for (const c of plan.classes) {
         if (!c["detail-available"]) continue;
         try {
-          let normalized;
+          let normalized, detailObserved;
           for (let attempt=0; attempt<2; attempt++) {
             const responses = await Promise.allSettled([
               get(sources.endpoints.detail(scope, c['class-id'])),
@@ -153,7 +146,7 @@ async function runLive({
             const sourceErrors = responses.filter(r=>r.status==='rejected').map(r=>r.reason?.message || String(r.reason));
             await keep('class-' + c['class-id'], {detail,decoded,...(sourceErrors.length?{sourceErrors}:{})});
             if (sourceErrors.length) { const error=Error(sourceErrors.join('; '));error.source_errors=sourceErrors;throw error; }
-            try { normalized=model.classDetail(detail,decoded,scope,c,clock());break; }
+            try { detailObserved=clock();normalized=model.classDetail(detail,decoded,scope,c,detailObserved);break; }
             catch(error) {
               if(error.code!=='LIVE_IDENTITY_SNAPSHOT_MISMATCH'||attempt===1)throw error;
               (report.snapshot_refreshes ||= []).push({class_id:c['class-id'],reason:error.message});
@@ -166,6 +159,7 @@ async function runLive({
             id: c["class-id"],
             endpoint: sources.endpoints.detail(scope, c["class-id"]),
             rows: normalized.entries,
+            observedAt: detailObserved,
           });
         } catch (e) {
           if (e.auditFailure) throw e;
@@ -334,13 +328,10 @@ async function runLive({
         "live-entry-key",
         entries.map((e) => {
           const previous=old['live-entries'].find(r=>r.fields['live-entry-key']===e['live-entry-key'])?.fields || {};
-          const resolved=require('./participation').resolve({entry:e,previous,binder,
-            localSchedules:scheduleRows,now:clock()});
-          if(resolved.issue)report.link_issues.push({entry_key:e['entry-key'],class_id:Number(e._class.split('|')[2]),trip_id:e['trip-id'],message:resolved.issue});
           return {
             ...clean(e),
             class: [classId(e._class)],
-            ...resolved.fields,
+            ...require('./participation').preserve(previous),
             collection: collection("class", Number(e._class.split("|")[2])),
           };
         }),
@@ -353,22 +344,9 @@ async function runLive({
         'participation-link-reason':'Live class collection unresolved; existing observation and links retained',
         'participation-checked-at':clock(),
       })));
-      // Retirement occurs only after all source and identity collections succeeded and archives were verified.
-      if (!report.errors.length && !report.unresolved.length && !report.link_issues.length && api.retire)
-        for (const table of [
-          "live-entries",
-          "live-classes",
-          "live-groups",
-          "live-rings",
-        ]) {
-          const prior = old[table].filter(
-            (r) => require('./rollover').canRetire(r.fields, scope),
-          );
-          if (prior.length) {
-            const receipt = await keep("retired-" + table, prior);
-            await api.retire(table, prior, scope, receipt);
-          }
-        }
+      publicationInput={scope,rings:plan.rings,groups:plan.groups,classes:plan.classes,
+        details:datasets.filter(d=>d.kind==='class').map(d=>({row:plan.classes.find(c=>c['class-id']===d.id),observedAt:d.observedAt,entries:d.rows})),
+        sourceArchives:report.archives.filter(a=>a.kind.startsWith('source-')||a.kind.startsWith('class-'))};
       report.counts = {
         rings: plan.rings.length,
         groups: plan.groups.length,
@@ -387,9 +365,29 @@ async function runLive({
       "Collection stopped; failed source data did not authorize cleanup. " +
       e.message;
   }
+  if(report.ok && publish){
+    try {
+      report.publication=await publish({input:publicationInput,clock,archive:keep,authority:async (expected,limit)=>{
+        const current=model.scope(await api.list('shows',settings.SHOWS_BASE,limit),clock());
+        if(!current.active||current.show!==expected.show||current.date!==expected.date||current.customer!==expected.customer)throw Error('Canonical scope changed before publication');
+      }});
+      report.publication_errors=report.publication.errors;
+      report.summary+=' Publication: '+Object.entries(report.publication.lanes).map(([lane,r])=>`${lane} ${r.status}, ${r.patched} patched, ${r.unchanged} unchanged, ${r.deferred} deferred`).join('; ')+'.';
+    }catch(error){report.publication_errors=[{lane:'publication',message:error.message}];report.summary+=' Publication failed; collection retained.';}
+  }
+  if (report.ok && !report.unresolved.length && api.retire) {
+    try {
+      await require('./retirement').retireOld({api, scope, archive, report, now:clock()});
+      if(report.retired.length) report.summary += ` Archived and retired ${report.retired.reduce((n,p)=>n+p.records,0)} older records; archive catalog retained in collections.`;
+    } catch (error) {
+      report.ok = false;
+      report.errors.push('Retirement: ' + error.message);
+      report.summary += ' Archive/retirement incomplete; see errors and retained catalog.';
+    }
+  }
   report.completed = clock();
     try {
-      await log(report.ok ? (report.unresolved.length || report.link_issues.length ? "Partial" : report.skipped ? "Skipped" : "Success") : "Failed");
+      await log(report.ok ? (report.unresolved.length || report.link_issues.length || report.publication_errors?.length ? "Partial" : report.skipped ? "Skipped" : "Success") : "Failed");
     } catch (e) { report.logging_errors.push('run-logs: ' + e.message); }
     try {
       await api.upsert("heartbeat", "heartbeat-key", [
@@ -401,7 +399,7 @@ async function runLive({
           "checked-at": report.completed,
           "show-id": scope?.show ?? null,
           date: scope?.date || "",
-          result: report.ok ? (report.unresolved.length || report.link_issues.length ? "Partial" : report.skipped ? "Skipped" : "Success") : "Failed",
+          result: report.ok ? (report.unresolved.length || report.link_issues.length || report.publication_errors?.length ? "Partial" : report.skipped ? "Skipped" : "Success") : "Failed",
           summary: report.summary,
           errors: report.errors.join("\n"),
         },

@@ -1,0 +1,423 @@
+✔ lost create response is read back without a second create (4.4001ms)
+✔ unresolved creation is not retried in the same run (2.4434ms)
+✖ source class identity and explicit empty arrays are validated (0.8297ms)
+✔ batch readback targets at most twenty exact unchanged keys despite unrelated rows (26.0132ms)
+✔ lost create response is read back by original keys, never created twice (6.9207ms)
+✖ independent empty collection succeeds for all five sources and all days (26.8181ms)
+✖ trainer overlap and both private follows collect once with separate collection associations (1.1364ms)
+✖ repeat run preserves entry/collection IDs and adds one terminal run log (0.9504ms)
+✖ one failed producer preserves its previous entry membership and other sources refresh (1.7043ms)
+✖ inactive roster never excludes collection; team slice hides inactive but user-only is never team (0.9063ms)
+✖ schedule sync mismatch stops before source calls and retains existing participation (1.3669ms)
+✔ archive failure prevents entry changes (2.274ms)
+✖ explicit missing followed entry fails that owner, not an empty success (2.1879ms)
+✖ more than ten private selections blocks sources and malformed empty people fails (2.0351ms)
+✖ private-only entry has no invented trainer feed association (1.3268ms)
+✖ scheduled date is respected; conflicting participation is rejected (4.1359ms)
+✖ adapter rejects every CWF/shared mutation, synced destination writes and deletion (1.332ms)
+✖ log capacity archives finished slot before reuse (1.5994ms)
+✖ canonical show read replaces schedules mirror without changing schedule links (1.054ms)
+✔ canonical authority is read-only through the adapter (0.6688ms)
+✖ plural writer keeps keys, local links and successful observation on two fixture runs (1.0109ms)
+✖ failed collection preserves historical links and successful timestamp (1.2642ms)
+✖ ambiguous class groups never inferred from people feed (9.2285ms)
+✔ stale or failed date health blocks collection without refreshing observation (2.4685ms)
+✖ plural empty sources succeed and disappeared participation is dropped with history (1.4948ms)
+✔ shared schedule without group fields keeps unique class link and independently proven group (51.0477ms)
+✔ saved positive copies actual active schedule and supports observed group association (3.7477ms)
+✔ saved same-run contradictory group retains supported entry and entity facts (1.8421ms)
+✔ saved partial roster671 keeps class/date association and flags only group uncertainty (1.4935ms)
+✔ missing inventory does not gate ordinary class/date linking or entity normalization (2.2548ms)
+✔ same-revision completeness is required only for group assertion (3.5026ms)
+✔ ring ID is not ring number; contradictory ring identity does not become group proof (4.7251ms)
+✔ duplicate group rosters are unresolved instead of selecting an arbitrary group (4.7127ms)
+✔ duplicate operational occurrences never fan out or erase entity facts (9.2597ms)
+✔ source occurrence conflict and repeated source occurrence are rejected (10.0606ms)
+✔ exact own-class trip identity matters; another trip or class cannot lend eligibility (63.1291ms)
+✔ one bad trip group match does not stop other supported group links (6.3866ms)
+✔ empty class succeeds without needing any group or schedule data (2.4833ms)
+✔ replay is stable, keeps observation time and does not mutate source or old links (4.7228ms)
+✔ conflicting required identity rejects source facts rather than guessing (1.8679ms)
+✔ unknown trainer and missing trip UUID retain facts but cannot claim group eligibility (2.4246ms)
+✔ duplicate shared key conflicts only affected classes; healthy key still links (0.36ms)
+✔ independent writer reads no tenant or source and persists ordinary links despite group uncertainty (24.3601ms)
+✔ repeat preserves IDs, native links, helper fields and source observation time (47.195ms)
+✔ initial empty scope does not bulk-drop feed-only rows (35.4066ms)
+✔ retirement is disabled even for later complete empty scope; links retained (19.0724ms)
+✔ malformed scope preserves rows and membership; other scopes continue (3.3894ms)
+✔ overdue input neither refreshes prior observation nor drops records (5.6869ms)
+✔ newer existing observations never regress and scope membership stays linked (3.5258ms)
+✔ no shared schedules skips Data and preserves every prior record and link (3.3195ms)
+✔ archive failure prevents participation writes (7.9304ms)
+✔ Data access is GET-only and old tenant targets are forbidden (2.3746ms)
+✔ missing canonical show logs failure using null absent date and preserves business rows (8.3438ms)
+✔ directory-only revision flags missing shared evidence and preserves records (5.0381ms)
+✔ applicable unfinished attempts persist on participation and scope provenance (6.9928ms)
+✔ Airtable timestamp normalization verifies and repeats without rewriting source time (4.9233ms)
+✔ ambiguous schedule is Conflict, preserves prior links and repeats while other scopes continue (7.0484ms)
+✔ outside shared schedule scope is preserved but never processed or newly created (5.9658ms)
+✔ unknown failed Data attempt does not gate accepted links or claim exact-class failure (5.1752ms)
+✔ repeat preserves additional existing source-json properties (3.3261ms)
+✔ Data failure cannot write participation or invoke Live (3.3576ms)
+✔ full-show archive references stay complete without exceeding the existing log field (293.4061ms)
+✔ previous lane and Live evidence is retained unchanged as history, not regenerated (3.6382ms)
+✔ restored adapter rejects Live reads and writes before network access (2.7207ms)
+✔ shared schedule without group fields keeps unique class link and independently proven group (47.4753ms)
+✔ saved positive copies actual active schedule and supports observed group association (4.0686ms)
+✔ saved same-run contradictory group retains supported entry and entity facts (2.2125ms)
+✔ saved partial roster671 keeps class/date association and flags only group uncertainty (18.4676ms)
+✔ missing inventory does not gate ordinary class/date linking or entity normalization (1.7526ms)
+✔ same-revision completeness is required only for group assertion (3.4642ms)
+✔ ring ID is not ring number; contradictory ring identity does not become group proof (2.187ms)
+✔ duplicate group rosters are unresolved instead of selecting an arbitrary group (2.7878ms)
+✔ duplicate operational occurrences never fan out or erase entity facts (3.9018ms)
+✔ source occurrence conflict and repeated source occurrence are rejected (20.6577ms)
+✔ exact own-class trip identity matters; another trip or class cannot lend eligibility (91.9259ms)
+✔ one bad trip group match does not stop other supported group links (11.0521ms)
+✔ empty class succeeds without needing any group or schedule data (3.5443ms)
+✔ replay is stable, keeps observation time and does not mutate source or old links (4.8376ms)
+✔ conflicting required identity rejects source facts rather than guessing (2.3907ms)
+✔ unknown trainer and missing trip UUID retain facts but cannot claim group eligibility (2.7316ms)
+✔ duplicate shared key conflicts only affected classes; healthy key still links (0.4536ms)
+node:internal/modules/cjs/loader:1386
+  throw err;
+  ^
+
+Error: Cannot find module '../../lib/wef-source-read'
+Require stack:
+- C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\source-retry.test.js
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1383:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+    at Function._load (node:internal/modules/cjs/loader:1192:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Module.require (node:internal/modules/cjs/loader:1463:12)
+    at require (node:internal/modules/helpers:147:16)
+    at Object.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\source-retry.test.js:1:83)
+    at Module._compile (node:internal/modules/cjs/loader:1705:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\evidence\\linking-only-restoration-20261029\\staged\\tests\\source-retry.test.js'
+  ]
+}
+
+Node.js v22.22.2
+✖ wef-entries\evidence\linking-only-restoration-20261029\staged\tests\source-retry.test.js (252.6414ms)
+ℹ tests 82
+ℹ suites 0
+ℹ pass 63
+ℹ fail 19
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 996.1871
+
+✖ failing tests:
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\boundaries.test.js:18:1
+✖ source class identity and explicit empty arrays are validated (0.8297ms)
+  Error: Direct Entries acquisition retired; consume accepted Data records
+      at disabled (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\source.js:3:27)
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\boundaries.test.js:19:19)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1047:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+      at Test.postRun (node:internal/test_runner/test:1173:19)
+      at Test.run (node:internal/test_runner/test:1101:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:14:1
+✖ independent empty collection succeeds for all five sources and all days (26.8181ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:14:227)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:15:1
+✖ trainer overlap and both private follows collect once with separate collection associations (1.1364ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:15:337)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:16:1
+✖ repeat run preserves entry/collection IDs and adds one terminal run log (0.9504ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:16:115)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:17:1
+✖ one failed producer preserves its previous entry membership and other sources refresh (1.7043ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:17:390)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:18:1
+✖ inactive roster never excludes collection; team slice hides inactive but user-only is never team (0.9063ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:18:246)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:19:1
+✖ schedule sync mismatch stops before source calls and retains existing participation (1.3669ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:19:299)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:21:1
+✖ explicit missing followed entry fails that owner, not an empty success (2.1879ms)
+  TypeError: Cannot read properties of undefined (reading 'result')
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:21:350)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:22:1
+✖ more than ten private selections blocks sources and malformed empty people fails (2.0351ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 3
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:22:448)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 3,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:23:1
+✖ private-only entry has no invented trainer feed association (1.3268ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:23:333)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:24:1
+✖ scheduled date is respected; conflicting participation is rejected (4.1359ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /No shared schedule/. Input:
+  
+  'TypeError: model.normalize is not a function'
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:24:161)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1047:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+      at Test.postRun (node:internal/test_runner/test:1173:19)
+      at Test.run (node:internal/test_runner/test:1101:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: model.normalize is not a function
+        at C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:24:178
+        at getActual (node:assert:609:5)
+        at Function.throws (node:assert:757:24)
+        at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:24:161)
+        at Test.runInAsyncScope (node:async_hooks:214:14)
+        at Test.run (node:internal/test_runner/test:1047:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+        at Test.postRun (node:internal/test_runner/test:1173:19)
+        at Test.run (node:internal/test_runner/test:1101:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:744:7),
+    expected: /No shared schedule/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:25:1
+✖ adapter rejects every CWF/shared mutation, synced destination writes and deletion (1.332ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Read-only/. Input:
+  
+  'Error: Unapproved read target'
+  
+      at async TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:25:265)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Unapproved read target
+        at Object.call (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\airtable.js:9:44)
+        at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:25:290)
+        at Test.runInAsyncScope (node:async_hooks:214:14)
+        at Test.run (node:internal/test_runner/test:1047:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+        at Test.postRun (node:internal/test_runner/test:1173:19)
+        at Test.run (node:internal/test_runner/test:1101:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:744:7),
+    expected: /Read-only/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:26:1
+✖ log capacity archives finished slot before reuse (1.5994ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:26:225)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:28:1
+✖ canonical show read replaces schedules mirror without changing schedule links (1.054ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:30:45)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:43:1
+✖ plural writer keeps keys, local links and successful observation on two fixture runs (1.0109ms)
+  AssertionError [ERR_ASSERTION]: ["No accepted Data revision"]
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:43:191)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:44:1
+✖ failed collection preserves historical links and successful timestamp (1.2642ms)
+  TypeError: Cannot read properties of undefined (reading 'id')
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:44:386)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:45:1
+✖ ambiguous class groups never inferred from people feed (9.2285ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(r.errors.some(e=>e.includes('eligibility unresolved')))
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:45:373)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:47:1
+✖ plural empty sources succeed and disappeared participation is dropped with history (1.4948ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\evidence\linking-only-restoration-20261029\staged\tests\collector.test.js:47:318)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\evidence\linking-only-restoration-20261029\staged\tests\source-retry.test.js:1:1
+✖ wef-entries\evidence\linking-only-restoration-20261029\staged\tests\source-retry.test.js (252.6414ms)
+  'test failed'

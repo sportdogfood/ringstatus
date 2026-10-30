@@ -1,0 +1,664 @@
+{
+  "payload": {
+    "show_id": "200000075",
+    "class": {
+      "class_id": 200030245,
+      "number": 209,
+      "name": "Add Back Hunter",
+      "sponsor": "",
+      "order_of_go_set": 0,
+      "order_set_date": "0000-00-00",
+      "order_set_time": "00:00:00",
+      "class_type": "Hunters",
+      "verification_detail": "",
+      "results_verified": 0,
+      "schedule_sequencetype": "Over Fences",
+      "show_id": 200000075,
+      "combined_class_id": 0,
+      "jumper_table": "",
+      "schedule_ring_id": 48,
+      "customer_id": 15,
+      "fei_event_type_code": "",
+      "multiphase_rule": "",
+      "is_team_event": false,
+      "is_under_saddle_class": false,
+      "oog_status_text": "Order of Go not set",
+      "has_splits": false
+    },
+    "class_related_data": {
+      "status": "Completed",
+      "unscratched_count": 4,
+      "show_results": true,
+      "has_prize_money": false,
+      "grouped_class": true,
+      "show_ring_info": true,
+      "actual_time": "08:07:12",
+      "estimated_time": "08:07:09",
+      "default_time": "00:00:00",
+      "date": "2026-10-24T00:00:00.000Z",
+      "class_group_id": 200029469,
+      "ring": 5,
+      "total_trips": 4,
+      "completed_trips": 4,
+      "remaining_trips": 0,
+      "order_check_in": 0,
+      "hunter_scoreby": "",
+      "hunter_type": "Score W/ Jog",
+      "type": "",
+      "ring_name": "GDF Hunter Ring 1",
+      "judges": [
+        {
+          "name": "SEMANTHA BURGER",
+          "position": "",
+          "isjudge": 0,
+          "iscoursedesigner": 1
+        },
+        {
+          "name": "KAREN KENNY",
+          "position": "",
+          "isjudge": 1,
+          "iscoursedesigner": 0
+        }
+      ],
+      "judges_count": 2,
+      "class_split_codes": [
+        "A"
+      ],
+      "current_split_code": "A",
+      "class_prizes": [
+        {
+          "sync_id": "00001518567712487270",
+          "class_id": 200030245,
+          "place": 1,
+          "prize_money": 0,
+          "addbackpercent": 40,
+          "winningnums": "",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 10,
+          "customer_id": 15,
+          "sgl_id": 13017660,
+          "class_prizes_uuid": "FF6C15FE38F3470999B7DB90FC4FF80D"
+        },
+        {
+          "sync_id": "00001509661674698755",
+          "class_id": 200030245,
+          "place": 2,
+          "prize_money": 0,
+          "addbackpercent": 30,
+          "winningnums": "",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 6,
+          "customer_id": 15,
+          "sgl_id": 13017661,
+          "class_prizes_uuid": "A7C159557B0D4E05A58BB92991214E51"
+        },
+        {
+          "sync_id": "00001564405746477457",
+          "class_id": 200030245,
+          "place": 3,
+          "prize_money": 0,
+          "addbackpercent": 20,
+          "winningnums": "",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 4,
+          "customer_id": 15,
+          "sgl_id": 13017662,
+          "class_prizes_uuid": "837E2EA015EA49A987CE065283902DCE"
+        },
+        {
+          "sync_id": "00001536252572840999",
+          "class_id": 200030245,
+          "place": 4,
+          "prize_money": 0,
+          "addbackpercent": 10,
+          "winningnums": "",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 2,
+          "customer_id": 15,
+          "sgl_id": 13017663,
+          "class_prizes_uuid": "4B809DB890E840ED9A31890628584648"
+        },
+        {
+          "sync_id": "00001554181001240232",
+          "class_id": 200030245,
+          "place": 5,
+          "prize_money": 0,
+          "addbackpercent": 0,
+          "winningnums": "",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 1,
+          "customer_id": 15,
+          "sgl_id": 13017664,
+          "class_prizes_uuid": "7CA9ED3AFEB744478AC56ABAFCBA2ADD"
+        },
+        {
+          "sync_id": "00001580309742454005",
+          "class_id": 200030245,
+          "place": 6,
+          "prize_money": 0,
+          "addbackpercent": 0,
+          "winningnums": "",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 0.5,
+          "customer_id": 15,
+          "sgl_id": 13017665,
+          "class_prizes_uuid": "4E369C4BCE0D44F7AB136C1FF9F32DC8"
+        },
+        {
+          "sync_id": "00001588757314909097",
+          "class_id": 200030245,
+          "place": 7,
+          "prize_money": 0,
+          "addbackpercent": 0,
+          "winningnums": "",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 0,
+          "customer_id": 15,
+          "sgl_id": 13017666,
+          "class_prizes_uuid": "E97361CAF36D4867A332EF68A9585CF9"
+        },
+        {
+          "sync_id": "00001519776034460838",
+          "class_id": 200030245,
+          "place": 8,
+          "prize_money": 0,
+          "addbackpercent": 0,
+          "winningnums": "",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 0,
+          "customer_id": 15,
+          "sgl_id": 13017667,
+          "class_prizes_uuid": "825B53CBA7F245EEB00462A6733B2F11"
+        }
+      ],
+      "score_fields": [],
+      "show_est_time": true,
+      "show_planned_time": false,
+      "is_videos_enabled": true
+    },
+    "total_entry_trips": 4,
+    "trips": [
+      {
+        "entry_id": 200245942,
+        "horse": "SAN ANGELO",
+        "horse_id": 152570,
+        "trainer_id": 20505,
+        "trip_id": 200398755,
+        "rider_name": "VIVIANNE GAYNOR",
+        "rider_id": 1000001069,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "5A25015557774010BA771E72172A9DEB"
+      },
+      {
+        "entry_id": 200245943,
+        "horse": "NASHVILLE",
+        "horse_id": 200000338,
+        "trainer_id": 20505,
+        "trip_id": 200398754,
+        "rider_name": "VIVIANNE GAYNOR",
+        "rider_id": 1000001069,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "91DF536DC2AF4394B7156076A493050C"
+      },
+      {
+        "entry_id": 200245947,
+        "horse": "GOLDEN ARCHES",
+        "horse_id": 200003461,
+        "trainer_id": 20505,
+        "trip_id": 200398753,
+        "rider_name": "VIVIANNE GAYNOR",
+        "rider_id": 1000001069,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "EEF5BA0D6B054737B7D38171AF68A38D"
+      },
+      {
+        "entry_id": 200247138,
+        "horse": "CHOOSIN TEXAS",
+        "horse_id": 200005304,
+        "trainer_id": 6074,
+        "trip_id": 200398234,
+        "rider_name": "RILEY DELBECQ",
+        "rider_id": 70539,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "D7D2CE6F6DF04B81B646065D98098615"
+      }
+    ],
+    "class_group_order_of_go": {
+      "entries": [
+        {
+          "class_id": 200030103,
+          "entry_id": 200245943,
+          "horse": "NASHVILLE",
+          "horse_id": 200000338,
+          "trainer_id": 20505,
+          "trip_id": 200396943,
+          "rider_name": "VIVIANNE GAYNOR",
+          "rider_id": 1000001069,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "A3B097140EC14E19B52FB0FA60CEC213"
+        },
+        {
+          "class_id": 200030103,
+          "entry_id": 200245942,
+          "horse": "SAN ANGELO",
+          "horse_id": 152570,
+          "trainer_id": 20505,
+          "trip_id": 200396949,
+          "rider_name": "VIVIANNE GAYNOR",
+          "rider_id": 1000001069,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "30135CE023EB43419515DF73BBD530AB"
+        },
+        {
+          "class_id": 200030103,
+          "entry_id": 200245947,
+          "horse": "GOLDEN ARCHES",
+          "horse_id": 200003461,
+          "trainer_id": 20505,
+          "trip_id": 200396962,
+          "rider_name": "VIVIANNE GAYNOR",
+          "rider_id": 1000001069,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "8FB3B679017C460C95C77D3551138922"
+        },
+        {
+          "class_id": 200030103,
+          "entry_id": 200244202,
+          "horse": "DRESS BLUE",
+          "horse_id": 133332,
+          "trainer_id": 42521,
+          "trip_id": 200398649,
+          "rider_name": "KATE SIEVEKING",
+          "rider_id": 84106,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "833A4AEA74C043F98735062517739344"
+        },
+        {
+          "class_id": 200030104,
+          "entry_id": 200245943,
+          "horse": "NASHVILLE",
+          "horse_id": 200000338,
+          "trainer_id": 20505,
+          "trip_id": 200396944,
+          "rider_name": "VIVIANNE GAYNOR",
+          "rider_id": 1000001069,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "CC833E8ACA0040FD9DA95CE2DA44DEC9"
+        },
+        {
+          "class_id": 200030104,
+          "entry_id": 200245942,
+          "horse": "SAN ANGELO",
+          "horse_id": 152570,
+          "trainer_id": 20505,
+          "trip_id": 200396952,
+          "rider_name": "VIVIANNE GAYNOR",
+          "rider_id": 1000001069,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "8B07E8EE593E44F9B1D624A40A6903C3"
+        },
+        {
+          "class_id": 200030104,
+          "entry_id": 200245947,
+          "horse": "GOLDEN ARCHES",
+          "horse_id": 200003461,
+          "trainer_id": 20505,
+          "trip_id": 200396963,
+          "rider_name": "VIVIANNE GAYNOR",
+          "rider_id": 1000001069,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "0DA04784BD53474089461282E5769326"
+        },
+        {
+          "class_id": 200030104,
+          "entry_id": 200244202,
+          "horse": "DRESS BLUE",
+          "horse_id": 133332,
+          "trainer_id": 42521,
+          "trip_id": 200398648,
+          "rider_name": "KATE SIEVEKING",
+          "rider_id": 84106,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "2D45C1C41963450EAB3A91503815CCE7"
+        },
+        {
+          "class_id": 200030245,
+          "entry_id": 200247138,
+          "horse": "CHOOSIN TEXAS",
+          "horse_id": 200005304,
+          "trainer_id": 6074,
+          "trip_id": 200398234,
+          "rider_name": "RILEY DELBECQ",
+          "rider_id": 70539,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "D7D2CE6F6DF04B81B646065D98098615"
+        },
+        {
+          "class_id": 200030245,
+          "entry_id": 200245947,
+          "horse": "GOLDEN ARCHES",
+          "horse_id": 200003461,
+          "trainer_id": 20505,
+          "trip_id": 200398753,
+          "rider_name": "VIVIANNE GAYNOR",
+          "rider_id": 1000001069,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "EEF5BA0D6B054737B7D38171AF68A38D"
+        },
+        {
+          "class_id": 200030245,
+          "entry_id": 200245943,
+          "horse": "NASHVILLE",
+          "horse_id": 200000338,
+          "trainer_id": 20505,
+          "trip_id": 200398754,
+          "rider_name": "VIVIANNE GAYNOR",
+          "rider_id": 1000001069,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "91DF536DC2AF4394B7156076A493050C"
+        },
+        {
+          "class_id": 200030245,
+          "entry_id": 200245942,
+          "horse": "SAN ANGELO",
+          "horse_id": 152570,
+          "trainer_id": 20505,
+          "trip_id": 200398755,
+          "rider_name": "VIVIANNE GAYNOR",
+          "rider_id": 1000001069,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "5A25015557774010BA771E72172A9DEB"
+        }
+      ]
+    }
+  },
+  "groups": [
+    {
+      "groupId": "200027983",
+      "date": "2026-10-24",
+      "ringNumber": "1",
+      "ringId": "10",
+      "classIds": [
+        "200030348",
+        "200030363",
+        "200030394"
+      ]
+    },
+    {
+      "groupId": "200027986",
+      "date": "2026-10-24",
+      "ringNumber": "1",
+      "ringId": "10",
+      "classIds": [
+        "200030399"
+      ]
+    },
+    {
+      "groupId": "200027987",
+      "date": "2026-10-24",
+      "ringNumber": "1",
+      "ringId": "10",
+      "classIds": [
+        "200030350"
+      ]
+    },
+    {
+      "groupId": "200027988",
+      "date": "2026-10-24",
+      "ringNumber": "1",
+      "ringId": "10",
+      "classIds": [
+        "200030345"
+      ]
+    },
+    {
+      "groupId": "200027989",
+      "date": "2026-10-24",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030336",
+        "200030365"
+      ]
+    },
+    {
+      "groupId": "200027993",
+      "date": "2026-10-24",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030339"
+      ]
+    },
+    {
+      "groupId": "200027994",
+      "date": "2026-10-24",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030359",
+        "200030342",
+        "200030391"
+      ]
+    },
+    {
+      "groupId": "200028007",
+      "date": "2026-10-24",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030376",
+        "200030333"
+      ]
+    },
+    {
+      "groupId": "200027997",
+      "date": "2026-10-24",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030429"
+      ]
+    },
+    {
+      "groupId": "200027999",
+      "date": "2026-10-24",
+      "ringNumber": "4",
+      "ringId": "13",
+      "classIds": [
+        "200030313",
+        "200030314",
+        "200030316",
+        "200030317"
+      ]
+    },
+    {
+      "groupId": "200028003",
+      "date": "2026-10-24",
+      "ringNumber": "4",
+      "ringId": "13",
+      "classIds": [
+        "200030320",
+        "200030323"
+      ]
+    },
+    {
+      "groupId": "200028004",
+      "date": "2026-10-24",
+      "ringNumber": "4",
+      "ringId": "13",
+      "classIds": [
+        "200030326"
+      ]
+    },
+    {
+      "groupId": "200028005",
+      "date": "2026-10-24",
+      "ringNumber": "4",
+      "ringId": "13",
+      "classIds": [
+        "200030330"
+      ]
+    },
+    {
+      "groupId": "200029469",
+      "date": "2026-10-24",
+      "ringNumber": "5",
+      "ringId": "48",
+      "classIds": [
+        "200030245",
+        "200030015",
+        "200030016"
+      ]
+    },
+    {
+      "groupId": "200029514",
+      "date": "2026-10-24",
+      "ringNumber": "5",
+      "ringId": "48",
+      "classIds": [
+        "200030245",
+        "200030103",
+        "200030104"
+      ]
+    },
+    {
+      "groupId": "200029491",
+      "date": "2026-10-24",
+      "ringNumber": "5",
+      "ringId": "48",
+      "classIds": [
+        "200030155",
+        "200030156",
+        "200030256"
+      ]
+    },
+    {
+      "groupId": "200029498",
+      "date": "2026-10-24",
+      "ringNumber": "5",
+      "ringId": "48",
+      "classIds": [
+        "200030163",
+        "200030164",
+        "200030249",
+        "200030405"
+      ]
+    },
+    {
+      "groupId": "200029502",
+      "date": "2026-10-24",
+      "ringNumber": "5",
+      "ringId": "48",
+      "classIds": [
+        "200030173",
+        "200030174",
+        "200030253"
+      ]
+    },
+    {
+      "groupId": "200028041",
+      "date": "2026-10-24",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030272",
+        "200030188",
+        "200030191"
+      ]
+    },
+    {
+      "groupId": "200028043",
+      "date": "2026-10-24",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030272",
+        "200030193",
+        "200030194"
+      ]
+    },
+    {
+      "groupId": "200028045",
+      "date": "2026-10-24",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030272",
+        "200030198",
+        "200030199"
+      ]
+    },
+    {
+      "groupId": "200028047",
+      "date": "2026-10-24",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030178",
+        "200030179",
+        "200030255"
+      ]
+    },
+    {
+      "groupId": "200028051",
+      "date": "2026-10-24",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030135",
+        "200030136",
+        "200030255"
+      ]
+    },
+    {
+      "groupId": "200028052",
+      "date": "2026-10-24",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030208",
+        "200030209",
+        "200030251"
+      ]
+    },
+    {
+      "groupId": "200028054",
+      "date": "2026-10-24",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030270",
+        "200030216",
+        "200030217"
+      ]
+    },
+    {
+      "groupId": "200028057",
+      "date": "2026-10-24",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030268",
+        "200030237",
+        "200030238"
+      ]
+    }
+  ]
+}

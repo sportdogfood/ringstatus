@@ -12,12 +12,12 @@ function airtable({
   const readable = new Map([
     [
       settings.BASE_ID,
-      new Set([...writable, "wef-schedules.schedules", "wef-entries.entries"]),
+      new Set([...writable, "wef-schedules.schedules"]),
     ],
     [settings.SHOWS_BASE, new Set(["shows"])],
     [settings.SCHEDULES_BASE, new Set(['schedules','show-collection'])],
   ]);
-  async function call(base, table, method = "GET", body, query = "") {
+  async function call(base, table, method = "GET", body, query = "", limit = {}) {
     if (!readable.get(base)?.has(table)) throw Error("Unapproved read target");
     if (
       method !== "GET" &&
@@ -36,13 +36,13 @@ function airtable({
           "Content-Type": "application/json",
         },
         ...(body ? { body: JSON.stringify(body) } : {}),
-        signal: AbortSignal.timeout(30000),
+        signal: (() => { const remaining=(limit.deadline ?? (Date.now()+30000))-Date.now(); if(remaining<=0)throw Error("Publication lane budget exhausted"); return AbortSignal.timeout(Math.min(30000,remaining)); })(),
       },
     );
     if (!r.ok) throw Error(`Airtable ${method} ${table} HTTP ${r.status}`);
     return r.json();
   }
-  async function list(table, base = settings.BASE_ID) {
+  async function list(table, base = settings.BASE_ID, limit) {
     const rows = [];
     let offset;
     do {
@@ -50,7 +50,7 @@ function airtable({
         pageSize: "100",
         ...(offset ? { offset } : {}),
       });
-      const d = await call(base, table, "GET", undefined, "?" + q);
+      const d = await call(base, table, "GET", undefined, "?" + q, limit);
       rows.push(...d.records);
       offset = d.offset;
     } while (offset);
@@ -127,10 +127,11 @@ function airtable({
   }
   async function retire(table, rows, scope, receipt) {
     if (
-      !["live-rings", "live-groups", "live-classes", "live-entries"].includes(
+      !["live-rings", "live-groups", "live-classes", "live-entries", "collections"].includes(
         table,
       ) ||
-      rows.some((r) => !require('./rollover').canRetire(r.fields, scope))
+      rows.some((r) => !require('./rollover').canRetire(r.fields, scope) ||
+        (table === 'collections' && !['rings','groups','class'].includes(r.fields['source-kind'])))
     )
       throw Error("Forbidden retirement scope");
     const fs = require("node:fs"),
@@ -164,7 +165,8 @@ function airtable({
       const result = await r.json();
       if (
         result.records?.length !== rows.slice(i, i + 10).length ||
-        result.records.some((r) => !r.deleted)
+        result.records.some((r) => !r.deleted) ||
+        JSON.stringify(result.records.map(r=>r.id).sort()) !== JSON.stringify(rows.slice(i,i+10).map(r=>r.id).sort())
       )
         throw Error("Incomplete retirement");
     }
@@ -179,6 +181,6 @@ function airtable({
     if(!t)throw Error('Missing reference schema');
     return t.fields.map(f=>f.name);
   }
-  return { list, upsert, call, retire, fieldNames };
+  return { list, upsert, call, retire, fieldNames, publicationEnabled: true };
 }
 module.exports = { airtable };

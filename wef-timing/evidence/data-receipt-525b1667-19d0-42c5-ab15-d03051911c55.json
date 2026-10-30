@@ -1,0 +1,21 @@
+{
+  "run_id": "525b1667-19d0-42c5-ab15-d03051911c55",
+  "started": "2026-10-30T01:04:03.180Z",
+  "ok": true,
+  "errors": [],
+  "source_lane": "data_live",
+  "destination": "appYOykKIy1kAquhP",
+  "counts": {
+    "evaluated": 227,
+    "written": 147,
+    "unchanged": 80,
+    "deferred": 0,
+    "available": 0,
+    "partial": 60,
+    "unavailable": 167,
+    "purged": 0,
+    "purge_deferred": 0
+  },
+  "completed": "2026-10-30T01:04:34.593Z",
+  "clock_verified": true
+}

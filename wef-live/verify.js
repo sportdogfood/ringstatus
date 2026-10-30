@@ -22,7 +22,6 @@ async function verify() {
     "run-logs",
     "heartbeat",
     "wef-schedules.schedules",
-    "wef-entries.entries",
   ])
     data[table] = await api.list(table);
   const keys = {
@@ -45,7 +44,7 @@ async function verify() {
   )
     throw Error("Run-log completion mismatch");
   if (
-    data.heartbeat.find((r) => r.fields["heartbeat-key"] === "wef-live")
+    data.heartbeat.find((r) => r.fields["heartbeat-key"] === receipt.run_id)
       ?.fields["checked-at"] !== receipt.completed
   )
     throw Error("Heartbeat mismatch");
@@ -60,8 +59,7 @@ async function verify() {
     throw Error("Archive log count mismatch");
   const byId = (table) => new Map(data[table].map((r) => [r.id, r]));
   const classes = byId("live-classes"),
-    schedules = byId("wef-schedules.schedules"),
-    binder = byId("wef-entries.entries");
+    schedules = byId("wef-schedules.schedules");
   let scheduleLinks = 0,
     entryLinks = 0;
   for (const row of data["live-classes"])
@@ -94,11 +92,7 @@ async function verify() {
       Number(raw.identity.entry_id) !== f["entry-id"]
     )
       throw Error("Trip mapping mismatch");
-    for (const id of f.entry || []) {
-      if (binder.get(id)?.fields["entry-key"] !== expected)
-        throw Error("Invalid binder link");
-      entryLinks++;
-    }
+    entryLinks += (f.entry || []).length; // Retained links only; Entries owns qualification.
   }
   const result = {
     at: new Date().toISOString(),

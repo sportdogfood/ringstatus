@@ -1,0 +1,86 @@
+[
+  {
+    "lane": "schedules",
+    "base": "appUq5Qz9kARqFija",
+    "table": "rings",
+    "id": "tbliUwvXYdMhvJ3Fm",
+    "field": {
+      "type": "multilineText",
+      "id": "fldpqRSb49AUKE7AL",
+      "name": "live-observation-json",
+      "description": "Live-owned observed facts, original observation time and verified provenance. Not acquisition status, source facts, checkpoint evidence or native links."
+    }
+  },
+  {
+    "lane": "schedules",
+    "base": "appUq5Qz9kARqFija",
+    "table": "schedules",
+    "id": "tblqiTFqqO3zk2KJC",
+    "field": {
+      "type": "multilineText",
+      "id": "fldtaDx0GeytGlgp7",
+      "name": "live-observation-json",
+      "description": "Live-owned observed facts, original observation time and verified provenance. Not acquisition status, source facts, checkpoint evidence or native links."
+    }
+  },
+  {
+    "lane": "data",
+    "base": "appdl16HJ5ETm8N69",
+    "table": "rings",
+    "id": "tblhKkfYXppW3TbTq",
+    "field": {
+      "type": "multilineText",
+      "id": "fldRQhrsPlDhYi1pg",
+      "name": "live-observation-json",
+      "description": "Live-owned observed facts, original observation time and verified provenance. Not acquisition status, source facts, checkpoint evidence or native links."
+    }
+  },
+  {
+    "lane": "data",
+    "base": "appdl16HJ5ETm8N69",
+    "table": "groups",
+    "id": "tblQObOvktufkyq54",
+    "field": {
+      "type": "multilineText",
+      "id": "fld5CGky9wd6HeZaI",
+      "name": "live-observation-json",
+      "description": "Live-owned observed facts, original observation time and verified provenance. Not acquisition status, source facts, checkpoint evidence or native links."
+    }
+  },
+  {
+    "lane": "data",
+    "base": "appdl16HJ5ETm8N69",
+    "table": "classes",
+    "id": "tbl0IFf067w4wUBj5",
+    "field": {
+      "type": "multilineText",
+      "id": "fldNq7bwz5KhqRO0K",
+      "name": "live-observation-json",
+      "description": "Live-owned observed facts, original observation time and verified provenance. Not acquisition status, source facts, checkpoint evidence or native links."
+    }
+  },
+  {
+    "lane": "data",
+    "base": "appdl16HJ5ETm8N69",
+    "table": "schedules",
+    "id": "tbl6KKlYuMIPHEJWe",
+    "field": {
+      "type": "multilineText",
+      "id": "fldWwAZJ982iZep6O",
+      "name": "live-observation-json",
+      "description": "Live-owned observed facts, original observation time and verified provenance. Not acquisition status, source facts, checkpoint evidence or native links."
+    }
+  },
+  {
+    "lane": "data",
+    "base": "appdl16HJ5ETm8N69",
+    "table": "trips",
+    "id": "tblt0GvQ39bHIu930",
+    "field": {
+      "type": "multilineText",
+      "id": "fldyWwkBBa3JlOuX3",
+      "name": "live-observation-json",
+      "description": "Live-owned observed facts, original observation time and verified provenance. Not acquisition status, source facts, checkpoint evidence or native links."
+    }
+  }
+]

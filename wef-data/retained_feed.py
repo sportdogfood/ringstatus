@@ -12,14 +12,18 @@ def replay(units):
             for row in rows:facts.setdefault(table,{}).setdefault(row[TABLE_KEYS[table]],{}).update(copy.deepcopy(row))
     return facts
 
-def dependencies(repo,state):
+def facts_for_state(repo,state):
     from wef_data_handoff import revision_chain
     from day_counts import retained_units
     collections={k:{**v,'_record-id':repo.inventory['collections'][k]['id']} for k,v in repo.graph['collections'].items()}
     units=[];previous=state.get('predecessor')
     if previous:
         for _,saved in revision_chain(previous['run-key'],repo.graph['runs'],collections):units.extend(saved)
-    units.extend(u for u,refs in retained_units(state,collections));facts=replay(units);extra={}
+    units.extend(u for u,refs in retained_units(state,collections))
+    return replay(units)
+
+def dependencies(repo,state):
+    facts=facts_for_state(repo,state);extra={}
     domain={'shows','days','rings','groups','classes','schedules','entries','horses','riders','trainers','owners','trips','results'}
     changed=True
     while changed:

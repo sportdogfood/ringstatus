@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-30T00:39:38.242Z",
+  "total": 227,
+  "numeric": 60,
+  "unavailable": 167,
+  "reasons": {
+    "group_aggregation_unproven": 77,
+    "live_observation_missing": 227,
+    "positive_trip_count_missing": 56,
+    "non_class_block": 34
+  }
+}

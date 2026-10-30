@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "inputFile": "C:\\Users\\gombc\\Documents\\Codex\\2026-10-23\\find-all-docs-discussing-wef-people-4\\outputs\\entries-offline-projection-input.json",
+  "inputSha256": "517c69ab0cb9a4902fba5c29f9e25ebf78747fafa25752d5ef14c38230320adc",
+  "head": "adaptive-2026-10-29T22:08:14.002823+00:00",
+  "classes": 406,
+  "sharedInventories": 4,
+  "outputBytes": 3583592,
+  "limitBytes": 8000000,
+  "sourceCalls": 0,
+  "manualCollectorRuns": 0,
+  "encoding": "UTF-8 matches production bridge"
+}

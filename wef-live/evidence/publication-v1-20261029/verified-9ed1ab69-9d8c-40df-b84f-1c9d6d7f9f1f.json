@@ -1,0 +1,478 @@
+{
+  "run": "9ed1ab69-9d8c-40df-b84f-1c9d6d7f9f1f",
+  "started": "2026-10-30T00:29:12.810Z",
+  "completed": "2026-10-30T00:29:32.830Z",
+  "counts": {
+    "rings": 0,
+    "groups": 0,
+    "classes": 0,
+    "entries": 0
+  },
+  "publication": {
+    "lanes": {
+      "schedules": {
+        "status": "Skipped",
+        "patched": 0,
+        "unchanged": 0,
+        "deferred": 0,
+        "issues": []
+      },
+      "data": {
+        "status": "Skipped",
+        "patched": 0,
+        "unchanged": 0,
+        "deferred": 0,
+        "issues": []
+      }
+    },
+    "errors": []
+  },
+  "archiveCatalogs": 7,
+  "archiveHashesVerified": true,
+  "deployedHashesVerified": true,
+  "destinations": {
+    "schedules": {
+      "rings": {
+        "rows": 8,
+        "observations": 0
+      },
+      "schedules": {
+        "rows": 26,
+        "observations": 0
+      }
+    },
+    "data": {
+      "rings": {
+        "rows": 8,
+        "observations": 0
+      },
+      "groups": {
+        "rows": 26,
+        "observations": 0
+      },
+      "classes": {
+        "rows": 0,
+        "observations": 0
+      },
+      "schedules": {
+        "rows": 26,
+        "observations": 0
+      },
+      "trips": {
+        "rows": 0,
+        "observations": 0
+      }
+    }
+  },
+  "preservation": {
+    "schedules": {
+      "rings": {
+        "baselineRecords": 8,
+        "missingIds": [],
+        "protectedChanges": [],
+        "collectedChanges": [],
+        "addedIds": []
+      },
+      "schedules": {
+        "baselineRecords": 26,
+        "missingIds": [],
+        "protectedChanges": [],
+        "collectedChanges": [],
+        "addedIds": []
+      }
+    },
+    "data": {
+      "rings": {
+        "baselineRecords": 8,
+        "missingIds": [],
+        "protectedChanges": [],
+        "collectedChanges": [],
+        "addedIds": []
+      },
+      "groups": {
+        "baselineRecords": 26,
+        "missingIds": [],
+        "protectedChanges": [],
+        "collectedChanges": [
+          {
+            "id": "rec1LBSJprh6klOEh",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "rec25Cy3PWCAagDiX",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recArjPykGcVdt15a",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recBN8R6HeRiJHGEC",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recHHc2MxJXS6VMW7",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recIlIpvylzEli8H5",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recJ5AjnObxKAijoK",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recJoQ7bSrf6coZSj",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recK2KNGMoOi2zN5X",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recMjVEKNt1kUl4kw",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recOEayzJrVB6sCdX",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recSb6TAAJv1pz2H4",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recTh5kJVJajplFvG",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recXpansVdW9HDJpc",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recYDCiQXPoexAeYC",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recZwesSvRCVzwSzQ",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recgDokx0c3suOt1m",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "reck1JLGPj73mGVGT",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recmxxcmL4pTtm6Em",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "reco8pFuUdpjaej37",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recpry6ulG0Enntrm",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recqI9qYDdsLyYIcj",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "rectxodzREgMRKN5Y",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "rectzvLq3u5P9lH6D",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recuiYmTWKfDNhxUO",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recx45EzdpYZWdVJD",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          }
+        ],
+        "addedIds": []
+      },
+      "classes": {
+        "baselineRecords": 0,
+        "missingIds": [],
+        "protectedChanges": [],
+        "collectedChanges": [],
+        "addedIds": []
+      },
+      "schedules": {
+        "baselineRecords": 26,
+        "missingIds": [],
+        "protectedChanges": [],
+        "collectedChanges": [
+          {
+            "id": "rec0sVPBOxb0jg4ef",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "rec2cup28034h5qMC",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "rec3FvCAjMrtWLeSA",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "rec61IHlYgbyl9fPK",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "rec66aJRkg01Nn4Jn",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recBNcoLBzOE6E7yx",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recGMV97rvsBTRH7d",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recGl6sUcvFob6g01",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recKWJie0t7IO1Fbv",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recNlnT7zHIcb4ak6",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recPfrTNv5S55ErBq",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recQPuSNgvl7QKve9",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recUIyBCPYPMnHxCD",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recWvKr4VzhqkeCmr",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recXPhqQlCQ5ifXhn",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recXhbxW5GpDkqzVw",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recaVuz5yee9hqFPY",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "reccVSa1BmNaFH1Qj",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "reccWg5NNM0EEe57p",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recctQvWcYZXzMG6p",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recgxV3m7mUQM4gzK",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "reck1dFyt1bnME8nu",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "reckA26wfn4QOC1oX",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "reckyjJORrokVvlK3",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "recndgWVvCto5zcFr",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          },
+          {
+            "id": "reco7K6EK5ZcUEynQ",
+            "field": "last-success",
+            "before": "2026-10-30T00:25:54.461Z",
+            "after": "2026-10-30T00:31:52.939Z"
+          }
+        ],
+        "addedIds": []
+      },
+      "trips": {
+        "baselineRecords": 0,
+        "missingIds": [],
+        "protectedChanges": [],
+        "collectedChanges": [],
+        "addedIds": []
+      }
+    }
+  },
+  "logs": {
+    "heartbeat": [
+      {
+        "id": "recRoGFozNSiwq8Zr",
+        "createdTime": "2026-10-30T00:29:19.000Z",
+        "fields": {
+          "started": "2026-10-30T00:29:12.810Z",
+          "run-id": "9ed1ab69-9d8c-40df-b84f-1c9d6d7f9f1f",
+          "heartbeat-key": "9ed1ab69-9d8c-40df-b84f-1c9d6d7f9f1f",
+          "show-id": 200000076,
+          "result": "Success",
+          "date": "2026-10-29",
+          "summary": "Success: no live activity available; current records and links preserved. Publication: schedules Skipped, 0 patched, 0 unchanged, 0 deferred; data Skipped, 0 patched, 0 unchanged, 0 deferred.",
+          "checked-at": "2026-10-30T00:29:32.830Z",
+          "completed": "2026-10-30T00:29:32.830Z"
+        }
+      }
+    ],
+    "run-logs": [
+      {
+        "id": "recSEtoiXHc5Ryv3G",
+        "createdTime": "2026-10-30T00:29:40.000Z",
+        "fields": {
+          "date": "2026-10-29",
+          "result": "Success",
+          "entry-count": 0,
+          "group-count": 0,
+          "ring-count": 0,
+          "archive-count": 3,
+          "class-count": 0,
+          "show-id": 200000076,
+          "archives": "2026-10-30T00:29:28.365Z: source-live-status Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-live-status\\7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e.json.gz; SHA256 7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e\n2026-10-30T00:29:28.514Z: source-groups Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\af0c2c7d6f4a95130d7e66fa2728d613a6dfecbfbb33e82d784795fa47cef669.json.gz; SHA256 af0c2c7d6f4a95130d7e66fa2728d613a6dfecbfbb33e82d784795fa47cef669\n2026-10-30T00:29:30.753Z: source-widget Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\4b05318cabbd2786ba79db94828733759c47e38868b818d76b68e2f30c8bb83c.json.gz; SHA256 4b05318cabbd2786ba79db94828733759c47e38868b818d76b68e2f30c8bb83c",
+          "completed": "2026-10-30T00:29:32.830Z",
+          "summary": "Success: no live activity available; current records and links preserved. Publication: schedules Skipped, 0 patched, 0 unchanged, 0 deferred; data Skipped, 0 patched, 0 unchanged, 0 deferred.",
+          "started": "2026-10-30T00:29:12.810Z",
+          "run-id": "9ed1ab69-9d8c-40df-b84f-1c9d6d7f9f1f"
+        }
+      }
+    ],
+    "errs-log": []
+  },
+  "populatedProof": false
+}

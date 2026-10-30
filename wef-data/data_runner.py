@@ -343,6 +343,9 @@ class Runner:
             if part['part']==0 and parts:thaw(parts);parts=[]
             parts.append(got)
         if parts:thaw(parts)
+        from retained_feed import facts_for_state
+        from wef_data_handoff import assignment_evidence
+        assignment_counts=assignment_evidence(facts_for_state(self.repo,self.state))['summary']
         for item in self.state['observations']:
             status=rows[item['key']]['fields'].get(self.repo.store.fields['collections']['status']['id'])
             if status!='Verified retained observation':self.repo.patch('collections',item['key'],{'status':'Verified retained observation'})
@@ -352,12 +355,12 @@ class Runner:
             'summary':packed({'show-key':self.show,'coverage':self.state.get('coverage','Verified bounded observations'),
                 'observations':len(self.state['observations']),'directory-complete':self.state.get('directory',{}).get('complete',False),
                 'identity-conflicts':self.state.get('directory-conflicts',[]),
-                'timing':self.state.get('timing',{}),'capacity':self.state.get('capacity',{})}),
+                'timing':self.state.get('timing',{}),'capacity':self.state.get('capacity',{}),'assignment-counts':assignment_counts}),
             'source-requests':self.state.get('requests',0),'errors':len(self.state.get('directory-conflicts',[]))})
         (self.runtime/'active.json').unlink(missing_ok=True)
         return {'ok':True,'show-key':self.show,'run-key':self.runkey,'observations':len(self.state['observations']),
                 'identity-conflicts':self.state.get('directory-conflicts',[]),
-                'retention-waits':getattr(self,'retention_waits',[])}
+                'retention-waits':getattr(self,'retention_waits',[]),'assignment-counts':assignment_counts}
 
     def close75(self,authority):
         key='15|200000075';row=self.repo.graph['shows'].get(key)

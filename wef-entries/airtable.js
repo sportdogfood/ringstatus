@@ -6,8 +6,7 @@ function airtable({token=settings.AIRTABLE_TOKEN,request=globalThis.fetch,pause=
  const writable=new Set(['entries','collections','run-logs','heartbeat']),unresolved=new Set();
  const readable=new Map([[settings.BASE_ID,new Set([...writable,settings.SYNC_TABLE])],[settings.SHARED_BASE_ID,new Set(['schedules','show-collection'])],[settings.SHOWS_BASE_ID,new Set([settings.SHARED_SHOWS_TABLE])],[settings.DATA_BASE_ID,new Set(['runs','collections'])]]);
  async function call(base,table,method='GET',body,query=''){
-  const live=base===settings.LIVE_BASE_ID&&[settings.LIVE_ENTRIES,settings.LIVE_CLASSES,settings.LIVE_COLLECTIONS].includes(table);
-  if(!live&&!readable.get(base)?.has(table))throw Error('Unapproved read target');
+  if(!readable.get(base)?.has(table))throw Error('Unapproved read target');
   if(method!=='GET'&&(base!==settings.BASE_ID||!writable.has(table)||!['POST','PATCH'].includes(method)))throw Error('Read-only source or forbidden mutation');
   await pause(250);const r=await request(`https://api.airtable.com/v0/${base}/${encodeURIComponent(table)}${query}`,{method,headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(30000)});
   if(!r.ok)throw Error(`Airtable ${method} ${table} HTTP ${r.status}`);return r.json();

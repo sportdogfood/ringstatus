@@ -1,9 +1,9 @@
 """Pure Season mapping. Source keys are copied; dated attendance is never inferred."""
 from wef_data_handoff import memberships,show_memberships
 
-def project(facts,entity):
+def project(facts,entity,assessment=None):
     if entity not in ('horses','riders','trainers','rings'):raise ValueError('Unsupported Season entity')
-    shown=show_memberships(facts)[entity];dated=memberships(facts)[entity]
+    shown=show_memberships(facts)[entity];dated=memberships(facts,assessment)[entity]
     stem=entity[:-1];keyfield=stem+'-key'
     show_fields=['show-key','show-id','customer-id','facility-id','show-name','start-date','end-date','selected-date','last-success']
     output={'shows':{},'show-days':{},entity:{}}
@@ -14,7 +14,8 @@ def project(facts,entity):
         show=output['shows'][refs[0][1]];day=row['date'][:10]
         if not show['start-date'][:10]<=day<=show['end-date'][:10]:raise ValueError('Season day out of range')
         output['show-days'][key]={'day-key':row['day-key'],'date':day,'show':[refs[0][1]],**({'last-success':row['last-success']} if row.get('last-success') else {})}
-    for key,shows in shown.items():
+    for key in sorted(set(shown)|set(dated)):
+        shows=sorted(set(shown.get(key,[]))|{show for show,day in dated.get(key,[])})
         source=facts[entity][key]
         if str(source[keyfield])!=key:raise ValueError('Season source identity mismatch')
         fields=[keyfield,stem+'-id',stem+'-name','last-success']+(['ring-number'] if entity=='rings' else [])

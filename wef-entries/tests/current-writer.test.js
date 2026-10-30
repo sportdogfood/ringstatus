@@ -15,7 +15,7 @@ function fixture(){
 }
 test('independent writer reads no tenant or source and persists ordinary links despite group uncertainty',async()=>{
  const f=fixture(),r=await runEntries(f.options);assert.equal(r.ok,true);assert.equal(r.result,'Partial');assert.equal(r.rows,1);assert.equal(r.accepted_rows,1);
- assert(f.reads.every(([b])=>[settings.BASE_ID,settings.SHOWS_BASE_ID,settings.LIVE_BASE_ID].includes(b)));
+ assert(f.reads.every(([b])=>[settings.BASE_ID,settings.SHOWS_BASE_ID].includes(b)));
  const row=(await f.api.list('entries'))[0].fields;assert.equal(row['schedule-link-basis'],'class-date');assert.equal(row['group-link-status'],'unresolved');assert(row['source-trainer-ids']);assert.equal(row['trainer-ids'],undefined);
  assert.equal((await f.api.list('heartbeat'))[0].fields['heartbeat-key'],'wef-entries');assert(f.archives.some(a=>a.event.kind==='entries-before'));assert(f.archives.some(a=>a.event.kind==='retained-class-dataset'));
 });
@@ -43,9 +43,12 @@ test('newer existing observations never regress and scope membership stays linke
  const f=fixture();await runEntries(f.options);const before=(await f.api.list('entries'))[0];await f.api.upsert('entries','entry-key',[{'entry-key':before.fields['entry-key'],'last-seen':'2026-10-30T12:10:00Z','rider-name':'newer'}]);
  await runEntries(f.options);const after=(await f.api.list('entries'))[0];assert.equal(after.fields['rider-name'],'newer');assert.equal(after.fields['last-seen'],'2026-10-30T12:10:00Z');assert.deepEqual((await f.api.list('collections'))[0].fields.entries,[before.id]);
 });
-test('no shared schedules still processes Data participation and preserves prior native links as history',async()=>{
- const f=fixture();await runEntries(f.options);const prior=(await f.api.list('entries'))[0];f.seed(settings.SYNC_TABLE,[]);let reads=0;const result=await runEntries({...f.options,readInput:async()=>{reads++;return structuredClone(f.input);}});const after=(await f.api.list('entries'))[0];assert.equal(after.id,prior.id);assert.deepEqual(after.fields.schedules,prior.fields.schedules);assert.equal(after.fields['schedule-link-status'],'unresolved');assert.equal(after.fields['last-seen'],prior.fields['last-seen']);assert.equal(result.ok,true);assert.equal(result.rows,1);assert.equal(reads,1);
+test('no shared schedules skips Data and preserves every prior record and link',async()=>{
+ const f=fixture();await runEntries(f.options);const before=await f.api.list('entries');f.seed(settings.SYNC_TABLE,[]);let reads=0;
+ const result=await runEntries({...f.options,readInput:async()=>{reads++;throw Error('Must not read Data without schedule scope');},readLive:async()=>{throw Error('Forbidden Live read');}});
+ assert.equal(result.ok,true);assert.equal(result.rows,0);assert.equal(reads,0);assert.deepEqual(await f.api.list('entries'),before);
 });
+
 test('archive failure prevents participation writes',async()=>{
  const f=fixture();const r=await runEntries({...f.options,archive:async()=>{throw Error('Archive unavailable');}});assert.equal(r.ok,false);assert.equal(f.writes.includes('entries'),false);
 });
@@ -96,13 +99,14 @@ test('ambiguous schedule is Conflict, preserves prior links and repeats while ot
   assert.equal(rows.find(x=>x.fields['class-id']===200039999).fields['schedule-link-status'],'linked');
  }
 });
-test('Data-only participation survives absent shared schedule coverage; external schedules are never read',async()=>{
- const f=fixture();const extra=structuredClone(f.input.classes[0]);extra.scopeKey+='outside';extra.payload.class.class_id=200039999;f.input.classes.push(extra);
- const list=f.api.list;f.api.list=async(t,b)=>{if(b===settings.SHARED_BASE_ID)throw Error('External schedules forbidden');return list(t,b);};
- const r=await runEntries(f.options);assert.equal(r.ok,true);assert.equal(r.rows,2);assert.equal(r.out_of_scope_classes,0);
- const rows=await f.api.list('entries');assert.equal(rows.length,2);assert(f.reads.every(([b])=>b!==settings.SHARED_BASE_ID));
- const source=JSON.parse(rows.find(r=>r.fields['class-id']===200039999).fields['source-json']);assert.equal(source.laneAssociations.schedules.status,'unresolved');assert.equal(source.format,'wef-entry-link-v1');assert(source.sourceEvidence);assert(source.trips);
+test('outside shared schedule scope is preserved but never processed or newly created',async()=>{
+ const f=fixture(),extra=structuredClone(f.input.classes[0]);extra.payload.class.class_id=200039999;extra.scopeKey+='outside';f.input.classes.push(extra);
+ f.seed('entries',[{'entry-key':'protected-outside','show-id':200000076,'class-id':200039999,date:'2026-10-30',status:'active',schedules:['prior-link'],'source-json':'{"laneAssociations":{"data":{"key":"historical"}},"liveEvidence":{"original":true}}',horses:['helper']}]);
+ const prior=(await f.api.list('entries'))[0];const result=await runEntries(f.options);
+ assert.equal(result.ok,true);assert.equal(result.rows,1);assert.equal(result.out_of_scope_classes,1);const rows=await f.api.list('entries');assert.equal(rows.length,2);assert.deepEqual(rows.find(r=>r.id===prior.id),prior);
+ assert(!f.reads.some(([b])=>b==='appgzosUcVqA4vZdf'));assert(!JSON.parse(rows.find(r=>r.id!==prior.id).fields['source-json']).laneAssociations);
 });
+
 test('unknown failed Data attempt does not gate accepted links or claim exact-class failure',async()=>{
  const f=fixture();f.input.attempts=[{key:'failed-inventory',status:'Failed',phase:'Writing',reservedClass:null}];
  const r=await runEntries(f.options);assert.equal(r.ok,true);const row=(await f.api.list('entries'))[0].fields;
@@ -110,37 +114,37 @@ test('unknown failed Data attempt does not gate accepted links or claim exact-cl
  assert.deepEqual(JSON.parse(row['source-json']).latestApplicableAttempts,[]);assert.deepEqual(r.producer_attempts,f.input.attempts);
 });
 
-test('separate occurrence evidence never mixes Data IDs into native Schedules links',async()=>{
- const f=fixture(),item=f.input.classes[0],p=item.payload;
- f.input.schedules=[{key:'UNCHANGED-DATA-KEY',recordId:'recForeignData',customerId:15,showId:p.show_id,date:p.class_related_data.date.slice(0,10),classId:p.class.class_id,ringNumber:p.class_related_data.ring,kind:'class',sourceAsOf:f.now}];
- await runEntries(f.options);const first=(await f.api.list('entries'))[0],source=JSON.parse(first.fields['source-json']);
- assert.equal(source.laneAssociations.data.key,'UNCHANGED-DATA-KEY');assert.equal(source.laneAssociations.data.status,'linked');assert.equal(source.laneAssociations.schedules.status,'linked');assert(!first.fields.schedules.includes('recForeignData'));
- f.input.schedules.push({...f.input.schedules[0],key:'OTHER-UNCHANGED-KEY',recordId:'recOtherData'});
- await runEntries(f.options);const repeated=(await f.api.list('entries'))[0],after=JSON.parse(repeated.fields['source-json']);assert.equal(repeated.id,first.id);assert.deepEqual(repeated.fields.schedules,first.fields.schedules);assert.equal(after.laneAssociations.data.status,'Conflict');assert.equal(after.laneAssociations.schedules.status,'linked');assert.equal(repeated.fields['last-seen'],first.fields['last-seen']);
-});
 test('repeat preserves additional existing source-json properties',async()=>{
  const f=fixture();await runEntries(f.options);const first=(await f.api.list('entries'))[0],source=JSON.parse(first.fields['source-json']);source.existingOwnerEvidence={keep:'exact'};source.priorLink={keys:'historical-proof',observedAt:'original'};
  await f.api.upsert('entries','entry-key',[{'entry-key':first.fields['entry-key'],'source-json':JSON.stringify(source)}]);await runEntries(f.options);
  const after=(await f.api.list('entries'))[0];assert.deepEqual(JSON.parse(after.fields['source-json']).existingOwnerEvidence,{keep:'exact'});assert.equal(after.id,first.id);assert.deepEqual(JSON.parse(after.fields['source-json']).priorLink,source.priorLink);
 });
 
-test('TODAY enrichment bypasses unavailable multi-day Data without refreshing its time or links',async()=>{
- const f=fixture();await runEntries(f.options);const prior=(await f.api.list('entries'))[0],fields=prior.fields,trip=JSON.parse(fields['source-json']).trips[0];
- const observed={entryKey:fields['entry-key'],entryId:fields['entry-id'],classId:fields['class-id'],horseId:fields['horse-id'],riderId:fields['rider-id'],trainerId:trip.trainer_id,tripId:Number(trip.trip_id),tripUuid:trip.entryxclasses_uuid,sourceAsOf:'2026-10-30T12:01:00Z'};
- const result=await runEntries({...f.options,readInput:async()=>{throw Error('Multi-day Data unavailable');},readLive:async()=>({status:'verified',evidence:new Map([[fields['entry-key'],[observed]]])})});
- assert.equal(result.ok,false);assert.equal(result.live.enriched,1);const after=(await f.api.list('entries'))[0];assert.equal(after.id,prior.id);assert.equal(after.fields['last-seen'],fields['last-seen']);assert.deepEqual(after.fields.schedules,fields.schedules);const source=JSON.parse(after.fields['source-json']);assert.equal(source.sourceAsOf,JSON.parse(fields['source-json']).sourceAsOf);assert.equal(source.liveEvidence.observations[0].sourceAsOf,observed.sourceAsOf);
+test('Data failure cannot write participation or invoke Live',async()=>{
+ const f=fixture();await runEntries(f.options);const before=await f.api.list('entries');f.writes.length=0;let liveReads=0;
+ const result=await runEntries({...f.options,readInput:async()=>{throw Error('Data unavailable');},readLive:async()=>{liveReads++;return{status:'verified',evidence:new Map()};}});
+ assert.equal(result.ok,false);assert.equal(liveReads,0);assert(!f.writes.includes('entries'));assert.deepEqual(await f.api.list('entries'),before);
 });
 
 test('full-show archive references stay complete without exceeding the existing log field',async()=>{
- const f=fixture(),first=structuredClone(f.input.classes[0]);
+ const f=fixture(),first=structuredClone(f.input.classes[0]),shared=await f.api.list(settings.SYNC_TABLE);
  for(let i=1;i<400;i++){
   const item=structuredClone(first);item.scopeKey+='-'+i;item.payload.class.class_id=200040000+i;
   for(const trip of item.payload.trips)if(trip.class_id!=null)trip.class_id=item.payload.class.class_id;
-  f.input.classes.push(item);
+  f.input.classes.push(item);shared.push({id:'shared-'+i,fields:{...shared[0].fields,'class-id':item.payload.class.class_id,'stage-key':'shared-key-'+i}});
  }
+ f.seed(settings.SYNC_TABLE,shared);
  const upsert=f.api.upsert;
  f.api.upsert=async(t,k,values)=>{if(t==='run-logs')for(const value of values)if((value.archives||'').length>100000)throw Error('Log field too long');return upsert(t,k,values);};
  const r=await runEntries({...f.options,archive:async(kind,value,scope)=>{const event=await f.options.archive(kind,value,scope);event.file='existing-runtime-history/'.repeat(15)+kind;return event;}});
  assert.equal(r.ok,true);assert.equal(r.rows,400);const log=(await f.api.list('run-logs'))[0].fields;assert(log.archives.length<100000);assert.match(log.archives,/Full archive index/);
  const index=f.archives.find(a=>a.event.kind==='run-archive-index');assert(index);assert.equal(index.value.run_id,r.run_id);assert.equal(index.value.archives.filter(a=>a.kind==='retained-class-dataset').length,400);assert.equal(log['archive-count'],r.archives.length);
+});
+
+test('previous lane and Live evidence is retained unchanged as history, not regenerated',async()=>{
+ const f=fixture();await runEntries(f.options);const first=(await f.api.list('entries'))[0],source=JSON.parse(first.fields['source-json']);
+ source.laneAssociations={data:{key:'existing-data',status:'Conflict'},schedules:{key:'old-key'}};source.liveEvidence={status:'historical',observations:[{sourceAsOf:'original'}]};
+ await f.api.upsert('entries','entry-key',[{'entry-key':first.fields['entry-key'],'source-json':JSON.stringify(source)}]);
+ f.input.schedules=[{key:'must-not-evaluate'}];await runEntries(f.options);const after=JSON.parse((await f.api.list('entries'))[0].fields['source-json']);
+ assert.deepEqual(after.laneAssociations,source.laneAssociations);assert.deepEqual(after.liveEvidence,source.liveEvidence);assert.equal(after.sourceAsOf,source.sourceAsOf);
 });

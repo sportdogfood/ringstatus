@@ -1,0 +1,38 @@
+{
+  "fixtureOnly": true,
+  "notes": "Reduced saved payloads. Positive class and group inventory share Live receipt00912a72; schedule fields combine separately saved historical references. Partial current input combines saved Data and schedule snapshots, not accepted same-revision production proof. Test revision labels are synthetic. No API calls.",
+  "sources": [
+    {
+      "path": "wef-live\\runtime\\history\\class-200030347\\9ef05e4b73f0cd56e6e62b9899b7bbae04f8ec0f8c9eef3f1e61ac637e884bd7.json.gz",
+      "sha256": "b0be3c637298488720a69d358407766dcba2638d1b85b9ee75f8fcb8be6c2e96"
+    },
+    {
+      "path": "wef-live\\runtime\\history\\source-groups\\65c736e8d8048ac21c77cdea1281f7158ced19b3130dd1c915e3de1cca1a7f44.json.gz",
+      "sha256": "fd907f94801483004299abdaabc0bbc7a6381c38165ee397feb47d2d2ea7be7d"
+    },
+    {
+      "path": "wef-live\\evidence\\ambiguous-schedule-examples.json",
+      "sha256": "4c1d2cf1acce12b39039c65e1f7b0c2e5ebf4c323178d80090a633e378df2c32"
+    },
+    {
+      "path": "wef-schedules\\runtime\\history\\datasets\\02a51571-d8d0-4310-9dbb-f2e236de1c62.json.gz",
+      "sha256": "09f2cc7b55b5f149a571cc64e310685e66737e93b30777912b1bce397b24db1f"
+    },
+    {
+      "path": "wef-live\\runtime\\history\\class-200030245\\068f20d563dbbb31436bd31ba42c7a6f3ebdbfa75ed34106efcc802b8a302705.json.gz",
+      "sha256": "230ab7b7afb3fc9ce77a1a426b09458216e9ecbeba19e57736a1e36f611132db"
+    },
+    {
+      "path": "wef-live\\runtime\\history\\source-groups\\1795c60b485f139a45ff045319b7252fdbaf53ed0013863dc064a97b0542aac6.json.gz",
+      "sha256": "6cf1e880e4fe36a43f4952339703660b9a9d9acaa534c7c5fa30218b48735033"
+    },
+    {
+      "path": "wef-data\\runtime\\adaptive-2026-10-29T13_43_04.027436+00_00\\class-batch-8\\graph.json",
+      "sha256": "04e098488ad55b05dc6f58ee13dfaf33cff424074d0da99d7e6cb70917e2763a"
+    },
+    {
+      "path": "wef-schedules\\evidence\\attempt-errors-20261029\\business-before.json",
+      "sha256": "2b3e230e1211fa25ce56f1793f3322d19b7e332a02eeac340b7dd6f9cbb8a8e6"
+    }
+  ]
+}

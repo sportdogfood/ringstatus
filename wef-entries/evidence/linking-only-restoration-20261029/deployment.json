@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-29T23:37:05.226Z",
+  "route": "Unchanged wef-entries-cwf-collector -> run-hidden.vbs -> run.ps1 -> entry.js",
+  "files": {
+    "collector.js": "c3ff83abd87ef5abe0116ecc025594888d1d3b2ac5dd5b878a9c7e931fe746eb",
+    "model.js": "47d5360435e5087d946e09a98483fcb1b8b5e4b57c1cb6e97296cb410a13d371",
+    "retained-input.py": "4bb0077b23ef7b487f25c405bcdcdc97069483756a0f33bb54d5e2d52477d165",
+    "settings.js": "8ad3cc6c331c0e7d70b5372df930060cd0fc0af1dcb83d171db0bdbc136f10ea",
+    "airtable.js": "4f965a87a656e0bc5db48911a371ba018101a61fab7d510a49b578ba4f31df3b"
+  },
+  "retiredCode": [
+    "live-input.js"
+  ],
+  "taskXmlSha256": "2637f09efc3770f8a5e0c74ea018d92a79f6e7ff9d639726f5a2d42cf9d5264a",
+  "manualRuns": 0,
+  "taskChanges": 0,
+  "recordRepairs": 0,
+  "recordsDeleted": 0
+}

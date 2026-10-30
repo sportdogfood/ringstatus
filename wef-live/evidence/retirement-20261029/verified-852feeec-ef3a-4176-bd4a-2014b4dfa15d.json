@@ -1,0 +1,122 @@
+{
+  "run": "852feeec-ef3a-4176-bd4a-2014b4dfa15d",
+  "started": "2026-10-29T23:08:13.508Z",
+  "completed": "2026-10-29T23:09:47.613Z",
+  "counts": {
+    "rings": 0,
+    "groups": 0,
+    "classes": 0,
+    "entries": 0
+  },
+  "retired": [
+    {
+      "table": "live-entries",
+      "show": 200000075,
+      "date": "2026-10-25",
+      "records": 305,
+      "catalog": "archive|200000075|2026-10-25|live-entries|d4e385ea1f6b3a8f6326dcc9d3c26f68a8ef3516367ada3bbc9e253fcf445cf0"
+    },
+    {
+      "table": "live-classes",
+      "show": 200000075,
+      "date": "2026-10-25",
+      "records": 56,
+      "catalog": "archive|200000075|2026-10-25|live-classes|7e92874448c22f75c045467857473ebd72ad8ef0b319a999fa020f700d057507"
+    },
+    {
+      "table": "live-groups",
+      "show": 200000075,
+      "date": "2026-10-25",
+      "records": 31,
+      "catalog": "archive|200000075|2026-10-25|live-groups|9a64dc59aeae6471baecc9cc4dd18eefed24840d4dbccb78360a4c5d5251fbc5"
+    },
+    {
+      "table": "live-rings",
+      "show": 200000075,
+      "date": "2026-10-25",
+      "records": 5,
+      "catalog": "archive|200000075|2026-10-25|live-rings|de1dfa9b57f0aee02f2cc467b28b2ba358ac5011c97bf267b50a112b56a2b512"
+    },
+    {
+      "table": "collections",
+      "show": 200000075,
+      "date": "2026-10-24",
+      "records": 61,
+      "catalog": "archive|200000075|2026-10-24|collections|bd78bcd80ee8ab799712681fc1b9654db0e55572daa45fcae79fd0461588fbe3"
+    },
+    {
+      "table": "collections",
+      "show": 200000075,
+      "date": "2026-10-25",
+      "records": 58,
+      "catalog": "archive|200000075|2026-10-25|collections|3ff45a22c5132264c606ab7faba18dee83f8ef8766e1320ffa2307a9e01f98fa"
+    },
+    {
+      "table": "collections",
+      "show": 200000075,
+      "date": "2026-10-23",
+      "records": 34,
+      "catalog": "archive|200000075|2026-10-23|collections|a397b9fe76e05db149b38b1bcb6ec0b20533023cc4fa20669f21849cec34e783"
+    }
+  ],
+  "catalogs": 7,
+  "archived": {
+    "live-entries": 305,
+    "collections": 153,
+    "live-classes": 56,
+    "live-groups": 31,
+    "live-rings": 5
+  },
+  "activeCounts": {
+    "live-rings": 0,
+    "live-groups": 0,
+    "live-classes": 0,
+    "live-entries": 0,
+    "collections": 7,
+    "wef-schedules.schedules": 512,
+    "wef-entries.entries": 512
+  },
+  "exactArchivedFieldsAndLinks": true,
+  "referenceIdsPreserved": true,
+  "logs": {
+    "run-logs": [
+      {
+        "id": "reccsKeOiQ1U7lTZM",
+        "createdTime": "2026-10-29T23:09:56.000Z",
+        "fields": {
+          "date": "2026-10-29",
+          "result": "Success",
+          "entry-count": 0,
+          "group-count": 0,
+          "ring-count": 0,
+          "archive-count": 10,
+          "class-count": 0,
+          "show-id": 200000076,
+          "archives": "2026-10-29T23:08:30.683Z: source-live-status Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-live-status\\7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e.json.gz; SHA256 7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e\n2026-10-29T23:08:30.817Z: source-groups Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\af0c2c7d6f4a95130d7e66fa2728d613a6dfecbfbb33e82d784795fa47cef669.json.gz; SHA256 af0c2c7d6f4a95130d7e66fa2728d613a6dfecbfbb33e82d784795fa47cef669\n2026-10-29T23:08:35.645Z: source-widget Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\4b05318cabbd2786ba79db94828733759c47e38868b818d76b68e2f30c8bb83c.json.gz; SHA256 4b05318cabbd2786ba79db94828733759c47e38868b818d76b68e2f30c8bb83c\n2026-10-29T23:08:37.147Z: retired-live-entries Created; 305 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-live-entries\\d4e385ea1f6b3a8f6326dcc9d3c26f68a8ef3516367ada3bbc9e253fcf445cf0.json.gz; SHA256 d4e385ea1f6b3a8f6326dcc9d3c26f68a8ef3516367ada3bbc9e253fcf445cf0; cleanup Retired\n2026-10-29T23:08:37.522Z: retired-live-classes Created; 56 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-live-classes\\7e92874448c22f75c045467857473ebd72ad8ef0b319a999fa020f700d057507.json.gz; SHA256 7e92874448c22f75c045467857473ebd72ad8ef0b319a999fa020f700d057507; cleanup Retired\n2026-10-29T23:08:37.927Z: retired-live-groups Created; 31 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-live-groups\\9a64dc59aeae6471baecc9cc4dd18eefed24840d4dbccb78360a4c5d5251fbc5.json.gz; SHA256 9a64dc59aeae6471baecc9cc4dd18eefed24840d4dbccb78360a4c5d5251fbc5; cleanup Retired\n2026-10-29T23:08:38.294Z: retired-live-rings Created; 5 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-live-rings\\de1dfa9b57f0aee02f2cc467b28b2ba358ac5011c97bf267b50a112b56a2b512.json.gz; SHA256 de1dfa9b57f0aee02f2cc467b28b2ba358ac5011c97bf267b50a112b56a2b512; cleanup Retired\n2026-10-29T23:08:39.033Z: retired-collections Created; 61 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-collections\\bd78bcd80ee8ab799712681fc1b9654db0e55572daa45fcae79fd0461588fbe3.json.gz; SHA256 bd78bcd80ee8ab799712681fc1b9654db0e55572daa45fcae79fd0461588fbe3; cleanup Retired\n2026-10-29T23:08:39.038Z: retired-collections Created; 58 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-collections\\3ff45a22c5132264c606ab7faba18dee83f8ef8766e1320ffa2307a9e01f98fa.json.gz; SHA256 3ff45a22c5132264c606ab7faba18dee83f8ef8766e1320ffa2307a9e01f98fa; cleanup Retired\n2026-10-29T23:08:39.045Z: retired-collections Created; 34 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-collections\\a397b9fe76e05db149b38b1bcb6ec0b20533023cc4fa20669f21849cec34e783.json.gz; SHA256 a397b9fe76e05db149b38b1bcb6ec0b20533023cc4fa20669f21849cec34e783; cleanup Retired",
+          "completed": "2026-10-29T23:09:47.613Z",
+          "summary": "Success: no live activity available; current records and links preserved. Archived and retired 550 older records; archive catalog retained in collections.",
+          "started": "2026-10-29T23:08:13.508Z",
+          "run-id": "852feeec-ef3a-4176-bd4a-2014b4dfa15d"
+        }
+      }
+    ],
+    "heartbeat": [
+      {
+        "id": "reclbWxathXUi0z7n",
+        "createdTime": "2026-10-29T23:08:19.000Z",
+        "fields": {
+          "started": "2026-10-29T23:08:13.508Z",
+          "run-id": "852feeec-ef3a-4176-bd4a-2014b4dfa15d",
+          "heartbeat-key": "852feeec-ef3a-4176-bd4a-2014b4dfa15d",
+          "show-id": 200000076,
+          "result": "Success",
+          "date": "2026-10-29",
+          "summary": "Success: no live activity available; current records and links preserved. Archived and retired 550 older records; archive catalog retained in collections.",
+          "checked-at": "2026-10-29T23:09:47.613Z",
+          "completed": "2026-10-29T23:09:47.613Z"
+        }
+      }
+    ],
+    "errs-log": []
+  }
+}

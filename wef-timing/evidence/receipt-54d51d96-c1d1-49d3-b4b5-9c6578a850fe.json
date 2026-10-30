@@ -1,0 +1,20 @@
+{
+  "run_id": "54d51d96-c1d1-49d3-b4b5-9c6578a850fe",
+  "started": "2026-10-30T00:18:01.972Z",
+  "ok": true,
+  "counts": {
+    "evaluated": 80,
+    "written": 80,
+    "unchanged": 0,
+    "deferred": 147,
+    "available": 0,
+    "partial": 24,
+    "unavailable": 56,
+    "purged": 0,
+    "purge_deferred": 0
+  },
+  "errors": [],
+  "completed": "2026-10-30T00:18:21.707Z",
+  "clock_verified": true,
+  "pending": 147
+}

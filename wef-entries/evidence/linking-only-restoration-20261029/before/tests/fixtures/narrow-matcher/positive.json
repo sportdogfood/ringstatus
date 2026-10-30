@@ -1,0 +1,810 @@
+{
+  "payload": {
+    "show_id": "200000075",
+    "class": {
+      "class_id": 200030347,
+      "number": 770,
+      "name": "1.30m Open Jumper II2d",
+      "sponsor": "",
+      "order_of_go_set": 1,
+      "order_set_date": "2026-10-22T00:00:00.000Z",
+      "order_set_time": "17:08:41",
+      "class_type": "Jumpers",
+      "verification_detail": "10-23-26 - 08:53:33 - HALI MILLER",
+      "results_verified": 1,
+      "schedule_sequencetype": "Over Fences",
+      "show_id": 200000075,
+      "combined_class_id": 0,
+      "jumper_table": "USEF Table II.2.d",
+      "schedule_ring_id": 10,
+      "customer_id": 15,
+      "fei_event_type_code": "",
+      "multiphase_rule": "",
+      "is_team_event": false,
+      "is_under_saddle_class": false,
+      "oog_status_text": "Order of Go set at 2026-10-22 17:08",
+      "has_splits": false
+    },
+    "class_related_data": {
+      "status": "Completed",
+      "unscratched_count": 14,
+      "show_results": true,
+      "has_prize_money": true,
+      "grouped_class": true,
+      "show_ring_info": true,
+      "actual_time": "07:56:59",
+      "estimated_time": "08:00:00",
+      "default_time": "08:00:00",
+      "date": "2026-10-23T00:00:00.000Z",
+      "class_group_id": 200029518,
+      "ring": 1,
+      "total_trips": 19,
+      "completed_trips": 19,
+      "remaining_trips": 0,
+      "order_check_in": 0,
+      "hunter_scoreby": "",
+      "hunter_type": "",
+      "type": "",
+      "ring_name": "Equestrian Village Derby Field",
+      "judges": [
+        {
+          "name": "ANDY CHRISTIANSEN",
+          "position": "",
+          "isjudge": 0,
+          "iscoursedesigner": 1
+        },
+        {
+          "name": "JENNY ROSS-KONING",
+          "position": "",
+          "isjudge": 1,
+          "iscoursedesigner": 0
+        },
+        {
+          "name": "LILIANA RIVERA DE TRIOLET",
+          "position": "",
+          "isjudge": 1,
+          "iscoursedesigner": 0
+        }
+      ],
+      "judges_count": 3,
+      "class_split_codes": [
+        "A"
+      ],
+      "current_split_code": "A",
+      "class_prizes": [
+        {
+          "sync_id": "00001524965436202735",
+          "class_id": 200030347,
+          "place": 1,
+          "prize_money": 40,
+          "addbackpercent": 40,
+          "winningnums": "194",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 10,
+          "customer_id": 15,
+          "sgl_id": 13018476,
+          "class_prizes_uuid": "EB537DA7F8DF4EDB87BC80A0D53DF5EE"
+        },
+        {
+          "sync_id": "00001536096196461361",
+          "class_id": 200030347,
+          "place": 2,
+          "prize_money": 30,
+          "addbackpercent": 30,
+          "winningnums": "211",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 6,
+          "customer_id": 15,
+          "sgl_id": 13018477,
+          "class_prizes_uuid": "A48408C6902D4C3DA692766429FFD031"
+        },
+        {
+          "sync_id": "00001583120214828621",
+          "class_id": 200030347,
+          "place": 3,
+          "prize_money": 20,
+          "addbackpercent": 20,
+          "winningnums": "193",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 4,
+          "customer_id": 15,
+          "sgl_id": 13018478,
+          "class_prizes_uuid": "F13C35FA6F7B4A95B4D9831AEFE20532"
+        },
+        {
+          "sync_id": "00001534148741471875",
+          "class_id": 200030347,
+          "place": 4,
+          "prize_money": 10,
+          "addbackpercent": 10,
+          "winningnums": "409",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 2,
+          "customer_id": 15,
+          "sgl_id": 13018479,
+          "class_prizes_uuid": "47A937E213D446A1A7ACF3BE44EFCD45"
+        },
+        {
+          "sync_id": "00001539830738056459",
+          "class_id": 200030347,
+          "place": 5,
+          "prize_money": 0,
+          "addbackpercent": 0,
+          "winningnums": "453",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 1,
+          "customer_id": 15,
+          "sgl_id": 13018480,
+          "class_prizes_uuid": "D1A48F44E6904A978E1F69D22AA354B2"
+        },
+        {
+          "sync_id": "00001552896648724067",
+          "class_id": 200030347,
+          "place": 6,
+          "prize_money": 0,
+          "addbackpercent": 0,
+          "winningnums": "597",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 0.5,
+          "customer_id": 15,
+          "sgl_id": 13018481,
+          "class_prizes_uuid": "B4CB389B75A24DE69166AC0B6465DD6C"
+        },
+        {
+          "sync_id": "00001561564418162917",
+          "class_id": 200030347,
+          "place": 7,
+          "prize_money": 0,
+          "addbackpercent": 0,
+          "winningnums": "700",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 0,
+          "customer_id": 15,
+          "sgl_id": 13018482,
+          "class_prizes_uuid": "7678592E338F4C7BB4E66BF9ADC6DA6F"
+        },
+        {
+          "sync_id": "00001515837048345688",
+          "class_id": 200030347,
+          "place": 8,
+          "prize_money": 0,
+          "addbackpercent": 0,
+          "winningnums": "236",
+          "checkprinted": 0,
+          "splitcode": "A",
+          "prize_money_spent": 0,
+          "points": 0,
+          "customer_id": 15,
+          "sgl_id": 13018483,
+          "class_prizes_uuid": "5BBACE7668E04DAFA482E385158554BB"
+        }
+      ],
+      "score_fields": [],
+      "show_est_time": true,
+      "show_planned_time": false,
+      "is_videos_enabled": true
+    },
+    "total_entry_trips": 14,
+    "trips": [
+      {
+        "entry_id": 200245642,
+        "horse": "WHERE'S WALDO",
+        "horse_id": 200002216,
+        "trainer_id": 80970,
+        "trip_id": 200398136,
+        "rider_name": "DANIEL ZETTERMAN",
+        "rider_id": 40889,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "85300B7F7F914821A0F7E09E8FAF03DA"
+      },
+      {
+        "entry_id": 200245088,
+        "horse": "RUNAWAY VD WITHOEVE",
+        "horse_id": 200002313,
+        "trainer_id": 4616,
+        "trip_id": 200398195,
+        "rider_name": "JUAN PABLO GNECCO",
+        "rider_id": 4616,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "5F68677A3A8F4EB4AE0AA7C19DAE90AB"
+      },
+      {
+        "entry_id": 200246772,
+        "horse": "CHACCO BRAVO PS",
+        "horse_id": 200000546,
+        "trainer_id": 4616,
+        "trip_id": 200398193,
+        "rider_name": "JUAN PABLO GNECCO",
+        "rider_id": 4616,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "7066488C922042369BB336FD13623D8F"
+      },
+      {
+        "entry_id": 200246420,
+        "horse": "POSTIN LS LA SILLA",
+        "horse_id": 147034,
+        "trainer_id": 57785,
+        "trip_id": 200398103,
+        "rider_name": "KEVIN MEALIFF",
+        "rider_id": 57785,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "9A305B31A2504ED4A0DF977B3947B878"
+      },
+      {
+        "entry_id": 200245506,
+        "horse": "CROSS OVER SR",
+        "horse_id": 200002670,
+        "trainer_id": 50121,
+        "trip_id": 200397888,
+        "rider_name": "ISABELA DE SOUSA",
+        "rider_id": 50121,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "D16475014D64450695C6D10F5EA64B1F"
+      },
+      {
+        "entry_id": 200243025,
+        "horse": "JODOKUS",
+        "horse_id": 133868,
+        "trainer_id": 40889,
+        "trip_id": 200398293,
+        "rider_name": "DANIEL ZETTERMAN",
+        "rider_id": 40889,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "1C9003095F084ED4810454A1CFB6E62C"
+      },
+      {
+        "entry_id": 200245409,
+        "horse": "ELIANA",
+        "horse_id": 117573,
+        "trainer_id": 58995,
+        "trip_id": 200398163,
+        "rider_name": "KAITLYN MCCANN",
+        "rider_id": 58995,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "BEB15DE688FC49B7A5756771DA886464"
+      },
+      {
+        "entry_id": 200245071,
+        "horse": "DRAGONFLY",
+        "horse_id": 152230,
+        "trainer_id": 45939,
+        "trip_id": 200398258,
+        "rider_name": "NORA NAUSS",
+        "rider_id": 79265,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "F44185098A3F454287E7A5836430F6E5"
+      },
+      {
+        "entry_id": 200246887,
+        "horse": "MAESTRO A",
+        "horse_id": 148610,
+        "trainer_id": 56630,
+        "trip_id": 200398237,
+        "rider_name": "SAYRE HAPPY",
+        "rider_id": 36107,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "D3AD017AFF4F4383BD241B68827BFAD4"
+      },
+      {
+        "entry_id": 200245739,
+        "horse": "QUITO",
+        "horse_id": 148624,
+        "trainer_id": 50914,
+        "trip_id": 200397969,
+        "rider_name": "LUIZ FRANCISCO DE AZEVEDO",
+        "rider_id": 50914,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "7A9DEBDB52FB480789B6AC2D48BAFAF7"
+      },
+      {
+        "entry_id": 200246160,
+        "horse": "CHAFILOU PS",
+        "horse_id": 200001205,
+        "trainer_id": 41748,
+        "trip_id": 200398342,
+        "rider_name": "DAISY FOREGGER",
+        "rider_id": 53910,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "A1CF9F9992034436888F2A1B646F4EE6"
+      },
+      {
+        "entry_id": 200247110,
+        "horse": "GHM MANDELA VAN'T STUDUTCH",
+        "horse_id": 200005195,
+        "trainer_id": 1000001496,
+        "trip_id": 200398440,
+        "rider_name": "GWYNETH BABINGTON",
+        "rider_id": 43016,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "B6C35711A8E3431F906F17596F43611F"
+      },
+      {
+        "entry_id": 200244892,
+        "horse": "FOR BEBEE PS",
+        "horse_id": 200002300,
+        "trainer_id": 1000000198,
+        "trip_id": 200398040,
+        "rider_name": "SIMON ARANGO ARANGO",
+        "rider_id": 1000000198,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "B9BE94435F1E488EAE937153E666E633"
+      },
+      {
+        "entry_id": 200245636,
+        "horse": "SOLAGUAYRE DIMITRI",
+        "horse_id": 153346,
+        "trainer_id": 80970,
+        "trip_id": 200398135,
+        "rider_name": "DANIEL ZETTERMAN",
+        "rider_id": 40889,
+        "scratch_trip": 0,
+        "entryxclasses_uuid": "4DD75C0F3C6E45A3BB870C79E5C4FC52"
+      }
+    ],
+    "class_group_order_of_go": {
+      "entries": [
+        {
+          "class_id": 200030347,
+          "entry_id": 200246887,
+          "horse": "MAESTRO A",
+          "horse_id": 148610,
+          "trainer_id": 56630,
+          "trip_id": 200398237,
+          "rider_name": "SAYRE HAPPY",
+          "rider_id": 36107,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "D3AD017AFF4F4383BD241B68827BFAD4"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200243025,
+          "horse": "JODOKUS",
+          "horse_id": 133868,
+          "trainer_id": 40889,
+          "trip_id": 200398293,
+          "rider_name": "DANIEL ZETTERMAN",
+          "rider_id": 40889,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "1C9003095F084ED4810454A1CFB6E62C"
+        },
+        {
+          "class_id": 200030393,
+          "entry_id": 200243757,
+          "horse": "KANNALETTA",
+          "horse_id": 200001785,
+          "trainer_id": 53771,
+          "trip_id": 200398299,
+          "rider_name": "DIEGO JAVIER VIVERO VITERI",
+          "rider_id": 53771,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "942F360A13F545E693B26100ADE241FF"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200246420,
+          "horse": "POSTIN LS LA SILLA",
+          "horse_id": 147034,
+          "trainer_id": 57785,
+          "trip_id": 200398103,
+          "rider_name": "KEVIN MEALIFF",
+          "rider_id": 57785,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "9A305B31A2504ED4A0DF977B3947B878"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200245071,
+          "horse": "DRAGONFLY",
+          "horse_id": 152230,
+          "trainer_id": 45939,
+          "trip_id": 200398258,
+          "rider_name": "NORA NAUSS",
+          "rider_id": 79265,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "F44185098A3F454287E7A5836430F6E5"
+        },
+        {
+          "class_id": 200030362,
+          "entry_id": 200245488,
+          "horse": "VDL D’AMIGO DE BEAUTY",
+          "horse_id": 200005022,
+          "trainer_id": 73688,
+          "trip_id": 200397949,
+          "rider_name": "JENNIFER HEBERT",
+          "rider_id": 33694,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "C8B66B35BA5643E4AEEFCCC435E1F5D3"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200245409,
+          "horse": "ELIANA",
+          "horse_id": 117573,
+          "trainer_id": 58995,
+          "trip_id": 200398163,
+          "rider_name": "KAITLYN MCCANN",
+          "rider_id": 58995,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "BEB15DE688FC49B7A5756771DA886464"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200245739,
+          "horse": "QUITO",
+          "horse_id": 148624,
+          "trainer_id": 50914,
+          "trip_id": 200397969,
+          "rider_name": "LUIZ FRANCISCO DE AZEVEDO",
+          "rider_id": 50914,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "7A9DEBDB52FB480789B6AC2D48BAFAF7"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200245088,
+          "horse": "RUNAWAY VD WITHOEVE",
+          "horse_id": 200002313,
+          "trainer_id": 4616,
+          "trip_id": 200398195,
+          "rider_name": "JUAN PABLO GNECCO",
+          "rider_id": 4616,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "5F68677A3A8F4EB4AE0AA7C19DAE90AB"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200245642,
+          "horse": "WHERE'S WALDO",
+          "horse_id": 200002216,
+          "trainer_id": 80970,
+          "trip_id": 200398136,
+          "rider_name": "DANIEL ZETTERMAN",
+          "rider_id": 40889,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "85300B7F7F914821A0F7E09E8FAF03DA"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200246160,
+          "horse": "CHAFILOU PS",
+          "horse_id": 200001205,
+          "trainer_id": 41748,
+          "trip_id": 200398342,
+          "rider_name": "DAISY FOREGGER",
+          "rider_id": 53910,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "A1CF9F9992034436888F2A1B646F4EE6"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200245506,
+          "horse": "CROSS OVER SR",
+          "horse_id": 200002670,
+          "trainer_id": 50121,
+          "trip_id": 200397888,
+          "rider_name": "ISABELA DE SOUSA",
+          "rider_id": 50121,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "D16475014D64450695C6D10F5EA64B1F"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200244892,
+          "horse": "FOR BEBEE PS",
+          "horse_id": 200002300,
+          "trainer_id": 1000000198,
+          "trip_id": 200398040,
+          "rider_name": "SIMON ARANGO ARANGO",
+          "rider_id": 1000000198,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "B9BE94435F1E488EAE937153E666E633"
+        },
+        {
+          "class_id": 200030393,
+          "entry_id": 200246055,
+          "horse": "T'AMUSE VAN DE RISPEN",
+          "horse_id": 200005046,
+          "trainer_id": 77733,
+          "trip_id": 200397951,
+          "rider_name": "ALEY RUSSELL",
+          "rider_id": 19895,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "2DF8A69D00EE4976A493FEE987FC8AC9"
+        },
+        {
+          "class_id": 200030393,
+          "entry_id": 200247089,
+          "horse": "OMICA",
+          "horse_id": 200002218,
+          "trainer_id": 52275,
+          "trip_id": 200398316,
+          "rider_name": "FLORENCIA CACABELOS",
+          "rider_id": 53220,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "C66F406A14E44DAE9D5BA9F7ABF92692"
+        },
+        {
+          "class_id": 200030362,
+          "entry_id": 200244512,
+          "horse": "CAMP S",
+          "horse_id": 200000329,
+          "trainer_id": 27815,
+          "trip_id": 200398329,
+          "rider_name": "PALOMA SANTA CRUZ DE OSMA",
+          "rider_id": 80638,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "C790E6ECCB9147498E042F4A6571D230"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200246772,
+          "horse": "CHACCO BRAVO PS",
+          "horse_id": 200000546,
+          "trainer_id": 4616,
+          "trip_id": 200398193,
+          "rider_name": "JUAN PABLO GNECCO",
+          "rider_id": 4616,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "7066488C922042369BB336FD13623D8F"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200245636,
+          "horse": "SOLAGUAYRE DIMITRI",
+          "horse_id": 153346,
+          "trainer_id": 80970,
+          "trip_id": 200398135,
+          "rider_name": "DANIEL ZETTERMAN",
+          "rider_id": 40889,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "4DD75C0F3C6E45A3BB870C79E5C4FC52"
+        },
+        {
+          "class_id": 200030347,
+          "entry_id": 200247110,
+          "horse": "GHM MANDELA VAN'T STUDUTCH",
+          "horse_id": 200005195,
+          "trainer_id": 1000001496,
+          "trip_id": 200398440,
+          "rider_name": "GWYNETH BABINGTON",
+          "rider_id": 43016,
+          "scratch_trip": 0,
+          "entryxclasses_uuid": "B6C35711A8E3431F906F17596F43611F"
+        }
+      ]
+    }
+  },
+  "groups": [
+    {
+      "groupId": "200029518",
+      "date": "2026-10-23",
+      "ringNumber": "1",
+      "ringId": "10",
+      "classIds": [
+        "200030347",
+        "200030362",
+        "200030393"
+      ]
+    },
+    {
+      "groupId": "200027912",
+      "date": "2026-10-23",
+      "ringNumber": "1",
+      "ringId": "10",
+      "classIds": [
+        "200030400"
+      ]
+    },
+    {
+      "groupId": "200027913",
+      "date": "2026-10-23",
+      "ringNumber": "1",
+      "ringId": "10",
+      "classIds": [
+        "200030344"
+      ]
+    },
+    {
+      "groupId": "200027978",
+      "date": "2026-10-23",
+      "ringNumber": "2",
+      "ringId": "3",
+      "classIds": [
+        "200030410"
+      ]
+    },
+    {
+      "groupId": "200027914",
+      "date": "2026-10-23",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030358",
+        "200030341",
+        "200030390"
+      ]
+    },
+    {
+      "groupId": "200027917",
+      "date": "2026-10-23",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030338"
+      ]
+    },
+    {
+      "groupId": "200027918",
+      "date": "2026-10-23",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030335",
+        "200030364",
+        "200030387"
+      ]
+    },
+    {
+      "groupId": "200027921",
+      "date": "2026-10-23",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030328"
+      ]
+    },
+    {
+      "groupId": "200027922",
+      "date": "2026-10-23",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030377"
+      ]
+    },
+    {
+      "groupId": "200027923",
+      "date": "2026-10-23",
+      "ringNumber": "3",
+      "ringId": "44",
+      "classIds": [
+        "200030413"
+      ]
+    },
+    {
+      "groupId": "200027928",
+      "date": "2026-10-23",
+      "ringNumber": "4",
+      "ringId": "13",
+      "classIds": [
+        "200030332"
+      ]
+    },
+    {
+      "groupId": "200027931",
+      "date": "2026-10-23",
+      "ringNumber": "4",
+      "ringId": "13",
+      "classIds": [
+        "200030329"
+      ]
+    },
+    {
+      "groupId": "200027933",
+      "date": "2026-10-23",
+      "ringNumber": "4",
+      "ringId": "13",
+      "classIds": [
+        "200030325"
+      ]
+    },
+    {
+      "groupId": "200027934",
+      "date": "2026-10-23",
+      "ringNumber": "4",
+      "ringId": "13",
+      "classIds": [
+        "200030319",
+        "200030322"
+      ]
+    },
+    {
+      "groupId": "200027936",
+      "date": "2026-10-23",
+      "ringNumber": "4",
+      "ringId": "13",
+      "classIds": [
+        "200030414"
+      ]
+    },
+    {
+      "groupId": "200029448",
+      "date": "2026-10-23",
+      "ringNumber": "5",
+      "ringId": "48",
+      "classIds": [
+        "200030243",
+        "200030013",
+        "200030014"
+      ]
+    },
+    {
+      "groupId": "200029454",
+      "date": "2026-10-23",
+      "ringNumber": "5",
+      "ringId": "48",
+      "classIds": [
+        "200030243",
+        "200030153",
+        "200030154"
+      ]
+    },
+    {
+      "groupId": "200027967",
+      "date": "2026-10-23",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030133",
+        "200030134",
+        "200030254"
+      ]
+    },
+    {
+      "groupId": "200027971",
+      "date": "2026-10-23",
+      "ringNumber": "6",
+      "ringId": "45",
+      "classIds": [
+        "200030281",
+        "200030282"
+      ]
+    }
+  ],
+  "schedules": [
+    {
+      "id": "recXJwU4CzYBwlGvC",
+      "createdTime": "2026-10-23T14:17:29.000Z",
+      "fields": {
+        "ring": 1,
+        "class-id": 200030347,
+        "changed-at": "2026-10-23T11:00:17.900Z",
+        "status": "dropped",
+        "date": "2026-10-23",
+        "stage-key": "200000075|2026-10-23|200027909_770",
+        "class-name": "1.30m Open Jumper II2d",
+        "show-id": 200000075
+      }
+    },
+    {
+      "id": "recZE0IZAkr7bG5pQ",
+      "createdTime": "2026-10-23T14:17:30.000Z",
+      "fields": {
+        "ring": 1,
+        "class-id": 200030347,
+        "changed-at": "2026-10-23T14:35:19.803Z",
+        "status": "active",
+        "date": "2026-10-23",
+        "stage-key": "200000075|2026-10-23|200029518_770",
+        "class-name": "1.30m Open Jumper II2d",
+        "show-id": 200000075,
+        "group-id": 200029518,
+        "row-json": "{\"key\": \"200029518_770\", \"fields\": {\"class_groupxclasses_id\": 200044738, \"class_group_id\": 200029518, \"class_id\": 200030347, \"show_id\": 200000075, \"show_date\": \"2026-10-23\", \"ring_number\": 1}}"
+      }
+    }
+  ]
+}

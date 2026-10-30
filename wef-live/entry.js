@@ -29,6 +29,7 @@ async function scheduled({
     };
     save();
     const messages = [...(report.errors || []).map(message=>({message})),
+      ...(report.publication_errors || []).map(e=>({message:`Publication ${e.lane}: ${e.message}`})),
       ...(report.unresolved || []).flatMap(u=>(u.messages?.length?u.messages:[u.message]).map(message=>({message:`${u.status === 'error' ? 'Class error' : 'Unresolved class'} ${u.class_id}: ${message}`,class_id:u.class_id,trip_id:u.trip_id,group_id:u.group_id}))),
       ...(report.link_issues||[]).map(u=>({message:`Participation ${u.entry_key}: ${u.message}`,class_id:u.class_id,trip_id:u.trip_id,group_id:u.group_id})),
       ...report.logging_errors.map(message=>({message}))];

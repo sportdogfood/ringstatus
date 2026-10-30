@@ -253,7 +253,7 @@ test("repeat collection keeps stable IDs, distinct ring ID/number, exact native 
   assert.equal(a.store.db["live-rings"][0].fields["ring-number"], 3);
   assert.equal(a.store.db["live-entries"][0].fields["entry-id"], 200);
   assert.equal(a.store.db["live-entries"][0].fields["trip-id"], 400);
-  assert.deepEqual(a.store.db["live-entries"][0].fields.entry, ["entry-local"]);
+  assert.equal(a.store.db["live-entries"][0].fields.entry, undefined);
   assert.deepEqual(a.store.db["live-classes"][0].fields.schedules, [
     "schedule-local",
   ]);
@@ -269,7 +269,7 @@ test("untracked live entries are collected without binder matches", async () => 
   const a = args();
   a.store.db["wef-entries.entries"] = [];
   assert.equal((await runLive(a)).ok, true);
-  assert.deepEqual(a.store.db["live-entries"][0].fields.entry, []);
+  assert.equal(a.store.db["live-entries"][0].fields.entry, undefined);
 });
 test("missing schedules do not prevent independent observations", async () => {
   const a = args();
@@ -287,12 +287,12 @@ test("confirmed empty is success", async () => {
   assert.equal(r.ok, true);
   assert.equal(r.counts.entries, 0);
 });
-test('empty source arrays preserve all existing records and links across repeated runs', async () => {
+test('empty source arrays preserve current and future records and links across repeated runs', async () => {
   const f = fixture(), a = args(f);
   assert.equal((await runLive(a)).ok, true);
   const protectedTables = ['live-rings','live-groups','live-classes','live-entries','collections'];
-  // Include older observations to prove this path cannot authorize retirement.
-  for (const t of protectedTables) a.store.db[t].push({id:'old-'+t,fields:{date:'2026-10-22',entry:['prior-link'],'scope-status':'historical'}});
+  // Current and future observations remain protected on empty runs.
+  for (const t of protectedTables) a.store.db[t].push({id:'old-'+t,fields:{date:'2026-10-24','show-id':75,entry:['prior-link'],'scope-status':'historical'}});
   const before = Object.fromEntries(protectedTables.map(t=>[t,structuredClone(a.store.db[t])]));
   f.groups[0].json_data = [];
   f.widget[0].live_data = [];
@@ -324,35 +324,33 @@ test("wrong show response preserves existing data", async () => {
   assert.equal(r.ok, false);
   assert.deepEqual(a.store.db["live-entries"], before);
 });
-test('rollover labels old-show rows on empty runs without changing links, then archives same-day retirement',async()=>{
-  const f=fixture(),a=args(f);await runLive(a);
-  const keys=require('../rollover').keys;
-  for(const [t,key] of Object.entries(keys)) {
-    const row=structuredClone(a.store.db[t][0]);row.id='old-'+t;
-    row.fields[key]='old-'+row.fields[key];row.fields['show-id']=74;
-    a.store.db[t].push(row);
-  }
-  const before=Object.fromEntries(Object.keys(keys).map(t=>[t,structuredClone(a.store.db[t].find(r=>r.id==='old-'+t))]));
-  const populated=structuredClone(f);f.groups[0].json_data=[];f.widget[0].live_data=[];
-  const first=await runLive(a);assert.equal(first.ok,true);
-  for(const t of Object.keys(keys)){
-    const r=a.store.db[t].find(r=>r.id==='old-'+t);assert.equal(r.fields['scope-status'],'historical');
-    if(t==='live-entries')assert.equal(r.fields['participation-link-status'],'historical');
-    for(const k of Object.keys(links[t]))assert.deepEqual(r.fields[k],before[t].fields[k]);
-    assert(first.archives.some(x=>x.kind==='rollover-before-'+t));
-  }
-  const labeled=structuredClone(a.store.db);
-  const second=await runLive(a);assert.equal(second.ok,true);
-  for(const t of Object.keys(keys))assert.deepEqual(a.store.db[t],labeled[t]);
-  assert(!second.archives.some(x=>x.kind.startsWith('rollover-before-')));
-  Object.assign(f,populated);
-  const third=await runLive(a);assert.equal(third.ok,true);
-  for(const t of Object.keys(keys)){
-    assert(!a.store.db[t].some(r=>r.id==='old-'+t));
-    assert(third.archives.some(x=>x.kind==='retired-'+t));
-    assert.equal(a.store.db[t][0].fields['scope-status'],'current');
-  }
+test('empty successful rollover archives and retires old show once, preserving current rows',async()=>{
+ const f=fixture(),a=args(f);await runLive(a);
+ const keys=require('../rollover').keys;
+ for(const [t,key] of Object.entries(keys)) {
+   const row=structuredClone(a.store.db[t][0]);row.id='old-'+t;
+   row.fields[key]='old-'+row.fields[key];row.fields['show-id']=74;a.store.db[t].push(row);
+ }
+ f.groups[0].json_data=[];f.widget[0].live_data=[];
+ const first=await runLive(a);assert.equal(first.ok,true);
+ for(const t of Object.keys(keys)){
+   assert(!a.store.db[t].some(r=>r.id==='old-'+t));assert.equal(a.store.db[t].length,1);
+   assert(first.archives.some(x=>x.kind==='retired-'+t));
+ }
+ const catalogs=structuredClone(a.store.db.collections.filter(r=>r.fields['source-kind']==='archive-catalog'));
+ assert.equal(catalogs.length,4);assert(catalogs.every(r=>r.fields.status==='Retired'));
+ const second=await runLive(a);assert.equal(second.ok,true);assert.equal(second.retired.length,0);
+ assert.deepEqual(a.store.db.collections.filter(r=>r.fields['source-kind']==='archive-catalog'),catalogs);
 });
+
+for(const reason of ['false','completed'])test('old rows retire on successful '+reason+' skip',async()=>{
+ const f=fixture(),a=args(f);await runLive(a);
+ a.store.db['live-entries'].push({id:'old',fields:{'live-entry-key':'old','show-id':75,date:'2026-10-22','scope-status':'historical'}});
+ if(reason==='false')a.getStatus=async()=>false;else f.groups[0].json_data[0].status='Completed';
+ const result=await runLive(a);assert.equal(result.ok,true);assert(result.skipped);
+ assert(!a.store.db['live-entries'].some(r=>r.id==='old'));
+});
+
 test('rollover labeling requires valid authority and successful archive',async()=>{
   for(const failure of ['authority','archive']){
     const a=args();await runLive(a);
@@ -398,7 +396,7 @@ test("archive failure prevents collection writes and retirement", async () => {
 test("prior dates retire only after successful archive", async () => {
   const a = args();
   a.store.db["live-entries"] = [
-    { id: "old", fields: { date: "2026-10-22", "live-entry-key": "old" } },
+    { id: "old", fields: { "show-id":75, date: "2026-10-22", "live-entry-key": "old" } },
   ];
   const r = await runLive(a);
   assert.equal(r.ok, true);
@@ -454,7 +452,7 @@ test("temporary reference read failure preserves links and does not stop live ob
   };
   const r = await runLive(a);
   assert.equal(r.ok, true);
-  assert.deepEqual(a.store.db["live-entries"][0].fields.entry, ["entry-local"]);
+  assert.equal(a.store.db["live-entries"][0].fields.entry, undefined);
   assert.deepEqual(a.store.db["live-classes"][0].fields.schedules, [
     "schedule-local",
   ]);
@@ -542,23 +540,47 @@ test('separate source failures retain separate errors and ambiguous group stays 
  assert.equal(r.unresolved[0].class_id,30);assert.equal(r.unresolved[0].group_id,undefined);assert.equal(r.unresolved[0].trip_id,undefined);
 });
 
-test('published Entries contract avoids upstream schedule reads and schema discovery',async()=>{
+test('populated repeat collection never reads Entries or discovers its schema',async()=>{
  const a=args(),list=a.api.list;
- a.api.list=async t=>{assert(!['schedules','show-collection'].includes(t),'Unexpected upstream replay');return list(t);};
+ a.api.list=async t=>{assert(!['wef-entries.entries','schedules','show-collection'].includes(t),'Unexpected reverse read');return list(t);};
  a.api.fieldNames=async()=>{throw Error('Unexpected schema discovery');};
- const r=await runLive(a);assert.equal(r.ok,true);assert.equal(r.link_issues.length,0);
- assert.equal(a.store.db['live-entries'][0].fields['participation-link-status'],'current');
+ for(let i=0;i<2;i++){const r=await runLive(a);assert.equal(r.ok,true);assert.equal(r.counts.entries,1);assert.equal(r.link_issues.length,0);assert.equal(a.store.db['live-entries'][0].fields.entry,undefined);}
 });
-test('stale Entries evidence preserves observations and links across repeat collections',async()=>{
+
+test('existing participation link survives with original verification time, not renewed qualification',async()=>{
  const a=args();await runLive(a);
- const first=observations(a.store.db['live-entries']);
- const f=a.store.db['wef-entries.entries'][0].fields,e=JSON.parse(f['source-json']);
- e.sourceAsOf='2026-10-23T00:00:00Z';f['source-json']=JSON.stringify(e);
+ Object.assign(a.store.db['live-entries'][0].fields,{entry:['entry-local'],'participation-link-status':'current','participation-verified-at':'2026-10-22T12:00:00Z','participation-checked-at':'2026-10-22T12:00:00Z'});
+ const before=observations(a.store.db['live-entries']);
+ a.api.list=((list)=>async t=>{if(t==='wef-entries.entries')throw Error('Forbidden Entries read');return list(t);})(a.api.list);
  for(let i=0;i<2;i++){
-  const r=await runLive(a);assert.equal(r.ok,true);assert.equal(r.link_issues.length,1);
-  assert.deepEqual(observations(a.store.db['live-entries']),first);
-  assert.equal(a.store.db['live-entries'][0].fields['participation-link-status'],'historical');
-  assert.deepEqual(a.store.db['live-entries'][0].fields.entry,['entry-local']);
-  assert.equal(a.store.db['run-logs'].at(-1).fields.result,'Partial');
+  const r=await runLive(a);assert.equal(r.ok,true);assert.equal(r.link_issues.length,0);
+  assert.deepEqual(observations(a.store.db['live-entries']),before);
+  const f=a.store.db['live-entries'][0].fields;
+  assert.deepEqual(f.entry,['entry-local']);assert.equal(f['participation-link-status'],'historical');
+  assert.equal(f['participation-verified-at'],'2026-10-22T12:00:00Z');assert.equal(f['participation-checked-at'],'2026-10-22T12:00:00Z');
+  assert.equal(a.store.db['run-logs'].at(-1).fields.result,'Success');
  }
+});
+
+test('adapter rejects Entries reference reads before making a request',async()=>{
+ let requests=0;const api=require('../airtable').airtable({request:async()=>{requests++;throw Error('Unexpected request');}});
+ await assert.rejects(()=>api.list('wef-entries.entries'),/Unapproved read/);
+ await assert.rejects(()=>api.fieldNames('wef-entries.entries'),/Unapproved metadata/);assert.equal(requests,0);
+});
+
+
+test('publisher receives only successfully validated class details with original detail time',async()=>{
+ const a=args();let input;
+ a.publish=async opts=>{input=opts.input;assert(input.details.length===1);assert(input.sourceArchives.some(a=>a.kind==='class-30'));assert.equal(input.details[0].observedAt,clock());return {lanes:{schedules:{status:'Success',patched:1,unchanged:0,deferred:0}},errors:[]};};
+ const r=await runLive(a);assert.equal(r.ok,true);assert.equal(input.details[0].entries[0]['trip-id'],400);assert.match(r.summary,/Publication/);
+});
+test('publication failures do not invalidate collection or recurring old-data retirement',async()=>{
+ const a=args();a.store.db['live-entries'].push({id:'old',fields:{'live-entry-key':'old','show-id':74,date:'2026-10-22','scope-status':'historical'}});
+ a.publish=async()=>({lanes:{data:{status:'Partial',patched:0,unchanged:0,deferred:0}},errors:[{lane:'data',message:'publication unavailable'}]});
+ const r=await runLive(a);assert.equal(r.ok,true);assert.equal(r.errors.length,0);assert.equal(r.publication_errors.length,1);assert.equal(r.counts.entries,1);assert(!a.store.db['live-entries'].some(r=>r.id==='old'));assert.equal(a.store.db['run-logs'].at(-1).fields.result,'Partial');
+});
+test('no current source details on empty runs means no publication input',async()=>{
+ const f=fixture(),a=args(f);f.groups[0].json_data=[];f.widget[0].live_data=[];
+ a.publish=async opts=>{assert.equal(opts.input,undefined);return {lanes:{},errors:[]}};
+ assert.equal((await runLive(a)).ok,true);
 });

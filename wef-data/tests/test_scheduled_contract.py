@@ -3,7 +3,7 @@ import copy, datetime, json, pathlib, re, sys, tempfile, unittest
 from unittest.mock import patch
 ROOT=pathlib.Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from test_store import MemoryAPI
-from data_runner import Repository,Runner,refs,stamp,KEYS,run
+from data_runner import Repository,Runner,refs,stamp,KEYS,run,latest_state
 from data_contract import packed,thaw
 
 SHOW='15|200000076'
@@ -54,6 +54,16 @@ def seed(api):
     api.db[SCHEMA['tables']['lanes']['id']]=rows
 
 class ScheduledContractTests(unittest.TestCase):
+    def test_assignment_failure_prevents_completed_revision_without_clearing_checkpoint(self):
+        from test_trip_assignments import fixture
+        bad=fixture();next(iter(bad['trips'].values()))['rider']=refs('riders','1000001274')
+        api=API();seed(api)
+        with tempfile.TemporaryDirectory() as folder:
+            runner=Runner(Repository(api,SCHEMA,AUTHORED),Source(),folder,folder)
+            with patch('retained_feed.facts_for_state',return_value=bad):
+                with self.assertRaisesRegex(ValueError,'source identity conflict'):runner.tick()
+            self.assertNotEqual(runner.repo.graph['runs'][runner.runkey]['status'],'Verified completed revision')
+            self.assertNotEqual(runner.state['phase'],'Complete');self.assertTrue(pathlib.Path(folder,'active.json').exists())
     def test_failed_run_resume_requires_explicit_matching_authorization_and_keeps_keys(self):
         api=API();seed(api);source=Source()
         with tempfile.TemporaryDirectory() as folder:
@@ -146,7 +156,7 @@ class ScheduledContractTests(unittest.TestCase):
         api=API();seed(api);source=Source()
         with tempfile.TemporaryDirectory() as folder:
             runner=Runner(Repository(api,SCHEMA,AUTHORED),source,folder,folder);runner.tick()
-            repo=Repository(api,SCHEMA,AUTHORED);runner=Runner(repo,source,folder,folder);runner.begin(SHOW,{})
+            repo=Repository(api,SCHEMA,AUTHORED);runner=Runner(repo,source,folder,folder);runner.begin(SHOW,latest_state(list(repo.graph['runs'].values()),SHOW))
             state=json.loads(next(iter(repo.graph['work-items'].values()))['state-json'])
             with patch.object(runner,'observation',side_effect=KeyboardInterrupt):
                 with self.assertRaises(KeyboardInterrupt):runner.class_batch([state],repo.scoped(SHOW),repo.graph['lanes'])
@@ -161,7 +171,7 @@ class ScheduledContractTests(unittest.TestCase):
             source.empty=True
             for i in range(2):
                 repo=Repository(api,SCHEMA,AUTHORED);identity=repo.inventory['trips'][SHOW+'|2026-10-29|1|2|21|uuid-existing']['id']
-                runner=Runner(repo,source,folder,folder);runner.begin(SHOW,{})
+                runner=Runner(repo,source,folder,folder);runner.begin(SHOW,latest_state(list(repo.graph['runs'].values()),SHOW))
                 state=json.loads(next(iter(repo.graph['work-items'].values()))['state-json'])
                 runner.class_batch([state],repo.scoped(SHOW),repo.graph['lanes']);runner.finish(api.canonical_context())
                 after=Repository(api,SCHEMA,AUTHORED)

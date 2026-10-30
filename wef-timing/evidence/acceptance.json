@@ -1,0 +1,37 @@
+{
+  "verified_at": "2026-10-29T23:48:07.366Z",
+  "normal_runs": [
+    {
+      "run": "5d3a122a-18fb-46db-bf55-4f998c67014f",
+      "started": "2026-10-29T23:45:03.973Z",
+      "completed": "2026-10-29T23:45:15.569Z",
+      "written": 80,
+      "hashes_verified": 80
+    },
+    {
+      "run": "8d839e6c-50c5-4af8-bfd0-ec931f8e5556",
+      "started": "2026-10-29T23:46:02.451Z",
+      "completed": "2026-10-29T23:46:12.459Z",
+      "written": 80,
+      "hashes_verified": 80
+    },
+    {
+      "run": "a4c50d47-a76f-4556-97f8-17aaa656286c",
+      "started": "2026-10-29T23:47:02.827Z",
+      "completed": "2026-10-29T23:47:13.470Z",
+      "written": 80,
+      "hashes_verified": 80
+    }
+  ],
+  "snapshots": 240,
+  "group_scopes": 227,
+  "latest_methods": {
+    "unavailable": 168,
+    "schedule_window": 59
+  },
+  "checkpoint_records": 1,
+  "initial_launcher_failure_retained": true,
+  "manual_business_runs": 0,
+  "capacity_guard": 4000,
+  "observed_live_proof": false
+}

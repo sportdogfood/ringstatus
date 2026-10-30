@@ -1,0 +1,286 @@
+TAP version 13
+# Subtest: every discovered group is evaluated on consecutive runs
+ok 1 - every discovered group is evaluated on consecutive runs
+  ---
+  duration_ms: 87.7258
+  type: 'test'
+  ...
+# Subtest: Data and Schedules use identical arithmetic but isolated output identities
+ok 2 - Data and Schedules use identical arithmetic but isolated output identities
+  ---
+  duration_ms: 0.3153
+  type: 'test'
+  ...
+# Subtest: Data inventory covers missing Live classes and repeats without duplicate snapshots
+ok 3 - Data inventory covers missing Live classes and repeats without duplicate snapshots
+  ---
+  duration_ms: 1.2929
+  type: 'test'
+  ...
+# Subtest: Data original source time remains stale despite a new completed head
+ok 4 - Data original source time remains stale despite a new completed head
+  ---
+  duration_ms: 1.0715
+  type: 'test'
+  ...
+# Subtest: changed pinned head withholds output and never picks another show
+ok 5 - changed pinned head withholds output and never picks another show
+  ---
+  duration_ms: 0.3828
+  type: 'test'
+  ...
+# Subtest: new-show handoff absence is deferred rather than a collector invocation or old-head fallback
+ok 6 - new-show handoff absence is deferred rather than a collector invocation or old-head fallback
+  ---
+  duration_ms: 0.3514
+  type: 'test'
+  ...
+# Subtest: Data purge cannot remove the original Schedules lane
+ok 7 - Data purge cannot remove the original Schedules lane
+  ---
+  duration_ms: 0.2304
+  type: 'test'
+  ...
+# Subtest: Data transport cannot write Engine, Data, Live or Shows
+ok 8 - Data transport cannot write Engine, Data, Live or Shows
+  ---
+  duration_ms: 0.855
+  type: 'test'
+  ...
+# Subtest: Data Live exact roster creates interval pace; a different roster falls back
+ok 9 - Data Live exact roster creates interval pace; a different roster falls back
+  ---
+  duration_ms: 5.0152
+  type: 'test'
+  ...
+# Subtest: Data purge confirms across runs, preserves current/future and unrelated lanes
+ok 10 - Data purge confirms across runs, preserves current/future and unrelated lanes
+  ---
+  duration_ms: 3.0112
+  type: 'test'
+  ...
+# Subtest: unrelated completed Data head advancement does not duplicate consumed evidence
+ok 11 - unrelated completed Data head advancement does not duplicate consumed evidence
+  ---
+  duration_ms: 1.7466
+  type: 'test'
+  ...
+# Subtest: saved 33-minute eleven-trip schedule yields three minutes; no invented actual
+ok 12 - saved 33-minute eleven-trip schedule yields three minutes; no invented actual
+  ---
+  duration_ms: 2.4496
+  type: 'test'
+  ...
+# Subtest: zero, missing, invalid windows, blocks and multi-class groups never divide or double-count
+ok 13 - zero, missing, invalid windows, blocks and multi-class groups never divide or double-count
+  ---
+  duration_ms: 0.3621
+  type: 'test'
+  ...
+# Subtest: interval throughput uses compatible dated observations, including holds
+ok 14 - interval throughput uses compatible dated observations, including holds
+  ---
+  duration_ms: 0.3218
+  type: 'test'
+  ...
+# Subtest: reset/membership change/out-of-order/gap/stale/future/count-conflict cannot produce pace
+ok 15 - reset/membership change/out-of-order/gap/stale/future/count-conflict cannot produce pace
+  ---
+  duration_ms: 0.2509
+  type: 'test'
+  ...
+# Subtest: no-progress does not advance baseline; repeated source preserves measured interval without new measurement
+ok 16 - no-progress does not advance baseline; repeated source preserves measured interval without new measurement
+  ---
+  duration_ms: 1.0158
+  type: 'test'
+  ...
+# Subtest: fresh evaluation clock alone does not renew stale observation
+ok 17 - fresh evaluation clock alone does not renew stale observation
+  ---
+  duration_ms: 0.9325
+  type: 'test'
+  ...
+# Subtest: a new observation without progress never represents the previous interval as a new measurement
+ok 18 - a new observation without progress never represents the previous interval as a new measurement
+  ---
+  duration_ms: 0.7009
+  type: 'test'
+  ...
+# Subtest: source-invalid scope does not publish numeric schedule fallback
+ok 19 - source-invalid scope does not publish numeric schedule fallback
+  ---
+  duration_ms: 0.2863
+  type: 'test'
+  ...
+# Subtest: readback rejects duplicate identities and mismatched content
+ok 20 - readback rejects duplicate identities and mismatched content
+  ---
+  duration_ms: 1.2901
+  type: 'test'
+  ...
+# Subtest: transport forbids source writes and unsupported targets before any network action
+ok 21 - transport forbids source writes and unsupported targets before any network action
+  ---
+  duration_ms: 1.3134
+  type: 'test'
+  ...
+# Subtest: transport uses existing-key performUpsert and validates server clock
+ok 22 - transport uses existing-key performUpsert and validates server clock
+  ---
+  duration_ms: 240.8107
+  type: 'test'
+  ...
+# Subtest: authority uses New York date, not UTC midnight; requires fresh completed scope
+ok 23 - authority uses New York date, not UTC midnight; requires fresh completed scope
+  ---
+  duration_ms: 23.2434
+  type: 'test'
+  ...
+# Subtest: discovering a future working day does not retire current day
+ok 24 - discovering a future working day does not retire current day
+  ---
+  duration_ms: 0.2843
+  type: 'test'
+  ...
+# Subtest: only owned prior-show and past-day pace snapshots qualify
+ok 25 - only owned prior-show and past-day pace snapshots qualify
+  ---
+  duration_ms: 0.5544
+  type: 'test'
+  ...
+# Subtest: two distinct normal invocations confirm authority; first observation never deletes
+ok 26 - two distinct normal invocations confirm authority; first observation never deletes
+  ---
+  duration_ms: 0.6259
+  type: 'test'
+  ...
+# Subtest: delete transport only targets exact Engine snapshot IDs and reads back absence
+ok 27 - delete transport only targets exact Engine snapshot IDs and reads back absence
+  ---
+  duration_ms: 444.9346
+  type: 'test'
+  ...
+# Subtest: lost delete response is not retried; a retained row fails verification
+ok 28 - lost delete response is not retried; a retained row fails verification
+  ---
+  duration_ms: 647.7315
+  type: 'test'
+  ...
+# Subtest: duplicated delete response IDs cannot masquerade as an exact successful batch
+ok 29 - duplicated delete response IDs cannot masquerade as an exact successful batch
+  ---
+  duration_ms: 217.7652
+  type: 'test'
+  ...
+# Subtest: normal repeat retains snapshot identities and writes only runner status on unchanged input
+ok 30 - normal repeat retains snapshot identities and writes only runner status on unchanged input
+  ---
+  duration_ms: 8.2054
+  type: 'test'
+  ...
+# Subtest: bad structured projection cannot borrow frozen numeric pace
+ok 31 - bad structured projection cannot borrow frozen numeric pace
+  ---
+  duration_ms: 1.8402
+  type: 'test'
+  ...
+# Subtest: an active projection cannot admit a frozen dropped schedule
+ok 32 - an active projection cannot admit a frozen dropped schedule
+  ---
+  duration_ms: 1.7804
+  type: 'test'
+  ...
+# Subtest: changing producer collection defers publication without inventing snapshot
+ok 33 - changing producer collection defers publication without inventing snapshot
+  ---
+  duration_ms: 0.5048
+  type: 'test'
+  ...
+# Subtest: scope failure is recorded, no automatic successful retry or baseline advancement
+ok 34 - scope failure is recorded, no automatic successful retry or baseline advancement
+  ---
+  duration_ms: 1.4778
+  type: 'test'
+  ...
+# Subtest: budget deferral is explicit rather than partial snapshot publication
+ok 35 - budget deferral is explicit rather than partial snapshot publication
+  ---
+  duration_ms: 1.8187
+  type: 'test'
+  ...
+# Subtest: new evidence creates a snapshot even when pace is unchanged
+ok 36 - new evidence creates a snapshot even when pace is unchanged
+  ---
+  duration_ms: 2.127
+  type: 'test'
+  ...
+# Subtest: checkpoint failure cannot report successful execution
+ok 37 - checkpoint failure cannot report successful execution
+  ---
+  duration_ms: 0.9906
+  type: 'test'
+  ...
+# Subtest: normal interval retains both endpoints and absolute counts; same observation is not a second interval
+ok 38 - normal interval retains both endpoints and absolute counts; same observation is not a second interval
+  ---
+  duration_ms: 6.8432
+  type: 'test'
+  ...
+# Subtest: future observation and mismatched class roster cannot yield interval pace
+ok 39 - future observation and mismatched class roster cannot yield interval pace
+  ---
+  duration_ms: 5.6457
+  type: 'test'
+  ...
+# Subtest: malformed later archive member invalidates the entire candidate collection
+ok 40 - malformed later archive member invalidates the entire candidate collection
+  ---
+  duration_ms: 2.2656
+  type: 'test'
+  ...
+# Subtest: two normal fixture invocations purge only prior show/past day and keep today/future
+ok 41 - two normal fixture invocations purge only prior show/past day and keep today/future
+  ---
+  duration_ms: 26.4709
+  type: 'test'
+  ...
+# Subtest: a source change before delete fences purge and requires new confirmation
+ok 42 - a source change before delete fences purge and requires new confirmation
+  ---
+  duration_ms: 2.8771
+  type: 'test'
+  ...
+# Subtest: unknown deletion stops with exact retained intent, without retry or business source mutation
+ok 43 - unknown deletion stops with exact retained intent, without retry or business source mutation
+  ---
+  duration_ms: 4.2776
+  type: 'test'
+  ...
+# Subtest: pending partial deletion blocks replanning and preserves original intent
+ok 44 - pending partial deletion blocks replanning and preserves original intent
+  ---
+  duration_ms: 1.4638
+  type: 'test'
+  ...
+# Subtest: a fully absent pending batch reconciles before new work without another delete
+ok 45 - a fully absent pending batch reconciles before new work without another delete
+  ---
+  duration_ms: 1.555
+  type: 'test'
+  ...
+# Subtest: confirmed retired days cannot be recreated after authority becomes stale
+ok 46 - confirmed retired days cannot be recreated after authority becomes stale
+  ---
+  duration_ms: 4.8523
+  type: 'test'
+  ...
+1..46
+# tests 46
+# suites 0
+# pass 46
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1501.0847

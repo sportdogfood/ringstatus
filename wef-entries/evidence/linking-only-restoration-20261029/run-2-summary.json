@@ -1,0 +1,28 @@
+{
+  "label": "run-2",
+  "run": "c09f9521-a35f-4cb9-9172-dce34de9a48c",
+  "started": "2026-10-29T23:44:03.540Z",
+  "completed": "2026-10-29T23:45:48.959Z",
+  "ok": true,
+  "result": "Partial",
+  "rows": 471,
+  "accepted": 471,
+  "outside": 86,
+  "entries": 513,
+  "errors": [],
+  "checks": {
+    "uniqueKeys": true,
+    "allOriginalRecords": true,
+    "nativeFields": 988,
+    "outsideScopeUnchanged": 28,
+    "historicalEvidenceFields": 496,
+    "collectionIdsPreserved": 446,
+    "collectionNativeFields": 175,
+    "taskXmlUnchanged": true,
+    "sourceTimesNotRegressed": true,
+    "noNewOutsideScope": true,
+    "logsHeartbeat": true,
+    "deployedHashes": true,
+    "noLiveExecution": true
+  }
+}

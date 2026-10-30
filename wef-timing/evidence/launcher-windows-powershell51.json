@@ -1,0 +1,43 @@
+{
+    "inert":  true,
+    "production_runner_invoked":  false,
+    "fixture_root":  "C:\\Users\\gombc\\AppData\\Local\\Temp\\ring pace launcher df3713d6-dbf3-48ae-84a7-24131b2a6ee9",
+    "production_task_touched":  false,
+    "results":  [
+                    {
+                        "disable_intercepted":  false,
+                        "case":  "success",
+                        "pass":  true,
+                        "shell":  "5.1.26100.9767",
+                        "exit":  0
+                    },
+                    {
+                        "disable_intercepted":  true,
+                        "case":  "node_failure",
+                        "pass":  true,
+                        "shell":  "5.1.26100.9767",
+                        "exit":  7
+                    },
+                    {
+                        "disable_intercepted":  true,
+                        "case":  "initialization_failure",
+                        "pass":  true,
+                        "shell":  "5.1.26100.9767",
+                        "exit":  1
+                    },
+                    {
+                        "disable_intercepted":  true,
+                        "case":  "logging_failure",
+                        "pass":  true,
+                        "shell":  "5.1.26100.9767",
+                        "exit":  1
+                    },
+                    {
+                        "disable_intercepted":  true,
+                        "case":  "final_logging_failure",
+                        "pass":  true,
+                        "shell":  "5.1.26100.9767",
+                        "exit":  1
+                    }
+                ]
+}

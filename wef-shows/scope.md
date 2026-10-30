@@ -1,3 +1,11 @@
+## LOCKED - wef-shows verified scope v1.4 - 29 October 2026
+
+Owner directs this module to remain locked. This is a scope lock, not a disabled collector or filesystem restriction. Preserve the five-minute task, canonical shows/show-days, discovery and source checks, Data count reader and protected replay, accepted local archive handoff, keys/links and verified logs/heartbeat. No build or preparation for Entries is pending.
+
+Dependency direction: Entries reads canonical Shows; scheduled Shows does not read, write, qualify or trigger Entries. Count evidence comes directly from wef-data; the Season coordinator owns that producer separately. Season retention is not an intermediary or readiness gate. Older descriptions of Season-supplied summaries below are historical coordinator wording, superseded by this inspected direct-reader clarification. No count replay or archive check is removed.
+
+Reopen only for a verified defect or explicitly approved requirement. A verified defect authorizes investigation, not an unapproved fix, deployment, schema/task change or record repair. Earlier proposals do not reopen this scope. Existing independently approved operation continues.
+
 # wef-shows scope
 
 Version: 1.4

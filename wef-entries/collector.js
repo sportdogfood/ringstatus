@@ -4,7 +4,7 @@ const settings=require('./settings'),model=require('./model'),{archiveFile}=requ
 const hash=v=>crypto.createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const fields=['entry-key','show-id','date','entry-id','class-id','horse-id','horse-name','rider-id','rider-name','class-name','ring-number','status','observation-status','last-seen','schedule-key','schedule-keys','schedules','schedule-link-status','schedule-link-basis','group-link-status'];
 const project=row=>Object.fromEntries(fields.filter(k=>row[k]!=null).map(k=>[k,row[k]]));
-async function runEntries({api=require('./airtable').airtable(),readInput,readLive=require('./live-input').readLive,clock=()=>new Date().toISOString(),assess=require('./freshness').evaluate,archive=(kind,value,scope)=>archiveFile(path.join(settings.RUNTIME,'history'),kind,value,scope),logLimit=1000}={}){
+async function runEntries({api=require('./airtable').airtable(),readInput,clock=()=>new Date().toISOString(),assess=require('./freshness').evaluate,archive=(kind,value,scope)=>archiveFile(path.join(settings.RUNTIME,'history'),kind,value,scope),logLimit=1000}={}){
  const report={ok:false,run_id:crypto.randomUUID(),started:clock(),rows:0,accepted_rows:0,collections:[],errors:[],link_issues:[],archives:[],source_fetches:0,tenant_reads:0};
  let show,log={'run-id':report.run_id,started:report.started,result:'Running',summary:'Linking accepted Data records.',errors:'','archive-count':0,archives:''},logReady=false;
  async function keep(kind,value,scope={}){try{const event=await archive(kind,value,scope);report.archives.push(event);return event;}catch(e){report.archives.push({kind,outcome:'Failed',error:e.message});throw e;}}
@@ -29,28 +29,10 @@ async function runEntries({api=require('./airtable').airtable(),readInput,readLi
   report.shared_schedule_rows=schedules.length;
   const [oldEntries,oldCollections]=await Promise.all([api.list('entries'),api.list('collections')]);
   const before=new Map(oldEntries.map(r=>[r.fields['entry-key'],r]));if(before.size!==oldEntries.length)throw Error('Duplicate existing participation key');
-  const [dataResult,liveResult]=await Promise.allSettled([(readInput||require('./data-input').reader(api))(shows.find(r=>r.id===authority.showRecord)),readLive(api,show,clock())]);
-  const live=liveResult.status==='fulfilled'?liveResult.value:{status:'skipped',reason:liveResult.reason.message,evidence:new Map()};
-  report.live={status:live.status,reason:live.reason,issues:live.issues||[],memberships:live.evidence?.size||0};
-  if(dataResult.status!=='fulfilled'){
-   // Live can enrich already established participation while multi-day Data is
-   // unavailable. It cannot create participation or refresh its Data timestamp.
-   const patches=[];
-   for(const old of oldEntries){
-    const evidence=require('./live-input').forParticipation(old.fields,live.evidence?.get(old.fields['entry-key']));
-    if(!evidence)continue;
-    let source;try{source=JSON.parse(old.fields['source-json']);}catch{continue;}
-    if(source?.format!=='wef-entry-link-v1')continue;
-    patches.push({'entry-key':old.fields['entry-key'],'source-json':JSON.stringify({...source,liveEvidence:evidence})});
-   }
-   if(patches.length){await keep('entries-before',oldEntries,{shows:[report.show_id],dates:authority.dates});await api.upsert('entries','entry-key',patches);report.live.enriched=patches.length;}
-   throw dataResult.reason;
-  }
-  const input=dataResult.value;
-  const dataSchedules=(input.schedules||[]).map(row=>({...row,sourceEvidence:row.sourceEvidence||input.scheduleEvidence?.[row.sourceEvidenceIndex]}));
-  if(!input.head||!Array.isArray(input.classes))throw Error('Accepted Data input unavailable');
+  const input=sharedKeys.size?await (readInput||require('./data-input').reader(api))(shows.find(r=>r.id===authority.showRecord)):{head:null,classes:[],attempts:[]};
+  if(sharedKeys.size&&(!input.head||!Array.isArray(input.classes)))throw Error('Accepted Data input unavailable');
   report.data_revision=input.head;report.producer_attempts=input.attempts||[];
-  const selected=input.classes.map(item=>({...item,inventory:item.inventory||input.inventories?.[item.inventoryDate]}));
+  const selected=(input.classes||[]).filter(item=>sharedKeys.has(model.sharedClassKey(item.payload?.show_id,item.payload?.class_related_data?.date,item.payload?.class?.class_id,item.payload?.class_related_data?.ring))).map(item=>({...item,inventory:item.inventory||input.inventories?.[item.inventoryDate]}));
   report.out_of_scope_classes=(input.classes||[]).length-selected.length;
   const observedKeys=new Set(selected.map(item=>model.sharedClassKey(item.payload?.show_id,item.payload?.class_related_data?.date,item.payload?.class?.class_id,item.payload?.class_related_data?.ring)));
   for(const key of sharedKeys)if(!observedKeys.has(key))report.link_issues.push({kind:'missing-class-evidence',scope:key,reason:'Shared schedule has no accepted class observation; existing links preserved'});
@@ -73,12 +55,6 @@ async function runEntries({api=require('./airtable').airtable(),readInput,readLi
      if(row['schedule-link-status']!=='linked')value['schedule-link-basis']='';
      let prior;try{prior=JSON.parse(old?.fields['source-json']||'null');}catch{prior={unparsed:true};}
      value['source-json']=JSON.stringify({...prior,format:'wef-entry-link-v1',revision:input.head,scope:item.scopeKey,sourceAsOf:item.observedAt,sourceEvidence:item.sourceEvidence,currentness:'not-asserted',latestApplicableAttempts:freshness.affectedAttempts,inventoryEvidence:item.inventory?{revision:item.inventory.revision,observedAt:item.inventory.observedAt,collections:item.inventory.collections}:null,trips:row['source-trips'],groupId:row['source-group-id']??null,groupEvidence:row['group-link-evidence']??null,seasonReference:'unavailable',priorLink:row['schedule-link-status']==='linked'?prior?.priorLink:(prior?.priorLink||{keys:old?.fields['schedule-keys'],scalar:old?.fields['schedule-key'],observedAt:old?.fields['last-seen']})});
-     const source=JSON.parse(value['source-json']);
-     source.laneAssociations={schedules:model.scheduleAssociation(row),data:model.dataAssociation(row,show,dataSchedules)};
-     const liveEvidence=require('./live-input').forParticipation(row,live.evidence?.get(row['entry-key']));
-     if(liveEvidence)source.liveEvidence=liveEvidence;
-     else if(prior?.liveEvidence)source.liveEvidence={...prior.liveEvidence,status:'historical',reason:'No matching fresh verified Live observation this pass'};
-     value['source-json']=JSON.stringify(source);
      if(wanted.has(value['entry-key'])||plan.pending.has(value['entry-key']))throw Error('Repeated participation across class scopes');
      plan.pending.set(value['entry-key'],value);plan.rows.push(value);
      if(issues.length)report.link_issues.push({'entry-key':row['entry-key'],reasons:issues});

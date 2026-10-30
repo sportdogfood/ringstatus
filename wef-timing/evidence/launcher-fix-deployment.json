@@ -1,0 +1,7 @@
+{
+  "approved_scope": "Launcher argument and failure handling only; normal scheduled verification",
+  "manual_start": false,
+  "fixture_evidence": "evidence/launcher-windows-powershell51.json",
+  "launcher_sha256": "B5402060D9F9071AB8D5A976A887C7061165318E2A60B22B906394443FF004C5",
+  "deployed_at": "2026-10-29T23:44:00.7847873Z"
+}

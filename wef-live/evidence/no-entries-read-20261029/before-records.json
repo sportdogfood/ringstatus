@@ -1,0 +1,134 @@
+{
+  "live-rings": [],
+  "live-groups": [],
+  "live-classes": [],
+  "live-entries": [],
+  "collections": [
+    {
+      "id": "rec4N533dPrRayubi",
+      "createdTime": "2026-10-29T23:08:41.000Z",
+      "fields": {
+        "source-id": "live-entries",
+        "started": "2026-10-29T23:08:35.646Z",
+        "row-count": 305,
+        "completed": "2026-10-29T23:08:35.646Z",
+        "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-live-entries\\d4e385ea1f6b3a8f6326dcc9d3c26f68a8ef3516367ada3bbc9e253fcf445cf0.json.gz",
+        "collection-id": "archive|200000075|2026-10-25|live-entries|d4e385ea1f6b3a8f6326dcc9d3c26f68a8ef3516367ada3bbc9e253fcf445cf0",
+        "status": "Retired",
+        "message": "{\"version\":1,\"run\":\"852feeec-ef3a-4176-bd4a-2014b4dfa15d\",\"table\":\"live-entries\",\"recordIds\":[\"rec0neDNu3IwG57c8\",\"rec11LU7COe4orGpo\",\"rec13Kqp1ZMKpIeHo\",\"rec14ahwfLgpcZ9Py\",\"rec1Bv4FGxtSC88NW\",\"rec1FLo0z0xrk4PHo\",\"rec1nJSKa8jj8oVG6\",\"rec1umdXH7pUiA55w\",\"rec23IWj5UiIo1sCu\",\"rec26ilOpe2ylN7Zy\",\"rec26jYlMkGfGBeHD\",\"rec2MRMLtERx9YEIh\",\"rec2VbzEABtYqvwN3\",\"rec2iuAPvQFhwQmbx\",\"rec2lrWC8mLdFPWgO\",\"rec2zKGqtUDjQQ5kA\",\"rec3Luiy5h5Yc8e3q\",\"rec3PzMRQ5Y7AXWeQ\",\"rec3aTK3wBctCrAKg\",\"rec3ghSRETbgMl3z2\",\"rec40CycDn0VVMags\",\"rec42JaMBvxrd5nRg\",\"rec4N7yE9AzEmq0tZ\",\"rec4gHI7xwxLCWY0j\",\"rec4qYjqZ7miUF79K\",\"rec4svzWiLNKPo535\",\"rec518fwphvNYV4H4\",\"rec51HyUKC74XVhuk\",\"rec51Ojz5Hqk5lRWg\",\"rec5EeOtZVXkiA0PD\",\"rec5HXM0LgJEWcJWj\",\"rec5OnzUcHfdD20tJ\",\"rec5fqKa8zc6NCwzt\",\"rec5vM0ZEXYmCIFfD\",\"rec5wm1biE8sGp0Fi\",\"rec6ISJHMxmcjWSVh\",\"rec6JloRNdUuy1nKU\",\"rec6NgeundpW7Sfjr\",\"rec6Pi8wLc4Ikf6Kn\",\"rec6fQbDuAhdyDUOi\",\"rec6pacBVQcDd4CYv\",\"rec6q4JyMJg7uRPWt\",\"rec6xvjZC6HnoOXgY\",\"rec74xmKwOuOfpAmX\",\"rec7GJYCjXVMFD1L7\",\"rec7RXkHtNN4pSSuk\",\"rec7sm80sPbHaSjnM\",\"rec7yeDXyE1ZQcgdH\",\"rec89MJBUszmJEkYN\",\"rec8AhRUALnvTnh0f\",\"rec8cuW1njakDDu2o\",\"rec9OHvMFVU9sQoY7\",\"rec9V1HEUKOHsIlQ1\",\"rec9cRseLLL3o2iUP\",\"recA375ivCs5372CP\",\"recA5vsotfByrzwdp\",\"recAGBgnKwvix4jTB\",\"recAMdLS0jvAZ4QA4\",\"recAhEfJsAP1R7ZEW\",\"recAsN7XCWTRrhpZK\",\"recAxXBO8YCwgbpao\",\"recB2X21jfJ3BGrjW\",\"recBF0SkR9G3qb86O\",\"recBSou8lMAmFgVHV\",\"recBjwePe2xmjkc1U\",\"recBttXBrVxv3gbzb\",\"recC7YJf5TVy3qEdG\",\"recCSh7jLE6c69ule\",\"recCTX2IXgviDL5IZ\",\"recCoZ4nlDGhSbELJ\",\"recCso7lcFEBfMOrO\",\"recDA3ULi3wnS64Fe\",\"recDCnbl3C7KNgyWz\",\"recDM3gvw5ufMLjqI\",\"recDbJ1Bu6jySXaKW\",\"recDkSzxG9189fPG2\",\"recE345YlcNndzED1\",\"recEd8t2Yp9MHRpEO\",\"recEgl34QYgXE392J\",\"recEmvzYhNbcwAFFQ\",\"recEwEdV0DPqb0RhD\",\"recEzl6qYWe7daLE3\",\"recFFGrMP66288TM5\",\"recFMs10d5bba6W6u\",\"recFkMXLAxRglEHYb\",\"recGNSs0Z6DrrFfXj\",\"recHV80ujkk5sCzub\",\"recHkQ0AUn1T1CqKp\",\"recHzZQqQiS50C1Zp\",\"recI9eB2QmwOHqsSa\",\"recIMKJUK6wXBa9mn\",\"recIMOuSYVSV2EFpi\",\"recIOmuUAjMYBwZqu\",\"recInYmBS01kIeEGB\",\"recJFfW6y96uupUeB\",\"recJIvOpsoMbZyDQI\",\"recJSbXezgSQ0qkw5\",\"recJWlV6w83ZhnL3V\",\"recJoXejrWGotaHFQ\",\"recJu0vCWuwKQKcC3\",\"recJvKF7Lg7oyOpEr\",\"recK8uC1QdyH7mhB1\",\"recK9Q6AjCKC3dMGw\",\"recKEYEf9HfrcRQ3m\",\"recKHCQfnVHZWWf1B\",\"recKK8d8oRbnUvCoL\",\"recKLHhPq4bLj0yUf\",\"recKS7W23aFdis9Rf\",\"recKWgUtcuuJAD5yz\",\"recKjUBGmutC0JDTP\",\"recKvtXEtekLOuuAB\",\"recLx9T9p9TtmnBNK\",\"recLyiXjI5UglGYsI\",\"recM81iGKYRxOltu0\",\"recMHQ51zQL9nH1yV\",\"recMbYM1hiO0xEpIS\",\"recMhKdCr9lJpKaRd\",\"recMiFkpGtPzuLZje\",\"recMymbRMb7LFSLeS\",\"recN2yIewJrDOnO7U\",\"recN9U3brVqcx2WT6\",\"recNPKBKKUgbl5k5w\",\"recNS1VEDYgc3ecfE\",\"recNchl8GZ8G4fVo9\",\"recNvxW1DB8EkEsoH\",\"recO381dVnnyRM36d\",\"recOPyoLuPE6FTl9J\",\"recOZB24u1PyXf571\",\"recObTx9cLMbeF1gG\",\"recOgkHbZSgvrpiZk\",\"recPIIagSb86NXPsZ\",\"recPM5u6oUwDh1hR2\",\"recPNAsCCJJ3VGEcC\",\"recQAakkfAWMy8FOi\",\"recQXtDvmRWxGnb7s\",\"recQeNLGJJzpVFR4y\",\"recQjslQ6KEt6bEs4\",\"recQsqFgyQQKb4yiC\",\"recQtzMViXJjVJzs7\",\"recRIgzvo5M0subHj\",\"recRL5HuDhkKVAWT2\",\"recRtx6sOhrfTQioW\",\"recRuIqvgtcWqDZ7q\",\"recS2jtpvmZeCh4WC\",\"recS7lhhlvOgdfTaU\",\"recSKzw02jKPXGjS5\",\"recSlcr4f73UsDoSb\",\"recSqL8O7sISVMGf3\",\"recTCFlCy3KFUsObt\",\"recTTd6tvsLycTIqb\",\"recTVt906qd8OOBDk\",\"recUJdkkYd7GKMMgU\",\"recUNUK4cNp6PL8o6\",\"recUXp0cQPmFXGE2L\",\"recUi73MenECpGxwS\",\"recV8aqsOFFFC4nKZ\",\"recVGeSxWCEwdD6LZ\",\"recVI1Heb2Xrjn3If\",\"recVNhBNCS5S6In8N\",\"recVXfgx3YW9w5mly\",\"recVfwceCAVF2Uadc\",\"recVkmAhKan0LjWvr\",\"recVs7FA4TGm61Ots\",\"recWeeoqemtZxpckI\",\"recWgCHV8eyKJ6TI3\",\"recX6iZmteyxGM2Zy\",\"recXIjIw3FrxVyOZ1\",\"recXpyJkZpX8Mdymi\",\"recYUG6wsYis2HZ6z\",\"recZ7Yym0hWSUohZt\",\"recZSGnu8kijV8tiu\",\"recZTmjv9ujFoYPVi\",\"recZhrMplJDmZLXri\",\"recZsjYVkEJfSkHSM\",\"recZyNPzMkMJAw0rz\",\"reca3WGHGwgU2K4RI\",\"recaMl4kSfUTLC6TK\",\"recaWEkFxrwWgDfFM\",\"recar7nNvqnzNbn7Z\",\"recatoqXBg3aNfTcC\",\"recaxpwsMxGs1NLyr\",\"recb3azdNqIyz57Fc\",\"recbHk8FdlvtvCfjl\",\"recbd5IbkVqetsD9A\",\"reccN3VfrkcrC46LA\",\"reccYQcWKDRQXqqRZ\",\"reccaAdDmZL8PmjE5\",\"reccdAnrVEGsV5jFK\",\"reccfT2prMugjkHo8\",\"reccmSZudIOb7oumM\",\"recd1DFRG2sZjOCZN\",\"recd3tfwKMQqYdDVj\",\"recd9gEpyzChFcOd1\",\"recdLn0ky584JVsbS\",\"recdQ4waRB4dj7i7z\",\"recddFuoI2KrVsYI9\",\"recdm8FazDSfOtsCu\",\"recdvrLAyOPYvPmap\",\"recdx9PcUkkniOadG\",\"recdzK6WEd5OBe0QM\",\"rece0cfgDl1YIOB5P\",\"receQANdwkifmzgF3\",\"receUd75ihtrpXxjp\",\"receVUCOrNr1xP7UK\",\"recep9Jeepx75no3V\",\"recetW5TWLQATh0KX\",\"recfUQUHifx7AYAON\",\"recg3e2phFhcfFCGV\",\"recgP2IDWxCHLcYW1\",\"recgb7EdpgB2O6B52\",\"recgqLBBTEECF4H8e\",\"recgvzQh8h4phQtlz\",\"rech0FEaIh7MSrKNy\",\"rech2Ld9CPBAuzule\",\"rech3IH9ENSkldIqT\",\"rech41KPcphFTROJP\",\"rech5hApT7kRsUmmS\",\"rechAPOS2agJ6GIRf\",\"rechCqnzHZQ6z3dJE\",\"rechf598B4GWA8bqc\",\"reci2cK6I7qXabfOn\",\"recieqcFdELtG9pG8\",\"recimk09PpbGXq9u0\",\"recipDp1d7hfWDtVZ\",\"reciypcMwjUsSLuve\",\"recjiWjn89nLDLFfg\",\"recjkKfj5EmRM9wF6\",\"recjn5URcmKOwGCTz\",\"reck0Rh5AbrRl6U5h\",\"reck4vrHFvKyysXpf\",\"reck5XtNfzPvvwfSS\",\"reck7P0lnAY9J5Bvh\",\"reckI6peQPY7oKDq3\",\"reckV9j3exIb9LA3P\",\"reckeIPQRckzu8Noc\",\"reckgDBVc10Ete2Zg\",\"recl0zt2a8pkx284K\",\"reclR9v6xK8JNCfE0\",\"reclW23czfT4IzH8z\",\"recljWU7kHwVP0Kvn\",\"recmLl96F3oGHY5f5\",\"recmnnVoaN6MQWW28\",\"recn3bvqPZdSDyUMI\",\"recn6Xvy7AT2hdHCB\",\"recnDoHDn5lSZ3I1Q\",\"recnM6ANeYdT1pQr3\",\"recnSquDb9p96fmOt\",\"recnXaMwxRWDOqAhT\",\"recnaTSx3CpRoAFkp\",\"recnf59D4lO9sXWLo\",\"recngAEMYd2KLDkC7\",\"recnpYt9yz0yyXfXa\",\"recnvHwdUKpwdKW67\",\"recoEpqHflbOLOOG8\",\"recoFZmyMRK7EzBNF\",\"recoG1feiB5LyUKEN\",\"recoJKjiCW02Zbb8Q\",\"recoLLZP1QnvW2fS1\",\"recqGH6ZHHrbMGjtA\",\"recqQ3s59o4a17CCE\",\"recqkQUEkHGojtj5Q\",\"recqoBsLcOcke5xUk\",\"recqsPtmu0SSvgoZc\",\"recrNTjCtA9sdivH9\",\"recrWcYMqxLYjReOD\",\"recrucgr1veiYJwC5\",\"recsBkFw2rXbS9hhW\",\"recsFNG8Wqu5gT00m\",\"recsk22lmA701Hwo8\",\"recswYANtSxUDdqQy\",\"rectYe8JsOHwFN1uI\",\"rectcJy79Qnm8oYaP\",\"recu5Os5EG3yDKAw2\",\"recu5omVhSbCLuilA\",\"recuH90qB4yc5ptKC\",\"recuOMhqHgHDaIBC3\",\"recuRHnJ9xq8LsVOL\",\"recuVfhkIbbJoiNVj\",\"recuZmtMQUgknr3Tg\",\"recudSaHym2rNFSS5\",\"recuk7omiptn0aWcE\",\"recux1pMrh1vdvwmd\",\"recvFVBjIqJ0s1nXS\",\"recw74Ix2lwZ4f9db\",\"recwJcMjVLTCjFOIC\",\"recwNrXcz04IzVete\",\"recwkoBAqFWnNQaGa\",\"recwpKiRnSXZ02UPB\",\"recwpd0VVoicgHbsb\",\"recwxmFkhGfoGXmoD\",\"recx7QwzA5xOHEOzP\",\"recx960g1FVMv0ITG\",\"recxk13NQC9Y2HfDy\",\"recy31raClGC0uqW7\",\"recy7ukp1OZfDVInC\",\"recyGdTTT3FWpszxu\",\"recyHGYdGFIoWVzmX\",\"recyNXGOcfC2HZtSX\",\"recyujJlDO62SP7OZ\",\"recz4EVHibzWaBrpN\",\"recz8Uai4iAmBZo5L\",\"reczDw5lGx8QrenRz\",\"reczGvSzQwfOjUZDd\",\"reczf5R9spFQpp2ND\",\"reczhrMAyeP3FVLiM\"],\"cleanup\":\"complete\"}",
+        "source-kind": "archive-catalog",
+        "show-id": 200000075,
+        "fingerprint": "d4e385ea1f6b3a8f6326dcc9d3c26f68a8ef3516367ada3bbc9e253fcf445cf0",
+        "date": "2026-10-25"
+      }
+    },
+    {
+      "id": "rec6D85NoDZpVzf9T",
+      "createdTime": "2026-10-29T23:08:54.000Z",
+      "fields": {
+        "source-id": "collections",
+        "started": "2026-10-29T23:08:35.646Z",
+        "row-count": 58,
+        "completed": "2026-10-29T23:08:35.646Z",
+        "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-collections\\3ff45a22c5132264c606ab7faba18dee83f8ef8766e1320ffa2307a9e01f98fa.json.gz",
+        "collection-id": "archive|200000075|2026-10-25|collections|3ff45a22c5132264c606ab7faba18dee83f8ef8766e1320ffa2307a9e01f98fa",
+        "status": "Retired",
+        "message": "{\"version\":1,\"run\":\"852feeec-ef3a-4176-bd4a-2014b4dfa15d\",\"table\":\"collections\",\"recordIds\":[\"rec1TELgy8UtBSzBR\",\"rec2GFjePwYcIy1Sk\",\"rec2gCJYOcfk2XyPV\",\"rec34PpmHOrlsGVXL\",\"rec3Hcq87JEuRdlNY\",\"rec3eEm87UxbVVkLS\",\"rec5TRuypkDpNVcKI\",\"rec9ZerLj1UfkFoxC\",\"rec9sJcFZ8JvxG950\",\"recAJbaJIYqGM6dZW\",\"recBUb3gJRNku3Grw\",\"recBfF7nyJaKK5LCM\",\"recDBOtRXetxwk9Zl\",\"recDnPjq0U3TLkqDd\",\"recEzmCycL7pVVNvM\",\"recFCnbc3RdgE4I42\",\"recFOvAup1UVqp6PF\",\"recHHRt9NZoTvgw5T\",\"recIYhUlDN6pANSWs\",\"recJ9lVbWS3LAzzd2\",\"recJDxkkdGM8Y2H1i\",\"recJJ0vqTos6jPtw0\",\"recJMdFNQNxYLoykT\",\"recLtx9JU3ja230gN\",\"recMKtEZoyq5UoaV1\",\"recNICFNKlIhbjloe\",\"recNuVP77CBa8Z3MB\",\"recOaKGosQztfEgnc\",\"recRCJrXihQmdyN5h\",\"recS6D0dR42gN67wI\",\"recSHJ3PDj4mZDNwO\",\"recT2MULzsShjBNgW\",\"recUkzdwqsLugFQYs\",\"recXFvjd1eJM2UB5O\",\"recXVTxnWLppcmejZ\",\"recXnsmgPKSv0Ng4O\",\"recYf14yxtad90WPx\",\"recYy35klKObcWZJ4\",\"recZ3lnSeRTKD6rn7\",\"reccPZT61aMUjZ8XB\",\"reccpyKpThpegC1uc\",\"recd5m8LQnBgOZth8\",\"recdPRV10BNzKo8Tr\",\"rechfZiAnLlPoRUA8\",\"reckaqrwi0zeIkphw\",\"recleKhWdg4GJliAX\",\"recnT7Ehr5VthNStj\",\"recnUf0XSkINcWBVv\",\"recosajOodDzkRJ3a\",\"recqEa8BQvjBALdZh\",\"recqIAAiMAhxza0SY\",\"recsHHavw1MnAEiZ8\",\"recu70NZ9de8wVXbt\",\"recvVXg7dNJ4kELLh\",\"recxZ4G8Shdt70YPK\",\"recxb0Tt7HnKencBI\",\"recy8OwPxxlKhoYm3\",\"recyOBGmvA62U5KXX\"],\"cleanup\":\"complete\"}",
+        "source-kind": "archive-catalog",
+        "show-id": 200000075,
+        "fingerprint": "3ff45a22c5132264c606ab7faba18dee83f8ef8766e1320ffa2307a9e01f98fa",
+        "date": "2026-10-25"
+      }
+    },
+    {
+      "id": "rec6S5Bb2gXZCqaKX",
+      "createdTime": "2026-10-29T23:08:52.000Z",
+      "fields": {
+        "source-id": "collections",
+        "started": "2026-10-29T23:08:35.646Z",
+        "row-count": 61,
+        "completed": "2026-10-29T23:08:35.646Z",
+        "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-collections\\bd78bcd80ee8ab799712681fc1b9654db0e55572daa45fcae79fd0461588fbe3.json.gz",
+        "collection-id": "archive|200000075|2026-10-24|collections|bd78bcd80ee8ab799712681fc1b9654db0e55572daa45fcae79fd0461588fbe3",
+        "status": "Retired",
+        "message": "{\"version\":1,\"run\":\"852feeec-ef3a-4176-bd4a-2014b4dfa15d\",\"table\":\"collections\",\"recordIds\":[\"rec1SOLh98jOorZHm\",\"rec1c4lQNn6UWzHeH\",\"rec2cuCMzNtMMaZs4\",\"rec2u3gN4JK8Dc7jf\",\"rec2ydr2sNjLVBO4s\",\"rec3eMKJ3H3SltVHY\",\"rec5AlpQ6wpEDtsac\",\"rec7MQtPp1MA8H5z0\",\"recDBmEK7RZoVZu1V\",\"recE34us98PiSMKa6\",\"recE6BzbiPVwj71h9\",\"recFHfvK8dO4gO0jo\",\"recFQ6K0HZAmbYH0n\",\"recFhsc9IW5j1Tqig\",\"recFqS7NusfnJ0GId\",\"recGU16xVDz36Wjvv\",\"recHSQ0N3IUpGaK6p\",\"recHk9CzUEwwrb7UG\",\"recIEHMOKPU5wCZzh\",\"recLcRNMB0E4nhyrr\",\"recN5qm8CMmBEBJXt\",\"recNVsZPnvecgzcwp\",\"recOtXvDVc4B4UTF7\",\"recP36jIvsr3xkGm0\",\"recS0F4qY9eaa8e4U\",\"recS6dlgB4JCWZYqv\",\"recT9LmYNSYv1T9ms\",\"recTQVkR1HsFDroym\",\"recUguajuKIZV3721\",\"recVbxR5oICpcQWI6\",\"recW36PSM3HWaeFoy\",\"recWRqLKBeSdBRYta\",\"recWqdBncQXvO0jKA\",\"recZ8LZu7kGf0OKZb\",\"recadb2e84XgOPR9G\",\"recbBOjdmTwsHgOoz\",\"reccaF4x4wi1Y3Z0r\",\"reccvhUL9ZjVSuASy\",\"recdlK7DSYuzr5gpM\",\"recfJIMco8qtAPTJe\",\"recg7GbPnQF8HF4Mz\",\"recg7pI2GVfd64M20\",\"recgzQ6daJ8689BTk\",\"rechoeRPfF95OnKOG\",\"recliZzNWH2ZDRkrY\",\"recmNlDgYTUeTilTo\",\"recmidIonPd3YI2Ni\",\"recn2S4X4HQTGxTwg\",\"reco2cUGC9j2pEluL\",\"recq4bh1AtzGyDrrf\",\"recqHMgGUfieQ1qn7\",\"recqYpTGaAMrdenQe\",\"recqsA10BJtDbpR9o\",\"recrrB1uX8zLnalUY\",\"recsmSelhbcoEr7b6\",\"rectWIpUdLPguqqCM\",\"recuDgSzNh1eItRXi\",\"recwruJrfb9Rb9UJp\",\"recxPOW6eyYsDcRPJ\",\"recxWNg3fZqkyr1ku\",\"recz11OiB5fMeHYvU\"],\"cleanup\":\"complete\"}",
+        "source-kind": "archive-catalog",
+        "show-id": 200000075,
+        "fingerprint": "bd78bcd80ee8ab799712681fc1b9654db0e55572daa45fcae79fd0461588fbe3",
+        "date": "2026-10-24"
+      }
+    },
+    {
+      "id": "recKkKk5eCgJM3Nmt",
+      "createdTime": "2026-10-29T23:08:57.000Z",
+      "fields": {
+        "source-id": "collections",
+        "started": "2026-10-29T23:08:35.646Z",
+        "row-count": 34,
+        "completed": "2026-10-29T23:08:35.646Z",
+        "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-collections\\a397b9fe76e05db149b38b1bcb6ec0b20533023cc4fa20669f21849cec34e783.json.gz",
+        "collection-id": "archive|200000075|2026-10-23|collections|a397b9fe76e05db149b38b1bcb6ec0b20533023cc4fa20669f21849cec34e783",
+        "status": "Retired",
+        "message": "{\"version\":1,\"run\":\"852feeec-ef3a-4176-bd4a-2014b4dfa15d\",\"table\":\"collections\",\"recordIds\":[\"rec1Us9xBtXcJfVpm\",\"rec1iCFlR3qDvg8gn\",\"rec4AbSvAGNkiYhlw\",\"rec5n54JyiPkMGd93\",\"rec8OahGj7Pftgfi9\",\"recBAqUPtGv5BJwN9\",\"recBHmRDhPyEpBBhf\",\"recFOW4povslhY4yM\",\"recHgFMOWaAM7nZnS\",\"recITLXkUOYW4go8M\",\"recJAFWphqQ0yFDku\",\"recJj4Grx4l6CC8K0\",\"recKRqgj4A3Zcy2PC\",\"recM3KzURXUtDSb73\",\"recP1Z9KgSsCggp2L\",\"recU0FwtuvKIZomcw\",\"recU6aW4tXsomgkEU\",\"recYXE8wLcTNOUfDz\",\"recbUrqdDgV8fFGZr\",\"recfKeiSGsuht7qlj\",\"recfYaZgd9T9xLaPS\",\"recfgNI3RDMhIkXrB\",\"recg3quaOOBXFFv9X\",\"reciLKXvvgK4hFdvc\",\"recjolrd2WwTm37D5\",\"reclI02Z3yzxKkP0a\",\"recltLUhJAtZwA0Di\",\"recnFt75tN8oDYin8\",\"rectcBB741wW9fwuY\",\"recvSTTFhGctsKEXI\",\"recvibd6DCSw0h91o\",\"recvkgeKSVmCk0gkg\",\"recwoJoBPdEJLvyCs\",\"recxnUT8mWePiELcV\"],\"cleanup\":\"complete\"}",
+        "source-kind": "archive-catalog",
+        "show-id": 200000075,
+        "fingerprint": "a397b9fe76e05db149b38b1bcb6ec0b20533023cc4fa20669f21849cec34e783",
+        "date": "2026-10-23"
+      }
+    },
+    {
+      "id": "recRoUGwutnDC2XKf",
+      "createdTime": "2026-10-29T23:08:44.000Z",
+      "fields": {
+        "source-id": "live-classes",
+        "started": "2026-10-29T23:08:35.646Z",
+        "row-count": 56,
+        "completed": "2026-10-29T23:08:35.646Z",
+        "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-live-classes\\7e92874448c22f75c045467857473ebd72ad8ef0b319a999fa020f700d057507.json.gz",
+        "collection-id": "archive|200000075|2026-10-25|live-classes|7e92874448c22f75c045467857473ebd72ad8ef0b319a999fa020f700d057507",
+        "status": "Retired",
+        "message": "{\"version\":1,\"run\":\"852feeec-ef3a-4176-bd4a-2014b4dfa15d\",\"table\":\"live-classes\",\"recordIds\":[\"rec1UTkPynxFNNkZZ\",\"rec1os5SNSMtH06zJ\",\"rec2DOsErIiL5YH66\",\"rec2V3HE4EWr4osLc\",\"rec39iqgMuRK6nQLn\",\"rec39w8yG4vScwgJo\",\"rec3CqZZtFrzm1wxI\",\"rec46JmYXBAHlXyRv\",\"rec6DPqAm8fgEMrxR\",\"rec6bCTAfvKkiHzxO\",\"rec6fkpIG42TnKgLd\",\"rec9Dz44rkNbr7cet\",\"recBCZkY6oBRVM2SS\",\"recC7SClwrwimFzqk\",\"recCoeR56ypAH76Fh\",\"recDhyzV4IPDjnJtu\",\"recEm94E9tyTJIJy8\",\"recF4FEmhGYIttCNB\",\"recI8Fy0wqH3tWCtc\",\"recJf30NjeDcTprpF\",\"recKCWxmfEYtLsFVQ\",\"recLrHcuRfandW8pX\",\"recMGFbIHZKZu9jGG\",\"recMWQFN7ghBhxQUg\",\"recMf2IQDoe74OfYs\",\"recNSdAkc8BSZfdye\",\"recOuePy6kRntBFyO\",\"recRMuj3VFaP9qFbD\",\"recS3Se00qjaVuXR1\",\"recTJeg8cUItpwPhb\",\"recV9cq3YCgPLj0Ig\",\"recVJk2oapyObFKpc\",\"recVusncIpscFqxLL\",\"recXS5A7C4tCuj41u\",\"recaLRA4pQLERDp6P\",\"recaU0VsjgKnqxPN9\",\"recanlanPZAZ8q2A2\",\"recbC0m5V1NtEo2oQ\",\"reccvcodDaSsoFHP4\",\"recdtY6Vafemz4Vs5\",\"recf3ZsNIsk2BiVvq\",\"recfpyRqLtCWiqtWY\",\"reci4hKDwUPYt7JnZ\",\"recmwNneikrv2jx1Y\",\"recn8hwRgJsk61Jo2\",\"recnscLt3bxE84FW8\",\"recobMfVOVeplcKO4\",\"recpwuDOCmuPFtxKz\",\"recq1vUWbwd0FiHWV\",\"recqjDqcCOFwPrVwf\",\"recqrqr9Bt6TD85Ek\",\"rectIATkfVfArswt2\",\"recuBEPhpxbkm1y5J\",\"recuJgw6x93tY3DVI\",\"recuQaHo4AswvQ1Hb\",\"recuyhW84epWxjuPw\"],\"cleanup\":\"complete\"}",
+        "source-kind": "archive-catalog",
+        "show-id": 200000075,
+        "fingerprint": "7e92874448c22f75c045467857473ebd72ad8ef0b319a999fa020f700d057507",
+        "date": "2026-10-25"
+      }
+    },
+    {
+      "id": "recRvFQQuEaONDmOP",
+      "createdTime": "2026-10-29T23:08:46.000Z",
+      "fields": {
+        "source-id": "live-groups",
+        "started": "2026-10-29T23:08:35.646Z",
+        "row-count": 31,
+        "completed": "2026-10-29T23:08:35.646Z",
+        "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-live-groups\\9a64dc59aeae6471baecc9cc4dd18eefed24840d4dbccb78360a4c5d5251fbc5.json.gz",
+        "collection-id": "archive|200000075|2026-10-25|live-groups|9a64dc59aeae6471baecc9cc4dd18eefed24840d4dbccb78360a4c5d5251fbc5",
+        "status": "Retired",
+        "message": "{\"version\":1,\"run\":\"852feeec-ef3a-4176-bd4a-2014b4dfa15d\",\"table\":\"live-groups\",\"recordIds\":[\"rec3qaRyT8oZ4a5Fh\",\"rec5QRPGgwsJDTYTV\",\"rec6W6iMxyIbGk9Hj\",\"rec9ZrLNlNInTrGAr\",\"recAMnKwxhHJk6InK\",\"recCXcXCCQhshJ5Ng\",\"recDCu87wmJfEPkm8\",\"recItOuYIzH4ur8gn\",\"recJOO9Y9MmwW3oiO\",\"recLQN74Lm5NC89K3\",\"recMHweTqrFwjJEtk\",\"recMMmeaZie41VCzE\",\"recObvQsHdDbsMfXJ\",\"recRiCMpvBKBoMqL0\",\"recSaDbQODZ2a1LAZ\",\"recSbkJzp74BfYMRd\",\"recTbH5GCPY8OE1PX\",\"recUAoLWXAugcscWl\",\"recUPthqFAw8U2UA2\",\"recWnOFVUGhIxIH3w\",\"recYH4OESbXC0VZVm\",\"recZG8f9vxAYJI5Vd\",\"recZUx9JZDTgiVkIB\",\"recbq7P4C1JP3RUhQ\",\"reccPshRAs7Xno8rj\",\"reccXvWgyH1GWdum7\",\"rece33EVC89aNJ8fG\",\"recmJ020oBTQsktMK\",\"recpSrOYvox1GDsGf\",\"recx3rFBCNbJAGfvt\",\"recyRqOgZ1P8K4DCk\"],\"cleanup\":\"complete\"}",
+        "source-kind": "archive-catalog",
+        "show-id": 200000075,
+        "fingerprint": "9a64dc59aeae6471baecc9cc4dd18eefed24840d4dbccb78360a4c5d5251fbc5",
+        "date": "2026-10-25"
+      }
+    },
+    {
+      "id": "recwPelAASFFSBsF5",
+      "createdTime": "2026-10-29T23:08:49.000Z",
+      "fields": {
+        "source-id": "live-rings",
+        "started": "2026-10-29T23:08:35.646Z",
+        "row-count": 5,
+        "completed": "2026-10-29T23:08:35.646Z",
+        "archive-file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\retired-live-rings\\de1dfa9b57f0aee02f2cc467b28b2ba358ac5011c97bf267b50a112b56a2b512.json.gz",
+        "collection-id": "archive|200000075|2026-10-25|live-rings|de1dfa9b57f0aee02f2cc467b28b2ba358ac5011c97bf267b50a112b56a2b512",
+        "status": "Retired",
+        "message": "{\"version\":1,\"run\":\"852feeec-ef3a-4176-bd4a-2014b4dfa15d\",\"table\":\"live-rings\",\"recordIds\":[\"rec5YazkP29B3ChAm\",\"recCKZkatTdNnggjz\",\"reciizdlrfrTQlwCE\",\"recmqTJvewYICMUNH\",\"recz74aMEKbojyvwF\"],\"cleanup\":\"complete\"}",
+        "source-kind": "archive-catalog",
+        "show-id": 200000075,
+        "fingerprint": "de1dfa9b57f0aee02f2cc467b28b2ba358ac5011c97bf267b50a112b56a2b512",
+        "date": "2026-10-25"
+      }
+    }
+  ]
+}

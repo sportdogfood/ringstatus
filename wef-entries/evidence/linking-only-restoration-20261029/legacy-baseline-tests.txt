@@ -1,0 +1,314 @@
+✖ independent empty collection succeeds for all five sources and all days (47.1288ms)
+✖ trainer overlap and both private follows collect once with separate collection associations (1.2972ms)
+✖ repeat run preserves entry/collection IDs and adds one terminal run log (1.5889ms)
+✖ one failed producer preserves its previous entry membership and other sources refresh (2.7945ms)
+✖ inactive roster never excludes collection; team slice hides inactive but user-only is never team (2.1204ms)
+✖ schedule sync mismatch stops before source calls and retains existing participation (2.2289ms)
+✔ archive failure prevents entry changes (3.4991ms)
+✖ explicit missing followed entry fails that owner, not an empty success (1.4978ms)
+✖ more than ten private selections blocks sources and malformed empty people fails (2.5716ms)
+✖ private-only entry has no invented trainer feed association (2.0527ms)
+✖ scheduled date is respected; conflicting participation is rejected (1.2379ms)
+✖ adapter rejects every CWF/shared mutation, synced destination writes and deletion (1.0623ms)
+✖ log capacity archives finished slot before reuse (1.613ms)
+✖ canonical show read replaces schedules mirror without changing schedule links (1.4045ms)
+✔ canonical authority is read-only through the adapter (1.0333ms)
+✖ plural writer keeps keys, local links and successful observation on two fixture runs (1.2987ms)
+✖ failed collection preserves historical links and successful timestamp (1.6202ms)
+✖ ambiguous class groups never inferred from people feed (8.5981ms)
+✔ stale or failed date health blocks collection without refreshing observation (2.596ms)
+✖ plural empty sources succeed and disappeared participation is dropped with history (4.2354ms)
+✔ one transient source retry recovers; no retry for authentication or malformed success (3.8596ms)
+✔ persistent 502 is bounded to two attempts and fails rather than empty success (1.0428ms)
+✔ timeout may retry once; arbitrary programming errors never retry (1.6433ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 6
+ℹ fail 17
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 400.5496
+
+✖ failing tests:
+
+test at wef-entries\tests\collector.test.js:14:1
+✖ independent empty collection succeeds for all five sources and all days (47.1288ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:14:227)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:15:1
+✖ trainer overlap and both private follows collect once with separate collection associations (1.2972ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:15:337)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:16:1
+✖ repeat run preserves entry/collection IDs and adds one terminal run log (1.5889ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:16:115)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:17:1
+✖ one failed producer preserves its previous entry membership and other sources refresh (2.7945ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:17:390)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:18:1
+✖ inactive roster never excludes collection; team slice hides inactive but user-only is never team (2.1204ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:18:246)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:19:1
+✖ schedule sync mismatch stops before source calls and retains existing participation (2.2289ms)
+  TypeError: Cannot read properties of undefined (reading 'fields')
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:19:385)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+
+test at wef-entries\tests\collector.test.js:21:1
+✖ explicit missing followed entry fails that owner, not an empty success (1.4978ms)
+  TypeError: Cannot read properties of undefined (reading 'result')
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:21:350)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+
+test at wef-entries\tests\collector.test.js:22:1
+✖ more than ten private selections blocks sources and malformed empty people fails (2.5716ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 3
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:22:448)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 3,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:23:1
+✖ private-only entry has no invented trainer feed association (2.0527ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:23:333)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:24:1
+✖ scheduled date is respected; conflicting participation is rejected (1.2379ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /No shared schedule/. Input:
+  
+  'TypeError: model.normalize is not a function'
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:24:161)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1047:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+      at Test.postRun (node:internal/test_runner/test:1173:19)
+      at Test.run (node:internal/test_runner/test:1101:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: model.normalize is not a function
+        at C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:24:178
+        at getActual (node:assert:609:5)
+        at Function.throws (node:assert:757:24)
+        at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:24:161)
+        at Test.runInAsyncScope (node:async_hooks:214:14)
+        at Test.run (node:internal/test_runner/test:1047:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+        at Test.postRun (node:internal/test_runner/test:1173:19)
+        at Test.run (node:internal/test_runner/test:1101:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:744:7),
+    expected: /No shared schedule/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:25:1
+✖ adapter rejects every CWF/shared mutation, synced destination writes and deletion (1.0623ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Read-only/. Input:
+  
+  'Error: Unapproved read target'
+  
+      at async TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:25:265)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Unapproved read target
+        at Object.call (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\airtable.js:10:51)
+        at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:25:290)
+        at Test.runInAsyncScope (node:async_hooks:214:14)
+        at Test.run (node:internal/test_runner/test:1047:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+        at Test.postRun (node:internal/test_runner/test:1173:19)
+        at Test.run (node:internal/test_runner/test:1101:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:744:7),
+    expected: /Read-only/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:26:1
+✖ log capacity archives finished slot before reuse (1.613ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:26:225)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:28:1
+✖ canonical show read replaces schedules mirror without changing schedule links (1.4045ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:30:45)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:43:1
+✖ plural writer keeps keys, local links and successful observation on two fixture runs (1.2987ms)
+  AssertionError [ERR_ASSERTION]: ["No accepted Data revision"]
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:43:191)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:44:1
+✖ failed collection preserves historical links and successful timestamp (1.6202ms)
+  TypeError: Cannot read properties of undefined (reading 'id')
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:44:386)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+
+test at wef-entries\tests\collector.test.js:45:1
+✖ ambiguous class groups never inferred from people feed (8.5981ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(r.errors.some(e=>e.includes('eligibility unresolved')))
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:45:373)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at wef-entries\tests\collector.test.js:47:1
+✖ plural empty sources succeed and disappeared participation is dropped with history (4.2354ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:47:318)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

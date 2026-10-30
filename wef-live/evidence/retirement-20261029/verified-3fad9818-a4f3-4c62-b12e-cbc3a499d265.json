@@ -1,0 +1,72 @@
+{
+  "run": "3fad9818-a4f3-4c62-b12e-cbc3a499d265",
+  "started": "2026-10-29T23:11:14.288Z",
+  "completed": "2026-10-29T23:11:40.920Z",
+  "counts": {
+    "rings": 0,
+    "groups": 0,
+    "classes": 0,
+    "entries": 0
+  },
+  "retired": [],
+  "catalogs": 7,
+  "archived": {
+    "live-entries": 305,
+    "collections": 153,
+    "live-classes": 56,
+    "live-groups": 31,
+    "live-rings": 5
+  },
+  "activeCounts": {
+    "live-rings": 0,
+    "live-groups": 0,
+    "live-classes": 0,
+    "live-entries": 0,
+    "collections": 7,
+    "wef-schedules.schedules": 512,
+    "wef-entries.entries": 512
+  },
+  "exactArchivedFieldsAndLinks": true,
+  "referenceIdsPreserved": true,
+  "logs": {
+    "run-logs": [
+      {
+        "id": "recqYZy9uu9ueViKJ",
+        "createdTime": "2026-10-29T23:11:49.000Z",
+        "fields": {
+          "date": "2026-10-29",
+          "result": "Success",
+          "entry-count": 0,
+          "group-count": 0,
+          "ring-count": 0,
+          "archive-count": 3,
+          "class-count": 0,
+          "show-id": 200000076,
+          "archives": "2026-10-29T23:11:32.210Z: source-live-status Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-live-status\\7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e.json.gz; SHA256 7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e\n2026-10-29T23:11:32.405Z: source-groups Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\af0c2c7d6f4a95130d7e66fa2728d613a6dfecbfbb33e82d784795fa47cef669.json.gz; SHA256 af0c2c7d6f4a95130d7e66fa2728d613a6dfecbfbb33e82d784795fa47cef669\n2026-10-29T23:11:38.777Z: source-widget Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\4b05318cabbd2786ba79db94828733759c47e38868b818d76b68e2f30c8bb83c.json.gz; SHA256 4b05318cabbd2786ba79db94828733759c47e38868b818d76b68e2f30c8bb83c",
+          "completed": "2026-10-29T23:11:40.920Z",
+          "summary": "Success: no live activity available; current records and links preserved.",
+          "started": "2026-10-29T23:11:14.288Z",
+          "run-id": "3fad9818-a4f3-4c62-b12e-cbc3a499d265"
+        }
+      }
+    ],
+    "heartbeat": [
+      {
+        "id": "recYt5QqXYJGb5B8O",
+        "createdTime": "2026-10-29T23:11:21.000Z",
+        "fields": {
+          "started": "2026-10-29T23:11:14.288Z",
+          "run-id": "3fad9818-a4f3-4c62-b12e-cbc3a499d265",
+          "heartbeat-key": "3fad9818-a4f3-4c62-b12e-cbc3a499d265",
+          "show-id": 200000076,
+          "result": "Success",
+          "date": "2026-10-29",
+          "summary": "Success: no live activity available; current records and links preserved.",
+          "checked-at": "2026-10-29T23:11:40.920Z",
+          "completed": "2026-10-29T23:11:40.920Z"
+        }
+      }
+    ],
+    "errs-log": []
+  }
+}

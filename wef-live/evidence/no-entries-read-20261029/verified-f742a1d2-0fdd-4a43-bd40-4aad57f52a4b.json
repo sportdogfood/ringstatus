@@ -1,0 +1,63 @@
+{
+  "run": "f742a1d2-0fdd-4a43-bd40-4aad57f52a4b",
+  "started": "2026-10-29T23:35:14.045Z",
+  "completed": "2026-10-29T23:35:38.625Z",
+  "counts": {
+    "rings": 0,
+    "groups": 0,
+    "classes": 0,
+    "entries": 0
+  },
+  "retired": [],
+  "tableCounts": {
+    "live-rings": 0,
+    "live-groups": 0,
+    "live-classes": 0,
+    "live-entries": 0,
+    "collections": 7
+  },
+  "recordsAndCatalogUnchanged": true,
+  "archiveHashesVerified": true,
+  "entriesReadRejected": true,
+  "logs": {
+    "heartbeat": [
+      {
+        "id": "recSimsYyntsx0EEI",
+        "createdTime": "2026-10-29T23:35:22.000Z",
+        "fields": {
+          "started": "2026-10-29T23:35:14.045Z",
+          "run-id": "f742a1d2-0fdd-4a43-bd40-4aad57f52a4b",
+          "heartbeat-key": "f742a1d2-0fdd-4a43-bd40-4aad57f52a4b",
+          "show-id": 200000076,
+          "result": "Success",
+          "date": "2026-10-29",
+          "summary": "Success: no live activity available; current records and links preserved.",
+          "checked-at": "2026-10-29T23:35:38.625Z",
+          "completed": "2026-10-29T23:35:38.625Z"
+        }
+      }
+    ],
+    "run-logs": [
+      {
+        "id": "rec5R1JQxuaAXIDeL",
+        "createdTime": "2026-10-29T23:35:46.000Z",
+        "fields": {
+          "date": "2026-10-29",
+          "result": "Success",
+          "entry-count": 0,
+          "group-count": 0,
+          "ring-count": 0,
+          "archive-count": 3,
+          "class-count": 0,
+          "show-id": 200000076,
+          "archives": "2026-10-29T23:35:33.285Z: source-live-status Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-live-status\\7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e.json.gz; SHA256 7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e\n2026-10-29T23:35:33.562Z: source-groups Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\af0c2c7d6f4a95130d7e66fa2728d613a6dfecbfbb33e82d784795fa47cef669.json.gz; SHA256 af0c2c7d6f4a95130d7e66fa2728d613a6dfecbfbb33e82d784795fa47cef669\n2026-10-29T23:35:36.232Z: source-widget Reused; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\4b05318cabbd2786ba79db94828733759c47e38868b818d76b68e2f30c8bb83c.json.gz; SHA256 4b05318cabbd2786ba79db94828733759c47e38868b818d76b68e2f30c8bb83c",
+          "completed": "2026-10-29T23:35:38.625Z",
+          "summary": "Success: no live activity available; current records and links preserved.",
+          "started": "2026-10-29T23:35:14.045Z",
+          "run-id": "f742a1d2-0fdd-4a43-bd40-4aad57f52a4b"
+        }
+      }
+    ],
+    "errs-log": []
+  }
+}

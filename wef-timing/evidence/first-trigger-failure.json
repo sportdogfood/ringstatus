@@ -1,0 +1,9 @@
+{
+  "trigger": "2026-10-29T19:30:00-04:00",
+  "task_result": 1,
+  "task_state": "Disabled",
+  "stage": "launcher",
+  "calculator_started": false,
+  "reason": "PowerShell split --env-file= expression into separate arguments",
+  "next_permission": "APPROVED TO EDIT launcher argument and resume existing task; no manual runs"
+}

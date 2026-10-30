@@ -11,6 +11,18 @@ def schema():
 def graph():return {'shows':{'15|75':{'show-key':'15|75','show-id':75}},'show-days':{'15|75|day':{'day-key':'15|75|day','show':['15|75']}},'horses':{'100':{'horse-key':'100','horse-id':100,'horse-name':'H','last-success':'2026-10-29T12:00:00Z','shows':['15|75'],'show-days':['15|75|day']}}}
 
 class SeasonStoreTests(unittest.TestCase):
+    def test_trip_based_projection_repeats_without_record_or_link_loss_in_all_four_bases(self):
+        import json
+        from test_trip_assignments import fixture
+        from wef_data_handoff import assignment_evidence
+        from season_projection import project
+        config=json.loads((pathlib.Path(__file__).resolve().parents[2]/'wef-season/schema.json').read_text(encoding='utf-8'));facts=fixture();audit=assignment_evidence(facts)
+        for entity,item in config['entities'].items():
+            with self.subTest(entity=entity),tempfile.TemporaryDirectory() as folder:
+                api=MemoryAPI();store=SeasonStore(api,item,folder);candidate=project(facts,entity,audit)
+                first=store.apply(candidate);before=copy.deepcopy(api.db);second=store.apply(candidate)
+                self.assertGreater(first['records-added'],0);self.assertEqual(second['records-added'],0);self.assertEqual(second['records-updated'],0);self.assertEqual(api.db,before)
+                empty={table:{} for table in candidate};store.apply(empty);self.assertEqual(api.db,before)
     def test_repeat_keeps_keys_ids_links_and_owner_fields(self):
         api=MemoryAPI()
         with tempfile.TemporaryDirectory() as folder:

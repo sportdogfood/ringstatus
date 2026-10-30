@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: saved 33-minute eleven-trip schedule yields three minutes; no invented actual
+ok 1 - saved 33-minute eleven-trip schedule yields three minutes; no invented actual
+  ---
+  duration_ms: 2.9361
+  type: 'test'
+  ...
+# Subtest: zero, missing, invalid windows, blocks and multi-class groups never divide or double-count
+ok 2 - zero, missing, invalid windows, blocks and multi-class groups never divide or double-count
+  ---
+  duration_ms: 0.3944
+  type: 'test'
+  ...
+# Subtest: interval throughput uses compatible dated observations, including holds
+ok 3 - interval throughput uses compatible dated observations, including holds
+  ---
+  duration_ms: 0.3324
+  type: 'test'
+  ...
+# Subtest: reset/membership change/out-of-order/gap/stale/future/count-conflict cannot produce pace
+ok 4 - reset/membership change/out-of-order/gap/stale/future/count-conflict cannot produce pace
+  ---
+  duration_ms: 0.3101
+  type: 'test'
+  ...
+# Subtest: no-progress does not advance baseline; repeated source preserves measured interval without new measurement
+ok 5 - no-progress does not advance baseline; repeated source preserves measured interval without new measurement
+  ---
+  duration_ms: 1.1762
+  type: 'test'
+  ...
+# Subtest: fresh evaluation clock alone does not renew stale observation
+ok 6 - fresh evaluation clock alone does not renew stale observation
+  ---
+  duration_ms: 0.172
+  type: 'test'
+  ...
+# Subtest: a new observation without progress never represents the previous interval as a new measurement
+ok 7 - a new observation without progress never represents the previous interval as a new measurement
+  ---
+  duration_ms: 1.5874
+  type: 'test'
+  ...
+# Subtest: source-invalid scope does not publish numeric schedule fallback
+ok 8 - source-invalid scope does not publish numeric schedule fallback
+  ---
+  duration_ms: 0.2896
+  type: 'test'
+  ...
+# Subtest: readback rejects duplicate identities and mismatched content
+ok 9 - readback rejects duplicate identities and mismatched content
+  ---
+  duration_ms: 1.3748
+  type: 'test'
+  ...
+# Subtest: transport forbids source writes and unsupported targets before any network action
+ok 10 - transport forbids source writes and unsupported targets before any network action
+  ---
+  duration_ms: 1.4746
+  type: 'test'
+  ...
+# Subtest: transport uses existing-key performUpsert and validates server clock
+ok 11 - transport uses existing-key performUpsert and validates server clock
+  ---
+  duration_ms: 249.7799
+  type: 'test'
+  ...
+# Subtest: normal repeat retains snapshot identities and writes only runner status on unchanged input
+ok 12 - normal repeat retains snapshot identities and writes only runner status on unchanged input
+  ---
+  duration_ms: 10.3715
+  type: 'test'
+  ...
+# Subtest: bad structured projection cannot borrow frozen numeric pace
+ok 13 - bad structured projection cannot borrow frozen numeric pace
+  ---
+  duration_ms: 2.44
+  type: 'test'
+  ...
+# Subtest: an active projection cannot admit a frozen dropped schedule
+ok 14 - an active projection cannot admit a frozen dropped schedule
+  ---
+  duration_ms: 1.9432
+  type: 'test'
+  ...
+# Subtest: changing producer collection defers publication without inventing snapshot
+ok 15 - changing producer collection defers publication without inventing snapshot
+  ---
+  duration_ms: 0.8384
+  type: 'test'
+  ...
+# Subtest: scope failure is recorded, no automatic successful retry or baseline advancement
+ok 16 - scope failure is recorded, no automatic successful retry or baseline advancement
+  ---
+  duration_ms: 1.9899
+  type: 'test'
+  ...
+# Subtest: budget deferral is explicit rather than partial snapshot publication
+ok 17 - budget deferral is explicit rather than partial snapshot publication
+  ---
+  duration_ms: 1.4216
+  type: 'test'
+  ...
+# Subtest: new evidence creates a snapshot even when pace is unchanged
+ok 18 - new evidence creates a snapshot even when pace is unchanged
+  ---
+  duration_ms: 3.4809
+  type: 'test'
+  ...
+# Subtest: checkpoint failure cannot report successful execution
+ok 19 - checkpoint failure cannot report successful execution
+  ---
+  duration_ms: 1.468
+  type: 'test'
+  ...
+# Subtest: normal interval retains both endpoints and absolute counts; same observation is not a second interval
+ok 20 - normal interval retains both endpoints and absolute counts; same observation is not a second interval
+  ---
+  duration_ms: 4.8246
+  type: 'test'
+  ...
+# Subtest: future observation and mismatched class roster cannot yield interval pace
+ok 21 - future observation and mismatched class roster cannot yield interval pace
+  ---
+  duration_ms: 5.0037
+  type: 'test'
+  ...
+# Subtest: malformed later archive member invalidates the entire candidate collection
+ok 22 - malformed later archive member invalidates the entire candidate collection
+  ---
+  duration_ms: 2.5243
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 381.4508

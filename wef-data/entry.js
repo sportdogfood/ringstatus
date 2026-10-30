@@ -21,6 +21,7 @@ async function scheduled(){
      result.reason='Verified unaffected facts; entry identity reconciliation remains partial';
      if(result.counts)result.counts['identity-conflicts']=report['identity-conflicts'].length;
     }
+    if(report['assignment-counts']){const a=report['assignment-counts'];result.counts={...(result.counts||{}),'complete-trip-assignments':a['complete-trips'],'incomplete-trip-assignments':a['incomplete-trips'],'withheld-entry-assignments':a['withheld-entries']};if(a['withheld-entries'])result.reason=[result.reason,'Ambiguous or unsupported parent assignments withheld; verified trip roles retained.'].filter(Boolean).join('; ');}
     if(report.retirement)result.counts={...(result.counts||{}),'retired-records':report.retirement.reduce((n,r)=>n+r['removed-this-wake'],0)};
     if(report['handoff-error'])result.error={category:'Handoff',operation:'Publish',target:'Verified retained cache',message:report['handoff-error'],'write-outcome':'NotApplicable'};
    }

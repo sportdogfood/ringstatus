@@ -1,12 +1,141 @@
-> Earlier Entries build boundary - retained context; superseded by current wiring and proposed lanes below: wef-entries ONLY links accepted Data/Season records to schedules and stops at wef-entries. It performs no direct source collection and has no tenant input, output, integration or acceptance gate. This supersedes conflicting historical descriptions below. Documentation only; no code, Airtable or task changes.
+## Controlling lane ownership and approved Live publication — 29 October 2026
+
+Owner APPROVED TO EDIT: add seven fields, implement/deploy Live publication, update ownership, verify two normal scheduled runs. Preserve records/links; no manual runs or task changes. Deployment subsequently verified at 20:28:06 Eastern (2026-10-30T00:28:06Z); all six deployed file hashes match the release receipt. Offline suite: 80 PASS; independent actual-code review PASS. See `wef-live/evidence/publication-v1-20261029/{deployed.json,review.md,deployed-tests.txt}`. Full operational acceptance remains pending. Earlier conflicting proposals/locks below are superseded only for this narrow release.
+
+Each agent owns its own module. Schedules must not use/reference Data as its collector/input/dependency; Data must not use Schedules as its collector/input/dependency. Neither collector compares, selects, edits or manages the other. Shared source identifiers do not transfer ownership. Shows remains canonical show/day authority. Live owns Live collection and the explicitly approved observation publisher only. Entries remains independently owned linking-only, with its accepted existing inputs preserved; it performs no acquisition, Live enrichment or collector comparison. Season retains data and never gates current collection/publication. The local Season coordinator's separate Data responsibility does not extend to Entries/Schedules/Live.
+
+Live has one narrow cross-base write exception: PATCH only `live-observation-json` (multiline text, format `wef-live-observation-v1`) on existing records in these seven tables. No record creation/upsert/deletion, native-link changes or writes to acquisition/status/count/time/raw-source fields. No new syncs, tables, workflows, tasks or cadences.
+
+| Destination base/table | Exact table ID | Allowed observed component |
+| --- | --- | --- |
+| Schedules appUq5Qz9kARqFija / rings | tbliUwvXYdMhvJ3Fm | ring: current/next/completed portable source group IDs |
+| Schedules / schedules | tblqiTFqqO3zk2KJC | attributable group status/is-live context; class total/gone/jo-gone/r2-gone/current-trip-id for one evidenced occurrence |
+| Data appdl16HJ5ETm8N69 / rings | tblhKkfYXppW3TbTq | ring: current/next/completed portable source group IDs |
+| Data / groups | tblQObOvktufkyq54 | group: status/is-live/detail flag, sequence, raw estimated start, separate main/JO/R2 total/gone |
+| Data / classes | tbl0IFf067w4wUBj5 | class: total/gone/jo-gone/r2-gone/current-trip-id |
+| Data / schedules | tbl6KKlYuMIPHEJWe | class observations for one uniquely attributable existing occurrence |
+| Data / trips | tblt0GvQ39bHIu930 | trip: source identities/provenance, order-of-go/actual-order/scratch/gone/position; position is not certified official placing |
+
+Live is sole writer of these observation fields; destination collectors retain ownership of collected facts and omit the overlay. Schedules/Data collectors need no runtime changes for this release. Data entries and entity assignments are excluded. Preserve existing keys and resolve exact existing dated ring/group/class/occurrence/trip identities; never match by names, invent occurrence keys, fan out class totals or copy foreign Airtable link IDs. Trip evidence must agree on exact dated class/trip/entry/available UUID and supported horse/rider/trainer provenance; unresolved contradictions withhold publication.
+
+Class counters require a successful validated class-detail observation and its ORIGINAL receipt. Refreshed group discovery or class last-seen is insufficient. Require complete saved dataset/archive membership. Six-minute freshness from original observation, at most one minute future clock skew; new actual validated observations may advance time, publication retries may not. Missing/empty/failed/stale/outside-TODAY observations do not clear or renew data; explicit zero remains distinct from missing. Older revisions are ignored, identical receipt/content is a no-op, same-time conflicting content is logged as Conflict. No inferred absolute start/end timestamps.
+
+Publish both destinations independently, with bounded errors/readback and durable local fallback. Destination failures do not stop Live collection or the other lane; unknown PATCH outcomes require readback before a later normal scheduled retry. Existing source/retirement safety stops remain. Before PATCH durably archive source evidence, intent and destination before/proposed-after values; afterward retain outcome/readback. Data overlays remain outside authored acquisition graphs, fingerprints, verified revisions/checkpoints and graph archives; Live owns overlay audit retention. No Season gating.
+
+Schema metadata independently read back by Records: all seven `live-observation-json` fields exist as multilineText. Schedules schedules=fldtaDx0GeytGlgp7, rings=fldpqRSb49AUKE7AL; Data rings=fldRQhrsPlDhYi1pg, groups=fld5CGky9wd6HeZaI, classes=fldNq7bwz5KhqRO0K, schedules=fldWwAZJ982iZep6O, trips=fldyWwkBBa3JlOuX3. This proves schema creation; deployment is separately evidenced above and scheduled populated acceptance remains pending.
+
+Operational result: PARTIAL. Two NEW normal postdeployment runs passed: `9ed1ab69-9d8c-40df-b84f-1c9d6d7f9f1f` (20:29:12-20:29:32 Eastern) and `b1ffb86b-7e0c-41e3-b72c-70306fe48b65` (20:32:12-20:32:33 Eastern). Both lanes skipped empty activity; zero PATCHes/errors. Seven archive catalogs and deployed hashes verified. All 94 baseline destination records, keys and native links retained; no additions/removals. Data's own last-success timestamps advanced on 26 groups/26 schedules, separately from Live publication. Proof: `wef-live/evidence/publication-v1-20261029/release.md` and both `verified-<run-id>.json` receipts. BLOCKED acceptance gate: no naturally populated Live observations on these runs. Next gate is two normal populated runs proving exact matching, one-field PATCH/readback and protected fields/links/repeat behavior; do not manufacture observations, manually invoke, repair or change tasks. Existing schedules continue. No implementation approval is missing; required natural source activity is absent.
+
+Acceptance completed: seven-field metadata readback, 80 offline tests, independent actual-change review and established guarded Live deployment. Acceptance pending: two distinct NORMAL scheduled populated publication passes including repeat/no-change behavior and protected records/links/fields. Empty runs prove invocation only and cannot complete populated acceptance. Failed approved workflow stops that path; no patch/retry without fresh applicable approval. Records owns shared documentation; Live owns its runtime/module docs/evidence. No sibling runtime changes authorized.
+
+> Entries linking-only boundary; controlling correction below supersedes conflicting comparison/release proposals: wef-entries ONLY links accepted Data/Season records to schedules and stops at wef-entries. It performs no direct source collection and has no tenant input, output, integration or acceptance gate. This supersedes conflicting historical descriptions below. Documentation only; no code, Airtable or task changes.
 > Current ownership update (26 October 2026): [Six-component records workflow](wef-records-workflow-ownership-20261026.md) governs shows, all-show Data acquisition, cross-show Season stewardship, and operational schedules/selected entries/live. Existing implementations and historical evidence below are preserved; new roles do not authorize reader migrations or production changes.
 
 # WEF data boundaries — working document
 
 Updated: 29 October 2026, America/New_York.
-Status: documentation only. Entries is linking-only. Current wiring is separate from the proposed two lanes. Season is retention-only and never a current collection prerequisite.
+Status: separately approved linking-only restoration DEPLOYED19:37:05Eastern; two distinct normal scheduled acceptance checks PASS (19:39/19:44Eastern triggers). Entries does not compare collectors. No manual runs, task changes or record repairs.
 
 
+
+## CONTROLLING CORRECTION - Entries is linking-only - 29 October 2026
+
+Owner's latest instruction withdraws Records' assignment of collector/lane comparison to wef-entries. This supersedes the former approval-ready release below. Comparing, scoring or choosing between Schedules and Data is NOT an Entries responsibility. No comparison owner or replacement evaluator is appointed here. Keeping two collectors separate does not assign their evaluation to Entries.
+
+### Ownership and operating boundaries
+
+| Owner | Responsibility and protection |
+| --- | --- |
+| wef-records-coordinator | Maintain accurate source/consumer contracts and approval records. Do not turn coordination into another module's ownership or a collector trigger. |
+| wef-shows | Canonical shows/show-days and discovery, existing Data count publication, protected count replay and accepted local archive handoff. Locked to verified scope v1.4; no change for this plan. Verified defects permit investigation; fixes still require applicable approval. |
+| wef-schedules | Collect and publish schedule occurrences, dated context and evidence. No Entries dependency to collect/continue; no collector-comparison responsibility. Preserve keys, cadence and archives. |
+| Data under local wef-season-coordinator | Acquire/publish its own collected facts and evidence; provide the Data input contract. No authority to redefine or edit Entries. Latest separate Data/Season trip-assignment planning expressly excludes Entries. |
+| wef-season-* under local wef-season-coordinator | Retain and maintain history/entities; optional references do not gate otherwise supported linking or current collection. |
+| wef-live | Preserve approved v1.6 independent TODAY collection, canonical/context reads, logs and archives. Only the seven-field publication release above is newly approved; deployed; populated acceptance pending. No Entries read/enrichment/qualification/gate/preparation. No sibling acquisition or native-link writes. |
+| wef-entries | Link collected schedules, rings, groups, classes, horses, riders and trainers through source-supported participation identities. Validate and deduplicate relationships, keep provenance, flag missing/ambiguous links, preserve supported facts and publish for consumers. No source acquisition, collector comparison, collector selection or downstream business workflow. CWF is not a core input/output/gate. |
+
+Link validation and Conflict handling are ordinary linking duties, not collector benchmarking. Do not remove those safeguards under the mistaken claim that a linking module cannot qualify relationships.
+
+### Existing approved baseline versus newly discovered runtime discrepancy
+
+Entries scope v1.6, README and evidence/shared-schedules-20261029 describe the accepted shared-schedules-only baseline: active Entries-local synced schedules select matching accepted Data participation; canonical Shows validates scope; supported IDs/links/source times are preserved. Optional Season is nonblocking. Historical Entries -> Live references remain physically present only for links/history. The separately approved Live v1.6 collector no longer reads or qualifies Entries; restored Entries also does not read Live. No active read dependency exists in either direction.
+
+PROVENANCE RESOLVED: wef-season-coordinator implemented separate Entries changes in its implementation checkout under its interpretation of the owner's18:08approval, then deployed commits8afe89212 at18:22 andec753faa0 at18:36Eastern. The owner subsequently clarified the separate Entries module was outside Season responsibility. Root873b36e80 recorded already-deployed files; it was not the originating deployment. Evidence: Season transcript11539onward; outputs/entries-lanes-deployment-20261029.json and entries-bounds-deployment-20261029.json in that chat workspace. Prior 'unimplemented' statements were stale.
+
+CURRENT RESTORATION: owner explicitly APPROVED TO EDIT linking-only restoration, retaining records/links and size/readback/log fixes. Records deployed the selective correction at19:37:05Eastern through the unchanged task/lock route. No Live reads/enrichment or lane-generation path remains active; previous JSON and all records are retained. Runtime/proof scripts independently reviewed;41Node checks, compact Python regression and saved406class replay passed. Two distinct normal scheduled runs19:39/19:44Eastern passed with task0/businessPartial/noerrors and complete preservation readbacks. See wef-entries/evidence/linking-only-restoration-20261029/release.md and acceptance.json; restoration is accepted through the required two normal runs. No rollback/record repair/manual run or task change occurred.
+
+### What is withdrawn and what remains
+
+- Withdraw the former combined Entries comparison / Live enrichment / Data retirement-isolation approval request as an active build instruction. Agent feasibility agreement is not implementation authorization. The earlier owner architecture acceptance remains historical; the latest linking-only correction controls present scope.
+- Withdraw planned Entries collector-comparison outputs, new laneAssociations/liveEvidence JSON contract and new Live reader as requirements of that package. Their generation/read path has been removed by the separately approved and verified Entries restoration; previously saved JSON remains protected history, not an active requirement.
+- No Live input preparation, reverse-dependency cutover, new reader, sync or permission is authorized here. Existing approved consumption and separate approved archive/retirement work continue under their own scope.
+- Data retention-wait findings belong to the Data owner as a separately scoped issue, never an Entries release prerequisite. Its approval, tests, deployment and Source holds must be reconciled independently; no new permission is granted here.
+- Keep the two schedule collectors separate. Share exact source identities only where existing linking needs them. Do not merge key universes, insert foreign record IDs into native link fields, invent group attribution or renew original source timestamps.
+- Group/class/trip sequencing and target/focus discussion has no implementation owner assigned by this document. It does not add target evaluation or collector selection to Entries. Entry+class can have several trips; preserve separate trip identity.
+- Preserve historical evidence and existing approvals. Only the latest explicit scope replaces conflicting planning directions; no stop, restart, repair, deletion, task/cadence or cross-module edit follows from this correction.
+
+### Correction completion and remaining verification
+
+Central scope documents and five owner notices were corrected under explicit authorization. Provenance is now reconciled and separately approved restoration is deployed; two distinct normal scheduled acceptance runs and preservation readbacks PASS. Documentation or offline tests alone do not prove live restoration.
+
+## Shows / Schedules tables and TODAY Live views - 29 October 2026
+
+Documentation proposal only. Inspect and reuse prepared tables before any build. Nothing here creates tables, syncs, links, history projections or retirement jobs, or changes the existing collectors or cadence. Existing archive behavior is described separately from proposed browsing views.
+
+### Table responsibilities
+
+LOCKED: Shows verified v1.4 and Live approved v1.6. Only a verified defect or explicitly approved requirement reopens scope; investigation is not automatic edit approval. No collector/task/runtime changes are made by this lock.
+
+| Base | Table | Responsibility |
+| --- | --- | --- |
+| wef-shows | shows | Canonical show identity, name, dates and default selection. Retain the show index across show changes. |
+| wef-shows | show-days | One canonical record per show/date; publish verified daily summaries from accepted current Data evidence; Season retains history and is not a publication prerequisite. These records survive the end of the live day. |
+| wef-shows | sources | Discovery and supporting source evidence. |
+| wef-shows | heartbeat / run-logs / err-logs | Latest health, collection attempts/results, errors and archive evidence. |
+| wef-schedules | shows | Reuse the existing local show reference and schedule archive catalog; canonical authority stays in wef-shows. |
+| wef-schedules | schedules | Keep each operational schedule occurrence across every date of the current show, preserving existing stage-keys and record identities. |
+| wef-schedules | rings | Reuse existing dated ring records. Ring identity uses source/customer/facility and source ring ID; dated schedule references also retain show/date/ring number. Do not rekey the existing table or substitute ring ID, number and name for each other. |
+| wef-schedules | groups (proposed reference table) | Show-scoped source group ID, with dated ring context and links to schedule occurrences. |
+| wef-schedules | classes (proposed reference table) | Show-scoped source class ID as identity; class number/name for display and lookup. A class can belong to multiple groups; preserve separate schedule occurrences. |
+| wef-schedules | types / sequence-types / statuses (proposed lookup tables) | Reference actual source values and defined status meanings. Separate collected class/live status from collector success and historical/dropped state. |
+| wef-schedules | show-collection | Collection result and health per show/date, not a substitute for canonical show-day counts. |
+| wef-schedules | heartbeat / run-logs / err-logs | Latest health, attempts/results, errors and archive events. |
+
+Existing rings-helper/static owner data remains protected. The proposed references reuse or link prepared tables where suitable; they do not duplicate all-show acquisition, replace Data acquisition or Season retention, or authorize a new entity writer.
+
+### TODAY Live links - proposed read-only sync views
+
+wef-live owns current-day live-rings, live-groups, live-classes and live-entries. Read-only synced copies of these four tables may be exposed inside wef-shows and wef-schedules for browsing. They do not transfer collection ownership or extend Live's collection to all show dates. These inbound sync views are not claimed to be configured yet.
+
+| Destination | Link context |
+| --- | --- |
+| wef-shows | Match the canonical customer/show/date to the corresponding show-day, then browse its live rings/groups/classes/entries. |
+| wef-schedules | Match customer/show/date and source ring/group/class identities to the existing dated schedule records and actual stage-keys. Ring number must be validated against the dated ring; do not compare it directly with ring ID. |
+
+Identifiers remain distinct: entry-id identifies a show entry; the participation entry-key is show|date|entry|class; trip-id identifies a trip and is scoped as show|date|class|trip in Live's live-entry-key. None is interchangeable with a schedule occurrence or its stage-key. Multiple classes/groups/occurrences require attributable evidence; do not guess links from a name or class number. Ambiguous schedule associations are Conflict, missing links remain unresolved, and only dependent live views are affected. Missing, stale or conflicting Live data never stops Shows, Schedules or Entries. Entries remains linking-only; current independence and the resolved runtime-provenance history are distinguished above. The former forward-enrichment build is not an active instruction. These browsing views add no Entries-owned integration.
+
+### Current independent collectors; historical Entries reference retained
+
+Historical baseline: Live previously consumed the read-only wef-entries.entries reference and its five evidence/status fields. That read/qualification was removed under separate owner approval in Live v1.6, deployed19:33:37Eastern, two normal19:35/19:38runs verified. Existing sync/table/native links are preserved for history; their presence is not active collection dependency. Current Entries v1.7 also performs no Live reads or enrichment. No collector calls or qualifies the other. Preserve both verified releases; no new linking input or Live preparation is assigned by this document. Evidence: wef-live/evidence/no-entries-read-20261029/release.md and wef-entries/evidence/linking-only-restoration-20261029/acceptance.json.
+
+Live logging uses the actual existing table name errs-log alongside heartbeat, run-logs and collections. Heartbeat stamps each invocation; run-logs records the overall run outcome; errs-log records individual errors. This does not rename it to the err-logs tables used in Shows or Schedules.
+
+Proposed browsing views must filter by canonical customer/show/date, current-versus-historical scope and appropriate observation qualification; retained historical rows are not TODAY activity merely because they remain in Live. Observation freshness and participation-link qualification are separate. Validate the latter only when using linked participation/group answers; unresolved, Conflict or stale participation links do not suppress otherwise valid independent observations. The implementation and acceptance of these destination browsing filters remain proposed.
+
+### Day end: what stays and what is archived
+
+- No midnight delete is introduced. Live changes current/historical labeling by its validated show/date scope; the collectors do not use a clock change alone as permission to discard records.
+- Shows retains the show and its dated show-day record. Schedules retains that day's operational schedule as part of the current show's multi-day projection; a day ending does not trigger old-show retirement.
+- Earlier populated-only Live retirement wording is superseded by its separately approved scope amendment in wef-live/scope.md (29 October v1.4): valid successful empty/skipped runs may retire eligible older owned records after verified archives/catalogs. Partial/unresolved/failed runs remain excluded; current/future protections remain. This correction neither authorizes nor rolls back that separate Live release; its dated evidence is in wef-live/evidence/retirement-20261029/release.md.
+- Read-only Live syncs follow the source table and sync configuration. When Live retires source records, their continued presence or native links in destination syncs must not be assumed. These synced views are not permanent history, and Shows/Schedules records must not depend on their survival.
+- Local verified Live archives preserve the prior observations. A permanent browsable Airtable history or durable archive index in a destination base would require a separately agreed retention/sync implementation; merely adding a sync does not provide it. Live's separately approved archive-catalog release has its own evidence in wef-live/evidence/retirement-20261029/release.md; it is not an Entries preparation task. Destination permanent browsable history remains separate.
+- On a later new-show rollover, Schedules waits for all new-show dates to succeed, archives/verifies the exact old schedule and show-collection records, then retires them from active tables. The local shows archive catalog and run-logs retain file references/counts/verification; archived content remains in wef-schedules/runtime/history/retired. That show rollover is separate from Live's daily rollover.
+
+The current diagram removes the former Entries-to-Live read arrow; retained sync/native links are history, not active collector inputs. Data handoffs are not execution triggers. Existing source ownership, keys, archives and failure protections remain controlling.
+
+## WITHDRAWN Records comparison release - retained audit only
+
+NOT AN ACTIVE PLAN OR APPROVAL REQUEST. Retained verbatim to show what Records proposed before the owner corrected Entries back to linking-only. Any old statement of implementation/approval readiness below is superseded. Do not implement or use it as ownership authority.
 
 ## Owner-reviewed mapping and approval plan - 29 October 2026
 
@@ -71,59 +200,6 @@ Rollback: restore reviewed prior deployed code through existing routes after app
 Approve the schedule-comparison/common-participation boundary and optional TODAY bypass, then code edits, focused offline tests, independent review, established deployment and two normal scheduled verifications for the named Entries and Data files above. Approve three GET-only Live tables and read-only existing normalized archives; existing source-json gains additive lane/enrichment evidence only. No additional Airtable fields, tables, views, syncs, task/cadence changes, manual runs, repairs or deletion scope are included.
 
 Not in this release: independent lane-A participation acquisition; mandatory Data -> Live -> Entries routing; Live production changes; removal of Entries -> Live qualification/reference; native Data/Live cross-base relationships; optional Shows/Schedules browsing syncs/lookups; permanent browsable history or archive-catalog implementation. Reverse-dependency removal needs a separately mapped replacement and approval after first-release acceptance. These are explicit exclusions, not claims of completed implementation.
-
-## Shows / Schedules tables and TODAY Live views - 29 October 2026
-
-Documentation proposal only. Inspect and reuse prepared tables before any build. Nothing here creates tables, syncs, links, history projections or retirement jobs, or changes the existing collectors or cadence. Existing archive behavior is described separately from proposed browsing views.
-
-### Table responsibilities
-
-| Base | Table | Responsibility |
-| --- | --- | --- |
-| wef-shows | shows | Canonical show identity, name, dates and default selection. Retain the show index across show changes. |
-| wef-shows | show-days | One canonical record per show/date; publish verified daily summaries from accepted current Data evidence; Season retains history and is not a publication prerequisite. These records survive the end of the live day. |
-| wef-shows | sources | Discovery and supporting source evidence. |
-| wef-shows | heartbeat / run-logs / err-logs | Latest health, collection attempts/results, errors and archive evidence. |
-| wef-schedules | shows | Reuse the existing local show reference and schedule archive catalog; canonical authority stays in wef-shows. |
-| wef-schedules | schedules | Keep each operational schedule occurrence across every date of the current show, preserving existing stage-keys and record identities. |
-| wef-schedules | rings | Reuse existing dated ring records. Ring identity uses source/customer/facility and source ring ID; dated schedule references also retain show/date/ring number. Do not rekey the existing table or substitute ring ID, number and name for each other. |
-| wef-schedules | groups (proposed reference table) | Show-scoped source group ID, with dated ring context and links to schedule occurrences. |
-| wef-schedules | classes (proposed reference table) | Show-scoped source class ID as identity; class number/name for display and lookup. A class can belong to multiple groups; preserve separate schedule occurrences. |
-| wef-schedules | types / sequence-types / statuses (proposed lookup tables) | Reference actual source values and defined status meanings. Separate collected class/live status from collector success and historical/dropped state. |
-| wef-schedules | show-collection | Collection result and health per show/date, not a substitute for canonical show-day counts. |
-| wef-schedules | heartbeat / run-logs / err-logs | Latest health, attempts/results, errors and archive events. |
-
-Existing rings-helper/static owner data remains protected. The proposed references reuse or link prepared tables where suitable; they do not duplicate all-show acquisition, replace Data acquisition or Season retention, or authorize a new entity writer.
-
-### TODAY Live links - proposed read-only sync views
-
-wef-live owns current-day live-rings, live-groups, live-classes and live-entries. Read-only synced copies of these four tables may be exposed inside wef-shows and wef-schedules for browsing. They do not transfer collection ownership or extend Live's collection to all show dates. These inbound sync views are not claimed to be configured yet.
-
-| Destination | Link context |
-| --- | --- |
-| wef-shows | Match the canonical customer/show/date to the corresponding show-day, then browse its live rings/groups/classes/entries. |
-| wef-schedules | Match customer/show/date and source ring/group/class identities to the existing dated schedule records and actual stage-keys. Ring number must be validated against the dated ring; do not compare it directly with ring ID. |
-
-Identifiers remain distinct: entry-id identifies a show entry; the participation entry-key is show|date|entry|class; trip-id identifies a trip and is scoped as show|date|class|trip in Live's live-entry-key. None is interchangeable with a schedule occurrence or its stage-key. Multiple classes/groups/occurrences require attributable evidence; do not guess links from a name or class number. Ambiguous schedule associations are Conflict, missing links remain unresolved, and only dependent live views are affected. Missing, stale or conflicting Live data never stops Shows, Schedules or Entries. Entries remains linking-only; existing reverse dependencies and proposed forward handoffs are distinguished above. These browsing views add no Entries-owned integration.
-
-### Existing Entries reference and Live qualification
-
-Live already consumes the read-only wef-entries.entries reference. Alongside identities, original observation times and scalar/plural schedule keys, that reference includes schedule-link-status, schedule-link-basis, group-link-status, link-issues and source-json evidence. This is an existing data handoff, not a job trigger or an Entries-owned downstream workflow. Entries remains linking-only and stops at its own publication; Live owns qualification and consumption. See wef-live/evidence/entries-contract-20261029/release.md for dated acceptance.
-
-Live logging uses the actual existing table name errs-log alongside heartbeat, run-logs and collections. Heartbeat stamps each invocation; run-logs records the overall run outcome; errs-log records individual errors. This does not rename it to the err-logs tables used in Shows or Schedules.
-
-Proposed browsing views must filter by canonical customer/show/date, current-versus-historical scope and appropriate observation qualification; retained historical rows are not TODAY activity merely because they remain in Live. Observation freshness and participation-link qualification are separate. Validate the latter only when using linked participation/group answers; unresolved, Conflict or stale participation links do not suppress otherwise valid independent observations. The implementation and acceptance of these destination browsing filters remain proposed.
-
-### Day end: what stays and what is archived
-
-- No midnight delete is introduced. Live changes current/historical labeling by its validated show/date scope; the collectors do not use a clock change alone as permission to discard records.
-- Shows retains the show and its dated show-day record. Schedules retains that day's operational schedule as part of the current show's multi-day projection; a day ending does not trigger old-show retirement.
-- Existing Live behavior archives prior observations before eligible retirement. Only a later clean qualifying populated collection can retire eligible earlier-date rows or same-date rows belonging to another valid show. Archives are compressed local files verified by readback/hash before removal. Empty, skipped, failed or unresolved runs do not authorize this cleanup; current-scope and future-date records are protected.
-- Read-only Live syncs follow the source table and sync configuration. When Live retires source records, their continued presence or native links in destination syncs must not be assumed. These synced views are not permanent history, and Shows/Schedules records must not depend on their survival.
-- Local verified Live archives preserve the prior observations. A permanent browsable Airtable history or durable archive index in a destination base would require a separately agreed retention/sync implementation; merely adding a sync does not provide it. Live's separately discussed archive-index work is not certified deployed by this document.
-- On a later new-show rollover, Schedules waits for all new-show dates to succeed, archives/verifies the exact old schedule and show-collection records, then retires them from active tables. The local shows archive catalog and run-logs retain file references/counts/verification; archived content remains in wef-schedules/runtime/history/retired. That show rollover is separate from Live's daily rollover.
-
-The diagram labels proposed read-only Live browsing arrows separately from the existing read-only Entries reference handoff. Data handoffs are not execution triggers. Existing source ownership, keys, archives and failure protections remain controlling.
 
 ## Historical working notes and dated evidence
 

@@ -1,3 +1,16 @@
+## Linking-only restoration - v1.7 - 29 October 2026
+
+Owner explicitly approved restoration of linking-only scope, preserving records, links and compact-input/readback/log fixes. Deployed 19:37:05 Eastern using the unchanged wef-entries-cwf-collector route and existing lock. Normal scheduled acceptance PASS:19:39 and19:44Eastern triggers completed task0/businessPartial without errors; both preservation readbacks passed. All513entries/446collections, checked links and source times preserved. See evidence/linking-only-restoration-20261029/acceptance.json.
+
+Only active Entries-local shared schedules select matching accepted Data class/participation evidence. No new Data-only participation outside those scopes. No shared schedules means no Data replay or business updates. Live reads/qualification/enrichment and collector comparison outputs are removed from active execution; the unused live-input helper is retained in release before/ history. Existing stored lane/Live JSON is preserved as historical evidence, not scrubbed, regenerated or used to select records. Current linking still validates identities, deduplicates, reports unresolved/Conflict and preserves supported facts.
+
+Preserved: compact once-per-day inventories below the existing 8MB bridge limit; bounded exact-key Airtable readbacks with lost-response protection; compressed verified archive indexes for oversized logs; all matcher/freshness/identity/group safeguards, existing keys, native/helper links and source times. No absence retirement, schema/task/cadence changes, manual runs or record repairs. Existing downstream Live consumes the unchanged core source-evidence/schedule contract; no consumer code or sync changes.
+
+Evidence: evidence/linking-only-restoration-20261029/ (before/, staged/, current-tests.txt, saved-replay-check.json, review.md, deployment.json, before.json, release.md). 41 current-contract Node checks, compact projection Python check and saved406class replay passed; independent review cleared the selective correction. Historical CWF/feed tests remain historical, with baseline failures documented; they do not restore tenant collection duties.
+
+This supersedes later comparison/enrichment implementation claims and earlier pending comparison proposals. Prior accepted shared-schedule linking behavior and historical evidence below remain protected. Data/Season scope and separately approved Live retirement work are independent.
+
+
 # Current scope: link the schedules shared into Entries
 
 Only active local shared schedules determine what Entries processes. Accepted Data supplies matching participation/group evidence; unrelated Data failures do not block supported links. No source-base schedule parity or dated-health replay. Missing evidence is reported and processing continues; ambiguous or duplicate schedule keys are Conflict. Actual read/write errors remain errors.

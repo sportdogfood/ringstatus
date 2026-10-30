@@ -1,0 +1,4 @@
+# Independent review - linking-only restoration
+Reviewer: native /root/review_entries_restoration; read-only, precisely scoped candidate review.
+Result: no blocking findings. Independently41Node+1Python PASS. Unchanged matcher/freshness hashes match baseline. Core downstream Live source-evidence/schedule contract supported. Shared-only scope/empty skip, record/helper/native-link/source-time/historical JSON preservation, Live access denial, bounded readback and archive-index checked. Offline acceptance only; two normal scheduled runs still required.
+Legacy collector.test.js asserts superseded CWF/feed/normalize behavior;18failures reproduced on untouched baseline. Source-retry test depends on repository-relative lib, so run at its original root path rather than staged relocation. No unrelated contract changes.

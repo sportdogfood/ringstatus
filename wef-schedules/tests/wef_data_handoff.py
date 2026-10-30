@@ -129,33 +129,94 @@ def revision_chain(head,runs,collections):
     return output
 
 
-def memberships(tables):
-    output = {t:{} for t in ('rings','horses','riders','trainers')}
-    def one(row,field,table):
-        links = row[field]['$links']
-        if len(links)!=1 or links[0][0]!=table:
-            raise ValueError('Ambiguous context: '+field)
-        return links[0][1]
-    def add(table,key,show,day):
-        if one(tables['days'][day],'show','shows') != show:
-            raise ValueError('Day/show conflict')
-        output[table].setdefault(key,set()).add((show,day))
-    for key,ring in tables['rings'].items():
-        add('rings',key,one(ring,'show','shows'),one(ring,'day','days'))
-    for trip in tables['trips'].values():
-        cls=tables['classes'][one(trip,'class','classes')]
-        entry=tables['entries'][one(trip,'entry','entries')]
-        show=one(cls,'show','shows');day=one(cls,'day','days')
-        if one(entry,'show','shows') != show:
-            raise ValueError('Entry/class show conflict')
-        ring=tables['rings'][one(cls,'ring','rings')]
-        if one(ring,'show','shows')!=show or one(ring,'day','days')!=day:
-            raise ValueError('Class/ring context conflict')
-        for table,field,entryfield in [('horses','horse','horse'),('riders','rider','riders'),('trainers','trainer','trainers')]:
-            refs=trip[field]['$links']
-            if not refs and table=='trainers':continue
-            key=one(trip,field,table)
-            if [table,key] not in entry[entryfield]['$links']:
-                raise ValueError('Trip/entry entity conflict')
-            add(table,key,show,day)
+def assignment_evidence(tables):
+    """Pure assessment of retained trip identities; parent lists are not assignments."""
+    from collections import Counter
+    def one(row,field,table,optional=False):
+        refs=row.get(field,{}).get('$links',[])
+        if optional and not refs:return None
+        if len(refs)!=1 or refs[0][0]!=table or refs[0][1] not in tables.get(table,{}):
+            raise ValueError('Invalid assignment context: '+field)
+        key=refs[0][1]
+        if str(tables[table][key].get(TABLE_KEYS[table]))!=key:raise ValueError('Assignment entity key mismatch')
+        return key
+    def identity(value):
+        if isinstance(value,bool) or not (type(value) is int or isinstance(value,str) and value.isdecimal()) or int(value)<=0:
+            raise ValueError('Invalid assignment source identity')
+        return int(value)
+    def scope(row):
+        show=one(row,'show','shows');day=one(row,'day','days')
+        if one(tables['days'][day],'show','shows')!=show:raise ValueError('Day/show conflict')
+        import datetime
+        date=str(tables['days'][day].get('date',''))[:10]
+        try:datetime.date.fromisoformat(date)
+        except ValueError as error:raise ValueError('Invalid assignment day') from error
+        context=tables['shows'][show]
+        if context.get('start-date') and not context['start-date'][:10]<=date<=context['end-date'][:10]:raise ValueError('Assignment day outside show')
+        return show,day
+    trips={};active={};incomplete=set()
+    for key,trip in tables.get('trips',{}).items():
+        if trip.get('trip-key')!=key:raise ValueError('Trip key mismatch')
+        ck=one(trip,'class','classes');ek=one(trip,'entry','entries');cls=tables['classes'][ck];entry=tables['entries'][ek]
+        show,day=scope(cls);ring=one(cls,'ring','rings')
+        if scope(tables['rings'][ring])!=(show,day):raise ValueError('Class/ring context conflict')
+        if one(entry,'show','shows')!=show:raise ValueError('Entry/class show conflict')
+        try:raw=json.loads(trip['source-json'])
+        except (KeyError,TypeError,ValueError) as error:raise ValueError('Missing trip source evidence') from error
+        if not isinstance(raw,dict) or identity(raw.get('entry_id'))!=identity(entry.get('entry-id')):raise ValueError('Trip/entry source identity conflict')
+        if raw.get('class_id') is not None and identity(raw['class_id'])!=identity(cls.get('class-id')):raise ValueError('Trip/class source identity conflict')
+        for field,source in [('trip-id','trip_id'),('source-uuid','entryxclasses_uuid')]:
+            if trip.get(field) not in (None,'') and str(trip[field])!=str(raw.get(source)):raise ValueError('Trip source occurrence conflict')
+        uuid=raw.get('entryxclasses_uuid')
+        if uuid:
+            if not isinstance(uuid,str) or not uuid.strip() or uuid!=uuid.strip():raise ValueError('Invalid trip source UUID')
+        else:identity(raw.get('trip_id'))
+        roles={}
+        for table,field in [('horses','horse'),('riders','rider'),('trainers','trainer')]:
+            linked=one(trip,field,table,optional=table=='trainers');source=raw.get(field+'_id')
+            if linked is None:
+                if source not in (None,'',0,'0'):raise ValueError('Missing source-backed trainer link')
+            else:
+                if identity(source)!=identity(tables[table][linked].get(field+'-id')):raise ValueError('Trip '+field+' source identity conflict')
+            roles[field]=linked
+        if one(entry,'horse','horses')!=roles['horse']:raise ValueError('Trip/entry horse conflict')
+        complete=roles['trainer'] is not None;historical=trip.get('record-status')=='dropped'
+        trips[key]={'entry':ek,'class':ck,'show':show,'day':day,**roles,'complete':complete,'historical':historical,'source-as-of':trip.get('last-success')}
+        if not historical:
+            if complete:active.setdefault(ek,set()).add(tuple(roles[f] for f in ('horse','rider','trainer')))
+            else:incomplete.add(ek)
+    withheld={}
+    for key,entry in tables.get('entries',{}).items():
+        tuples=active.get(key,set());reasons=[]
+        parent={f:{k for t,k in entry.get(f,{}).get('$links',[])} for f in ('riders','trainers')}
+        if len(tuples)>1:reasons.append('multiple-trip-assignments')
+        if any(len(values)>1 for values in parent.values()):reasons.append('multiple-parent-associations')
+        if not tuples:reasons.append('no-complete-trip-assignment')
+        if key in incomplete:reasons.append('incomplete-trip-assignment')
+        if len(tuples)==1:
+            value=next(iter(tuples))
+            if any(parent[f] and parent[f]!={value[index]} for f,index in [('riders',1),('trainers',2)]):reasons.append('unreconciled-parent-associations')
+        if reasons:withheld[key]=reasons
+    reasons=Counter(reason for values in withheld.values() for reason in values)
+    return {'trips':trips,'withheld-entries':withheld,'summary':{
+        'complete-trips':sum(t['complete'] for t in trips.values()),'incomplete-trips':sum(not t['complete'] for t in trips.values()),
+        'historical-trips':sum(t['historical'] for t in trips.values()),'withheld-entries':len(withheld),'withholding-reasons':dict(sorted(reasons.items()))}}
+
+
+def memberships(tables,assessment=None):
+    """Dated source history, independent of ambiguous registration-role arrays."""
+    assessment=assignment_evidence(tables) if assessment is None else assessment
+    output={t:{} for t in ('rings','horses','riders','trainers')}
+    def add(table,key,show,day):output[table].setdefault(key,set()).add((show,day))
+    for key,ring in tables.get('rings',{}).items():
+        def one(field,table):
+            refs=ring[field]['$links']
+            if len(refs)!=1 or refs[0][0]!=table or refs[0][1] not in tables.get(table,{}):raise ValueError('Invalid ring '+field)
+            return refs[0][1]
+        show=one('show','shows');day=one('day','days')
+        if tables['days'][day]['show']['$links']!=[['shows',show]]:raise ValueError('Ring day/show conflict')
+        add('rings',key,show,day)
+    for trip in assessment['trips'].values():
+        for table,field in [('horses','horse'),('riders','rider'),('trainers','trainer')]:
+            if trip[field] is not None:add(table,trip[field],trip['show'],trip['day'])
     return {t:{k:sorted(v) for k,v in rows.items()} for t,rows in output.items()}

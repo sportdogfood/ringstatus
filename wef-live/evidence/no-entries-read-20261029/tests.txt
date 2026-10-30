@@ -1,0 +1,179 @@
+✔ each invocation stamps Running before source work and finalizes the same heartbeat row (89.4127ms)
+✔ failed class retains reciprocal group membership when source moves it (7.7873ms)
+✔ ordinary class HTTP 502 is partial, preserves links and allows other classes (7.8541ms)
+✔ ordinary class timeout is partial, preserves links and allows other classes (6.4685ms)
+✔ ordinary class malformed is partial, preserves links and allows other classes (5.432ms)
+✔ ordinary class scope is partial, preserves links and allows other classes (12.4503ms)
+✔ run-log outage cannot interrupt collection or heartbeat and does not repeat per archive (8.1703ms)
+✔ heartbeat outage leaves collection and final run log successful (2.3305ms)
+✔ unresolved class does not prevent a different class from collecting (4.0934ms)
+✔ false live status skips source details and preserves records, then resumes when true (5.9847ms)
+✔ all TODAY groups completed skips widget and class requests; another day does not affect gate (12.9611ms)
+✔ empty or mixed groups do not imply completed and invalid status fails visibly (3.4707ms)
+✔ repeat collection keeps stable IDs, distinct ring ID/number, exact native links (4.6885ms)
+✔ untracked live entries are collected without binder matches (3.1509ms)
+✔ missing schedules do not prevent independent observations (1.7937ms)
+✔ confirmed empty is success (5ms)
+✔ empty source arrays preserve current and future records and links across repeated runs (10.3517ms)
+✔ empty widget with expected rings and malformed empty widgets still fail (13.5608ms)
+✔ wrong show response preserves existing data (17.5125ms)
+✔ empty successful rollover archives and retires old show once, preserving current rows (11.7668ms)
+✔ old rows retire on successful false skip (3.621ms)
+✔ old rows retire on successful completed skip (4.6919ms)
+✔ rollover labeling requires valid authority and successful archive (10.4336ms)
+✔ future source-selected date does not collect live (1.581ms)
+✔ unresolved class identity leaves previous entries intact (3.9397ms)
+✔ archive failure prevents collection writes and retirement (1.0395ms)
+✔ prior dates retire only after successful archive (3.5832ms)
+✔ malformed and wrong date data cannot be empty success (0.3944ms)
+✔ live trips cannot be mistaken for entry IDs (0.3521ms)
+✔ Airtable adapter refuses all writes to source and synced tables (14.6365ms)
+✔ temporary reference read failure preserves links and does not stop live observations (7.6516ms)
+✔ retirement adapter refuses missing archive and current date (3.3957ms)
+✔ multiple live groups link only their own active schedules, preserving repeat IDs (6.5595ms)
+✔ canonical authority read is direct, fresh, unique and never falls back to schedules (4.8439ms)
+✔ canonical shows cannot be written by live adapter (1.479ms)
+✔ one mismatched live/decoded snapshot refreshes the pair with both attempts archived (2.2365ms)
+✔ persistent missing identity is unresolved after one fresh pair, preserves links and resumes (4.7773ms)
+✔ separate source failures retain separate errors and ambiguous group stays blank (1.9634ms)
+✔ populated repeat collection never reads Entries or discovers its schema (4.6456ms)
+✔ existing participation link survives with original verification time, not renewed qualification (5.8248ms)
+✔ adapter rejects Entries reference reads before making a request (2.208ms)
+{
+  "run_id": "logging-1",
+  "ok": true,
+  "errors": [],
+  "completed": "2026-10-29T23:33:15.219Z",
+  "logging_errors": [
+    "run-logs timeout",
+    "errs-log unavailable; local receipt retained where writable: Airtable down"
+  ]
+}
+{
+  "run_id": "logging-2",
+  "ok": true,
+  "errors": [],
+  "completed": "2026-10-29T23:33:15.232Z",
+  "logging_errors": [
+    "run-logs timeout",
+    "errs-log unavailable; local receipt retained where writable: Airtable down"
+  ]
+}
+{
+  "run_id": "logging-3",
+  "ok": true,
+  "errors": [],
+  "completed": "2026-10-29T23:33:15.242Z",
+  "logging_errors": [
+    "run-logs timeout",
+    "Local receipt logging-3.json: ENOENT: no such file or directory, open 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-live-test-9S45Ul\\not-a-directory\\logging-3.json'",
+    "Local receipt last-run.json: ENOENT: no such file or directory, open 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-live-test-9S45Ul\\not-a-directory\\last-run.json'",
+    "Local errs-log: ENOENT: no such file or directory, open 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-live-test-9S45Ul\\not-a-directory\\errs-log.jsonl'",
+    "errs-log unavailable; local receipt retained where writable: Airtable down"
+  ]
+}
+{
+  "run_id": "partial",
+  "completed": "2026-10-29T23:33:15.247Z",
+  "ok": true,
+  "errors": [],
+  "unresolved": [
+    {
+      "class_id": 30,
+      "message": "No decoded identity for trip 400"
+    },
+    {
+      "class_id": 31,
+      "status": "error",
+      "message": "HTTP 502"
+    }
+  ],
+  "logging_errors": []
+}
+{
+  "run_id": "run-1",
+  "completed": "2026-10-23T18:00:00Z",
+  "ok": false,
+  "errors": [
+    "Source HTTP 502"
+  ],
+  "logging_errors": []
+}
+{
+  "run_id": "run-2",
+  "completed": "2026-10-23T18:00:00Z",
+  "ok": true,
+  "errors": [],
+  "logging_errors": []
+}
+{
+  "run_id": "ids",
+  "completed": "2026-10-25T14:00:00Z",
+  "ok": true,
+  "errors": [
+    "General error"
+  ],
+  "unresolved": [
+    {
+      "class_id": 200030349,
+      "trip_id": 200398787,
+      "group_id": 123,
+      "message": "No decoded identity for trip 200398787"
+    },
+    {
+      "class_id": 200030315,
+      "status": "error",
+      "message": "HTTP 502; timeout",
+      "messages": [
+        "HTTP 502",
+        "timeout"
+      ]
+    }
+  ],
+  "link_issues": [
+    {
+      "entry_key": "200000075|2026-10-25|200241392|200030375",
+      "class_id": 200030375,
+      "trip_id": 456,
+      "message": "Missing, stale or incomplete dated schedule collection"
+    }
+  ],
+  "logging_errors": []
+}
+{
+  "run_id": "e920d8db-3866-4be6-b037-a44ee49dcb7b",
+  "started": "2026-10-29T23:33:15.278Z",
+  "completed": "2026-10-29T23:33:15.284Z",
+  "ok": false,
+  "errors": [
+    "collection unavailable"
+  ],
+  "logging_errors": [
+    "errs-log unavailable; local receipt retained where writable: Airtable unavailable"
+  ]
+}
+✔ logging outages do not fail a completed collection or prevent next invocation (29.2355ms)
+✔ partial run writes unresolved identity to errs-log without failing the invocation (4.9586ms)
+✔ failed scheduled invocation logs errors and does not block the next invocation (10.2677ms)
+✔ each error gets its own record and exact optional IDs without changing messages (7.8874ms)
+✔ unexpected collection and Airtable logging failures retain local evidence and release lock (24.5066ms)
+✔ preservation never creates links or renews historical qualification (4.1929ms)
+✔ all snapshots and catalogs precede child-first retirement, catalog survives repeat (43.1628ms)
+✔ archive failure prevents every deletion (1.1211ms)
+✔ catalog failure prevents every deletion (0.8781ms)
+✔ readback failure prevents every deletion (0.7672ms)
+✔ uncertain deletion stops immediately, records uncertainty, no retry (1.1892ms)
+✔ upcoming canonical date protects today and future even for other shows (1.1916ms)
+✔ retirement scope permits old dates and same-date other shows only (1.6538ms)
+✔ same-date old-show adapter deletion requires an exact verified archive (149.1046ms)
+✔ Live modules load with tenant imports forbidden (352.8586ms)
+✔ local helpers preserve blank comparison, uniqueness and overlap protection (8.5246ms)
+✔ local archives reuse verified content and reject corruption (19.0958ms)
+ℹ tests 58
+ℹ suites 0
+ℹ pass 58
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 926.6528

@@ -17,15 +17,4 @@ function schedulesFor(show,local){
 function sharedClassKey(showId,date,classId,ring){return [Number(showId),String(date).slice(0,10),Number(classId),Number(ring)].join('|');}
 // Shared tenant-independent matcher; no production collector invocation.
 const {linkClass}=require('./participation-linker');
-function dataAssociation(row,show,schedules=[]){
- const candidates=schedules.filter(s=>s.kind==='class'&&Number(s.customerId)===Number(show.customer_id)&&Number(s.showId)===Number(show.show_id)&&s.date===row.date&&Number(s.classId)===row['class-id']);
- if(candidates.length>1)return{status:'Conflict',reason:'Ambiguous Data class/date occurrence'};
- const match=candidates[0];
- if(!match||Number(match.ringNumber)!==row['ring-number'])return{status:'unresolved',reason:'No matching Data class/date/ring occurrence'};
- if(!match.key||!match.recordId)return{status:'unresolved',reason:'Missing retained Data identity'};
- return{status:'linked',basis:'class-date-ring',...match,groupStatus:'unresolved',groupReason:'Class occurrence does not prove operational group eligibility'};
-}
-function scheduleAssociation(row){
- return{status:row['schedule-link-status'],basis:row['schedule-link-basis']??null,key:row['schedule-key']??null,recordIds:row.schedules??[],reason:row['schedule-link-reason']??null,groupStatus:row['group-link-status'],groupEvidence:row['group-link-evidence']??null};
-}
-module.exports={scope,schedulesFor,sharedClassKey,linkClass,dataAssociation,scheduleAssociation};
+module.exports={scope,schedulesFor,sharedClassKey,linkClass};

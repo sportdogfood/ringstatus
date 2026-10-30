@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-29T23:33:37.4167537Z",
+  "files": [
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\participation.js",
+      "Hash": "BB42027BEA9EAA9557E53E63F39EEB9403760FB491DD77A971A3E6A01A0A69F8"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\airtable.js",
+      "Hash": "29DC3D02EB65320698C3A5C88428D7AB92265135EBDA86963CFA363871FE4800"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\settings.js",
+      "Hash": "C577CAD3B11CB8DB0970DA2A2092C0F21CC8C26EAFD028F2308CA7BC5BB7AE35"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\verify.js",
+      "Hash": "C0483558419C9D9EA90BD2741981DA85136E509E666A0467F1048E1AE97E7976"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\collector.js",
+      "Hash": "E732AB6F1CCE0CC692C394734F72BC482BA2E67FA7A32F10699F5416EC2C5C06"
+    }
+  ],
+  "route": "Existing scheduled task, no manual invocation"
+}

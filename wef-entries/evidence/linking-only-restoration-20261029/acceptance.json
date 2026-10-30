@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "deployedAt": "2026-10-29T23:37:05.226Z",
+  "runs": [
+    {
+      "label": "run-1",
+      "run": "db51c5bc-4270-4194-993f-74b54dc6a8b5",
+      "started": "2026-10-29T23:39:02.270Z",
+      "completed": "2026-10-29T23:40:22.854Z",
+      "ok": true,
+      "result": "Partial",
+      "rows": 471,
+      "accepted": 471,
+      "outside": 86,
+      "entries": 513,
+      "errors": [],
+      "checks": {
+        "uniqueKeys": true,
+        "allOriginalRecords": true,
+        "nativeFields": 988,
+        "outsideScopeUnchanged": 28,
+        "historicalEvidenceFields": 496,
+        "collectionIdsPreserved": 446,
+        "collectionNativeFields": 175,
+        "taskXmlUnchanged": true,
+        "sourceTimesNotRegressed": true,
+        "noNewOutsideScope": true,
+        "logsHeartbeat": true,
+        "deployedHashes": true,
+        "noLiveExecution": true
+      }
+    },
+    {
+      "label": "run-2",
+      "run": "c09f9521-a35f-4cb9-9172-dce34de9a48c",
+      "started": "2026-10-29T23:44:03.540Z",
+      "completed": "2026-10-29T23:45:48.959Z",
+      "ok": true,
+      "result": "Partial",
+      "rows": 471,
+      "accepted": 471,
+      "outside": 86,
+      "entries": 513,
+      "errors": [],
+      "checks": {
+        "uniqueKeys": true,
+        "allOriginalRecords": true,
+        "nativeFields": 988,
+        "outsideScopeUnchanged": 28,
+        "historicalEvidenceFields": 496,
+        "collectionIdsPreserved": 446,
+        "collectionNativeFields": 175,
+        "taskXmlUnchanged": true,
+        "sourceTimesNotRegressed": true,
+        "noNewOutsideScope": true,
+        "logsHeartbeat": true,
+        "deployedHashes": true,
+        "noLiveExecution": true
+      }
+    }
+  ],
+  "taskResults": [
+    0,
+    0
+  ],
+  "manualRuns": 0,
+  "taskChanges": 0,
+  "recordRepairs": 0,
+  "recordsDeleted": 0,
+  "review": "Independent native reviewer cleared runtime and proof scripts; 41 Node + Python compact regression + actual saved406class replay passed.",
+  "limitations": "Partial reflects unresolved relationship evidence; no record repairs. Historical lane/live JSON intentionally retained; no ongoing generation or consumption by Entries."
+}

@@ -13,8 +13,8 @@ test('Live modules load with tenant imports forbidden', () => {
       return original.call(this,name,...args);
     };
     for(const name of ['entry','collector','airtable','verify','archive','runtime-utils'])
-      require('./wef-live/'+name);
-  `], {cwd:path.resolve(__dirname,'../..')});
+      require('./'+name);
+  `], {cwd:path.resolve(__dirname,'..')});
 });
 
 test('local helpers preserve blank comparison, uniqueness and overlap protection', () => {

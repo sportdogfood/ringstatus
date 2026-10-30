@@ -1,0 +1,29 @@
+{
+  "run": "bde1033a-61f5-4e44-b843-ef45bd73ec54",
+  "outcome": "partial",
+  "purge_status": "purge_confirmation_pending",
+  "authority": {
+    "token": "d8f1c433df63041be2ce597cfe2d4ab4adb86af195985b37fff52a9bbd570903",
+    "context": {
+      "customer": 15,
+      "show": 200000076,
+      "day": "2026-10-29",
+      "show_record": "rec3DXsFtpXxx2Rr7",
+      "retired_shows": []
+    },
+    "run_id": "bde1033a-61f5-4e44-b843-ef45bd73ec54"
+  },
+  "retired_shows": [],
+  "retirement_cutoffs": {},
+  "counts": {
+    "evaluated": 80,
+    "written": 80,
+    "unchanged": 0,
+    "deferred": 147,
+    "available": 0,
+    "partial": 21,
+    "unavailable": 59,
+    "purged": 0,
+    "purge_deferred": 0
+  }
+}

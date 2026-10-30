@@ -1,0 +1,30 @@
+{
+  "files": [
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication-api.js",
+      "Hash": "E756795E90946A9BF99B26677DA49E6A8B670D78729B86A4CAD5D2157241B2AE"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication-journal.js",
+      "Hash": "F97762D89FADBA3F49C568E73B697D3AE4B2C1863CF210AD85BAB391EA849809"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication.js",
+      "Hash": "19E2B9DD2C48C0E15C725B1B5AD0FB4271F18172B4BE1A5D6FE5290A315F368F"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\airtable.js",
+      "Hash": "D4CA0D2AA33B0CD3D970899DFF47BFC84E359E4318422BAAF8E0DB4CBE2B5741"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\entry.js",
+      "Hash": "112266E8E4E512EF2BC12B56A592162D44E79FC26EC4547377FBC61245551720"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\collector.js",
+      "Hash": "ECE7E06371CEE514D012D7360CCC9DF7F310D7F5D25094BCD85F467B113E1ACF"
+    }
+  ],
+  "route": "Existing wef-live-collector task; no invocation or task change",
+  "at": "2026-10-30T00:28:06.1216968Z"
+}

@@ -1,9 +1,20 @@
+## LOCKED - wef-shows verified scope v1.4 - 29 October 2026
+
+Owner directs this module to remain locked. This is a scope lock, not a disabled collector or filesystem restriction. Preserve the five-minute task, canonical shows/show-days, discovery and source checks, Data count reader and protected replay, accepted local archive handoff, keys/links and verified logs/heartbeat. No build or preparation for Entries is pending.
+
+Dependency direction: Entries reads canonical Shows; scheduled Shows does not read, write, qualify or trigger Entries. Count evidence comes directly from wef-data; the Season coordinator owns that producer separately. Season retention is not an intermediary or readiness gate. Older descriptions of Season-supplied summaries below are historical coordinator wording, superseded by this inspected direct-reader clarification. No count replay or archive check is removed.
+
+Reopen only for a verified defect or explicitly approved requirement. A verified defect authorizes investigation, not an unapproved fix, deployment, schema/task change or record repair. Earlier proposals do not reopen this scope. Existing independently approved operation continues.
+
 # WEF default-show authority
 
 ## Locked operating plan and responsibilities — 24 October 2026
 
 This is the agreed scope for the wef-shows chat. Changes to this boundary require
 explicit owner approval. This is a responsibility baseline, not a filesystem lock.
+Clarified 29 October 2026 against [scope.md v1.4](scope.md). Shows remains locked;
+reopen only for a verified defect or an explicitly approved requirement. A defect
+does not itself authorize a code change.
 
 1. Independently discover Wellington's default show every five minutes.
 2. Validate and publish show identity, show dates and the source-selected date.
@@ -16,7 +27,7 @@ explicit owner approval. This is a responsibility baseline, not a filesystem loc
 | --- | --- |
 | wef-shows | Sole writer of canonical show context in `appCaSmL819KK7UFJ`; owns discovery, its archives, run-logs and heartbeat. Holds cross-consumer source-repair history. |
 | wef-schedules | Reads show authority; owns schedule/class/group/ring/date collection and local links in `appUq5Qz9kARqFija`. |
-| wef-entries | Reads show authority; owns tenant-derived participation and the CWF consumer migration in `appSxF4pYMBaxpTZd`, including its approved CWF boundary. |
+| wef-entries | Linking-only module in `appSxF4pYMBaxpTZd`. Reads canonical Shows authority and links accepted evidence, preserving identities, native links, provenance and source times. No source acquisition, comparison/selection engine or tenant workflow ownership. |
 | wef-live | Reads show authority; owns today's live observations, trip identities and local reference links in `appgzosUcVqA4vZdf`. |
 | wef-records-coordinator | Records handoffs, dependencies and owner acceptance; coordinates any shared-source changes before implementation. |
 
@@ -26,11 +37,16 @@ selections, user follows or permissions. `selected_date` is source-selected,
 not automatically TODAY. Missing, ambiguous, inconsistent or older-than-30-minute
 authority must not become an invented show or trigger another collector.
 
-Downstream collectors, CWF helpers, schemas, tasks and acceptance remain with
+Entries reads Shows; Shows does not read, write or trigger wef-entries during
+normal scheduled operation. Shows count evidence comes directly from Data,
+not Entries. Entries or CWF readiness is not a Shows collection gate.
+
+Downstream collectors, tenant helpers, schemas, tasks and acceptance remain with
 their respective owners. This chat hands off exact source IDs, affected runs,
 retained evidence and unresolved questions. It does not independently edit
-downstream or overlapping shared-source code. The approved CWF base is
-`appxKPBtdl2Rdq7CS`; its consumer/helper ownership belongs to the entries owner.
+downstream or overlapping shared-source code. CWF is a separate downstream
+consumer, outside Shows inputs, outputs, dependencies and acceptance gates;
+tenant integration is not assigned to the Entries linking module.
 
 Current plan: preserve the proven discovery implementation and five-minute
 cadence. No additional build is needed for this scope. Any future change must
@@ -95,10 +111,10 @@ does not trigger a manual discovery fallback or erase prior schedules.
 The existing schedules `shows` records and their IDs remain in place as linked
 local mirrors. Source fields come from wef-shows; archive fields remain owned by
 schedules. The mirror's last_checked preserves the canonical discovery time.
-Entries and live now read canonical wef-shows directly. CWF consumes the
-entries-owned synced participation through its approved migration. Those later
-consumer changes are owned and verified by their respective chats; the initial
-release evidence below retains its original, narrower scope.
+Entries and Live read canonical wef-shows directly; the dependency is from each
+consumer to Shows, not the reverse. Consumers own their reads and acceptance.
+This README makes no current CWF migration or compatibility claim. The initial
+release evidence below retains its original, narrower scope and historical checks.
 
 ## Scope and evidence
 
@@ -110,6 +126,9 @@ depend on a completed schedules run.
 `configure.js` writes destination schema only. `entry.js` is the scheduled
 business entry point; do not invoke it manually for proof. `verify.js` reads
 existing receipts, records and archives only. Release evidence is in `evidence`.
+`verify-consumers.js` remains an existing verification helper with Entries/Live
+references; it is not a dependency of scheduled Shows collection and is unchanged
+by this documentation clarification.
 Private credentials, source responses and operational state are ignored under
 `runtime/`. Deployment acceptance requires two normal scheduled consumer runs.
 
