@@ -171,6 +171,10 @@ function airtable({
         throw Error("Incomplete retirement");
     }
   }
+  function forRetention(deadline){
+    const guard=()=>{if(Date.now()>=deadline)throw Error('Log retention deadline exhausted');};
+    return airtable({token,pause:async ms=>{guard();await pause(ms);guard();},request:(url,options)=>{guard();return request(url,{...options,signal:AbortSignal.any([options.signal,AbortSignal.timeout(Math.max(1,deadline-Date.now()))].filter(Boolean))});}});
+  }
   async function oldErrors(cutoff,maxRows,accept=()=>true){
     const rows=[];let offset;do{const q=new URLSearchParams({pageSize:'100',filterByFormula:`IS_BEFORE({occurred-at},'${cutoff}')`,...(offset?{offset}:{})});const d=await call(settings.BASE_ID,'errs-log','GET',undefined,'?'+q);rows.push(...d.records.filter(accept));offset=d.offset;}while(offset&&rows.length<maxRows);return rows.slice(0,maxRows);
   }
@@ -197,6 +201,6 @@ function airtable({
     if(!t)throw Error('Missing reference schema');
     return t.fields.map(f=>f.name);
   }
-  return { list, upsert, call, retire, retireLogs, oldErrors, fieldNames, publicationEnabled: true };
+  return { list, upsert, call, retire, retireLogs, oldErrors, forRetention, fieldNames, publicationEnabled: true };
 }
 module.exports = { airtable };

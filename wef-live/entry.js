@@ -28,6 +28,16 @@ async function scheduled({
       }
     };
     save();
+    if(report.ok && api.retireLogs){
+      try{report.log_retention=await require('./log-retention').retainLogs({api,runtime,runId:report.run_id});}
+      catch(error){report.log_retention={status:'Failed',error:error.message};}
+      if(['Failed','Blocked'].includes(report.log_retention.status))loggingError('Log retention '+report.log_retention.status+': '+(report.log_retention.error||report.log_retention.reason));
+      report.summary=(report.summary||'')+' Log retention: '+report.log_retention.status+', '+(report.log_retention.deleted||0)+' completed records removed.';
+      const retained=(report.log_retention.tables||[]).flatMap(t=>t.batch?[t.batch,t.manifest]:[]);report.archives||=[];report.archives.push(...retained);
+      try{await api.upsert('run-logs','run-id',[{'run-id':report.run_id,summary:report.summary,'archive-count':report.archives.length,archives:report.archives.map(a=>`${a.at}: ${a.kind} ${a.outcome}; ${a.records} records; ${a.file}; SHA256 ${a.sha256}${a.cleanup ? '; cleanup '+a.cleanup : ''}`).join('\n')}]);}catch(e){loggingError('Retention run-log: '+e.message);}
+      try{await api.upsert('heartbeat','heartbeat-key',[{'heartbeat-key':report.run_id,summary:report.summary}]);}catch(e){loggingError('Retention heartbeat: '+e.message);}
+      save();
+    }
     const messages = [...(report.errors || []).map(message=>({message})),
       ...(report.publication_errors || []).map(e=>({message:`Publication ${e.lane}: ${e.message}`})),
       ...(report.unresolved || []).flatMap(u=>(u.messages?.length?u.messages:[u.message]).map(message=>({message:`${u.status === 'error' ? 'Class error' : 'Unresolved class'} ${u.class_id}: ${message}`,class_id:u.class_id,trip_id:u.trip_id,group_id:u.group_id}))),

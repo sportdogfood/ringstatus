@@ -1,0 +1,26 @@
+{
+  "run_id": "a3e2a70f-ff7f-4f81-83c7-07d21e2536a6",
+  "started": "2026-10-30T14:43:01.870Z",
+  "ok": true,
+  "errors": [],
+  "source_lane": "data_live",
+  "destination": "appYOykKIy1kAquhP",
+  "counts": {
+    "evaluated": 202,
+    "written": 202,
+    "unchanged": 0,
+    "deferred": 0,
+    "available": 0,
+    "partial": 0,
+    "unavailable": 202,
+    "purged": 0,
+    "purge_deferred": 0,
+    "classes_evaluated": 372,
+    "classes_unchanged": 0,
+    "classes_unavailable": 372,
+    "classes_written": 372
+  },
+  "purge_status": "archive_required",
+  "completed": "2026-10-30T14:43:59.970Z",
+  "clock_verified": true
+}

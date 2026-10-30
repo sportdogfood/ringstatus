@@ -29,6 +29,18 @@ test('independent readback rejects missing, altered, duplicate and unexpected re
  }
 });
 
+test('readback rejects swapped record associations but accepts reordered intact records',async()=>{
+ const writes=[{'answer-key':'first','content-hash':'one'},{'answer-key':'second','content-hash':'two'}];
+ const swapped=fixture(),read=swapped.api.list;
+ swapped.api.list=async(...args)=>{const rows=await read(...args);[rows[0].id,rows[1].id]=[rows[1].id,rows[0].id];return rows;};
+ await assert.rejects(writeAnswers(swapped.api,writes),/Timing readback identity mismatch/);
+ const reordered=fixture(),list=reordered.api.list;
+ reordered.api.list=async(...args)=>(await list(...args)).reverse();
+ const saved=await writeAnswers(reordered.api,writes);
+ assert.equal(saved.length,2);assert.equal(saved[0].fields['answer-key'],'second');
+ for(const row of saved)assert.equal(row.fields['answer-key'],reordered.db[T.answers].find(r=>r.id===row.id).fields['answer-key']);
+});
+
 test('filtered readback follows all offsets with the same exact-record filter',async()=>{
  const urls=[],formula="OR(RECORD_ID()='rec00000000000001')";
  const transport=api({token:'inert',lane:'data_live',deadline:Date.now()+10000,request:async(url)=>{

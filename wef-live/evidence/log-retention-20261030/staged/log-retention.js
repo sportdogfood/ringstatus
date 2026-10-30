@@ -10,7 +10,8 @@ function eligible(table,row,cutoff,parents={}){
  return terminal.has(f.result)&&old(f.completed)&&(table!=='heartbeat'||f['heartbeat-key']===run);
 }
 function verified(receipt){const b=zlib.gunzipSync(fs.readFileSync(receipt.file));if(crypto.createHash('sha256').update(b).digest('hex')!==receipt.sha256)throw Error('Log archive hash mismatch');return JSON.parse(b);}
-async function retainLogs({api,runtime,runId,now=new Date().toISOString(),maxRowsPerTable=1000}){
+async function retainLogs({api,runtime,runId,now=new Date().toISOString(),maxRowsPerTable=250,budgetMs=240000}){
+ const deadline=Date.now()+budgetMs;api=api.forRetention?api.forRetention(deadline):api;
  const stop=path.join(runtime,'log-retention-stop.json');if(fs.existsSync(stop))return{status:'Blocked',reason:'Prior retention failure requires owner review',stopFile:stop};
  const result={status:'Success',cutoff:new Date(Date.parse(now)-86400000).toISOString(),tables:[],deleted:0};
  const initial=fs.openSync(stop,'wx');try{fs.writeFileSync(initial,JSON.stringify({runId,at:now,status:'InProgress'}));fs.fsyncSync(initial);}finally{fs.closeSync(initial);}
@@ -24,6 +25,7 @@ async function retainLogs({api,runtime,runId,now=new Date().toISOString(),maxRow
   data['errs-log']=await api.oldErrors(result.cutoff,maxRowsPerTable,r=>!active.has(r.fields['run-id'])&&eligible('errs-log',r,result.cutoff,parents));
   const catalogs=await api.list('collections');
   for(const table of TABLES){
+   if(Date.now()>deadline-60000){result.status='Deferred';result.reason='Retention budget reserved for next normal run';break;}
    const rows=data[table].filter(r=>!active.has(r.fields['run-id'])&&eligible(table,r,result.cutoff,parents)).sort((a,b)=>String(a.fields.completed||a.fields['occurred-at']).localeCompare(String(b.fields.completed||b.fields['occurred-at']))).slice(0,maxRowsPerTable);
    if(!rows.length){result.tables.push({table,archived:0,deleted:0});continue;}
    const key='log-archive|'+table,previous=catalogs.filter(r=>r.fields['collection-id']===key);if(previous.length>1)throw Error('Duplicate log archive catalog');

@@ -17,24 +17,24 @@ function selectShow(rows,now){
 function sameAuthority(left,right){return left.record.id===right.record.id&&hash(left.context)===hash(right.context);}
 async function writeAnswers(api,writes){
   if(!writes.length)return [];
-  const ids=new Set();
+  const ids=new Map();
   for(let i=0;i<writes.length;i+=10){
     const batch=writes.slice(i,i+10),result=await api.upsert(T.answers,'answer-key',batch);
     if(!Array.isArray(result?.records)||result.records.length!==batch.length)throw Error('Timing write response coverage mismatch');
     verifyRows(result.records,batch,'answer-key');
     for(const row of result.records){
       if(!/^rec[A-Za-z0-9]{14}$/.test(row.id)||ids.has(row.id))throw Error('Timing write response identity mismatch');
-      ids.add(row.id);
+      ids.set(row.id,row.fields['answer-key']);
     }
   }
   // Independent GET readback; batch only the query, never the evaluated scope.
   // list() follows every offset, including an unexpected duplicate response page.
-  const saved=[],recordIds=[...ids];
+  const saved=[],recordIds=[...ids.keys()];
   for(let i=0;i<recordIds.length;i+=100){
     const batch=recordIds.slice(i,i+100);
     saved.push(...await api.list(TIMING,T.answers,'OR('+batch.map(id=>`RECORD_ID()='${id}'`).join(',')+')'));
   }
-  if(saved.some(row=>!ids.has(row.id))||new Set(saved.map(row=>row.id)).size!==saved.length)throw Error('Timing readback identity mismatch');
+  if(saved.some(row=>!ids.has(row.id)||ids.get(row.id)!==row.fields['answer-key'])||new Set(saved.map(row=>row.id)).size!==saved.length)throw Error('Timing readback identity mismatch');
   verifyRows(saved,writes,'answer-key');
   if(saved.length!==writes.length)throw Error('Timing readback coverage mismatch');
   return saved;

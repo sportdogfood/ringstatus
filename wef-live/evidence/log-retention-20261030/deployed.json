@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\log-retention.js",
+      "Hash": "7D351CB97B711ACDFA3D90120E4287E55F252A1FF1972693980F08B5D325F897"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\airtable.js",
+      "Hash": "4F83DE8F6FF4EBAD6BAFF3B00B63A59FF85F1E25C86A54DD395B2BF9224CCCEC"
+    },
+    {
+      "Path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\entry.js",
+      "Hash": "ED488350367BD346F6D3B81B94494A3926A24B01C32E051BF46D0843AB7203B1"
+    }
+  ],
+  "at": "2026-10-30T14:40:40.1601323Z",
+  "route": "Existing wef-live-collector task; no manual invocation or task changes"
+}

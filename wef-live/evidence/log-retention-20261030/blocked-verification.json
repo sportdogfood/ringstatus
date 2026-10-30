@@ -1,0 +1,11 @@
+{
+  "run": "b09174d2-e4a0-49db-9798-c089cf45a1c6",
+  "started": "2026-10-30T14:41:13.172Z",
+  "completed": "2026-10-30T14:41:53.882Z",
+  "collectionOk": false,
+  "errors": [
+    "Source HTTP 504 at /iphonev2/index.php/esp/liveclassv2/ListAjax"
+  ],
+  "retention": null,
+  "status": "BLOCKED: normal source collection failed; retention correctly skipped"
+}
