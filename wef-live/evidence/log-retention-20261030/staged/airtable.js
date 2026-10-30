@@ -171,8 +171,8 @@ function airtable({
         throw Error("Incomplete retirement");
     }
   }
-  async function oldErrors(cutoff,maxRows){
-    const rows=[];let offset;do{const q=new URLSearchParams({pageSize:'100',filterByFormula:`IS_BEFORE({occurred-at},'${cutoff}')`,...(offset?{offset}:{})});const d=await call(settings.BASE_ID,'errs-log','GET',undefined,'?'+q);rows.push(...d.records);offset=d.offset;}while(offset&&rows.length<maxRows);return rows;
+  async function oldErrors(cutoff,maxRows,accept=()=>true){
+    const rows=[];let offset;do{const q=new URLSearchParams({pageSize:'100',filterByFormula:`IS_BEFORE({occurred-at},'${cutoff}')`,...(offset?{offset}:{})});const d=await call(settings.BASE_ID,'errs-log','GET',undefined,'?'+q);rows.push(...d.records.filter(accept));offset=d.offset;}while(offset&&rows.length<maxRows);return rows.slice(0,maxRows);
   }
   async function retireLogs(table,rows,cutoff,receipt,parents){
     const policy=require('./log-retention');
@@ -180,7 +180,7 @@ function airtable({
     const path=require('node:path');if(!path.resolve(receipt.file).startsWith(path.resolve(settings.RUNTIME,'history')+path.sep))throw Error('Log archive outside history');
     if(JSON.stringify(policy.verified(receipt))!==JSON.stringify(rows))throw Error('Log archive rows mismatch');
     for(let i=0;i<rows.length;i+=10){const batch=rows.slice(i,i+10);const q=new URLSearchParams({filterByFormula:'OR('+batch.map(r=>`RECORD_ID()="${r.id}"`).join(',')+')'});const current=(await call(settings.BASE_ID,table,'GET',undefined,'?'+q)).records;
-      if(current.length!==batch.length||batch.some(r=>{const c=current.find(c=>c.id===r.id);return !c||JSON.stringify(c.fields)!==JSON.stringify(r.fields)||!policy.eligible(table,c,cutoff,parents);}))throw Error('Log changed before deletion');
+      if(current.length!==batch.length||batch.some(r=>{const c=current.find(c=>c.id===r.id);return !c||!require('node:util').isDeepStrictEqual(c.fields,r.fields)||!policy.eligible(table,c,cutoff,parents);}))throw Error('Log changed before deletion');
       await pause(250);const query=new URLSearchParams();for(const r of batch)query.append('records[]',r.id);
       const response=await request(`https://api.airtable.com/v0/${settings.BASE_ID}/${encodeURIComponent(table)}?${query}`,{method:'DELETE',headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
       if(!response.ok)throw Error('Log retirement HTTP '+response.status);const d=await response.json();if(d.records?.length!==batch.length||d.records.some(r=>!r.deleted)||JSON.stringify(d.records.map(r=>r.id).sort())!==JSON.stringify(batch.map(r=>r.id).sort()))throw Error('Uncertain log deletion');
