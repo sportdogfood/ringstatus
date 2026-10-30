@@ -1,6 +1,7 @@
 'use strict';
 const {evaluateClassTiming,instant}=require('./class-timing');
 const {ageReason,hash,POLICY,schedulePace}=require('./pace');
+const {TIMING,SYNC_GROUPS,syncSample}=require('./api');
 const DATA='appdl16HJ5ETm8N69', LIVE='appgzosUcVqA4vZdf', SHOWS='appCaSmL819KK7UFJ';
 const zone='America/New_York';
 const formatter=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
@@ -34,14 +35,30 @@ function paceEvidence(rows,identity,group,inventory,now,issues){
   if(f['answer-kind']!=='ring-pace'||f['source-lane']!=='data_live'||f.phase!=='base'||p.phase!=='base'||p.schema_version!==1
    ||!['customer','show','date','ring','group'].every(k=>p.identity?.[k]===identity[k])
    ||f['show-id']!==identity.show||f.date!==identity.date||f['ring-number']!==identity.ring||f['group-id']!==identity.group)throw Error('identity');
+  const progress=p.group_progress;
+  let final=false;
+  if(progress?.quality==='final'){
+   const synced=inventory.synced_live,ref=progress.ref;
+   if(!synced||ref?.base!==TIMING||ref.table!==SYNC_GROUPS)throw Error('final_source_missing');
+   const found=synced.groups.filter(r=>r.id===ref.record);if(found.length!==1)throw Error('final_source_identity');
+   const verified=syncSample(found[0],synced.rings,{customer:identity.customer,show:identity.show,day:identity.date,now});
+   if(verified.status!=='Completed'||hash(verified.ref)!==hash(ref)||verified.at!==progress.observed_at||verified.total!==progress.total||verified.gone!==progress.completed
+    ||verified.identity.ring!==identity.ring||verified.identity.group!==identity.group)throw Error('final_source_content');
+   final=true;
+  }
+  const validClock=(at,limit)=>{const reason=ageReason(at,now,limit);return reason===null||(final&&reason==='stale_observation');};
   const method=p.pace_method,limit=method==='observed_interval'?600000:1800000;
   if(!['observed_interval','schedule_window'].includes(method)||method!==f['pace-method']
    ||f.availability!==(method==='observed_interval'?'available':'partial')
    ||!Number.isFinite(p.selected_pace_minutes_per_trip)||p.selected_pace_minutes_per_trip<=0
    ||f['pace-minutes-per-trip']!==Math.round(p.selected_pace_minutes_per_trip*10000)/10000
-   ||instant(f['evaluated-at'])>instant(now)||ageReason(f['observed-at'],now,limit))throw Error('pace_or_freshness');
-  if(!Array.isArray(refs)||!refs.length||refs.some(r=>![DATA,LIVE,SHOWS].includes(r.base)
-   ||ageReason(r.observed_at,now,r.base===LIVE?600000:1800000)))throw Error('supporting_freshness');
+   ||instant(f['evaluated-at'])>instant(now)||!validClock(f['observed-at'],limit))throw Error('pace_or_freshness');
+  if(!Array.isArray(refs)||!refs.length||refs.some(r=>{
+   if(![DATA,LIVE,SHOWS,TIMING].includes(r.base))return true;
+   if(r.base===TIMING&&!validSyncRef(r,identity,now))return true;
+   const reason=ageReason(r.observed_at,now,r.base===LIVE?600000:1800000);
+   return reason!==null && !(final&&[DATA,LIVE,TIMING].includes(r.base)&&reason==='stale_observation') && !(method==='observed_interval' && r.base===DATA && reason==='stale_observation');
+  }))throw Error('supporting_freshness');
   const sourceRefs=refs.filter(r=>r.base===DATA);
   if(!sourceRefs.length||sourceRefs.some(r=>r.observed_at!==inventory.observed_at)
    ||hash(sourceRefs.map(refCore).sort((a,b)=>a.key.localeCompare(b.key)))!==hash(inventory.refs.map(refCore).sort((a,b)=>a.key.localeCompare(b.key))))throw Error('data_revision');
@@ -50,22 +67,30 @@ function paceEvidence(rows,identity,group,inventory,now,issues){
   if(typeof f['answer-key']!=='string'||!f['answer-key'].startsWith(scope+'|')
    ||!(f['answer-key']===scope+'|'+f['content-hash']||f['answer-key'].endsWith('|'+f['content-hash'].slice(0,16))))throw Error('answer_key');
   if(method==='observed_interval'){
+   if(final&&p.final_transition){
+    const q=p.final_transition.before,ref=progress.ref,raw=ref.material.group.fields;
+    const classes=JSON.parse(raw['source-json']).classes.map(c=>`${identity.show}|${identity.date}|${Number(c)}`).sort();
+    if(p.final_transition.completed_at!==progress.observed_at||q.status!=='Underway'||hash(q.classes)!==hash(classes)||q.total!==progress.total||!Number.isSafeInteger(q.gone)||q.gone<0||q.gone>q.total||!validEndpointRef(q.ref,identity,now,q)
+     ||instant(q.at)===null||instant(q.at)>instant(progress.observed_at)||(q.at===progress.observed_at&&q.gone!==progress.completed)
+     ||q.membership!==hash({members:q.classes,ring:identity.ring,gid:identity.group,status:q.status})
+     ||p.interval.endpoints.some(e=>e.membership!==q.membership)||instant(p.interval.to)>instant(q.at))throw Error('final_transition');
+   }
    const v=p.interval;
    if(!v||v.to!==f['observed-at']||!Array.isArray(v.endpoints)||v.endpoints.length!==2
-    ||ageReason(v.from,now,600000)||ageReason(v.to,now,600000))throw Error('interval_evidence');
+    ||!validClock(v.from,600000)||!validClock(v.to,600000))throw Error('interval_evidence');
    const [a,b]=v.endpoints,dt=instant(b.at)-instant(a.at),dn=b.gone-a.gone;
    if(a.at!==v.from||b.at!==v.to||dt<=0||dn<=0||dn!==v.new_completions||a.total!==b.total
     ||a.membership!==b.membership||dt/60000/dn!==p.selected_pace_minutes_per_trip
     ||p.observed_interval_pace_minutes_per_trip!==p.selected_pace_minutes_per_trip
     ||v.endpoints.some(e=>!positive(e.total)||!Number.isSafeInteger(e.gone)||e.gone<0||e.gone>e.total
-     ||e.ref?.base!==LIVE||e.ref.observed_at!==e.at||!sha(e.ref.fingerprint))
-    ||!refs.some(r=>r.base===LIVE&&r.fingerprint===b.ref.fingerprint&&r.observed_at===b.at))throw Error('interval_counts');
+     ||!validEndpointRef(e.ref,identity,now,e)||e.ref.observed_at!==e.at||!sha(e.ref.fingerprint))
+    ||!(refs.some(r=>[LIVE,TIMING].includes(r.base)&&r.fingerprint===b.ref.fingerprint&&r.observed_at===b.at) || (p.last_proven_interval?.to===v.to && hash(p.last_proven_interval.endpoints)===hash(v.endpoints) && refs.some(r=>[LIVE,TIMING].includes(r.base)&&r.fingerprint===p.group_progress?.ref?.fingerprint&&r.observed_at===p.group_progress?.observed_at))))throw Error('interval_counts');
   }else if(f['observed-at']!==inventory.observed_at||p.schedule_pace_minutes_per_trip!==p.selected_pace_minutes_per_trip
     ||schedulePace(group.rows).value!==p.selected_pace_minutes_per_trip)throw Error('schedule_pace');
   return{identity:{...p.identity,phase:p.phase},source_lane:'data_live',observed_at:f['observed-at'],
    valid_until:new Date(Date.parse(f['observed-at'])+limit).toISOString(),
    ref:{source_key:scope,revision:f['content-hash'],base:'appYOykKIy1kAquhP',table:'timing-answers',record:record.id,input_refs:refs},
-   answer_key:f['answer-key'],member_class_ids:[...new Set(p.schedule_members.map(r=>r['class-id']).filter(positive))],
+   lifecycle:final?'final':'active_or_unknown',final_verified:final,answer_key:f['answer-key'],member_class_ids:[...new Set(p.schedule_members.map(r=>r['class-id']).filter(positive))],
    pace_minutes_per_trip:p.selected_pace_minutes_per_trip,method};
  }catch(error){issues.push('ring_pace_'+error.message);return null;}
 }
@@ -122,3 +147,10 @@ function adapt({lane='data_live',now,data,paceRows=[],liveClasses=new Map(),sche
  });
 }
 module.exports={adapt,localInstant,paceEvidence};
+
+function validSyncRef(ref,identity,now){try{
+ if(ref.base!==TIMING||ref.table!==SYNC_GROUPS||!ref.material||ref.material.group.id!==ref.record)return false;
+ const sample=syncSample(ref.material.group,[ref.material.ring],{customer:identity.customer,show:identity.show,day:identity.date,now});
+ return sample.identity.ring===identity.ring&&sample.identity.group===identity.group&&hash(sample.ref)===hash(ref);
+}catch{return false;}}
+function validEndpointRef(ref,identity,now,endpoint){if(ref?.base===LIVE)return sha(ref.fingerprint);if(!validSyncRef(ref,identity,now))return false;const sample=syncSample(ref.material.group,[ref.material.ring],{customer:identity.customer,show:identity.show,day:identity.date,now});return sample.total===endpoint.total&&sample.gone===endpoint.gone&&sample.membership===endpoint.membership;}

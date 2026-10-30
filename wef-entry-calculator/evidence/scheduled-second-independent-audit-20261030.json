@@ -1,0 +1,68 @@
+{
+  "at": "2026-10-30T19:51:59.698Z",
+  "run": "f0344c6e-4773-4fc9-b7d5-cedafd7c0d36",
+  "entry_snapshot_comparison": "PASS",
+  "identical_saved_snapshots": 207,
+  "duplicate_ids": 0,
+  "controls": {
+    "engine-checkpoints": [
+      {
+        "run-id": "f0344c6e-4773-4fc9-b7d5-cedafd7c0d36",
+        "last-outcome": "partial",
+        "completed-at": "2026-10-30T19:50:23.453Z",
+        "checkpoint-key": "entry-data-runner",
+        "duration-ms": 1645,
+        "counts-json": "{\"entries_evaluated\":207,\"entry_writes_planned\":0,\"entries_written\":0,\"entries_unchanged\":207,\"entries_available\":0,\"entries_partial\":0,\"entries_unavailable\":207,\"entry_scopes_skipped\":2}",
+        "started-at": "2026-10-30T19:50:21.808Z",
+        "state-json": "{\"version\":1,\"pending_write\":null,\"entry_failed\":null,\"counts\":{\"entries_evaluated\":207,\"entry_writes_planned\":0,\"entries_written\":0,\"entries_unchanged\":207,\"entries_available\":0,\"entries_partial\":0,\"entries_unavailable\":207,\"entry_scopes_skipped\":2},\"issues\":[{\"identity\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-30\",\"ring\":3,\"group\":200029550,\"class\":200030671,\"occurrence\":\"15|200000076|2026-10-30|3|200044782\",\"phase\":\"base\"},\"reason\":\"entry_occurrence_ambiguous\"},{\"identity\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-30\",\"ring\":3,\"group\":200029556,\"class\":200030671,\"occurrence\":\"15|200000076|2026-10-30|3|200044794\",\"phase\":\"base\"},\"reason\":\"entry_occurrence_ambiguous\"}],\"stage\":\"entry_logging\"}",
+        "policy-version": "entry-timing-v1"
+      }
+    ],
+    "run-logs": [
+      {
+        "run-id": "30f098aa-b24f-419a-a7b5-67a5fab0fc84",
+        "archive-count": 0,
+        "errors": "[]",
+        "summary": "{\"counts\":{\"entries_evaluated\":207,\"entry_writes_planned\":207,\"entries_written\":207,\"entries_unchanged\":0,\"entries_available\":0,\"entries_partial\":0,\"entries_unavailable\":207,\"entry_scopes_skipped\":2},\"issues\":[{\"identity\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-30\",\"ring\":3,\"group\":200029550,\"class\":200030671,\"occurrence\":\"15|200000076|2026-10-30|3|200044782\",\"phase\":\"base\"},\"reason\":\"entry_occurrence_ambiguous\"},{\"identity\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-30\",\"ring\":3,\"group\":200029556,\"class\":200030671,\"occurrence\":\"15|200000076|2026-10-30|3|200044794\",\"phase\":\"base\"},\"reason\":\"entry_occurrence_ambiguous\"}],\"retention\":\"archive_required\"}",
+        "entry-count": 207,
+        "date": "2026-10-30",
+        "archives": "[]",
+        "show-id": 200000076,
+        "completed": "2026-10-30T19:47:39.467Z",
+        "started": "2026-10-30T19:47:24.227Z",
+        "result": "partial"
+      },
+      {
+        "run-id": "f0344c6e-4773-4fc9-b7d5-cedafd7c0d36",
+        "archive-count": 0,
+        "errors": "[]",
+        "summary": "{\"counts\":{\"entries_evaluated\":207,\"entry_writes_planned\":0,\"entries_written\":0,\"entries_unchanged\":207,\"entries_available\":0,\"entries_partial\":0,\"entries_unavailable\":207,\"entry_scopes_skipped\":2},\"issues\":[{\"identity\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-30\",\"ring\":3,\"group\":200029550,\"class\":200030671,\"occurrence\":\"15|200000076|2026-10-30|3|200044782\",\"phase\":\"base\"},\"reason\":\"entry_occurrence_ambiguous\"},{\"identity\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-30\",\"ring\":3,\"group\":200029556,\"class\":200030671,\"occurrence\":\"15|200000076|2026-10-30|3|200044794\",\"phase\":\"base\"},\"reason\":\"entry_occurrence_ambiguous\"}],\"retention\":\"archive_required\"}",
+        "entry-count": 207,
+        "date": "2026-10-30",
+        "archives": "[]",
+        "show-id": 200000076,
+        "completed": "2026-10-30T19:50:22.025Z",
+        "started": "2026-10-30T19:50:21.808Z",
+        "result": "partial"
+      }
+    ],
+    "heartbeat": [
+      {
+        "completed": "2026-10-30T19:50:22.025Z",
+        "checked-at": "2026-10-30T19:50:22.025Z",
+        "result": "partial",
+        "show-id": 200000076,
+        "date": "2026-10-30",
+        "errors": "[]",
+        "heartbeat-key": "entry-data-runner",
+        "summary": "{\"counts\":{\"entries_evaluated\":207,\"entry_writes_planned\":0,\"entries_written\":0,\"entries_unchanged\":207,\"entries_available\":0,\"entries_partial\":0,\"entries_unavailable\":207,\"entry_scopes_skipped\":2},\"issues\":[{\"identity\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-30\",\"ring\":3,\"group\":200029550,\"class\":200030671,\"occurrence\":\"15|200000076|2026-10-30|3|200044782\",\"phase\":\"base\"},\"reason\":\"entry_occurrence_ambiguous\"},{\"identity\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-30\",\"ring\":3,\"group\":200029556,\"class\":200030671,\"occurrence\":\"15|200000076|2026-10-30|3|200044794\",\"phase\":\"base\"},\"reason\":\"entry_occurrence_ambiguous\"}],\"retention\":\"archive_required\"}",
+        "run-id": "f0344c6e-4773-4fc9-b7d5-cedafd7c0d36",
+        "started": "2026-10-30T19:50:21.808Z"
+      }
+    ],
+    "errs-log": []
+  },
+  "limitations": [
+    "All entry predictions remain unavailable. Partial scheduled outcome is not usable-go-time acceptance."
+  ]
+}

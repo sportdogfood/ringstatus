@@ -1,6 +1,6 @@
 "use strict";
 const fs=require('node:fs'),path=require('node:path'),{execFile}=require('node:child_process');
-const {api:makeApi,TIMING,SHOWS,LIVE,DATA_TABLES:T,CLASS_TIMING,CLASS_ANSWERS}=require('./api');
+const {api:makeApi,TIMING,SHOWS,LIVE,DATA_TABLES:T,CLASS_TIMING,CLASS_ANSWERS,SYNC_GROUPS,SYNC_RINGS,syncSample,syncToken}=require('./api');
 const {POLICY,hash,ageReason,evaluate}=require('./pace');
 const {archive,verifyRows,collectionToken}=require('./runner');
 const {prepare:prepareClasses}=require('./class-worker');
@@ -91,7 +91,8 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
     const pinned=readPointer(context);let data;
     try{data=await readData(context,deadline);}catch(error){if(!error.deferred)throw error;delete state.purge_authority;state.input_status='budget_deferred';await save('input_deferred');report.status='deferred';report.deferred_reason=state.input_status;report.completed=clock();return report;}
     if(!data.inventories?.[context['selected-date']])throw Error('Today Data inventory missing');
-    const liveBefore=await api.list(LIVE,'collections',`AND({show-id}=${sid},{source-kind}='groups')`);
+    const syncFilter=`AND({show-id}=${sid},{customer-id}=${customer},{date}='${context['selected-date']}')`;
+    const liveBefore=await api.list(TIMING,SYNC_GROUPS,syncFilter),syncRings=await api.list(TIMING,SYNC_RINGS,syncFilter);
     const again=selectShow(await api.list(SHOWS,'shows'),clock());
     const showChanged=!sameAuthority(selected,again),afterPointer=showChanged?null:readPointer(context);
     const headChanged=afterPointer!==null&&hash(afterPointer)!==hash(pinned),proofMismatch=data.proof['run-key']!==pinned.head;
@@ -121,24 +122,27 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
         groups.set(key,{...group,original:group,observedAt:inventory.observed_at,refs:inventory.refs,reason});
       }
     }
-    const liveSamples=new Map(),blocked=new Set();state.live_input_issues=[];
-    for(const c of liveBefore){
-      if(c.fields.status!=='complete'||c.fields.date!==purge.localDay(clock())||ageReason(c.fields.completed,clock(),600000))continue;
-      try{
-        const values=readArchive(c.fields['archive-file'],path.join(ROOT,'wef-live/runtime/history'),c.fields.fingerprint),candidate=new Map();
-        if(!Array.isArray(values)||values.length!==c.fields['row-count'])throw Error('Live archive coverage mismatch');
-        for(const g of values){const raw=JSON.parse(g['source-json']),rn=Number(raw.ring_number),gid=g['class-group-id'];
-          if(g['show-id']!==sid||g['customer-id']!==customer||g.date!==c.fields.date||g['scope-status']!=='current'||!Number.isSafeInteger(rn)||!Number.isSafeInteger(gid)||!Array.isArray(g._classes)||!g._classes.length||g._classes.some(k=>typeof k!=='string')||new Set(g._classes).size!==g._classes.length)throw Error('Live identity/membership invalid');
-          if(ageReason(g['last-seen'],clock(),600000)||Date.parse(g['last-seen'])>Date.parse(c.fields.completed))throw Error('Live observation invalid');
-          const key=[sid,g.date,rn,gid].join('|'),classes=[...g._classes].sort();
-          if(candidate.has(key)||liveSamples.has(key)||blocked.has(key)){blocked.add(key);liveSamples.delete(key);throw Error('Duplicate Live group');}
-          candidate.set(key,{at:g['last-seen'],total:g.total,gone:g.gone,classes,membership:hash({members:classes,ring:rn,gid,status:g.status}),
-            ref:{base:LIVE,table:'collections',record:c.id,fingerprint:c.fields.fingerprint,observed_at:g['last-seen']}});
-        }
-        for(const [k,v]of candidate)liveSamples.set(k,v);
-      }catch{state.live_input_issues.push('live_archive_unusable');}
-    }
-    if(collectionToken(liveBefore)!==collectionToken(await api.list(LIVE,'collections',`AND({show-id}=${sid},{source-kind}='groups')`))){delete state.purge_authority;state.input_status='live_changed';await save('input_deferred');report.status='deferred';report.deferred_reason=state.input_status;report.completed=clock();return report;}
+    const liveSamples=new Map(),blocked=new Set(),nativeCounts=new Map();state.live_input_issues=[];
+    // Account for identifiable native scopes before rejecting any value/clock.
+    const nativeIds=row=>{
+      const f=row.fields;if(f['show-id']!==sid||f['customer-id']!==customer||f.date!==context['selected-date'])return [];
+      let raw;try{raw=JSON.parse(f['source-json']);}catch{raw={};}
+      const key=String(f['group-key']||'').split('|');
+      return [...new Set([f['class-group-id'],raw.class_group_id,...(key[0]===String(sid)&&key[1]===f.date?[key[2]]:[])].map(Number).filter(n=>Number.isSafeInteger(n)&&n>0))];
+    };
+    for(const row of liveBefore)for(const id of nativeIds(row))nativeCounts.set(id,(nativeCounts.get(id)||0)+1);
+    const ambiguousIds=new Set([...nativeCounts].filter(([,count])=>count>1).map(([id])=>id));
+    for(const row of liveBefore){
+     if(nativeIds(row).some(id=>ambiguousIds.has(id))){state.live_input_issues.push('duplicate_synced_group');continue;}
+     try{
+      const sample=syncSample(row,syncRings,{customer,show:sid,day:context['selected-date'],now:clock()}),i=sample.identity,key=[sid,i.date,i.ring,i.group].join('|');
+      if(liveSamples.has(key)||blocked.has(key)){liveSamples.delete(key);blocked.add(key);state.live_input_issues.push('duplicate_synced_group');continue;}
+      liveSamples.set(key,sample);
+    }catch(error){state.live_input_issues.push(error.message);}}
+    const syncUnchanged=async()=>syncToken(liveBefore)===syncToken(await api.list(TIMING,SYNC_GROUPS,syncFilter))&&syncToken(syncRings)===syncToken(await api.list(TIMING,SYNC_RINGS,syncFilter));
+    if(!await syncUnchanged()){delete state.purge_authority;state.input_status='live_changed';await save('input_deferred');report.status='deferred';report.deferred_reason=state.input_status;report.completed=clock();return report;}
+    // Pass exact native evidence to Class's independent pace validator, without altering producer facts.
+    for(const inv of Object.values(data.inventories))inv.synced_live={groups:liveBefore,rings:syncRings};
     let existing=await api.list(TIMING,T.answers);const seen=new Set();for(const r of existing){if(seen.has(r.fields['answer-key']))throw Error('Duplicate Data snapshot');seen.add(r.fields['answer-key']);}
     if(state.pending_purge){
       for(const p of state.pending_purge.records){const actual=existing.find(r=>r.id===p.id);if(actual)throw Error('Pending Data purge requires owner resolution');}
@@ -157,13 +161,14 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
       const g=groups.get(key);let live=liveSamples.get(key);if(live&&hash(live.classes)!==hash(g.class_keys)){live=null;state.live_input_issues.push('live_data_membership_conflict');}
       const refs=[{base:SHOWS,table:'shows',record:show.id,observed_at:show.fields.last_checked},
         ...g.refs.map(ref=>({...ref,observed_at:g.observedAt})),...(live?[live.ref]:[])];
-      const result=evaluate({identity:g.identity,rows:g.rows,observedAt:g.observedAt,inputRefs:refs,sourceReason:g.reason||ageReason(g.observedAt,clock(),1800000),live,previous:state.baselines[key],now:clock(),sourceLane:'data_live'});
+      const result=evaluate({identity:g.identity,rows:g.rows,observedAt:g.observedAt,inputRefs:refs,sourceReason:g.reason||ageReason(g.observedAt,clock(),1800000),live,liveIssue:ambiguousIds.has(g.identity.group)?'live_group_ambiguous':null,previous:state.baselines[key] && (!state.baselines[key].classes || hash(state.baselines[key].classes)===hash(g.class_keys)) ? state.baselines[key] : null,now:clock(),sourceLane:'data_live'});
       result.fields['answer-key']=result.fields['scope-key']+'|'+runId+'|'+result.fields['content-hash'].slice(0,16);
       report.counts.evaluated++;report.counts[result.fields.availability]++;
       if(latest.get(result.fields['scope-key'])?.fields['content-hash']!==result.fields['content-hash'])writes.push(result.fields);else report.counts.unchanged++;
       baselines[key]=result.baseline;processed.push(key);
     }
     if(purge.localDay(clock())!==paceDay){state.input_status='day_changed';await save('input_deferred');report.status='deferred';report.deferred_reason=state.input_status;report.completed=clock();return report;}
+    if(!await syncUnchanged())throw defer('synced_live_changed_before_publication');
     const savedPace=await publish(api,writes,TIMING,T.answers),savedKeys=new Set(savedPace.map(r=>r.fields['answer-key']));
     const afterPace=[...existing.filter(r=>!savedKeys.has(r.fields['answer-key'])),...savedPace];
     report.counts.written=writes.length;
@@ -180,6 +185,7 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
     report.counts.classes_unavailable=batch.outputs.filter(x=>x.fields.availability==='unavailable').length;
     if(Date.now()>deadline-15000)throw Error('Time budget exhausted before class publication');
     if(purge.localDay(clock())!==classDay){state.input_status='day_changed';await save('input_deferred');report.status='deferred';report.deferred_reason=state.input_status;report.completed=clock();return report;}
+    if(!await syncUnchanged())throw defer('synced_live_changed_before_class_publication');
     await publish(classApi,batch.writes,CLASS_TIMING,CLASS_ANSWERS);
     report.counts.classes_written=batch.writes.length;state.class_live_issues=liveClass.issues;state.class_scope_count=batch.outputs.length;state.evaluation_cutoff=classDay;
     for(const [k,v]of Object.entries(baselines)){if(v)state.baselines[k]=v;else delete state.baselines[k];}

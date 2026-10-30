@@ -68,8 +68,9 @@ function evaluateClassTiming(input) {
     }
     const observed = instant(value.observed_at), expires = instant(value.valid_until);
     const maxAge = name === 'live' || (group && value.method === 'observed_interval') ? 600000 : 1800000;
-    if (observed === null || expires === null || observed > evaluated || expires <= evaluated || expires <= observed
-        || evaluated - observed >= maxAge || expires - observed > maxAge) {
+    const finalPace = name==='ring_pace' && group && value.lifecycle==='final' && value.final_verified===true && identity.date===localDate(evaluated,timezone);
+    if (observed === null || expires === null || observed > evaluated || expires <= observed
+        || (!finalPace && (expires <= evaluated || evaluated - observed >= maxAge)) || expires - observed > maxAge) {
       reasons.push(name + '_observation_unusable'); return null;
     }
     if (!text(value.ref?.source_key) || !text(value.ref?.revision)) {

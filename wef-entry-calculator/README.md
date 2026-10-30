@@ -9,11 +9,12 @@ Human **APPROVED TO EDIT** and requested code-review in coordinator turn `01a18e
 - **23/23 Node checks PASS**, including actual entry stage, checkpoint/log readbacks, both input orders and repeat runs: [raw report](evidence/node-malformed-group-20261030.txt).
 - Unchanged Python retained-projection fixtures **4/4 PASS** using `wef-data/.venv/Scripts/python.exe`: [raw report](evidence/python-project-runtime-20261030.txt).
 - [Frozen source hashes](evidence/malformed-group-hashes-20261030.json) and [writer plus independent review](evidence/malformed-group-review-20261030.md).
-- Ring is staging full shared-runner regressions using the actual entry stage, followed by combined independent review. **No entry deployment or normal scheduled acceptance yet.**
+- Combined actual-stage regression **175/175 PASS**, independent Class review PASS (turn `01a18e56-e587-70e1-8d61-e63cc148c4ba`). Ring deployed the frozen nine-file payload at 15:45 Eastern. Both normal scheduled runs completed; see [scheduled acceptance](evidence/scheduled-acceptance-20261030.md). No manual runs.
+- First run saved 32 ring, 38 class and 207 entry snapshots. Second run reported all unchanged and zero writes. Fresh Entry GET confirmed all 207 saved IDs and fields identical, with matching checkpoint/log/heartbeat and no pending intent or entry failure. Both outcomes are **partial**, not clean success or usable-go-time acceptance.
 - Production phase/sequence/start-anchor evidence is unproved. Answers preserve `phase_unproven`; a synthetic phase-proof test is not evidence of usable production predictions.
 - Retention remains disabled behind shared verified archive release. Tables and candidate code do not establish an active archival service.
 
-The earlier error-message test failure, system Python timezone setup failure and combined malformed-group review failure are retained in evidence. The first two were resolved; the last has this approved narrow correction but still needs full combined acceptance. New failed verification stops its affected path under the owner's rule.
+The earlier error-message test failure, system Python timezone setup failure and combined malformed-group review failure are retained in evidence. The first two were resolved; the last was resolved by the approved narrow correction, combined verification and independent review. New failed verification stops its affected path under the owner's rule.
 
 ## Base and ownership
 
@@ -29,7 +30,7 @@ Base `appyoLTcNmLrgpHcg`; exact field IDs and created/read-back schema in [schem
 | code-reviews | tblKzdte0XfjALsXS |
 | archive-catalog | tbligPSRSbgFeERyZ |
 
-Tables were created and independently listed. No business answers, operational review records or recurring review automation were created by this owner task. No active periodic review ID is claimed.
+Tables were created and independently listed. Business answers were written by the scheduled runner. No operational review records or recurring review automation were created by this owner task. No active periodic review ID is claimed.
 
 ## Source and implementation
 
@@ -56,13 +57,12 @@ Pass original unfiltered Data and the shared validator's original-object `exclud
 
 Shared save persists intent before entry PATCH; entry also mirrors its checkpoint with independent readback. Entry issues/counters remain separate from ring/class skips. Ring fences day/deadline/pinned pointer before each answer batch and Shows authority before the first. Uncertain writes stay blocked for owner review.
 
-Shared staging: `C:/Users/gombc/Documents/Codex/staging/wef-timing-entry-integration-20261030`. That directory's current release manifest and independent review control deployment; an older combined162-test result did not cover the real malformed-group interaction. Ring is replacing that coverage with actual-stage regressions.
+Shared deployed staging: `C:/Users/gombc/Documents/Codex/staging/wef-timing-entry-malformed-20261030`. Deployment receipt and first readback are under `deployment-a39241cc-fa09-4f4b-95ff-50025cc3b70d`. The earlier integration staging and 162-test result are superseded.
 
 ## Remaining acceptance
 
-1. Full shared real-stage malformed/duplicate continuation in both orders and repeated runs, then independent combined code-review.
-2. Coordinator-controlled idle reconciliation, exact frozen payload deployment and normal scheduled first/repeat-run proof across all three bases. Earlier orphan-lock state is dated evidence; recheck before acting.
-3. Full retained-workload capacity and projection size under the existing budgets; no synthetic-test timing claim of production capacity.
+1. Resolve the two ambiguous occurrence scopes through the authoritative producer; no manual record repair.
+2. Observed current-workload scheduled duration was 100.873 seconds then 82.583 seconds under existing budgets. Broader workload capacity is unproved; no general capacity claim.
 4. Proven phase/sequence/anchor semantics before usable go-time predictions; validated finish bounds before conflict findings. No new phase inference is authorized.
 5. Verified archive/index release before any cleanup, protecting current/future/sync records and uncertain intents. No active retention claim.
 6. Results/Messages/serving-time expiry contracts and any condition thresholds remain separate acceptance work, not implied by table creation.

@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-30T19:49:55.838Z",
+  "evidence": "C:\\Users\\gombc\\Documents\\Codex\\staging\\wef-timing-entry-malformed-20261030\\deployment-a39241cc-fa09-4f4b-95ff-50025cc3b70d\\scheduled-first-readback.json",
+  "run": "30f098aa-b24f-419a-a7b5-67a5fab0fc84",
+  "verdict": "PASS",
+  "errors": [],
+  "deployed_files_checked": 9,
+  "entry_snapshots": 207,
+  "verified_saved_class_links": 207,
+  "reasons": {
+    "live_trip_roster_missing_or_stale": 207,
+    "order_missing_or_ambiguous": 8,
+    "phase_start_or_progress_anchor_unproven": 207,
+    "phase_unproven": 207
+  },
+  "limitations": [
+    "Saved GET readback inspected; no fresh independent API call in this audit.",
+    "Partial source coverage and unavailable phase-dependent predictions; not useful-go-time acceptance.",
+    "Second scheduled run still required."
+  ]
+}
