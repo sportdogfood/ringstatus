@@ -1527,12 +1527,22 @@ class Runner:
 
 def run(schema_file):
     """Fresh day-zero collection. Errors are reported; no work is queued or resumed."""
-    errors=[];saved=set();show=None;day=None
+    errors=[];saved=set();show=None;day=None;runkey=None;run_started=stamp()
+    started=time.perf_counter();stage_started=started;timings={}
+    def timed(stage):
+        nonlocal stage_started
+        now=time.perf_counter();timings[stage]=round(now-stage_started,6);stage_started=now
     def error(target,exception):
         errors.append({'key':target,'error':type(exception).__name__+': '+str(exception) if isinstance(exception,Exception) else str(exception)})
     def report():
+        if runkey:
+            save('runs',[{'run-key':runkey,'mode':'Scheduled day-zero collection',
+                'started':run_started,'completed':stamp(),'status':'Partial' if errors else 'Succeeded',
+                'records':len(saved),'errors':len(errors),'elapsed-seconds':round(time.perf_counter()-started,6)}])
+            timed('save-run-summary')
         return {'ok':not errors,'state':'Partial' if errors else 'Saved',
-                'show-key':show,'day':day,'counts':{'saved':len(saved)},'item-errors':errors}
+                'show-key':show,'day':day,'run-key':runkey,'counts':{'saved':len(saved),
+                'stage-seconds':dict(timings),'total-seconds':round(time.perf_counter()-started,6)},'item-errors':errors}
     try:
         client=Airtable();source=Source()
         store=DataStore(client,json.loads(pathlib.Path(schema_file).read_text(encoding='utf-8')),cache=True)
@@ -1546,10 +1556,11 @@ def run(schema_file):
         day=selected['fields']['fldOeAP4c7F1lxIEd'][:10]
     except Exception as exception:
         error('Show and day selection',exception);return report()
+    timed('select-show-and-day')
 
-    tables=('rings','groups','classes','entries','trips')
+    tables=('rings','groups','classes','entries','trips','schedules','runs')
     def save(table,rows):
-        rows=list(rows)
+        rows=list(rows);written=set()
         for start in range(0,len(rows),10):
             batch=rows[start:start+10]
             try:
@@ -1573,9 +1584,12 @@ def run(schema_file):
                 response=client.request('PATCH',DATA_BASE,store.schema[table]['id'],body={'records':records})
                 acknowledged={row['id'] for row in response['records']}
                 for key,record in zip(keys,records):
-                    if record['id'] in acknowledged:saved.add((table,key))
+                    if record['id'] in acknowledged:
+                        written.add(key)
+                        if table!='runs':saved.add((table,key))
                     else:error(table+' '+key,'Write response did not acknowledge this record')
             except Exception as exception:error(table,exception)
+        return written
 
     def source_rows(rows):
         output=[]
@@ -1588,22 +1602,29 @@ def run(schema_file):
             output.append(value)
         return output
 
+    runkey='collection-'+(os.environ.get('WEF_LOG_ATTEMPT_ID') or run_started)
+    run_fields={'last-run':refs('runs',runkey)} if runkey in save('runs',[
+        {'run-key':runkey,'mode':'Scheduled day-zero collection','started':run_started,'status':'Started'}]) else {}
+    timed('save-run-start')
     params={'show_id':context['show-id'],'customer_id':context['customer-id']}
     try:
         payload,metric=source.fetch('/schedule',{**params,'date':day})
     except Exception as exception:
         error('Day inventory collection',exception);return report()
+    timed('fetch-rings-groups-classes')
     inventory={table:{} for table in tables[:3]}
+    schedules={}
     try:rings=iter(payload['rings'])
     except Exception as exception:error('Day inventory collection',exception);return report()
     for ring in rings:
         try:
             rk=show+'|'+day+'|'+str(ring['ring_number'])
             inventory['rings'][rk]={'ring-key':rk,'ring-id':ring.get('ring_id'),
-                'ring-number':ring['ring_number'],'ring-name':ring.get('ring_name')}
+                'ring-number':ring['ring_number'],'ring-name':ring.get('ring_name'),
+                'last-success':metric['completed'],**run_fields}
             items=iter(ring['classes'])
         except Exception as exception:error('Ring',exception);continue
-        for item in items:
+        for pos,item in enumerate(items):
             try:
                 gid=item.get('class_group_id');gk=rk+'|'+str(gid) if gid is not None else None
                 if gk:
@@ -1611,10 +1632,18 @@ def run(schema_file):
                         'group-name':item.get('group_name'),'last-success':metric['completed'],
                         'source-json':packed({k:v for k,v in item.items() if k.startswith('class_group') or k in ('group_name','class_list')})}
                 cid=item.get('class_id')
-                if cid is None:
+                ck=rk+'|'+str(cid) if cid is not None and not item.get('schedule_break') else None
+                schedulekey=rk+'|'+(str(item['class_groupxclasses_id']) if item.get('class_groupxclasses_id') is not None else 'position-'+str(pos))
+                schedules[schedulekey]={'schedule-key':schedulekey,'show':refs('shows',show),
+                    'day':refs('days',show+'|'+day),'ring':refs('rings',rk),'group':refs('groups',gk),
+                    'class':refs('classes',ck),'kind':'break' if item.get('schedule_break') else 'class',
+                    'source-position':pos,'source-id':str(item['class_groupxclasses_id']) if item.get('class_groupxclasses_id') is not None else None,
+                    'name':item.get('class_name') or item.get('group_name'),
+                    'start-time':item.get('estimated_start_time') or item.get('start_time_default'),
+                    'end-time':item.get('estimated_end_time'),'source-json':packed(item),'last-success':metric['completed']}
+                if ck is None:
                     if not item.get('schedule_break'):error(rk,'Source class has no class_id')
                     continue
-                ck=rk+'|'+str(cid)
                 row=inventory['classes'].setdefault(ck,{'class-key':ck,'ring':refs('rings',rk),
                     'class-id':cid,'group':refs('groups')})
                 if item.get('class_number') is not None:row['class-number']=str(item['class_number'])
@@ -1622,7 +1651,10 @@ def run(schema_file):
                 if gk and ['groups',gk] not in row['group']['$links']:row['group']['$links'].append(['groups',gk])
             except Exception as exception:error(rk,exception)
     graph={table:list(rows.values()) for table,rows in inventory.items()}
-    for table in tables[:3]:save(table,source_rows(graph[table]))
+    timed('prepare-rings-groups-classes')
+    for table in tables[:3]:
+        save(table,source_rows(graph[table]));timed('save-inventory-'+table)
+    save('schedules',schedules.values());timed('save-schedules')
 
     classes={};entries={};trips={}
     def fetch(row):return source.fetch('/classes/'+str(row['class-id']),params)
@@ -1632,7 +1664,10 @@ def run(schema_file):
             row=requests[future];key=row['class-key']
             try:
                 payload,metric=future.result();at=metric['completed']
-                classes[key]={'class-key':key,'source-json':packed(payload),'last-success':at}
+                classes[key]={'class-key':key,'source-json':packed(payload),'last-success':at,**run_fields}
+                if payload.get('class_related_data',{}).get('status') is not None:
+                    classes[key]['status']=payload['class_related_data']['status']
+                if payload.get('total_entry_trips') is not None:classes[key]['entry-count']=payload['total_entry_trips']
                 for trip in payload['trips']:
                     try:
                         eid=int(trip['entry_id']);ek=str(context['show-id'])+'|'+str(eid)
@@ -1641,7 +1676,7 @@ def run(schema_file):
                         if ek not in entries or at>entries[ek]['last-success']:entries[ek]=entry
                         tk=key+'|'+str(eid)+'|'+str(trip.get('entryxclasses_uuid') or trip.get('trip_id') or '')
                         value={'trip-key':tk,'class':refs('classes',key),'entry':refs('entries',ek),
-                            'source-json':packed(trip),'last-success':at,'record-status':'active'}
+                            'source-json':packed(trip),'last-success':at,'record-status':'active',**run_fields}
                         for field,raw in {'trip-id':'trip_id','source-uuid':'entryxclasses_uuid','order-of-go':'order_of_go',
                             'actual-order':'actual_order','gone-in':'gone_in','placing':'placing','scratch':'scratch_trip',
                             'estimated-go-time':'estimated_go_time'}.items():
@@ -1653,5 +1688,8 @@ def run(schema_file):
                         trips[tk]=value
                     except Exception as exception:error(key,exception)
             except Exception as exception:error(key,exception)
-    save('classes',classes.values());save('entries',entries.values());save('trips',trips.values())
+    timed('fetch-and-prepare-entries-trips')
+    save('classes',classes.values());timed('save-class-details')
+    save('entries',entries.values());timed('save-entries')
+    save('trips',trips.values());timed('save-trips')
     return report()

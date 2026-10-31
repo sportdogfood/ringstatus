@@ -31,7 +31,7 @@ async function scheduled(){
  if(attempt){
   const errors=report['item-errors']||[];
   for(const error of errors)logging.recordError(root,attempt,{category:'Collection',operation:'Collect',target:error.key,message:error.error,'write-outcome':'Unknown'},'Collection');
-  logging.finish(root,attempt,{status:errors.length?'Partial':'Succeeded',stage:'Collection','show-key':report['show-key'],counts:report.counts});
+  logging.finish(root,attempt,{status:errors.length?'Partial':'Succeeded',stage:'Collection','show-key':report['show-key'],'run-key':report['run-key'],counts:report.counts});
   const delivered=await logging.deliver(root,config);
   if(!delivered.ok)logging.recordError(root,attempt,{category:'Logging',message:delivered.error,'write-outcome':'Unknown'},'LogDelivery');
  }
