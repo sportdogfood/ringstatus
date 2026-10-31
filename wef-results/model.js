@@ -32,14 +32,16 @@ function evaluate(row,{now,maxSourceAgeMs,customer,show,live}={}){
     if(d>localDay(now))return {...out,status:'waiting',reason:'Future competition date'};
     if(detail.status!=='Completed')return {...out,status:'waiting',reason:'Class not source-reported Completed'};
     if(!out.verified||!out.visible)return {...out,status:'waiting',reason:'Results verification/publication not reported'};
-    if(!Array.isArray(j.trips))throw Error('Missing complete class trips array');
+    if(!Array.isArray(j.trips)||!Number.isSafeInteger(j.total_entry_trips)||j.total_entry_trips<0||j.total_entry_trips!==j.trips.length)throw Error('Incomplete class trips: total_entry_trips must match the class array');
     if(!j.trips.length)return {...out,status:'empty',reason:'Verified class contains no result trips; no placings inferred'};
-    const seen=new Set();
+    const seen=new Set(),participations=new Set();
     out.results=j.trips.map(t=>{
       const trip=id(t.trip_id),entry=id(t.entry_id);
       if(t.class_id!=null&&id(t.class_id)!==cls)throw Error('Trip class mismatch');
       if(seen.has(trip))throw Error('Duplicate source trip');seen.add(trip);
-      if(!t.entryxclasses_uuid||typeof t.entryxclasses_uuid!=='string')throw Error('Missing source participation UUID');
+      const uuid=t.entryxclasses_uuid;
+      if(typeof uuid!=='string'||!uuid.trim()||uuid!==uuid.trim()||participations.has(uuid))throw Error('Missing, malformed or duplicate source participation UUID');
+      participations.add(uuid);
       const values=Object.fromEntries(RESULT_FIELDS.filter(k=>Object.hasOwn(t,k)).map(k=>[k,t[k]]));
       if(!Object.keys(values).some(k=>!['gone_in','scratch_trip','r3_trip','split_section'].includes(k)))throw Error('Trip result values missing');
       return {trip_id:trip,entry_id:entry,participation_uuid:t.entryxclasses_uuid,entry_key:`${s}|${d}|${entry}|${cls}`,live_entry_key:`${s}|${d}|${cls}|${trip}`,horse_id:t.horse_id??null,horse:t.horse??null,rider_id:t.rider_id??null,rider:t.rider_name??t.rider??null,values};

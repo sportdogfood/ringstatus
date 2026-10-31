@@ -1,0 +1,86 @@
+{
+  "baseline": [
+    {
+      "sha256": "ea85180d3a2d0231b0f20f69089b47f3be5feb80e76da40f7d2156a2f1e857e6",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\day-priority-20261030\\automation\\collector-before.js"
+    }
+  ],
+  "required_checks": [
+    {
+      "status": "executed",
+      "name": "Independent targeted offline tests",
+      "command_ids": [
+        "targeted-tests"
+      ],
+      "requirement": "execute"
+    },
+    {
+      "status": "executed",
+      "name": "Independent ambiguity partial-failure and empty cases",
+      "command_ids": [
+        "failure-and-empty-cases"
+      ],
+      "requirement": "execute"
+    },
+    {
+      "reason": "Inspected actual candidate and baseline source and dependency contracts; independent executions are separately logged, not inferred from writer output.",
+      "status": "inspected",
+      "name": "Actual integration and frozen baseline review",
+      "evidence": [
+        {
+          "sha256": "bbec0c24ff4b6faec495b63acadb96f95ff39ccefba25a523f6984fb64adf44f",
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\day-priority-20261030\\automation\\review-hash-manifest.json"
+        },
+        {
+          "sha256": "c9baa13920e1e7396f525d9c087c7392a5c5a5a6117dbb2535a2cff8035b3b29",
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\day-priority-20261030\\wef-shows\\discovery-policy.js"
+        },
+        {
+          "sha256": "f97bd4964e3b39197e284418c98f3fa1b81f8f284c7afbd514a7263d9a147154",
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\day-priority-20261030\\wef-shows\\airtable.js"
+        },
+        {
+          "sha256": "336de81c63840d6195099c84f1004576e11991aa7e69d598681a3b433391ff18",
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\day-priority-20261030\\wef-shows\\audit.js"
+        },
+        {
+          "sha256": "dc420c8b139698fe7d1275aca09df857a0bc3c802c9323b6325d21600d1985a0",
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\day-priority-20261030\\wef-schedules\\collect.js"
+        }
+      ],
+      "requirement": "inspect"
+    }
+  ],
+  "reviewer": "/root/shows_review",
+  "logs": [
+    {
+      "sha256": "14ec019586cfb1f7ee9bbce4d7364da47e8c33a0b83039bc96f58ce32082f4dd",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\day-priority-20261030\\automation\\review-command-log.json"
+    }
+  ],
+  "objective": "Independent read-only review of approved day-priority phase; no runner execution or implementation changes",
+  "skill_sha256": "9d49972b3bd6acfa4edd9123bd6a33633eb010ea583b1bdc037b3d45b566abd7",
+  "integration_coverage": "Actual collector diff, selected-date and Eastern cadence, count-stop isolation, native link/key validation, prewrite authority fence, empty inventory and uncertain-write stop. Scheduled production behavior remains unverified.",
+  "target": "Frozen three-file day-priority automation manifest and matching staged test inputs",
+  "review_status": "COMPLETE",
+  "report": {
+    "sha256": "5c9ec2d26a5a759deee5d177536a634f0b31ff5de8a571fff4f59f1e5ac3c236",
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\day-priority-20261030\\automation\\review-report.md"
+  },
+  "candidate": [
+    {
+      "sha256": "96f8fe69ad643cf140828cd594f8992f247f737ca3034b5189aeb45898c5e47f",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\day-priority-20261030\\automation\\prepared-release\\wef-shows\\collector.js"
+    },
+    {
+      "sha256": "373d9487e4c3da212a4644833a9be2f97c376b1d4414ef52ceb08d2e58119fb0",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\day-priority-20261030\\automation\\prepared-release\\wef-shows\\day-priority.js"
+    },
+    {
+      "sha256": "d37e60a5dd4f85b874c04df1ddac0ae60145009b0281daeb85b7432e104373a5",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\day-priority-20261030\\automation\\prepared-release\\wef-shows\\tests\\day-priority.test.js"
+    }
+  ],
+  "candidate_status": "PASS",
+  "reviewed_at": "2026-10-31T02:48:28.2548660Z"
+}

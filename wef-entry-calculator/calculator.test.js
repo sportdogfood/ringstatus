@@ -235,7 +235,7 @@ test('Class component proof preserves matching pace when only end/count material
  const p=structuredClone(expected.payload);p.total_trips=null;p.completed_trips=null;p.duration_minutes=null;p.estimated_end_at=null;p.end_kind='unknown';
  const fields={...expected.fields,'payload-json':JSON.stringify(p),'content-hash':hash(material(p)),availability:'unavailable'};
  fields['answer-key']=fields['scope-key']+'|'+fields['content-hash'];const saved={id:'rec00000000000001',fields};
- assert.equal(components(saved,expected,now).pace_minutes_per_trip,3);assert.equal(verifyClass(saved,expected,now),false);
+ assert.equal(components(saved,expected,now).pace_minutes_per_trip,2.5746);assert.equal(verifyClass(saved,expected,now),false);
  const bad=structuredClone(saved);bad.fields['pace-minutes-per-trip']=6;assert.equal(components(bad,expected,now),null);
  const wrong=structuredClone(saved);wrong.fields['payload-json']=wrong.fields['payload-json'].replace('"class":3','"class":4');assert.equal(components(wrong,expected,now),null);
 });
@@ -251,13 +251,15 @@ test('isolated runner uses real stage twice with read-only upstream and own jour
  const data=dataFixture(),a=memoryAPI(),state={version:1};let saves=0;
  const show={id:'rec00000000000999',fields:{is_default:true,customer_id:15,show_id:1,'show-key':'15|1',last_checked:now,start_date:'2026-10-30',end_date:'2026-10-30',selected_date:'2026-10-30'}};
  const args={deadline:Date.now()+160000,clock:()=>now,state,save:async()=>{saves++;},destination:a,
-  source:{list:async(base,table)=>{if(base===SHOWS&&table==='shows')return[show];assert.equal(base,TIMING);assert.equal(table,DATA_TABLES.answers);return[];}},
+  source:{list:async(base,table)=>{if(base===SHOWS&&table==='shows')return[show];assert.equal(base,TIMING);assert.ok([DATA_TABLES.answers,require('../wef-timing/api').SYNC_GROUPS,require('../wef-timing/api').SYNC_RINGS].includes(table));return[];}},
   classSource:{list:async(base,table)=>{assert.equal(base,CLASS_TIMING);assert.equal(table,CLASS_ANSWERS);return[];}},
   project:async()=>data,readPointer:()=>({head:'pinned'}),readLive:async()=>({classes:new Map()})};
  const first=await run({...args,runId:'first'}),second=await run({...args,runId:'second'});
  assert.equal(first.ok,true);assert.equal(second.ok,true);assert.equal(first.counts.entries_written,1);assert.equal(second.counts.entries_written,0);
  assert.equal(second.counts.entries_unchanged,1);assert.ok(saves>0);assert.equal(a.db.get(T['run-logs']).length,2);
- const failed=await run({...args,runId:'bad',project:async()=>{throw Error('offline source failure');}});assert.equal(failed.ok,false);assert.ok(state.entry_failed);
+ const failed=await run({...args,runId:'bad',project:async()=>{throw Error('Airtable HTTP 503');}});assert.equal(failed.status,'deferred');assert.equal(state.entry_failed,undefined);
+ const recovered=await run({...args,runId:'recovered'});assert.equal(recovered.ok,true);
+ state.pending_write={run_id:'uncertain'};
  let sourceCalls=0;const blocked=await run({...args,runId:'blocked',source:{list:async()=>{sourceCalls++;throw Error('must not reach');}}});
  assert.equal(blocked.ok,false);assert.equal(sourceCalls,0);
 });
@@ -268,4 +270,46 @@ test('explicit Data group binds one occurrence without assigning its trips to an
  const r=await prepare({data,classRows:[],paceRows:[],now,runId:'r'});
  assert.equal(r.outputs.length,1);assert.equal(r.outputs[0].payload.identity.group,2);assert.equal(r.issues.length,1);
  assert.equal(r.issues[0].identity.group,9);
+});
+
+test('proven prewrite fence failure defers, logs and permits next ordinary invocation; reporting uncertainty blocks',async()=>{
+ for(const controlFailure of [false,true]){
+ const a=memoryAPI(),state={};if(controlFailure){const upsert=a.upsert;a.upsert=async(...args)=>{if(args[0]===T['run-logs'])throw Error('control HTTP 503');return upsert(...args);};}
+ const args={api:a,state,save:async()=>{},data:dataFixture(),classRows:[],paceRows:[],now,runId:'fence'};
+ await assert.rejects(stage({...args,beforePublish:async()=>{throw Error('Entry sync source changed');}}),/sync source changed/);
+ assert.equal(state.pending_write,undefined);assert.equal((a.db.get(T['timing-answers'])||[]).length,0);
+ if(controlFailure){assert.ok(state.entry_failed);await assert.rejects(preflight({api:a,state}),/owner review/);}
+ else{assert.equal(state.entry_failed,undefined);await preflight({api:a,state});const good=await stage({...args,runId:'next-normal'});assert.equal(good.saved.length,1);}
+ }
+});
+
+test('real retained chain feeds captured final pace through Class proof, Entry saved readback and repeat',async()=>{
+ const fs=require('fs'),{execFileSync}=require('child_process'),{run}=require('./runner'),A=require('../wef-timing/api');
+ const stage='C:/Users/gombc/Documents/Codex/staging/wef-entry-workingday-20261031';
+ const captured=JSON.parse(fs.readFileSync('C:/Users/gombc/Documents/Codex/staging/wef-ring-sync-final-20261030/scheduled-readback-93554292-c1a8-4175-8423-289b0f767856.json'));
+ const fixture=JSON.parse(execFileSync('wef-data/.venv/Scripts/python.exe',['-B','wef-entry-calculator/retained-fixture.py',stage,'captured','2026-10-30'],{maxBuffer:8*1024*1024}));
+ assert.equal(fixture.data.proof['state-sha256'],fixture.pointer['run-sha256']);assert.equal(fixture.data.proof['run-key'],fixture.pointer.head);
+ const finals=captured.ring_rows.filter(r=>JSON.parse(r.fields['payload-json']).group_progress?.quality==='final');
+ const unique=values=>[...new Map(values.map(r=>[r.id,r])).values()];
+ const groups=unique(finals.map(r=>JSON.parse(r.fields['payload-json']).group_progress.ref.material.group)),rings=unique(finals.map(r=>JSON.parse(r.fields['payload-json']).group_progress.ref.material.ring));
+ const c=fixture.context,show={id:'rec00000000000999',fields:{is_default:true,customer_id:c['customer-id'],show_id:c['show-id'],'show-key':c['show-key'],last_checked:captured.completed,start_date:c['start-date'],end_date:c['end-date'],selected_date:c['selected-date']}};
+ const a=memoryAPI(),state={version:1},args={runId:'retained-captured',deadline:Date.now()+160000,clock:()=>captured.completed,state,save:async()=>{},destination:a,source:{list:async(base,table)=>table==='shows'?[show]:table===A.SYNC_GROUPS?groups:table===A.SYNC_RINGS?rings:captured.ring_rows},classSource:{list:async()=>captured.class_rows},project:async()=>structuredClone(fixture.data),readPointer:()=>fixture.pointer,readLive:async()=>({classes:new Map()})};
+ const out=await run(args);assert.equal(out.ok,true,JSON.stringify(out));const saved=a.db.get(T['timing-answers'])||[];assert.ok(saved.length>0);
+ let checked=0;
+ for(const ring of finals){const p=JSON.parse(ring.fields['payload-json']);if(!(p.selected_pace_minutes_per_trip>0))continue;
+ const matching=saved.map(r=>JSON.parse(r.fields['payload-json'])).filter(p2=>p2.identity.group===p.identity.group&&p2.identity.ring===p.identity.ring&&captured.class_rows.some(c=>JSON.parse(c.fields['payload-json']).identity.class===p2.identity.class));
+ assert.ok(matching.length>0,'final group '+p.identity.group);for(const p2 of matching)assert.equal(p2.pace_minutes_per_trip,p.selected_pace_minutes_per_trip);checked++;
+ }
+ assert.ok(checked>0);const repeat=await run({...args,runId:'retained-repeat'});assert.equal(repeat.counts.entries_written,0);assert.equal(repeat.counts.entries_unchanged,saved.length);
+});
+
+test('canonical planning tomorrow retains TODAY trip selection, sync filter, controls and authority fence',async()=>{
+ const {execFileSync}=require('child_process'),{run}=require('./runner'),A=require('../wef-timing/api');
+ const fixture=JSON.parse(execFileSync('wef-data/.venv/Scripts/python.exe',['-B','wef-entry-calculator/retained-fixture.py','C:/Users/gombc/Documents/Codex/staging/wef-entry-workingday-20261031','planning','2026-10-30'],{maxBuffer:8*1024*1024}));
+ assert.equal(fixture.context['selected-date'],'2026-10-31');assert.ok(fixture.data.entry_classes.length>0);assert.ok(fixture.data.entry_classes.every(c=>c.identity[2]==='2026-10-30'));
+ const c=fixture.context,at='2026-10-31T03:00:00.000Z',show={id:'rec00000000000999',fields:{is_default:true,customer_id:c['customer-id'],show_id:c['show-id'],'show-key':c['show-key'],last_checked:at,start_date:c['start-date'],end_date:c['end-date'],selected_date:c['selected-date']}};
+ const a=memoryAPI(),state={version:1};let syncReads=0;
+ const args={runId:'planning-tomorrow',clock:()=>at,deadline:Date.now()+160000,state,save:async()=>{},destination:a,source:{list:async(base,table,filter)=>{if(table==='shows')return[show];if([A.SYNC_GROUPS,A.SYNC_RINGS].includes(table)){assert.ok(filter.includes("2026-10-30"));syncReads++;}return[];}},classSource:{list:async()=>[]},project:async(context,deadline,day)=>{assert.deepEqual(context,c);assert.equal(day,'2026-10-30');return structuredClone(fixture.data);},readPointer:()=>fixture.pointer,readLive:async()=>({classes:new Map()})};
+ const out=await run(args);assert.equal(out.ok,true,JSON.stringify(out));assert.ok(syncReads>2);const rows=a.db.get(T['timing-answers'])||[];assert.ok(rows.length>0);assert.ok(rows.every(r=>r.fields.date==='2026-10-30'));assert.equal(a.db.get(T['run-logs'])[0].fields.date,'2026-10-30');
+ const before=rows.length;const changed=await run({...args,runId:'changed',readPointer:(()=>{let n=0;return()=>++n<3?fixture.pointer:{...fixture.pointer,head:'changed'};})()});assert.equal(changed.ok,false);assert.equal((a.db.get(T['timing-answers'])||[]).length,before);
 });

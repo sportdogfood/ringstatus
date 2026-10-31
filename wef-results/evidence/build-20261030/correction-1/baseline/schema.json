@@ -1,0 +1,340 @@
+{
+  "base": "appK9IX59jFwUkB2u",
+  "tables": [
+    {
+      "id": "tblXVlQ8VGETl8RLB",
+      "name": "run-logs",
+      "description": "Results-owned run-logs; no collector activation or source writes.",
+      "primaryFieldId": "fldKza8XQ05TN8RNG",
+      "fields": [
+        {
+          "id": "fldKza8XQ05TN8RNG",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldy4NBiZ4ZwR8In0",
+          "name": "started",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldx1bBf5EXnRw4mL",
+          "name": "completed",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldnSgjDFVXsWz9am",
+          "name": "result",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldUIZ85QRccLaBrA",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldBbCHWaA4WPJBRf",
+          "name": "class-count",
+          "type": "number"
+        },
+        {
+          "id": "flds8zSj5uOd4TKi5",
+          "name": "ready-count",
+          "type": "number"
+        },
+        {
+          "id": "fldXuagoHre7fZTwc",
+          "name": "changed-count",
+          "type": "number"
+        },
+        {
+          "id": "fldAYrTPji8CLE2DD",
+          "name": "summary",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldNMqzo6zqF8qlt0",
+          "name": "errors",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tbld5k6m2wiKjy3pY",
+      "name": "heartbeat",
+      "description": "Results-owned heartbeat; no collector activation or source writes.",
+      "primaryFieldId": "fld0xv8MoaX81PcSD",
+      "fields": [
+        {
+          "id": "fld0xv8MoaX81PcSD",
+          "name": "heartbeat-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld9g20G2iLQQge6y",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld4RCWVfdVD3ADkH",
+          "name": "started",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldlhsv2AQiBrY1qk",
+          "name": "completed",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldLkr7CLFZaQUwDo",
+          "name": "checked-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldsbn7JvzDYud1WM",
+          "name": "last-success",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldMUOQ36mZd0dS0C",
+          "name": "result",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldzUXO1Z6I1aDbBl",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldKRl4QnInMet3Ft",
+          "name": "summary",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldAgHIACXFObYjqY",
+          "name": "errors",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tbllVvYbHdcAKmFzG",
+      "name": "errs-log",
+      "description": "Results-owned errs-log; no collector activation or source writes.",
+      "primaryFieldId": "fldDVYDrt6kgiGuvW",
+      "fields": [
+        {
+          "id": "fldDVYDrt6kgiGuvW",
+          "name": "error-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldmeuAe7yeEt8un2",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldeyDMTZcRuyl7W1",
+          "name": "occurred-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldtJ3oVMQKKSeYZ1",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldtNIr2AfExtePkz",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld68Jw2jkf0i5k9f",
+          "name": "err-class",
+          "type": "number"
+        },
+        {
+          "id": "fldnxf3QsgUJP9MVs",
+          "name": "message",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tbl0p1Me0zVdz1pzF",
+      "name": "code-reviews",
+      "description": "Results-owned code-reviews; no collector activation or source writes.",
+      "primaryFieldId": "fldaC7vAvVhFg88Qs",
+      "fields": [
+        {
+          "id": "fldaC7vAvVhFg88Qs",
+          "name": "routine",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldk3HlMhvrhv1Upw",
+          "name": "last-review",
+          "type": "date"
+        },
+        {
+          "id": "fldbW4DjvSOg3rKST",
+          "name": "last-result",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld1D3YCIzwIKyzqL",
+          "name": "next-review",
+          "type": "date"
+        },
+        {
+          "id": "fld9eLbhQzp47eQOm",
+          "name": "cadence",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldtooDwLRr2Rttha",
+          "name": "notes",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tblraM6Oo9pxUxKzV",
+      "name": "snapshot",
+      "description": "Results-owned class snapshots from existing Data evidence. Live is advisory. Task not activated.",
+      "primaryFieldId": "fldHtFXdUkhE1i9ip",
+      "fields": [
+        {
+          "id": "fldHtFXdUkhE1i9ip",
+          "name": "snapshot-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldQ7keT0IKbOJeTo",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldiywszJ6dHFFqim",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldknAK1CdjNqxYvF",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld0PCKe9ZVC3T7CG",
+          "name": "ring-number",
+          "type": "number"
+        },
+        {
+          "id": "fld28Vy5pBbUVODt1",
+          "name": "class-id",
+          "type": "number"
+        },
+        {
+          "id": "fldM3W0sHGRERDN2D",
+          "name": "class-number",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldwbvyHyX1Eif2rr",
+          "name": "class-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldW6uUIv28TjZ4ly",
+          "name": "class-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldY5OfsOjHTQsCJz",
+          "name": "check-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldEgZpzxkZgGVVJa",
+          "name": "check-reason",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldkYKXIMkiOvjGLt",
+          "name": "checked-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldzPmfPyTYHURH0c",
+          "name": "checked-run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldhwxN6RwZIYh1Ud",
+          "name": "source-observed-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldbzBH8tQlWPe90k",
+          "name": "accepted-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldS5awNkfmIXQzWp",
+          "name": "finality",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldKwkJNZtz5icWTh",
+          "name": "content-hash",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldGTrEg6fOvVmIYK",
+          "name": "previous-hash",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldlOgwiv3C44PZXh",
+          "name": "revision-number",
+          "type": "number"
+        },
+        {
+          "id": "fldp14mkaqrYBmJKA",
+          "name": "result-count",
+          "type": "number"
+        },
+        {
+          "id": "fldSXOAOQt703j6Ms",
+          "name": "results-verified",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldG98R5Ov5djQGcT",
+          "name": "show-results",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldWh7v1pZffL68Ci",
+          "name": "results-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld4naLYWtrVX8qOt",
+          "name": "phase-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldduIqyRBrF05YFb",
+          "name": "source-evidence-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldG89TNevWzqLOBe",
+          "name": "check-evidence-json",
+          "type": "multilineText"
+        }
+      ]
+    }
+  ]
+}

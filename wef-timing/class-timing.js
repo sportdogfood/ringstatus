@@ -106,7 +106,7 @@ function evaluateClassTiming(input) {
       } else reasons.push(name + '_counts_unusable');
     }
   }
-  let pace = 3, paceMethod = 'default_3_minutes', paceAnswer = null;
+  let pace = 2.5746, paceMethod = 'default_2_5746_minutes', paceAnswer = null;
   const p = evidence(ringPace, 'ring_pace', true);
   if (p) {
     if (Number.isFinite(p.pace_minutes_per_trip) && p.pace_minutes_per_trip > 0
@@ -170,7 +170,7 @@ function evaluateClassTiming(input) {
     'reason-codes-json':JSON.stringify(payload.reasons), 'input-refs-json':JSON.stringify(refs),
     'payload-json':JSON.stringify(payload), 'content-hash':contentHash};
   return {payload, fields, flags:{completion_candidate:candidate, actual_completion:actualCompletion !== null,
-    data_fallback:start?.source === 'data' || counts?.source === 'data', default_pace:paceMethod === 'default_3_minutes'}};
+    data_fallback:start?.source === 'data' || counts?.source === 'data', default_pace:paceMethod === 'default_2_5746_minutes'}};
 }
 
 module.exports = {POLICY, evaluateClassTiming, instant};

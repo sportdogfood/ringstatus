@@ -67,6 +67,14 @@ def due_days(days,passes,at):
         if not prior.get('completed') or interval is not None and at-prior['completed']>=interval:due.append(day)
     return sorted(due)
 
+def collection_days(context,days,at):
+    """Collect the canonical selected day onward, never an earlier local day."""
+    from zoneinfo import ZoneInfo
+    today=datetime.datetime.fromtimestamp(at,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date()
+    selected=datetime.date.fromisoformat(context['selected-date'][:10])
+    lower=max(today,selected)
+    return [day for day in days if datetime.date.fromisoformat(day)>=lower]
+
 def active_class_keys(state):
     """Legacy lists and lossless compact journal controls contain the same keys."""
     value=state['active-classes']
@@ -212,6 +220,50 @@ def read_saved_checkpoint(folder,show,runkey):
     return {'reservation':reservation,'accepted':accepted,'missing':[k for k in keys if k not in accepted],
             'reservation-sha256':__import__('hashlib').sha256(reservation_bytes).hexdigest(),
             'responses-sha256':__import__('hashlib').sha256(body).hexdigest() if body else None}
+
+def saved_collection_scopes(runtime,runkey,state,repo):
+    """Original scopes of every source/projection path recover() may resume."""
+    runtime=pathlib.Path(runtime);show=state['show-key'];scopes=set()
+    def source_scopes(scope,source):
+        if scope=='class':
+            values=source.get('classes')
+            if not isinstance(values,list) or not values:raise ValueError('Saved class projection lacks source dates')
+            for value in values:
+                related=value['class_related_data'];day=str(related['date'])[:10]
+                datetime.date.fromisoformat(day)
+                if str(value['show_id'])!=show.split('|')[1]:raise ValueError('Saved projection show changed')
+                scopes.add((day,f"{show}|{day}|{related['ring']}|{value['class']['class_id']}"))
+        elif scope=='dated-inventory-page':
+            day=source['show_date'];datetime.date.fromisoformat(day);scopes.add((day,None))
+    for day,reference in state.get('day-work',{}).items():
+        if day not in ('directory','checkpoint-recovery'):
+            datetime.date.fromisoformat(day);scopes.add((day,None))
+        # Reuse exact owner/path/hash validation. Withheld plans are retained
+        # evidence, not active recovery, and must not trigger a new replay.
+        active={**state,'day-work':{day:reference},'withheld-day-work':{}}
+        folder,plan=saved_work_plans(runtime,active,runkey,repo)[day]
+        source_scopes(plan['scope'],plan['source'])
+    sequence=(state.get('reserved-class') or {}).get('slot',state.get('slots',0)+1)
+    folder=runtime/runkey.replace(':','_')/('class-batch-'+str(sequence))
+    if (folder/'reservation.json').exists():
+        saved=read_saved_checkpoint(folder,show,runkey)
+        scopes.update((value['day'],value['class_key']) for value in saved['reservation']['states'])
+    marker=state.get('saved-checkpoint-recovery') or {}
+    if marker and marker.get('phase')!='Complete':
+        recovery=(runtime/marker['path']).resolve()
+        if not recovery.is_relative_to(runtime.resolve()):raise ValueError('Recovery source path escapes runtime')
+        inventory=recovery/'inventory.json'
+        if inventory.exists():
+            saved=json.loads(inventory.read_text(encoding='utf-8'))
+            if saved['scope']['show-key']!=show:raise ValueError('Recovery inventory show changed')
+            for day in saved['scope']['keys']:
+                datetime.date.fromisoformat(day);scopes.add((day,None))
+    pending=runtime/'pending.json'
+    if pending.exists():
+        plan=json.loads(pending.read_text(encoding='utf-8'))
+        if plan['run-key']!=runkey or plan['show-key']!=show:raise ValueError('Pending source owner changed')
+        source_scopes(plan['scope'],plan['source'])
+    return scopes
 
 def pending_candidate(plan):
     graph=copy.deepcopy(plan['graph']);run=plan['run-key'];start=plan['start'];scope=plan['scope']
@@ -808,6 +860,8 @@ class Runner:
         if any(prior.get(k)!=v for k,v in marker.items()) and prior:raise ValueError('Saved checkpoint recovery identity changed')
         days=context.get('canonical-days',self.state.get('canonical-days'))
         if not days:raise ValueError('Canonical recovery days missing')
+        days=collection_days(context,days,time.time())
+        if not days:raise ValueError('No eligible recovery days')
         if path.exists():
             envelope=json.loads(path.read_text(encoding='utf-8'));body=envelope['body']
             if digest(packed(body))!=envelope['sha256'] or body['owner']!=marker or body['dates']!=days:raise ValueError('Saved recovery context changed')
@@ -975,18 +1029,19 @@ class Runner:
             first=False;now=time.time();passes=self.state.setdefault('day-passes',{})
             jobs=self.state.setdefault('day-work',{});held=self.state.setdefault('withheld-day-work',{})
             reasons=self.state.setdefault('withheld-day-reasons',{});changed=False
+            eligible=set(collection_days(context,self.state['canonical-days'],now))
             for day in list(jobs):
-                if day!='directory' and day not in self.state['canonical-days']:
-                    held[day]=jobs.pop(day);reasons[day]='Saved source work is outside current canonical day scope; retained, not accepted';changed=True
+                if day!='directory' and day not in eligible:
+                    held[day]=jobs.pop(day);reasons[day]='Saved source work is outside the selected/current collection window; retained, not replayed';changed=True
             for day in list(held):
-                if day in self.state['canonical-days']:
+                if day in eligible:
                     jobs[day]=held.pop(day);reasons.pop(day,None);changed=True
             if changed:self.journal()
-            due=due_days(self.state['canonical-days'],passes,now)
+            due=due_days(sorted(eligible),passes,now)
             from zoneinfo import ZoneInfo
             today=datetime.datetime.fromtimestamp(now,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()
-            candidates=sorted(set(due)|{d for d in jobs if d!='directory' and d in self.state['canonical-days']},
-                              key=lambda d:(0 if d==today else 1 if d>today else 2,d))
+            candidates=sorted(set(due)|{d for d in jobs if d!='directory' and d in eligible},
+                              key=lambda d:(bool(passes.get(d,{}).get('completed')),0 if d==today else 1,d))
             if candidates:
                 day=candidates[0]
                 if day in jobs:self.step_work(day);continue
@@ -998,6 +1053,8 @@ class Runner:
                 for key,row in self.repo.graph['work-items'].items():
                     if key not in active or key.split('|')[2]!=day:continue
                     if key in self.state.get('withheld-class-contexts',{}):continue
+                    count=self.repo.graph['classes'].get(key,{}).get('entry-count')
+                    if day==today and type(count) in (int,float) and count==0:continue
                     value=json.loads(row['state-json'])
                     if not value.get('last_success') or planner.epoch(value['last_success'])<progress['started']:states.append(value)
                 if states:
@@ -1267,7 +1324,14 @@ class Runner:
         active=self.runtime/'active.json'
         if active.exists():
             reserved=json.loads(active.read_text(encoding='utf-8'));row=self.repo.graph['runs'].get(reserved['run-key'],reserved['reserved-run']);old=json.loads(row.get('state-json') or reserved['reserved-run']['state-json'])
-            if old.get('authority-before') and old['authority-before']!=list(canonical_fence(authority)):
+            eligible=set(collection_days(context,canonical_days,time.time()))
+            scopes=saved_collection_scopes(self.runtime,reserved['run-key'],old,self.repo)
+            from zoneinfo import ZoneInfo
+            today=datetime.datetime.fromtimestamp(time.time(),datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()
+            outside=any(day not in eligible or day==today and key is not None
+                        and type(self.repo.graph['classes'].get(key,{}).get('entry-count')) in (int,float)
+                        and self.repo.graph['classes'][key]['entry-count']==0 for day,key in scopes)
+            if outside or old.get('authority-before') and old['authority-before']!=list(canonical_fence(authority)):
                 if row.get('status')=='Failed; prior accepted state retained':
                     approval=self.runtime/'resume-approved.json'
                     permitted=json.loads(approval.read_text(encoding='utf-8')) if approval.exists() else {}

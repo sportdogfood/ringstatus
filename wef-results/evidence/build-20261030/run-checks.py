@@ -4,6 +4,8 @@ from pathlib import Path
 from datetime import datetime,timezone
 root=Path(__file__).resolve().parents[2]
 out=Path(__file__).resolve().parent
+if '--correction' in sys.argv:
+ out=out/'correction-1';out.mkdir(exist_ok=True)
 node=shutil.which('node');logs=[]
 if '--remaining' in sys.argv and (out/'execution-log.json').exists():
  logs=json.loads((out/'execution-log.json').read_text(encoding='utf-8'))['commands']
@@ -16,7 +18,7 @@ def run(name,argv,cwd=root):
  if r.returncode:print(r.stdout,r.stderr);raise SystemExit(r.returncode)
  return r
 run('unit-integration-offline',[node,'--test',*[str(p) for p in sorted((root/'test').glob('*.test.js'))]])
-run('retained-source-shape',[node,str(out/'retained-shape-check.js')])
+run('retained-source-shape',[node,str(Path(__file__).resolve().parent/'retained-shape-check.js')])
 run('javascript-syntax',[node,'-e',"const fs=require('node:fs'),cp=require('node:child_process');for(const f of fs.readdirSync('.').filter(f=>f.endsWith('.js'))){const r=cp.spawnSync(process.execPath,['--check',f],{encoding:'utf8'});if(r.status)throw Error(r.stderr);}console.log('All module JavaScript parsed');"])
 shell=shutil.which('pwsh') or str(Path.home()/'.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe')
 run('powershell-syntax',[shell,'-NoProfile','-NonInteractive','-Command',"$e=$null; $t=$null; [System.Management.Automation.Language.Parser]::ParseFile((Join-Path (Get-Location) 'run.ps1'),[ref]$t,[ref]$e)|Out-Null; if($e){$e|Out-String|Write-Error;exit 1}; 'Launcher parsed; not executed'"])

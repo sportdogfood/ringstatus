@@ -1,0 +1,17 @@
+[
+  {
+    "path": "wef-shows/collector.js",
+    "before": "ea85180d3a2d0231b0f20f69089b47f3be5feb80e76da40f7d2156a2f1e857e6",
+    "sha256": "96f8fe69ad643cf140828cd594f8992f247f737ca3034b5189aeb45898c5e47f"
+  },
+  {
+    "path": "wef-shows/day-priority.js",
+    "before": null,
+    "sha256": "373d9487e4c3da212a4644833a9be2f97c376b1d4414ef52ceb08d2e58119fb0"
+  },
+  {
+    "path": "wef-shows/tests/day-priority.test.js",
+    "before": null,
+    "sha256": "d37e60a5dd4f85b874c04df1ddac0ae60145009b0281daeb85b7432e104373a5"
+  }
+]

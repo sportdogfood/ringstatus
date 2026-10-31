@@ -1,0 +1,10 @@
+"use strict";
+const test=require('node:test'),assert=require('node:assert/strict');
+const {readSnapshot}=require('../reader'),{evaluate,project}=require('../model'),{fixture,options}=require('./fixtures');
+const p=()=>project(evaluate(fixture(),options),undefined,'r1',options.now);
+const args={now:options.now,show:76,maxSourceAgeMs:600000,maxCheckAgeMs:600000,heartbeat:{result:'Success','run-id':'r1',completed:options.now,'checked-at':options.now}};
+test('consumer receives hash-verified result only after completed matching run',()=>assert.equal(readSnapshot(p(),args).status,'available'));
+test('failed/interrupted/different run cannot leave old ready flag current',()=>{for(const result of ['Running','Failed'])assert.equal(readSnapshot(p(),{...args,heartbeat:{...args.heartbeat,result}}).status,'unavailable');assert.equal(readSnapshot(p(),{...args,heartbeat:{...args.heartbeat,'run-id':'r2'}}).status,'unavailable');});
+test('consumer detects expiry without waiting for another collector tick',()=>assert.equal(readSnapshot(p(),{...args,now:'2026-10-30T20:09:00Z'}).status,'unavailable'));
+test('consumer rejects damaged content and wrong show',()=>{const f=p();f['results-json']='[]';assert.equal(readSnapshot(f,args).status,'unavailable');assert.equal(readSnapshot(p(),{...args,show:77}).status,'unavailable');});
+test('missing source data never becomes zero',()=>{const r=readSnapshot(p(),args);assert.equal(r.results[1].values.score1,null);assert.equal(r.results[1].values.scratch_trip,1);});

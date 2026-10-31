@@ -74,6 +74,11 @@ async function runShows({api=require('./airtable').airtable(),fetchJson=fetchSou
   report.source_selected_date=wanted.source_selected_date;report.next_show_check=plan.state.next;
   report.summary=`Show ${wanted.show_id}; selected ${wanted.selected_date} (${wanted.selection_basis}); source date ${wanted.source_selected_date}, last checked ${wanted.last_checked}. New-show check ${report.discovery.show}; next ${plan.state.next}. Calendar day ${report.discovery.show_day}. No downstream jobs triggered.`;
   try{
+   audit.stage('day-priority');
+   report.day_priority=await require('./day-priority').updatePriority({api,show:savedShow,now:clock(),discovered:report.discovery.show==='Checked',statePath:path.join(path.dirname(statePath),'day-priority.json')});
+   report.summary+=' Day-priority: '+report.day_priority.status+'.';
+  }catch(error){audit.capture(error);report.ok=false;report.errors.push('Day-priority: '+error.message);report.summary+=' Day-priority failed: '+error.message;}
+  try{
    audit.stage('day-publication');
    if(fs.existsSync(dayStopPath))throw Error('Day publication stopped after prior failure; owner authorization required');
    report.show_days=await publishDays({api,show:savedShow,clock,readSummaries:async show=>{const value=await audit.observe('season-counts',()=>(readSummaries||require('./day-source').reader(api))(show));audit.stage('day-publication');return value;}});

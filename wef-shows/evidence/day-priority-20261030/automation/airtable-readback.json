@@ -1,0 +1,118 @@
+{
+  "days": {
+    "records": [
+      {
+        "id": "recNKs86S27g79pl5",
+        "createdTime": "2026-10-29T14:05:13.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-10-30",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-30",
+          "fldbK4VEp3aNOdJlB": -1
+        }
+      },
+      {
+        "id": "recV3qjf5oJAQW8SY",
+        "createdTime": "2026-10-29T14:05:22.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-10-31",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-31",
+          "fldbK4VEp3aNOdJlB": 0
+        }
+      },
+      {
+        "id": "recohTvwKk7pDGnk1",
+        "createdTime": "2026-10-29T14:05:08.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-10-29",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-29",
+          "fldbK4VEp3aNOdJlB": -2
+        }
+      },
+      {
+        "id": "recs1RPpDh6bGuHkY",
+        "createdTime": "2026-10-29T14:05:27.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-11-01",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-11-01",
+          "fldbK4VEp3aNOdJlB": 1
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 4
+    }
+  },
+  "run_log": {
+    "records": [
+      {
+        "id": "recRNzSSulsSWfT2T",
+        "createdTime": "2026-10-26T16:44:06.000Z",
+        "cellValuesByFieldId": {
+          "fld07ih8s9e3RtG5Z": "2026-10-31T02:49:02.810Z",
+          "fld5s9CfuFWHAmR7O": "Partial",
+          "fldBuinqICo2okCwB": 1,
+          "fldEBH94TwKZf0ksV": 200000076,
+          "fldLMunHI4QR5fFKh": "Show-days: Day publication stopped after prior failure; owner authorization required",
+          "fldM8fmb7yMTer7qA": "4e66eabb-8fb8-4c5f-9d9c-2653a873d138",
+          "fldRRS2wGPkqkdwi8": [
+            {
+              "id": "rec4M7jqb4wXqScP2",
+              "name": "4e66eabb-8fb8-4c5f-9d9c-2653a873d138|1"
+            }
+          ],
+          "fldSUMU4ll2Jjeu2F": "2026-10-31T02:49:06.587Z; run-logs; Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\run-logs\\aa93e13f01d126a013dd32fbc522ac5df460b3eec8082d291d59584c53278978.json.gz; SHA256 aa93e13f01d126a013dd32fbc522ac5df460b3eec8082d291d59584c53278978",
+          "fldi7V6lrDYhD0GL0": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Verified. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+          "fldtU7Vxn21teQB8V": "2026-10-31T02:49:22.360Z",
+          "fldwMbY6c0Ij4v89Z": 1
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "heartbeat": {
+    "records": [
+      {
+        "id": "recCpv3iPc1R8eAqX",
+        "createdTime": "2026-10-23T14:34:12.000Z",
+        "cellValuesByFieldId": {
+          "fld9jjnU8WuSUP0M4": 200000076,
+          "fldDUVfka6iEEpHOg": "Show-days: Day publication stopped after prior failure; owner authorization required",
+          "fldY5Ura2oIBQLrJI": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Verified. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+          "fldpDEq7ZjX8yit38": "WEF-default",
+          "fldtXUpsn3QYXrnfN": "Partial",
+          "fldtrSDNqW7hGL0fq": "2026-10-31T02:49:22.360Z",
+          "fldzP95LOJ5cvdgcb": "2026-10-31"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  }
+}

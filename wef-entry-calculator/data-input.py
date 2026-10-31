@@ -4,7 +4,9 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('timing_data',ROOT/'wef-timing/data-input.py')
 baseline=importlib.util.module_from_spec(spec);spec.loader.exec_module(baseline)
 
-def project(root,pointer,context):
+def project(root,pointer,context,working_day=None):
+    working_day=working_day or context['selected-date']
+    if not baseline.positive(context['show-id']) or not context['start-date']<=working_day<=context['end-date']:raise ValueError('Entry working day outside show dates')
     result=baseline.project(root,pointer,context)
     root=pathlib.Path(root);key=pointer['head'];sha=pointer['run-sha256'];snapshots={}
     while key:
@@ -17,7 +19,7 @@ def project(root,pointer,context):
             if len(payloads)!=len(metrics):raise ValueError('Entry class receipt coverage mismatch')
             for payload,metric in zip(payloads,metrics):
                 related=payload['class_related_data'];day=str(related['date'])[:10]
-                if day!=context['selected-date']:continue
+                if day!=working_day:continue
                 if str(payload['show_id'])!=str(context['show-id']):raise ValueError('Entry source show mismatch')
                 identity=[context['customer-id'],context['show-id'],day,related['ring'],payload['class']['class_id']]
                 scope=json.dumps(identity,separators=(',',':'));at=metric['completed']
@@ -32,9 +34,9 @@ def project(root,pointer,context):
 
 if __name__=='__main__':
     try:
-        context=json.load(sys.stdin);root=ROOT/'wef-data/runtime/handoff'
+        request=json.load(sys.stdin);context=request['context'];working_day=request['working_day'];root=ROOT/'wef-data/runtime/handoff'
         file=root/('head-'+context['show-key'].replace('|','-')+'.json');pointer=baseline.read(file)
-        result=project(root,pointer,context)
+        result=project(root,pointer,context,working_day)
         if baseline.read(file)!=pointer:raise ValueError('Data pointer changed during read')
         json.dump(result,sys.stdout,ensure_ascii=False,separators=(',',':'))
     except Exception as error:

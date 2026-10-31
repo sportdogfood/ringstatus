@@ -1,0 +1,65 @@
+--- baseline/model.js
++++ model.js
+@@ -32,14 +32,16 @@
+     if(d>localDay(now))return {...out,status:'waiting',reason:'Future competition date'};
+     if(detail.status!=='Completed')return {...out,status:'waiting',reason:'Class not source-reported Completed'};
+     if(!out.verified||!out.visible)return {...out,status:'waiting',reason:'Results verification/publication not reported'};
+-    if(!Array.isArray(j.trips))throw Error('Missing complete class trips array');
++    if(!Array.isArray(j.trips)||!Number.isSafeInteger(j.total_entry_trips)||j.total_entry_trips<0||j.total_entry_trips!==j.trips.length)throw Error('Incomplete class trips: total_entry_trips must match the class array');
+     if(!j.trips.length)return {...out,status:'empty',reason:'Verified class contains no result trips; no placings inferred'};
+-    const seen=new Set();
++    const seen=new Set(),participations=new Set();
+     out.results=j.trips.map(t=>{
+       const trip=id(t.trip_id),entry=id(t.entry_id);
+       if(t.class_id!=null&&id(t.class_id)!==cls)throw Error('Trip class mismatch');
+       if(seen.has(trip))throw Error('Duplicate source trip');seen.add(trip);
+-      if(!t.entryxclasses_uuid||typeof t.entryxclasses_uuid!=='string')throw Error('Missing source participation UUID');
++      const uuid=t.entryxclasses_uuid;
++      if(typeof uuid!=='string'||!uuid.trim()||uuid!==uuid.trim()||participations.has(uuid))throw Error('Missing, malformed or duplicate source participation UUID');
++      participations.add(uuid);
+       const values=Object.fromEntries(RESULT_FIELDS.filter(k=>Object.hasOwn(t,k)).map(k=>[k,t[k]]));
+       if(!Object.keys(values).some(k=>!['gone_in','scratch_trip','r3_trip','split_section'].includes(k)))throw Error('Trip result values missing');
+       return {trip_id:trip,entry_id:entry,participation_uuid:t.entryxclasses_uuid,entry_key:`${s}|${d}|${entry}|${cls}`,live_entry_key:`${s}|${d}|${cls}|${trip}`,horse_id:t.horse_id??null,horse:t.horse??null,rider_id:t.rider_id??null,rider:t.rider_name??t.rider??null,values};
+
+--- baseline/README.md
++++ README.md
+@@ -22,7 +22,7 @@
+ - Read-only Live `appgzosUcVqA4vZdf/live-classes/tblNaM9ehOJFsrveV`: advisory counts, phase counts and original last-seen. Live never upgrades verification or renews Data source age.
+ - Canonical authority is read directly from Shows `appCaSmL819KK7UFJ/shows/tblJA5CUon5s1sWib`, using its existing authority-age helper. Calendar selection is not automatically TODAY. No collectors are imported or invoked.
+ 
+-Source scope must match customer/show/date/ring/class. Accept only exact `Completed`, explicit results_verified true/1, show_results true/1, a complete parsed nonempty class trips array with unique trip IDs, participation UUIDs and source result values. Re-read the Data row before acceptance; changed acquisition evidence is withheld. Group-wide counts need not equal class-only trip count; jump-off/R2 and source values are preserved without inference. Missing values, zeros, scratches and source sentinels stay distinct. No automatic no_place, withdrawal, score aggregation or invented official placing.
++Source scope must match customer/show/date/ring/class. Accept only exact `Completed`, explicit results_verified true/1, show_results true/1, a complete parsed nonempty class trips array with unique trip IDs, participation UUIDs and source result values. Class-only `total_entry_trips` must be a nonnegative integer matching the array length. UUIDs must be nonempty, trimmed and unique; malformed or ambiguous input is withheld. Re-read the Data row before acceptance; changed acquisition evidence is withheld. Group-wide counts need not equal class-only trip count; jump-off/R2 and source values are preserved without inference. Missing values, zeros, scratches and source sentinels stay distinct. No automatic no_place, withdrawal, score aggregation or invented official placing.
+ 
+ `finality=source-verified` records the upstream flag, not permanent official finality. Exact trip IDs and UUIDs are retained, along with entry-key `show|date|entry|class` and live-entry-key `show|date|class|trip`. Phase configuration is preserved. Material values/phase changes increment revision-number once; ordering, estimated times and repeated identical evidence do not. Source provenance includes exact record/key, timestamp, source hash and upstream run references.
+ 
+
+--- baseline/test\fixtures.js
++++ test\fixtures.js
+@@ -1,5 +1,5 @@
+ const now='2026-10-30T20:00:00.000Z';
+-function fixture(){return {id:'recClass',fields:{'class-key':'15|76|2026-10-30|1|200','class-id':200,status:'Completed','last-success':'2026-10-30T19:59:00.000Z','last-run':['recDataRun'],'source-json':JSON.stringify({class:{class_id:200,show_id:76,customer_id:15,number:807,name:'Stake',results_verified:1,verification_detail:'source verifier'},class_related_data:{date:'2026-10-30T00:00:00.000Z',ring:1,class_group_id:50,status:'Completed',show_results:true,total_trips:2,completed_trips:2,remaining_trips:0,grouped_class:false},jumper_table_info:{hasJO:true,hasR3Data:false,roundLabels:{r1:{name:'Round 1'},r2:{name:'Jump Off'}}},trips:[{trip_id:301,entry_id:401,entryxclasses_uuid:'uuid1',score1:0,placing:1,time_one:40,time_two:33,faults_one:0,scratch_trip:0},{trip_id:302,entry_id:402,entryxclasses_uuid:'uuid2',score1:null,placing:100000,gone_in:0,scratch_trip:1}]})}};}
++function fixture(){return {id:'recClass',fields:{'class-key':'15|76|2026-10-30|1|200','class-id':200,status:'Completed','last-success':'2026-10-30T19:59:00.000Z','last-run':['recDataRun'],'source-json':JSON.stringify({total_entry_trips:2,class:{class_id:200,show_id:76,customer_id:15,number:807,name:'Stake',results_verified:1,verification_detail:'source verifier'},class_related_data:{date:'2026-10-30T00:00:00.000Z',ring:1,class_group_id:50,status:'Completed',show_results:true,total_trips:2,completed_trips:2,remaining_trips:0,grouped_class:false},jumper_table_info:{hasJO:true,hasR3Data:false,roundLabels:{r1:{name:'Round 1'},r2:{name:'Jump Off'}}},trips:[{trip_id:301,entry_id:401,entryxclasses_uuid:'uuid1',score1:0,placing:1,time_one:40,time_two:33,faults_one:0,scratch_trip:0},{trip_id:302,entry_id:402,entryxclasses_uuid:'uuid2',score1:null,placing:100000,gone_in:0,scratch_trip:1}]})}};}
+ const options={now,maxSourceAgeMs:600000,customer:15,show:76};
+ 
+ module.exports={fixture,options};
+
+--- baseline/test\model.test.js
++++ test\model.test.js
+@@ -4,7 +4,7 @@
+ const now='2026-10-30T20:00:00.000Z';
+ const {fixture,options}=require('./fixtures');
+ test('source completed/verified/visible produces exact trip snapshot without count equality',()=>{const f=fixture();const raw=JSON.parse(f.fields['source-json']);raw.class_related_data.total_trips=1;f.fields['source-json']=JSON.stringify(raw);const e=evaluate(f,options);assert.equal(e.status,'ready');assert.equal(e.results.length,2);assert.equal(e.results[0].entry_key,'76|2026-10-30|401|200');assert.equal(e.results[0].live_entry_key,'76|2026-10-30|200|301');assert.equal(e.results[0].values.score1,0);assert.equal(e.results[1].values.score1,null);assert.equal(e.results[1].values.placing,100000);assert.equal(e.finality,'source-verified');});
+-for(const [label,change,status] of [['running',j=>j.class_related_data.status='Running','waiting'],['unverified',j=>j.class.results_verified=0,'waiting'],['hidden',j=>j.class_related_data.show_results=false,'waiting'],['empty',j=>j.trips=[],'empty'],['string verified false',j=>j.class.results_verified='false','waiting']])test(label+' never publishes',()=>{const f=fixture(),j=JSON.parse(f.fields['source-json']);change(j);f.fields.status=j.class_related_data.status;f.fields['source-json']=JSON.stringify(j);assert.equal(evaluate(f,options).status,status);});
++for(const [label,change,status] of [['running',j=>j.class_related_data.status='Running','waiting'],['unverified',j=>j.class.results_verified=0,'waiting'],['hidden',j=>j.class_related_data.show_results=false,'waiting'],['empty',j=>{j.trips=[];j.total_entry_trips=0;},'empty'],['string verified false',j=>j.class.results_verified='false','waiting']])test(label+' never publishes',()=>{const f=fixture(),j=JSON.parse(f.fields['source-json']);change(j);f.fields.status=j.class_related_data.status;f.fields['source-json']=JSON.stringify(j);assert.equal(evaluate(f,options).status,status);});
+ test('freshness expires at boundary and future source time rejected',()=>{const f=fixture();f.fields['last-success']='2026-10-30T19:50:00Z';assert.equal(evaluate(f,options).status,'stale');f.fields['last-success']='2026-10-30T20:00:01Z';assert.equal(evaluate(f,options).status,'unavailable');});
+ test('explicit freshness policy required',()=>assert.throws(()=>evaluate(fixture(),{...options,maxSourceAgeMs:undefined}),/policy/));
+ for(const [label,change] of [['show mismatch',j=>j.class.show_id=77],['trip duplicate',j=>j.trips.push(j.trips[0])],['trip without id',j=>delete j.trips[0].trip_id],['trip class conflict',j=>j.trips[0].class_id=201]])test(label+' withheld',()=>{const f=fixture(),j=JSON.parse(f.fields['source-json']);change(j);f.fields['source-json']=JSON.stringify(j);assert.equal(evaluate(f,options).status,'unavailable');});
+@@ -14,4 +14,8 @@
+ test('repeat projection keeps revision stable; correction increments once; failures retain content',()=>{const a=evaluate(fixture(),options);let p=project(a,undefined,'run1',now);assert.equal(p['revision-number'],1);p=project(a,p,'run2',now);assert.equal(p['revision-number'],1);const corrected={...a,contentHash:hash('correction')};p=project(corrected,p,'run3',now);assert.equal(p['revision-number'],2);const kept=project({...a,status:'stale',reason:'expired'},p,'run4',now);assert.equal(kept['results-json'],p['results-json']);assert.equal(kept['content-hash'],p['content-hash']);assert.equal(kept['check-status'],'stale');});
+ test('older accepted source cannot replace newer evidence',()=>{const e=evaluate(fixture(),options),p=project(e,undefined,'r1',now);assert.throws(()=>project({...e,sourceAt:'2026-10-30T19:58:00Z'},p,'r2',now),/older/);});
+ test('source stamp ignores Live overlay but changes with acquisition',()=>{const f=fixture(),h=sourceStamp(f);f.fields['live-observation-json']='changed';assert.equal(sourceStamp(f),h);f.fields['last-success']=now;assert.notEqual(sourceStamp(f),h);});
++for(const [label,count]of [['missing',undefined],['smaller',1],['larger',3],['negative',-1],['fraction',2.5],['string','2'],['null',null]])test('class count '+label+' is unavailable',()=>{const f=fixture(),j=JSON.parse(f.fields['source-json']);j.total_entry_trips=count;f.fields['source-json']=JSON.stringify(j);const e=evaluate(f,options);assert.equal(e.status,'unavailable');assert.match(e.reason,/complete class trips/i);});
++for(const value of ['', ' ', ' uuid1', 'uuid1 ', 'uuid2'])test('participation UUID '+JSON.stringify(value)+' is unavailable',()=>{const f=fixture(),j=JSON.parse(f.fields['source-json']);j.trips[0].entryxclasses_uuid=value;f.fields['source-json']=JSON.stringify(j);const e=evaluate(f,options);assert.equal(e.status,'unavailable');assert.match(e.reason,/participation UUID/i);});
++test('class count zero and empty trips are empty without invented result',()=>{const f=fixture(),j=JSON.parse(f.fields['source-json']);j.total_entry_trips=0;j.trips=[];f.fields['source-json']=JSON.stringify(j);assert.equal(evaluate(f,options).status,'empty');});
++test('invalid correction preserves previous accepted result and revision across repeats',()=>{const f=fixture(),a=evaluate(f,options),prior=project(a,undefined,'accepted',now),j=JSON.parse(f.fields['source-json']);j.total_entry_trips=3;f.fields['source-json']=JSON.stringify(j);for(let i=0;i<2;i++){const e=evaluate(f,options),next=project(e,prior,'withheld'+i,now);assert.equal(next['check-status'],'unavailable');assert.equal(next['content-hash'],prior['content-hash']);assert.equal(next['revision-number'],1);assert.equal(next['results-json'],prior['results-json']);}});
+ 

@@ -18,8 +18,9 @@ function latest(rows){
  }return map;
 }
 async function prepare({data,liveClasses=new Map(),classRows,paceRows,answers=[],now,runId,readArchive=archive,excludedGroups=new Set()}){
- if(!runId||data?.source_lane!=='data_live'||data.context?.['selected-date']!==localDay(now)||!Array.isArray(data.entry_classes))throw Error('Entry current-day Data projection missing');
- const today=data.context['selected-date'];
+ if(!runId||data?.source_lane!=='data_live'||!data.context||!Array.isArray(data.entry_classes))throw Error('Entry current-day Data projection missing');
+ const today=localDay(now);
+ if(today<data.context['start-date']||today>data.context['end-date'])throw Error('Entry TODAY outside show dates');
  const inventory=data.inventories?.[today];
  if(!inventory||!Array.isArray(inventory.groups)||!(excludedGroups instanceof Set))throw Error('Entry inventory contract missing');
  const issues=[],outputs=[],writes=[];let unchanged=0;

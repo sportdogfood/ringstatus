@@ -1,0 +1,55 @@
+{
+  "ok": false,
+  "run_id": "4e66eabb-8fb8-4c5f-9d9c-2653a873d138",
+  "started": "2026-10-31T02:49:02.810Z",
+  "rows": 1,
+  "errors": [
+    "Show-days: Day publication stopped after prior failure; owner authorization required"
+  ],
+  "archives": [
+    {
+      "at": "2026-10-31T02:49:06.587Z",
+      "kind": "run-logs",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\run-logs\\aa93e13f01d126a013dd32fbc522ac5df460b3eec8082d291d59584c53278978.json.gz",
+      "records": 1,
+      "sha256": "aa93e13f01d126a013dd32fbc522ac5df460b3eec8082d291d59584c53278978"
+    }
+  ],
+  "telemetry_errors": [],
+  "discovery": {
+    "timezone": "America/New_York",
+    "show": "Skipped",
+    "show_day": "Retained"
+  },
+  "discovery_ok": true,
+  "show_id": 200000076,
+  "selected_date": "2026-10-31",
+  "source_selected_date": "2026-10-30",
+  "next_show_check": "2026-11-02T03:00:00.000Z",
+  "summary": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Verified. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+  "day_priority": {
+    "status": "Verified",
+    "anchor": "2026-10-31",
+    "updated": 0,
+    "verified": 4,
+    "outside_untouched": []
+  },
+  "error_records": [
+    "rec4M7jqb4wXqScP2"
+  ],
+  "observability": {
+    "sources": [],
+    "errors": [
+      {
+        "at": "2026-10-31T02:49:18.776Z",
+        "phase": "day-publication",
+        "source": null,
+        "message": "Day publication stopped after prior failure; owner authorization required"
+      }
+    ],
+    "ok": true,
+    "logging_errors": []
+  },
+  "completed": "2026-10-31T02:49:22.360Z"
+}

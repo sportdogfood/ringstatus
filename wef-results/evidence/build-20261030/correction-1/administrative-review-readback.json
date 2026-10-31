@@ -1,0 +1,13 @@
+{
+  "base": "appK9IX59jFwUkB2u",
+  "table": "tbl0p1Me0zVdz1pzF",
+  "record": "recFuD6Uxk6fWhv3l",
+  "matches": true,
+  "fields": {
+    "routine": "wef-results-build-20261030-correction1",
+    "last-review": "2026-10-30",
+    "last-result": "Code review PASS; 54 offline tests PASS; task inactive",
+    "cadence": "Change-triggered review; no recurring automation",
+    "notes": "wef-code-review-v1; Results build appK9IX59jFwUkB2u. Owner approved correction/recheck after initial two P2 findings. Both corrected: total_entry_trips validated against exact class array; participation UUID trimmed/nonempty/unique. Independent /root/results_review COMPLETE, candidate PASS for code/offline scope. 54 tests,3sanitized retained-shape replays and independent withholding/repeat-retention/recovery PASS; frozen baseline matches original findings and corrected candidate hashes unchanged. Exact report,execution logs,candidate manifests,receipt,mechanical verifier under C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-results/evidence/build-20261030/correction-1/independent-review/. Initial FAIL record recbwuyKwIn8bfwqY preserved. Five table schemas created/read back. No task registered/activated, no business run/source endpoint request/Data-Live mutation. Normal scheduled/live/downstream acceptance UNVERIFIED pending separate activation approval. No credential or cadence setup done."
+  }
+}

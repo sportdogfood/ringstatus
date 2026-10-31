@@ -1,0 +1,5 @@
+Set shell = CreateObject("WScript.Shell")
+Set fs = CreateObject("Scripting.FileSystemObject")
+folder = fs.GetParentFolderName(WScript.ScriptFullName)
+command = "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File " & Chr(34) & folder & "\run.ps1" & Chr(34)
+WScript.Quit shell.Run(command, 0, True)

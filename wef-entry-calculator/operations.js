@@ -26,14 +26,14 @@ function controls({api,state,runId,started,clock,context}){
  const counts=()=>state.entry_counts||{};
  async function checkpoint(outcome,error=''){
   const body=JSON.stringify({version:1,pending_write:state.pending_write??null,entry_failed:state.entry_failed??null,
-   counts:counts(),issues:state.entry_issues||[],stage:state.stage});
+   prewrite_failure:state.prewrite_failure??null,counts:counts(),issues:state.entry_issues||[],stage:state.stage});
   if(body.length>90000)throw Error('Entry checkpoint requires bounded evidence references');
   return write(api,'engine-checkpoints','checkpoint-key',{'checkpoint-key':KEY,'run-id':runId,'started-at':started,
    'completed-at':clock(),'last-outcome':outcome,'duration-ms':Math.max(0,Date.parse(clock())-Date.parse(started)),
    'counts-json':JSON.stringify(counts()),'state-json':body,'error-summary':error,'policy-version':POLICY});
  }
  async function finish(result,error=''){
-  const completed=clock(),summary=JSON.stringify({counts:counts(),issues:state.entry_issues||[],retention:'archive_required'});
+  const completed=clock(),summary=JSON.stringify({prewrite_failure:state.prewrite_failure??null,counts:counts(),issues:state.entry_issues||[],retention:'archive_required'});
   const common={'run-id':runId,started,completed,result,'show-id':context['show-id'],date:context['selected-date'],summary,errors:JSON.stringify(error?[error]:[])};
   await write(api,'run-logs','run-id',{...common,'entry-count':counts().entries_evaluated||0,'archive-count':0,archives:'[]'});
   await write(api,'heartbeat','heartbeat-key',{...common,'heartbeat-key':KEY,'checked-at':completed});

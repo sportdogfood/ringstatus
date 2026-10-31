@@ -1,3 +1,7 @@
+## Day-priority automation - approved and deployed October 30, 2026
+
+Independent priority-only phase runs on discovery and the first existing wake at/after19:00 Eastern. It uses the canonical planning selected_date as0; midnight does not shift priorities again. Only existing current-show day-priority values within-3..3 are patched/readback; outside-window values stay untouched. Keys, links, counts, source clocks, tasks and protected count stop remain. Priority failure has its own local stop and does not resume counts. Targeted tests and independent0.2.2review passed; normal22:49phase verified4rows (0changes needed) with Airtable readback. FullShowsrun remainsPartial for count stop. [Exact evidence](evidence/day-priority-20261030/automation/README.md).
+
 ## Current v1.6 policy - deployed October 30, 2026 at 19:03 Eastern
 
 - At the first normal wake at/after 19:00 America/New_York, select tomorrow only when it falls within the current show date range. Otherwise retain the selected day. Repeat wakes never add another day.

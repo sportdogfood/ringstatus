@@ -1,8 +1,10 @@
 # wef-entry-calculator
 
-## Current authority and operating guidance — 30 October 2026
+## Current authority and operating guidance â€” 30 October 2026
 
-Entry owns entry timing and the consolidated conflicts/conditions/validation planning context. Entry is the sole writer/deployer for the proposed isolated Entry route; Class independently reviews and Timing coordinates. **Product work is STOPPED pending fresh human APPROVED TO EDIT** after the component candidate's independent Class FAIL: missing native sync evidence for final Ring pace, and permanent blocking after transient prewrite errors. Candidate remains frozen at `C:/Users/gombc/Documents/Codex/staging/wef-entry-components-20261030`; no Entry task registered or isolated deployment performed. Its correction plan and coordinator reconciliation control the next decision. The historical shared deployment below was subsequently disconnected/restored and is not the current Entry execution route.
+Entry owns entry timing and consolidated conflicts/conditions/validation planning; sole Entry writer/deployer, Class independent review, Timing coordination. Direct owner approval now covers correcting retained-evidence integration tests and Entry TODAY handling, then Class review, isolated deployment and two normal scheduled runs. New candidate staging: `C:/Users/gombc/Documents/Codex/staging/wef-entry-workingday-20261031`. Canonical planning context/pointer remains authoritative while the Entry working day is TODAY in America/New_York. Copied immutable producer evidence under this stage supplies original proof/part references; no live collector/manual production invocation.
+
+Prepared route: Entry-owned `wef-entry-calculator` three-minute Windows task → `run-hidden.vbs` → `run.ps1` → `entry.js` → `runner.js`. Own lock/journal/checkpoint; upstream read-only, Entry-only writes. Task remains unregistered pending complete current Class review and coordinator reconciliation. Earlier failed37-check candidate/log are preserved at `wef-entry-twofix-20261031`; its incomplete fixture is not deployment proof. Ring's historical shared Entry route below is disconnected/restored, not the current isolated route. Ring, collectors and retention remain protected.
 
 When code review is invoked or required, follow [canonical Code Review](C:/Users/gombc/.agents/skills/code-review/SKILL.md): inspect actual changes, dependencies and downstream/failure paths independently; save reviewer-owned findings and exact command/cwd/runtime/UTC/exit/stdout-stderr evidence. Separate executed, inspected and recovered evidence from deployment and normal scheduled proof. Passing component tests are not integration proof; review failure grants no repair or retry permission.
 
@@ -14,7 +16,7 @@ Installed receipt: ringstatus-operating-skills **0.2.2**, release `pluginrel_6ae
 
 Preserve existing Data/Live source identity, original as-of and TODAY Eastern contracts;100000 is unknown order, provider estimates remain distinct from derived ETA, no invented phase/anchor or queue positions. Preserve no caps/SQLite/Schedules/legacy/manual runs and Ring/collector isolation. Retention remains disabled. The proposed three-minute Entry-owned Windows route requires approved corrections and fresh Class PASS before deployment; guidance adoption does not authorize task registration, test repetition, restart, product edits or data writes.
 
-## Historical shared release — superseded by current stop
+## Historical shared release â€” superseded by current stop
 
 Human **APPROVED TO EDIT** and requested code-review in coordinator turn `01a18e50-5cba-7db2-b4cd-04d6b2e7a51d`. The malformed-group correction is frozen and independently reviewed PASS. Raw class/group/stage multiplicity is retained; only safe nonexcluded groups reach class adaptation. Scoped malformed/duplicate issues do not poison unrelated work or persist entry_failed.
 

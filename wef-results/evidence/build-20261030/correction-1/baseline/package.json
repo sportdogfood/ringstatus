@@ -1,0 +1,1 @@
+{"name":"wef-results","version":"1.0.0","private":true,"description":"Results snapshots from existing Airtable Data/Live evidence; scheduler activation separate","scripts":{"test":"node --test test/*.test.js"},"engines":{"node":">=22"}}

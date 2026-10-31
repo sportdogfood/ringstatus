@@ -1,0 +1,211 @@
+{
+  "authorization": "Explicit human manual priority-only action through Records",
+  "show": "recOAxMcqu1f75CQk",
+  "key": "15|200000076",
+  "anchor": "2026-10-31",
+  "plan": [
+    {
+      "id": "recNKs86S27g79pl5",
+      "date": "2026-10-30",
+      "offset": -1
+    },
+    {
+      "id": "recV3qjf5oJAQW8SY",
+      "date": "2026-10-31",
+      "offset": 0
+    },
+    {
+      "id": "recohTvwKk7pDGnk1",
+      "date": "2026-10-29",
+      "offset": -2
+    },
+    {
+      "id": "recs1RPpDh6bGuHkY",
+      "date": "2026-11-01",
+      "offset": 1
+    }
+  ],
+  "before": {
+    "records": [
+      {
+        "id": "recNKs86S27g79pl5",
+        "createdTime": "2026-10-29T14:05:13.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-10-30",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-30"
+        }
+      },
+      {
+        "id": "recV3qjf5oJAQW8SY",
+        "createdTime": "2026-10-29T14:05:22.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-10-31",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-31"
+        }
+      },
+      {
+        "id": "recohTvwKk7pDGnk1",
+        "createdTime": "2026-10-29T14:05:08.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-10-29",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-29"
+        }
+      },
+      {
+        "id": "recs1RPpDh6bGuHkY",
+        "createdTime": "2026-10-29T14:05:27.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-11-01",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-11-01"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 4
+    }
+  },
+  "write": {
+    "records": [
+      {
+        "id": "recNKs86S27g79pl5",
+        "createdTime": "2026-10-29T14:05:13.000Z",
+        "cellValuesByFieldId": {
+          "fldbK4VEp3aNOdJlB": -1
+        }
+      },
+      {
+        "id": "recV3qjf5oJAQW8SY",
+        "createdTime": "2026-10-29T14:05:22.000Z",
+        "cellValuesByFieldId": {
+          "fldbK4VEp3aNOdJlB": 0
+        }
+      },
+      {
+        "id": "recohTvwKk7pDGnk1",
+        "createdTime": "2026-10-29T14:05:08.000Z",
+        "cellValuesByFieldId": {
+          "fldbK4VEp3aNOdJlB": -2
+        }
+      },
+      {
+        "id": "recs1RPpDh6bGuHkY",
+        "createdTime": "2026-10-29T14:05:27.000Z",
+        "cellValuesByFieldId": {
+          "fldbK4VEp3aNOdJlB": 1
+        }
+      }
+    ],
+    "hint": "Next, ask the user if they want to display the updated records in an interactive view."
+  },
+  "readback": {
+    "records": [
+      {
+        "id": "recNKs86S27g79pl5",
+        "createdTime": "2026-10-29T14:05:13.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-10-30",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-30",
+          "fldbK4VEp3aNOdJlB": -1
+        }
+      },
+      {
+        "id": "recV3qjf5oJAQW8SY",
+        "createdTime": "2026-10-29T14:05:22.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-10-31",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-31",
+          "fldbK4VEp3aNOdJlB": 0
+        }
+      },
+      {
+        "id": "recohTvwKk7pDGnk1",
+        "createdTime": "2026-10-29T14:05:08.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-10-29",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-29",
+          "fldbK4VEp3aNOdJlB": -2
+        }
+      },
+      {
+        "id": "recs1RPpDh6bGuHkY",
+        "createdTime": "2026-10-29T14:05:27.000Z",
+        "cellValuesByFieldId": {
+          "fldA41GJyjFTr5ZSA": "2026-11-01",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-11-01",
+          "fldbK4VEp3aNOdJlB": 1
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 4
+    }
+  },
+  "anchor_readback": {
+    "records": [
+      {
+        "id": "recOAxMcqu1f75CQk",
+        "createdTime": "2026-10-26T16:02:47.000Z",
+        "cellValuesByFieldId": {
+          "fldhc0ngVDJ45neim": "2026-10-31",
+          "fldqdLdrX8LLTdHJg": true
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "result": "PASS",
+  "collectors_run": 0,
+  "count_replays": 0,
+  "source_calls": 0,
+  "recurring_population": "Not implemented or proved by this manual priority action"
+}

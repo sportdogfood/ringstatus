@@ -1,0 +1,41 @@
+{
+  "base": "appCaSmL819KK7UFJ",
+  "table": "tbl14MaCCDw6dAywH",
+  "field": {
+    "id": "fldbK4VEp3aNOdJlB",
+    "name": "day-priority",
+    "type": "number",
+    "description": "Offset from effective planning selected_date; description updated and GET-read back",
+    "options": {
+      "precision": 0
+    },
+    "actionId": "actII9uTO6p2fmvGy"
+  },
+  "schema_readback": "PASS",
+  "meaning": "show-days.date minus effective Shows PLANNING selected_date",
+  "values": [
+    -3,
+    -2,
+    -1,
+    0,
+    1,
+    2,
+    3
+  ],
+  "population": "IMPLEMENTED and deployed22:48:45Eastern; normal22:49phaseVerified4rows,0changes needed; independentAirtableGETreadbackPASS",
+  "outside_window": "Explicit current instruction: leave existing values untouched outside-3..3; never clamp",
+  "existing_stop": {
+    "path": "wef-shows/runtime/show-days-stopped.json",
+    "error": "Count replay timed out",
+    "at": "2026-10-30T18:07:49.560Z"
+  },
+  "repeat_proof": "Previous 19:09 wake blocked by already-running process; no retry authorization inferred",
+  "next_action": "None for current priority automation. Preserve count stop and normal existing cadence; future discovery/19:00 trigger evidence remains naturally unobserved.",
+  "requested_update_triggers": [
+    "On successful new-show discovery",
+    "Daily at first existing scheduled wake at/after19:00 America/New_York"
+  ],
+  "anchor_decision": "SETTLED by human: Move0to tomorrow at7p.m.; use existing within-range planning advance, no additional midnight shift",
+  "preserved_contract": "Live and Timing remain actual calendar TODAY",
+  "authorization": "Human via Records explicitly approved independent priority-phase code, targeted tests, review and guarded established deployment; no count stop retry/manualcollector/task changes"
+}
