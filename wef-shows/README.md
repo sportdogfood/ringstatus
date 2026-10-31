@@ -1,3 +1,29 @@
+## Current v1.6 policy - deployed October 30, 2026 at 19:03 Eastern
+
+- At the first normal wake at/after 19:00 America/New_York, select tomorrow only when it falls within the current show date range. Otherwise retain the selected day. Repeat wakes never add another day.
+- Start new-show discovery Sunday at 22:00 Eastern; repeat every three elapsed hours from each attempt until the show ID changes, then wait until the following Sunday. Existing five-minute wakes execute due work; no new task.
+- Five-minute heartbeat/run/error logging remains. Original source date and last_checked stay separate from calendar selection and authority_checked_at.
+- Live and Timing independently operate on TODAY within the show range. Data still receives the canonical selected-date fence; no fabricated handoff or evidence-age reset. Existing archive/retirement safeguards are preserved.
+- Normal 19:04 calendar rollover and Airtable heartbeat/run-log readback PASS. Repeat verification stopped: the 19:09 wake exited with Schedule collector already running; its active lock was left untouched. No retry or further patch. The pre-existing count-publication stop remains unchanged; no reset, repair or manual run.
+
+Owner boundary: downstream verification and further downstream work now belong to wef-timing-coordinator and wef-records-coordinator. Both received the deployed handoff. Shows owns only its canonical publication, discovery and own logs/heartbeat.
+
+[Exact release, review and verification](evidence/calendar-discovery-20261030/README.md). This approved v1.6 policy supersedes the earlier v1.5 discovery-window policy below; unrelated locked ownership and protections remain.
+
+# Current discovery policy - October 30, 2026
+
+Scope amendment v1.5 deployed at 18:15 Eastern through the existing task route. Two normal daily-window discovery runs verified at 18:19 and 18:24 Eastern, including Airtable heartbeat/run-log readback. Full runs remain Partial only because of the preserved prior count-publication stop. Sunday/overnight branches have offline proof only; [release, review and evidence](evidence/discovery-windows-20261030/README.md).
+
+- New default show: Sunday 16:00 inclusive to 20:00 exclusive America/New_York.
+- Source-selected show-day for the retained show: daily 16:00 inclusive to 20:00 exclusive, following Eastern DST.
+- Five-minute heartbeat, run logs and error logs continue. Discovery is logged as skipped outside its window. Count publication continues only where not already stopped.
+- Sunday uses the existing ring/default-schedule pair. Other days query default-schedule only for the retained canonical show. Never fabricate tomorrow's date or switch show identity outside Sunday.
+- Skipped source checks retain last_checked, archived payloads, IDs and links. Approved companion readers accept a successful closing-window check until the next daily 16:30 deadline; other source observations, count freshness, future-clock and identity safeguards remain unchanged. A missed window expires authority.
+
+Separate existing failure: show-days publication stopped October 30 at 14:07:49 Eastern after Count replay timed out. Its stop was preserved by this deployment. Discovery verification is not count-publication recovery or universal collector success.
+
+The record below describes the prior locked release and dated evidence. The policy above supersedes its unrestricted five-minute discovery wording. All unrelated scope, archive and count-replay protections remain locked.
+
 # Current Shows operating record - 30 October 2026
 
 This section is current; older dated sections below are historical evidence,

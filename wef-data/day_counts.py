@@ -12,6 +12,14 @@ def instant(value):
 
 def class_key(show,day,ring,cid):return f'{show}|{day}|{ring}|{cid}'
 
+def summary_dates(context):
+    start=datetime.date.fromisoformat(context['start-date'][:10]);end=datetime.date.fromisoformat(context['end-date'][:10])
+    days=context.get('canonical-days')
+    if days is None:return [(start+datetime.timedelta(days=i)).isoformat() for i in range((end-start).days+1)]
+    if not isinstance(days,list) or not days or sorted(set(days))!=days:raise ValueError('Invalid canonical count day set')
+    if any(datetime.date.fromisoformat(day)<start or datetime.date.fromisoformat(day)>end for day in days):raise ValueError('Canonical count date outside show')
+    return days
+
 def summaries(context, units, run_key, predecessor, verified_at):
     """Units are (verified frozen unit, exact ordered part references), oldest first.
 
@@ -55,10 +63,9 @@ def summaries(context, units, run_key, predecessor, verified_at):
                 if valid:history.setdefault(ck,{}).update({tk:references for tk in trips})
                 candidate={'entries':entries,'trips':trips,'scratch':scratch,'valid':valid,'metric':receipt,'references':references}
                 if ck not in snapshots or instant(receipt['completed'])>=instant(snapshots[ck]['metric']['completed']):snapshots[ck]=candidate
-    start=datetime.date.fromisoformat(context['start-date'][:10]);end=datetime.date.fromisoformat(context['end-date'][:10])
     output=[]
-    for offset in range((end-start).days+1):
-        day=(start+datetime.timedelta(days=offset)).isoformat();dk=show+'|'+day
+    for day in summary_dates(context):
+        dk=show+'|'+day
         inv=inventory.get(day);expected=inv[0] if inv else set()
         accepted=sorted(k for k in expected if k in snapshots and snapshots[k]['valid'])
         missing=sorted(expected-set(accepted));entries=set();trips=set();scratches=set();dropped=set();refs={};metrics=[]
@@ -99,6 +106,7 @@ def validate_summary(envelope,context):
     if body['format']!=FORMAT or body['policy-version']!=POLICY:raise ValueError('Unsupported day count policy')
     if body['show-key']!=context['show-key'] or body['customer-id']!=context['customer-id']:raise ValueError('Day summary context mismatch')
     if body['day-key']!=body['show-key']+'|'+body['date'] or not context['start-date'][:10]<=body['date']<=context['end-date'][:10]:raise ValueError('Day summary date mismatch')
+    if body['date'] not in summary_dates(context):raise ValueError('Day summary outside canonical scope')
     if body['coverage']!='competition-class-participation' or body['all-dated-activity-completeness']!='unknown':raise ValueError('Unsupported broad coverage claim')
     if body['completeness'] not in ('complete','partial','unknown'):raise ValueError('Invalid count completeness')
     for field in ('unique-entry-count','proven-trip-count','scratch-count','drop-count'):
@@ -131,6 +139,10 @@ def accepted_summaries(head,runs,collections,context):
     """Read-only consumer contract; validates chain, dependencies and recomputed body."""
     from wef_data_handoff import revision_chain
     chain=revision_chain(head,runs,collections);units=[];accepted=[]
+    days=chain[-1][0].get('canonical-days')
+    if days is not None:
+        if context.get('canonical-days') is not None and context['canonical-days']!=days:raise ValueError('Count canonical day scope mismatch')
+        context={**context,'canonical-days':days};summary_dates(context)
     fence=[context[k] for k in ('show-key','start-date','end-date','selected-date')]
     if chain[-1][0].get('authority')!=fence or chain[-1][0].get('authority-before')!=fence:raise ValueError('Count canonical fence mismatch')
     for state,_ in chain:
@@ -148,6 +160,6 @@ def accepted_summaries(head,runs,collections,context):
                                 'summary-collections':refs}})
             else:units.append((unit,refs))
     if accepted:
-        wanted=(datetime.date.fromisoformat(context['end-date'][:10])-datetime.date.fromisoformat(context['start-date'][:10])).days+1
+        wanted=len(summary_dates(context))
         if len(accepted)!=wanted or len({e['body']['day-key'] for e in accepted})!=wanted:raise ValueError('Incomplete summary day set')
     return accepted

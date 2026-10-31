@@ -1,0 +1,95 @@
+{
+  "run_id": "e2cbcc75-63ae-4b99-bcbc-dbc366f46b09",
+  "log": {
+    "records": [
+      {
+        "id": "recqi1DFK9Rex7mHm",
+        "createdTime": "2026-10-25T11:24:05.000Z",
+        "cellValuesByFieldId": {
+          "fld07ih8s9e3RtG5Z": "2026-10-30T22:24:02.433Z",
+          "fld5s9CfuFWHAmR7O": "Partial",
+          "fldBuinqICo2okCwB": 1,
+          "fldEBH94TwKZf0ksV": 200000076,
+          "fldKx4JQgSbblmXZO": [
+            {
+              "id": "recijgxkbeqk66BqB",
+              "name": "default-schedule"
+            }
+          ],
+          "fldLMunHI4QR5fFKh": "Show-days: Day publication stopped after prior failure; owner authorization required",
+          "fldM8fmb7yMTer7qA": "e2cbcc75-63ae-4b99-bcbc-dbc366f46b09",
+          "fldRRS2wGPkqkdwi8": [
+            {
+              "id": "rec9jv5s429aZDA9J",
+              "name": "e2cbcc75-63ae-4b99-bcbc-dbc366f46b09|1"
+            }
+          ],
+          "fldSUMU4ll2Jjeu2F": "2026-10-30T22:24:06.652Z; run-logs; Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\run-logs\\451f9388a99e9dda82ad66966b35c2d78f8f2bcc6e6e93a899d905c175737d4b.json.gz; SHA256 451f9388a99e9dda82ad66966b35c2d78f8f2bcc6e6e93a899d905c175737d4b\n2026-10-30T22:24:15.664Z; default-schedule; Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\3599e72bd1dfaba5b3085311fb677b618ccbf8f08ef7e2c847f1f205f5682798.json.gz; SHA256 3599e72bd1dfaba5b3085311fb677b618ccbf8f08ef7e2c847f1f205f5682798\n2026-10-30T22:24:15.671Z; shows-before; Created; 2 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\shows-before\\54982b78a222cd6eced01ace8be5bf33f1a09c5bfc0b51be50e80193c2e22805.json.gz; SHA256 54982b78a222cd6eced01ace8be5bf33f1a09c5bfc0b51be50e80193c2e22805",
+          "fldi7V6lrDYhD0GL0": "Daily show-day discovery: show 200000076: 2026 ESP Fall Finale (#6963); 2026-10-29 through 2026-11-01; source-selected 2026-10-30. New-show discovery skipped outside Sunday window. No downstream jobs triggered. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+          "fldtU7Vxn21teQB8V": "2026-10-30T22:24:21.728Z",
+          "fldwMbY6c0Ij4v89Z": 3
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "heartbeat": {
+    "records": [
+      {
+        "id": "recCpv3iPc1R8eAqX",
+        "createdTime": "2026-10-23T14:34:12.000Z",
+        "cellValuesByFieldId": {
+          "fld9jjnU8WuSUP0M4": 200000076,
+          "fldDUVfka6iEEpHOg": "Show-days: Day publication stopped after prior failure; owner authorization required",
+          "fldY5Ura2oIBQLrJI": "Daily show-day discovery: show 200000076: 2026 ESP Fall Finale (#6963); 2026-10-29 through 2026-11-01; source-selected 2026-10-30. New-show discovery skipped outside Sunday window. No downstream jobs triggered. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+          "fldpDEq7ZjX8yit38": "WEF-default",
+          "fldtXUpsn3QYXrnfN": "Partial",
+          "fldtrSDNqW7hGL0fq": "2026-10-30T22:24:21.728Z",
+          "fldzP95LOJ5cvdgcb": "2026-10-30"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "sources": {
+    "records": [
+      {
+        "id": "rec8pwcOzXDi0sjMO",
+        "createdTime": "2026-10-29T17:10:47.000Z",
+        "cellValuesByFieldId": {
+          "fldRayFRe3paZR4FX": "Failed",
+          "fldi4jHgIW6ViSiAu": "season-counts",
+          "fldkXAnCIqZYbDFt7": "2026-10-30T17:59:55.586Z",
+          "fldlxOBpP58BeVi0x": "2026-10-30T18:04:25.870Z"
+        }
+      },
+      {
+        "id": "recVO4bhoqfHSWBGn",
+        "createdTime": "2026-10-29T17:10:47.000Z",
+        "cellValuesByFieldId": {
+          "fldRayFRe3paZR4FX": "Success",
+          "fldi4jHgIW6ViSiAu": "default-ring",
+          "fldkXAnCIqZYbDFt7": "2026-10-30T22:14:16.483Z",
+          "fldlxOBpP58BeVi0x": "2026-10-30T22:14:16.118Z"
+        }
+      },
+      {
+        "id": "recijgxkbeqk66BqB",
+        "createdTime": "2026-10-29T17:10:47.000Z",
+        "cellValuesByFieldId": {
+          "fldRayFRe3paZR4FX": "Success",
+          "fldi4jHgIW6ViSiAu": "default-schedule",
+          "fldkXAnCIqZYbDFt7": "2026-10-30T22:24:15.657Z",
+          "fldlxOBpP58BeVi0x": "2026-10-30T22:24:15.285Z"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 3
+    }
+  }
+}

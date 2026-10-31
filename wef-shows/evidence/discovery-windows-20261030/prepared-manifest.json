@@ -1,0 +1,6 @@
+{
+  "collector.js": "384ce314478da4999076e39798bee1e6e17bc73e8769e2a0b101e9115e7c0022",
+  "discovery-window.js": "cd58bd4ced4af3a358c45af40d3ab6c58aca0cf70fd2ff8d58059ff32a71b9f8",
+  "tests/shows.test.js": "4f482b9a0c3ead6b1b653fcb54d2bad3eeeb1d78a1ea13374b24ed5031e469dd",
+  "tests/discovery-window.test.js": "158cd162d86bc351ad002c652ce3f8fe3089af19d69307d1cfb5047ca903bb28"
+}

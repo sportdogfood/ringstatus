@@ -1,0 +1,90 @@
+{
+  "shows": {
+    "table": "shows",
+    "records": [
+      {
+        "id": "rec4En9UWd6lkT1Oh",
+        "fields": {
+          "fld0m1KbWQt126gVv": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\f6d007126bf0c01caa1d7d2f6010e21c271867deb6f3d9ca5f43b060fc8697d0.json.gz",
+          "fld341FzFAHXRhORn": "2026 ESP Fall III (#261901)",
+          "fld8V7t8Nx7JhawnQ": "2026-10-22",
+          "fldKJb88YklYQniWs": "f6d007126bf0c01caa1d7d2f6010e21c271867deb6f3d9ca5f43b060fc8697d0",
+          "fldL6ca7XqCn4pn9W": 516,
+          "fldSFgZFCbn2BYoJG": 15,
+          "fldaem8M0ExDQmxSN": "2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25",
+          "flde0zgjI9fjzdZY5": "2026-10-25T14:49:09.831Z",
+          "fldhc0ngVDJ45neim": "2026-10-25",
+          "fldjn5SUt9HBgQdBs": "15|200000075",
+          "fldpYLDyXGuM1BUrt": "2026-10-25",
+          "fldzwGGWrAFMwh7mJ": 200000075
+        }
+      },
+      {
+        "id": "recOAxMcqu1f75CQk",
+        "fields": {
+          "fld0m1KbWQt126gVv": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\93e9dd604eb191659e40dc20d1a7039a69a10db0d3e9ce07449258e56f4405f3.json.gz",
+          "fld341FzFAHXRhORn": "2026 ESP Fall Finale (#6963)",
+          "fld8V7t8Nx7JhawnQ": "2026-10-29",
+          "fldKJb88YklYQniWs": "93e9dd604eb191659e40dc20d1a7039a69a10db0d3e9ce07449258e56f4405f3",
+          "fldL6ca7XqCn4pn9W": 500,
+          "fldSFgZFCbn2BYoJG": 15,
+          "fldaem8M0ExDQmxSN": "2026-10-29, 2026-10-30, 2026-10-31, 2026-11-01",
+          "flde0zgjI9fjzdZY5": "2026-10-30T22:14:17.042Z",
+          "fldhc0ngVDJ45neim": "2026-10-30",
+          "fldjn5SUt9HBgQdBs": "15|200000076",
+          "fldpYLDyXGuM1BUrt": "2026-11-01",
+          "fldqdLdrX8LLTdHJg": true,
+          "fldzwGGWrAFMwh7mJ": 200000076
+        }
+      }
+    ]
+  },
+  "sources": {
+    "table": "sources",
+    "records": [
+      {
+        "id": "rec8pwcOzXDi0sjMO",
+        "fields": {
+          "fldRayFRe3paZR4FX": "Failed",
+          "flddq7VPt0ooJq7kQ": "https://airtable.com/appdl16HJ5ETm8N69",
+          "fldf6wUlN2NGqFTaC": "Count replay timed out",
+          "fldg6C40wXgxr0l6m": "Read and validate completed runs and retained collections for canonical day counts.",
+          "fldi4jHgIW6ViSiAu": "season-counts",
+          "fldkXAnCIqZYbDFt7": "2026-10-30T17:59:55.586Z",
+          "fldlxOBpP58BeVi0x": "2026-10-30T18:04:25.870Z",
+          "flduSGpJTqGlHrnn0": "Retained Season/Data day counts",
+          "fldwXNRPnQqEM2GId": "wef-season-coordinator",
+          "fldzOihkZsRn2YqRG": "Airtable"
+        }
+      },
+      {
+        "id": "recVO4bhoqfHSWBGn",
+        "fields": {
+          "fldRayFRe3paZR4FX": "Success",
+          "flddq7VPt0ooJq7kQ": "https://wef-schedules-decoded.gombcg.workers.dev/ring?customer_id=15",
+          "fldg6C40wXgxr0l6m": "Identify the source default show.",
+          "fldi4jHgIW6ViSiAu": "default-ring",
+          "fldkXAnCIqZYbDFt7": "2026-10-30T22:14:16.483Z",
+          "fldlxOBpP58BeVi0x": "2026-10-30T22:14:16.118Z",
+          "flduSGpJTqGlHrnn0": "Default show discovery",
+          "fldwXNRPnQqEM2GId": "wef-shows",
+          "fldzOihkZsRn2YqRG": "Endpoint"
+        }
+      },
+      {
+        "id": "recijgxkbeqk66BqB",
+        "fields": {
+          "fldRayFRe3paZR4FX": "Success",
+          "flddq7VPt0ooJq7kQ": "https://wef-schedules-decoded.gombcg.workers.dev/schedule?date=00/00/00&show_id={show_id}&customer_id=15",
+          "fldg6C40wXgxr0l6m": "Validate show metadata, dates and source-selected date.",
+          "fldi4jHgIW6ViSiAu": "default-schedule",
+          "fldkXAnCIqZYbDFt7": "2026-10-30T22:14:16.660Z",
+          "fldlxOBpP58BeVi0x": "2026-10-30T22:14:16.490Z",
+          "flduSGpJTqGlHrnn0": "Default show dates",
+          "fldwXNRPnQqEM2GId": "wef-shows",
+          "fldzOihkZsRn2YqRG": "Endpoint"
+        }
+      }
+    ]
+  }
+}

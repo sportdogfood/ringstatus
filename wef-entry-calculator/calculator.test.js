@@ -22,15 +22,23 @@ test('scratch and gone are excluded and never get a go time',()=>{
  for(const flag of ['scratch','gone']){const f=fixture();f.rows[1][flag]=true;assert.equal(evaluate(f).payload.predicted_go_at,null);}
  const f=fixture();f.rows[0].scratch=true;f.classTiming.total_trips=1;prove(f);assert.equal(evaluate(f).payload.trips_ahead,0);
 });
-test('unknown phase, missing eligibility, partial actual order and duplicate order withhold',()=>{
- for(const mutate of [f=>f.phaseProof=null,f=>f.rows[0].gone=null,f=>f.rows[0].actual=1,f=>f.rows[0].order=2]){
+test('unknown phase withholds derived ETA but preserves independently proved planned queue',()=>{
+ const f=fixture();f.phaseProof=null;const p=evaluate(f).payload;
+ assert.equal(p.predicted_go_at,null);assert.equal(p.trips_ahead,1);assert.equal(p.order,2);
+});
+test('missing eligibility and duplicate planned order withhold exact queue',()=>{
+ for(const mutate of [f=>f.rows[0].gone=null,f=>f.rows[0].order=2]){
   const f=fixture();mutate(f);assert.equal(evaluate(f).payload.predicted_go_at,null);assert.equal(evaluate(f).payload.trips_ahead,null);
  }
 });
-test('progress conflict, stale and future observations withhold',()=>{
- const f=fixture();f.rows[1].gone=true;assert.ok(evaluate(f).payload.reasons.includes('progress_order_conflict'));
+test('partial actual execution order does not replace planned queue',()=>{
+ const f=fixture();f.rows[0].actual=1;f.rows[0].gone=true;const p=evaluate(f).payload;
+ assert.equal(p.trips_ahead,0);assert.equal(p.order,2);assert.equal(p.predicted_go_at,null);
+});
+test('stale and future observations withhold upcoming calculations without erasing observed status',()=>{
  for(const at of ['2026-10-30T13:30:00.000Z','2026-10-30T14:00:01.000Z']){
   const f=fixture();f.observedAt=at;assert.equal(evaluate(f).payload.eligibility,'stale');assert.equal(evaluate(f).payload.predicted_go_at,null);
+  f.rows[1].gone=true;assert.equal(evaluate(f).payload.eligibility,'gone');assert.equal(evaluate(f).payload.observation_quality,'stale');
  }
 });
 test('countdown-only reevaluation keeps hash; expiry produces a new revision',()=>{
@@ -142,10 +150,12 @@ test('Live-first matched frozen roster can override stale Data values without re
  const args={data,liveClasses:new Map([['1|2026-10-30|1|2|3',live]]),classRows:[],paceRows:[],now,runId:'r',readArchive:async()=>structuredClone(rows)};
  const good=await prepare(args);assert.equal(good.outputs[0].payload.source,'live');assert.equal(good.outputs[0].payload.observed_at,now);
  assert.equal(good.outputs[0].payload.input_refs[0].observed_at,s.observed_at);
+ rows[0]['order-of-go']=100000;raw.live.OOG=100000;rows[0]['source-json']=JSON.stringify(raw);live.ref.parts[0].fingerprint=require('../wef-timing/pace').digest(JSON.stringify(rows));
+ const sentinel=await prepare(args);assert.equal(sentinel.outputs[0].payload.order,null);assert.equal(sentinel.outputs[0].payload.order_observation.raw,100000);
  rows[0]['entry-id']=99;live.ref.parts[0].fingerprint=require('../wef-timing/pace').digest(JSON.stringify(rows));
  const conflict=await prepare(args);assert.equal(conflict.outputs[0].payload.source,'data');assert.equal(conflict.outputs[0].payload.eligibility,'stale');
  assert.ok(conflict.outputs[0].payload.reasons.includes('live_trip_roster_mismatch'));
- live.ref.parts[0].fingerprint='0'.repeat(64);await assert.rejects(prepare(args),/archive hash mismatch/);
+ live.ref.parts[0].fingerprint='0'.repeat(64);const bad=await prepare(args);assert.equal(bad.outputs.length,0);assert.ok(bad.issues.some(i=>i.reason.includes('archive hash mismatch')));
 });
 test('real entry stage isolates malformed groups in both orders across repeat runs',async()=>{
  for(const reverse of [false,true])for(const malformed of [null,{identity:{customer:15,show:1,date:'2026-10-30',ring:2,group:9},rows:[null]},
@@ -184,4 +194,78 @@ test('excluded raw occurrence still prevents a false unique entry match',async()
  const bad={identity:{...good.identity,group:9},rows:[{...good.rows[0]},null]};data.inventories['2026-10-30'].groups.push(bad);
  const r=await prepare({data,classRows:[],paceRows:[],now,runId:'r',excludedGroups:new Set([bad])});
  assert.equal(r.outputs.length,0);assert.ok(r.issues.some(i=>i.reason==='entry_occurrence_ambiguous'));
+});
+
+test('sentinel target and peer never acquire rank or exact queue through any input type',()=>{
+ for(const sentinel of [100000,'100000',0,null,''])for(const target of [false,true]){
+  const f=fixture();f.rows[target?1:0].order=sentinel;f.rows[target?1:0].actual=100000;f.phaseProof=null;
+  const p=evaluate(f).payload;assert.equal(p.trips_ahead,null);assert.equal(p.workload_minutes,null);assert.equal(p.predicted_go_at,null);
+  assert.equal(p.order,target?null:2);assert.equal(p.eligibility,'eligible');
+ }
+});
+test('unknown peer eligibility cannot erase target status or invent queue',()=>{
+ const f=fixture();f.rows[0].scratch=null;f.phaseProof=null;const p=evaluate(f).payload;
+ assert.equal(p.eligibility,'eligible');assert.equal(p.order,2);assert.equal(p.trips_ahead,null);
+});
+test('gone sentinel peers are not pending; actual order never ranks the remaining target',()=>{
+ const f=fixture();f.rows[0].order=100000;f.rows[0].actual=1;f.rows[0].gone=true;f.phaseProof=null;
+ const p=evaluate(f).payload;assert.equal(p.order,2);assert.equal(p.trips_ahead,0);assert.equal(p.predicted_go_at,null);
+});
+test('provider estimate is independent sourced evidence, never a derived or completed upcoming ETA',()=>{
+ const f=fixture();f.phaseProof=null;f.rows[0].order=100000;
+ f.rows[1].providerEstimate={raw:'10:15:00',observed_at:now,ref:{source_key:'trip-b',revision:'source'}};
+ let p=evaluate(f).payload;assert.equal(p.provider_estimate.at,'2026-10-30T14:15:00.000Z');assert.equal(p.provider_estimate.upcoming,true);
+ assert.equal(p.predicted_go_at,null);assert.equal(p.trips_ahead,null);
+ f.rows[1].gone=true;p=evaluate(f).payload;assert.equal(p.provider_estimate.upcoming,false);assert.equal(p.eligibility,'gone');
+ f.observedAt='2026-10-30T13:00:00.000Z';p=evaluate(f).payload;assert.equal(p.eligibility,'gone');assert.equal(p.observation_quality,'stale');
+ for(const raw of ['00:00:00','bad','25:00:00','2026-10-31T14:00:00Z']){f.rows[1].providerEstimate.raw=raw;assert.equal(evaluate(f).payload.provider_estimate.at,null);}
+});
+test('provider local time rejects DST ambiguity and nonexistent wall time',()=>{
+ const {providerTime}=require('./calculator');assert.equal(providerTime('01:30:00','2026-11-01'),null);
+ assert.equal(providerTime('02:30:00','2026-03-08'),null);
+});
+test('worker normalizes retained sentinel and carries original provider provenance through real stage',async()=>{
+ const data=dataFixture(),t=data.entry_classes[0].payload.trips[0];Object.assign(t,{order_of_go:'100000',actual_order:1,gone_in:1,estimated_go_time:'10:15:00'});
+ const a=memoryAPI(),state={};const r=await stage({api:a,state,save:async()=>{},data,classRows:[],paceRows:[],now,runId:'sentinel'});
+ const p=JSON.parse(r.saved[0].fields['payload-json']);assert.equal(p.order,null);assert.equal(p.actual_order,1);assert.equal(p.eligibility,'gone');
+ assert.equal(p.order_observation.raw,'100000');assert.equal(p.provider_estimate.upcoming,false);assert.equal(p.provider_estimate.ref.parts[0].sha256,'a'.repeat(64));
+});
+test('Class component proof preserves matching pace when only end/count material changes, rejects tampering',()=>{
+ const {components,material}=require('./class-proof');const expected=adapt({data:dataFixture(),now,paceRows:[],liveClasses:new Map()})[0];
+ const p=structuredClone(expected.payload);p.total_trips=null;p.completed_trips=null;p.duration_minutes=null;p.estimated_end_at=null;p.end_kind='unknown';
+ const fields={...expected.fields,'payload-json':JSON.stringify(p),'content-hash':hash(material(p)),availability:'unavailable'};
+ fields['answer-key']=fields['scope-key']+'|'+fields['content-hash'];const saved={id:'rec00000000000001',fields};
+ assert.equal(components(saved,expected,now).pace_minutes_per_trip,3);assert.equal(verifyClass(saved,expected,now),false);
+ const bad=structuredClone(saved);bad.fields['pace-minutes-per-trip']=6;assert.equal(components(bad,expected,now),null);
+ const wrong=structuredClone(saved);wrong.fields['payload-json']=wrong.fields['payload-json'].replace('"class":3','"class":4');assert.equal(components(wrong,expected,now),null);
+});
+test('malformed trip class is scoped; unrelated class still publishes without persistent failure',async()=>{
+ const data=dataFixture(),other=structuredClone(data.entry_classes[0]),group=structuredClone(data.inventories['2026-10-30'].groups[0]);
+ group.identity.group=9;group.rows[0]['class-id']=4;group.rows[0]['stage-key']='15|1|2026-10-30|1|8';data.inventories['2026-10-30'].groups.push(group);
+ other.identity[4]=4;other.payload.class_related_data.class_group_id=9;other.payload.trips[0].entry_id=null;data.entry_classes.push(other);
+ const a=memoryAPI(),state={};const r=await stage({api:a,state,save:async()=>{},data,classRows:[],paceRows:[],now,runId:'local'});
+ assert.equal(r.saved.length,1);assert.equal(r.issues.length,1);assert.equal(state.entry_failed,undefined);
+});
+test('isolated runner uses real stage twice with read-only upstream and own journal',async()=>{
+ const {run}=require('./runner'),{SHOWS,TIMING,DATA_TABLES,CLASS_TIMING,CLASS_ANSWERS}=require('../wef-timing/api');
+ const data=dataFixture(),a=memoryAPI(),state={version:1};let saves=0;
+ const show={id:'rec00000000000999',fields:{is_default:true,customer_id:15,show_id:1,'show-key':'15|1',last_checked:now,start_date:'2026-10-30',end_date:'2026-10-30',selected_date:'2026-10-30'}};
+ const args={deadline:Date.now()+160000,clock:()=>now,state,save:async()=>{saves++;},destination:a,
+  source:{list:async(base,table)=>{if(base===SHOWS&&table==='shows')return[show];assert.equal(base,TIMING);assert.equal(table,DATA_TABLES.answers);return[];}},
+  classSource:{list:async(base,table)=>{assert.equal(base,CLASS_TIMING);assert.equal(table,CLASS_ANSWERS);return[];}},
+  project:async()=>data,readPointer:()=>({head:'pinned'}),readLive:async()=>({classes:new Map()})};
+ const first=await run({...args,runId:'first'}),second=await run({...args,runId:'second'});
+ assert.equal(first.ok,true);assert.equal(second.ok,true);assert.equal(first.counts.entries_written,1);assert.equal(second.counts.entries_written,0);
+ assert.equal(second.counts.entries_unchanged,1);assert.ok(saves>0);assert.equal(a.db.get(T['run-logs']).length,2);
+ const failed=await run({...args,runId:'bad',project:async()=>{throw Error('offline source failure');}});assert.equal(failed.ok,false);assert.ok(state.entry_failed);
+ let sourceCalls=0;const blocked=await run({...args,runId:'blocked',source:{list:async()=>{sourceCalls++;throw Error('must not reach');}}});
+ assert.equal(blocked.ok,false);assert.equal(sourceCalls,0);
+});
+
+test('explicit Data group binds one occurrence without assigning its trips to another group',async()=>{
+ const data=dataFixture(),second=structuredClone(data.inventories['2026-10-30'].groups[0]);
+ second.identity.group=9;second.rows[0]['stage-key']='15|1|2026-10-30|1|8';data.inventories['2026-10-30'].groups.push(second);
+ const r=await prepare({data,classRows:[],paceRows:[],now,runId:'r'});
+ assert.equal(r.outputs.length,1);assert.equal(r.outputs[0].payload.identity.group,2);assert.equal(r.issues.length,1);
+ assert.equal(r.issues[0].identity.group,9);
 });

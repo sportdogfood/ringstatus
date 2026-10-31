@@ -1,0 +1,117 @@
+{
+  "shows": {
+    "records": [
+      {
+        "id": "rec4En9UWd6lkT1Oh",
+        "createdTime": "2026-10-23T14:34:09.000Z",
+        "cellValuesByFieldId": {
+          "fld0m1KbWQt126gVv": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\f6d007126bf0c01caa1d7d2f6010e21c271867deb6f3d9ca5f43b060fc8697d0.json.gz",
+          "fld341FzFAHXRhORn": "2026 ESP Fall III (#261901)",
+          "fld8V7t8Nx7JhawnQ": "2026-10-22",
+          "fldKJb88YklYQniWs": "f6d007126bf0c01caa1d7d2f6010e21c271867deb6f3d9ca5f43b060fc8697d0",
+          "fldL6ca7XqCn4pn9W": 516,
+          "fldSFgZFCbn2BYoJG": 15,
+          "fldaem8M0ExDQmxSN": "2026-10-22, 2026-10-23, 2026-10-24, 2026-10-25",
+          "flde0zgjI9fjzdZY5": "2026-10-25T14:49:09.831Z",
+          "fldhc0ngVDJ45neim": "2026-10-25",
+          "fldjn5SUt9HBgQdBs": "15|200000075",
+          "fldpYLDyXGuM1BUrt": "2026-10-25",
+          "fldzwGGWrAFMwh7mJ": 200000075
+        }
+      },
+      {
+        "id": "recOAxMcqu1f75CQk",
+        "createdTime": "2026-10-26T16:02:47.000Z",
+        "cellValuesByFieldId": {
+          "fld0m1KbWQt126gVv": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\229503bea86691858ae13ff3e9c09bfd9a52d60c03941018584ca928ad2fd00a.json.gz",
+          "fld2DqSkvfM6ng5Hc": [
+            {
+              "id": "recohTvwKk7pDGnk1",
+              "name": "15|200000076|2026-10-29"
+            },
+            {
+              "id": "recNKs86S27g79pl5",
+              "name": "15|200000076|2026-10-30"
+            },
+            {
+              "id": "recV3qjf5oJAQW8SY",
+              "name": "15|200000076|2026-10-31"
+            },
+            {
+              "id": "recs1RPpDh6bGuHkY",
+              "name": "15|200000076|2026-11-01"
+            }
+          ],
+          "fld341FzFAHXRhORn": "2026 ESP Fall Finale (#6963)",
+          "fld8V7t8Nx7JhawnQ": "2026-10-29",
+          "fld9l5o4ZWJ2Es60q": "calendar",
+          "fldA1aMRgG0eywgPb": "2026-10-30T23:04:17.923Z",
+          "fldKJb88YklYQniWs": "229503bea86691858ae13ff3e9c09bfd9a52d60c03941018584ca928ad2fd00a",
+          "fldL6ca7XqCn4pn9W": 500,
+          "fldSFgZFCbn2BYoJG": 15,
+          "fldYudrEu429DYYQp": "2026-10-30",
+          "fldaem8M0ExDQmxSN": "2026-10-29, 2026-10-30, 2026-10-31, 2026-11-01",
+          "flde0zgjI9fjzdZY5": "2026-10-30T22:59:14.976Z",
+          "fldhc0ngVDJ45neim": "2026-10-31",
+          "fldjn5SUt9HBgQdBs": "15|200000076",
+          "fldmwq9dQc9C20kg2": "2026-10-30T23:04:17.894Z",
+          "fldpYLDyXGuM1BUrt": "2026-11-01",
+          "fldqdLdrX8LLTdHJg": true,
+          "fldzwGGWrAFMwh7mJ": 200000076
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 2
+    }
+  },
+  "heartbeat": {
+    "records": [
+      {
+        "id": "recCpv3iPc1R8eAqX",
+        "createdTime": "2026-10-23T14:34:12.000Z",
+        "cellValuesByFieldId": {
+          "fld9jjnU8WuSUP0M4": 200000076,
+          "fldDUVfka6iEEpHOg": "Show-days: Day publication stopped after prior failure; owner authorization required",
+          "fldY5Ura2oIBQLrJI": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Advanced. No downstream jobs triggered. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+          "fldpDEq7ZjX8yit38": "WEF-default",
+          "fldtXUpsn3QYXrnfN": "Partial",
+          "fldtrSDNqW7hGL0fq": "2026-10-30T23:04:22.875Z",
+          "fldzP95LOJ5cvdgcb": "2026-10-31"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "log": {
+    "records": [
+      {
+        "id": "recAv7yIinJkRzuhb",
+        "createdTime": "2026-10-25T12:04:06.000Z",
+        "cellValuesByFieldId": {
+          "fld07ih8s9e3RtG5Z": "2026-10-30T23:04:02.611Z",
+          "fld5s9CfuFWHAmR7O": "Partial",
+          "fldBuinqICo2okCwB": 1,
+          "fldEBH94TwKZf0ksV": 200000076,
+          "fldLMunHI4QR5fFKh": "Show-days: Day publication stopped after prior failure; owner authorization required",
+          "fldM8fmb7yMTer7qA": "441b82ca-47aa-4358-9ee4-f37ba4883af1",
+          "fldRRS2wGPkqkdwi8": [
+            {
+              "id": "recElDju7n6GDhBeA",
+              "name": "441b82ca-47aa-4358-9ee4-f37ba4883af1|1"
+            }
+          ],
+          "fldSUMU4ll2Jjeu2F": "2026-10-30T23:04:06.584Z; run-logs; Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\run-logs\\6c52add068aa98897671a015d8f053bf06a10b7f150edb5083dce3d5b231c82e.json.gz; SHA256 6c52add068aa98897671a015d8f053bf06a10b7f150edb5083dce3d5b231c82e\n2026-10-30T23:04:17.968Z; shows-before; Created; 2 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\shows-before\\c19d01bd68621dd1bedfbad1536c75c5a0c450083d59c11d8653828bb39b75f9.json.gz; SHA256 c19d01bd68621dd1bedfbad1536c75c5a0c450083d59c11d8653828bb39b75f9",
+          "fldi7V6lrDYhD0GL0": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Advanced. No downstream jobs triggered. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+          "fldtU7Vxn21teQB8V": "2026-10-30T23:04:22.875Z",
+          "fldwMbY6c0Ij4v89Z": 2
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  }
+}

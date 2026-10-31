@@ -1,0 +1,4 @@
+{"case":"upcoming","version":"baseline","scope":{"show":77,"customer":15,"date":"2026-11-05","authority":"canonical","checked_at":"2026-11-02T00:04:00Z","active":false},"archiveAttempts":0}
+{"case":"upcoming","version":"candidate","scope":{"show":77,"customer":15,"date":"2026-11-05","authority":"canonical","checked_at":"2026-11-02T00:04:00Z","active":false},"archiveAttempts":0}
+{"case":"active-selected-tomorrow","version":"baseline","scope":{"show":77,"customer":15,"date":"2026-11-02","authority":"canonical","checked_at":"2026-11-02T00:04:00Z","active":false},"archiveAttempts":0}
+{"case":"active-selected-tomorrow","version":"candidate","scope":{"show":77,"customer":15,"date":"2026-11-01","authority":"canonical","checked_at":"2026-11-02T00:04:00Z","active":true},"archiveAttempts":1}

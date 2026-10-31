@@ -7,7 +7,7 @@ function localDay(now){return new Intl.DateTimeFormat('en-CA',{timeZone:'America
 function authority(show,scopeProblems,now){
   const f=show.fields,day=f.selected_date,sid=Number(f.show_id),customer=Number(f.customer_id);
   if(f.is_default!==true||!Number.isSafeInteger(sid)||sid<=0||!Number.isSafeInteger(customer)||customer<=0||f['show-key']!==`${customer}|${sid}`)return{reason:'purge_show_identity_unproven'};
-  if(ageReason(f.last_checked,now,1800000))return{reason:'purge_show_not_fresh'};
+  if(require('../wef-shows/authority-age').showAuthorityReason(f,now))return{reason:'purge_show_not_fresh'};
   if(!validDay(day)||!validDay(f.start_date)||!validDay(f.end_date)||day<f.start_date||day>f.end_date)return{reason:'purge_working_day_unproven'};
   // Discovery/preparation of a future day must not retire today's observations.
   if(day!==localDay(now))return{reason:'purge_working_day_not_today'};

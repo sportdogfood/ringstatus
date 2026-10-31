@@ -1,0 +1,105 @@
+{
+  "at": "2026-10-30T22:06:46.302054+00:00",
+  "prepared": {
+    "tests": 380,
+    "passed": 341,
+    "failed": 39
+  },
+  "baseline": {
+    "tests": 208,
+    "passed": 169,
+    "failed": 39
+  },
+  "identical_failure_names": true,
+  "baseline_failures": [
+    "source class identity and explicit empty arrays are validated",
+    "independent empty collection succeeds for all five sources and all days",
+    "trainer overlap and both private follows collect once with separate collection associations",
+    "repeat run preserves entry/collection IDs and adds one terminal run log",
+    "one failed producer preserves its previous entry membership and other sources refresh",
+    "inactive roster never excludes collection; team slice hides inactive but user-only is never team",
+    "schedule sync mismatch stops before source calls and retains existing participation",
+    "explicit missing followed entry fails that owner, not an empty success",
+    "more than ten private selections blocks sources and malformed empty people fails",
+    "private-only entry has no invented trainer feed association",
+    "scheduled date is respected; conflicting participation is rejected",
+    "adapter rejects every CWF/shared mutation, synced destination writes and deletion",
+    "log capacity archives finished slot before reuse",
+    "canonical show read replaces schedules mirror without changing schedule links",
+    "plural writer keeps keys, local links and successful observation on two fixture runs",
+    "failed collection preserves historical links and successful timestamp",
+    "ambiguous class groups never inferred from people feed",
+    "plural empty sources succeed and disappeared participation is dropped with history",
+    "initial complete inventory rejects historical duplicate keys before answer writes",
+    "failed checkpoint only resumes the specifically authorized run, never pending purge",
+    "every discovered group is evaluated on consecutive runs",
+    "one normal Data invocation saves pace and each eligible class in its destination",
+    "class snapshots use the class base and only the selected current day, including repeat runs",
+    "Data inventory covers missing Live classes and repeats without duplicate snapshots",
+    "Data original source time remains stale despite a new completed head",
+    "source crossing freshness limit during a run cannot authorize pace or purge",
+    "expired source cannot advance retirement authority when no old rows exist",
+    "Live class source changing defers class work without losing recorded ring counts",
+    "a class-only change records a complete checkpoint",
+    "changed pinned head withholds output and never picks another show",
+    "fresh Shows heartbeat refresh does not interrupt unchanged authority",
+    "changed Shows selected date defers with explicit reason",
+    "new-show handoff absence is deferred rather than a collector invocation or old-head fallback",
+    "Data Live exact roster creates interval pace; a different roster falls back",
+    "archive prerequisite defers cleanup on repeat runs and protects every show date",
+    "failed class readback prevents rollover deletion",
+    "unresolved deletion intent blocks additional deletions",
+    "unrelated completed Data head advancement does not duplicate consumed evidence",
+    "a new observation without progress never represents the previous interval as a new measurement"
+  ],
+  "Data_offline_contract": {
+    "tests": 13,
+    "passed": 13
+  },
+  "independent_review": "PASS authority-only scope; no new actionable defects",
+  "normal_scheduled_acceptance": {
+    "daily_window": "PASS two normal scheduled runs",
+    "runs": [
+      {
+        "run_id": "1db4a696-5728-48d2-b009-900900a26c24",
+        "started": "2026-10-30T22:19:02.501Z",
+        "completed": "2026-10-30T22:19:21.150Z",
+        "discovery": "PASS daily-window check and Sunday-only show skip",
+        "heartbeat_and_run_log": "PASS Airtable readback",
+        "run_log_record": "recJkGbK8MOg1boLy",
+        "overall_result": "Partial - preserved prior count-publication stop"
+      },
+      {
+        "run_id": "e2cbcc75-63ae-4b99-bcbc-dbc366f46b09",
+        "started": "2026-10-30T22:24:02.433Z",
+        "completed": "2026-10-30T22:24:21.728Z",
+        "discovery": "PASS daily-window check and Sunday-only show skip",
+        "heartbeat_and_run_log": "PASS Airtable readback",
+        "run_log_record": "recqi1DFK9Rex7mHm",
+        "overall_result": "Partial - preserved prior count-publication stop"
+      }
+    ],
+    "Sunday_and_outside_window": "Offline tests PASS; normal scheduled behavior not yet observed",
+    "downstream": "Live read current Shows authority and Timing normal run completed; Schedules dead logging lock and Entries retained collection uniqueness remain pre-existing blockers. Overnight companion acceptance not yet observed.",
+    "manual_runs": false,
+    "record_repairs": false,
+    "count_stop_preserved": true,
+    "deployed_hashes": {
+      "wef-shows/authority-age.js": true,
+      "wef-schedules/show-source.js": true,
+      "wef-schedules/tests/wef_data_context.py": true,
+      "wef-entries/model.js": true,
+      "wef-live/model.js": true,
+      "wef-timing/data-runner.js": true,
+      "wef-timing/purge.js": true,
+      "wef-timing/class-adapter.js": true,
+      "wef-shows/discovery-window.js": true,
+      "wef-shows/collector.js": true,
+      "wef-shows/tests/shows.test.js": true,
+      "wef-shows/tests/discovery-window.test.js": true,
+      "wef-shows/tests/authority-age.test.js": true,
+      "wef-timing/class-adapter.test.js": true
+    }
+  },
+  "verified_at": "2026-10-30T22:25:01.663567+00:00"
+}

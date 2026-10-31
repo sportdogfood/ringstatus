@@ -1,0 +1,66 @@
+[
+  {
+    "path": "wef-shows/collector.js",
+    "before": "384ce314478da4999076e39798bee1e6e17bc73e8769e2a0b101e9115e7c0022"
+  },
+  {
+    "path": "wef-shows/authority-age.js",
+    "before": "ba0998dda5b6e6a9cbc5fc5aa99f9f0b0b2bec0f436ef2e9d34eaf3cc56f7cfd"
+  },
+  {
+    "path": "wef-schedules/show-source.js",
+    "before": "503204118fa49309b23555667231bf7a35e429cc41d455a312c13c25aa7c0b28"
+  },
+  {
+    "path": "wef-schedules/tests/wef_data_context.py",
+    "before": "c1601d1b9c4472e35815acf7332a6ea4a16df5cb50f683acf0a2aa0eedc3e65c"
+  },
+  {
+    "path": "wef-schedules/tests/wef_data_airtable.py",
+    "before": "44306d51e6107d630f2156656bd7df98d74155ce0d6240da02643d0831e3951c"
+  },
+  {
+    "path": "wef-entries/model.js",
+    "before": "94f4341be194f7c7285654d6662a0f59e5501e51903eb6f6b6b29a958b8d83d9"
+  },
+  {
+    "path": "wef-live/model.js",
+    "before": "40faaab2c14d8aaba9a3d462357ff0bd740a7e1a548b71df39efa6bcfb85ba84"
+  },
+  {
+    "path": "wef-timing/data-runner.js",
+    "before": "28fa216a5ea11413a1e6a91a601a1521deaca3d86b47632e0dc8530e4db02eb0"
+  },
+  {
+    "path": "wef-timing/class-adapter.js",
+    "before": "e241a7184254b26ff722fc49212750ddf79dd85726a124e665e2e46aefeb9ae9"
+  },
+  {
+    "path": "wef-timing/purge.js",
+    "before": "c84c3ec5e5f48f6ffa89b7f42a6330dd76c812413e271249caa15df5b18131c1"
+  },
+  {
+    "path": "wef-shows/tests/shows.test.js",
+    "before": "91496c148a765d1513ccecf906121fe824a83bd9538111d146056d55084d79bb"
+  },
+  {
+    "path": "wef-shows/tests/discovery-window.test.js",
+    "before": "158cd162d86bc351ad002c652ce3f8fe3089af19d69307d1cfb5047ca903bb28"
+  },
+  {
+    "path": "wef-shows/tests/authority-age.test.js",
+    "before": "c4a40e51231bdf7412ed4cfb6aecabb7b63be5de5f32cae57d6393051a55969d"
+  },
+  {
+    "path": "wef-shows/discovery-policy.js",
+    "before": null
+  },
+  {
+    "path": "wef-shows/tests/today-consumers.test.js",
+    "before": null
+  },
+  {
+    "path": "wef-live/retirement.js",
+    "before": "19b568342c893cafe333088fc6736e3296933b244231d270fc7a7a467b87801e"
+  }
+]

@@ -1,3 +1,11 @@
+## Shows calendar policy companion - deployed October 30, 2026
+
+Shows now selects tomorrow at 19:00 Eastern within show dates and checks new shows Sunday 22:00, then every three hours until changed. Readers validate authority_checked_at with their original 30-minute/future-clock tolerances; last_checked remains the original source timestamp and must be valid/non-future. Legacy rows retain the prior fallback until normal publication. All unrelated source/count freshness checks remain. Live and Timing use TODAY independently while preserving the canonical Data fence and original retirement guards. [Release and normal-run evidence](../wef-shows/evidence/calendar-discovery-20261030/README.md).
+
+## Canonical Shows authority - approved October 30 discovery windows
+
+The approved companion check now follows Shows' daily 16:00-20:00 America/New_York discovery window. A successful check from the closing 30 minutes remains valid until the next daily 16:30 deadline; other checks retain the existing 30-minute allowance. Original source timestamps, exact show identity/links and all non-authority freshness limits remain unchanged. This does not restart a stopped workflow, retire a source, or change any task cadence. [Shows release and normal-run acceptance](../wef-shows/evidence/discovery-windows-20261030/README.md).
+
 ## Current Live status — 30 October 2026, 13:03 Eastern
 
 Latest read-only check: October30 at13:35Eastern. All19 deployed/protected runtime hashes still match. Eleven postdeployment receipts contain no populated activity. Latest completed run4bfd1122-90b5-47a0-90bf-cdf822a84379 (13:32:13–13:32:29Eastern) is ok=true, all-today-groups-completed, with zero collection/logging errors. Two naturally populated runs remain the only acceptance blocker; no code/retention/workflow edits or new approval needed for the already-deployed corrections.

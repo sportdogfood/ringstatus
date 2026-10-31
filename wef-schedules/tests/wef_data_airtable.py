@@ -19,6 +19,7 @@ SHOW_FIELDS = {
     'start-date':'fld8V7t8Nx7JhawnQ', 'end-date':'fldpYLDyXGuM1BUrt',
     'selected-date':'fldhc0ngVDJ45neim', 'default':'fldqdLdrX8LLTdHJg',
     'last-checked':'flde0zgjI9fjzdZY5',
+    'authority-checked-at':'fldA1aMRgG0eywgPb',
 }
 
 class TransportDeferred(RuntimeError):

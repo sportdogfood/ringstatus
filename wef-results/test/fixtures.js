@@ -1,0 +1,5 @@
+const now='2026-10-30T20:00:00.000Z';
+function fixture(){return {id:'recClass',fields:{'class-key':'15|76|2026-10-30|1|200','class-id':200,status:'Completed','last-success':'2026-10-30T19:59:00.000Z','last-run':['recDataRun'],'source-json':JSON.stringify({class:{class_id:200,show_id:76,customer_id:15,number:807,name:'Stake',results_verified:1,verification_detail:'source verifier'},class_related_data:{date:'2026-10-30T00:00:00.000Z',ring:1,class_group_id:50,status:'Completed',show_results:true,total_trips:2,completed_trips:2,remaining_trips:0,grouped_class:false},jumper_table_info:{hasJO:true,hasR3Data:false,roundLabels:{r1:{name:'Round 1'},r2:{name:'Jump Off'}}},trips:[{trip_id:301,entry_id:401,entryxclasses_uuid:'uuid1',score1:0,placing:1,time_one:40,time_two:33,faults_one:0,scratch_trip:0},{trip_id:302,entry_id:402,entryxclasses_uuid:'uuid2',score1:null,placing:100000,gone_in:0,scratch_trip:1}]})}};}
+const options={now,maxSourceAgeMs:600000,customer:15,show:76};
+
+module.exports={fixture,options};

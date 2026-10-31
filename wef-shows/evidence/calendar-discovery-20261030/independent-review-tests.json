@@ -1,0 +1,9 @@
+{
+  "started": "2026-10-30T18:49:41.4599234-04:00",
+  "command": "node --test wef-shows/staged/calendar-discovery-20261030/wef-shows/tests/*.test.js",
+  "node": "v22.22.2",
+  "python": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\.venv\\Scripts\\python.exe",
+  "completed": "2026-10-30T18:49:43.6907590-04:00",
+  "exit": 0,
+  "seconds": 2.23126
+}

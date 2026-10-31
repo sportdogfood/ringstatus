@@ -55,6 +55,16 @@ Codex inspects, documents, coordinates and performs explicitly authorized repeat
 
 ## Working records and verification
 
+### Guidance adoption receipt — October 30, 2026
+
+RingStatus Operating Skills **0.2.1** was read from the installed plugin and compared byte-for-byte with the canonical Code Review, Context Compact and context helper sources. Use the stable canonical procedures on future invocation: [Code Review](C:/Users/gombc/.agents/skills/code-review/SKILL.md) and [Context Compact](C:/Users/gombc/.codex/skills/context-compact/SKILL.md). This README does not automatically load a skill or schedule work.
+
+For delegated/release reviews, save independently authored findings and exact command/runtime/time/exit/stdout/stderr evidence in the authorized review directory; read back and hash the report and frozen inputs. Separate inspected, executed, deployed and normally scheduled proof. Review findings authorize no repair.
+
+At resume, observed compaction and material scope/approval/review handoff, reconcile the full continuing role and current owner boundaries, preserve the prior private checkpoint, refresh the current resume/archive and readback/hash receipt, and run the context helper's `--verify-checkpoint`. The owner's **65%** estimated-context preparation threshold overrides the skill default. No new compaction, observer, timer or production action is implied. Existing cadences, role ownership and explicit stops remain controlling.
+
+The bounded offline adoption proof and receipt are private workspace evidence under `.git/ringstatus-control/skill-proof-20261030/coordinator-rollout/records/`; raw transcripts remain only in the existing private context-recovery directory. Adoption proof does not establish collector reliability or universal future compliance.
+
 - [Owner operating instructions](../wef-owner-operating-instructions.md)
 - [Owner workspace, authority and cadence index](../wef-agent-operating-index-20261030.md)
 - [Sharing review and pending decisions](../wef-sync-sharing-review-20261030.md)

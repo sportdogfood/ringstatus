@@ -1,0 +1,31 @@
+{
+  "base": "appCaSmL819KK7UFJ",
+  "table": "tblJA5CUon5s1sWib",
+  "fields": [
+    {
+      "id": "fldYudrEu429DYYQp",
+      "name": "source_selected_date",
+      "type": "date",
+      "description": "Original date reported by the archived default-schedule source; independent of calendar selection."
+    },
+    {
+      "id": "fld9l5o4ZWJ2Es60q",
+      "name": "selection_basis",
+      "type": "singleLineText",
+      "description": "source or calendar. Calendar means tomorrow was inside the show date range at the daily 19:00 America/New_York decision."
+    },
+    {
+      "id": "fldmwq9dQc9C20kg2",
+      "name": "selection_at",
+      "type": "dateTime",
+      "description": "When the current selected_date was established; retained on unchanged selection."
+    },
+    {
+      "id": "fldA1aMRgG0eywgPb",
+      "name": "authority_checked_at",
+      "type": "dateTime",
+      "description": "Last successful scheduled validation of canonical identity, archived source and calendar selection. Not a source fetch timestamp; last_checked remains original source time."
+    }
+  ],
+  "business_records_edited": false
+}

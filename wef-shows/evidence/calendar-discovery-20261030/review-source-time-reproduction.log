@@ -1,0 +1,9 @@
+{"sourceTime":"MISSING","reader":"wef-live/model","result":"ACCEPTED"}
+{"sourceTime":"MISSING","reader":"wef-entries/model","result":"ACCEPTED"}
+{"sourceTime":"MISSING","reader":"wef-timing/data-runner","result":"ACCEPTED"}
+{"sourceTime":"not-a-date","reader":"wef-live/model","result":"ACCEPTED"}
+{"sourceTime":"not-a-date","reader":"wef-entries/model","result":"ACCEPTED"}
+{"sourceTime":"not-a-date","reader":"wef-timing/data-runner","result":"ACCEPTED"}
+{"sourceTime":"2026-11-15T12:00:00Z","reader":"wef-live/model","result":"ACCEPTED"}
+{"sourceTime":"2026-11-15T12:00:00Z","reader":"wef-entries/model","result":"ACCEPTED"}
+{"sourceTime":"2026-11-15T12:00:00Z","reader":"wef-timing/data-runner","result":"ACCEPTED"}

@@ -1,0 +1,98 @@
+{
+  "run_id": "d735040e-0541-4a0f-8c4e-bd1aefcb5428",
+  "started": "2026-10-30T22:50:13.561Z",
+  "ok": true,
+  "errors": [],
+  "unresolved": [],
+  "link_issues": [],
+  "warnings": [],
+  "logging_errors": [
+    "Log retention Blocked: Prior retention failure requires owner review"
+  ],
+  "archives": [
+    {
+      "at": "2026-10-30T22:50:22.292Z",
+      "kind": "source-live-status",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-live-status\\7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e.json.gz",
+      "records": 1,
+      "sha256": "7ee8a919e693e609d874bdbc948a0cda541a06ff284de1758f99c7f5b2616a9e",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-30T22:50:22.819Z",
+      "kind": "source-groups",
+      "outcome": "Reused",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\a45fa83c5f80528f43314360744394e2fb0aee93aabb0f78db56488e6ea4265c.json.gz",
+      "records": 1,
+      "sha256": "a45fa83c5f80528f43314360744394e2fb0aee93aabb0f78db56488e6ea4265c",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    }
+  ],
+  "counts": {
+    "rings": 0,
+    "groups": 0,
+    "classes": 0,
+    "entries": 0
+  },
+  "scope": {
+    "show": 200000076,
+    "customer": 15,
+    "date": "2026-10-30",
+    "authority": "recOAxMcqu1f75CQk",
+    "checked_at": "2026-10-30T22:49:19.517Z",
+    "active": true
+  },
+  "show_source": {
+    "base": "appCaSmL819KK7UFJ",
+    "record": "recOAxMcqu1f75CQk",
+    "checked_at": "2026-10-30T22:49:19.517Z"
+  },
+  "skipped": "all-today-groups-completed",
+  "summary": "Skipped detailed collection: all 18 groups for show 200000076 on 2026-10-30 are completed. Three-minute checks continue. Publication: schedules Skipped, 0 patched, 0 unchanged, 0 deferred, 0 uncertain; data Skipped, 0 patched, 0 unchanged, 0 deferred, 0 uncertain. Log retention: Blocked, 0 completed records removed.",
+  "publication": {
+    "lanes": {
+      "schedules": {
+        "status": "Skipped",
+        "planned": 0,
+        "attempted": 0,
+        "patched": 0,
+        "unchanged": 0,
+        "deferred": 0,
+        "uncertain": 0,
+        "pending": 0,
+        "issues": []
+      },
+      "data": {
+        "status": "Skipped",
+        "planned": 0,
+        "attempted": 0,
+        "patched": 0,
+        "unchanged": 0,
+        "deferred": 0,
+        "uncertain": 0,
+        "pending": 0,
+        "issues": []
+      }
+    },
+    "errors": []
+  },
+  "publication_errors": [],
+  "retired": [],
+  "completed": "2026-10-30T22:50:25.699Z",
+  "log_retention": {
+    "status": "Blocked",
+    "reason": "Prior retention failure requires owner review",
+    "stopFile": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\log-retention-stop.json"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "ok": false,
+  "run_id": "1db4a696-5728-48d2-b009-900900a26c24",
+  "started": "2026-10-30T22:19:02.501Z",
+  "rows": 1,
+  "errors": [
+    "Show-days: Day publication stopped after prior failure; owner authorization required"
+  ],
+  "archives": [
+    {
+      "at": "2026-10-30T22:19:06.383Z",
+      "kind": "run-logs",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\run-logs\\0cec8f22c252256d11eb5593f2fd3f2f76f30bd2cd596143cadc7d4bd522d631.json.gz",
+      "records": 1,
+      "sha256": "0cec8f22c252256d11eb5593f2fd3f2f76f30bd2cd596143cadc7d4bd522d631"
+    },
+    {
+      "at": "2026-10-30T22:19:15.249Z",
+      "kind": "default-schedule",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\efaf39f3fc150b0a5ab087b00d41885e16205f5aeb0030cc16a67692ccbab691.json.gz",
+      "records": 1,
+      "sha256": "efaf39f3fc150b0a5ab087b00d41885e16205f5aeb0030cc16a67692ccbab691",
+      "shows": [
+        200000076
+      ],
+      "dates": [
+        "2026-10-30"
+      ]
+    },
+    {
+      "at": "2026-10-30T22:19:15.256Z",
+      "kind": "shows-before",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\shows-before\\89d81bb43e176d375baab3a65a48b6177caa16408794b2a462cf90f2131340b8.json.gz",
+      "records": 2,
+      "sha256": "89d81bb43e176d375baab3a65a48b6177caa16408794b2a462cf90f2131340b8"
+    }
+  ],
+  "telemetry_errors": [],
+  "discovery": {
+    "timezone": "America/New_York",
+    "show": "Skipped",
+    "showDay": true,
+    "show_day": "Checked"
+  },
+  "show_id": 200000076,
+  "selected_date": "2026-10-30",
+  "discovery_ok": true,
+  "summary": "Daily show-day discovery: show 200000076: 2026 ESP Fall Finale (#6963); 2026-10-29 through 2026-11-01; source-selected 2026-10-30. New-show discovery skipped outside Sunday window. No downstream jobs triggered. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+  "error_records": [
+    "recgTLGXYta0grVyO"
+  ],
+  "observability": {
+    "sources": [
+      {
+        "key": "default-schedule",
+        "at": "2026-10-30T22:19:14.908Z",
+        "result": "Success",
+        "error": "",
+        "successAt": "2026-10-30T22:19:15.238Z"
+      }
+    ],
+    "errors": [
+      {
+        "at": "2026-10-30T22:19:16.356Z",
+        "phase": "day-publication",
+        "source": null,
+        "message": "Day publication stopped after prior failure; owner authorization required"
+      }
+    ],
+    "ok": true,
+    "logging_errors": []
+  },
+  "completed": "2026-10-30T22:19:21.150Z"
+}

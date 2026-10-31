@@ -1,0 +1,50 @@
+{
+  "files": [
+    {
+      "sha256": "2B01B6590DEFDD76F382D68764674714CB0A202D0DD7B48686646E653B20271D",
+      "path": "wef-shows/collector.js"
+    },
+    {
+      "sha256": "C9BAA13920E1E7396F525D9C087C7392A5C5A5A6117DBB2535A2CFF8035B3B29",
+      "path": "wef-shows/discovery-window.js"
+    },
+    {
+      "sha256": "6022EF852FA6ECBECF7D32BCD9FC297E1CD2F326B6C7C1CF6E29435DEADFF2E8",
+      "path": "wef-shows/authority-age.js"
+    },
+    {
+      "sha256": "5630F10F4B79B0A08F573057D74629988F10CA32E09CAF10FD1CC30882A4EAAD",
+      "path": "wef-schedules/show-source.js"
+    },
+    {
+      "sha256": "E024574F851DC878656B8FE2EA067DFEBD8FBDFC8307AD55533E2CD2B168D23D",
+      "path": "wef-schedules/tests/wef_data_context.py"
+    },
+    {
+      "sha256": "7FBC14E677F229BE95695B81C6CECBC68FB94A5C5AC94EDCD12FD897ED44F2D3",
+      "path": "wef-schedules/tests/wef_data_airtable.py"
+    },
+    {
+      "sha256": "A6D0780DC1CDF749947CA4DD98647F1A84A4C5BB3F096C0260043C11D00D3E14",
+      "path": "wef-entries/model.js"
+    },
+    {
+      "sha256": "B07962626BB35DFDE9CD974CCBD8630F442A8A45AD96344580E9EAA8D0DADC68",
+      "path": "wef-live/model.js"
+    },
+    {
+      "sha256": "F5BB07264FBB0E13F25F271B78214A5CB56EFB6510DF1DCB2818BFAD14733E60",
+      "path": "wef-timing/data-runner.js"
+    },
+    {
+      "sha256": "2D78E64D36BDD9908D130F1DA671759C333CE703872FF90733CB1D708E41A28A",
+      "path": "wef-timing/purge.js"
+    },
+    {
+      "sha256": "F5C8444F2E26B42B0EA07BB4600F8521EFC8A92B977FCEE3ECB2DD55EF6F5BB9",
+      "path": "wef-timing/class-adapter.js"
+    }
+  ],
+  "at": "2026-10-30T18:50:18.7611587-04:00",
+  "state": "reviewed candidate, not frozen release"
+}

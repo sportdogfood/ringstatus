@@ -1,0 +1,58 @@
+{
+  "run_id": "1db4a696-5728-48d2-b009-900900a26c24",
+  "log": {
+    "records": [
+      {
+        "id": "recJkGbK8MOg1boLy",
+        "createdTime": "2026-10-25T01:39:06.000Z",
+        "cellValuesByFieldId": {
+          "fld07ih8s9e3RtG5Z": "2026-10-30T22:19:02.501Z",
+          "fld5s9CfuFWHAmR7O": "Partial",
+          "fldBuinqICo2okCwB": 1,
+          "fldEBH94TwKZf0ksV": 200000076,
+          "fldKx4JQgSbblmXZO": [
+            {
+              "id": "recijgxkbeqk66BqB",
+              "name": "default-schedule"
+            }
+          ],
+          "fldLMunHI4QR5fFKh": "Show-days: Day publication stopped after prior failure; owner authorization required",
+          "fldM8fmb7yMTer7qA": "1db4a696-5728-48d2-b009-900900a26c24",
+          "fldRRS2wGPkqkdwi8": [
+            {
+              "id": "recgTLGXYta0grVyO",
+              "name": "1db4a696-5728-48d2-b009-900900a26c24|1"
+            }
+          ],
+          "fldSUMU4ll2Jjeu2F": "2026-10-30T22:19:06.383Z; run-logs; Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\run-logs\\0cec8f22c252256d11eb5593f2fd3f2f76f30bd2cd596143cadc7d4bd522d631.json.gz; SHA256 0cec8f22c252256d11eb5593f2fd3f2f76f30bd2cd596143cadc7d4bd522d631\n2026-10-30T22:19:15.249Z; default-schedule; Created; 1 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\efaf39f3fc150b0a5ab087b00d41885e16205f5aeb0030cc16a67692ccbab691.json.gz; SHA256 efaf39f3fc150b0a5ab087b00d41885e16205f5aeb0030cc16a67692ccbab691\n2026-10-30T22:19:15.256Z; shows-before; Created; 2 records; C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\shows-before\\89d81bb43e176d375baab3a65a48b6177caa16408794b2a462cf90f2131340b8.json.gz; SHA256 89d81bb43e176d375baab3a65a48b6177caa16408794b2a462cf90f2131340b8",
+          "fldi7V6lrDYhD0GL0": "Daily show-day discovery: show 200000076: 2026 ESP Fall Finale (#6963); 2026-10-29 through 2026-11-01; source-selected 2026-10-30. New-show discovery skipped outside Sunday window. No downstream jobs triggered. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+          "fldtU7Vxn21teQB8V": "2026-10-30T22:19:21.150Z",
+          "fldwMbY6c0Ij4v89Z": 3
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "heartbeat": {
+    "records": [
+      {
+        "id": "recCpv3iPc1R8eAqX",
+        "createdTime": "2026-10-23T14:34:12.000Z",
+        "cellValuesByFieldId": {
+          "fld9jjnU8WuSUP0M4": 200000076,
+          "fldDUVfka6iEEpHOg": "Show-days: Day publication stopped after prior failure; owner authorization required",
+          "fldY5Ura2oIBQLrJI": "Daily show-day discovery: show 200000076: 2026 ESP Fall Finale (#6963); 2026-10-29 through 2026-11-01; source-selected 2026-10-30. New-show discovery skipped outside Sunday window. No downstream jobs triggered. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+          "fldpDEq7ZjX8yit38": "WEF-default",
+          "fldtXUpsn3QYXrnfN": "Partial",
+          "fldtrSDNqW7hGL0fq": "2026-10-30T22:19:21.150Z",
+          "fldzP95LOJ5cvdgcb": "2026-10-30"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  }
+}

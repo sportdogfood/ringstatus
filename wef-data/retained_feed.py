@@ -2,9 +2,55 @@
 import copy,json,pathlib,sys,hashlib
 from data_contract import packed,digest
 
+def history_archive(repo,show=None,head_key=None):
+    show=show or getattr(repo,'history_show',None)
+    if show is None:
+        scopes={json.loads(r.get('state-json') or '{}').get('show-key') for r in repo.graph['runs'].values() if r.get('status')=='Verified completed revision'}-{None}
+        if len(scopes)>1:raise ValueError('Explicit historical show scope required')
+        show=next(iter(scopes),None)
+    candidates=[]
+    for row in repo.graph['runs'].values():
+        if row.get('status')=='Verified completed revision':
+            state=json.loads(row.get('state-json') or '{}')
+            if state.get('show-key')==show and (head_key is None or row['run-key']==head_key):candidates.append((state.get('sequence',0),row))
+    if not candidates:return None
+    head=max(candidates,key=lambda item:item[0])[1]
+    receipt=json.loads(head.get('summary') or '{}').get('evidence-archive')
+    if not receipt:return None
+    repository=getattr(repo,'archive_repository',None)
+    if repository is None:
+        evidence=getattr(repo,'evidence',None)
+        if evidence is None:return None
+        repository=evidence.repository
+    identity=(head['run-key'],digest(head['state-json']),digest(packed(receipt)))
+    cached=getattr(repo,'_history_archive',None)
+    if cached and cached[0]==identity:return cached[1]
+    from archive_evidence import HistoryArchive
+    history=HistoryArchive(repository,receipt,head,repo.inventory['runs'][head['run-key']]['id'])
+    repo._history_archive=(identity,history);return history
+
+def run_rows(repo,show=None,head_key=None):
+    history=history_archive(repo,show,head_key)
+    class Runs(dict):
+        def __missing__(self,key):
+            if history is None:raise KeyError(key)
+            row=history.read('runs',key);self[key]=row;return row
+        def get(self,key,default=None):
+            try:return self[key]
+            except KeyError:return default
+    return Runs(repo.graph['runs'])
+
+def run_identity(repo,key,show=None):
+    native=repo.inventory['runs'].get(key)
+    return native['id'] if native else run_rows(repo,show)[key]['_record-id']
+
 def collection_rows(repo,state=None):
     """Legacy native IDs and archive objects share validation, never fabricated IDs."""
     references={}
+    history=history_archive(repo,(state or {}).get('show-key'))
+    if history:
+        for ref in history.manifest['records']['observations']:
+            if 'archive' in ref:references[ref['key']]=ref
     for row in repo.graph['runs'].values():
         for ref in json.loads(row.get('state-json') or '{}').get('observations',[]):
             if 'archive' in ref:references[ref['key']]=ref
@@ -12,10 +58,18 @@ def collection_rows(repo,state=None):
         if 'archive' in ref:references[ref['key']]=ref
     class Rows(dict):
         def __missing__(self,key):
-            if key not in references:raise KeyError(key)
+            if key not in references:
+                if history is None:raise KeyError(key)
+                row=history.read('legacy-collections',key);self[key]=row;return row
             store=getattr(repo,'evidence',None)
-            if store is None:raise ValueError('Archive-backed observation requires retained evidence reader')
-            row=store.read(references[key]);self[key]=row;return row
+            if store is not None:row=store.read(references[key])
+            else:
+                if history is None:raise ValueError('Archive-backed observation requires retained evidence reader')
+                from archive_evidence import archived_row,checked_path
+                ref=references[key];name=ref['archive']['path']
+                if name!=history.prefix+'/parts/'+ref['sha256']+'.json.gz':raise ValueError('Archive part outside historical show scope')
+                row=archived_row(checked_path(history.repository,name).read_bytes(),ref)
+            self[key]=row;return row
     return Rows({k:{**v,'_record-id':repo.inventory['collections'][k]['id']} for k,v in repo.graph['collections'].items()})
 
 def replay(units):
@@ -34,7 +88,7 @@ def facts_for_state(repo,state):
     collections=collection_rows(repo,state)
     units=[];previous=state.get('predecessor')
     if previous:
-        for _,saved in revision_chain(previous['run-key'],repo.graph['runs'],collections):units.extend(saved)
+        for _,saved in revision_chain(previous['run-key'],run_rows(repo,state['show-key']),collections):units.extend(saved)
     units.extend(u for u,refs in retained_units(state,collections))
     return replay(units)
 
@@ -64,7 +118,7 @@ def put(root,name,value):
 
 def publish(repo,state,root,authority):
     from wef_data_handoff import revision_chain
-    runs=repo.graph['runs'];head=next(k for k,r in runs.items() if r.get('state-json')==packed(state))
+    runs=run_rows(repo,state['show-key']);head=next(k for k,r in runs.items() if r.get('state-json')==packed(state))
     collections=collection_rows(repo,state)
     chain=revision_chain(head,runs,collections);run_names={}
     for journal,_ in chain:
@@ -73,11 +127,17 @@ def publish(repo,state,root,authority):
         # Equal frozen bytes can belong to distinct existing collection records.
         for ref in journal['observations']:
             if 'archive' in ref:
-                from archive_evidence import immutable
-                store=repo.evidence;local=store.local_path(ref)
-                source=local if local.exists() else store.repository/ref['archive']['path']
-                store.read(ref)
-                immutable(pathlib.Path(root)/'objects'/('part-archive-'+ref['archive']['sha256']+'.json.gz'),source.read_bytes())
+                from archive_evidence import immutable,archived_row,checked_path
+                store=getattr(repo,'evidence',None)
+                if store is not None:
+                    local=store.local_path(ref)
+                    source=local if local.exists() else checked_path(store.repository,ref['archive']['path'])
+                else:
+                    history=history_archive(repo,state['show-key'])
+                    if history is None or ref['archive']['path']!=history.prefix+'/parts/'+ref['sha256']+'.json.gz':raise ValueError('Archive part outside historical show scope')
+                    source=checked_path(history.repository,ref['archive']['path'])
+                body=source.read_bytes();archived_row(body,ref)
+                immutable(pathlib.Path(root)/'objects'/('part-archive-'+ref['archive']['sha256']+'.json.gz'),body)
             else:put(root,'objects/part-'+ref['record-id']+'-'+ref['sha256']+'.json',{n:collections[ref['key']][n] for n in ('collection-key','status','retained-json','retained-sha256','_record-id')})
     from data_runner import atomic
     atomic(pathlib.Path(root)/('head-'+state['show-key'].replace('|','-')+'.json'),{'head':head,'run-sha256':run_names[head],'show-key':state['show-key'],'authority':authority})

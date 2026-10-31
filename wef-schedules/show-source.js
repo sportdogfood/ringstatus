@@ -24,10 +24,10 @@ async function readShowFocus({statePath=settings.SCHEDULE_FOCUS_FILE,now=new Dat
  const shared=require('./collect');
  const matches=(await read()).filter(r=>r.fields.is_default===true&&Number(r.fields.customer_id)===15);
  if(matches.length!==1)throw Error('Exactly one default wef-shows record required');
- const record=matches[0],f=record.fields,sid=Number(f.show_id),age=Date.parse(now)-Date.parse(f.last_checked);
- if(!Number.isSafeInteger(sid)||sid<=0||f['show-key']!==`15|${sid}`||!Number.isFinite(age)||age< -60000||age>30*60000)throw Error('Invalid or stale wef-shows default');
+ const record=matches[0],f=record.fields,sid=Number(f.show_id);
+ if(!Number.isSafeInteger(sid)||sid<=0||f['show-key']!==`15|${sid}`||require('../wef-shows/authority-age').showAuthorityReason(f,now,{futureMs:60000,inclusive:true}))throw Error('Invalid or stale wef-shows default');
  const payload=verifiedPayload(f,archiveRoot),meta=payload.show||{},start=shared.isoDate(f.start_date),end=shared.isoDate(f.end_date),selected=shared.isoDate(f.selected_date);
- if(start>end||selected<start||selected>end||Number(meta.show_id)!==sid||Number(meta.facility_id)!==Number(f.facility_id)||shared.isoDate(meta.start_date)!==start||shared.isoDate(meta.end_date)!==end||shared.isoDate(payload.show_date??payload.showDate)!==selected||String(meta.show_name||'')!==String(f.show_name||''))throw Error('wef-shows metadata/payload mismatch');
+ if(start>end||selected<start||selected>end||Number(meta.show_id)!==sid||Number(meta.facility_id)!==Number(f.facility_id)||shared.isoDate(meta.start_date)!==start||shared.isoDate(meta.end_date)!==end||!require('../wef-shows/discovery-policy').selectionMatches(f,payload)||String(meta.show_name||'')!==String(f.show_name||''))throw Error('wef-shows metadata/payload mismatch');
  const previous=fs.existsSync(statePath)?JSON.parse(fs.readFileSync(statePath,'utf8')):{},manual=previous.overrides?.[String(sid)]||{};
  const fields={show_id:sid,customer_id:15,show_name:f.show_name,start_date:start,end_date:end,focus_day:manual.focus_day?shared.isoDate(manual.focus_day):shared.localDay(now),sgl_default_day:selected,ring_collection:manual.ring_collection,has_full_schedule_payload:manual.has_full_schedule_payload===true,full_schedule_payload_file:manual.full_schedule_payload_file||[]};
  const today=shared.localDay(now),changed=previous.show_id!==sid;

@@ -56,7 +56,7 @@ function paceEvidence(rows,identity,group,inventory,now,issues){
   if(!Array.isArray(refs)||!refs.length||refs.some(r=>{
    if(![DATA,LIVE,SHOWS,TIMING].includes(r.base))return true;
    if(r.base===TIMING&&!validSyncRef(r,identity,now))return true;
-   const reason=ageReason(r.observed_at,now,r.base===LIVE?600000:1800000);
+   const reason=r.base===SHOWS?require('../wef-shows/authority-age').showAuthorityReason({last_checked:r.observed_at,authority_checked_at:r.authority_checked_at},now):ageReason(r.observed_at,now,r.base===LIVE?600000:1800000);
    return reason!==null && !(final&&[DATA,LIVE,TIMING].includes(r.base)&&reason==='stale_observation') && !(method==='observed_interval' && r.base===DATA && reason==='stale_observation');
   }))throw Error('supporting_freshness');
   const sourceRefs=refs.filter(r=>r.base===DATA);
@@ -103,11 +103,13 @@ function adapt({lane='data_live',now,data,paceRows=[],liveClasses=new Map(),sche
  const c=data.context;
  if(!positive(c['customer-id'])||!positive(c['show-id'])||c['show-key']!==c['customer-id']+'|'+c['show-id']
   ||data.proof['show-key']!==c['show-key']||!sha(data.proof['state-sha256'])||!data.proof['run-key'])throw Error('Data authority mismatch');
- if(!data.inventories?.[c['selected-date']])throw Error('Selected Data date coverage missing');
+ const today=require('./purge').localDay(now);
+ if(today<c['start-date']||today>c['end-date']||!data.inventories?.[today])throw Error('TODAY Data date coverage missing');
  const records=[],seen=new Set(),multiplicity=new Map(),occurrences=new Map(),unknownClassGroups=new Set();
  for(const inv of Object.values(data.inventories))for(const g of inv.groups||[])for(const r of g.rows||[])if(r&&typeof r['stage-key']==='string')occurrences.set(r['stage-key'],(occurrences.get(r['stage-key'])||0)+1);
  const reject=(identity,message)=>{if(!onIssue)throw Error(message);onIssue(identity,message);};
  for(const [date,inventory] of Object.entries(data.inventories)){
+  if(date!==today)continue;
   if(date<c['start-date']||date>c['end-date']||inventory.inventory_complete!==true||!Array.isArray(inventory.groups)
    ||!Array.isArray(inventory.refs)||!inventory.refs.length||inventory.refs.some(r=>r.base!==DATA||!r.key||!sha(r.sha256)||(!r.record&&!r.archive)))throw Error('Data inventory evidence invalid');
   for(const group of inventory.groups){

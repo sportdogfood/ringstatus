@@ -1,0 +1,13 @@
+{
+  "base": "appK9IX59jFwUkB2u",
+  "table": "tbl0p1Me0zVdz1pzF",
+  "record": "recbwuyKwIn8bfwqY",
+  "matches": true,
+  "fields": {
+    "routine": "wef-results-build-20261030",
+    "last-review": "2026-10-30",
+    "last-result": "Review FAIL: 2 P2; offline PASS; task inactive",
+    "cadence": "Change-triggered review; no recurring automation created",
+    "notes": "wef-code-review-v1; Results-owned new build in appK9IX59jFwUkB2u. Independent reviewer /root/results_review: COMPLETE with 2 confirmed P2 findings, incomplete total_entry_trips validation and duplicate/blank participation UUID validation. Forty offline tests plus three sanitized retained-shape replays passed; independent source mutation, partial, interrupted-write/recovery checks passed. Five table schemas created/read back; snapshot/run-logs/heartbeat/errs-log have no business runs/records. No task registered/enabled/started, no source endpoint requests, no Data/Live writes. Report and exact reviewed manifests/logs: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-results/evidence/build-20261030/independent-review/review.md and review-receipt.json. Fresh correction approval requested in Results chat; no correction made after review FAIL. Separate activation and normal scheduled/downstream proof remain required."
+  }
+}

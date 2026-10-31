@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-30T22:58:40.935906+00:00",
+  "offline_shows_and_companions": {
+    "passed": 47,
+    "failed": 0,
+    "log": "tests-today-final.tap"
+  },
+  "class_adapter_regression": {
+    "passed": 16,
+    "failed": 0,
+    "log": "class-adapter-tests.tap"
+  },
+  "independent_review": {
+    "result": "PASS",
+    "report": "independent-today-final-review.md",
+    "tests_passed": 47,
+    "retirement_equivalence_cases": 30
+  },
+  "schema": "4 additive fields GET-read back; normal collector populates",
+  "deployment": {
+    "result": "PASS",
+    "at": "2026-10-30T23:03:32.197896+00:00",
+    "hashes_verified": 16
+  },
+  "scheduled_acceptance": {
+    "first_run": "441b82ca-47aa-4358-9ee4-f37ba4883af1",
+    "first_run_at": "2026-10-30T23:04:02.611Z",
+    "calendar_rollover": "PASS October31 selected; raw source October30 unchanged",
+    "discovery_requests": 0,
+    "heartbeat_runlog": "PASS Airtable readback",
+    "archive_checksums": "PASS",
+    "overall": "Partial only for existing count stop",
+    "repeat_run": {
+      "result": "BLOCKED",
+      "at": "2026-10-30T23:09:09.309Z",
+      "error": "Schedule collector already running",
+      "task_exit": 1,
+      "evidence": "normal-1909-lock-failure.txt",
+      "lock_owner_observed": {
+        "pid": 7100,
+        "process": "node",
+        "started_eastern": "2026-10-30T19:08:45",
+        "alive": true
+      },
+      "action": "Verification stopped. No lock clearing, manual run, retry or further patch."
+    }
+  },
+  "protected_count_stop": "Unchanged; prior count replay timeout; no reset or retry",
+  "downstream_owner_handoff": "Sent to Timing and Records coordinators at owner direction; no further downstream verification in Shows chat"
+}

@@ -4,10 +4,11 @@ const {localDay}=require('./model');
 const order=['live-entries','live-classes','live-groups','live-rings','collections'];
 async function retireOld({api,scope,archive,report,now}) {
   // An upcoming selected date must not make today's records eligible.
-  const today=localDay(now), cutoff={...scope,date:scope.date < today ? scope.date : today};
+  const selectedDate=scope.selected_date||scope.date;
+  const today=localDay(now), cutoff={...scope,date:selectedDate < today ? selectedDate : today};
   const plans=[];
   for(const table of order){
-    const rows=(await api.list(table)).filter(r=>canRetire(r.fields,cutoff) && (scope.date<=today || r.fields.date<today) &&
+    const rows=(await api.list(table)).filter(r=>canRetire(r.fields,cutoff) && (selectedDate<=today || r.fields.date<today) &&
       (table!=='collections'||['rings','groups','class'].includes(r.fields['source-kind'])));
     const groups=new Map();
     for(const r of rows){

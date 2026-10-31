@@ -1,0 +1,274 @@
+TAP version 13
+# Subtest: Airtable timestamp readback accepts equivalent source offsets without repeated writes
+ok 1 - Airtable timestamp readback accepts equivalent source offsets without repeated writes
+  ---
+  duration_ms: 17.602
+  type: 'test'
+  ...
+# Subtest: creates two tables and exact reciprocal relationships; repeat does not write
+ok 2 - creates two tables and exact reciprocal relationships; repeat does not write
+  ---
+  duration_ms: 7.8152
+  type: 'test'
+  ...
+# Subtest: rejects incompatible existing audit tables before writing
+ok 3 - rejects incompatible existing audit tables before writing
+  ---
+  duration_ms: 1.1478
+  type: 'test'
+  ...
+# Subtest: repeat error persistence is idempotent; previous source success survives a later failed attempt
+ok 4 - repeat error persistence is idempotent; previous source success survives a later failed attempt
+  ---
+  duration_ms: 4.0096
+  type: 'test'
+  ...
+# Subtest: retained authority follows Eastern windows, expires after a missed window, and never changes timestamps
+ok 5 - retained authority follows Eastern windows, expires after a missed window, and never changes timestamps
+  ---
+  duration_ms: 3.7628
+  type: 'test'
+  ...
+# Subtest: Data Python validator agrees on daily and DST authority windows
+ok 6 - Data Python validator agrees on daily and DST authority windows
+  ---
+  duration_ms: 386.3673
+  type: 'test'
+  ...
+# Subtest: Live, Entries and Timing accept retained show authority, preserving unrelated age rules
+ok 7 - Live, Entries and Timing accept retained show authority, preserving unrelated age rules
+  ---
+  duration_ms: 39.5916
+  type: 'test'
+  ...
+# Subtest: calendar authority has a separate thirty-minute validation clock, never renews source time or unrelated evidence
+ok 8 - calendar authority has a separate thirty-minute validation clock, never renews source time or unrelated evidence
+  ---
+  duration_ms: 311.863
+  type: 'test'
+  ...
+# Subtest: schema rejects changed canonical field types before writes
+ok 9 - schema rejects changed canonical field types before writes
+  ---
+  duration_ms: 2.4667
+  type: 'test'
+  ...
+# Subtest: schema creates only agreed days and reciprocal, repeat makes no writes
+ok 10 - schema creates only agreed days and reciprocal, repeat makes no writes
+  ---
+  duration_ms: 5.1362
+  type: 'test'
+  ...
+# Subtest: exact Season fixture replays through isolated Python bridge
+ok 11 - exact Season fixture replays through isolated Python bridge
+  ---
+  duration_ms: 329.1645
+  type: 'test'
+  ...
+# Subtest: real no-inventory frozen fixture publishes null asof/counts as Unknown
+ok 12 - real no-inventory frozen fixture publishes null asof/counts as Unknown
+  ---
+  duration_ms: 425.1517
+  type: 'test'
+  ...
+# Subtest: reader publishes the producer fixture and reuses only hashed collection cache
+ok 13 - reader publishes the producer fixture and reuses only hashed collection cache
+  ---
+  duration_ms: 543.6737
+  type: 'test'
+  ...
+# Subtest: tampered source parts fail before count publication
+ok 14 - tampered source parts fail before count publication
+  ---
+  duration_ms: 2.9897
+  type: 'test'
+  ...
+# Subtest: changed head fence rejects otherwise valid replay
+ok 15 - changed head fence rejects otherwise valid replay
+  ---
+  duration_ms: 126.7486
+  type: 'test'
+  ...
+# Subtest: Sunday 22 Eastern including DST, three-hour durable retry, stop and next cycle
+ok 16 - Sunday 22 Eastern including DST, three-hour durable retry, stop and next cycle
+  ---
+  duration_ms: 3.7704
+  type: 'test'
+  ...
+# Subtest: 7 p.m. calendar selection uses tomorrow within inclusive show range, never repeats or rolls backward
+ok 17 - 7 p.m. calendar selection uses tomorrow within inclusive show range, never repeats or rolls backward
+  ---
+  duration_ms: 0.5174
+  type: 'test'
+  ...
+# Subtest: replay still rejects a changed hash after valid input
+ok 18 - replay still rejects a changed hash after valid input
+  ---
+  duration_ms: 645.9588
+  type: 'test'
+  ...
+# Subtest: replay rejects missing retained evidence and changed provenance
+ok 19 - replay rejects missing retained evidence and changed provenance
+  ---
+  duration_ms: 405.8376
+  type: 'test'
+  ...
+# Subtest: archive reader validates bytes, payload, show and path before replay
+ok 20 - archive reader validates bytes, payload, show and path before replay
+  ---
+  duration_ms: 27.3038
+  type: 'test'
+  ...
+# Subtest: valid subset zero publishes same day/native link on repeats; absent day stays unknown
+ok 21 - valid subset zero publishes same day/native link on repeats; absent day stays unknown
+  ---
+  duration_ms: 11.2018
+  type: 'test'
+  ...
+# Subtest: unknown coverage remains null not zero
+ok 22 - unknown coverage remains null not zero
+  ---
+  duration_ms: 1.5233
+  type: 'test'
+  ...
+# Subtest: unknown day without inventory retains null source time and does not stop remaining days
+ok 23 - unknown day without inventory retains null source time and does not stop remaining days
+  ---
+  duration_ms: 2.0656
+  type: 'test'
+  ...
+# Subtest: invalid or failed evidence preserves accepted body and original counts/time
+ok 24 - invalid or failed evidence preserves accepted body and original counts/time
+  ---
+  duration_ms: 1.9577
+  type: 'test'
+  ...
+# Subtest: scope mismatch fails before publishing counts
+ok 25 - scope mismatch fails before publishing counts
+  ---
+  duration_ms: 0.3945
+  type: 'test'
+  ...
+# Subtest: mixed projection, tampered digest and changed fence are rejected
+ok 26 - mixed projection, tampered digest and changed fence are rejected
+  ---
+  duration_ms: 2.0845
+  type: 'test'
+  ...
+# Subtest: expiry uses source time despite recent verification; exact five minutes is stale
+ok 27 - expiry uses source time despite recent verification; exact five minutes is stale
+  ---
+  duration_ms: 0.2061
+  type: 'test'
+  ...
+# Subtest: failed staged write preserves authoritative previous body; readback refuses mixed projections
+ok 28 - failed staged write preserves authoritative previous body; readback refuses mixed projections
+  ---
+  duration_ms: 1.5117
+  type: 'test'
+  ...
+# Subtest: duplicate canonical keys fail without writes
+ok 29 - duplicate canonical keys fail without writes
+  ---
+  duration_ms: 0.6918
+  type: 'test'
+  ...
+# Subtest: normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+ok 30 - normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+  ---
+  duration_ms: 86.1822
+  type: 'test'
+  ...
+# Subtest: Sunday poll repeats after three hours until show changes then stops until next Sunday
+ok 31 - Sunday poll repeats after three hours until show changes then stops until next Sunday
+  ---
+  duration_ms: 75.4361
+  type: 'test'
+  ...
+# Subtest: failed source logs linked error, retains authority time and does not retry on five-minute wakes
+ok 32 - failed source logs linked error, retains authority time and does not retry on five-minute wakes
+  ---
+  duration_ms: 24.5515
+  type: 'test'
+  ...
+# Subtest: existing count stop stays byte-identical while calendar and heartbeat proceed
+ok 33 - existing count stop stays byte-identical while calendar and heartbeat proceed
+  ---
+  duration_ms: 15.9898
+  type: 'test'
+  ...
+# Subtest: tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+ok 34 - tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+  ---
+  duration_ms: 20.2766
+  type: 'test'
+  ...
+# Subtest: archive failure prevents calendar mutation
+ok 35 - archive failure prevents calendar mutation
+  ---
+  duration_ms: 7.2077
+  type: 'test'
+  ...
+# Subtest: adapter still rejects cross-base writes and deletes
+ok 36 - adapter still rejects cross-base writes and deletes
+  ---
+  duration_ms: 12.8834
+  type: 'test'
+  ...
+# Subtest: consumer freshness expires without authority heartbeat even when source date is retained
+ok 37 - consumer freshness expires without authority heartbeat even when source date is retained
+  ---
+  duration_ms: 8.7125
+  type: 'test'
+  ...
+# Subtest: transient source failure recovers on same URL with bounded GETs
+ok 38 - transient source failure recovers on same URL with bounded GETs
+  ---
+  duration_ms: 6.7176
+  type: 'test'
+  ...
+# Subtest: exhausted source reads stop after three and retain safe nested cause
+ok 39 - exhausted source reads stop after three and retain safe nested cause
+  ---
+  duration_ms: 2.0319
+  type: 'test'
+  ...
+# Subtest: HTTP 503 recovers but 401 and 404 do not retry
+ok 40 - HTTP 503 recovers but 401 and 404 do not retry
+  ---
+  duration_ms: 2.8555
+  type: 'test'
+  ...
+# Subtest: body transport failure is recovered; invalid JSON and missing decode proof are not retried
+ok 41 - body transport failure is recovered; invalid JSON and missing decode proof are not retried
+  ---
+  duration_ms: 55.1653
+  type: 'test'
+  ...
+# Subtest: unapproved endpoints and certificate errors never fall back or retry
+ok 42 - unapproved endpoints and certificate errors never fall back or retry
+  ---
+  duration_ms: 0.7085
+  type: 'test'
+  ...
+# Subtest: Live uses TODAY while canonical selection is tomorrow; outside show range stays inactive
+ok 43 - Live uses TODAY while canonical selection is tomorrow; outside show range stays inactive
+  ---
+  duration_ms: 7.6382
+  type: 'test'
+  ...
+# Subtest: Timing normal function calculates TODAY twice with tomorrow canonical fence and no future-day purge
+ok 44 - Timing normal function calculates TODAY twice with tomorrow canonical fence and no future-day purge
+  ---
+  duration_ms: 23.1597
+  type: 'test'
+  ...
+1..44
+# tests 44
+# suites 0
+# pass 44
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1719.639

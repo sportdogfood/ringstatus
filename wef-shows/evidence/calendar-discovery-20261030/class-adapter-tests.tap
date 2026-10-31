@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: local times reject both DST gaps and ambiguity and invalid calendar dates
+ok 1 - local times reject both DST gaps and ambiguity and invalid calendar dates
+  ---
+  duration_ms: 6.0515
+  type: 'test'
+  ...
+# Subtest: Data only fallback retains all native/archive parts and authority
+ok 2 - Data only fallback retains all native/archive parts and authority
+  ---
+  duration_ms: 18.9416
+  type: 'test'
+  ...
+# Subtest: existing producer pace hash and precise unrounded value are consumed
+ok 3 - existing producer pace hash and precise unrounded value are consumed
+  ---
+  duration_ms: 9.5197
+  type: 'test'
+  ...
+# Subtest: tampered pace identity, fields, hash, members, provenance or original freshness defaults
+ok 4 - tampered pace identity, fields, hash, members, provenance or original freshness defaults
+  ---
+  duration_ms: 13.682
+  type: 'test'
+  ...
+# Subtest: newer invalid pace does not revive older good snapshot
+ok 5 - newer invalid pace does not revive older good snapshot
+  ---
+  duration_ms: 2.0886
+  type: 'test'
+  ...
+# Subtest: Live identity preserved and class counts preferred only for unique occurrence
+ok 6 - Live identity preserved and class counts preferred only for unique occurrence
+  ---
+  duration_ms: 5.4448
+  type: 'test'
+  ...
+# Subtest: wrong Live customer and stale Live do not contaminate Data fallback
+ok 7 - wrong Live customer and stale Live do not contaminate Data fallback
+  ---
+  duration_ms: 2.6802
+  type: 'test'
+  ...
+# Subtest: multi-class group never repeats group counts
+ok 8 - multi-class group never repeats group counts
+  ---
+  duration_ms: 6.8567
+  type: 'test'
+  ...
+# Subtest: no admission cap: all 501 exact occurrences are represented
+ok 9 - no admission cap: all 501 exact occurrences are represented
+  ---
+  duration_ms: 593.0453
+  type: 'test'
+  ...
+# Subtest: coverage, proof, exact occurrence, duplicates and forbidden Schedules fail explicitly
+ok 10 - coverage, proof, exact occurrence, duplicates and forbidden Schedules fail explicitly
+  ---
+  duration_ms: 2.5712
+  type: 'test'
+  ...
+# Subtest: stale Data stays enumerated but unavailable; missing data never becomes completed
+ok 11 - stale Data stays enumerated but unavailable; missing data never becomes completed
+  ---
+  duration_ms: 1.2631
+  type: 'test'
+  ...
+# Subtest: verified empty selected inventory is explicit zero coverage, not missing coverage
+ok 12 - verified empty selected inventory is explicit zero coverage, not missing coverage
+  ---
+  duration_ms: 0.4486
+  type: 'test'
+  ...
+# Subtest: observed ring pace carries original endpoints and is consumed without identity invention
+ok 13 - observed ring pace carries original endpoints and is consumed without identity invention
+  ---
+  duration_ms: 3.3316
+  type: 'test'
+  ...
+# Subtest: stale supporting evidence is rejected even if its content hash is internally consistent
+ok 14 - stale supporting evidence is rejected even if its content hash is internally consistent
+  ---
+  duration_ms: 2.3738
+  type: 'test'
+  ...
+# Subtest: unrelated Data head advances preserve material hash while receipts retain exact validation proof
+ok 15 - unrelated Data head advances preserve material hash while receipts retain exact validation proof
+  ---
+  duration_ms: 4.1741
+  type: 'test'
+  ...
+# Subtest: pace supporting Shows authority survives overnight without relaxing Data observation age
+ok 16 - pace supporting Shows authority survives overnight without relaxing Data observation age
+  ---
+  duration_ms: 3.4738
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 950.1661

@@ -1,3 +1,11 @@
+## Shows calendar policy companion - deployed October 30, 2026
+
+Shows now selects tomorrow at 19:00 Eastern within show dates and checks new shows Sunday 22:00, then every three hours until changed. Readers validate authority_checked_at with their original 30-minute/future-clock tolerances; last_checked remains the original source timestamp and must be valid/non-future. Legacy rows retain the prior fallback until normal publication. All unrelated source/count freshness checks remain. Live and Timing use TODAY independently while preserving the canonical Data fence and original retirement guards. [Release and normal-run evidence](../wef-shows/evidence/calendar-discovery-20261030/README.md).
+
+## Canonical Shows authority - approved October 30 discovery windows
+
+The approved companion check now follows Shows' daily 16:00-20:00 America/New_York discovery window. A successful check from the closing 30 minutes remains valid until the next daily 16:30 deadline; other checks retain the existing 30-minute allowance. Original source timestamps, exact show identity/links and all non-authority freshness limits remain unchanged. This does not restart a stopped workflow, retire a source, or change any task cadence. [Shows release and normal-run acceptance](../wef-shows/evidence/discovery-windows-20261030/README.md).
+
 ## Linking-only restoration - v1.7 - 29 October 2026
 
 Owner explicitly approved restoration of linking-only scope, preserving records, links and compact-input/readback/log fixes. Deployed 19:37:05 Eastern using the unchanged wef-entries-cwf-collector route and existing lock. Normal scheduled acceptance PASS:19:39 and19:44Eastern triggers completed task0/businessPartial without errors; both preservation readbacks passed. All513entries/446collections, checked links and source times preserved. See evidence/linking-only-restoration-20261029/acceptance.json.

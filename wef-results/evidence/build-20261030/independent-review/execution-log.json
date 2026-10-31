@@ -1,0 +1,71 @@
+{
+  "reviewer": "/root/results_review",
+  "commands": [
+    {
+      "id": "suite",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\test\\airtable.test.js\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\test\\model.test.js\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\test\\reader.test.js\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\test\\runner.test.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results",
+      "runtime": "Windows subprocess; v22.22.2",
+      "started_at": "2026-10-30T23:20:39.709140+00:00",
+      "ended_at": "2026-10-30T23:20:40.112844+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: entrypoint is inert without explicit activation\nok 1 - entrypoint is inert without explicit activation\n  ---\n  duration_ms: 2.1892\n  type: 'test'\n  ...\n# Subtest: source writes and unknown destinations rejected before request\nok 2 - source writes and unknown destinations rejected before request\n  ---\n  duration_ms: 3.0498\n  type: 'test'\n  ...\n# Subtest: paginates all source records without caps\nok 3 - paginates all source records without caps\n  ---\n  duration_ms: 0.8194\n  type: 'test'\n  ...\n# Subtest: duplicate persisted key blocks writes\nok 4 - duplicate persisted key blocks writes\n  ---\n  duration_ms: 0.5552\n  type: 'test'\n  ...\n# Subtest: unknown create outcome reconciles once without retry or duplicate\nok 5 - unknown create outcome reconciles once without retry or duplicate\n  ---\n  duration_ms: 0.9126\n  type: 'test'\n  ...\n# Subtest: uncertain uncommitted create fails without retry\nok 6 - uncertain uncommitted create fails without retry\n  ---\n  duration_ms: 0.8364\n  type: 'test'\n  ...\n# Subtest: long text cannot silently truncate source results\nok 7 - long text cannot silently truncate source results\n  ---\n  duration_ms: 0.3706\n  type: 'test'\n  ...\n# Subtest: source completed/verified/visible produces exact trip snapshot without count equality\nok 8 - source completed/verified/visible produces exact trip snapshot without count equality\n  ---\n  duration_ms: 36.0877\n  type: 'test'\n  ...\n# Subtest: running never publishes\nok 9 - running never publishes\n  ---\n  duration_ms: 0.8638\n  type: 'test'\n  ...\n# Subtest: unverified never publishes\nok 10 - unverified never publishes\n  ---\n  duration_ms: 0.5757\n  type: 'test'\n  ...\n# Subtest: hidden never publishes\nok 11 - hidden never publishes\n  ---\n  duration_ms: 0.6229\n  type: 'test'\n  ...\n# Subtest: empty never publishes\nok 12 - empty never publishes\n  ---\n  duration_ms: 0.7104\n  type: 'test'\n  ...\n# Subtest: string verified false never publishes\nok 13 - string verified false never publishes\n  ---\n  duration_ms: 0.5238\n  type: 'test'\n  ...\n# Subtest: freshness expires at boundary and future source time rejected\nok 14 - freshness expires at boundary and future source time rejected\n  ---\n  duration_ms: 0.5099\n  type: 'test'\n  ...\n# Subtest: explicit freshness policy required\nok 15 - explicit freshness policy required\n  ---\n  duration_ms: 0.6634\n  type: 'test'\n  ...\n# Subtest: show mismatch withheld\nok 16 - show mismatch withheld\n  ---\n  duration_ms: 0.659\n  type: 'test'\n  ...\n# Subtest: trip duplicate withheld\nok 17 - trip duplicate withheld\n  ---\n  duration_ms: 3.5879\n  type: 'test'\n  ...\n# Subtest: trip without id withheld\nok 18 - trip without id withheld\n  ---\n  duration_ms: 0.9575\n  type: 'test'\n  ...\n# Subtest: trip class conflict withheld\nok 19 - trip class conflict withheld\n  ---\n  duration_ms: 0.4861\n  type: 'test'\n  ...\n# Subtest: future class date never treated as today\nok 20 - future class date never treated as today\n  ---\n  duration_ms: 0.4193\n  type: 'test'\n  ...\n# Subtest: Live completed counts are advisory and old live cannot invalidate newer Data\nok 21 - Live completed counts are advisory and old live cannot invalidate newer Data\n  ---\n  duration_ms: 0.5369\n  type: 'test'\n  ...\n# Subtest: material correction changes fingerprint; trip ordering and estimate changes do not\nok 22 - material correction changes fingerprint; trip ordering and estimate changes do not\n  ---\n  duration_ms: 1.2844\n  type: 'test'\n  ...\n# Subtest: repeat projection keeps revision stable; correction increments once; failures retain content\nok 23 - repeat projection keeps revision stable; correction increments once; failures retain content\n  ---\n  duration_ms: 1.1503\n  type: 'test'\n  ...\n# Subtest: older accepted source cannot replace newer evidence\nok 24 - older accepted source cannot replace newer evidence\n  ---\n  duration_ms: 0.734\n  type: 'test'\n  ...\n# Subtest: source stamp ignores Live overlay but changes with acquisition\nok 25 - source stamp ignores Live overlay but changes with acquisition\n  ---\n  duration_ms: 0.2196\n  type: 'test'\n  ...\n# Subtest: consumer receives hash-verified result only after completed matching run\nok 26 - consumer receives hash-verified result only after completed matching run\n  ---\n  duration_ms: 35.3431\n  type: 'test'\n  ...\n# Subtest: failed/interrupted/different run cannot leave old ready flag current\nok 27 - failed/interrupted/different run cannot leave old ready flag current\n  ---\n  duration_ms: 2.1416\n  type: 'test'\n  ...\n# Subtest: consumer detects expiry without waiting for another collector tick\nok 28 - consumer detects expiry without waiting for another collector tick\n  ---\n  duration_ms: 0.8277\n  type: 'test'\n  ...\n# Subtest: consumer rejects damaged content and wrong show\nok 29 - consumer rejects damaged content and wrong show\n  ---\n  duration_ms: 2.3194\n  type: 'test'\n  ...\n# Subtest: missing source data never becomes zero\nok 30 - missing source data never becomes zero\n  ---\n  duration_ms: 0.912\n  type: 'test'\n  ...\n# Subtest: repeat workflow publishes one snapshot and stable revision with separate run evidence\nok 31 - repeat workflow publishes one snapshot and stable revision with separate run evidence\n  ---\n  duration_ms: 44.0931\n  type: 'test'\n  ...\n# Subtest: source changes during read are withheld; next normal evaluation can accept stable evidence\nok 32 - source changes during read are withheld; next normal evaluation can accept stable evidence\n  ---\n  duration_ms: 4.0293\n  type: 'test'\n  ...\n# Subtest: partial newer evidence preserves accepted content\nok 33 - partial newer evidence preserves accepted content\n  ---\n  duration_ms: 2.1094\n  type: 'test'\n  ...\n# Subtest: source read failure returns Failed and never writes snapshots\nok 34 - source read failure returns Failed and never writes snapshots\n  ---\n  duration_ms: 0.619\n  type: 'test'\n  ...\n# Subtest: duplicate source identity blocks without overwrite\nok 35 - duplicate source identity blocks without overwrite\n  ---\n  duration_ms: 0.9838\n  type: 'test'\n  ...\n# Subtest: new canonical show never leaves old snapshot current\nok 36 - new canonical show never leaves old snapshot current\n  ---\n  duration_ms: 1.9859\n  type: 'test'\n  ...\n# Subtest: missing class preserves last known but is not current\nok 37 - missing class preserves last known but is not current\n  ---\n  duration_ms: 1.8583\n  type: 'test'\n  ...\n# Subtest: stale canonical authority fails before snapshot mutation\nok 38 - stale canonical authority fails before snapshot mutation\n  ---\n  duration_ms: 1.4186\n  type: 'test'\n  ...\n# Subtest: snapshot unknown write failure stops path without retry and marks Failed\nok 39 - snapshot unknown write failure stops path without retry and marks Failed\n  ---\n  duration_ms: 2.7707\n  type: 'test'\n  ...\n# Subtest: heartbeat last success is not renewed on failure\nok 40 - heartbeat last success is not renewed on failure\n  ---\n  duration_ms: 2.4558\n  type: 'test'\n  ...\n1..40\n# tests 40\n# suites 0\n# pass 40\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 280.1225\n",
+      "stderr": ""
+    },
+    {
+      "id": "retained-shape",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\evidence\\build-20261030\\retained-shape-check.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results",
+      "runtime": "Windows subprocess; v22.22.2",
+      "started_at": "2026-10-30T23:20:40.160300+00:00",
+      "ended_at": "2026-10-30T23:20:40.344417+00:00",
+      "exit_code": 0,
+      "stdout": "{\n  \"scope\": \"Sanitized retained Airtable source-shape replay only; no API or workflow run\",\n  \"results\": [\n    {\n      \"class_key\": \"15|200000076|2026-10-30|1|200030828\",\n      \"result_count\": 22,\n      \"source_verified\": true,\n      \"finality\": \"source-verified\",\n      \"repeat_revision\": 1\n    },\n    {\n      \"class_key\": \"15|200000076|2026-10-30|3|200030671\",\n      \"result_count\": 3,\n      \"source_verified\": true,\n      \"finality\": \"source-verified\",\n      \"repeat_revision\": 1\n    },\n    {\n      \"class_key\": \"15|200000076|2026-10-30|5|200030708\",\n      \"result_count\": 3,\n      \"source_verified\": true,\n      \"finality\": \"source-verified\",\n      \"repeat_revision\": 1\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "supplementary",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\evidence\\build-20261030\\independent-review\\supplementary.js\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results",
+      "runtime": "Windows subprocess; v22.22.2",
+      "started_at": "2026-10-30T23:20:40.388710+00:00",
+      "ended_at": "2026-10-30T23:20:40.502049+00:00",
+      "exit_code": 0,
+      "stdout": "{\n  \"confirmed_defect_reproductions\": [\n    {\n      \"kind\": \"truncated\",\n      \"declared\": 2,\n      \"actual\": 1,\n      \"evaluation\": \"ready\",\n      \"consumer\": \"available\"\n    },\n    {\n      \"kind\": \"duplicate-uuid\",\n      \"declared\": 2,\n      \"actual\": 2,\n      \"evaluation\": \"ready\",\n      \"consumer\": \"available\"\n    },\n    {\n      \"kind\": \"whitespace-uuid\",\n      \"declared\": 2,\n      \"actual\": 2,\n      \"evaluation\": \"ready\",\n      \"consumer\": \"available\"\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "id": "recovery",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\evidence\\build-20261030\\independent-review\\recovery.js\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results",
+      "runtime": "Node v22.22.2",
+      "started_at": "2026-10-30T23:20:51.311354+00:00",
+      "ended_at": "2026-10-30T23:20:51.465096+00:00",
+      "exit_code": 0,
+      "stdout": "PASS offline mutation -> Partial/withheld -> stable recovery; interrupted snapshot -> Failed/consumer withheld -> independent next-run recovery; accepted content and revision retained. No production runner invoked.\n",
+      "stderr": ""
+    },
+    {
+      "id": "schema-local",
+      "command": "node -e \"const a=require('./schema').tables,b=require('./schema.json').tables;const assert=require('node:assert/strict');assert.equal(b.length,5);for(const [name,fields]of Object.entries(a)){const t=b.find(t=>t.name===name);assert.ok(t);assert.equal(t.fields.length,fields.length);for(const f of fields){const g=t.fields.find(g=>g.name===f.name);assert.ok(g);assert.equal(g.type,f.type);}}console.log('PASS five local schema table/field names and types; no live readback independently performed');\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results",
+      "runtime": "Node v22.22.2",
+      "started_at": "2026-10-30T23:21:26.124446+00:00",
+      "ended_at": "2026-10-30T23:21:26.680795+00:00",
+      "exit_code": 0,
+      "stdout": "PASS five local schema table/field names and types; no live readback independently performed\n",
+      "stderr": ""
+    },
+    {
+      "id": "baseline",
+      "command": "git ls-tree -r c79cf2d2ae01f3f50efa201518ca8c1d48982c9f -- wef-results",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "Git",
+      "started_at": "2026-10-30T23:21:26.874086+00:00",
+      "ended_at": "2026-10-30T23:21:27.029174+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

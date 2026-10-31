@@ -1,3 +1,21 @@
+## Current v1.6 policy - deployed October 30, 2026 at 19:03 Eastern
+
+- At the first normal wake at/after 19:00 America/New_York, select tomorrow only when it falls within the current show date range. Otherwise retain the selected day. Repeat wakes never add another day.
+- Start new-show discovery Sunday at 22:00 Eastern; repeat every three elapsed hours from each attempt until the show ID changes, then wait until the following Sunday. Existing five-minute wakes execute due work; no new task.
+- Five-minute heartbeat/run/error logging remains. Original source date and last_checked stay separate from calendar selection and authority_checked_at.
+- Live and Timing independently operate on TODAY within the show range. Data still receives the canonical selected-date fence; no fabricated handoff or evidence-age reset. Existing archive/retirement safeguards are preserved.
+- Normal 19:04 calendar rollover and Airtable heartbeat/run-log readback PASS. Repeat verification stopped: the 19:09 wake exited with Schedule collector already running; its active lock was left untouched. No retry or further patch. The pre-existing count-publication stop remains unchanged; no reset, repair or manual run.
+
+Owner boundary: downstream verification and further downstream work now belong to wef-timing-coordinator and wef-records-coordinator. Both received the deployed handoff. Shows owns only its canonical publication, discovery and own logs/heartbeat.
+
+[Exact release, review and verification](evidence/calendar-discovery-20261030/README.md). This approved v1.6 policy supersedes the earlier v1.5 discovery-window policy below; unrelated locked ownership and protections remain.
+
+## October 30 approved discovery-window amendment - v1.5 (deployed; two daily-window runs verified)
+
+The owner now approves new-show discovery only Sunday 4-8 p.m. Eastern and source-selected show-day discovery daily 4-8 p.m. Eastern. Five-minute heartbeat and logging continue. This supersedes the October 29 unrestricted discovery decision below, not the five-minute task itself. All other scope protections remain locked.
+
+Deployed October 30 at 18:15 Eastern. The initial Shows suite passed 55 tests; combined companion review/tests and retained baseline failures are documented in the release record. Normal daily-window discovery and Airtable heartbeat/run-log readback verified at 18:19 and 18:24 Eastern. Both full runs remain Partial because of the preserved count-publication stop. Sunday and overnight behavior is tested offline but not yet observed in normal runs. Required downstream authority compatibility and the separate pre-existing count-replay stop are recorded in [the change record](evidence/discovery-windows-20261030/README.md). Preserve original last_checked on skipped source checks; never renew count observation age. The owner subsequently approved the companion canonical-authority checks and deployment. Count freshness and failed-path stops remain unchanged.
+
 ## LOCKED - wef-shows verified scope v1.4 - 29 October 2026
 
 Runtime reverified and relocked **30 October 2026** after the separately approved

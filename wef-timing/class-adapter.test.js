@@ -120,3 +120,14 @@ test('unrelated Data head advances preserve material hash while receipts retain 
  i.data.inventories[day].refs[0].sha256='e'.repeat(64);
  const changed=adapt(i)[0];assert.notEqual(changed.fields['content-hash'],next.fields['content-hash']);
 });
+
+test('pace supporting Shows authority survives overnight without relaxing Data observation age',()=>{
+ const i=fixture(),inv=i.data.inventories[day],g=inv.groups[0];
+ const build=showAt=>{
+  const refs=[{base:'appCaSmL819KK7UFJ',table:'shows',record:'show1',observed_at:showAt},...inv.refs.map(r=>({...r,observed_at:at}))];
+  const result=evaluate({identity:g.identity,rows:g.rows,observedAt:at,inputRefs:refs,now,sourceLane:'data_live'});
+  i.paceRows=[{id:'pace1',fields:result.fields}];return adapt(i)[0];
+ };
+ assert.equal(build('2026-10-28T23:45:00Z').payload.pace_minutes_per_trip,2);
+ assert.equal(build('2026-10-27T23:45:00Z').flags.default_pace,true);
+});

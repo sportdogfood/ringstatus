@@ -1,0 +1,2 @@
+{"version":"baseline","scope":{"show":76,"customer":15,"date":"2026-10-31","authority":"canonical","checked_at":"2026-11-01T14:00:00Z","active":false},"archiveAttempts":0}
+{"version":"candidate","scope":{"show":76,"customer":15,"date":"2026-11-01","selected_date":"2026-10-31","authority":"canonical","checked_at":"2026-11-01T14:00:00Z","active":true},"archiveAttempts":1}

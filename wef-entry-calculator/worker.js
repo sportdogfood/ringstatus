@@ -2,10 +2,10 @@
 const {adapt}=require('../wef-timing/class-adapter');
 const {archive}=require('../wef-timing/runner');
 const {hash,digest}=require('../wef-timing/pace');
-const {evaluate,fresh}=require('./calculator');
+const {evaluate,fresh,orderValue}=require('./calculator');
 const {localDay}=require('../wef-timing/purge');
 const path=require('node:path');
-const {verify:verifyClass}=require('./class-proof');
+const {components:classComponents}=require('./class-proof');
 const positive=n=>Number.isSafeInteger(n)&&n>0;
 const integer=v=>typeof v==='number'?v:typeof v==='string'&&/^\d+$/.test(v)?Number(v):null;
 const flag=v=>[0,'0',false].includes(v)?false:[1,'1',true].includes(v)?true:null;
@@ -33,7 +33,7 @@ async function prepare({data,liveClasses=new Map(),classRows,paceRows,answers=[]
   for(const row of Array.isArray(group?.rows)?group.rows:[]){
    if(typeof row?.['stage-key']==='string')stageCounts.set(row['stage-key'],(stageCounts.get(row['stage-key'])||0)+1);
    if(!i)continue;
-   if(positive(row?.['class-id'])){const k=JSON.stringify([i.customer,i.show,i.date,i.ring,row['class-id']]);occurrences.set(k,(occurrences.get(k)||0)+1);}
+   if(positive(row?.['class-id'])){const k=JSON.stringify([i.customer,i.show,i.date,i.ring,row['class-id'],i.group]);occurrences.set(k,(occurrences.get(k)||0)+1);}
    else if(!['break','schooling'].includes(String(row?.type).toLowerCase()))unknownGroups.add(JSON.stringify([i.ring,i.group]));
   }
  }
@@ -54,12 +54,14 @@ async function prepare({data,liveClasses=new Map(),classRows,paceRows,answers=[]
  const savedClasses=latest(classRows.filter(r=>r.fields['answer-kind']==='class-timing'&&r.fields['source-lane']==='data_live'));
  const previous=latest(answers.filter(r=>r.fields['answer-kind']==='entry-timing'&&r.fields['source-lane']==='data_live'));
  for(const cls of classes){
-  const i=cls.payload.identity,k=JSON.stringify([i.customer,i.show,i.date,i.ring,i.class]),reasons=[];
+  const i=cls.payload.identity;
+  try{
+  const k=JSON.stringify([i.customer,i.show,i.date,i.ring,i.class]),reasons=[];
   const matches=data.entry_classes.filter(c=>JSON.stringify(c.identity)===k);
   if(matches.length!==1){issues.push({identity:i,reason:'entry_class_snapshot_missing_or_ambiguous'});continue;}
   const s=matches[0],p=s.payload,related=p.class_related_data;
-  // Class-wide trips cannot be assigned to one of several dated occurrences.
-  if(occurrences.get(k)!==1||stageCounts.get(i.occurrence)!==1||unknownGroups.has(JSON.stringify([i.ring,i.group]))||integer(related.class_group_id)!==i.group){issues.push({identity:i,reason:'entry_occurrence_ambiguous'});continue;}
+  // Bind class detail only to its explicit group and a unique stage in that group.
+  if(occurrences.get(JSON.stringify([i.customer,i.show,i.date,i.ring,i.class,i.group]))!==1||stageCounts.get(i.occurrence)!==1||unknownGroups.has(JSON.stringify([i.ring,i.group]))||integer(related.class_group_id)!==i.group){issues.push({identity:i,reason:'entry_occurrence_ambiguous'});continue;}
   if(!Array.isArray(p.trips)||p.total_entry_trips!==p.trips.length||!Array.isArray(s.refs)||!s.refs.length
    ||s.refs.some(r=>r.base!=='appdl16HJ5ETm8N69'||!r.key||!/^[a-f0-9]{64}$/.test(r.sha256)||(!r.record&&!r.archive)))throw Error('Entry retained coverage/provenance mismatch');
   const seen=new Set();let rows=[];
@@ -68,7 +70,7 @@ async function prepare({data,liveClasses=new Map(),classRows,paceRows,answers=[]
    const sourceId=uuid?'uuid:'+uuid:'trip:'+tid;
    if(seen.has(sourceId))throw Error('Entry source trip repeated');seen.add(sourceId);
    const key=[data.context['show-key'],today,i.ring,i.class,entry,uuid||tid].join('|');
-   rows.push({key,entry,tripId:tid,horse:t.horse_id,rider:t.rider_id,order:integer(t.order_of_go),actual:integer(t.actual_order),scratch:flag(t.scratch_trip),gone:flag(t.gone_in)});
+   rows.push({key,entry,tripId:tid,horse:t.horse_id,rider:t.rider_id,order:orderValue(t.order_of_go),actual:orderValue(t.actual_order),rawOrder:t.order_of_go??null,rawActual:t.actual_order??null,providerEstimate:{raw:t.estimated_go_time??null,observed_at:s.observed_at,ref:{source_key:k,revision:hash(s.refs),base:'appdl16HJ5ETm8N69',parts:s.refs}},scratch:flag(t.scratch_trip),gone:flag(t.gone_in)});
   }
   let source='data',observedAt=s.observed_at;
   const refs=[{base:'appdl16HJ5ETm8N69',source_key:k,revision:hash(s.refs),observed_at:s.observed_at,parts:s.refs,producer_proof:data.proof},
@@ -88,26 +90,24 @@ async function prepare({data,liveClasses=new Map(),classRows,paceRows,answers=[]
      &&flag(f.scratch)===flag(raw.live.Scr)&&flag(f.gone)===flag(raw.live.Gone);
    });
    if(compatible){
-    rows=rows.map(r=>{const f=byId.get(r.tripId);return{...r,order:f['order-of-go'],actual:f['actual-order'],scratch:flag(f.scratch),gone:flag(f.gone)};});
+    rows=rows.map(r=>{const f=byId.get(r.tripId);return{...r,order:orderValue(f['order-of-go']),actual:orderValue(f['actual-order']),rawOrder:f['order-of-go'],rawActual:f['actual-order'],scratch:flag(f.scratch),gone:flag(f.gone)};});
     source='live';observedAt=live.observed_at;refs.push({...live.ref,role:'live_trip_roster',observed_at:live.observed_at});
    }else reasons.push('live_trip_roster_mismatch');
   }else reasons.push('live_trip_roster_missing_or_stale');
   const saved=savedClasses.get(cls.fields['scope-key']);
-  const classVerified=verifyClass(saved,cls,now);
+  const verified=classComponents(saved,cls,now),classVerified=verified!==null;
   if(classVerified)refs.push({base:'appeqxxJyPGS1iqdm',table:'tblmoBFySYW2TkDHf',record:saved.id,source_key:saved.fields['answer-key'],revision:saved.fields['content-hash'],observed_at:saved.fields['observed-at']});
   else reasons.push('class_readback_missing_or_changed');
   if(!fresh(scoped.inventories[today].observed_at,now,1800000))reasons.push('occurrence_stale');
-  // Current Data/Live fields do not prove phase semantics (class-owner review,
-  // 2026-10-30). Neither whole-class counts nor absent JO/R2 fields prove them.
-  // No phase proof is fabricated; the pure calculator accepts a future verified
-  // phase contract independently of whole-class completion.
-  const phaseProof=null;
+  // Planned queue and provider estimates do not require an invented phase anchor.
+  // Derived phase-specific ETA remains conditional on independently proved evidence.
   for(const target of rows){const output=evaluate({identity:{...i,entry:target.entry,trip:target.key},now,rows,targetKey:target.key,
-   observedAt,refs,classTiming:classVerified?cls.payload:null,issues:reasons,phaseProof,source});
+   observedAt,refs,classTiming:verified,issues:reasons,source});
    outputs.push(output);const f=output.fields;
    if(previous.get(f['scope-key'])?.fields['content-hash']===f['content-hash'])unchanged++;
    else{f['answer-key']=f['scope-key']+'|'+runId+'|'+f['content-hash'].slice(0,16);writes.push(f);}
   }
+  }catch(error){issues.push({identity:i,reason:'entry_scope_invalid: '+error.message});}
  }
  return{outputs,writes,unchanged,issues,counts:{entries_evaluated:outputs.length,entry_writes_planned:writes.length,entries_written:0,entries_unchanged:unchanged,
   entries_available:outputs.filter(o=>o.fields.availability==='available').length,entries_partial:outputs.filter(o=>o.fields.availability==='partial').length,

@@ -1,0 +1,30 @@
+{
+  "run_id": "4635cb9b-9142-4750-bb5a-03bcafcc9863",
+  "started": "2026-10-30T22:49:02.449Z",
+  "ok": true,
+  "errors": [],
+  "source_lane": "data_live",
+  "destination": "appYOykKIy1kAquhP",
+  "counts": {
+    "evaluated": 32,
+    "written": 0,
+    "unchanged": 32,
+    "deferred": 0,
+    "available": 0,
+    "partial": 10,
+    "unavailable": 22,
+    "purged": 0,
+    "purge_deferred": 0,
+    "groups_skipped": 0,
+    "classes_skipped": 0,
+    "classes_evaluated": 38,
+    "classes_unchanged": 38,
+    "classes_unavailable": 38,
+    "classes_written": 0
+  },
+  "issues": [],
+  "purge_status": "archive_required",
+  "completed": "2026-10-30T22:51:14.909Z",
+  "clock_verified": true,
+  "status": "complete"
+}

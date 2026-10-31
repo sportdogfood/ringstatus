@@ -10,7 +10,7 @@ function defer(message){const error=Error(message);error.deferred=true;return er
 function selectShow(rows,now){
   const defaults=rows.filter(r=>r.fields.is_default===true);if(defaults.length!==1)throw defer('Canonical default show unresolved');
   const s=defaults[0],f=s.fields,customer=Number(f.customer_id),show=Number(f.show_id);
-  if(!Number.isSafeInteger(customer)||customer<=0||!Number.isSafeInteger(show)||show<=0||f['show-key']!==`${customer}|${show}`||ageReason(f.last_checked,now,1800000))throw defer('Canonical show identity/freshness invalid');
+  if(!Number.isSafeInteger(customer)||customer<=0||!Number.isSafeInteger(show)||show<=0||f['show-key']!==`${customer}|${show}`||require('../wef-shows/authority-age').showAuthorityReason(f,now))throw defer('Canonical show identity/freshness invalid');
   if(![f.start_date,f.end_date,f.selected_date].every(purge.validDay)||f.selected_date<f.start_date||f.selected_date>f.end_date)throw defer('Canonical dates invalid');
   return{record:s,context:{'show-key':f['show-key'],'show-id':show,'customer-id':customer,'start-date':f.start_date,'end-date':f.end_date,'selected-date':f.selected_date}};
 }
@@ -87,11 +87,12 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
       if(old[0].fields['last-outcome']==='failed'&&!state.retry_safe&&old[0].fields['run-id']!==resumeRunId){resumeBlocked=true;throw Error('Data pace checkpoint requires owner review');}}
     checkpointLoaded=true;stage='source_read';
     const selected=selectShow(await api.list(SHOWS,'shows'),clock()),{record:show,context}=selected,sid=context['show-id'],customer=context['customer-id'];
-    if(context['selected-date']!==purge.localDay(clock()))throw defer('Selected show date is not today');
+    const workingDate=purge.localDay(clock());
+    if(workingDate<context['start-date']||workingDate>context['end-date'])throw defer('TODAY is outside canonical show dates');
     const pinned=readPointer(context);let data;
     try{data=await readData(context,deadline);}catch(error){if(!error.deferred)throw error;delete state.purge_authority;state.input_status='budget_deferred';await save('input_deferred');report.status='deferred';report.deferred_reason=state.input_status;report.completed=clock();return report;}
-    if(!data.inventories?.[context['selected-date']])throw Error('Today Data inventory missing');
-    const syncFilter=`AND({show-id}=${sid},{customer-id}=${customer},{date}='${context['selected-date']}')`;
+    if(!data.inventories?.[workingDate])throw Error('Today Data inventory missing');
+    const syncFilter=`AND({show-id}=${sid},{customer-id}=${customer},{date}='${workingDate}')`;
     const liveBefore=await api.list(TIMING,SYNC_GROUPS,syncFilter),syncRings=await api.list(TIMING,SYNC_RINGS,syncFilter);
     const again=selectShow(await api.list(SHOWS,'shows'),clock());
     const showChanged=!sameAuthority(selected,again),afterPointer=showChanged?null:readPointer(context);
@@ -125,7 +126,7 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
     const liveSamples=new Map(),blocked=new Set(),nativeCounts=new Map();state.live_input_issues=[];
     // Account for identifiable native scopes before rejecting any value/clock.
     const nativeIds=row=>{
-      const f=row.fields;if(f['show-id']!==sid||f['customer-id']!==customer||f.date!==context['selected-date'])return [];
+      const f=row.fields;if(f['show-id']!==sid||f['customer-id']!==customer||f.date!==workingDate)return [];
       let raw;try{raw=JSON.parse(f['source-json']);}catch{raw={};}
       const key=String(f['group-key']||'').split('|');
       return [...new Set([f['class-group-id'],raw.class_group_id,...(key[0]===String(sid)&&key[1]===f.date?[key[2]]:[])].map(Number).filter(n=>Number.isSafeInteger(n)&&n>0))];
@@ -135,7 +136,7 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
     for(const row of liveBefore){
      if(nativeIds(row).some(id=>ambiguousIds.has(id))){state.live_input_issues.push('duplicate_synced_group');continue;}
      try{
-      const sample=syncSample(row,syncRings,{customer,show:sid,day:context['selected-date'],now:clock()}),i=sample.identity,key=[sid,i.date,i.ring,i.group].join('|');
+      const sample=syncSample(row,syncRings,{customer,show:sid,day:workingDate,now:clock()}),i=sample.identity,key=[sid,i.date,i.ring,i.group].join('|');
       if(liveSamples.has(key)||blocked.has(key)){liveSamples.delete(key);blocked.add(key);state.live_input_issues.push('duplicate_synced_group');continue;}
       liveSamples.set(key,sample);
     }catch(error){state.live_input_issues.push(error.message);}}
@@ -154,12 +155,12 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
     const plan=purge.plan(existing,verified,state,runId);state.purge_status=plan.reason||'confirmed';if(plan.next)state.purge_authority=plan.next;else delete state.purge_authority;
     if(plan.confirmed){state.retired_shows=verified.context.retired_shows;state.retirement_cutoffs=state.retirement_cutoffs||{};const k=`${customer}|${sid}`;state.retirement_cutoffs[k]=[state.retirement_cutoffs[k]||'',verified.context.day].sort().at(-1);state.current_show=sid;}
     const latest=new Map();for(const r of existing){const k=r.fields['scope-key'];if(!latest.has(k)||r.fields['evaluated-at']>latest.get(k).fields['evaluated-at'])latest.set(k,r);}
-    const paceDay=purge.localDay(clock()),keys=[...groups.keys()].filter(k=>context['selected-date']===paceDay&&groups.get(k).identity.date===paceDay).sort();
+    const paceDay=purge.localDay(clock());if(paceDay!==workingDate)throw defer('TODAY changed during collection');const keys=[...groups.keys()].filter(k=>groups.get(k).identity.date===paceDay).sort();
     const split=keys.findIndex(k=>k>state.cursor),ordered=split<0?keys:[...keys.slice(split),...keys.slice(0,split)];
     const writes=[],baselines={},processed=[];
     for(const key of ordered){if(Date.now()>deadline-15000)throw Error('Time budget exhausted before all groups were evaluated');
       const g=groups.get(key);let live=liveSamples.get(key);if(live&&hash(live.classes)!==hash(g.class_keys)){live=null;state.live_input_issues.push('live_data_membership_conflict');}
-      const refs=[{base:SHOWS,table:'shows',record:show.id,observed_at:show.fields.last_checked},
+      const refs=[{base:SHOWS,table:'shows',record:show.id,observed_at:show.fields.last_checked,...(show.fields.authority_checked_at?{authority_checked_at:show.fields.authority_checked_at}:{})},
         ...g.refs.map(ref=>({...ref,observed_at:g.observedAt})),...(live?[live.ref]:[])];
       const result=evaluate({identity:g.identity,rows:g.rows,observedAt:g.observedAt,inputRefs:refs,sourceReason:g.reason||ageReason(g.observedAt,clock(),1800000),live,liveIssue:ambiguousIds.has(g.identity.group)?'live_group_ambiguous':null,previous:state.baselines[key] && (!state.baselines[key].classes || hash(state.baselines[key].classes)===hash(g.class_keys)) ? state.baselines[key] : null,now:clock(),sourceLane:'data_live'});
       result.fields['answer-key']=result.fields['scope-key']+'|'+runId+'|'+result.fields['content-hash'].slice(0,16);
@@ -180,7 +181,7 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
     const classRows=await classApi.list(CLASS_TIMING,CLASS_ANSWERS),classKeys=new Set();
     for(const row of classRows){if(classKeys.has(row.fields['answer-key']))throw Error('Duplicate class snapshot');classKeys.add(row.fields['answer-key']);}
     const classData={...data,inventories:Object.fromEntries(Object.entries(data.inventories).filter(([day])=>day===classDay).map(([day,inv])=>[day,{...inv,groups:inv.groups.filter(g=>!excludedGroups.has(g))}]))};
-    const batch=context['selected-date']===classDay?prepareClassBatch({data:classData,liveClasses:liveClass.classes,answers:[...afterPace.filter(r=>r.fields['answer-kind']==='ring-pace'),...classRows],now:clock(),runId,onIssue:(identity,message)=>issue('class',identity,message)}):{outputs:[],writes:[],unchanged:0};
+    const batch=workingDate===classDay?prepareClassBatch({data:classData,liveClasses:liveClass.classes,answers:[...afterPace.filter(r=>r.fields['answer-kind']==='ring-pace'),...classRows],now:clock(),runId,onIssue:(identity,message)=>issue('class',identity,message)}):{outputs:[],writes:[],unchanged:0};
     report.counts.classes_evaluated=batch.outputs.length;report.counts.classes_unchanged=batch.unchanged;
     report.counts.classes_unavailable=batch.outputs.filter(x=>x.fields.availability==='unavailable').length;
     if(Date.now()>deadline-15000)throw Error('Time budget exhausted before class publication');

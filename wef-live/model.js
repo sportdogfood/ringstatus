@@ -28,24 +28,26 @@ function scope(shows, now) {
   if (current.length !== 1)
     throw Error("Expected one default wef-shows record");
   const s = current[0].fields;
-  const date = day(s.selected_date);
-  const age = Date.parse(now) - Date.parse(s.last_checked);
-  if (s['show-key'] !== `15|${s.show_id}` || !Number.isFinite(age) || age < -60000 || age > 30 * 60000)
+  const selected = day(s.selected_date), today = localDay(now);
+  const active = today >= s.start_date && today <= s.end_date && text(s.available_dates).split(/,\s*/).includes(today);
+  const date = active ? today : selected;
+  if (s['show-key'] !== `15|${s.show_id}` || require('../wef-shows/authority-age').showAuthorityReason(s,now,{futureMs:60000,inclusive:true}))
     throw Error('Invalid or stale wef-shows default');
   if (
-    !date ||
-    date < s.start_date ||
-    date > s.end_date ||
-    !text(s.available_dates).split(/,\s*/).includes(date)
+    !selected ||
+    selected < s.start_date ||
+    selected > s.end_date ||
+    !text(s.available_dates).split(/,\s*/).includes(selected)
   )
     throw Error("Invalid authority show/date");
   return {
     show: integer(s.show_id, "show ID"),
     customer: integer(s.customer_id, "customer ID"),
     date,
+    selected_date: selected,
     authority: current[0].id,
     checked_at: s.last_checked,
-    active: date === localDay(now),
+    active,
   };
 }
 function unique(rows, field) {

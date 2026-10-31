@@ -40,6 +40,50 @@ def archived_row(body,reference):
     if part.get('retained-sha256')!=reference['sha256'] or digest(part['retained-json'])!=reference['sha256']:raise ValueError('Archive retained payload mismatch')
     return {**part,'collection-key':reference['key'],'scope':reference.get('scope'),'status':'Verified retained observation','_archive':proof}
 
+class HistoryArchive:
+    """Read existing published objects; never put archived IDs into write caches."""
+    def __init__(self,repository,receipt,head,native_id):
+        self.repository=pathlib.Path(repository);self.receipt=receipt;self.head=head
+        state=json.loads(head['state-json']);self.show=state['show-key'];self.prefix=prefix_for(self.show)
+        sha=digest(head['state-json']);name=self.prefix+'/revisions/'+sha+'.json'
+        if receipt.get('format')!=FORMAT or not receipt.get('verified_remote_commit') or receipt.get('manifest')!=name or receipt.get('state-sha256')!=sha:
+            raise ValueError('Historical archive receipt mismatch')
+        self.manifest=json.loads(checked_path(self.repository,name).read_text(encoding='utf-8'))
+        manifest=self.manifest
+        if manifest.get('format')!=FORMAT or manifest.get('show-key')!=self.show or manifest.get('run-key')!=head['run-key'] or manifest.get('state-sha256')!=sha or manifest.get('authority')!=state.get('authority'):
+            raise ValueError('Historical archive head mismatch')
+        self.loaded={}
+        row=self.read('runs',head['run-key'])
+        if row['_record-id']!=native_id or row['state-json']!=head['state-json']:raise ValueError('Historical native head changed')
+
+    def object_bytes(self,kind,key):
+        entry=self.manifest['records'][kind][key];name=entry['path'];proof=self.manifest['files'][name]
+        if name!=self.prefix+'/'+kind+'/'+proof['sha256']+'.json.gz':raise ValueError('Historical archive object outside scope')
+        body=checked_path(self.repository,name).read_bytes()
+        if len(body)!=proof['bytes'] or hashlib.sha256(body).hexdigest()!=proof['sha256']:raise ValueError('Historical archive object changed')
+        return body
+
+    def read_raw(self,kind,key):
+        """Preserve exact original rows, including non-observation readbacks."""
+        if kind not in ('runs','legacy-collections'):raise ValueError('Unexpected historical record kind')
+        identity=(kind,key)
+        if identity in self.loaded:return self.loaded[identity]
+        row=json.loads(gzip.decompress(self.object_bytes(kind,key)))
+        entry=self.manifest['records'][kind][key];field='run-key' if kind=='runs' else 'collection-key'
+        if row.get(field)!=key or row.get('_record-id')!=entry['record-id']:raise ValueError('Historical archive key/native ID mismatch')
+        self.loaded[identity]=row;return row
+
+    def read(self,kind,key):
+        """Accepted consumers require payload evidence even after a raw cache hit."""
+        row=self.read_raw(kind,key);entry=self.manifest['records'][kind][key]
+        if kind=='runs':
+            state=json.loads(row['state-json'])
+            if row.get('status')!='Verified completed revision' or state.get('phase')!='Complete' or state.get('show-key')!=self.show or state.get('run-record-id')!=entry['record-id']:
+                raise ValueError('Historical run is not accepted')
+        elif not isinstance(row.get('retained-json'),str) or row.get('retained-sha256')!=digest(row['retained-json']):
+            raise ValueError('Historical accepted observation payload missing or changed')
+        return row
+
 def publish_bundle(repository,prefix,files,allowed_remotes=REMOTES,pending_bundles=None):
     """Publish without rewriting history; reconcile only this producer's local commits."""
     repository=pathlib.Path(repository);primary_count=len(files);files=dict(files);prefixes=[prefix]
@@ -151,7 +195,47 @@ class EvidenceStore:
             state=json.loads(row.get('state-json') or '{}')
             if state.get('show-key')!=show:continue
             references=[r for r in state.get('observations',[]) if 'archive' in r]
-            if not references:continue
+            from data_runner import saved_work_plans
+            work=saved_work_plans(self.root.parent,state,key,repo)
+            captures=[]
+            folders={folder for folder,plan in work.values()}
+            # Finished jobs leave the small journal, but their exact receipts
+            # remain retention evidence under the same archive prefix.
+            for folder in (self.root.parent/key.replace(':','_')/'day-work').glob('*'):
+                plan=json.loads((folder/'plan.json').read_text(encoding='utf-8'))
+                if digest(packed(plan))!=folder.name or plan['run-key']!=key or plan['show-key']!=show:raise ValueError('Checkpoint plan owner/hash mismatch')
+                folders.add(folder)
+            for folder in folders:
+                captures.extend([folder/'plan.json',*sorted(folder.glob('block-*.json')),*sorted(folder.glob('reservation-*.json'))])
+                if (folder/'progress.json').exists():captures.append(folder/'progress.json')
+            reserved=state.get('reserved-class')
+            if reserved:
+                folder=self.root.parent/key.replace(':','_')/('class-batch-'+str(reserved['slot']))
+                captures.extend(p for p in [folder/'reservation.json',folder/'responses.json',folder/'source-batch.json'] if p.exists())
+            recovery=state.get('saved-checkpoint-recovery')
+            if recovery:
+                folder=checked_path(self.root.parent,recovery['path'])
+                captures.extend(sorted(folder.glob('*.json')))
+                from data_runner import read_saved_checkpoint
+                owner=recovery['slot'].rsplit('|slot-',1)[0]
+                original=read_saved_checkpoint(folder.parent,show,owner)
+                if any(original[k]!=recovery[k] for k in ('reservation-sha256','responses-sha256')):raise ValueError('Retained original checkpoint changed')
+                captures.extend(p for p in [folder.parent/'reservation.json',folder.parent/'responses.json'] if p.exists())
+            for reservation in state.get('inventory-day-reservations',{}).values():
+                capture=checked_path(self.root.parent,reservation['path'])/'responses.json'
+                if capture.exists():captures.append(capture)
+            directory=state.get('directory-reservation',{} ) or {}
+            pointer=directory.get('capture') or state.get('directory-capture')
+            if pointer:
+                capture=checked_path(self.root.parent,pointer)
+                if capture.exists():captures.append(capture)
+            if not references and not captures:continue
+            checkpoints={}
+            for capture in sorted(set(captures)):
+                body=capture.read_bytes();json.loads(body)
+                compressed=gzip.compress(body,mtime=0);sha=hashlib.sha256(compressed).hexdigest()
+                name=prefix+'/checkpoints/'+sha+'.json.gz';files[name]=compressed
+                checkpoints[capture.relative_to(self.root.parent).as_posix()]={'path':name,'bytes':len(compressed),'sha256':sha}
             for reference in references:
                 proof=reference['archive']
                 if not proof['path'].startswith(prefix+'/parts/'):raise ValueError('Cross-show retained evidence')
@@ -159,12 +243,13 @@ class EvidenceStore:
                 body=(local if local.exists() else checked_path(self.repository,proof['path'])).read_bytes()
                 archived_row(body,reference);files[proof['path']]=body
             journals[key]={'record-id':repo.inventory['runs'][key]['id'],'row':copy.deepcopy(row),'observations':copy.deepcopy(references)}
+            if checkpoints:journals[key]['checkpoint-files']=checkpoints
         return journals,files
     def bundle(self,repo,state,runkey):
         """Preserve legacy native rows verbatim and all logical archive observations."""
-        from retained_feed import collection_rows
+        from retained_feed import collection_rows,run_rows,run_identity,history_archive
         from wef_data_handoff import revision_chain
-        prefix=prefix_for(state['show-key']);files={};runs=copy.deepcopy(repo.graph['runs'])
+        prefix=prefix_for(state['show-key']);files={};runs=copy.deepcopy(run_rows(repo,state['show-key']))
         runs[runkey].update({'status':'Verified completed revision','state-json':packed(state)})
         # The runner key retains the original start value; Airtable may round its
         # dateTime readback. Freeze that original spelling, without changing rows.
@@ -181,7 +266,7 @@ class EvidenceStore:
             files[name]=body;manifests[kind][key]={'path':name,'record-id':row['_record-id']}
         for journal,units in chain:
             key=next(k for k,r in runs.items() if r.get('state-json')==packed(journal))
-            mirror('runs',key,{**runs[key],'_record-id':repo.inventory['runs'][key]['id']})
+            mirror('runs',key,{**runs[key],'_record-id':run_identity(repo,key,state['show-key'])})
             for reference in journal['observations']:
                 manifests['observations'].append(reference)
                 if 'archive' in reference:
@@ -194,6 +279,13 @@ class EvidenceStore:
         # Include unreferenced trial readback rows as well; none are deleted or rewritten.
         for key,row in repo.graph['collections'].items():
             if ['shows',state['show-key']] in row.get('show',{}).get('$links',[]):mirror('legacy-collections',key,{**row,'_record-id':repo.inventory['collections'][key]['id']})
+        previous=history_archive(repo,state['show-key'])
+        if previous:
+            for key,entry in previous.manifest['records']['legacy-collections'].items():
+                if key in manifests['legacy-collections']:continue
+                previous.read_raw('legacy-collections',key)
+                files[entry['path']]=previous.object_bytes('legacy-collections',key)
+                manifests['legacy-collections'][key]=copy.deepcopy(entry)
         manifest={'format':FORMAT,'show-key':state['show-key'],'run-key':runkey,'state-sha256':digest(packed(state)),
                   'authority':state['authority'],'records':manifests,'files':{n:{'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in sorted(files.items())}}
         name=prefix+'/revisions/'+manifest['state-sha256']+'.json';files[name]=packed(manifest).encode('utf-8')

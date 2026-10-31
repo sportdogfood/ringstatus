@@ -1,0 +1,1878 @@
+TAP version 13
+# Subtest: lost create response is read back without a second create
+ok 1 - lost create response is read back without a second create
+  ---
+  duration_ms: 3.6048
+  type: 'test'
+  ...
+# Subtest: unresolved creation is not retried in the same run
+ok 2 - unresolved creation is not retried in the same run
+  ---
+  duration_ms: 1.5049
+  type: 'test'
+  ...
+# Subtest: source class identity and explicit empty arrays are validated
+not ok 3 - source class identity and explicit empty arrays are validated
+  ---
+  duration_ms: 0.2415
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\boundaries.test.js:18:1'
+  failureType: 'testCodeFailure'
+  error: 'Direct Entries acquisition retired; consume accepted Data records'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    disabled (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\source.js:3:27)
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\boundaries.test.js:19:19)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: batch readback targets at most twenty exact unchanged keys despite unrelated rows
+ok 4 - batch readback targets at most twenty exact unchanged keys despite unrelated rows
+  ---
+  duration_ms: 12.6414
+  type: 'test'
+  ...
+# Subtest: lost create response is read back by original keys, never created twice
+ok 5 - lost create response is read back by original keys, never created twice
+  ---
+  duration_ms: 3.5725
+  type: 'test'
+  ...
+# Subtest: independent empty collection succeeds for all five sources and all days
+not ok 6 - independent empty collection succeeds for all five sources and all days
+  ---
+  duration_ms: 10.1519
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:14:227)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: trainer overlap and both private follows collect once with separate collection associations
+not ok 7 - trainer overlap and both private follows collect once with separate collection associations
+  ---
+  duration_ms: 1.1551
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:15:337)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: repeat run preserves entry/collection IDs and adds one terminal run log
+not ok 8 - repeat run preserves entry/collection IDs and adds one terminal run log
+  ---
+  duration_ms: 0.8724
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:16:115)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: one failed producer preserves its previous entry membership and other sources refresh
+not ok 9 - one failed producer preserves its previous entry membership and other sources refresh
+  ---
+  duration_ms: 1.4819
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:17:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:17:390)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: inactive roster never excludes collection; team slice hides inactive but user-only is never team
+not ok 10 - inactive roster never excludes collection; team slice hides inactive but user-only is never team
+  ---
+  duration_ms: 0.9691
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:18:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:18:246)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: schedule sync mismatch stops before source calls and retains existing participation
+not ok 11 - schedule sync mismatch stops before source calls and retains existing participation
+  ---
+  duration_ms: 1.9438
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:19:299)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: archive failure prevents entry changes
+ok 12 - archive failure prevents entry changes
+  ---
+  duration_ms: 1.2048
+  type: 'test'
+  ...
+# Subtest: explicit missing followed entry fails that owner, not an empty success
+not ok 13 - explicit missing followed entry fails that owner, not an empty success
+  ---
+  duration_ms: 1.0408
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:21:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'result')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:21:350)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: more than ten private selections blocks sources and malformed empty people fails
+not ok 14 - more than ten private selections blocks sources and malformed empty people fails
+  ---
+  duration_ms: 2.2636
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 3
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 3
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:22:448)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: private-only entry has no invented trainer feed association
+not ok 15 - private-only entry has no invented trainer feed association
+  ---
+  duration_ms: 1.1931
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:23:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:23:333)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: scheduled date is respected; conflicting participation is rejected
+not ok 16 - scheduled date is respected; conflicting participation is rejected
+  ---
+  duration_ms: 1.1296
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /No shared schedule/. Input:
+    
+    'TypeError: model.normalize is not a function'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: 'model.normalize is not a function'
+  name: 'TypeError'
+  stack: |-
+    C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:24:178
+    getActual (node:assert:609:5)
+    Function.throws (node:assert:757:24)
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:24:161)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:24:161)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: adapter rejects every CWF/shared mutation, synced destination writes and deletion
+not ok 17 - adapter rejects every CWF/shared mutation, synced destination writes and deletion
+  ---
+  duration_ms: 1.0345
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:25:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Read-only/. Input:
+    
+    'Error: Unapproved read target'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: 'Unapproved read target'
+  stack: |-
+    Object.call (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\airtable.js:9:44)
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:25:290)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:25:265)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: log capacity archives finished slot before reuse
+not ok 18 - log capacity archives finished slot before reuse
+  ---
+  duration_ms: 1.0855
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:26:225)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: canonical show read replaces schedules mirror without changing schedule links
+not ok 19 - canonical show read replaces schedules mirror without changing schedule links
+  ---
+  duration_ms: 0.805
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:28:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:30:45)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: canonical authority is read-only through the adapter
+ok 20 - canonical authority is read-only through the adapter
+  ---
+  duration_ms: 0.3331
+  type: 'test'
+  ...
+# Subtest: plural writer keeps keys, local links and successful observation on two fixture runs
+not ok 21 - plural writer keeps keys, local links and successful observation on two fixture runs
+  ---
+  duration_ms: 0.7222
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:43:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    ["No accepted Data revision"]
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:43:191)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed collection preserves historical links and successful timestamp
+not ok 22 - failed collection preserves historical links and successful timestamp
+  ---
+  duration_ms: 0.8794
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:44:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'id')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:44:386)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ambiguous class groups never inferred from people feed
+not ok 23 - ambiguous class groups never inferred from people feed
+  ---
+  duration_ms: 8.4307
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:45:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(r.errors.some(e=>e.includes('eligibility unresolved')))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:45:373)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: stale or failed date health blocks collection without refreshing observation
+ok 24 - stale or failed date health blocks collection without refreshing observation
+  ---
+  duration_ms: 1.818
+  type: 'test'
+  ...
+# Subtest: plural empty sources succeed and disappeared participation is dropped with history
+not ok 25 - plural empty sources succeed and disappeared participation is dropped with history
+  ---
+  duration_ms: 1.2475
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\tests\\collector.test.js:47:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-entries\tests\collector.test.js:47:318)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: shared schedule without group fields keeps unique class link and independently proven group
+ok 26 - shared schedule without group fields keeps unique class link and independently proven group
+  ---
+  duration_ms: 28.365
+  type: 'test'
+  ...
+# Subtest: saved positive copies actual active schedule and supports observed group association
+ok 27 - saved positive copies actual active schedule and supports observed group association
+  ---
+  duration_ms: 2.6448
+  type: 'test'
+  ...
+# Subtest: saved same-run contradictory group retains supported entry and entity facts
+ok 28 - saved same-run contradictory group retains supported entry and entity facts
+  ---
+  duration_ms: 1.0028
+  type: 'test'
+  ...
+# Subtest: saved partial roster671 keeps class/date association and flags only group uncertainty
+ok 29 - saved partial roster671 keeps class/date association and flags only group uncertainty
+  ---
+  duration_ms: 1.0189
+  type: 'test'
+  ...
+# Subtest: missing inventory does not gate ordinary class/date linking or entity normalization
+ok 30 - missing inventory does not gate ordinary class/date linking or entity normalization
+  ---
+  duration_ms: 0.7718
+  type: 'test'
+  ...
+# Subtest: same-revision completeness is required only for group assertion
+ok 31 - same-revision completeness is required only for group assertion
+  ---
+  duration_ms: 1.4218
+  type: 'test'
+  ...
+# Subtest: ring ID is not ring number; contradictory ring identity does not become group proof
+ok 32 - ring ID is not ring number; contradictory ring identity does not become group proof
+  ---
+  duration_ms: 1.2068
+  type: 'test'
+  ...
+# Subtest: duplicate group rosters are unresolved instead of selecting an arbitrary group
+ok 33 - duplicate group rosters are unresolved instead of selecting an arbitrary group
+  ---
+  duration_ms: 1.6742
+  type: 'test'
+  ...
+# Subtest: duplicate operational occurrences never fan out or erase entity facts
+ok 34 - duplicate operational occurrences never fan out or erase entity facts
+  ---
+  duration_ms: 2.6381
+  type: 'test'
+  ...
+# Subtest: source occurrence conflict and repeated source occurrence are rejected
+ok 35 - source occurrence conflict and repeated source occurrence are rejected
+  ---
+  duration_ms: 2.5669
+  type: 'test'
+  ...
+# Subtest: exact own-class trip identity matters; another trip or class cannot lend eligibility
+ok 36 - exact own-class trip identity matters; another trip or class cannot lend eligibility
+  ---
+  duration_ms: 8.2016
+  type: 'test'
+  ...
+# Subtest: one bad trip group match does not stop other supported group links
+ok 37 - one bad trip group match does not stop other supported group links
+  ---
+  duration_ms: 1.4671
+  type: 'test'
+  ...
+# Subtest: empty class succeeds without needing any group or schedule data
+ok 38 - empty class succeeds without needing any group or schedule data
+  ---
+  duration_ms: 1.268
+  type: 'test'
+  ...
+# Subtest: replay is stable, keeps observation time and does not mutate source or old links
+ok 39 - replay is stable, keeps observation time and does not mutate source or old links
+  ---
+  duration_ms: 5.2848
+  type: 'test'
+  ...
+# Subtest: conflicting required identity rejects source facts rather than guessing
+ok 40 - conflicting required identity rejects source facts rather than guessing
+  ---
+  duration_ms: 1.3126
+  type: 'test'
+  ...
+# Subtest: unknown trainer and missing trip UUID retain facts but cannot claim group eligibility
+ok 41 - unknown trainer and missing trip UUID retain facts but cannot claim group eligibility
+  ---
+  duration_ms: 10.5116
+  type: 'test'
+  ...
+# Subtest: duplicate shared key conflicts only affected classes; healthy key still links
+ok 42 - duplicate shared key conflicts only affected classes; healthy key still links
+  ---
+  duration_ms: 0.3998
+  type: 'test'
+  ...
+# Subtest: independent writer reads no tenant or source and persists ordinary links despite group uncertainty
+ok 43 - independent writer reads no tenant or source and persists ordinary links despite group uncertainty
+  ---
+  duration_ms: 11.6309
+  type: 'test'
+  ...
+# Subtest: repeat preserves IDs, native links, helper fields and source observation time
+ok 44 - repeat preserves IDs, native links, helper fields and source observation time
+  ---
+  duration_ms: 4.2914
+  type: 'test'
+  ...
+# Subtest: initial empty scope does not bulk-drop feed-only rows
+ok 45 - initial empty scope does not bulk-drop feed-only rows
+  ---
+  duration_ms: 1.8851
+  type: 'test'
+  ...
+# Subtest: retirement is disabled even for later complete empty scope; links retained
+ok 46 - retirement is disabled even for later complete empty scope; links retained
+  ---
+  duration_ms: 4.2385
+  type: 'test'
+  ...
+# Subtest: malformed scope preserves rows and membership; other scopes continue
+ok 47 - malformed scope preserves rows and membership; other scopes continue
+  ---
+  duration_ms: 2.1939
+  type: 'test'
+  ...
+# Subtest: overdue input neither refreshes prior observation nor drops records
+ok 48 - overdue input neither refreshes prior observation nor drops records
+  ---
+  duration_ms: 2.8791
+  type: 'test'
+  ...
+# Subtest: newer existing observations never regress and scope membership stays linked
+ok 49 - newer existing observations never regress and scope membership stays linked
+  ---
+  duration_ms: 2.7934
+  type: 'test'
+  ...
+# Subtest: no shared schedules skips Data and preserves every prior record and link
+ok 50 - no shared schedules skips Data and preserves every prior record and link
+  ---
+  duration_ms: 1.8953
+  type: 'test'
+  ...
+# Subtest: archive failure prevents participation writes
+ok 51 - archive failure prevents participation writes
+  ---
+  duration_ms: 1.8582
+  type: 'test'
+  ...
+# Subtest: Data access is GET-only and old tenant targets are forbidden
+ok 52 - Data access is GET-only and old tenant targets are forbidden
+  ---
+  duration_ms: 1.9811
+  type: 'test'
+  ...
+# Subtest: missing canonical show logs failure using null absent date and preserves business rows
+ok 53 - missing canonical show logs failure using null absent date and preserves business rows
+  ---
+  duration_ms: 1.0917
+  type: 'test'
+  ...
+# Subtest: directory-only revision flags missing shared evidence and preserves records
+ok 54 - directory-only revision flags missing shared evidence and preserves records
+  ---
+  duration_ms: 0.9264
+  type: 'test'
+  ...
+# Subtest: applicable unfinished attempts persist on participation and scope provenance
+ok 55 - applicable unfinished attempts persist on participation and scope provenance
+  ---
+  duration_ms: 1.4494
+  type: 'test'
+  ...
+# Subtest: Airtable timestamp normalization verifies and repeats without rewriting source time
+ok 56 - Airtable timestamp normalization verifies and repeats without rewriting source time
+  ---
+  duration_ms: 2.6903
+  type: 'test'
+  ...
+# Subtest: ambiguous schedule is Conflict, preserves prior links and repeats while other scopes continue
+ok 57 - ambiguous schedule is Conflict, preserves prior links and repeats while other scopes continue
+  ---
+  duration_ms: 4.4028
+  type: 'test'
+  ...
+# Subtest: outside shared schedule scope is preserved but never processed or newly created
+ok 58 - outside shared schedule scope is preserved but never processed or newly created
+  ---
+  duration_ms: 1.6968
+  type: 'test'
+  ...
+# Subtest: unknown failed Data attempt does not gate accepted links or claim exact-class failure
+ok 59 - unknown failed Data attempt does not gate accepted links or claim exact-class failure
+  ---
+  duration_ms: 1.3451
+  type: 'test'
+  ...
+# Subtest: repeat preserves additional existing source-json properties
+ok 60 - repeat preserves additional existing source-json properties
+  ---
+  duration_ms: 3.5997
+  type: 'test'
+  ...
+# Subtest: Data failure cannot write participation or invoke Live
+ok 61 - Data failure cannot write participation or invoke Live
+  ---
+  duration_ms: 2.061
+  type: 'test'
+  ...
+# Subtest: full-show archive references stay complete without exceeding the existing log field
+ok 62 - full-show archive references stay complete without exceeding the existing log field
+  ---
+  duration_ms: 223.0389
+  type: 'test'
+  ...
+# Subtest: previous lane and Live evidence is retained unchanged as history, not regenerated
+ok 63 - previous lane and Live evidence is retained unchanged as history, not regenerated
+  ---
+  duration_ms: 2.2879
+  type: 'test'
+  ...
+# Subtest: restored adapter rejects Live reads and writes before network access
+ok 64 - restored adapter rejects Live reads and writes before network access
+  ---
+  duration_ms: 3.5457
+  type: 'test'
+  ...
+# Subtest: shared schedule without group fields keeps unique class link and independently proven group
+ok 65 - shared schedule without group fields keeps unique class link and independently proven group
+  ---
+  duration_ms: 26.6785
+  type: 'test'
+  ...
+# Subtest: saved positive copies actual active schedule and supports observed group association
+ok 66 - saved positive copies actual active schedule and supports observed group association
+  ---
+  duration_ms: 2.3237
+  type: 'test'
+  ...
+# Subtest: saved same-run contradictory group retains supported entry and entity facts
+ok 67 - saved same-run contradictory group retains supported entry and entity facts
+  ---
+  duration_ms: 1.0365
+  type: 'test'
+  ...
+# Subtest: saved partial roster671 keeps class/date association and flags only group uncertainty
+ok 68 - saved partial roster671 keeps class/date association and flags only group uncertainty
+  ---
+  duration_ms: 0.7898
+  type: 'test'
+  ...
+# Subtest: missing inventory does not gate ordinary class/date linking or entity normalization
+ok 69 - missing inventory does not gate ordinary class/date linking or entity normalization
+  ---
+  duration_ms: 0.7688
+  type: 'test'
+  ...
+# Subtest: same-revision completeness is required only for group assertion
+ok 70 - same-revision completeness is required only for group assertion
+  ---
+  duration_ms: 1.7571
+  type: 'test'
+  ...
+# Subtest: ring ID is not ring number; contradictory ring identity does not become group proof
+ok 71 - ring ID is not ring number; contradictory ring identity does not become group proof
+  ---
+  duration_ms: 1.2958
+  type: 'test'
+  ...
+# Subtest: duplicate group rosters are unresolved instead of selecting an arbitrary group
+ok 72 - duplicate group rosters are unresolved instead of selecting an arbitrary group
+  ---
+  duration_ms: 1.2129
+  type: 'test'
+  ...
+# Subtest: duplicate operational occurrences never fan out or erase entity facts
+ok 73 - duplicate operational occurrences never fan out or erase entity facts
+  ---
+  duration_ms: 4.5494
+  type: 'test'
+  ...
+# Subtest: source occurrence conflict and repeated source occurrence are rejected
+ok 74 - source occurrence conflict and repeated source occurrence are rejected
+  ---
+  duration_ms: 2.6575
+  type: 'test'
+  ...
+# Subtest: exact own-class trip identity matters; another trip or class cannot lend eligibility
+ok 75 - exact own-class trip identity matters; another trip or class cannot lend eligibility
+  ---
+  duration_ms: 8.1491
+  type: 'test'
+  ...
+# Subtest: one bad trip group match does not stop other supported group links
+ok 76 - one bad trip group match does not stop other supported group links
+  ---
+  duration_ms: 1.3902
+  type: 'test'
+  ...
+# Subtest: empty class succeeds without needing any group or schedule data
+ok 77 - empty class succeeds without needing any group or schedule data
+  ---
+  duration_ms: 1.0932
+  type: 'test'
+  ...
+# Subtest: replay is stable, keeps observation time and does not mutate source or old links
+ok 78 - replay is stable, keeps observation time and does not mutate source or old links
+  ---
+  duration_ms: 5.3517
+  type: 'test'
+  ...
+# Subtest: conflicting required identity rejects source facts rather than guessing
+ok 79 - conflicting required identity rejects source facts rather than guessing
+  ---
+  duration_ms: 1.3659
+  type: 'test'
+  ...
+# Subtest: unknown trainer and missing trip UUID retain facts but cannot claim group eligibility
+ok 80 - unknown trainer and missing trip UUID retain facts but cannot claim group eligibility
+  ---
+  duration_ms: 1.8135
+  type: 'test'
+  ...
+# Subtest: duplicate shared key conflicts only affected classes; healthy key still links
+ok 81 - duplicate shared key conflicts only affected classes; healthy key still links
+  ---
+  duration_ms: 0.3264
+  type: 'test'
+  ...
+# Subtest: one transient source retry recovers; no retry for authentication or malformed success
+ok 82 - one transient source retry recovers; no retry for authentication or malformed success
+  ---
+  duration_ms: 3.1896
+  type: 'test'
+  ...
+# Subtest: persistent 502 is bounded to two attempts and fails rather than empty success
+ok 83 - persistent 502 is bounded to two attempts and fails rather than empty success
+  ---
+  duration_ms: 0.5753
+  type: 'test'
+  ...
+# Subtest: timeout may retry once; arbitrary programming errors never retry
+ok 84 - timeout may retry once; arbitrary programming errors never retry
+  ---
+  duration_ms: 0.5857
+  type: 'test'
+  ...
+# Subtest: local times reject both DST gaps and ambiguity and invalid calendar dates
+ok 85 - local times reject both DST gaps and ambiguity and invalid calendar dates
+  ---
+  duration_ms: 2.4278
+  type: 'test'
+  ...
+# Subtest: Data only fallback retains all native/archive parts and authority
+ok 86 - Data only fallback retains all native/archive parts and authority
+  ---
+  duration_ms: 6.6245
+  type: 'test'
+  ...
+# Subtest: existing producer pace hash and precise unrounded value are consumed
+ok 87 - existing producer pace hash and precise unrounded value are consumed
+  ---
+  duration_ms: 10.8028
+  type: 'test'
+  ...
+# Subtest: tampered pace identity, fields, hash, members, provenance or original freshness defaults
+ok 88 - tampered pace identity, fields, hash, members, provenance or original freshness defaults
+  ---
+  duration_ms: 10.5981
+  type: 'test'
+  ...
+# Subtest: newer invalid pace does not revive older good snapshot
+ok 89 - newer invalid pace does not revive older good snapshot
+  ---
+  duration_ms: 2.471
+  type: 'test'
+  ...
+# Subtest: Live identity preserved and class counts preferred only for unique occurrence
+ok 90 - Live identity preserved and class counts preferred only for unique occurrence
+  ---
+  duration_ms: 2.8577
+  type: 'test'
+  ...
+# Subtest: wrong Live customer and stale Live do not contaminate Data fallback
+ok 91 - wrong Live customer and stale Live do not contaminate Data fallback
+  ---
+  duration_ms: 1.8881
+  type: 'test'
+  ...
+# Subtest: multi-class group never repeats group counts
+ok 92 - multi-class group never repeats group counts
+  ---
+  duration_ms: 1.925
+  type: 'test'
+  ...
+# Subtest: no admission cap: all 501 exact occurrences are represented
+ok 93 - no admission cap: all 501 exact occurrences are represented
+  ---
+  duration_ms: 363.7044
+  type: 'test'
+  ...
+# Subtest: coverage, proof, exact occurrence, duplicates and forbidden Schedules fail explicitly
+ok 94 - coverage, proof, exact occurrence, duplicates and forbidden Schedules fail explicitly
+  ---
+  duration_ms: 1.2916
+  type: 'test'
+  ...
+# Subtest: stale Data stays enumerated but unavailable; missing data never becomes completed
+ok 95 - stale Data stays enumerated but unavailable; missing data never becomes completed
+  ---
+  duration_ms: 0.8537
+  type: 'test'
+  ...
+# Subtest: verified empty selected inventory is explicit zero coverage, not missing coverage
+ok 96 - verified empty selected inventory is explicit zero coverage, not missing coverage
+  ---
+  duration_ms: 0.19
+  type: 'test'
+  ...
+# Subtest: observed ring pace carries original endpoints and is consumed without identity invention
+ok 97 - observed ring pace carries original endpoints and is consumed without identity invention
+  ---
+  duration_ms: 2.1186
+  type: 'test'
+  ...
+# Subtest: stale supporting evidence is rejected even if its content hash is internally consistent
+ok 98 - stale supporting evidence is rejected even if its content hash is internally consistent
+  ---
+  duration_ms: 0.789
+  type: 'test'
+  ...
+# Subtest: unrelated Data head advances preserve material hash while receipts retain exact validation proof
+ok 99 - unrelated Data head advances preserve material hash while receipts retain exact validation proof
+  ---
+  duration_ms: 1.4692
+  type: 'test'
+  ...
+# Subtest: populated Live fixture returns exact source class/group identity and archived class counts
+ok 100 - populated Live fixture returns exact source class/group identity and archived class counts
+  ---
+  duration_ms: 24.879
+  type: 'test'
+  ...
+# Subtest: wrong legacy link name does not silently bind a class
+ok 101 - wrong legacy link name does not silently bind a class
+  ---
+  duration_ms: 1.6486
+  type: 'test'
+  ...
+# Subtest: raw header cannot fabricate completed trips against frozen trip evidence
+ok 102 - raw header cannot fabricate completed trips against frozen trip evidence
+  ---
+  duration_ms: 0.9379
+  type: 'test'
+  ...
+# Subtest: missing gone list stays unknown rather than zero
+ok 103 - missing gone list stays unknown rather than zero
+  ---
+  duration_ms: 1.1335
+  type: 'test'
+  ...
+# Subtest: archive tampering is rejected even with injected reader
+ok 104 - archive tampering is rejected even with injected reader
+  ---
+  duration_ms: 0.8136
+  type: 'test'
+  ...
+# Subtest: group projection must match frozen archive, not current mutable source-json alone
+ok 105 - group projection must match frozen archive, not current mutable source-json alone
+  ---
+  duration_ms: 0.6627
+  type: 'test'
+  ...
+# Subtest: fresh class cannot borrow stale group evidence
+ok 106 - fresh class cannot borrow stale group evidence
+  ---
+  duration_ms: 0.5889
+  type: 'test'
+  ...
+# Subtest: known additional rounds remain phase counts, never whole-class confirmation
+ok 107 - known additional rounds remain phase counts, never whole-class confirmation
+  ---
+  duration_ms: 0.9944
+  type: 'test'
+  ...
+# Subtest: duplicate class identity invalidates all duplicates
+ok 108 - duplicate class identity invalidates all duplicates
+  ---
+  duration_ms: 1.0322
+  type: 'test'
+  ...
+# Subtest: class, group and collection mutations during reads each reject the snapshot
+ok 109 - class, group and collection mutations during reads each reject the snapshot
+  ---
+  duration_ms: 3.3946
+  type: 'test'
+  ...
+# Subtest: empty Live is a valid missing-Live input; unavailable source read fails explicitly
+ok 110 - empty Live is a valid missing-Live input; unavailable source read fails explicitly
+  ---
+  duration_ms: 0.7268
+  type: 'test'
+  ...
+# Subtest: returns exact source scope, validated singleton counts, original times and no secrets
+ok 111 - returns exact source scope, validated singleton counts, original times and no secrets
+  ---
+  duration_ms: 7.2005
+  type: 'test'
+  ...
+# Subtest: reads all rows without a 500/80 row cap
+ok 112 - reads all rows without a 500/80 row cap
+  ---
+  duration_ms: 143.8252
+  type: 'test'
+  ...
+# Subtest: no Live dependency; empty complete date remains usable evidence
+ok 113 - no Live dependency; empty complete date remains usable evidence
+  ---
+  duration_ms: 0.7724
+  type: 'test'
+  ...
+# Subtest: stale, future and incomplete date scopes never expose usable rows
+ok 114 - stale, future and incomplete date scopes never expose usable rows
+  ---
+  duration_ms: 1.2079
+  type: 'test'
+  ...
+# Subtest: completed projection, frozen archive, dataset and retention conflicts reject the date
+ok 115 - completed projection, frozen archive, dataset and retention conflicts reject the date
+  ---
+  duration_ms: 2.3009
+  type: 'test'
+  ...
+# Subtest: parallel classes retain exact rows but do not duplicate group counters as class counts
+ok 116 - parallel classes retain exact rows but do not duplicate group counters as class counts
+  ---
+  duration_ms: 1.5007
+  type: 'test'
+  ...
+# Subtest: dropped rows excluded and blocks cannot supply class counts
+ok 117 - dropped rows excluded and blocks cannot supply class counts
+  ---
+  duration_ms: 1.4403
+  type: 'test'
+  ...
+# Subtest: invalid completed counts are withheld even when projection agrees
+ok 118 - invalid completed counts are withheld even when projection agrees
+  ---
+  duration_ms: 0.6755
+  type: 'test'
+  ...
+# Subtest: ring identity ambiguity fails closed
+ok 119 - ring identity ambiguity fails closed
+  ---
+  duration_ms: 1.1667
+  type: 'test'
+  ...
+# Subtest: show, collection and ring changes after reading invalidate the whole adapter result
+ok 120 - show, collection and ring changes after reading invalidate the whole adapter result
+  ---
+  duration_ms: 2.9465
+  type: 'test'
+  ...
+# Subtest: duplicate stage keys and wrong default identity are rejected
+ok 121 - duplicate stage keys and wrong default identity are rejected
+  ---
+  duration_ms: 0.6053
+  type: 'test'
+  ...
+# Subtest: freshness is checked again after archive work
+ok 122 - freshness is checked again after archive work
+  ---
+  duration_ms: 0.7737
+  type: 'test'
+  ...
+# Subtest: unchanged evidence does not generate a new snapshot just from clock movement
+ok 123 - unchanged evidence does not generate a new snapshot just from clock movement
+  ---
+  duration_ms: 35.6483
+  type: 'test'
+  ...
+# Subtest: data_live: missing Live uses schedule and three minutes; candidate is not actual
+ok 124 - data_live: missing Live uses schedule and three minutes; candidate is not actual
+  ---
+  duration_ms: 2.0596
+  type: 'test'
+  ...
+# Subtest: matching group pace changes duration without copying group counts
+ok 125 - matching group pace changes duration without copying group counts
+  ---
+  duration_ms: 1.0064
+  type: 'test'
+  ...
+# Subtest: invalid pace, wrong lane, wrong class roster, expiry and missing provenance use default
+ok 126 - invalid pace, wrong lane, wrong class roster, expiry and missing provenance use default
+  ---
+  duration_ms: 7.2402
+  type: 'test'
+  ...
+# Subtest: no arbitrary pace maximum and no input mutation
+ok 127 - no arbitrary pace maximum and no input mutation
+  ---
+  duration_ms: 1.5844
+  type: 'test'
+  ...
+# Subtest: Live class evidence overrides schedule independently for counts and start
+ok 128 - Live class evidence overrides schedule independently for counts and start
+  ---
+  duration_ms: 0.9052
+  type: 'test'
+  ...
+# Subtest: wrong occurrence, future observation and stale Live cannot contaminate fallback
+ok 129 - wrong occurrence, future observation and stale Live cannot contaminate fallback
+  ---
+  duration_ms: 2.2432
+  type: 'test'
+  ...
+# Subtest: group-scoped counts never become class counts; missing is not zero
+ok 130 - group-scoped counts never become class counts; missing is not zero
+  ---
+  duration_ms: 0.6085
+  type: 'test'
+  ...
+# Subtest: completion requires positive complete whole-class counts and end reached
+ok 131 - completion requires positive complete whole-class counts and end reached
+  ---
+  duration_ms: 3.9768
+  type: 'test'
+  ...
+# Subtest: explicit fresh all-phase Live completion is distinguished from estimated completion
+ok 132 - explicit fresh all-phase Live completion is distinguished from estimated completion
+  ---
+  duration_ms: 2.7392
+  type: 'test'
+  ...
+# Subtest: full date arithmetic crosses midnight without wrapping or losing a day
+ok 133 - full date arithmetic crosses midnight without wrapping or losing a day
+  ---
+  duration_ms: 0.8103
+  type: 'test'
+  ...
+# Subtest: DST rollover uses elapsed minutes, not local clock subtraction
+ok 134 - DST rollover uses elapsed minutes, not local clock subtraction
+  ---
+  duration_ms: 0.6305
+  type: 'test'
+  ...
+# Subtest: offsetless, impossible and wrong local date starts stay unknown
+ok 135 - offsetless, impossible and wrong local date starts stay unknown
+  ---
+  duration_ms: 1.19
+  type: 'test'
+  ...
+# Subtest: invalid identity, lane, timezone and clock fail explicitly
+ok 136 - invalid identity, lane, timezone and clock fail explicitly
+  ---
+  duration_ms: 0.6927
+  type: 'test'
+  ...
+# Subtest: same inputs give identical output; different class occurrence and lanes have separate keys
+ok 137 - same inputs give identical output; different class occurrence and lanes have separate keys
+  ---
+  duration_ms: 1.9064
+  type: 'test'
+  ...
+# Subtest: all missing observations produce explicit unavailable output with no completion
+ok 138 - all missing observations produce explicit unavailable output with no completion
+  ---
+  duration_ms: 0.4362
+  type: 'test'
+  ...
+# Subtest: unknown round coverage produces only the owner-requested calculated candidate
+ok 139 - unknown round coverage produces only the owner-requested calculated candidate
+  ---
+  duration_ms: 0.6257
+  type: 'test'
+  ...
+# Subtest: Schedules input is explicitly rejected and unbounded freshness is not accepted
+ok 140 - Schedules input is explicitly rejected and unbounded freshness is not accepted
+  ---
+  duration_ms: 0.9074
+  type: 'test'
+  ...
+# Subtest: writes changed class snapshots and reuses unchanged current evidence
+ok 141 - writes changed class snapshots and reuses unchanged current evidence
+  ---
+  duration_ms: 8.1311
+  type: 'test'
+  ...
+# Subtest: a return to prior content creates a new revision instead of reviving history
+ok 142 - a return to prior content creates a new revision instead of reviving history
+  ---
+  duration_ms: 4.3311
+  type: 'test'
+  ...
+# Subtest: written-record readback covers all batches without scanning unrelated history
+ok 143 - written-record readback covers all batches without scanning unrelated history
+  ---
+  duration_ms: 21.4696
+  type: 'test'
+  ...
+# Subtest: independent readback rejects missing, altered, duplicate and unexpected records
+ok 144 - independent readback rejects missing, altered, duplicate and unexpected records
+  ---
+  duration_ms: 1.5401
+  type: 'test'
+  ...
+# Subtest: readback rejects swapped record associations but accepts reordered intact records
+ok 145 - readback rejects swapped record associations but accepts reordered intact records
+  ---
+  duration_ms: 0.8506
+  type: 'test'
+  ...
+# Subtest: filtered readback follows all offsets with the same exact-record filter
+ok 146 - filtered readback follows all offsets with the same exact-record filter
+  ---
+  duration_ms: 446.6364
+  type: 'test'
+  ...
+# Subtest: initial complete inventory rejects historical duplicate keys before answer writes
+not ok 147 - initial complete inventory rejects historical duplicate keys before answer writes
+  ---
+  duration_ms: 76.1247
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:55:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Duplicate Data snapshot/. Input:
+    
+    'The input did not match the regular expression /^OR\\(RECORD_ID\\(\\)=/. Input:\n' +
+      '\n' +
+      `"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')"\n`
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    The input did not match the regular expression /^OR\(RECORD_ID\(\)=/. Input:
+    
+    "AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')"
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:57:60)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed checkpoint only resumes the specifically authorized run, never pending purge
+not ok 148 - failed checkpoint only resumes the specifically authorized run, never pending purge
+  ---
+  duration_ms: 3.483
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:62:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    {"run_id":"authorized","started":"2026-10-29T14:25:00Z","ok":false,"errors":["The input did not match the regular expression /^OR\\(RECORD_ID\\(\\)=/. Input:\n\n\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\"\n"],"source_lane":"data_live","destination":"appYOykKIy1kAquhP","counts":{"evaluated":0,"written":0,"unchanged":0,"deferred":0,"available":0,"partial":0,"unavailable":0,"purged":0,"purge_deferred":0,"groups_skipped":0,"classes_skipped":0},"issues":[{"stage":"source_read","message":"The input did not match the regular expression /^OR\\(RECORD_ID\\(\\)=/. Input:\n\n\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\"\n","run_id":"authorized"}],"status":"failed","completed":"2026-10-29T14:25:00Z"}
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:67:85)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: every discovered group is evaluated on consecutive runs
+not ok 149 - every discovered group is evaluated on consecutive runs
+  ---
+  duration_ms: 5.4445
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:72:1'
+  failureType: 'testCodeFailure'
+  error: `{"run_id":"first","started":"2026-10-29T14:25:00Z","ok":false,"errors":["The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n"],"source_lane":"data_live","destination":"appYOykKIy1kAquhP","counts":{"evaluated":0,"written":0,"unchanged":0,"deferred":0,"available":0,"partial":0,"unavailable":0,"purged":0,"purge_deferred":0,"groups_skipped":0,"classes_skipped":0},"issues":[{"stage":"source_read","message":"The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n","run_id":"first"}],"status":"failed","completed":"2026-10-29T14:25:00Z"}`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:75:74)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Data and Schedules use identical arithmetic but isolated output identities
+ok 150 - Data and Schedules use identical arithmetic but isolated output identities
+  ---
+  duration_ms: 2.0098
+  type: 'test'
+  ...
+# Subtest: one normal Data invocation saves pace and each eligible class in its destination
+not ok 151 - one normal Data invocation saves pace and each eligible class in its destination
+  ---
+  duration_ms: 2.1035
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:83:1'
+  failureType: 'testCodeFailure'
+  error: `{"run_id":"integration","started":"2026-10-29T14:25:00Z","ok":false,"errors":["The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n"],"source_lane":"data_live","destination":"appYOykKIy1kAquhP","counts":{"evaluated":0,"written":0,"unchanged":0,"deferred":0,"available":0,"partial":0,"unavailable":0,"purged":0,"purge_deferred":0,"groups_skipped":0,"classes_skipped":0},"issues":[{"stage":"source_read","message":"The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n","run_id":"integration"}],"status":"failed","completed":"2026-10-29T14:25:00Z"}`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:88:53)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: class snapshots use the class base and only the selected current day, including repeat runs
+not ok 152 - class snapshots use the class base and only the selected current day, including repeat runs
+  ---
+  duration_ms: 3.0304
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:93:1'
+  failureType: 'testCodeFailure'
+  error: `{"run_id":"one","started":"2026-10-29T14:25:00Z","ok":false,"errors":["The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n"],"source_lane":"data_live","destination":"appYOykKIy1kAquhP","counts":{"evaluated":0,"written":0,"unchanged":0,"deferred":0,"available":0,"partial":0,"unavailable":0,"purged":0,"purge_deferred":0,"groups_skipped":0,"classes_skipped":0},"issues":[{"stage":"source_read","message":"The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n","run_id":"one"}],"status":"failed","completed":"2026-10-29T14:25:00Z"}`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:99:68)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Data inventory covers missing Live classes and repeats without duplicate snapshots
+not ok 153 - Data inventory covers missing Live classes and repeats without duplicate snapshots
+  ---
+  duration_ms: 1.4457
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:104:1'
+  failureType: 'testCodeFailure'
+  error: `{"run_id":"one","started":"2026-10-29T14:25:00Z","ok":false,"errors":["The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n"],"source_lane":"data_live","destination":"appYOykKIy1kAquhP","counts":{"evaluated":0,"written":0,"unchanged":0,"deferred":0,"available":0,"partial":0,"unavailable":0,"purged":0,"purge_deferred":0,"groups_skipped":0,"classes_skipped":0},"issues":[{"stage":"source_read","message":"The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n","run_id":"one"}],"status":"failed","completed":"2026-10-29T14:25:00Z"}`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:105:53)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Data original source time remains stale despite a new completed head
+not ok 154 - Data original source time remains stale despite a new completed head
+  ---
+  duration_ms: 6.5952
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:109:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(r.ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:111:29)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: source crossing freshness limit during a run cannot authorize pace or purge
+not ok 155 - source crossing freshness limit during a run cannot authorize pace or purge
+  ---
+  duration_ms: 2.1116
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:113:1'
+  failureType: 'testCodeFailure'
+  error: `{"run_id":"stale","started":"2026-10-29T14:25:00Z","ok":false,"errors":["The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n"],"source_lane":"data_live","destination":"appYOykKIy1kAquhP","counts":{"evaluated":0,"written":0,"unchanged":0,"deferred":0,"available":0,"partial":0,"unavailable":0,"purged":0,"purge_deferred":0,"groups_skipped":0,"classes_skipped":0},"issues":[{"stage":"source_read","message":"The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n","run_id":"stale"}],"status":"failed","completed":"2026-10-29T14:25:00Z"}`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:116:42)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: expired source cannot advance retirement authority when no old rows exist
+not ok 156 - expired source cannot advance retirement authority when no old rows exist
+  ---
+  duration_ms: 1.9919
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:119:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert((await run({...f,runId:'prior'})).ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:121:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Live class source changing defers class work without losing recorded ring counts
+not ok 157 - Live class source changing defers class work without losing recorded ring counts
+  ---
+  duration_ms: 2.2367
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:126:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(r.ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:128:49)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a class-only change records a complete checkpoint
+not ok 158 - a class-only change records a complete checkpoint
+  ---
+  duration_ms: 0.8183
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:131:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert((await run({...f,runId:'first'})).ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:132:20)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: changed pinned head withholds output and never picks another show
+not ok 159 - changed pinned head withholds output and never picks another show
+  ---
+  duration_ms: 0.9154
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:137:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(r.ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:139:29)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: fresh Shows heartbeat refresh does not interrupt unchanged authority
+not ok 160 - fresh Shows heartbeat refresh does not interrupt unchanged authority
+  ---
+  duration_ms: 0.6246
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:141:1'
+  failureType: 'testCodeFailure'
+  error: `{"run_id":"shows-refreshed","started":"2026-10-29T14:25:00Z","ok":false,"errors":["The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n"],"source_lane":"data_live","destination":"appYOykKIy1kAquhP","counts":{"evaluated":0,"written":0,"unchanged":0,"deferred":0,"available":0,"partial":0,"unavailable":0,"purged":0,"purge_deferred":0,"groups_skipped":0,"classes_skipped":0},"issues":[{"stage":"source_read","message":"The input did not match the regular expression /^OR\\\\(RECORD_ID\\\\(\\\\)=/. Input:\\n\\n\\"AND({show-id}=76,{customer-id}=15,{date}='2026-10-29')\\"\\n","run_id":"shows-refreshed"}],"status":"failed","completed":"2026-10-29T14:25:00Z"}`
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:143:52)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: changed Shows selected date defers with explicit reason
+not ok 161 - changed Shows selected date defers with explicit reason
+  ---
+  duration_ms: 0.8155
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:145:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(r.ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:147:49)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: new-show handoff absence is deferred rather than a collector invocation or old-head fallback
+not ok 162 - new-show handoff absence is deferred rather than a collector invocation or old-head fallback
+  ---
+  duration_ms: 0.6545
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:150:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert(r.ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:152:29)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Data purge cannot remove the original Schedules lane
+ok 163 - Data purge cannot remove the original Schedules lane
+  ---
+  duration_ms: 0.4766
+  type: 'test'
+  ...
+# Subtest: Data transport cannot write Engine, Data, Live or Shows
+ok 164 - Data transport cannot write Engine, Data, Live or Shows
+  ---
+  duration_ms: 0.2651
+  type: 'test'
+  ...
+# Subtest: Data Live exact roster creates interval pace; a different roster falls back
+not ok 165 - Data Live exact roster creates interval pace; a different roster falls back
+  ---
+  duration_ms: 0.7358
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:167:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert((await run({...f,runId:'baseline'})).ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:171:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: archive prerequisite defers cleanup on repeat runs and protects every show date
+not ok 166 - archive prerequisite defers cleanup on repeat runs and protects every show date
+  ---
+  duration_ms: 3.2462
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:181:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert((await run({...f,runId:'confirm'})).ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:186:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: failed class readback prevents rollover deletion
+not ok 167 - failed class readback prevents rollover deletion
+  ---
+  duration_ms: 1.5412
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:198:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert((await run({...f,runId:'confirm'})).ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:201:2)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unresolved deletion intent blocks additional deletions
+not ok 168 - unresolved deletion intent blocks additional deletions
+  ---
+  duration_ms: 0.6933
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:208:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Pending Data purge requires owner resolution/. Input:
+    
+    'Uncertain write or retention intent requires owner review'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: 'Uncertain write or retention intent requires owner review'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:211:78)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unrelated completed Data head advancement does not duplicate consumed evidence
+not ok 169 - unrelated completed Data head advancement does not duplicate consumed evidence
+  ---
+  duration_ms: 1.1916
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.test.js:215:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert((await run({...f,runId:'initial'})).ok)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\data-runner.test.js:216:20)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: saved 33-minute eleven-trip schedule yields three minutes; no invented actual
+ok 170 - saved 33-minute eleven-trip schedule yields three minutes; no invented actual
+  ---
+  duration_ms: 3.4998
+  type: 'test'
+  ...
+# Subtest: zero, missing, invalid windows, blocks and multi-class groups never divide or double-count
+ok 171 - zero, missing, invalid windows, blocks and multi-class groups never divide or double-count
+  ---
+  duration_ms: 0.4015
+  type: 'test'
+  ...
+# Subtest: interval throughput uses compatible dated observations, including holds
+ok 172 - interval throughput uses compatible dated observations, including holds
+  ---
+  duration_ms: 0.6607
+  type: 'test'
+  ...
+# Subtest: reset/membership change/out-of-order/gap/stale/future/count-conflict cannot produce pace
+ok 173 - reset/membership change/out-of-order/gap/stale/future/count-conflict cannot produce pace
+  ---
+  duration_ms: 0.2535
+  type: 'test'
+  ...
+# Subtest: no-progress does not advance baseline; repeated source preserves measured interval without new measurement
+ok 174 - no-progress does not advance baseline; repeated source preserves measured interval without new measurement
+  ---
+  duration_ms: 2.2334
+  type: 'test'
+  ...
+# Subtest: fresh evaluation clock alone does not renew stale observation
+ok 175 - fresh evaluation clock alone does not renew stale observation
+  ---
+  duration_ms: 0.2055
+  type: 'test'
+  ...
+# Subtest: a new observation without progress never represents the previous interval as a new measurement
+not ok 176 - a new observation without progress never represents the previous interval as a new measurement
+  ---
+  duration_ms: 1.5645
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\pace.test.js:39:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    2 !== null
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: ~
+  actual: 2
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-timing\pace.test.js:44:58)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: source-invalid scope does not publish numeric schedule fallback
+ok 177 - source-invalid scope does not publish numeric schedule fallback
+  ---
+  duration_ms: 0.3658
+  type: 'test'
+  ...
+# Subtest: readback rejects duplicate identities and mismatched content
+ok 178 - readback rejects duplicate identities and mismatched content
+  ---
+  duration_ms: 1.0456
+  type: 'test'
+  ...
+# Subtest: transport forbids source writes and unsupported targets before any network action
+ok 179 - transport forbids source writes and unsupported targets before any network action
+  ---
+  duration_ms: 1.4837
+  type: 'test'
+  ...
+# Subtest: transport uses existing-key performUpsert and validates server clock
+ok 180 - transport uses existing-key performUpsert and validates server clock
+  ---
+  duration_ms: 234.542
+  type: 'test'
+  ...
+# Subtest: class snapshots purge only their verified old Data scope
+ok 181 - class snapshots purge only their verified old Data scope
+  ---
+  duration_ms: 2.6451
+  type: 'test'
+  ...
+# Subtest: authority uses New York date, not UTC midnight; requires fresh completed scope
+ok 182 - authority uses New York date, not UTC midnight; requires fresh completed scope
+  ---
+  duration_ms: 22.8223
+  type: 'test'
+  ...
+# Subtest: discovering a future working day does not retire current day
+ok 183 - discovering a future working day does not retire current day
+  ---
+  duration_ms: 0.3496
+  type: 'test'
+  ...
+# Subtest: only owned prior-show and past-day pace snapshots qualify
+ok 184 - only owned prior-show and past-day pace snapshots qualify
+  ---
+  duration_ms: 0.4282
+  type: 'test'
+  ...
+# Subtest: two distinct normal invocations confirm authority; first observation never deletes
+ok 185 - two distinct normal invocations confirm authority; first observation never deletes
+  ---
+  duration_ms: 0.6038
+  type: 'test'
+  ...
+# Subtest: delete transport only targets exact Engine snapshot IDs and reads back absence
+ok 186 - delete transport only targets exact Engine snapshot IDs and reads back absence
+  ---
+  duration_ms: 445.5028
+  type: 'test'
+  ...
+# Subtest: lost delete response is not retried; a retained row fails verification
+ok 187 - lost delete response is not retried; a retained row fails verification
+  ---
+  duration_ms: 650.6882
+  type: 'test'
+  ...
+# Subtest: duplicated delete response IDs cannot masquerade as an exact successful batch
+ok 188 - duplicated delete response IDs cannot masquerade as an exact successful batch
+  ---
+  duration_ms: 212.2819
+  type: 'test'
+  ...
+# Subtest: normal repeat retains snapshot identities and writes only runner status on unchanged input
+ok 189 - normal repeat retains snapshot identities and writes only runner status on unchanged input
+  ---
+  duration_ms: 9.5355
+  type: 'test'
+  ...
+# Subtest: bad structured projection cannot borrow frozen numeric pace
+ok 190 - bad structured projection cannot borrow frozen numeric pace
+  ---
+  duration_ms: 1.391
+  type: 'test'
+  ...
+# Subtest: an active projection cannot admit a frozen dropped schedule
+ok 191 - an active projection cannot admit a frozen dropped schedule
+  ---
+  duration_ms: 1.9738
+  type: 'test'
+  ...
+# Subtest: changing producer collection defers publication without inventing snapshot
+ok 192 - changing producer collection defers publication without inventing snapshot
+  ---
+  duration_ms: 0.9199
+  type: 'test'
+  ...
+# Subtest: scope failure is recorded, no automatic successful retry or baseline advancement
+ok 193 - scope failure is recorded, no automatic successful retry or baseline advancement
+  ---
+  duration_ms: 1.6394
+  type: 'test'
+  ...
+# Subtest: budget deferral is explicit rather than partial snapshot publication
+ok 194 - budget deferral is explicit rather than partial snapshot publication
+  ---
+  duration_ms: 1.2298
+  type: 'test'
+  ...
+# Subtest: new evidence creates a snapshot even when pace is unchanged
+ok 195 - new evidence creates a snapshot even when pace is unchanged
+  ---
+  duration_ms: 1.7728
+  type: 'test'
+  ...
+# Subtest: checkpoint failure cannot report successful execution
+ok 196 - checkpoint failure cannot report successful execution
+  ---
+  duration_ms: 1.1462
+  type: 'test'
+  ...
+# Subtest: normal interval retains both endpoints and absolute counts; same observation is not a second interval
+ok 197 - normal interval retains both endpoints and absolute counts; same observation is not a second interval
+  ---
+  duration_ms: 5.7931
+  type: 'test'
+  ...
+# Subtest: future observation and mismatched class roster cannot yield interval pace
+ok 198 - future observation and mismatched class roster cannot yield interval pace
+  ---
+  duration_ms: 5.9776
+  type: 'test'
+  ...
+# Subtest: malformed later archive member invalidates the entire candidate collection
+ok 199 - malformed later archive member invalidates the entire candidate collection
+  ---
+  duration_ms: 2.4438
+  type: 'test'
+  ...
+# Subtest: two normal fixture invocations purge only prior show/past day and keep today/future
+ok 200 - two normal fixture invocations purge only prior show/past day and keep today/future
+  ---
+  duration_ms: 23.8359
+  type: 'test'
+  ...
+# Subtest: a source change before delete fences purge and requires new confirmation
+ok 201 - a source change before delete fences purge and requires new confirmation
+  ---
+  duration_ms: 2.6504
+  type: 'test'
+  ...
+# Subtest: unknown deletion stops with exact retained intent, without retry or business source mutation
+ok 202 - unknown deletion stops with exact retained intent, without retry or business source mutation
+  ---
+  duration_ms: 2.2273
+  type: 'test'
+  ...
+# Subtest: pending partial deletion blocks replanning and preserves original intent
+ok 203 - pending partial deletion blocks replanning and preserves original intent
+  ---
+  duration_ms: 0.9253
+  type: 'test'
+  ...
+# Subtest: a fully absent pending batch reconciles before new work without another delete
+ok 204 - a fully absent pending batch reconciles before new work without another delete
+  ---
+  duration_ms: 0.9496
+  type: 'test'
+  ...
+# Subtest: confirmed retired days cannot be recreated after authority becomes stale
+ok 205 - confirmed retired days cannot be recreated after authority becomes stale
+  ---
+  duration_ms: 2.9871
+  type: 'test'
+  ...
+# Subtest: acceptance checks every expected scope, including unchanged answers
+ok 206 - acceptance checks every expected scope, including unchanged answers
+  ---
+  duration_ms: 10.5613
+  type: 'test'
+  ...
+# Subtest: acceptance rejects corrupted unchanged answer and changed provenance
+ok 207 - acceptance rejects corrupted unchanged answer and changed provenance
+  ---
+  duration_ms: 2.6906
+  type: 'test'
+  ...
+# Subtest: valid unavailable stale class is accepted without fabricated data provenance
+ok 208 - valid unavailable stale class is accepted without fabricated data provenance
+  ---
+  duration_ms: 2.2085
+  type: 'test'
+  ...
+1..208
+# tests 208
+# suites 0
+# pass 169
+# fail 39
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2086.2359

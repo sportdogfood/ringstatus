@@ -1,0 +1,34 @@
+{
+  "ok": false,
+  "run_id": "92e739ee-c9f4-4153-a0d3-ec8a0bf9360d",
+  "started": "2026-10-30T22:49:02.611Z",
+  "rows": 0,
+  "accepted_rows": 0,
+  "collections": [],
+  "errors": [
+    "Retained collection not unique"
+  ],
+  "link_issues": [],
+  "archives": [
+    {
+      "at": "2026-10-30T22:49:07.396Z",
+      "kind": "run-logs",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entries\\runtime\\history\\run-logs\\ae20afd71a15ea7cf96ddd3af52810754ac56a58c4ed24f8843eb7c8848110c1.json.gz",
+      "records": 1,
+      "sha256": "ae20afd71a15ea7cf96ddd3af52810754ac56a58c4ed24f8843eb7c8848110c1"
+    }
+  ],
+  "source_fetches": 0,
+  "tenant_reads": 0,
+  "show_id": 200000076,
+  "show_source": {
+    "base": "appCaSmL819KK7UFJ",
+    "record": "recOAxMcqu1f75CQk",
+    "checked_at": "2026-10-30T22:44:15.271Z"
+  },
+  "shared_schedule_rows": 280,
+  "summary": "Linking stopped; prior unverified scopes preserved. Retained collection not unique",
+  "completed": "2026-10-30T22:49:47.848Z",
+  "result": "Failed"
+}

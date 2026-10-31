@@ -1,0 +1,9 @@
+START 2026-10-30T19:09:09.3096488-04:00
+node.exe : Schedule collector already running
+At C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-shows\run.ps1:15 char:5
++     & node --env-file=$envPath (Join-Path $PSScriptRoot 'entry.js') > ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Schedule collector already running:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+END 2026-10-30T19:09:09.6135958-04:00 exit=1

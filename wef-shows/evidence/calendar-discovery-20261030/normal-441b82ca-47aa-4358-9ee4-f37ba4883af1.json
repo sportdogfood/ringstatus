@@ -1,0 +1,56 @@
+{
+  "ok": false,
+  "run_id": "441b82ca-47aa-4358-9ee4-f37ba4883af1",
+  "started": "2026-10-30T23:04:02.611Z",
+  "rows": 1,
+  "errors": [
+    "Show-days: Day publication stopped after prior failure; owner authorization required"
+  ],
+  "archives": [
+    {
+      "at": "2026-10-30T23:04:06.584Z",
+      "kind": "run-logs",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\run-logs\\6c52add068aa98897671a015d8f053bf06a10b7f150edb5083dce3d5b231c82e.json.gz",
+      "records": 1,
+      "sha256": "6c52add068aa98897671a015d8f053bf06a10b7f150edb5083dce3d5b231c82e"
+    },
+    {
+      "at": "2026-10-30T23:04:17.968Z",
+      "kind": "shows-before",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\shows-before\\c19d01bd68621dd1bedfbad1536c75c5a0c450083d59c11d8653828bb39b75f9.json.gz",
+      "records": 2,
+      "sha256": "c19d01bd68621dd1bedfbad1536c75c5a0c450083d59c11d8653828bb39b75f9"
+    }
+  ],
+  "telemetry_errors": [],
+  "discovery": {
+    "timezone": "America/New_York",
+    "show": "Skipped",
+    "show_day": "Advanced"
+  },
+  "discovery_ok": true,
+  "show_id": 200000076,
+  "selected_date": "2026-10-31",
+  "source_selected_date": "2026-10-30",
+  "next_show_check": "2026-11-02T03:00:00.000Z",
+  "summary": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Advanced. No downstream jobs triggered. Show authority retained; show-days publication failed: Day publication stopped after prior failure; owner authorization required",
+  "error_records": [
+    "recElDju7n6GDhBeA"
+  ],
+  "observability": {
+    "sources": [],
+    "errors": [
+      {
+        "at": "2026-10-30T23:04:19.135Z",
+        "phase": "day-publication",
+        "source": null,
+        "message": "Day publication stopped after prior failure; owner authorization required"
+      }
+    ],
+    "ok": true,
+    "logging_errors": []
+  },
+  "completed": "2026-10-30T23:04:22.875Z"
+}
