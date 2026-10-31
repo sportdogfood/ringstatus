@@ -17,7 +17,7 @@ function api({token,deadline,request=fetch,lane='schedules_live'}) {
     await new Promise(r=>setTimeout(r,210));
     const before=Date.now(),response=await request(`https://api.airtable.com/v0/${base}/${encodeURIComponent(table)}${query}`,{method,
       headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(Math.min(8000,remaining-400))});
-    if(!response.ok)throw Error(`Airtable ${method} ${table} HTTP ${response.status}`);
+    if(!response.ok){let detail='';try{const e=await response.json();detail=JSON.stringify(e.error??e).slice(0,1200);}catch{}throw Error(`Airtable ${method} ${table} HTTP ${response.status}${detail?' '+detail:''}`);}
     const server=Date.parse(response.headers.get('date'));
     if(!Number.isFinite(server)||Math.abs(server-(before+Date.now())/2)>5000)throw Error('Host clock not verified against Airtable Date');
     clockVerified=true;return response.json();

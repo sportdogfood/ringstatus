@@ -16,7 +16,7 @@ function recordError(root,id,error,stage='Logging',at=iso()){
 }
 function finish(root,id,result,at=iso()){
  const row=readAttempt(root,id);if(row.status!=='Started')return row;
- const allowed=['Succeeded','Failed','Skipped','Interrupted','Deferred'];if(!allowed.includes(result.status))throw Error('Invalid terminal log status');
+ const allowed=['Succeeded','Partial','Failed','Skipped','Interrupted','Deferred'];if(!allowed.includes(result.status))throw Error('Invalid terminal log status');
  if(result.error)recordError(root,id,result.error,result.stage||row.stage,at);
  Object.assign(row,{status:result.status,completed:at,stage:safe(result.stage||row.stage),'elapsed-seconds':Math.max(0,(Date.parse(at)-Date.parse(row.started))/1000)});
  for(const name of ['run-key','source-revision','show-key'])if(result[name])row[name]=safe(result[name]);

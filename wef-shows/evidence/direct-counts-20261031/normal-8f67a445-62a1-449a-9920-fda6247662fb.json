@@ -1,0 +1,108 @@
+{
+  "ok": true,
+  "run_id": "8f67a445-62a1-449a-9920-fda6247662fb",
+  "started": "2026-10-31T12:44:02.759Z",
+  "rows": 1,
+  "errors": [],
+  "archives": [],
+  "telemetry_errors": [],
+  "discovery": {
+    "timezone": "America/New_York",
+    "show": "Skipped",
+    "show_day": "Retained"
+  },
+  "discovery_ok": true,
+  "show_id": 200000076,
+  "selected_date": "2026-10-31",
+  "source_selected_date": "2026-10-30",
+  "next_show_check": "2026-11-02T03:00:00.000Z",
+  "summary": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-10-29 Verified, 2026-10-30 Verified, 2026-10-31 Verified, 2026-11-01 Verified.",
+  "day_priority": {
+    "status": "Skipped",
+    "anchor": "2026-10-31"
+  },
+  "direct_counts": {
+    "request_count": 233,
+    "days": [
+      {
+        "date": "2026-10-29",
+        "expected_classes": 0,
+        "counted_classes": 0,
+        "complete": true,
+        "errors": []
+      },
+      {
+        "date": "2026-10-30",
+        "expected_classes": 37,
+        "counted_classes": 37,
+        "complete": true,
+        "errors": []
+      },
+      {
+        "date": "2026-10-31",
+        "expected_classes": 70,
+        "counted_classes": 70,
+        "complete": true,
+        "errors": []
+      },
+      {
+        "date": "2026-11-01",
+        "expected_classes": 118,
+        "counted_classes": 118,
+        "complete": true,
+        "errors": []
+      }
+    ]
+  },
+  "show_days": {
+    "ok": true,
+    "rows": 4,
+    "days": [
+      {
+        "date": "2026-10-29",
+        "status": "Verified",
+        "record": "recohTvwKk7pDGnk1",
+        "revision": "8f67a445-62a1-449a-9920-fda6247662fb",
+        "digest": "a0073b231e58ab7ffe9f1a3b2abea6696cb62d43e1361ddad1d6df7522d34d4f"
+      },
+      {
+        "date": "2026-10-30",
+        "status": "Verified",
+        "record": "recNKs86S27g79pl5",
+        "revision": "8f67a445-62a1-449a-9920-fda6247662fb",
+        "digest": "1d49786b901fac6134a45831225d2086a50b3ba7cc5c9f4c2aa7c18cad6c7291"
+      },
+      {
+        "date": "2026-10-31",
+        "status": "Verified",
+        "record": "recV3qjf5oJAQW8SY",
+        "revision": "8f67a445-62a1-449a-9920-fda6247662fb",
+        "digest": "ce3e7bc14ddbd1d2369f31e7686f677313758221d453453e7c62c7534e126219"
+      },
+      {
+        "date": "2026-11-01",
+        "status": "Verified",
+        "record": "recs1RPpDh6bGuHkY",
+        "revision": "8f67a445-62a1-449a-9920-fda6247662fb",
+        "digest": "16fd3590f8de9e2501318afb14e0f943dcf8d7f9438452b1635f04bed1c0cbce"
+      }
+    ],
+    "errors": []
+  },
+  "error_records": [],
+  "observability": {
+    "sources": [
+      {
+        "key": "direct-day-counts",
+        "at": "2026-10-31T12:44:06.703Z",
+        "result": "Success",
+        "error": "",
+        "successAt": "2026-10-31T12:44:15.130Z"
+      }
+    ],
+    "errors": [],
+    "ok": true,
+    "logging_errors": []
+  },
+  "completed": "2026-10-31T12:44:41.066Z"
+}

@@ -129,6 +129,7 @@ async function publish({input,api=transport(),state=require('./publication-journ
    }
    if(!obs)return;
    guard();await authority(input.scope,limit);guard();
+   if(lane==='data'&&(!api.priorityZero||!await api.priorityZero(input.scope,limit))){stats.reason='Data publication requires canonical day-priority 0';return;}
    const db={};for(const table of Object.keys(TARGETS[lane].tables)){guard();db[table]=await api.list(lane,table,input.scope,limit);guard();}
    const planned=plans(lane,input,obs,db);stats.issues.push(...planned.issues);items=planned.plans;stats.planned=items.length;
    if(!items.length)return;
@@ -149,6 +150,7 @@ async function publish({input,api=transport(),state=require('./publication-journ
      journal.pending[key]={table:plan.table,id:plan.id,before,after,intent};
      if(!save('Journal intent')){preserveCursor=true;outcomes.set(key,'deferred');break;}
      const beforeDispatch=()=>{guard();const now=clock();if(input.scope.date!==require('./model').localDay(now))throw Error('TODAY changed before dispatch');const previous=before?raw(before).components:{};for(const [level,c]of Object.entries(raw(after).components))if(c.revision!==previous[level]?.revision&&!fresh(c.observedAt,now))throw Error('Observation expired before dispatch');};
+     if(lane==='data'&&(!api.priorityZero||!await api.priorityZero(input.scope,limit)))throw Error('Data day-priority changed before dispatch');
      beforeDispatch();dispatched=true;dispatches++;await api.patch(lane,plan.table,plan.id,after,{...limit,beforeDispatch});
      guard();checked=await api.get(lane,plan.table,plan.id,limit);
      validateDestination(lane,plan,row,checked,after);

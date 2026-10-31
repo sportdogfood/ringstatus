@@ -1,0 +1,71 @@
+{
+  "result": "COMPLETE: Shows independently counts proxy responses",
+  "deployment": "2026-10-31T12:35:04.658942+00:00",
+  "independent_review": "COMPLETE/PASS; review-verifier.json",
+  "targeted_tests": 23,
+  "normal_runs": [
+    {
+      "run_id": "51c9c0ac-179c-44b0-b4a8-3b802ebe1c51",
+      "started": "2026-10-31T12:39:03.174Z",
+      "completed": "2026-10-31T12:39:50.777Z",
+      "result": "Success",
+      "request_count": 233,
+      "classes": 225,
+      "verified_days": 4,
+      "published_days": 4,
+      "Airtable_heartbeat_log_count_policy_ID_link_priority_readback": "PASS",
+      "raw_response_or_entity_detail_saved": false,
+      "archive_checksums": "PASS"
+    },
+    {
+      "run_id": "8f67a445-62a1-449a-9920-fda6247662fb",
+      "started": "2026-10-31T12:44:02.759Z",
+      "completed": "2026-10-31T12:44:41.066Z",
+      "result": "Success",
+      "request_count": 233,
+      "classes": 225,
+      "verified_days": 4,
+      "published_days": 4,
+      "Airtable_heartbeat_log_count_policy_ID_link_priority_readback": "PASS",
+      "raw_response_or_entity_detail_saved": false,
+      "archive_checksums": "PASS"
+    }
+  ],
+  "latest_counts": [
+    {
+      "date": "2026-10-29",
+      "entries": 0,
+      "trips": 0,
+      "status": "Verified",
+      "classes": 0
+    },
+    {
+      "date": "2026-10-30",
+      "entries": 173,
+      "trips": 210,
+      "status": "Verified",
+      "classes": 37
+    },
+    {
+      "date": "2026-10-31",
+      "entries": 166,
+      "trips": 271,
+      "status": "Verified",
+      "classes": 70
+    },
+    {
+      "date": "2026-11-01",
+      "entries": 108,
+      "trips": 164,
+      "status": "Verified",
+      "classes": 118
+    }
+  ],
+  "Data_tracked_files_unchanged": 58,
+  "deployed_hashes_verified": 7,
+  "manual_runs": 0,
+  "record_repairs": 0,
+  "task_changes": 0,
+  "raw_count_responses_or_entities_persisted": false,
+  "coverage": "Scheduled competition-class participation; no claim for schooling/classless activity"
+}

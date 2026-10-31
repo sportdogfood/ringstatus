@@ -1,17 +1,15 @@
-"""Only the registered Windows Data task invokes this business entry point."""
+"""Entry point used by the existing scheduled task."""
 import json,pathlib
 from data_runner import run
-from retirement import worker_lock,WorkerBusy
+from retirement import worker_lock
 ROOT=pathlib.Path(__file__).resolve().parent
 
 def main():
     try:
         with worker_lock(ROOT/'runtime'):
-            result=run(ROOT/'runtime',ROOT/'schema.json',ROOT/'authored-fields.json',ROOT/'runtime/archive-repository',archive_storage=True)
-        print(json.dumps(result));return 0 if result['ok'] or result.get('state')=='Deferred' else 1
-    except WorkerBusy as error:
-        print(json.dumps({'ok':False,'state':'Deferred','source-requests':0,'error':str(error),'write-outcome':'NotSent'}));return 0
+            result=run(ROOT/'schema.json')
     except Exception as error:
-        print(json.dumps({'ok':False,'state':'Stopped','error':type(error).__name__+': '+str(error)}));return 1
+        result={'ok':False,'state':'Partial','counts':{'saved':0},'item-errors':[{'key':'Collector','error':str(error)}]}
+    print(json.dumps(result));return 0
 
 if __name__=='__main__':raise SystemExit(main())

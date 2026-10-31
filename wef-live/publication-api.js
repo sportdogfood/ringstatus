@@ -27,6 +27,19 @@ function transport({token=require('./settings').AIRTABLE_TOKEN,request=globalThi
   do{await pause(210);const q=new URLSearchParams({pageSize:'100',filterByFormula:filter,...(offset?{offset}:{})});const r=await request(`https://api.airtable.com/v0/${t.base}/${t.tables[table]}?${q}`,{headers:{Authorization:'Bearer '+token},signal:signal(limit)});if(!r.ok)throw Error(`Publication ${lane}/${table} GET HTTP ${r.status}`);const d=await r.json();rows.push(...d.records);offset=d.offset;if(rows.length>10000)throw Error('Publication inventory exceeds bound');}while(offset);
   return rows;
  }
- return{list,get:(l,t,id,limit)=>call(l,t,'GET',id,undefined,limit),patch:(l,t,id,v,limit)=>call(l,t,'PATCH',id,v,limit)};
+ async function priorityZero(scope,limit){
+  if(!scope||!Number.isSafeInteger(scope.customer)||!Number.isSafeInteger(scope.show)||!/^\d{4}-\d{2}-\d{2}$/.test(scope.date)||!scope.authority)throw Error('Invalid priority publication scope');
+  const key=`${scope.customer}|${scope.show}|${scope.date}`;
+  const q=new URLSearchParams({pageSize:'2',filterByFormula:`{show-day-key}=${JSON.stringify(key)}`});
+  for(const f of ['show-day-key','date','show','day-priority'])q.append('fields[]',f);
+  await pause(210);
+  const response=await request(`https://api.airtable.com/v0/appCaSmL819KK7UFJ/tbl14MaCCDw6dAywH?${q}`,{headers:{Authorization:'Bearer '+token},signal:signal(limit)});
+  if(!response.ok)throw Error(`Publication priority GET HTTP ${response.status}`);
+  const value=await response.json(),rows=value.records;
+  if(!Array.isArray(rows)||rows.length!==1||value.offset)return false;
+  const f=rows[0].fields;
+  return f['show-day-key']===key&&f.date===scope.date&&Array.isArray(f.show)&&f.show.length===1&&f.show[0]===scope.authority&&f['day-priority']===0&&scope.date===scope.selected_date;
+ }
+ return{list,priorityZero,get:(l,t,id,limit)=>call(l,t,'GET',id,undefined,limit),patch:(l,t,id,v,limit)=>call(l,t,'PATCH',id,v,limit)};
 }
 module.exports={FIELD,TARGETS,transport};

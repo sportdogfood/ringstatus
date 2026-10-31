@@ -1,5 +1,23 @@
 # wef-season — retained entities and show/show-day history
 
+## Current cadence — owner change, October 31, 2026
+
+The existing Windows task `wef-season-collector` now repeats **every hour (`PT1H`)**, replacing five minutes. This applies to all four Season bases together. The original start boundary, action, account and `IgnoreNew` overlap setting remain in place. At readback, the next scheduled run was **October 31, 2026 at 09:51:14 America/New_York**. No manual task start was performed. Data's task and collection cadences were not changed. Five-minute descriptions below are historical.
+
+To adjust later, edit the existing task in Windows Task Scheduler: **Task Scheduler Library → wef-season-collector → Properties → Triggers → Edit → Repeat task every**. One hour corresponds to `PT1H`. Preserve the existing start boundary, action, account, overlap setting and other task properties; do not create a second task. Read back the exported task and Next Run Time afterward. Changing cadence does not run collection or clear an entity stop.
+
+Exact readback: [hourly-task-readback.json](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/season-completed-days-20261031/hourly-task-readback.json>). Before/after task exports are saved beside that receipt.
+
+## Completed-day input — deployed October 31 at 09:00:57 Eastern
+
+Season now reads Data's existing immutable `runtime/completed-days` receipts. The existing local accepted handoff supplies the initial complete facts once. Later completed-day changes are verified and applied in sequence. A cache in Season's own `runtime/day-reader-{customer}-{show}.json` retains resolved facts and cumulative four-entity projections, including memberships seen only in intermediate observations. Each base's existing heartbeat checkpoint advances only after its own writer/readback succeeds. An unchanged receipt skips entity writes; missing verified dependencies defer. New shows do not borrow another show's seed, and a selected-date change within the same show does not discard retained history.
+
+Only `wef-season/season.py` was deployed. Existing projection/store/helper modules, Data files, keys, schema, native records, nicknames and entity stops were preserved. There is no new adapter, provider acquisition, Git operation or outgoing archive scan in this input path. Historical destination records stay intact.
+
+Source SHA-256: `a3d1e682b2ab9687b723fc4c51719f432f0bd19ede60231403b144c7f26572b8`. Independent new checks: 9 PASS. Existing compatibility checks: 19 PASS and one obsolete Data-fixture error, preserved and not rerun or described as passing. The actual local-only input check validated 139 receipts and all four projections; it was not a collector or live Season write.
+
+[Review](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/season-completed-days-20261031/independent-review.md>) and [deployment receipt](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/season-completed-days-20261031/deployment.json>). First post-deployment hourly scheduled acceptance is pending the existing 09:51:14 Eastern wake. No manual collector was run. Earlier handoff/archive and five-minute descriptions below are historical and do not describe this new input path.
+
 ## Current Data/Season status — 2026-10-30T17:02:31.972950+00:00
 
 Outgoing archive correction deployed `dec332007a16fa31c06af39488a44a9678adff95` through existing guarded locks at12:55Eastern October30. Frozen retry snapshots/cutoffs, all unpublished-path validation and history-preserving publication independently reviewed PASS;163offline tests run160passed3skipped. Normal scheduled acceptance is pending; no manual runs, tasks/schema changes, record repairs, observers or Git history rewrite. Natural different-show rollover remains unobserved; offline race/actual-caller proof is separate. Evidence: [deployment](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/outgoing-deployment-20261030.json>), [review](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/outgoing-race-independent-review-final-20261030.md>), [scheduled proof](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/outgoing-scheduled-proof-20261030.json>).

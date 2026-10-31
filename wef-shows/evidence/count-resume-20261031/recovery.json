@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-31T11:39:50.861171+00:00",
+  "resumed": true,
+  "archived_stop_sha256": "025cc8a49e45103d145864d52ce673af176637f87c7a728fb515e121ca9ddcd9",
+  "runtime_edits": 0,
+  "reason": "Already-installed saved-day reader avoids full historical replay; targeted/independent checks passed",
+  "manual_runs": 0,
+  "records_repaired": 0,
+  "tasks_changed": false
+}

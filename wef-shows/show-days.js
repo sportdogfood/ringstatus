@@ -11,7 +11,7 @@ function dates(show){
 }
 function projection(body){return{'unique-entry-count':body['unique-entry-count']??null,'trip-count':body['proven-trip-count']??null,'count-coverage':body.coverage,'count-rules-version':body['policy-version'],'count-observed-at':body['accepted-as-of']||null,'count-verified-at':body['verified-at']||null,'data-evidence-ref':canonical(body.evidence)};}
 function validateBody(body,show,day){
- if(body.format!=='wef-day-count-summary-v1'||body['policy-version']!=='dated-registrations-v1'||body['show-key']!==show.fields['show-key']||String(body['customer-id'])!==String(show.fields.customer_id)||body.date!==day||body['day-key']!==`${show.fields['show-key']}|${day}`)throw Error('Count summary scope/policy mismatch');
+ if(body.format!=='wef-day-count-summary-v1'||!['dated-registrations-v1','direct-proxy-counts-v1'].includes(body['policy-version'])||body['show-key']!==show.fields['show-key']||String(body['customer-id'])!==String(show.fields.customer_id)||body.date!==day||body['day-key']!==`${show.fields['show-key']}|${day}`)throw Error('Count summary scope/policy mismatch');
  if(!['competition-class-participation','all-dated-activity'].includes(body.coverage)||!['complete','partial','unknown'].includes(body.completeness))throw Error('Count coverage invalid');
  for(const key of ['unique-entry-count','proven-trip-count'])if(body[key]!==null&&(!Number.isSafeInteger(body[key])||body[key]<0))throw Error('Count identity/number invalid');
  if((body['accepted-as-of']!==null&&!instant(body['accepted-as-of']))||(body.completeness!=='unknown'&&!instant(body['accepted-as-of']))||!instant(body['verified-at'])||Date.parse(body['accepted-as-of'])>Date.parse(body['verified-at']))throw Error('Count source time invalid');
@@ -44,10 +44,19 @@ async function publishDays({api,show,clock=()=>new Date().toISOString(),readSumm
   try{
    const matches=summaries.days.filter(b=>b.date===day);if(matches.length>1)throw Error('Duplicate count summaries');
    const body=matches[0];
+   if(summaries.mode==='direct-proxy'&&(!body||body.completeness!=='complete')){
+    const reason=summaries.failures?.find(f=>f.date===day)?.message||(body?.reasons||[]).join('; ')||'Direct count incomplete';
+    await api.upsert('show-days','show-day-key',[{...base,'publication-status':'Unknown','latest-attempt-at':now,'latest-attempt-status':'Failed','latest-attempt-reason':reason}]);if(!old)report.created=(report.created||0)+1;
+    report.ok=false;report.errors.push(day+': '+reason);report.days.push({date:day,status:'Failed',retained:!!old});continue;
+   }
+   if(summaries.mode==='saved-day'&&!body){
+    if(!old){await api.upsert('show-days','show-day-key',[{...base,'publication-status':'Unknown','latest-attempt-at':now,'latest-attempt-status':'Unknown','latest-attempt-reason':'Canonical day established; waiting for completed Data collection'}]);report.created=(report.created||0)+1;}
+    report.days.push({date:day,status:'Skipped',retained:!!old?.fields['accepted-summary'],reason:'No newly saved eligible day; prior totals preserved'});continue;
+   }
    if(!body){await api.upsert('show-days','show-day-key',[{...base,'publication-status':'Unknown','latest-attempt-at':now,'latest-attempt-status':summaries.error?'Failed':'Unknown','latest-attempt-reason':summaries.error||summaries.reason||'No accepted daily summary; counts unknown'}]);report.days.push({date:day,status:'Unknown',retained:!!old?.fields['accepted-summary']});continue;}
    validateBody(body,show,day);if(Date.parse(body['verified-at'])>Date.parse(now)+1000)throw Error('Summary time is in the future');
    const accepted=envelope(body),projections=projection(body);
-   await api.upsert('show-days','show-day-key',[{...base,'publication-status':'Unknown','latest-attempt-at':now,'latest-attempt-status':'Publishing','latest-attempt-reason':''}]);
+   await api.upsert('show-days','show-day-key',[{...base,'publication-status':'Unknown','latest-attempt-at':now,'latest-attempt-status':'Publishing','latest-attempt-reason':''}]);if(!old)report.created=(report.created||0)+1;
    await api.upsert('show-days','show-day-key',[{...base,...projections}]);
    const staged=(await read()).find(r=>r.fields['show-day-key']===key);if(!staged)throw Error('Staged day missing');
    for(const [name,value]of Object.entries({...base,...projections}))if(!equivalent(staged.fields[name],value))throw Error('Staged readback mismatch '+name);

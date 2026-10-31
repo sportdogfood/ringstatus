@@ -1,0 +1,38 @@
+{
+  "commands": [
+    {
+      "started_at": "2026-10-31T07:37:57.5869318-04:00",
+      "stdout": "TAP version 13\n# Subtest: exact Season fixture replays through isolated Python bridge\nok 1 - exact Season fixture replays through isolated Python bridge\n  ---\n  duration_ms: 281.5705\n  type: 'test'\n  ...\n# Subtest: real no-inventory frozen fixture publishes null asof/counts as Unknown\nok 2 - real no-inventory frozen fixture publishes null asof/counts as Unknown\n  ---\n  duration_ms: 652\n  type: 'test'\n  ...\n# Subtest: reader publishes the producer fixture and reuses only hashed collection cache\nok 3 - reader publishes the producer fixture and reuses only hashed collection cache\n  ---\n  duration_ms: 754.6938\n  type: 'test'\n  ...\n# Subtest: tampered source parts fail before count publication\nok 4 - tampered source parts fail before count publication\n  ---\n  duration_ms: 5.1682\n  type: 'test'\n  ...\n# Subtest: changed head fence rejects otherwise valid replay\nok 5 - changed head fence rejects otherwise valid replay\n  ---\n  duration_ms: 246.9257\n  type: 'test'\n  ...\n# Subtest: replay still rejects a changed hash after valid input\nok 6 - replay still rejects a changed hash after valid input\n  ---\n  duration_ms: 920.456\n  type: 'test'\n  ...\n# Subtest: replay rejects missing retained evidence and changed provenance\nok 7 - replay rejects missing retained evidence and changed provenance\n  ---\n  duration_ms: 428.6291\n  type: 'test'\n  ...\n# Subtest: archive reader validates bytes, payload, show and path before replay\nok 8 - archive reader validates bytes, payload, show and path before replay\n  ---\n  duration_ms: 72.393\n  type: 'test'\n  ...\n# Subtest: valid subset zero publishes same day/native link on repeats; absent day stays unknown\nok 9 - valid subset zero publishes same day/native link on repeats; absent day stays unknown\n  ---\n  duration_ms: 11.2406\n  type: 'test'\n  ...\n# Subtest: unknown coverage remains null not zero\nok 10 - unknown coverage remains null not zero\n  ---\n  duration_ms: 2.5178\n  type: 'test'\n  ...\n# Subtest: unknown day without inventory retains null source time and does not stop remaining days\nok 11 - unknown day without inventory retains null source time and does not stop remaining days\n  ---\n  duration_ms: 3.857\n  type: 'test'\n  ...\n# Subtest: invalid or failed evidence preserves accepted body and original counts/time\nok 12 - invalid or failed evidence preserves accepted body and original counts/time\n  ---\n  duration_ms: 1.5818\n  type: 'test'\n  ...\n# Subtest: scope mismatch fails before publishing counts\nok 13 - scope mismatch fails before publishing counts\n  ---\n  duration_ms: 0.5431\n  type: 'test'\n  ...\n# Subtest: mixed projection, tampered digest and changed fence are rejected\nok 14 - mixed projection, tampered digest and changed fence are rejected\n  ---\n  duration_ms: 2.2731\n  type: 'test'\n  ...\n# Subtest: expiry uses source time despite recent verification; exact five minutes is stale\nok 15 - expiry uses source time despite recent verification; exact five minutes is stale\n  ---\n  duration_ms: 0.1944\n  type: 'test'\n  ...\n# Subtest: failed staged write preserves authoritative previous body; readback refuses mixed projections\nok 16 - failed staged write preserves authoritative previous body; readback refuses mixed projections\n  ---\n  duration_ms: 1.3536\n  type: 'test'\n  ...\n# Subtest: duplicate canonical keys fail without writes\nok 17 - duplicate canonical keys fail without writes\n  ---\n  duration_ms: 0.7931\n  type: 'test'\n  ...\n1..17\n# tests 17\n# suites 0\n# pass 17\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 2137.2951\n",
+      "exit_code": 0,
+      "id": "targeted",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\count-resume-20261031\\review-isolated\\wef-shows/tests/day-source.test.js\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\count-resume-20261031\\review-isolated\\wef-shows/tests/show-days.test.js\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\count-resume-20261031\\review-isolated\\wef-shows/tests/replay-safety.test.js\"",
+      "stderr": "",
+      "runtime": "Node v22.22.2; WEF_DAY_TEST_SOURCE_ROOT=C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "ended_at": "2026-10-31T07:38:00.0420679-04:00"
+    },
+    {
+      "command": "./wef-data/.venv/Scripts/python.exe -B \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\count-resume-20261031/saved-fixture-test.py\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\"",
+      "stderr": "",
+      "stdout": "PASS saved-day counts match frozen original, repeat unchanged, corrupt receipt/evidence rejected; no network or business writes\r\n",
+      "ended_at": "2026-10-31T07:38:05.398699-04:00",
+      "exit_code": 0,
+      "id": "saved-fixture",
+      "started_at": "2026-10-31T07:38:05.0022029-04:00",
+      "runtime": "Python 3.11.3",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus"
+    },
+    {
+      "runtime": "Node v22.22.2",
+      "stdout": "PASS saved dispatch performs no legacy fetch; omitted existing days retained byte-for-byte; five-minute source age remains Stale. Mock API only.\n",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\count-resume-20261031/review-integration.cjs\"",
+      "stderr": "",
+      "id": "integration",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "ended_at": "2026-10-31T07:38:36.6207979-04:00",
+      "started_at": "2026-10-31T07:38:36.3984896-04:00",
+      "exit_code": 0
+    }
+  ],
+  "reviewer": "/root/shows_review"
+}

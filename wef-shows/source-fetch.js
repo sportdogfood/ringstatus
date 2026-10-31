@@ -8,7 +8,7 @@ function codes(error,depth=0){
 }
 async function fetchSourceText(url,{request=globalThis.fetch,pause=ms=>new Promise(r=>setTimeout(r,ms))}={}){
  const parsed=new URL(url);
- if(parsed.origin!=='https://wef-schedules-decoded.gombcg.workers.dev'||!['/ring','/schedule'].includes(parsed.pathname))throw Error('Unapproved show source');
+ if(parsed.origin!=='https://wef-schedules-decoded.gombcg.workers.dev'||!(['/ring','/schedule'].includes(parsed.pathname)||/^\/classes\/[1-9]\d*$/.test(parsed.pathname)))throw Error('Unapproved show source');
  let last;
  for(let attempt=1;attempt<=3;attempt++){
   try{

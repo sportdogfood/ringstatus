@@ -1,0 +1,58 @@
+{
+  "result": "COMPLETE: count publication restored",
+  "runtime_change": "None required; installed saved-day implementation retained",
+  "recovery": {
+    "at": "2026-10-31T11:39:50.861171+00:00",
+    "resumed": true,
+    "archived_stop_sha256": "025cc8a49e45103d145864d52ce673af176637f87c7a728fb515e121ca9ddcd9",
+    "runtime_edits": 0,
+    "reason": "Already-installed saved-day reader avoids full historical replay; targeted/independent checks passed",
+    "manual_runs": 0,
+    "records_repaired": 0,
+    "tasks_changed": false
+  },
+  "independent_review": "COMPLETE/PASS; review-verifier.json",
+  "tests": "17 targeted + frozen saved-receipt/evidence repeat/corruption checks",
+  "normal_runs": [
+    {
+      "run_id": "741d912f-bec2-42d7-8819-855a4d3b1c98",
+      "started": "2026-10-31T11:44:02.626Z",
+      "completed": "2026-10-31T11:44:27.208Z",
+      "result": "Success",
+      "published_days": 2,
+      "saved_count_read_seconds": 0.366,
+      "Airtable_heartbeat_log_counts_source_clocks_ID_links_priorities": "PASS",
+      "archive_checksums": "PASS"
+    },
+    {
+      "run_id": "fb210d52-e086-48ee-808a-6840a9fb4258",
+      "started": "2026-10-31T11:49:02.745Z",
+      "completed": "2026-10-31T11:49:28.472Z",
+      "result": "Success",
+      "published_days": 2,
+      "saved_count_read_seconds": 0.426,
+      "Airtable_heartbeat_log_counts_source_clocks_ID_links_priorities": "PASS",
+      "archive_checksums": "PASS"
+    }
+  ],
+  "counts": {
+    "2026-10-31": {
+      "entries": 165,
+      "trips": 270,
+      "coverage": "partial:63of70classscopes",
+      "status": "Unknown"
+    },
+    "2026-11-01": {
+      "entries": 107,
+      "trips": 164,
+      "coverage": "complete:118of118classscopes",
+      "status": "Stale at secondpublication"
+    }
+  },
+  "source_coverage_and_age": "Preserved. Data-owned coverage/freshness remains separate from successful Shows publication.",
+  "past_days": "NativeIDs/links/priorities/oldcountsandclocks preserved byte-equivalent on returned fields",
+  "manual_runs": 0,
+  "record_repairs": 0,
+  "tasks_changed": false,
+  "inspected_runtime_hashes_unchanged": true
+}

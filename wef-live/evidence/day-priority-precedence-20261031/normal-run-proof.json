@@ -1,0 +1,462 @@
+[
+  {
+    "run": "c4815132-8fb9-4a62-a85d-75ec1cb15c11",
+    "started": "2026-10-31T11:56:12.505Z",
+    "completed": "2026-10-31T11:57:53.232Z",
+    "scope": {
+      "show": 200000076,
+      "customer": 15,
+      "date": "2026-10-31",
+      "selected_date": "2026-10-31",
+      "authority": "recOAxMcqu1f75CQk",
+      "checked_at": "2026-10-30T22:59:14.976Z",
+      "active": true
+    },
+    "counts": {
+      "rings": 5,
+      "groups": 32,
+      "classes": 59,
+      "entries": 201
+    },
+    "verifiedDataWrites": 28,
+    "explicitZeroValues": 54,
+    "explicitFalseValues": 0,
+    "lanes": {
+      "schedules": {
+        "status": "Partial",
+        "planned": 66,
+        "attempted": 42,
+        "patched": 41,
+        "unchanged": 0,
+        "deferred": 24,
+        "uncertain": 1,
+        "pending": 1,
+        "issues": [
+          "200000076|2026-10-31|200030677: Ambiguous source group attribution",
+          "200000076|2026-10-31|200030700: Ambiguous source group attribution",
+          "schedules/200000076|2026-10-31|200028278_716: Publication lane budget exhausted"
+        ]
+      },
+      "data": {
+        "status": "Partial",
+        "planned": 345,
+        "attempted": 29,
+        "patched": 28,
+        "unchanged": 0,
+        "deferred": 316,
+        "uncertain": 1,
+        "pending": 1,
+        "issues": [
+          "200000076|2026-10-31|200030677 occurrence: Ambiguous source group attribution",
+          "200000076|2026-10-31|200030700 occurrence: Ambiguous source group attribution",
+          "200000076|2026-10-31|200030679|200399851: trip: 0 matches",
+          "200000076|2026-10-31|200030679|200399852: trip: 0 matches",
+          "200000076|2026-10-31|200030857|200399848: trip: 0 matches",
+          "trips/15|200000076|2026-10-31|1|200030776|200248319|854D57077ACD4D70A79BA27D4FC98BC3: The operation was aborted due to timeout"
+        ]
+      }
+    },
+    "unresolved": [
+      {
+        "class_id": 200030827,
+        "message": "No decoded identity for trip 200399585",
+        "trip_id": 200399585,
+        "group_id": 200028263,
+        "status": "unresolved"
+      },
+      {
+        "class_id": 200030758,
+        "message": "No decoded identity for trip 200399583",
+        "trip_id": 200399583,
+        "group_id": 200028272,
+        "status": "unresolved"
+      },
+      {
+        "class_id": 200030798,
+        "message": "No decoded identity for trip 200399857",
+        "trip_id": 200399857,
+        "group_id": 200028278,
+        "status": "unresolved"
+      }
+    ],
+    "logRetention": {
+      "status": "Blocked",
+      "reason": "Prior retention failure requires owner review",
+      "stopFile": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\log-retention-stop.json"
+    },
+    "examples": [
+      {
+        "id": "recBnMtwneXzLrCG5",
+        "destination": {
+          "lane": "data",
+          "table": "schedules",
+          "id": "recBnMtwneXzLrCG5",
+          "key": "15|200000076|2026-10-31|5|200042796"
+        },
+        "overlay": {
+          "format": "wef-live-observation-v1",
+          "destination": {
+            "lane": "data",
+            "base": "appdl16HJ5ETm8N69",
+            "table": "tbl6KKlYuMIPHEJWe",
+            "key": "15|200000076|2026-10-31|5|200042796"
+          },
+          "components": {
+            "class": {
+              "sourceKey": "200000076|2026-10-31|200030644",
+              "scope": {
+                "customer": 15,
+                "show": 200000076,
+                "date": "2026-10-31"
+              },
+              "observedAt": "2026-10-31T11:56:34.667Z",
+              "sourceUpdatedAt": "15oct2026 14:06:25",
+              "collectionKey": "200000076|2026-10-31|class|200030644",
+              "archive": {
+                "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\publication-observations\\55c3959fc8e1547a6a44245bc08c8758017ee3b74a91872d359398e94fe51bf3.json.gz",
+                "sha256": "55c3959fc8e1547a6a44245bc08c8758017ee3b74a91872d359398e94fe51bf3"
+              },
+              "sourceArchives": [
+                {
+                  "kind": "class-200030644",
+                  "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030644\\66717bd46d1caabcd7b2759e4c86486f53b503cb799b44ec6b83e7a373ed4ad4.json.gz",
+                  "sha256": "66717bd46d1caabcd7b2759e4c86486f53b503cb799b44ec6b83e7a373ed4ad4"
+                }
+              ],
+              "values": {
+                "total": 3,
+                "gone": 0,
+                "joGone": 0,
+                "r2Gone": 0,
+                "currentTripId": null
+              },
+              "revision": "dbf01d7a74ae6e6bdd43b11220a8b38eb34ee9ed9064fc696952703fb7d4bd0e"
+            }
+          }
+        },
+        "nativeLinks": {
+          "show": [
+            "recxI7H0RojcE39BP"
+          ],
+          "class": [
+            "recKNIoRzKbdfTItl"
+          ],
+          "day": [
+            "recux8nRoSl8tiaEE"
+          ],
+          "group": [
+            "reciRDJv5DdRMlToJ"
+          ],
+          "ring": [
+            "recdxLZHMYkIuAoWZ"
+          ]
+        }
+      },
+      {
+        "id": "recIGtQRNVGQhxajR",
+        "destination": {
+          "lane": "data",
+          "table": "schedules",
+          "id": "recIGtQRNVGQhxajR",
+          "key": "15|200000076|2026-10-31|5|200042797"
+        },
+        "overlay": {
+          "format": "wef-live-observation-v1",
+          "destination": {
+            "lane": "data",
+            "base": "appdl16HJ5ETm8N69",
+            "table": "tbl6KKlYuMIPHEJWe",
+            "key": "15|200000076|2026-10-31|5|200042797"
+          },
+          "components": {
+            "class": {
+              "sourceKey": "200000076|2026-10-31|200030645",
+              "scope": {
+                "customer": 15,
+                "show": 200000076,
+                "date": "2026-10-31"
+              },
+              "observedAt": "2026-10-31T11:56:34.771Z",
+              "sourceUpdatedAt": "15oct2026 14:06:26",
+              "collectionKey": "200000076|2026-10-31|class|200030645",
+              "archive": {
+                "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\publication-observations\\55c3959fc8e1547a6a44245bc08c8758017ee3b74a91872d359398e94fe51bf3.json.gz",
+                "sha256": "55c3959fc8e1547a6a44245bc08c8758017ee3b74a91872d359398e94fe51bf3"
+              },
+              "sourceArchives": [
+                {
+                  "kind": "class-200030645",
+                  "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030645\\9590964ecbda9f0981d265b8fba75bcc085f039d26617f0899702c5e63d41643.json.gz",
+                  "sha256": "9590964ecbda9f0981d265b8fba75bcc085f039d26617f0899702c5e63d41643"
+                }
+              ],
+              "values": {
+                "total": 3,
+                "gone": 0,
+                "joGone": 0,
+                "r2Gone": 0,
+                "currentTripId": null
+              },
+              "revision": "aeabefe7b75f63450b1a6879e1f9d1f9988a475721099c111a4e9bc802e968ad"
+            }
+          }
+        },
+        "nativeLinks": {
+          "show": [
+            "recxI7H0RojcE39BP"
+          ],
+          "class": [
+            "recncegE7K2RAICVk"
+          ],
+          "day": [
+            "recux8nRoSl8tiaEE"
+          ],
+          "group": [
+            "reciRDJv5DdRMlToJ"
+          ],
+          "ring": [
+            "recdxLZHMYkIuAoWZ"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "run": "da414dc8-ca4c-42f7-972d-8ca6e697fb68",
+    "started": "2026-10-31T12:02:13.722Z",
+    "completed": "2026-10-31T12:04:01.716Z",
+    "scope": {
+      "show": 200000076,
+      "customer": 15,
+      "date": "2026-10-31",
+      "selected_date": "2026-10-31",
+      "authority": "recOAxMcqu1f75CQk",
+      "checked_at": "2026-10-30T22:59:14.976Z",
+      "active": true
+    },
+    "counts": {
+      "rings": 5,
+      "groups": 32,
+      "classes": 59,
+      "entries": 237
+    },
+    "verifiedDataWrites": 29,
+    "explicitZeroValues": 27,
+    "explicitFalseValues": 0,
+    "lanes": {
+      "schedules": {
+        "status": "Partial",
+        "planned": 66,
+        "attempted": 42,
+        "patched": 41,
+        "unchanged": 0,
+        "deferred": 24,
+        "uncertain": 1,
+        "pending": 1,
+        "issues": [
+          "200000076|2026-10-31|200030677: Ambiguous source group attribution",
+          "200000076|2026-10-31|200030700: Ambiguous source group attribution",
+          "schedules/200000076|2026-10-31|200031052_651: Publication lane budget exhausted"
+        ]
+      },
+      "data": {
+        "status": "Partial",
+        "planned": 385,
+        "attempted": 30,
+        "patched": 29,
+        "unchanged": 0,
+        "deferred": 355,
+        "uncertain": 1,
+        "pending": 1,
+        "issues": [
+          "200000076|2026-10-31|200030677 occurrence: Ambiguous source group attribution",
+          "200000076|2026-10-31|200030700 occurrence: Ambiguous source group attribution",
+          "200000076|2026-10-31|200030679|200399851: trip: 0 matches",
+          "200000076|2026-10-31|200030679|200399852: trip: 0 matches",
+          "200000076|2026-10-31|200030857|200399848: trip: 0 matches",
+          "trips/15|200000076|2026-10-31|1|200030827|200245060|CE745F34FF984922B1013BCA83A334CE: The operation was aborted due to timeout"
+        ]
+      }
+    },
+    "unresolved": [
+      {
+        "class_id": 200030742,
+        "message": "No decoded identity for trip 200399187",
+        "trip_id": 200399187,
+        "group_id": 200028268,
+        "status": "unresolved"
+      }
+    ],
+    "logRetention": {
+      "status": "Blocked",
+      "reason": "Prior retention failure requires owner review",
+      "stopFile": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\log-retention-stop.json"
+    },
+    "examples": [
+      {
+        "id": "recd4f4tfoZ0Byizt",
+        "destination": {
+          "lane": "data",
+          "table": "trips",
+          "id": "recd4f4tfoZ0Byizt",
+          "key": "15|200000076|2026-10-31|1|200030776|200247516|AF5AAB4C98C9425887515A3291971092"
+        },
+        "overlay": {
+          "format": "wef-live-observation-v1",
+          "destination": {
+            "lane": "data",
+            "base": "appdl16HJ5ETm8N69",
+            "table": "tblt0GvQ39bHIu930",
+            "key": "15|200000076|2026-10-31|1|200030776|200247516|AF5AAB4C98C9425887515A3291971092"
+          },
+          "components": {
+            "trip": {
+              "sourceKey": "200000076|2026-10-31|200030776|200399618",
+              "scope": {
+                "customer": 15,
+                "show": 200000076,
+                "date": "2026-10-31"
+              },
+              "observedAt": "2026-10-31T12:02:31.889Z",
+              "sourceUpdatedAt": "23oct2026 12:19:12",
+              "collectionKey": "200000076|2026-10-31|class|200030776",
+              "archive": {
+                "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\publication-observations\\88a85e51d8c852d16ec793e9ace7b76eec1f2a97c224941a7e7a57162e372240.json.gz",
+                "sha256": "88a85e51d8c852d16ec793e9ace7b76eec1f2a97c224941a7e7a57162e372240"
+              },
+              "sourceArchives": [
+                {
+                  "kind": "class-200030776",
+                  "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030776\\fa02f23bc3d7028ff036d1ec7fb4694cd070e8c7f18f9abc311aba8dd5ed4fca.json.gz",
+                  "sha256": "fa02f23bc3d7028ff036d1ec7fb4694cd070e8c7f18f9abc311aba8dd5ed4fca"
+                }
+              ],
+              "values": {
+                "tripId": 200399618,
+                "entryId": 200247516,
+                "horseId": 200002759,
+                "riderId": 4799,
+                "trainerId": 4799,
+                "orderOfGo": 12,
+                "actualOrder": null,
+                "scratch": "0",
+                "gone": 0,
+                "position": "0",
+                "identityDifferences": {}
+              },
+              "revision": "af578d94496538695fd3aced26205b56a010fe2e9080b0137951f20c4950f5ea"
+            }
+          }
+        },
+        "nativeLinks": {
+          "horse": [
+            "recZyoY5QuLG2RcdO"
+          ],
+          "class": [
+            "rec6rRRae1QmTHKWT"
+          ],
+          "entry": [
+            "recAJl5QrtXGmkNhn"
+          ],
+          "rider": [
+            "recJwUUJcNBBDzWGk"
+          ],
+          "last-run": [
+            "recY2oIw5eEc90vp7"
+          ],
+          "trainer": [
+            "recebumfwQyFbbPOH"
+          ],
+          "owner": [
+            "recqAQpUg3QKGEjOc"
+          ],
+          "results": [
+            "recEaYN5jvqThdoio"
+          ]
+        }
+      },
+      {
+        "id": "recJ3vJx98kqgbxor",
+        "destination": {
+          "lane": "data",
+          "table": "trips",
+          "id": "recJ3vJx98kqgbxor",
+          "key": "15|200000076|2026-10-31|1|200030776|200247669|863894129882446293C0A364576EEA15"
+        },
+        "overlay": {
+          "format": "wef-live-observation-v1",
+          "destination": {
+            "lane": "data",
+            "base": "appdl16HJ5ETm8N69",
+            "table": "tblt0GvQ39bHIu930",
+            "key": "15|200000076|2026-10-31|1|200030776|200247669|863894129882446293C0A364576EEA15"
+          },
+          "components": {
+            "trip": {
+              "sourceKey": "200000076|2026-10-31|200030776|200399061",
+              "scope": {
+                "customer": 15,
+                "show": 200000076,
+                "date": "2026-10-31"
+              },
+              "observedAt": "2026-10-31T12:02:31.889Z",
+              "sourceUpdatedAt": "23oct2026 12:19:12",
+              "collectionKey": "200000076|2026-10-31|class|200030776",
+              "archive": {
+                "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\publication-observations\\88a85e51d8c852d16ec793e9ace7b76eec1f2a97c224941a7e7a57162e372240.json.gz",
+                "sha256": "88a85e51d8c852d16ec793e9ace7b76eec1f2a97c224941a7e7a57162e372240"
+              },
+              "sourceArchives": [
+                {
+                  "kind": "class-200030776",
+                  "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030776\\fa02f23bc3d7028ff036d1ec7fb4694cd070e8c7f18f9abc311aba8dd5ed4fca.json.gz",
+                  "sha256": "fa02f23bc3d7028ff036d1ec7fb4694cd070e8c7f18f9abc311aba8dd5ed4fca"
+                }
+              ],
+              "values": {
+                "tripId": 200399061,
+                "entryId": 200247669,
+                "horseId": 148360,
+                "riderId": 11108,
+                "trainerId": 11108,
+                "orderOfGo": 4,
+                "actualOrder": null,
+                "scratch": "0",
+                "gone": 0,
+                "position": "0",
+                "identityDifferences": {}
+              },
+              "revision": "c4e9c326eca322b45960ef0eb7779e7244e1563d7ab4c5c0b84c0caaa8bada11"
+            }
+          }
+        },
+        "nativeLinks": {
+          "horse": [
+            "recDH0XcDIoqHwvBF"
+          ],
+          "class": [
+            "rec6rRRae1QmTHKWT"
+          ],
+          "entry": [
+            "recPnEIUkl52hl43N"
+          ],
+          "rider": [
+            "recQyO3co1oMxzCGz"
+          ],
+          "last-run": [
+            "recY2oIw5eEc90vp7"
+          ],
+          "trainer": [
+            "recSvQvCk84nPxHPY"
+          ],
+          "owner": [
+            "rechJXW3VGyy8it0W"
+          ],
+          "results": [
+            "reccEeQ9iNj7guTB3"
+          ]
+        }
+      }
+    ]
+  }
+]

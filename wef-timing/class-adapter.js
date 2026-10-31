@@ -32,6 +32,7 @@ function paceEvidence(rows,identity,group,inventory,now,issues){
   const record=candidates[0],f=record.fields;
   if(candidates[1]?.fields['evaluated-at']===f['evaluated-at']&&candidates[1].fields['content-hash']!==f['content-hash'])throw Error('ambiguous_latest');
   const p=JSON.parse(f['payload-json']),refs=JSON.parse(f['input-refs-json']);
+  if(p.policy==='live-ring-pace-v2')return require('./ring-workflow').consume(record,identity,inventory,now);
   if(f['answer-kind']!=='ring-pace'||f['source-lane']!=='data_live'||f.phase!=='base'||p.phase!=='base'||p.schema_version!==1
    ||!['customer','show','date','ring','group'].every(k=>p.identity?.[k]===identity[k])
    ||f['show-id']!==identity.show||f.date!==identity.date||f['ring-number']!==identity.ring||f['group-id']!==identity.group)throw Error('identity');

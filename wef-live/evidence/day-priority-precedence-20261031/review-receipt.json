@@ -1,0 +1,54 @@
+{
+  "reviewer": "01a16902-240a-7280-8661-90b0d8d7325a",
+  "reviewed_at": "2026-10-31T12:07:28.130114+00:00",
+  "skill_sha256": "9d49972b3bd6acfa4edd9123bd6a33633eb010ea583b1bdc037b3d45b566abd7",
+  "objective": "Review and validate installed priority0 publisher and existing zero-safe overlap mapping",
+  "target": "wef-live publication.js and publication-api.js",
+  "integration_coverage": "Existing Shows show-days GET to priority0 guarded publication, independent Schedules lane, exactmatch/intent/PATCH/readback, zero andfalse and fallbackfields. No consumer migration or recordrepair.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\day-priority-precedence-20261031\\head-publication.js",
+      "sha256": "cfa2b4927d7e3337c4c3c76add0c1efe32e4203ad3b9ac9402789038a574a2f0"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\day-priority-precedence-20261031\\head-publication-api.js",
+      "sha256": "0ae780dcdeb310c6e2921f6f47e875ad8fbd5ee90eaa285dd8c433d6884e002a"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication.js",
+      "sha256": "91d083d7dbca2f474de56c9b560772b17aa892fe19b425d2796122c49c3cb96e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication-api.js",
+      "sha256": "b25b6bd25760d7fabd53ef2077de3854a676c6e43b3a6221a59607eeba9f852f"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\test\\publication.test.js",
+      "sha256": "6bc07d680c44c17211605e1f9a4a15f5b7883af195e558c99880633008250a54"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\day-priority-precedence-20261031\\review.md",
+    "sha256": "ba1277845c7d8f9f5a8ccffbae73221ca75f823ca50d2753ecd7e2d73e02e5c9"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\day-priority-precedence-20261031\\review-commands.json",
+      "sha256": "36205af08a533da1c80e1c99afe7f2ec4c820dea1097f040738786a1fb581dba"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "independent targeted publication checks",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "publication-tests"
+      ]
+    }
+  ]
+}

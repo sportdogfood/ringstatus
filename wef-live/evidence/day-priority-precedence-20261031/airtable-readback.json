@@ -1,0 +1,240 @@
+{
+  "priorityZero": true,
+  "logs": [
+    {
+      "run": "c4815132-8fb9-4a62-a85d-75ec1cb15c11",
+      "table": "heartbeat",
+      "rows": [
+        {
+          "id": "rece94SH3oroaHEfA",
+          "result": "Partial",
+          "completed": "2026-10-31T11:57:53.232Z"
+        }
+      ]
+    },
+    {
+      "run": "c4815132-8fb9-4a62-a85d-75ec1cb15c11",
+      "table": "run-logs",
+      "rows": [
+        {
+          "id": "recioQ9g2zPccpKmv",
+          "result": "Partial",
+          "completed": "2026-10-31T11:57:53.232Z"
+        }
+      ]
+    },
+    {
+      "run": "c4815132-8fb9-4a62-a85d-75ec1cb15c11",
+      "table": "errs-log",
+      "rows": [
+        {
+          "id": "rec3uHiP4F19Iweyv",
+          "message": "Unresolved class 200030798: No decoded identity for trip 200399857"
+        },
+        {
+          "id": "rec5w0YXVbqFEX2te",
+          "message": "Publication data: 200000076|2026-10-31|200030700 occurrence: Ambiguous source group attribution"
+        },
+        {
+          "id": "recH61IwYUWxzlWOs",
+          "message": "Publication schedules: 200000076|2026-10-31|200030700: Ambiguous source group attribution"
+        },
+        {
+          "id": "recHcsnzlMXrpHHl1",
+          "message": "Publication data: 200000076|2026-10-31|200030679|200399851: trip: 0 matches"
+        },
+        {
+          "id": "recKSFkWjW7q98OqL",
+          "message": "Publication data: 200000076|2026-10-31|200030857|200399848: trip: 0 matches"
+        },
+        {
+          "id": "recNlHyFhpNsGPHfK",
+          "message": "Publication data: trips/15|200000076|2026-10-31|1|200030776|200248319|854D57077ACD4D70A79BA27D4FC98BC3: The operation was aborted due to timeout"
+        },
+        {
+          "id": "recTQriPedzRg4A0J",
+          "message": "Unresolved class 200030827: No decoded identity for trip 200399585"
+        },
+        {
+          "id": "recacC8pqeVxFMCFo",
+          "message": "Log retention Blocked: Prior retention failure requires owner review"
+        },
+        {
+          "id": "recam9JBmhMIInnFs",
+          "message": "Publication schedules: schedules/200000076|2026-10-31|200028278_716: Publication lane budget exhausted"
+        },
+        {
+          "id": "recbjqaKDmFS81oh2",
+          "message": "Publication data: 200000076|2026-10-31|200030679|200399852: trip: 0 matches"
+        },
+        {
+          "id": "reckEl3b1a87wKWeo",
+          "message": "Publication data: 200000076|2026-10-31|200030677 occurrence: Ambiguous source group attribution"
+        },
+        {
+          "id": "recxvif7OS3Jr1uk4",
+          "message": "Unresolved class 200030758: No decoded identity for trip 200399583"
+        },
+        {
+          "id": "reczTBLnGjsJCrJ5o",
+          "message": "Publication schedules: 200000076|2026-10-31|200030677: Ambiguous source group attribution"
+        }
+      ]
+    },
+    {
+      "run": "da414dc8-ca4c-42f7-972d-8ca6e697fb68",
+      "table": "heartbeat",
+      "rows": [
+        {
+          "id": "recu2ucjLquKX9IBg",
+          "result": "Partial",
+          "completed": "2026-10-31T12:04:01.716Z"
+        }
+      ]
+    },
+    {
+      "run": "da414dc8-ca4c-42f7-972d-8ca6e697fb68",
+      "table": "run-logs",
+      "rows": [
+        {
+          "id": "recs8tUTTUXekgSGr",
+          "result": "Partial",
+          "completed": "2026-10-31T12:04:01.716Z"
+        }
+      ]
+    },
+    {
+      "run": "da414dc8-ca4c-42f7-972d-8ca6e697fb68",
+      "table": "errs-log",
+      "rows": [
+        {
+          "id": "rec2jk9tkYxSyQnDA",
+          "message": "Publication data: 200000076|2026-10-31|200030857|200399848: trip: 0 matches"
+        },
+        {
+          "id": "recC6azQflfis4sGD",
+          "message": "Publication schedules: 200000076|2026-10-31|200030677: Ambiguous source group attribution"
+        },
+        {
+          "id": "recDDwXvZqr8w2eK7",
+          "message": "Publication data: trips/15|200000076|2026-10-31|1|200030827|200245060|CE745F34FF984922B1013BCA83A334CE: The operation was aborted due to timeout"
+        },
+        {
+          "id": "recDiKKqprxaHOe1K",
+          "message": "Publication data: 200000076|2026-10-31|200030679|200399852: trip: 0 matches"
+        },
+        {
+          "id": "recLcp993o0duqSAC",
+          "message": "Publication schedules: schedules/200000076|2026-10-31|200031052_651: Publication lane budget exhausted"
+        },
+        {
+          "id": "recajEQghefirbpLb",
+          "message": "Publication data: 200000076|2026-10-31|200030700 occurrence: Ambiguous source group attribution"
+        },
+        {
+          "id": "recbJlIL9uNYTueWF",
+          "message": "Publication schedules: 200000076|2026-10-31|200030700: Ambiguous source group attribution"
+        },
+        {
+          "id": "rechPBSJMjUbpb6NH",
+          "message": "Unresolved class 200030742: No decoded identity for trip 200399187"
+        },
+        {
+          "id": "recjgaFmIFxPHh8Xu",
+          "message": "Publication data: 200000076|2026-10-31|200030679|200399851: trip: 0 matches"
+        },
+        {
+          "id": "recxCXBSNimg5PDmE",
+          "message": "Log retention Blocked: Prior retention failure requires owner review"
+        },
+        {
+          "id": "recyDtfBdN0Y5hk8j",
+          "message": "Publication data: 200000076|2026-10-31|200030677 occurrence: Ambiguous source group attribution"
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "run": "c4815132-8fb9-4a62-a85d-75ec1cb15c11",
+      "row": {
+        "id": "recBnMtwneXzLrCG5",
+        "createdTime": "2026-10-28T23:42:03.000Z",
+        "fields": {
+          "show": [
+            "recxI7H0RojcE39BP"
+          ],
+          "source-json": "{\"cancelled\":0,\"class_group_id\":200028333,\"class_group_sequence\":8,\"class_groupxclasses_id\":200042796,\"class_id\":200030644,\"class_list\":\"600,602,603\",\"class_name\":\"Short Stirrup Hunter\",\"class_number\":602,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"11:27:00\",\"estimated_start_time\":\"11:15:00\",\"group_has_warmup\":true,\"group_name\":\"Short Stirrup Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"11:15:00\",\"total_trips\":3,\"warmup_class\":0}",
+          "class": [
+            "recKNIoRzKbdfTItl"
+          ],
+          "source-id": "200042796",
+          "start-time": "11:15:00",
+          "kind": "class",
+          "last-success": "2026-10-31T12:04:56.527Z",
+          "source-position": 16,
+          "live-observation-json": "{\"format\":\"wef-live-observation-v1\",\"destination\":{\"lane\":\"data\",\"base\":\"appdl16HJ5ETm8N69\",\"table\":\"tbl6KKlYuMIPHEJWe\",\"key\":\"15|200000076|2026-10-31|5|200042796\"},\"components\":{\"class\":{\"sourceKey\":\"200000076|2026-10-31|200030644\",\"scope\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-31\"},\"observedAt\":\"2026-10-31T11:56:34.667Z\",\"sourceUpdatedAt\":\"15oct2026 14:06:25\",\"collectionKey\":\"200000076|2026-10-31|class|200030644\",\"archive\":{\"file\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\history\\\\publication-observations\\\\55c3959fc8e1547a6a44245bc08c8758017ee3b74a91872d359398e94fe51bf3.json.gz\",\"sha256\":\"55c3959fc8e1547a6a44245bc08c8758017ee3b74a91872d359398e94fe51bf3\"},\"sourceArchives\":[{\"kind\":\"class-200030644\",\"file\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\history\\\\class-200030644\\\\66717bd46d1caabcd7b2759e4c86486f53b503cb799b44ec6b83e7a373ed4ad4.json.gz\",\"sha256\":\"66717bd46d1caabcd7b2759e4c86486f53b503cb799b44ec6b83e7a373ed4ad4\"}],\"values\":{\"total\":3,\"gone\":0,\"joGone\":0,\"r2Gone\":0,\"currentTripId\":null},\"revision\":\"dbf01d7a74ae6e6bdd43b11220a8b38eb34ee9ed9064fc696952703fb7d4bd0e\"}}}",
+          "day": [
+            "recux8nRoSl8tiaEE"
+          ],
+          "name": "Short Stirrup Hunter",
+          "end-time": "11:27:00",
+          "schedule-key": "15|200000076|2026-10-31|5|200042796",
+          "group": [
+            "reciRDJv5DdRMlToJ"
+          ],
+          "ring": [
+            "recdxLZHMYkIuAoWZ"
+          ]
+        }
+      }
+    },
+    {
+      "run": "da414dc8-ca4c-42f7-972d-8ca6e697fb68",
+      "row": {
+        "id": "recd4f4tfoZ0Byizt",
+        "createdTime": "2026-10-30T19:20:50.000Z",
+        "fields": {
+          "record-status": "active",
+          "source-json": "{\"Owner\":\"TAKE TWO LLC\",\"actual_order\":0,\"competing_country\":\"ISR\",\"disqualify_status_one\":\"\",\"disqualify_status_three\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200247516,\"entryxclasses_uuid\":\"AF5AAB4C98C9425887515A3291971092\",\"estimated_go_time\":\"11:07:00\",\"faults_one\":0,\"faults_three\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"DARLING Z\",\"horse_id\":200002759,\"number\":1170,\"order_of_go\":12,\"owner_id\":69118,\"place\":16,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"r3_trip\":0,\"rank\":0,\"rank_placing\":\"\",\"rider\":\"\",\"rider_id\":4799,\"rider_name\":\"VANESSA HOOD\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"split_section\":\"A\",\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_three\":0,\"time_fault_two\":0,\"time_one\":0,\"time_three\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"VANESSA HOOD\",\"trainer_id\":4799,\"trip_id\":200399618}",
+          "last-success": "2026-10-31T12:05:31.115Z",
+          "trip-id": "200399618",
+          "estimated-go-time": "11:07:00",
+          "horse": [
+            "recZyoY5QuLG2RcdO"
+          ],
+          "placing": "100000",
+          "class": [
+            "rec6rRRae1QmTHKWT"
+          ],
+          "source-uuid": "AF5AAB4C98C9425887515A3291971092",
+          "actual-order": 0,
+          "entry": [
+            "recAJl5QrtXGmkNhn"
+          ],
+          "rider": [
+            "recJwUUJcNBBDzWGk"
+          ],
+          "order-of-go": 12,
+          "gone-in": "0",
+          "scratch": "0",
+          "last-run": [
+            "recTbH9iXTSQAVDgz"
+          ],
+          "trainer": [
+            "recebumfwQyFbbPOH"
+          ],
+          "owner": [
+            "recqAQpUg3QKGEjOc"
+          ],
+          "live-observation-json": "{\"format\":\"wef-live-observation-v1\",\"destination\":{\"lane\":\"data\",\"base\":\"appdl16HJ5ETm8N69\",\"table\":\"tblt0GvQ39bHIu930\",\"key\":\"15|200000076|2026-10-31|1|200030776|200247516|AF5AAB4C98C9425887515A3291971092\"},\"components\":{\"trip\":{\"sourceKey\":\"200000076|2026-10-31|200030776|200399618\",\"scope\":{\"customer\":15,\"show\":200000076,\"date\":\"2026-10-31\"},\"observedAt\":\"2026-10-31T12:02:31.889Z\",\"sourceUpdatedAt\":\"23oct2026 12:19:12\",\"collectionKey\":\"200000076|2026-10-31|class|200030776\",\"archive\":{\"file\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\history\\\\publication-observations\\\\88a85e51d8c852d16ec793e9ace7b76eec1f2a97c224941a7e7a57162e372240.json.gz\",\"sha256\":\"88a85e51d8c852d16ec793e9ace7b76eec1f2a97c224941a7e7a57162e372240\"},\"sourceArchives\":[{\"kind\":\"class-200030776\",\"file\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\history\\\\class-200030776\\\\fa02f23bc3d7028ff036d1ec7fb4694cd070e8c7f18f9abc311aba8dd5ed4fca.json.gz\",\"sha256\":\"fa02f23bc3d7028ff036d1ec7fb4694cd070e8c7f18f9abc311aba8dd5ed4fca\"}],\"values\":{\"tripId\":200399618,\"entryId\":200247516,\"horseId\":200002759,\"riderId\":4799,\"trainerId\":4799,\"orderOfGo\":12,\"actualOrder\":null,\"scratch\":\"0\",\"gone\":0,\"position\":\"0\",\"identityDifferences\":{}},\"revision\":\"af578d94496538695fd3aced26205b56a010fe2e9080b0137951f20c4950f5ea\"}}}",
+          "results": [
+            "recEaYN5jvqThdoio"
+          ],
+          "fingerprint": "6f880e58051fa8aeef9766bb59e6e09ed810267b14a8f2f47b92c6ccdd5160eb",
+          "trip-key": "15|200000076|2026-10-31|1|200030776|200247516|AF5AAB4C98C9425887515A3291971092"
+        }
+      }
+    }
+  ]
+}

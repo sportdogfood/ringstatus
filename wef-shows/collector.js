@@ -81,8 +81,13 @@ async function runShows({api=require('./airtable').airtable(),fetchJson=fetchSou
   try{
    audit.stage('day-publication');
    if(fs.existsSync(dayStopPath))throw Error('Day publication stopped after prior failure; owner authorization required');
-   report.show_days=await publishDays({api,show:savedShow,clock,readSummaries:async show=>{const value=await audit.observe('season-counts',()=>(readSummaries||require('./day-source').reader(api))(show));audit.stage('day-publication');return value;}});
+   report.show_days=await publishDays({api,show:savedShow,clock,readSummaries:async show=>{const value=await audit.observe('direct-day-counts',()=>readSummaries?readSummaries(show):require('./direct-counts').countDays({show,runId:report.run_id,clock,deadline:Date.parse(report.started)+150000}));report.direct_counts={request_count:value.request_count,days:value.diagnostics};for(const d of value.diagnostics||[])if(d.errors.length){audit.stage('direct-count-validation','direct-day-counts');audit.capture(Error(d.date+': '+d.errors.join('; ').slice(0,1500)));}audit.stage('day-publication');return value;}});
    if(!report.show_days.ok)throw Error(report.show_days.errors.join('; '));
+   if(report.show_days.created){
+    // New canonical day rows are created by the existing publisher. Label them
+    // before Data admission instead of waiting for another discovery/evening.
+    report.day_priority=await require('./day-priority').updatePriority({api,show:savedShow,now:clock(),discovered:true,statePath:path.join(path.dirname(statePath),'day-priority.json')});
+   }
    report.summary+=' Show-days: '+report.show_days.days.map(d=>d.date+' '+d.status).join(', ')+'.';
   }catch(error){
    audit.capture(error);report.ok=false;report.errors.push('Show-days: '+error.message);report.summary+=' Show authority retained; show-days publication failed: '+error.message;

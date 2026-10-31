@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: all days including past are counted directly; unique entries, scratches and duplicate schedule classes; no entity detail survives
+ok 1 - all days including past are counted directly; unique entries, scratches and duplicate schedule classes; no entity detail survives
+  ---
+  duration_ms: 10.2902
+  type: 'test'
+  ...
+# Subtest: explicit empty inventory and class trips are verified zero, missing identities remain incomplete
+ok 2 - explicit empty inventory and class trips are verified zero, missing identities remain incomplete
+  ---
+  duration_ms: 3.5688
+  type: 'test'
+  ...
+# Subtest: short class payload, pagination, wrong dated class and conflicting cross-class trip IDs never certify complete
+ok 3 - short class payload, pagination, wrong dated class and conflicting cross-class trip IDs never certify complete
+  ---
+  duration_ms: 34.9178
+  type: 'test'
+  ...
+# Subtest: changed final inventory is failed, per-day failure preserves last totals while other days publish
+ok 4 - changed final inventory is failed, per-day failure preserves last totals while other days publish
+  ---
+  duration_ms: 4.3675
+  type: 'test'
+  ...
+# Subtest: request deadline withholds unknown totals and still completes without substitute data
+ok 5 - request deadline withholds unknown totals and still completes without substitute data
+  ---
+  duration_ms: 0.8356
+  type: 'test'
+  ...
+# Subtest: source uses decoded proxy only, bounded retry and no response detail in errors
+ok 6 - source uses decoded proxy only, bounded retry and no response detail in errors
+  ---
+  duration_ms: 505.3904
+  type: 'test'
+  ...
+# Subtest: valid subset zero publishes same day/native link on repeats; absent day stays unknown
+ok 7 - valid subset zero publishes same day/native link on repeats; absent day stays unknown
+  ---
+  duration_ms: 7.1997
+  type: 'test'
+  ...
+# Subtest: unknown coverage remains null not zero
+ok 8 - unknown coverage remains null not zero
+  ---
+  duration_ms: 1.4947
+  type: 'test'
+  ...
+# Subtest: unknown day without inventory retains null source time and does not stop remaining days
+ok 9 - unknown day without inventory retains null source time and does not stop remaining days
+  ---
+  duration_ms: 2.0041
+  type: 'test'
+  ...
+# Subtest: invalid or failed evidence preserves accepted body and original counts/time
+ok 10 - invalid or failed evidence preserves accepted body and original counts/time
+  ---
+  duration_ms: 1.2849
+  type: 'test'
+  ...
+# Subtest: scope mismatch fails before publishing counts
+ok 11 - scope mismatch fails before publishing counts
+  ---
+  duration_ms: 0.3415
+  type: 'test'
+  ...
+# Subtest: mixed projection, tampered digest and changed fence are rejected
+ok 12 - mixed projection, tampered digest and changed fence are rejected
+  ---
+  duration_ms: 1.8332
+  type: 'test'
+  ...
+# Subtest: expiry uses source time despite recent verification; exact five minutes is stale
+ok 13 - expiry uses source time despite recent verification; exact five minutes is stale
+  ---
+  duration_ms: 0.1729
+  type: 'test'
+  ...
+# Subtest: failed staged write preserves authoritative previous body; readback refuses mixed projections
+ok 14 - failed staged write preserves authoritative previous body; readback refuses mixed projections
+  ---
+  duration_ms: 1.4377
+  type: 'test'
+  ...
+# Subtest: duplicate canonical keys fail without writes
+ok 15 - duplicate canonical keys fail without writes
+  ---
+  duration_ms: 0.7166
+  type: 'test'
+  ...
+# Subtest: transient source failure recovers on same URL with bounded GETs
+ok 16 - transient source failure recovers on same URL with bounded GETs
+  ---
+  duration_ms: 2.8365
+  type: 'test'
+  ...
+# Subtest: exhausted source reads stop after three and retain safe nested cause
+ok 17 - exhausted source reads stop after three and retain safe nested cause
+  ---
+  duration_ms: 1.2769
+  type: 'test'
+  ...
+# Subtest: HTTP 503 recovers but 401 and 404 do not retry
+ok 18 - HTTP 503 recovers but 401 and 404 do not retry
+  ---
+  duration_ms: 1.8542
+  type: 'test'
+  ...
+# Subtest: body transport failure is recovered; invalid JSON and missing decode proof are not retried
+ok 19 - body transport failure is recovered; invalid JSON and missing decode proof are not retried
+  ---
+  duration_ms: 36.4598
+  type: 'test'
+  ...
+# Subtest: unapproved endpoints and certificate errors never fall back or retry
+ok 20 - unapproved endpoints and certificate errors never fall back or retry
+  ---
+  duration_ms: 0.577
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 713.5803

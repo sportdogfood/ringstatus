@@ -19,9 +19,13 @@ function bridge(input,{root=path.resolve(__dirname,'..'),script=path.join(__dirn
   child.stdin.end(JSON.stringify(input));
  });
 }
-function reader(api,{runtime=path.join(__dirname,'runtime'),replay=bridge,headKey,archiveRoot=path.resolve(__dirname,'../wef-data/runtime/retained-evidence'),archiveRepository=path.resolve(__dirname,'../wef-data/runtime/archive-repository')}={}){
+function reader(api,{runtime=path.join(__dirname,'runtime'),replay=bridge,headKey,savedRoot=path.resolve(__dirname,'../wef-data/runtime/day-heads'),archiveRoot=path.resolve(__dirname,'../wef-data/runtime/retained-evidence'),archiveRepository=path.resolve(__dirname,'../wef-data/runtime/archive-repository')}={}){
  return async show=>{
   const f=show.fields,context={'show-key':f['show-key'],'customer-id':f.customer_id,'show-id':f.show_id,'start-date':f.start_date,'end-date':f.end_date,'selected-date':f.selected_date};
+  if(!headKey&&fs.existsSync(savedRoot)){
+   context['canonical-days']=String(f.available_dates||'').split(',').map(x=>x.trim()).filter(Boolean).sort();
+   return await replay({mode:'saved-day',context});
+  }
   const filter=`AND({status}="Verified completed revision",FIND(${quote('"show-key":'+JSON.stringify(f['show-key']))},{state-json}))`;
   const rows=await api.list('runs',BASE,filter),runs={},candidates=[];
   for(const r of rows){const v=r.fields,s=JSON.parse(v['state-json']||'{}');if(v.status!=='Verified completed revision'||s['show-key']!==context['show-key'])continue;if(runs[v['run-key']])throw Error('Duplicate retained run key');runs[v['run-key']]=v;candidates.push({key:v['run-key'],state:s});}

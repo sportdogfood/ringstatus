@@ -14,7 +14,7 @@ function fixture(){
  const db={schedules:{rings:[rec('recSR',{customer_id:15,show_id:76,ring_date:scoped.date,ring_id:44,ring_number:3,'ring-key':rk,notes:'protected'})],schedules:[rec('recSS',{'stage-key':'76|2026-10-29|20_100','show-id':76,date:scoped.date,ring:3,'group-id':20,'class-id':30,status:'active',rings:['recSR'],'row-json':'protected','total-trips':90})]},
  data:{rings:[rec('recDR',{'ring-key':rk,'ring-id':44,'ring-number':3,status:'acquisition'})],groups:[rec('recDG',{'group-key':rk+'|20','group-id':20,ring:['recDR']})],classes:[rec('recDC',{'class-key':ck,'class-id':30,ring:['recDR'],status:'acquisition','entry-count':90})],schedules:[rec('recDS',{'schedule-key':rk+'|100',class:['recDC'],group:['recDG'],ring:['recDR']})],trips:[rec('recDT',{'trip-key':ck+'|200|uuid','trip-id':'400','source-uuid':'uuid',class:['recDC'],horse:['horse-local'],rider:['rider-local'],trainer:['trainer-local'],'record-status':'active','last-success':NOW,'source-json':JSON.stringify(identity)})]}};
  const audits=[],writes=[];const state={data:{schedules:{pending:{},cursor:0},data:{pending:{},cursor:0}},save(){}};
- const api={list:async(l,t)=>structuredClone(db[l][t]),get:async(l,t,id)=>structuredClone(db[l][t].find(r=>r.id===id)),patch:async(l,t,id,v)=>{assert(audits.some(a=>a.kind==='publication-'+l+'-intent'));assert(Object.keys(state.data[l].pending).length);writes.push({l,t,id,v});db[l][t].find(r=>r.id===id).fields[FIELD]=v;}};
+ const api={priorityZero:async()=>true,list:async(l,t)=>structuredClone(db[l][t]),get:async(l,t,id)=>structuredClone(db[l][t].find(r=>r.id===id)),patch:async(l,t,id,v)=>{assert(audits.some(a=>a.kind==='publication-'+l+'-intent'));assert(Object.keys(state.data[l].pending).length);writes.push({l,t,id,v});db[l][t].find(r=>r.id===id).fields[FIELD]=v;}};
  const archive=async(kind,value)=>{audits.push({kind,value:structuredClone(value)});return{kind,file:'archive.gz',sha256:'hash'};};
  return{input,db,audits,writes,state,api,args:{input,api,state,archive,clock:()=>NOW,authority:async()=>{},budgetMs:100000}};
 }
@@ -271,4 +271,53 @@ test('all six saved exact occurrence keys resolve using their actual group and n
 test('uncertain writes consume unchanged per-lane patch budget',async()=>{
  const f=fixture();let dataCalls=0;f.api.patch=async(l)=>{if(l==='data')dataCalls++;throw Error('unknown network result');};
  const r=await publish({...f.args,maxPatches:1});assert.equal(dataCalls,1);assert.equal(r.lanes.data.uncertain,1);assert.equal(r.lanes.data.deferred,4);assert.equal(f.state.data.data.cursor,1);conserved(r.lanes.data);
+});
+
+test('Data priority is required; Schedules and collected fallback facts are independent',async()=>{
+ for(const allowed of [false,undefined]){
+  const f=fixture(),before=structuredClone(f.db.data);
+  if(allowed===undefined)delete f.api.priorityZero;else f.api.priorityZero=async()=>allowed;
+  const r=await publish(f.args);
+  assert.equal(r.lanes.data.status,'Skipped');assert.match(r.lanes.data.reason,/day-priority 0/);
+  assert.deepEqual(f.db.data,before);assert.equal(f.writes.filter(x=>x.l==='schedules').length,2);
+ }
+});
+
+test('priority changing before dispatch withholds Data without changing links or fallback',async()=>{
+ const f=fixture(),before=structuredClone(f.db.data);let checks=0;
+ f.api.priorityZero=async()=>++checks===1;
+ const r=await publish(f.args);
+ assert.equal(f.writes.filter(x=>x.l==='data').length,0);assert.deepEqual(f.db.data,before);
+ assert(r.errors.some(e=>e.message.includes('day-priority changed')));
+});
+
+test('verified Live zero and false survive publication and later acquisition values do not replace them',async()=>{
+ const f=fixture();const g=JSON.parse(f.input.groups[0]['source-json']);g.is_live=false;g.has_JSON=false;g.total=0;g.gone=0;
+ f.input.groups[0]['source-json']=JSON.stringify(g);
+ f.db.data.groups[0].fields['source-json']=JSON.stringify({total:9,gone:9,is_live:true});
+ const before=structuredClone(f.db.data);await publish(f.args);
+ const row=f.db.data.groups[0],overlay=row.fields[FIELD],v=JSON.parse(overlay).components.group.values;
+ assert.equal(v.total,0);assert.equal(v.gone,0);assert.equal(v.isLive,false);assert.equal(v.hasJson,false);
+ assert.equal(row.fields['source-json'],before.groups[0].fields['source-json']);
+ row.fields['source-json']=JSON.stringify({total:12,gone:12});
+ await publish(f.args);assert.equal(row.fields[FIELD],overlay);
+ assert.equal(row.fields['source-json'],JSON.stringify({total:12,gone:12}));
+ const missing=fixture();delete missing.input.groups[0]['source-json'];
+ const values=observations(missing.input,{file:'a',sha256:'h'}).groups[0].component.values;
+ assert.equal(values.total,null);assert.equal(values.isLive,null,'missing must not become zero or false');
+});
+
+test('priority reader requires exact canonical day, single show link and numeric zero',async()=>{
+ const scope={...scoped,authority:'recShow',selected_date:scoped.date};
+ const good={id:'recDay',fields:{'show-day-key':'15|76|2026-10-29',date:scoped.date,show:['recShow'],'day-priority':0}};
+ for(const mutate of [null,r=>r.fields['day-priority']=1,r=>r.fields['day-priority']='0',r=>delete r.fields['day-priority'],r=>r.fields.show=['other'],r=>r.fields.show.push('other'),r=>r.fields.date='2026-10-30',r=>r.fields['show-day-key']='wrong']){
+  const row=structuredClone(good);if(mutate)mutate(row);let calls=0;
+  const api=transport({pause:async()=>{},request:async(url,o)=>{calls++;assert(url.includes('tbl14MaCCDw6dAywH'));assert(!o.body);return{ok:true,json:async()=>({records:[row]})};}});
+  assert.equal(await api.priorityZero(scope),!mutate);assert.equal(calls,1);
+ }
+ for(const payload of [{records:[]},{records:[good,good]},{records:[good],offset:'next'}]){
+  const api=transport({pause:async()=>{},request:async()=>({ok:true,json:async()=>payload})});assert.equal(await api.priorityZero(scope),false);
+ }
+ const api=transport({pause:async()=>{},request:async()=>({ok:true,json:async()=>({records:[good]})})});
+ assert.equal(await api.priorityZero({...scope,selected_date:'2026-10-30'}),false);
 });

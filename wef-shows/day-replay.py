@@ -25,7 +25,10 @@ def replay(value):
 
 try:
     value=json.load(sys.stdin)
-    result=replay(value)
+    if value.get('mode')=='saved-day':
+        from day_counts import saved_day_summaries
+        result=saved_day_summaries(root/'wef-data/runtime',value['context'])
+    else:result=replay(value)
     json.dump(result,sys.stdout,ensure_ascii=False,separators=(',',':'))
 except Exception as error:
     print(str(error),file=sys.stderr)

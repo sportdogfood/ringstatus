@@ -21,59 +21,75 @@ planner=module('wef-data-adaptive-trial')
 COUNT_FRESH_SECONDS=300
 COUNT_REFRESH_SECONDS=180
 
+DAY_INTERVALS={0:180,1:3600,2:7200,3:10800}
+SAVED_DAY_STATUS='Saved day; native readback verified'
+PARTIAL_DAY_STATUS='Partial day; successful work saved'
+SYNC_SHOWS='tblAcQWswWfsc1MpS'
+SYNC_DAYS='tbl2iAfdZagycQkBp'
+SYNC_SHOW_FIELDS={'show-key':'fldCO3vwvXPyxoggQ','show-id':'fldCTMiEcYla3atq4',
+    'customer-id':'fldiyoV0EDvVyO6Fm','show-name':'fldlF56IRGRWx5C9U',
+    'start-date':'fldHYURW9fpSEnznp','end-date':'fldtg2CFR9i1sOqQ4',
+    'selected-date':'fld2ySdEbZVq8mrAg','default':'fldKjhA93Uy0narwR','last-checked':'fldr0j1f2hI09OkrD'}
+
+def read_synced_context(client):
+    from wef_data_context import validate_context
+    rows=client.records(DATA_BASE,SYNC_SHOWS,fields=list(SYNC_SHOW_FIELDS.values()))
+    context={'authority-base':'appCaSmL819KK7UFJ','read-base':DATA_BASE,'read-table':SYNC_SHOWS,
+        'records':[{name:row['fields'].get(field,False if name=='default' else None)
+                    for name,field in SYNC_SHOW_FIELDS.items()} for row in rows]}
+    try:
+        # The sync contains source time, not the separate authority heartbeat.
+        # Reuse the proven reader for freshness; retain synced collection facts.
+        authority=client.canonical_context()
+        if canonical_fence(context)!=canonical_fence(authority):
+            raise ValueError('Waiting for synced canonical selection')
+        selected=next(row for row in context['records'] if row['default'])
+        canonical=next(row for row in authority['records'] if row['default'])
+        for name in ('customer-id','show-id','show-name'):
+            if selected[name]!=canonical[name]:raise ValueError('Synced canonical metadata mismatch')
+        selected['authority-checked-at']=canonical.get('authority-checked-at') or canonical['last-checked']
+        validate_context(context,datetime.datetime.fromtimestamp(time.time(),datetime.timezone.utc))
+    except ValueError as error:raise CanonicalTransition(str(error)) from error
+    return context
+
 def read_canonical_days(client,context):
-    """Read Shows' native day membership, never synthesize dates from a range."""
-    base='appCaSmL819KK7UFJ';show=context['show-key']
-    selected=client.request('GET',base,'tblJA5CUon5s1sWib',params={
-        'filterByFormula':'{show-key}='+json.dumps(show),'fields[]':['show-key']})['records']
-    if len(selected)!=1 or selected[0]['fields'].get('show-key')!=show:raise ValueError('Invalid canonical day show owner')
-    identity=selected[0]['id'];params={'pageSize':100,'fields[]':['show-day-key','date','show']}
-    dates=set();offsets=set();ids=set()
-    while True:
-        page=client.request('GET',base,'tbl14MaCCDw6dAywH',params=params)
-        if not isinstance(page.get('records'),list):raise ValueError('Missing canonical day records')
-        for row in page['records']:
-            if row['id'] in ids:raise ValueError('Duplicate canonical day record')
-            ids.add(row['id']);fields=row['fields'];key=fields.get('show-day-key','');links=fields.get('show',[])
-            linked=identity in links
-            if not linked and not key.startswith(show+'|'):continue
-            day=fields.get('date','')[:10]
-            datetime.date.fromisoformat(day)
-            if links!=[identity] or key!=show+'|'+day or day in dates or not context['start-date'][:10]<=day<=context['end-date'][:10]:
-                raise ValueError('Invalid canonical day key/date/native link')
-            dates.add(day)
-        offset=page.get('offset')
-        if offset is None:break
-        if not isinstance(offset,str) or not offset or offset in offsets:raise ValueError('Invalid canonical day offset')
-        offsets.add(offset);params['offset']=offset
-    if not dates:raise ValueError('Missing canonical day scope')
-    return sorted(dates)
+    """Read Shows' existing native day labels; never invent missing priorities."""
+    show=context['show-key'];base=DATA_BASE
+    owners=client.records(base,SYNC_SHOWS,fields=['fldCO3vwvXPyxoggQ'],formula='{show-key}='+json.dumps(show))
+    if len(owners)!=1 or owners[0]['fields'].get('fldCO3vwvXPyxoggQ')!=show:raise ValueError('Invalid canonical show owner')
+    names={'show-day-key':'fld4RBSJRXKCbVU1A','show':'fldu4VmXs9yz4mTEa','date':'fldOeAP4c7F1lxIEd','day-priority':'fldP1IRkAD0E2HIND'}
+    rows=client.records(base,SYNC_DAYS,fields=list(names.values()))
+    priorities={};seen=set();anchor=datetime.date.fromisoformat(context['selected-date'][:10])
+    for row in rows:
+        f={name:row['fields'].get(identity) for name,identity in names.items()};key=f.get('show-day-key') or '';links=f.get('show') or []
+        if owners[0]['id'] not in links and not key.startswith(show+'|'):continue
+        day=f.get('date','')[:10];date=datetime.date.fromisoformat(day)
+        if key!=show+'|'+day or links!=[owners[0]['id']] or day in seen or not context['start-date'][:10]<=day<=context['end-date'][:10]:raise ValueError('Invalid canonical show-day identity/link')
+        seen.add(day);expected=(date-anchor).days
+        if not -3<=expected<=3:continue
+        value=f.get('day-priority')
+        if type(value) not in (int,float) or value!=expected:raise CanonicalTransition('Waiting for coherent Shows day-priority publication')
+        priorities[day]=int(value)
+    if not seen:raise CanonicalTransition('Waiting for Shows to publish canonical days')
+    context['day-priorities']=priorities
+    return sorted(seen)
 
-def day_interval(day,at):
+def day_interval(day,at,priorities=None):
+    if priorities is not None:return DAY_INTERVALS.get(priorities.get(day))
     from zoneinfo import ZoneInfo
     today=datetime.datetime.fromtimestamp(at,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date()
-    offset=(datetime.date.fromisoformat(day)-today).days
-    return {0:180,1:3600,2:7200}.get(offset)
+    return DAY_INTERVALS.get((datetime.date.fromisoformat(day)-today).days)
 
-def due_days(days,passes,at):
-    from zoneinfo import ZoneInfo
-    today=datetime.datetime.fromtimestamp(at,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date()
-    due=[]
-    for day in days:
-        offset=(datetime.date.fromisoformat(day)-today).days
-        if offset not in (0,1,2,3):continue
-        prior=passes.get(day,{})
-        interval=day_interval(day,at)
-        if not prior.get('completed') or interval is not None and at-prior['completed']>=interval:due.append(day)
-    return sorted(due)
+def due_days(days,passes,at,priorities=None):
+    return sorted(day for day in days if day_interval(day,at,priorities) is not None and
+                  (not passes.get(day,{}).get('attempted',passes.get(day,{}).get('completed')) or
+                   at-passes[day].get('attempted',passes[day].get('completed',0))>=day_interval(day,at,priorities)))
 
 def collection_days(context,days,at):
-    """Collect the canonical selected day onward, never an earlier local day."""
     from zoneinfo import ZoneInfo
-    today=datetime.datetime.fromtimestamp(at,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date()
-    selected=datetime.date.fromisoformat(context['selected-date'][:10])
-    lower=max(today,selected)
-    return [day for day in days if datetime.date.fromisoformat(day)>=lower]
+    today=datetime.datetime.fromtimestamp(at,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()
+    return [day for day in days if context.get('day-priorities',{}).get(day) in DAY_INTERVALS and day>=today]
+
 
 def active_class_keys(state):
     """Legacy lists and lossless compact journal controls contain the same keys."""
@@ -131,8 +147,11 @@ def validate_work_owner(repo,state,runkey,day,reference,plan):
         held={**journal.get('withheld-day-work',{}),**journal.get('day-work',{})}
         if held.get(day)!=reference or journal.get('show-key')!=plan['show-key']:raise ValueError('Work owner continuity mismatch')
         if repo is not None:
-            from retained_feed import run_identity
-            if run_identity(repo,key,plan['show-key'])!=journal.get('run-record-id'):raise ValueError('Work owner native ID changed')
+            identity=repo.inventory['runs'].get(key,{}).get('id')
+            if identity is None:
+                from retained_feed import run_identity
+                identity=run_identity(repo,key,plan['show-key'])
+            if identity!=journal.get('run-record-id'):raise ValueError('Work owner native ID changed')
         if key==owner:return
         parent=journal.get('predecessor')
         if repo is None or not parent:raise ValueError('Missing pinned work owner')
@@ -199,7 +218,7 @@ def validate_class_response(payload,state,show):
         source_ids.add(source_id);ids.append((trip['entry_id'],identity))
     if len(set(ids))!=len(ids):raise ValueError('Duplicate class trips')
 
-def read_saved_checkpoint(folder,show,runkey):
+def read_saved_checkpoint(folder,show,runkey,scope_only=False):
     folder=pathlib.Path(folder);reservation_bytes=(folder/'reservation.json').read_bytes()
     reservation=json.loads(reservation_bytes);states=reservation['states'];keys=reservation['class-keys']
     if not reservation['slot'].startswith(runkey+'|slot-') or not reservation['slot'].rsplit('-',1)[-1].isdecimal():raise ValueError('Wrong saved slot owner')
@@ -215,7 +234,10 @@ def read_saved_checkpoint(folder,show,runkey):
         item=saved['responses'].get(state['class_key'])
         if item is None:continue
         if digest(packed(item['value']))!=item['sha256']:raise ValueError('Saved source response changed')
-        payload,metric=item['value'];validate_class_response(payload,state,show)
+        payload,metric=item['value']
+        # Captured responses are not accepted business facts. Scope recovery
+        # checks their original reservation and hashes, not payload quality.
+        if not (scope_only and reservation.get('item-failures-allowed')):validate_class_response(payload,state,show)
         accepted[state['class_key']]=item['value']
     return {'reservation':reservation,'accepted':accepted,'missing':[k for k in keys if k not in accepted],
             'reservation-sha256':__import__('hashlib').sha256(reservation_bytes).hexdigest(),
@@ -246,7 +268,7 @@ def saved_collection_scopes(runtime,runkey,state,repo):
     sequence=(state.get('reserved-class') or {}).get('slot',state.get('slots',0)+1)
     folder=runtime/runkey.replace(':','_')/('class-batch-'+str(sequence))
     if (folder/'reservation.json').exists():
-        saved=read_saved_checkpoint(folder,show,runkey)
+        saved=read_saved_checkpoint(folder,show,runkey,scope_only=True)
         scopes.update((value['day'],value['class_key']) for value in saved['reservation']['states'])
     marker=state.get('saved-checkpoint-recovery') or {}
     if marker and marker.get('phase')!='Complete':
@@ -271,7 +293,7 @@ def pending_candidate(plan):
     metrics=plan['metric'].get('requests',[plan['metric']])
     requests=[]
     for i,metric in enumerate(metrics,plan['request-start']):
-        if 'route' not in metric:continue
+        if 'route' not in metric or plan.get('native-request-records') is False:continue
         requests.append({'request-key':run+f'|{i:04}','run':refs('runs',run),'collection':refs('collections',first),
             'route':metric['route'],'params':packed(metric['params']),'http':metric['http'],'bytes':metric['bytes'],
             'elapsed-seconds':metric['elapsed_seconds'],'sha256':metric['sha256'],'started':metric['started'],'completed':metric['completed'],'status':'Validated'})
@@ -292,7 +314,7 @@ def pending_candidate(plan):
 def latest_state(rows,show):
     states=[]
     for row in rows:
-        if row.get('status')!='Verified completed revision':continue
+        if row.get('status') not in ('Verified completed revision',SAVED_DAY_STATUS,PARTIAL_DAY_STATUS):continue
         state=json.loads(row.get('state-json') or '{}')
         if state.get('show-key')==show:
             state['_head']={'run-key':row['run-key'],'state-sha256':digest(row['state-json'])};states.append(state)
@@ -336,11 +358,14 @@ def directory_graph(payload,show,at,old,conflicts=None):
     return {t:list(rows.values()) for t,rows in output.items() if rows}
 
 class Repository:
-    def __init__(self,client,schema,authored):
+    def __init__(self,client,schema,authored,collection_only=False):
+        self.collection_only=collection_only
         self.client=client;self.schema=schema;self.store=DataStore(client,schema,cache=True);self.authored=authored
         self.reload()
     def reload(self,refresh=False):
-        self.inventory={t:self.store.inventory(t,refresh=refresh) for t in KEYS}
+        self.inventory={t:({} if self.collection_only and t in ('collections','requests') else self.store.inventory(t,refresh=refresh)) for t in KEYS}
+        for table in ('collections','requests'):
+            if self.collection_only:self.store.cache[table]={}
         self.byid={r['id']:(t,k) for t,rows in self.inventory.items() for k,r in rows.items()}
         self.graph={}
         for table,rows in self.inventory.items():
@@ -408,8 +433,8 @@ class SourceFailure(RuntimeError):
 def transient_source(error):
     return isinstance(error,SourceFailure) and (error.diagnostic.get('http') in (502,503,504) or error.diagnostic.get('timeout') is True)
 
-def capture_source_batch(path,scope,items,key_for,fetch):
-    """Keep validated parallel responses before raising; resume missing keys only."""
+def capture_source_batch(path,scope,items,key_for,fetch,failures=None):
+    """Persist every returned response before classification; resume missing keys only."""
     path=pathlib.Path(path)
     saved=json.loads(path.read_text(encoding='utf-8')) if path.exists() else {'scope':scope,'responses':{}}
     if saved['scope']!=scope:raise ValueError('Saved source batch scope changed')
@@ -419,13 +444,22 @@ def capture_source_batch(path,scope,items,key_for,fetch):
         if digest(packed(item['value']))!=item['sha256']:raise ValueError('Saved source response changed')
     errors=[]
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
-        futures={pool.submit(fetch,item):key_for(item) for item in items if key_for(item) not in responses}
+        futures={pool.submit(fetch,item):key_for(item) for item in items if key_for(item) not in responses
+                 and not (failures is not None and key_for(item) in saved.get('errors',{}))}
         for future in concurrent.futures.as_completed(futures):
             try:value=future.result()
-            except Exception as error:errors.append(error);continue
+            except Exception as error:
+                if failures is not None and isinstance(error,(SourceFailure,ValueError)):
+                    diagnostic=getattr(error,'diagnostic',{})
+                    saved.setdefault('errors',{})[futures[future]]={'error':str(error),'source':diagnostic,'at':stamp(),
+                        'status':'Quarantined' if diagnostic.get('saved-response') else 'Failed'}
+                    atomic(path,saved)
+                else:errors.append(error)
+                continue
             responses[futures[future]]={'value':value,'sha256':digest(packed(value))};atomic(path,saved)
     if errors:raise next((e for e in errors if not transient_source(e)),errors[0])
-    return [responses[key]['value'] for key in wanted]
+    if failures is not None:failures.update(saved.get('errors',{}))
+    return [responses[key]['value'] for key in wanted if key in responses]
 
 def defer_source(runtime,run_key,error,policy):
     """Three scheduled retries; preserve each error independently of API writes."""
@@ -444,22 +478,33 @@ def defer_source(runtime,run_key,error,policy):
             'retry-after-seconds':delay,'error':str(error),'operation':'GET','target':error.diagnostic.get('route'),'write-outcome':'NotApplicable'}
 
 class Source:
+    def __init__(self,capture_root=None):
+        self.capture_root=pathlib.Path(capture_root) if capture_root is not None else None
     def fetch(self,route,params,timeout=18):
         try:result=subprocess.run(['node',str(pathlib.Path(__file__).with_name('source-reader.js')),route,packed(params),str(timeout)],capture_output=True,timeout=timeout+10)
         except subprocess.TimeoutExpired:raise SourceFailure('Source reader timed out',{'route':route,'params':params,'timeout':True,'completed':stamp()}) from None
+        diagnostic={'route':route,'params':params,'exit-code':result.returncode}
+        if self.capture_root is not None:
+            received={'route':route,'params':params,'exit-code':result.returncode,
+                'stdout-base64':base64.b64encode(result.stdout).decode('ascii'),'received-at':stamp()}
+            path=self.capture_root/(digest(packed(received))+'.json')
+            atomic(path,received);diagnostic['saved-response']=str(path)
         try:response=json.loads(result.stdout)
-        except (ValueError,TypeError):raise SourceFailure('Source reader did not return a valid result',{'route':route,'params':params,'exit-code':result.returncode}) from None
-        if result.returncode or not response.get('ok'):raise SourceFailure(response.get('error','Source read failed'),response.get('metric',{'route':route,'params':params}))
-        body=base64.b64decode(response['body'],validate=True);metric=response['metric']
-        if metric['bytes']!=len(body) or metric['sha256']!=__import__('hashlib').sha256(body).hexdigest():raise ValueError('Source body receipt mismatch')
-        payload=json.loads(body)
+        except (ValueError,TypeError):raise SourceFailure('Source reader did not return a valid result',diagnostic) from None
+        metric={**response.get('metric',{}),**diagnostic}
+        if result.returncode or not response.get('ok'):raise SourceFailure(response.get('error','Source read failed'),metric)
         def check(v):
             if isinstance(v,dict):
                 if '_t' in v:raise ValueError('Unresolved encrypted envelope')
                 for x in v.values():check(x)
             elif isinstance(v,list):
                 for x in v:check(x)
-        check(payload)
+        try:
+            body=base64.b64decode(response['body'],validate=True)
+            if metric['bytes']!=len(body) or metric['sha256']!=__import__('hashlib').sha256(body).hexdigest():raise ValueError('Source body receipt mismatch')
+            payload=json.loads(body);check(payload)
+        except (ValueError,KeyError,TypeError) as error:
+            raise SourceFailure('Saved response quarantined: '+str(error),metric) from error
         return planner.safe(payload),metric
 
 class Runner:
@@ -473,6 +518,8 @@ class Runner:
         self.repo.history_show=show
         self.state['predecessor']=self.state.pop('_head',None);self.state['slots']=0
         self.state.pop('completion-at',None)
+        self.state['timing']={}
+        self.state.pop('count-mismatch',None)
         self.state.pop('publication-day',None)
         self.state.pop('publication-kind',None)
         recovery=self.state.get('saved-checkpoint-recovery',{})
@@ -651,7 +698,10 @@ class Runner:
                     if old.get('last-success') and row.get('last-success') and planner.epoch(old['last-success'])>planner.epoch(row['last-success']):row={KEYS[table]:row[KEYS[table]]}
                     effective.append(row)
                 staged.setdefault(table,[]).extend(effective);group.append((number,table,rows,effective))
+            save_started=time.monotonic()
             receipt=self.repo.stage(staged)
+            timing=self.state.setdefault('timing',{})
+            timing['native-write-readback-seconds']=timing.get('native-write-readback-seconds',0)+time.monotonic()-save_started
             for number,table,rows,effective in group:
                 pins=progress['pins'][table]
                 if any(receipt['record_map'][table][str(r[KEYS[table]])]!=pins[str(r[KEYS[table]])] for r in rows):raise ValueError('Work readback ID changed')
@@ -681,11 +731,12 @@ class Runner:
             # An accepted identity-reservation POST may lose its response before
             # authored fields are staged. Complete that same reserved ID first.
             self.repo.stage({'runs':[reserved['reserved-run']]});row=self.repo.graph['runs'][key]
-        if row.get('status')=='Verified completed revision':
+        if row.get('status') in ('Verified completed revision',SAVED_DAY_STATUS,PARTIAL_DAY_STATUS):
+            if row.get('status')==SAVED_DAY_STATUS:self.save_day(json.loads(row['state-json']),key)
             path.unlink();(self.runtime/'pending.json').unlink(missing_ok=True);return False
         resume=self.runtime/'resume-approved.json'
         approval=json.loads(resume.read_text(encoding='utf-8')) if resume.exists() else None
-        failed=row.get('status')=='Failed; prior accepted state retained'
+        failed=row.get('status') in ('Failed; prior accepted state retained','Retained incomplete; canonical context changed')
         if row.get('status')!='Writing; readback pending' and not (failed and approval and approval.get('run-key')==key and approval.get('approval')):raise ValueError('Active run is not resumable')
         self.runkey=key;self.at=row['started'];self.state=json.loads(row['state-json']);self.show=self.state['show-key']
         self.repo.history_show=self.show
@@ -708,6 +759,7 @@ class Runner:
     def observation(self,scope,payload,metric,graph,next_state=None,verification=None):
         plan={'run-key':self.runkey,'show-key':self.show,'scope':scope,'source':payload,'metric':metric,
             'graph':graph,'next-state':next_state or {},'start':len(self.state['observations'])+1,'request-start':self.state.get('requests',0)+1}
+        if getattr(self.repo,'collection_only',False):plan['native-request-records']=False
         if self.state.get('evidence-storage'):
             plan['evidence-storage']=self.state['evidence-storage'];plan['retained-budget']=1000000
         if verification:plan['verification']=verification;plan['business-verified']=True
@@ -747,58 +799,66 @@ class Runner:
             references=[{'key':r['collection-key'],'sha256':r['retained-sha256'],'record-id':receipt['record_map']['collections'][r['collection-key']]} for r in records]
         self.state.update(plan['next-state'])
         self.state['observations'].extend(references)
-        self.state['requests']=plan['request-start']-1+len(candidate.get('requests',[]))
+        self.state['requests']=plan['request-start']-1+len([m for m in plan['metric'].get('requests',[plan['metric']]) if 'route' in m])
         self.state['pending']=None;self.journal();(self.runtime/'pending.json').unlink(missing_ok=True)
         return receipt
+    def save_day(self,state,runkey):
+        day=state.get('publication-day')
+        if not day:return None
+        body={'format':'wef-data-day-save-v1','run-key':runkey,'state':state}
+        sha=digest(packed(body));name='completed-days/'+sha+'.json'
+        path=self.runtime/name
+        if path.exists() and json.loads(path.read_text(encoding='utf-8'))!=body:raise ValueError('Completed day bytes changed')
+        atomic(path,body)
+        head=self.runtime/'day-heads'/state['show-key'].replace('|','-')/(day+'.json')
+        if head.exists():
+            old=json.loads(head.read_text(encoding='utf-8'))
+            if old['sequence']>state['sequence']:return old
+            if old['sequence']==state['sequence'] and old['sha256']!=sha:raise ValueError('Completed day sequence changed')
+        pointer={'path':name,'sha256':sha,'sequence':state['sequence']}
+        atomic(head,pointer);return pointer
+
     def finish(self,authority):
-        day=self.state.get('publication-day');recovery=self.state.get('saved-checkpoint-recovery',{})
-        recovered_boundary=self.state.get('publication-kind')=='checkpoint-recovery' and recovery.get('phase')=='Complete' and recovery.get('published-in')==self.runkey
-        if self.state.get('day-work') and not recovered_boundary and (not day or day in self.state['day-work'] or not self.state.get('day-passes',{}).get(day,{}).get('completed')):
-            raise ValueError('Unfinished day work has no verified publication boundary')
-        after=self.client.canonical_context()
-        if canonical_fence(authority)!=canonical_fence(after):raise CanonicalTransition('Canonical scope changed; completion withheld')
-        # Read the immutable candidate itself, never just mutable business rows.
-        archived=bool(self.state.get('evidence-storage'))
-        from retained_feed import collection_rows,run_rows
-        logical=collection_rows(self.repo,self.state)
-        rows={} if archived else self.repo.store.inventory('collections',refresh=True,keys=[i['key'] for i in self.state['observations']]);parts=[]
-        for item in self.state['observations']:
-            fs=self.repo.store.fields['collections']
-            got=logical[item['key']] if archived else {n:rows[item['key']]['fields'].get(fs[n]['id']) for n in ('retained-json','retained-sha256')}
-            if got['retained-sha256']!=item['sha256'] or digest(got['retained-json'])!=item['sha256']:raise ValueError('Completion evidence changed')
-            part=json.loads(got['retained-json'])
-            if part['part']==0 and parts:thaw(parts);parts=[]
-            parts.append(got)
-        if parts:thaw(parts)
-        from retained_feed import facts_for_state
-        from wef_data_handoff import assignment_evidence
-        assignment_counts=assignment_evidence(facts_for_state(self.repo,self.state))['summary']
-        for item in ([] if archived else self.state['observations']):
-            status=rows[item['key']]['fields'].get(self.repo.store.fields['collections']['status']['id'])
-            if status!='Verified retained observation':self.repo.patch('collections',item['key'],{'status':'Verified retained observation'})
-        evidence_receipt=None
-        if archived:
-            self.state.setdefault('completion-at',stamp());self.journal()
-            completed={**self.state,'phase':'Complete','authority':list(canonical_fence(after)),'completed':self.state['completion-at']}
-            evidence_receipt=self.evidence.publish(self.repo,completed,self.runkey)
-            if canonical_fence(after)!=canonical_fence(self.client.canonical_context()):raise CanonicalTransition('Canonical scope changed during archive publication')
-            self.state=completed
-        else:self.state.update({'phase':'Complete','authority':list(canonical_fence(after)),'completed':stamp()})
+        day=self.state.get('publication-day')
+        if self.state.get('day-work') and (not day or day in self.state['day-work'] or not self.state.get('day-passes',{}).get(day,{}).get('completed')):raise ValueError('Unfinished day has no native save boundary')
+        after=read_synced_context(self.client)
+        if canonical_fence(authority)!=canonical_fence(after):raise CanonicalTransition('Canonical scope changed; day save withheld')
+        # Verify only this run's saved source/readback units. No history/Git replay.
+        if self.evidence:
+            rows={ref['key']:self.evidence.read(ref) for ref in self.state['observations']}
+        else:
+            from retained_feed import collection_rows
+            rows=collection_rows(self.repo,self.state)
+        from day_counts import retained_units
+        retained_units(self.state,rows)
+        self.state.setdefault('completion-at',stamp())
+        errors=self.state.get('day-passes',{}).get(day,{}).get('errors',{})
+        partial=bool(errors)
+        inventory_ready=self.state.get('day-passes',{}).get(day,{}).get('inventory',False)
+        current=[self.repo.graph['classes'][k] for k in active_class_keys(self.state) if k.split('|')[2]==day] if inventory_ready else []
+        since=self.state.get('day-passes',{}).get(day,{}).get('started',0)
+        collected=sum(bool(row.get('last-success')) and planner.epoch(row['last-success'])>=since for row in current)
+        self.state.update({'phase':'Partial' if partial else 'Complete','authority':list(canonical_fence(after)),'completed':self.state['completion-at']})
+        if day:self.state['next-day-priority']=(self.state['day-priorities'][day]+1)%4
         self.journal()
-        self.repo.patch('runs',self.runkey,{'status':'Verified completed revision','completed':self.state['completed'],
+        self.repo.patch('runs',self.runkey,{'status':PARTIAL_DAY_STATUS if partial else SAVED_DAY_STATUS,'completed':self.state['completed'],
             'elapsed-seconds':(datetime.datetime.now(datetime.timezone.utc)-datetime.datetime.fromisoformat(self.at)).total_seconds(),
-            'summary':packed({'show-key':self.show,'coverage':self.state.get('coverage','Verified bounded observations'),
-                'observations':len(self.state['observations']),'directory-complete':self.state.get('directory',{}).get('complete',False),
-                'identity-conflicts':self.state.get('directory-conflicts',[]),
-                'withheld-class-contexts':sorted(self.state.get('withheld-class-contexts',{})),
-                'timing':self.state.get('timing',{}),'capacity':self.state.get('capacity',{}),'assignment-counts':assignment_counts,
-                **({'evidence-archive':evidence_receipt} if evidence_receipt else {})}),
-            'source-requests':self.state.get('requests',0),'errors':len(self.state.get('directory-conflicts',[]))})
+            'source-requests':self.state.get('requests',0),'errors':len(errors),
+            'summary':packed({'show-key':self.show,'day':day,'coverage':'Native saved dated inventory and eligible details; no remote archive claim','retention-on-collection-path':False})})
+        receipt=None if partial else self.save_day(self.state,self.runkey)
         (self.runtime/'active.json').unlink(missing_ok=True)
-        return {'ok':True,'show-key':self.show,'run-key':self.runkey,'observations':len(self.state['observations']),
-                'identity-conflicts':self.state.get('directory-conflicts',[]),
-                'retention-waits':getattr(self,'retention_waits',[]),'assignment-counts':assignment_counts,
-                **({'evidence-archive':evidence_receipt} if evidence_receipt else {})}
+        return {'ok':not partial,'state':'Partial' if partial else 'Saved','show-key':self.show,'run-key':self.runkey,'day':day,
+            'day-priority':self.state.get('day-priorities',{}).get(day),'observations':len(self.state['observations']),
+            'source-requests':self.state.get('requests',0),'saved-day':receipt,'retention-on-collection-path':False,
+            'count-mismatch':self.state.get('count-mismatch'),
+            'item-errors':[{'key':key,**value} for key,value in errors.items()],
+            'counts':{'day':day,'source-requests':self.state.get('requests',0),'failed-items':len(errors),
+                'saved-class-responses':self.state.get('day-passes',{}).get(day,{}).get('saved-class-responses',0),
+                'quarantined-responses':sum(e.get('status')=='Quarantined' for e in errors.values()),
+                'expected-classes':len(current) if inventory_ready else None,
+                'collected-classes':collected if inventory_ready else None,
+                'attempt-started':self.at,'native-save-verified-at':self.state['completed'],
+                'timing':self.state.get('timing',{})}}
 
     def close75(self,authority):
         key='15|200000075';row=self.repo.graph['shows'].get(key)
@@ -921,7 +981,7 @@ class Runner:
             self.state.update({'slots':int(reservation['slot'].rsplit('-',1)[-1]),'reserved-class':None,
                 'saved-checkpoint-recovery':{**marker,'phase':'Complete'}});self.journal()
 
-    def class_batch(self,selected,base,policies,defer=False,recovery=None):
+    def class_batch(self,selected,base,policies,defer=False,recovery=None,allow_partial=False):
         observations=[];batch=[];batch_begin=time.monotonic()
         sequence=self.state.get('slots',0)+1;slot=self.runkey+'|slot-'+str(sequence)
         if recovery:slot=recovery['reservation']['slot'];sequence=int(slot.rsplit('-',1)[-1])
@@ -930,9 +990,10 @@ class Runner:
         saved=folder/'source-batch.json'
         def get(state):
             p,m=self.source.fetch('/classes/'+str(state['class_id']),{'show_id':int(self.show.split('|')[1]),'customer_id':15})
-            validate_class_response(p,state,self.show)
+            if not allow_partial:validate_class_response(p,state,self.show)
             return p,m
         reservation={'class-keys':[s['class_key'] for s in selected],'slot':slot,'states':selected}
+        if allow_partial:reservation['item-failures-allowed']=True
         folder.mkdir(parents=True,exist_ok=True)
         if (folder/'reservation.json').exists() and json.loads((folder/'reservation.json').read_text(encoding='utf-8'))!=reservation:raise ValueError('Reserved class batch scope changed')
         atomic(folder/'reservation.json',reservation)
@@ -943,14 +1004,42 @@ class Runner:
             if not saved.exists():atomic(saved,batch)
         elif saved.exists():batch=json.loads(saved.read_text(encoding='utf-8'))
         else:
-            batch=capture_source_batch(folder/'responses.json',{'show-key':self.show,'keys':reservation['class-keys']},selected,lambda s:s['class_key'],get)
+            failures={} if allow_partial else None
+            batch=capture_source_batch(folder/'responses.json',{'show-key':self.show,'keys':reservation['class-keys']},selected,lambda s:s['class_key'],get,failures)
             atomic(saved,batch)
+        if allow_partial and not recovery:
+            captured=json.loads((folder/'responses.json').read_text(encoding='utf-8'))
+            failures=copy.deepcopy(captured.get('errors',{}));accepted=[];accepted_states=[];quarantine={}
+            # Acquisition for the complete cohort has finished and is durable.
+            # Existing identity checks only gate native projection, never capture.
+            for state in selected:
+                key=state['class_key'];item=captured['responses'].get(key)
+                if item is None:continue
+                p,m=item['value']
+                if digest(packed(item['value']))!=item['sha256']:raise ValueError('Saved source response changed')
+                try:validate_class_response(p,state,self.show)
+                except (ValueError,KeyError,TypeError,AttributeError) as error:
+                    quarantine[key]={'error':str(error),'source':m,'status':'Quarantined',
+                        'saved-response':'responses.json','response-sha256':item['sha256']}
+                else:accepted_states.append(state);accepted.append(item['value'])
+            failures.update(quarantine)
+            if failures:atomic(folder/'quarantine.json',{'scope':captured['scope'],'items':failures})
+            progress=self.state['day-passes'][selected[0]['day']]
+            progress['saved-class-responses']=len(captured['responses'])+sum(bool(e.get('source',{}).get('saved-response')) for e in captured.get('errors',{}).values())
+            progress.setdefault('errors',{}).update({key:{'status':value['status'],
+                'saved-response':folder.name+'/quarantine.json'} for key,value in failures.items()})
+            selected=accepted_states;batch=accepted
+            if not selected:
+                self.state.update({'slots':sequence,'reserved-class':None})
+                self.state['requests']=self.state.get('requests',0)+len(failures)
+                self.journal();return
+            self.journal()
         (folder/'adaptive').mkdir(exist_ok=True)
         for index,(old,(p,m)) in enumerate(zip(selected,batch)):
             state,reason=planner.decide(old,p,planner.epoch(m['completed']),policies)
             observed=planner.epoch(m['completed'])
             today=datetime.datetime.fromtimestamp(observed,datetime.timezone.utc).astimezone(__import__('zoneinfo').ZoneInfo('America/New_York')).date().isoformat()
-            interval=day_interval(state['day'],observed)
+            interval=day_interval(state['day'],observed,self.state.get('day-priorities'))
             if interval is not None:
                 state['interval']=interval
                 state['next_due']=observed+interval
@@ -966,9 +1055,18 @@ class Runner:
                 'elapsed_seconds':planner.epoch(max(m['completed'] for p,m in batch))-planner.epoch(min(m['started'] for p,m in batch)),'requests':[m for p,m in batch]}]}
         (folder/'graph.json').write_text(packed(base),encoding='utf-8');(folder/'adaptive/trial.json').write_text(packed(trial),encoding='utf-8')
         if not (folder/'latest-graph.json').exists():subprocess.run([sys.executable,'-B',str(SOURCE/'build-wef-data-delta.py'),'--evidence-root',str(folder)],check=True,capture_output=True)
+        warning=folder/'count-mismatch.json'
+        if warning.exists():
+            self.state['count-mismatch']={**json.loads(warning.read_text(encoding='utf-8')),
+                'evidence':warning.relative_to(self.runtime).as_posix()}
         graph=json.loads((folder/'delta-graph.json').read_text(encoding='utf-8'))
         graph.pop('runs',None);graph.pop('collections',None)
         graph.pop('requests',None)
+        # The proven projector validates the complete show input. Restrict only
+        # the aggregate write set, never truncate its linked source records.
+        days={state['day'] for state in selected}
+        graph['days']=[row for row in graph.get('days',[]) if row['day-key'].rsplit('|',1)[-1] in days]
+        graph['rings']=[row for row in graph.get('rings',[]) if row['ring-key'].split('|')[2] in days]
         for row in graph.get('slots',[]):
             row['sequence']=sequence;row['summary']='Scheduled due-driven source batch; at most four concurrent requests; persistence time reported separately.'
             if recovery:
@@ -977,6 +1075,11 @@ class Runner:
                 row['summary']=f"Saved responses preserved; {len(selected)} validated of {len(recovery['reservation']['states'])} reserved; unverified contexts are not empty results."
         next_state={'slots':sequence,'reserved-class':None}
         metric={'started':min(m['started'] for p,m in batch),'completed':stamp(),'requests':[m for p,m in batch]}
+        self.state.setdefault('timing',{}).update({'detail-source-started':metric['started'],
+            'detail-source-completed':max(m['completed'] for p,m in batch),
+            'detail-source-elapsed-seconds':sum(m.get('elapsed_seconds',0) for p,m in batch)})
+        if allow_partial:
+            metric['requests'].extend(v['source'] for v in failures.values() if v.get('source',{}).get('route'))
         if defer:
             if recovery:
                 marker={**recovery['marker'],'phase':'Complete'}
@@ -1003,21 +1106,28 @@ class Runner:
         else:self.state['inventory-day-reservations']={**reservations,day:pointer};self.journal()
         def fetch(value):
             payload,metric=self.source.fetch('/schedule',{'date':value,'show_id':context['show-id'],'customer_id':context['customer-id']})
-            validate_inventory([payload],context,[value],self.repo.graph);return payload,metric
+            return payload,metric
         payload,metric=capture_source_batch(folder/'responses.json',{'show-key':self.show,'keys':[day]},[day],str,fetch)[0]
-        graph=module('build-wef-data-graph').inventory_graph([payload],context,self.repo.graph,metric['completed'])
-        facility=payload['show'].get('facility_id');old=self.repo.graph['shows'].get(self.show,{})
-        if facility is None or old.get('facility-id') not in (None,facility):raise ValueError('Inventory facility context conflict')
-        graph['shows'][0]['facility-id']=facility
-        active=sorted(r['class-key'] for r in graph.get('classes',[]))
         existing=active_class_keys(self.state) if 'active-classes' in self.state else []
-        other={k.rsplit('|',1)[-1] for k in existing if k.split('|')[2]!=day and k.split('|')[2] in self.state.get('canonical-days',[]) and k not in self.state.get('withheld-class-contexts',{})}
-        if any(k.rsplit('|',1)[-1] in other for k in active):raise ValueError('Ambiguous dated/ring class ID; detail association withheld')
-        for table,parent in [('days','day'),('rings','ring')]:
-            for row in graph.get(table,[]):
-                classes=[c['class-key'] for c in graph.get('classes',[]) if [table,row[KEYS[table]]] in c[parent]['$links']]
-                row.update({'expected-classes':len(classes),'collected-classes':sum(bool(self.repo.graph['classes'].get(k,{}).get('last-success')) for k in classes),
-                            'status':'Verified inventory; class freshness tracked individually'})
+        try:
+            validate_inventory([payload],context,[day],self.repo.graph)
+            graph=module('build-wef-data-graph').inventory_graph([payload],context,self.repo.graph,metric['completed'])
+            facility=payload['show'].get('facility_id');old=self.repo.graph['shows'].get(self.show,{})
+            if facility is None or old.get('facility-id') not in (None,facility):raise ValueError('Inventory facility context conflict')
+            graph['shows'][0]['facility-id']=facility
+            active=sorted(r['class-key'] for r in graph.get('classes',[]))
+            other={k.rsplit('|',1)[-1] for k in existing if k.split('|')[2]!=day and k.split('|')[2] in self.state.get('canonical-days',[]) and k not in self.state.get('withheld-class-contexts',{})}
+            if any(k.rsplit('|',1)[-1] in other for k in active):raise ValueError('Ambiguous dated/ring class ID; detail association withheld')
+            for table,parent in [('days','day'),('rings','ring')]:
+                for row in graph.get(table,[]):
+                    classes=[c['class-key'] for c in graph.get('classes',[]) if [table,row[KEYS[table]]] in c[parent]['$links']]
+                    row.update({'expected-classes':len(classes),'collected-classes':sum(bool(self.repo.graph['classes'].get(k,{}).get('last-success')) for k in classes),
+                                'status':'Verified inventory; class freshness tracked individually'})
+        except (ValueError,KeyError,TypeError,AttributeError) as error:
+            quarantine={'day':day,'error':str(error),'source':metric,'status':'Quarantined',
+                'saved-response':'responses.json','response-sha256':digest(packed([payload,metric]))}
+            atomic(folder/'quarantine.json',quarantine)
+            raise SourceFailure('Inventory quarantined: '+str(error),{**metric,'quarantine':str(folder/'quarantine.json')}) from error
         passes=copy.deepcopy(self.state.get('day-passes',{}).get(day,{}));passes['inventory']=True
         self.queue_work(day,'dated-inventory-page',payload,metric,graph,{'active-day':active,'day-passes':{day:passes}},
             queue_state={'inventory-day-reservations':{d:r for d,r in reservations.items() if d!=day}})
@@ -1037,22 +1147,33 @@ class Runner:
                 if day in eligible:
                     jobs[day]=held.pop(day);reasons.pop(day,None);changed=True
             if changed:self.journal()
-            due=due_days(sorted(eligible),passes,now)
+            due=due_days(sorted(eligible),passes,now,context['day-priorities'])
             from zoneinfo import ZoneInfo
             today=datetime.datetime.fromtimestamp(now,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()
             candidates=sorted(set(due)|{d for d in jobs if d!='directory' and d in eligible},
-                              key=lambda d:(bool(passes.get(d,{}).get('completed')),0 if d==today else 1,d))
+                              key=lambda d:(bool(passes.get(d,{}).get('attempted',passes.get(d,{}).get('completed'))),
+                                bool(passes.get(d,{}).get('attempted',passes.get(d,{}).get('completed'))) and
+                                context['day-priorities'][d]<self.state.get('next-day-priority',0),context['day-priorities'][d],d))
             if candidates:
                 day=candidates[0]
                 if day in jobs:self.step_work(day);continue
                 progress=passes.get(day,{})
-                if not progress.get('inventory') or progress.get('completed'):
+                if not progress.get('inventory') or progress.get('completed') or progress.get('attempted'):
                     progress={'started':now,'inventory':False};passes[day]=progress;self.journal()
-                if not progress['inventory']:self.inventory_day(context,day);continue
+                if not progress['inventory']:
+                    try:self.inventory_day(context,day)
+                    except SourceFailure as error:
+                        progress['errors']={'inventory':{'error':str(error),'source':error.diagnostic,'at':stamp(),
+                            'status':'Quarantined' if error.diagnostic.get('quarantine') or error.diagnostic.get('saved-response') else 'Failed'}}
+                        progress['attempted']=now;self.state['requests']=self.state.get('requests',0)+1
+                        self.state.get('inventory-day-reservations',{}).pop(day,None)
+                        self.state['publication-day']=day;self.journal();return True
+                    continue
                 active=set(active_class_keys(self.state));states=[]
                 for key,row in self.repo.graph['work-items'].items():
                     if key not in active or key.split('|')[2]!=day:continue
                     if key in self.state.get('withheld-class-contexts',{}):continue
+                    if key in progress.get('errors',{}):continue
                     count=self.repo.graph['classes'].get(key,{}).get('entry-count')
                     if day==today and type(count) in (int,float) and count==0:continue
                     value=json.loads(row['state-json'])
@@ -1063,13 +1184,14 @@ class Runner:
                     # through the same bounded transport blocks. Existing queued
                     # plans above finish under their original keys before admission.
                     states.sort(key=lambda s:(s['ring'],tuple(k for t,k in self.repo.graph['classes'][s['class_key']].get('group',refs('groups'))['$links']),s['class_key']))
-                    self.class_batch(states,self.repo.scoped(self.show),self.repo.graph['lanes'],defer=True);continue
-                progress['completed']=progress['started'];self.state['publication-day']=day;self.journal()
+                    self.class_batch(states,self.repo.scoped(self.show),self.repo.graph['lanes'],defer=True,allow_partial=True);continue
+                held={k:v for k,v in self.state.get('withheld-class-contexts',{}).items() if k in active and k.split('|')[2]==day}
+                progress.setdefault('errors',{}).update(held)
+                progress['attempted']=progress['started']
+                if not progress['errors']:progress['completed']=progress['started']
+                self.state['publication-day']=day;self.journal()
                 return True
-            if 'directory' in jobs:self.step_work('directory');continue
-            if self.state.get('directory',{}).get('complete') and now>=self.state.get('directory-due',0):self.state.pop('directory',None)
-            if self.collect_directory(context,request_limit=4,seconds=max(1,deadline-time.monotonic()),defer=True):continue
-            return not self.state.get('day-work')
+            return True
         return False
 
     def inventory(self,context):
@@ -1319,7 +1441,7 @@ class Runner:
 
     def tick(self):
         self.retention_waits=[]
-        start=time.monotonic();authority=self.client.canonical_context();context=next(r for r in authority['records'] if r['default'])
+        start=time.monotonic();authority=read_synced_context(self.client);context=next(r for r in authority['records'] if r['default'])
         canonical_days=read_canonical_days(self.client,context)
         active=self.runtime/'active.json'
         if active.exists():
@@ -1328,16 +1450,13 @@ class Runner:
             scopes=saved_collection_scopes(self.runtime,reserved['run-key'],old,self.repo)
             from zoneinfo import ZoneInfo
             today=datetime.datetime.fromtimestamp(time.time(),datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()
-            outside=any(day not in eligible or day==today and key is not None
-                        and type(self.repo.graph['classes'].get(key,{}).get('entry-count')) in (int,float)
-                        and self.repo.graph['classes'][key]['entry-count']==0 for day,key in scopes)
+            outside=any(day not in eligible for day,key in scopes)
             if outside or old.get('authority-before') and old['authority-before']!=list(canonical_fence(authority)):
                 if row.get('status')=='Failed; prior accepted state retained':
                     approval=self.runtime/'resume-approved.json'
                     permitted=json.loads(approval.read_text(encoding='utf-8')) if approval.exists() else {}
                     if permitted.get('run-key')!=reserved['run-key'] or not permitted.get('approval'):raise ValueError('Failed canonical transition requires exact approval')
                 if row.get('status')!='Verified completed revision':self.repo.patch('runs',reserved['run-key'],{'status':'Retained incomplete; canonical context changed'})
-                if old['show-key']!=context['show-key']:self.retain_outgoing(old['show-key'],authority)
                 folder=self.runtime/'retired-checkpoints'/reserved['run-key'].replace(':','_');folder.mkdir(parents=True,exist_ok=True)
                 for name in ['active.json','pending.json']:
                     source=self.runtime/name
@@ -1346,45 +1465,35 @@ class Runner:
                         if target.exists() and target.read_bytes()!=body:raise ValueError('Retired checkpoint collision')
                         target.write_bytes(body);source.unlink()
         recovered=self.recover(authority)
-        if recovered:
-            mode=self.repo.graph['runs'][self.runkey]['mode']
-            if mode in ('Historical archive closure','Outgoing archive closure'):
-                if not self.state['observations']:raise ValueError('Interrupted archive closure requires retained receipt reconciliation')
-                self.finish(authority);self.repo.patch('shows',self.show,{'status':'Archived retained snapshot'});recovered=False
         if not recovered:
-            for key,row in list(self.repo.graph['shows'].items()):
-                if key!=context['show-key']:self.retain_outgoing(key,authority)
-            self.begin(context['show-key'],latest_state(list(self.repo.graph['runs'].values()),context['show-key']))
+            previous=latest_state(list(self.repo.graph['runs'].values()),context['show-key'])
+            eligible=collection_days(context,canonical_days,time.time())
+            if not due_days(eligible,previous.get('day-passes',{}),time.time(),context['day-priorities']) and not previous.get('day-work'):
+                return {'ok':True,'show-key':context['show-key'],'observations':0,'source-requests':0,'state':'No qualifying day due'}
+            self.begin(context['show-key'],previous)
             self.state['authority-before']=list(canonical_fence(authority));self.journal()
+        self.state['day-priorities']=context['day-priorities']
+        if 'directory' in self.state.get('day-work',{}):
+            self.state.setdefault('withheld-day-work',{})['directory']=self.state['day-work'].pop('directory')
         if self.show!=context['show-key']:raise ValueError('Active acquisition show differs from canonical show')
         # A partially published summary resumes its exact pinned day set. New
         # work uses the current canonical native scope read above.
         context={**context,'canonical-days':self.state.get('canonical-days',canonical_days)}
         if recovered and self.state.get('completion-at'):return self.finish(authority)
-        # Once summary publication starts, close that exact generation before new
-        # source admission, even when a crash made inventory/class work due again.
-        from retained_feed import collection_rows
-        recovered_rows=collection_rows(self.repo,self.state)
-        if recovered and any((recovered_rows[r['key']].get('scope') or '').startswith('day-count-summary|') for r in self.state['observations']):
-            self.day_summaries(context)
-            return self.finish(authority)
         # Recover the exact reserved class order before any new directory/inventory read.
         reserved_class=self.state.get('reserved-class') or {}
         reservation=self.runtime/self.runkey.replace(':','_')/('class-batch-'+str(reserved_class.get('slot',self.state.get('slots',0)+1)))/'reservation.json'
         if recovered and reservation.exists():
             saved=json.loads(reservation.read_text(encoding='utf-8'))
             if not any(d in self.state.get('day-work',{}) for d in (saved['states'][0]['day'],'checkpoint-recovery')):
-                captured=read_saved_checkpoint(reservation.parent,self.show,self.runkey)
-                if len(saved['states'])>1 or captured['missing']:self.recover_saved_checkpoint(context,reservation.parent)
-                else:self.class_batch(saved['states'],self.repo.scoped(self.show),self.repo.graph['lanes'],defer=True)
+                if saved.get('item-failures-allowed'):
+                    self.class_batch(saved['states'],self.repo.scoped(self.show),self.repo.graph['lanes'],defer=True,allow_partial=True)
+                else:
+                    captured=read_saved_checkpoint(reservation.parent,self.show,self.runkey)
+                    if len(saved['states'])>1 or captured['missing']:self.recover_saved_checkpoint(context,reservation.parent)
+                    else:self.class_batch(saved['states'],self.repo.scoped(self.show),self.repo.graph['lanes'],defer=True)
         if self.show not in self.repo.graph['shows']:
             self.repo.stage({'runs':[{'run-key':self.runkey}],'shows':[{k:context[k] for k in ('show-key','show-id','customer-id','show-name','start-date','end-date','selected-date')}]})
-        if not self.state.get('bootstrap-run'):
-            retained=self.repo.scoped(self.show)
-            mapping={t:{r[KEYS[t]]:self.repo.inventory[t][r[KEYS[t]]]['id'] for r in rows} for t,rows in retained.items()}
-            self.observation('retained-bootstrap',{'retained-projection':retained,'record-map':mapping,
-                'coverage':'Previously retained bounded records with original source times; not a new source observation'},
-                {'started':self.at,'completed':stamp()}, {}, {'bootstrap-run':self.runkey})
         self.state['canonical-days']=canonical_days;context['canonical-days']=canonical_days;self.journal()
         while 'checkpoint-recovery' in self.state.get('day-work',{}) and time.monotonic()<start+180:self.step_work('checkpoint-recovery')
         marker=self.state.get('saved-checkpoint-recovery',{})
@@ -1397,10 +1506,6 @@ class Runner:
             self.journal()
             return {'ok':False,'state':'Deferred','run-key':self.runkey,'show-key':self.show,'source-requests':self.state.get('requests',0),
                     'operation':'Continue','target':'Saved canonical day work','error':'Verified work saved; exact remaining blocks continue at the existing scheduled wake','write-outcome':'Verified partial'}
-        from retained_feed import dependencies
-        retained=dependencies(self.repo,self.state)
-        if retained:self.observation('retained-dependencies',{'coverage':'Previously retained linked facts with their original timestamps; not fresh acquisition'}, {'started':self.at,'completed':stamp()},retained)
-        self.day_summaries(context)
         return self.finish(authority)
 
     def day_summaries(self,context):
@@ -1420,118 +1525,133 @@ class Runner:
             if scope in existing:continue
             self.observation(scope,envelope,{'started':body['verified-at'],'completed':body['verified-at']},{})
 
-def run(runtime,schema_file,authored_file,data_repo,archive_storage=False):
-    runtime=pathlib.Path(runtime);runtime.mkdir(parents=True,exist_ok=True)
-    if (runtime/'stopped.json').exists():return {'ok':False,'state':'Stopped; owner authorization required','source-requests':0}
-    from archive_evidence import EvidenceStore,ArchiveDeferred
-    archive_deferred=runtime/'archive-deferred.json'
-    archive_prior=json.loads(archive_deferred.read_text(encoding='utf-8')) if archive_deferred.exists() else {}
-    if archive_prior and time.time()<archive_prior['next-due']:return {'ok':False,'state':'Deferred','source-requests':0,'error':'Saved archive publication awaiting bounded recovery time'}
-    source_deferred=runtime/'source-deferred.json'
-    source_prior=json.loads(source_deferred.read_text(encoding='utf-8')) if source_deferred.exists() else None
-    if source_prior and time.time()<source_prior.get('next-due',0):return {'ok':False,'state':'Deferred','source-requests':0,'error':'Source checkpoint awaiting bounded recovery time'}
-    deferred=runtime/'deferred.json'
-    retirement_deferred=runtime/'retirement-deferred.json'
-    retirement_prior=json.loads(retirement_deferred.read_text(encoding='utf-8')) if retirement_deferred.exists() else None
-    prior=json.loads(deferred.read_text(encoding='utf-8')) if deferred.exists() else None
-    if prior and time.time()<prior.get('next-due',0):return {'ok':False,'state':'Deferred','source-requests':0,'error':'Retained checkpoint awaiting its bounded recovery time'}
-    runner=None;repo=None;retired=None;retiring=False;retention_waits=[]
+def run(schema_file):
+    """Fresh day-zero collection. Errors are reported; no work is queued or resumed."""
+    errors=[];saved=set();show=None;day=None
+    def error(target,exception):
+        errors.append({'key':target,'error':type(exception).__name__+': '+str(exception) if isinstance(exception,Exception) else str(exception)})
+    def report():
+        return {'ok':not errors,'state':'Partial' if errors else 'Saved',
+                'show-key':show,'day':day,'counts':{'saved':len(saved)},'item-errors':errors}
     try:
-        from retirement import retire,pending_approval,mutation_pending,RetentionWait
-        retiring=pending_approval(runtime)
-        repo=Repository(Airtable(),json.loads(pathlib.Path(schema_file).read_text(encoding='utf-8')),json.loads(pathlib.Path(authored_file).read_text(encoding='utf-8')))
-        from history_cleanup import retire as cleanup_history,pending as history_mutation_pending
-        try:
-            history_cleanup=cleanup_history(repo,runtime,data_repo)
-            if history_cleanup:retention_waits.append({'phase':'history-cleanup',**history_cleanup})
-        except Exception as error:
-            # Cleanup readiness must not stop acquisition. An uncertain DELETE
-            # must settle through its durable exact-ID intent before new work.
-            if history_mutation_pending(runtime):
-                return {'ok':False,'state':'Deferred','source-requests':0,'operation':'Historical cleanup',
-                    'error':type(error).__name__+': '+str(error)}
-            retention_waits.append({'phase':'history-cleanup','status':'Waiting' if isinstance(error,RetentionWait) else 'Blocked',
-                'reason':type(error).__name__+': '+str(error)})
-        retiring=True
-        if retirement_prior and retirement_prior.get('operation',{}).get('method')=='DELETE' and not mutation_pending(runtime):
-            raise ValueError('Deferred retirement DELETE lacks its exact mutation checkpoint')
-        if retirement_prior and time.time()<retirement_prior.get('next-due',0):
-            if mutation_pending(runtime):return {'ok':False,'state':'Deferred','source-requests':0,'error':'Retirement mutation awaiting bounded recovery time'}
-            retention_waits.append({'phase':'retirement-backoff','reason':'Pre-mutation retention retry not due','at':stamp()})
-        else:
+        client=Airtable();source=Source()
+        store=DataStore(client,json.loads(pathlib.Path(schema_file).read_text(encoding='utf-8')),cache=True)
+        shows=client.records(DATA_BASE,SYNC_SHOWS,fields=list(SYNC_SHOW_FIELDS.values()))
+        owner=next(row for row in shows if row['fields'].get(SYNC_SHOW_FIELDS['default']) is True)
+        context={name:owner['fields'].get(field) for name,field in SYNC_SHOW_FIELDS.items()}
+        show=context['show-key']
+        days=client.records(DATA_BASE,SYNC_DAYS,fields=['fld4RBSJRXKCbVU1A','fldu4VmXs9yz4mTEa','fldOeAP4c7F1lxIEd','fldP1IRkAD0E2HIND'])
+        selected=next(row for row in days if row['fields'].get('fldP1IRkAD0E2HIND')==0
+                      and owner['id'] in row['fields'].get('fldu4VmXs9yz4mTEa',[]))
+        day=selected['fields']['fldOeAP4c7F1lxIEd'][:10]
+    except Exception as exception:
+        error('Show and day selection',exception);return report()
+
+    tables=('rings','groups','classes','entries','trips')
+    def save(table,rows):
+        rows=list(rows)
+        for start in range(0,len(rows),10):
+            batch=rows[start:start+10]
             try:
-                retired=retire(repo,runtime)
-                retirement_deferred.unlink(missing_ok=True)
-            except RetentionWait as error:
-                if mutation_pending(runtime):raise ValueError('Unresolved retirement mutation cannot be bypassed') from error
-                failures=(retirement_prior or {}).get('failures',0)+1
-                wait={'at':stamp(),'reason':str(error),'phase':'retirement-readiness','failures':failures,'next-due':time.time()+min(300,60*2**min(failures-1,3))}
-                atomic(retirement_deferred,wait);retention_waits.append(wait)
-        retiring=False
-        if prior and prior['operation']['method']=='POST' and prior['operation'].get('write-outcome')!='NotSent':
-            operation=prior['operation'];table=next((t for t,v in repo.schema['tables'].items() if v['id']==operation['table']),None)
-            if table is None:raise ValueError('Deferred create outside Data schema')
-            primary=repo.store.fields[table][KEYS[table]]['id']
-            wanted=[str(r['fields'][primary]) for r in operation['body']['records']]
-            actual=repo.store.inventory(table,refresh=True,keys=wanted)
-            if any(k not in actual for k in wanted):
-                # A lost legacy POST cannot be blindly repeated. Match its exact
-                # reserved keys server-side, after proving saved current ownership.
-                active=json.loads((runtime/'active.json').read_text(encoding='utf-8'))
-                state=json.loads(active['reserved-run']['state-json'])
-                current=repo.client.canonical_context()
-                selected=next(r for r in current['records'] if r['default'])
-                if state['show-key']==selected['show-key']:
-                    pending=runtime/'pending.json'
-                    if pending.exists():
-                        plan=json.loads(pending.read_text(encoding='utf-8'))
-                        if plan['run-key']!=active['run-key'] or plan['show-key']!=state['show-key']:raise ValueError('Deferred reservation owner mismatch')
-                        graph=pending_candidate(plan)
-                    else:graph={'runs':[active['reserved-run']]}
-                    allowed={str(r[KEYS[table]]) for r in graph.get(table,[])}
-                    if operation['base']!=repo.schema['base'] or len(set(wanted))!=len(wanted) or not set(wanted)<=allowed:raise ValueError('Deferred reservation differs from saved owner')
-                    repo.store.reserve(table,wanted)
-                    repo.reload()
-        runner=Runner(repo,Source(),runtime,data_repo,evidence=EvidenceStore(runtime/'retained-evidence',data_repo) if archive_storage else None)
-        result=runner.tick();deferred.unlink(missing_ok=True);source_deferred.unlink(missing_ok=True);archive_deferred.unlink(missing_ok=True)
-        result['retention-waits']=retention_waits+result.get('retention-waits',[])
-        if retired:result['retirement']=retired
-        if not result.get('ok'):return result
+                targets={table}
+                for row in batch:
+                    for value in row.values():
+                        if isinstance(value,dict) and '$links' in value:targets.update(t for t,k in value['$links'])
+                mapping={t:{k:r['id'] for k,r in store.inventory(t).items()} for t in targets}
+                missing=[str(row[store.primary[table]]) for row in batch if str(row[store.primary[table]]) not in mapping[table]]
+                if missing:mapping[table].update(store.reserve(table,missing))
+            except Exception as exception:
+                error(table,exception);continue
+            records=[];keys=[]
+            for row in batch:
+                key=str(row[store.primary[table]])
+                try:
+                    records.append({'id':mapping[table][key],'fields':store.fields_for(table,row,mapping)});keys.append(key)
+                except Exception as exception:error(table+' '+key,exception)
+            if not records:continue
+            try:
+                response=client.request('PATCH',DATA_BASE,store.schema[table]['id'],body={'records':records})
+                acknowledged={row['id'] for row in response['records']}
+                for key,record in zip(keys,records):
+                    if record['id'] in acknowledged:saved.add((table,key))
+                    else:error(table+' '+key,'Write response did not acknowledge this record')
+            except Exception as exception:error(table,exception)
+
+    def source_rows(rows):
+        output=[]
+        for row in rows:
+            value={}
+            for name,field in row.items():
+                if isinstance(field,dict) and '$links' in field:
+                    if not field['$links'] or any(t not in tables for t,k in field['$links']):continue
+                if field is not None:value[name]=field
+            output.append(value)
+        return output
+
+    params={'show_id':context['show-id'],'customer_id':context['customer-id']}
+    try:
+        payload,metric=source.fetch('/schedule',{**params,'date':day})
+    except Exception as exception:
+        error('Day inventory collection',exception);return report()
+    inventory={table:{} for table in tables[:3]}
+    try:rings=iter(payload['rings'])
+    except Exception as exception:error('Day inventory collection',exception);return report()
+    for ring in rings:
         try:
-            from retained_feed import publish
-            publish(repo,runner.state,runtime/'handoff',runner.state['authority'])
-        except Exception as error:
-            result['handoff-error']=type(error).__name__+': '+str(error)
-        return result
-    except ArchiveDeferred as error:
-        failures=archive_prior.get('failures',0)+1
-        if failures>3:
-            report={'ok':False,'state':'Stopped','run-key':getattr(runner,'runkey',None),'at':stamp(),'error':'Archive recovery exhausted after three scheduled retries: '+str(error)}
-            atomic(runtime/'stopped.json',report)
-            if getattr(runner,'runkey',None):repo.patch('runs',runner.runkey,{'status':'Failed; prior accepted state retained','errors':1,'summary':packed(report)})
-            return report
-        atomic(archive_deferred,{'at':stamp(),'run-key':getattr(runner,'runkey',None),'failures':failures,'next-due':time.time()+min(300,60*2**(failures-1))})
-        return {'ok':False,'state':'Deferred','run-key':getattr(runner,'runkey',None),'error':str(error),'operation':'Archive','target':'ringstatus-data','source-requests':getattr(runner,'state',{}).get('requests',0),'write-outcome':'Unknown'}
-    except TransportDeferred as error:
-        failures=((retirement_prior if retiring else prior) or {}).get('failures',0)+1
-        operation=error.operation
-        # A read outage must not erase an unverified Source POST reservation.
-        if not retiring and prior and prior['operation']['method']=='POST' and prior['operation'].get('write-outcome')!='NotSent' and operation['method']=='GET':operation=prior['operation']
-        atomic(retirement_deferred if retiring else deferred,{'at':stamp(),'operation':operation,'failures':failures,'next-due':time.time()+min(300,60*2**min(failures-1,3))})
-        result={'ok':False,'state':'Deferred','error':str(error),'operation':error.operation['method'],'target':error.operation['table'],'source-requests':getattr(runner,'state',{}).get('requests',0),'write-outcome':error.operation['write-outcome'] if error.operation['method']!='GET' else 'NotApplicable'}
-        if retired:result['retirement']=retired
-        return result
-    except CanonicalTransition as error:
-        atomic(deferred,{'at':stamp(),'operation':{'method':'GET','base':'appCaSmL819KK7UFJ','table':'tblJA5CUon5s1sWib','body':None},'failures':0,'next-due':time.time()+60})
-        return {'ok':False,'state':'Deferred','error':str(error),'source-requests':getattr(runner,'state',{}).get('requests',0)}
-    except Exception as error:
-        if transient_source(error) and runner is not None:
-            recovery=defer_source(runtime,getattr(runner,'runkey',None),error,repo.graph['lanes'].get('recovery',{}))
-            if recovery:return recovery
-        report={'ok':False,'state':'Stopped','error':type(error).__name__+': '+str(error),'at':stamp()}
-        if isinstance(error,SourceFailure):report['source']=error.diagnostic
-        if getattr(runner,'runkey',None):
-            try:repo.patch('runs',runner.runkey,{'status':'Failed; prior accepted state retained','errors':1,'summary':packed(report)})
-            except Exception:pass
-        (runtime/'stopped.json').write_text(packed(report),encoding='utf-8')
-        raise
+            rk=show+'|'+day+'|'+str(ring['ring_number'])
+            inventory['rings'][rk]={'ring-key':rk,'ring-id':ring.get('ring_id'),
+                'ring-number':ring['ring_number'],'ring-name':ring.get('ring_name')}
+            items=iter(ring['classes'])
+        except Exception as exception:error('Ring',exception);continue
+        for item in items:
+            try:
+                gid=item.get('class_group_id');gk=rk+'|'+str(gid) if gid is not None else None
+                if gk:
+                    inventory['groups'][gk]={'group-key':gk,'ring':refs('rings',rk),'group-id':gid,
+                        'group-name':item.get('group_name'),'last-success':metric['completed'],
+                        'source-json':packed({k:v for k,v in item.items() if k.startswith('class_group') or k in ('group_name','class_list')})}
+                cid=item.get('class_id')
+                if cid is None:
+                    if not item.get('schedule_break'):error(rk,'Source class has no class_id')
+                    continue
+                ck=rk+'|'+str(cid)
+                row=inventory['classes'].setdefault(ck,{'class-key':ck,'ring':refs('rings',rk),
+                    'class-id':cid,'group':refs('groups')})
+                if item.get('class_number') is not None:row['class-number']=str(item['class_number'])
+                if item.get('class_name') is not None:row['class-name']=item['class_name']
+                if gk and ['groups',gk] not in row['group']['$links']:row['group']['$links'].append(['groups',gk])
+            except Exception as exception:error(rk,exception)
+    graph={table:list(rows.values()) for table,rows in inventory.items()}
+    for table in tables[:3]:save(table,source_rows(graph[table]))
+
+    classes={};entries={};trips={}
+    def fetch(row):return source.fetch('/classes/'+str(row['class-id']),params)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        requests={pool.submit(fetch,row):row for row in graph.get('classes',[])}
+        for future in concurrent.futures.as_completed(requests):
+            row=requests[future];key=row['class-key']
+            try:
+                payload,metric=future.result();at=metric['completed']
+                classes[key]={'class-key':key,'source-json':packed(payload),'last-success':at}
+                for trip in payload['trips']:
+                    try:
+                        eid=int(trip['entry_id']);ek=str(context['show-id'])+'|'+str(eid)
+                        entry={'entry-key':ek,'entry-id':eid,'last-success':at}
+                        if trip.get('number') is not None:entry['entry-number']=str(trip['number'])
+                        if ek not in entries or at>entries[ek]['last-success']:entries[ek]=entry
+                        tk=key+'|'+str(eid)+'|'+str(trip.get('entryxclasses_uuid') or trip.get('trip_id') or '')
+                        value={'trip-key':tk,'class':refs('classes',key),'entry':refs('entries',ek),
+                            'source-json':packed(trip),'last-success':at,'record-status':'active'}
+                        for field,raw in {'trip-id':'trip_id','source-uuid':'entryxclasses_uuid','order-of-go':'order_of_go',
+                            'actual-order':'actual_order','gone-in':'gone_in','placing':'placing','scratch':'scratch_trip',
+                            'estimated-go-time':'estimated_go_time'}.items():
+                            if trip.get(raw) is not None:
+                                if field in ('order-of-go','actual-order'):
+                                    try:value[field]=int(trip[raw])
+                                    except (ValueError,TypeError):pass
+                                else:value[field]=str(trip[raw])
+                        trips[tk]=value
+                    except Exception as exception:error(key,exception)
+            except Exception as exception:error(key,exception)
+    save('classes',classes.values());save('entries',entries.values());save('trips',trips.values())
+    return report()

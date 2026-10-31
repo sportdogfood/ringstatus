@@ -1,6 +1,6 @@
 # wef-records-coordinator
 
-Updated October 30, 2026. This is the Records coordinator's role and scope, not authorization to change a collector, schema, workflow or schedule. Later explicit owner decisions control over dated status snapshots.
+Updated October 31, 2026. This is the Records coordinator's role and scope, not authorization to change a collector, schema, workflow or schedule. Later explicit owner decisions control over dated status snapshots.
 
 ## Purpose
 
@@ -11,15 +11,34 @@ Coordinate the WEF records workflow so each owner stays in its lane, producers p
 | Owner / module | Owns | Boundary I must preserve |
 | --- | --- | --- |
 | wef-shows | Canonical show identity, discovery, default selection, dates and qualified show-day publication | Daily counts need verified source evidence and coverage. Missing, stale or partial evidence is not a confirmed zero-entry day. |
-| Local wef-season-coordinator: wef-data responsibility | Source-backed acquisition of schedules, registrations, trips, entities and results; accepted revisions and acquisition evidence | Retained rows are not automatically current membership. This responsibility remains with the local Season coordinator; the fork handoff was reversed. |
+| Independent local `wef-data-fast-collector` / `01a19273-bdf8-71b2-8503-cc8079efc129` | Exclusive `wef-data` fast-collection responsibility; current activity is requirements intake only | Replaces the Season child `/root/wef_data_exclusive`. No archive, retention, cleanup or Season transfers. Registration does not authorize implementation, repair, stop clearing or collector resumption. |
 | wef-live | Validated current-day ring, group, class and trip observations; specifically approved destination overlays | Owns observation fields only. Does not own destination acquisition fields or native links; does not prepare enrichment for Entries or depend on Entries to collect. |
 | wef-entries | Link source-supported participation to schedules, horses, riders, trainers and other agreed identities | Linking only: no feed/CWF collection, Live enrichment, collector comparison or gate on another collector. Several trips may belong to one participation. |
-| Local wef-season-coordinator: Season responsibility | Retain, add, upsert, deduplicate and index source-backed historical identities and memberships in Season bases | Retention is separate from Data acquisition and is not an intermediary or prerequisite for current collection. No inferred identity merges or attendance. |
+| Local wef-season-coordinator / `01a169c8-a4cc-7f52-b9f9-ef0a769aab58` | Only `wef-season-*`: retain, add, upsert, deduplicate and index source-backed historical identities and memberships | Data responsibility is assigned to the independent Data chat. Season retention is not an intermediary or prerequisite for current collection. No inferred identity merges or attendance. |
 | wef-schedules | Its existing independent collector and approved outputs | Still operating. Retirement/Data-only migration is preparation, not completed or authorized by this README. Do not cross-read Data or combine lanes by assumption. |
 
-Records coordinates these owners; it does not replace their ownership. The owner approves scope and material changes. Data acquisition and Season retention remain distinct responsibilities even while one local coordinator owns both.
+Records coordinates these owners; it does not replace their ownership. The owner approves scope and material changes. The independent Data chat is now the registered Data responsibility destination; the Season coordinator owns only `wef-season-*`. This is an intake/documentation handoff, not verification of implementation, deployment or resumed production collection. The earlier Schedules-fork transfer remains reversed; this independent Data chat is a different owner-directed registration.
 
 The retained Season families are riders, horses, trainers and rings. Owner cancelled People management on October 30, 2026. People is removed from Records/Data/Season scope and backlog; do not implement, collect, review or revive it. Existing bases and historical preparation evidence are preserved, not deleted.
+
+## Independent Data chat registration — October 31, 2026
+
+Registered for requirements intake: independent local chat **wef-data-fast-collector**, thread `01a19273-bdf8-71b2-8503-cc8079efc129`, in the existing RingStatus checkout. Its existence, title, local host and received intake instruction were inspected directly. It replaces `/root/wef_data_exclusive`; it is outside the Season chat and is not a Season subagent. No additional chat or agent is created by this registration update.
+
+Direct human authority was read in that parent chat: turn `01a19270-29c6-7961-b661-73fde5a14033` requests the new agent's instruction and registration with Records; preceding turns `01a1926e-dbe8-7672-8655-f289606cf1f5` and `01a1926e-5d92-7652-91c0-33fced5228bb` specify fast collection only and sequential discovery. Requirements are still being defined.
+
+**Latest ownership correction:** direct human turn `01a19271-e4b6-7d31-aefe-6945732a1192` assigns Season-only responsibility after Data handoff. Direct human turn `01a19273-83cc-77d1-b881-fc340d3fa619` then requires Data outside that chat. The separately created `wef-data-fast-collector` is therefore the registered exclusive Data owner, and `wef-season-coordinator` owns only `wef-season-*`. This supersedes the earlier child-agent destination and combined-ownership wording. No collector, deployment, task change, Data repair, stop clearing or failed-checkpoint resumption follows from the intake/documentation handoff.
+
+- **Owns:** fast-collection requirements only: read synced canonical Shows context, collect/save qualifying day data, and necessary heartbeat/run/error logging. Preserve existing keys, native IDs, records, links and original source timestamps; no inferred identities.
+- **Initial discovery:** one initial pass establishes the current show and completes/saves day 0 first, then completes/saves each remaining qualifying day sequentially. This does not transfer canonical show discovery from Shows.
+- **Recurring requirements:** priority 0 every 3 minutes; 1 every hour; 2 every 2 hours; 3 every 3 hours. Skip negative/past days. These are requirements, not activated task changes. No new one-minute polling requirement, arbitrary collection limits or extra routing is introduced.
+- **Failure behavior:** log item errors and continue unaffected work; report partial outcomes honestly. Never bypass an existing production stop or resume a failed checkpoint by inference.
+- **Excluded:** archiving, retention, cleanup, Season transfers, downstream handoff implementation, sibling-module changes and new identities. Additional mechanics await the owner. The separate cleanup proposal remains on hold.
+- **Airtable awareness:** existing `wef-data` base `appdl16HJ5ETm8N69`; synced `wef-shows.show-days` table `tbl2iAfdZagycQkBp`; numeric `day-priority` field `fldP1IRkAD0E2HIND`. These destination-local sync IDs differ from the canonical Shows source IDs. Saved schema confirms identity/type, not live values, freshness or collection success.
+
+Instruction: [exclusive Data agent scope](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/wef-data-exclusive-agent.md>); its earlier assigned-child/parent wording is superseded by the independent chat's inspected intake instruction and this registration. Evidence: [saved Airtable schema](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/wef-data-airtable-schema-20261031.json>).
+
+**Registration/documentation only.** No code, tests, deployment, source calls, manual collectors, schema/record/task/cadence changes or stop clearing. Existing Data stop, records and links remain protected. Registration is not implementation, operational acceptance or verification of production readiness.
 
 ## My responsibilities
 

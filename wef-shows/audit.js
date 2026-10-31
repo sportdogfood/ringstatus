@@ -1,5 +1,6 @@
 "use strict";
 const definitions={
+ 'direct-day-counts':{name:'Direct proxy entry/trip counts',kind:'Endpoint',location:'https://wef-schedules-decoded.gombcg.workers.dev/schedule and /classes/{class_id}',purpose:'Count dated source entries/trips in memory; save totals and logs only.',owner:'wef-shows'},
  'default-ring':{name:'Default show discovery',kind:'Endpoint',location:'https://wef-schedules-decoded.gombcg.workers.dev/ring?customer_id=15',purpose:'Identify the source default show.',owner:'wef-shows'},
  'default-schedule':{name:'Default show dates',kind:'Endpoint',location:'https://wef-schedules-decoded.gombcg.workers.dev/schedule?date=00/00/00&show_id={show_id}&customer_id=15',purpose:'Validate show metadata, dates and source-selected date.',owner:'wef-shows'},
  'season-counts':{name:'Retained Season/Data day counts',kind:'Airtable',location:'https://airtable.com/appdl16HJ5ETm8N69',purpose:'Read and validate completed runs and retained collections for canonical day counts.',owner:'wef-season-coordinator'}
@@ -11,7 +12,7 @@ function createAudit({api,runId,clock}){
  async function observe(key,action){
   if(!definitions[key])throw Error('Unregistered Shows source');stage('source-read',key);
   const attempt={key,at:clock(),result:'Running',error:''};attempts.set(key,attempt);
-  try{const value=await action();attempt.result='Success';attempt.successAt=clock();return value;}
+  try{const value=await action();const partial=key==='direct-day-counts'&&value.diagnostics?.some(d=>!d.complete);attempt.result=partial?'Partial':'Success';attempt.error=partial?'One or more day counts have incomplete source coverage':'';if(!partial)attempt.successAt=clock();return value;}
   catch(error){attempt.result='Failed';attempt.error=error.message;throw error;}
  }
  async function saveSources(){

@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-31T12:07:28.130114+00:00",
+  "route": "Existing scheduled wef-live-collector -> run.ps1 -> entry.js; no new runtime deployment or task change",
+  "files": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication.js",
+      "sha256": "91d083d7dbca2f474de56c9b560772b17aa892fe19b425d2796122c49c3cb96e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\publication-api.js",
+      "sha256": "b25b6bd25760d7fabd53ef2077de3854a676c6e43b3a6221a59607eeba9f852f"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\test\\publication.test.js",
+      "sha256": "6bc07d680c44c17211605e1f9a4a15f5b7883af195e558c99880633008250a54"
+    }
+  ]
+}

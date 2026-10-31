@@ -1,3 +1,7 @@
+## Day-priority and overlap validation — October 31, 2026
+
+Data publication requires the exact canonical `show-days.day-priority = 0` before inventory and dispatch; Live collection remains TODAY. Existing approved `live-observation-json` mapping preserves verified zero/false and leaves Data acquisition fields/native links intact as fallback. No runtime replacement was needed: installed guard reviewed, 43 targeted publication checks passed. Two existing normal runs at 07:56 and 08:02 Eastern verified 57 Data overlay writes with links/logs preserved. Operational result remains Partial due publication budget/identity issues and the separate blocked log-retention stop; no repairs or stops cleared. External consumer effective selection is not proved by overlay writes. [Exact evidence and limits](evidence/day-priority-precedence-20261031/release.md).
+
 ## Shows calendar policy companion - deployed October 30, 2026
 
 Shows now selects tomorrow at 19:00 Eastern within show dates and checks new shows Sunday 22:00, then every three hours until changed. Readers validate authority_checked_at with their original 30-minute/future-clock tolerances; last_checked remains the original source timestamp and must be valid/non-future. Legacy rows retain the prior fallback until normal publication. All unrelated source/count freshness checks remain. Live and Timing use TODAY independently while preserving the canonical Data fence and original retirement guards. [Release and normal-run evidence](../wef-shows/evidence/calendar-discovery-20261030/README.md).

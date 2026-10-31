@@ -1,0 +1,103 @@
+{
+  "records": [
+    {
+      "id": "recNKs86S27g79pl5",
+      "createdTime": "2026-10-29T14:05:13.000Z",
+      "cellValuesByFieldId": {
+        "fld5oeX8XMVUCgNYe": {
+          "id": "seli7KuBFi9JECgUl",
+          "name": "Unknown",
+          "color": "grayLight2"
+        },
+        "fld9jdMjDeWo2OQBi": 173,
+        "fldA41GJyjFTr5ZSA": "2026-10-30",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "recOAxMcqu1f75CQk",
+            "name": "15|200000076"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-30",
+        "fldbK4VEp3aNOdJlB": -1,
+        "fldc23g2swz3yqmJl": "2026-10-30T17:54:11.896Z",
+        "fldc5ZobyFB5GJlRO": 210,
+        "fldzCqzzIBuU4vkX1": "2026-10-30T17:50:42.168Z"
+      }
+    },
+    {
+      "id": "recV3qjf5oJAQW8SY",
+      "createdTime": "2026-10-29T14:05:22.000Z",
+      "cellValuesByFieldId": {
+        "fld5oeX8XMVUCgNYe": {
+          "id": "seli7KuBFi9JECgUl",
+          "name": "Unknown",
+          "color": "grayLight2"
+        },
+        "fld9jdMjDeWo2OQBi": 102,
+        "fldA41GJyjFTr5ZSA": "2026-10-31",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "recOAxMcqu1f75CQk",
+            "name": "15|200000076"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-31",
+        "fldbK4VEp3aNOdJlB": 0,
+        "fldc23g2swz3yqmJl": "2026-10-30T17:54:11.896Z",
+        "fldc5ZobyFB5GJlRO": 168,
+        "fldzCqzzIBuU4vkX1": "2026-10-30T13:58:47.078Z"
+      }
+    },
+    {
+      "id": "recohTvwKk7pDGnk1",
+      "createdTime": "2026-10-29T14:05:08.000Z",
+      "cellValuesByFieldId": {
+        "fld5oeX8XMVUCgNYe": {
+          "id": "seli7KuBFi9JECgUl",
+          "name": "Unknown",
+          "color": "grayLight2"
+        },
+        "fld9jdMjDeWo2OQBi": 0,
+        "fldA41GJyjFTr5ZSA": "2026-10-29",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "recOAxMcqu1f75CQk",
+            "name": "15|200000076"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-29",
+        "fldbK4VEp3aNOdJlB": -2,
+        "fldc23g2swz3yqmJl": "2026-10-30T17:54:11.896Z",
+        "fldc5ZobyFB5GJlRO": 0,
+        "fldzCqzzIBuU4vkX1": "2026-10-30T17:50:42.275Z"
+      }
+    },
+    {
+      "id": "recs1RPpDh6bGuHkY",
+      "createdTime": "2026-10-29T14:05:27.000Z",
+      "cellValuesByFieldId": {
+        "fld5oeX8XMVUCgNYe": {
+          "id": "seli7KuBFi9JECgUl",
+          "name": "Unknown",
+          "color": "grayLight2"
+        },
+        "fld9jdMjDeWo2OQBi": 90,
+        "fldA41GJyjFTr5ZSA": "2026-11-01",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "recOAxMcqu1f75CQk",
+            "name": "15|200000076"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000076|2026-11-01",
+        "fldbK4VEp3aNOdJlB": 1,
+        "fldc23g2swz3yqmJl": "2026-10-30T17:54:11.896Z",
+        "fldc5ZobyFB5GJlRO": 139,
+        "fldzCqzzIBuU4vkX1": "2026-10-30T13:38:26.029Z"
+      }
+    }
+  ],
+  "metadata": {
+    "totalRecordCount": 4
+  }
+}

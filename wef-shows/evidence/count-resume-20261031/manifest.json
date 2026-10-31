@@ -1,0 +1,26 @@
+[
+  {
+    "path": "wef-shows/day-source.js",
+    "sha256": "c212c2c1fc1bd226e20e214469051b3a2291c18432a075eef7a9c8e88d9ac0e6"
+  },
+  {
+    "path": "wef-shows/day-replay.py",
+    "sha256": "e94c5baaadb17f40db2507b300b4009a6334b35aa71e4492fae183c0ca2e8863"
+  },
+  {
+    "path": "wef-shows/show-days.js",
+    "sha256": "076f8e8a64f84c5d4b14b8b7d754d51db912a758ff540a9797de3932327b1747"
+  },
+  {
+    "path": "wef-shows/day-archive.js",
+    "sha256": "17b706949743f316bba2c6cad5b9ce166b10138d6613e4766ee7da4663597512"
+  },
+  {
+    "path": "wef-data/day_counts.py",
+    "sha256": "d6713187b78e50498fd77af614331169c7282ab8f31e5ebc2d4081261e83572e"
+  },
+  {
+    "path": "wef-data/archive_evidence.py",
+    "sha256": "9080d622a05769c360752ea93f62195db8060074570c0e3ea61d749a71921c1c"
+  }
+]

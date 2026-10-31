@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "run_id": "741d912f-bec2-42d7-8819-855a4d3b1c98",
+  "started": "2026-10-31T11:44:02.626Z",
+  "rows": 1,
+  "errors": [],
+  "archives": [
+    {
+      "at": "2026-10-31T11:44:06.472Z",
+      "kind": "run-logs",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\run-logs\\6f718181fe41c66cfff946707486219395e5ea1a7c45875d67d44f3d5ba2ecc8.json.gz",
+      "records": 1,
+      "sha256": "6f718181fe41c66cfff946707486219395e5ea1a7c45875d67d44f3d5ba2ecc8"
+    }
+  ],
+  "telemetry_errors": [],
+  "discovery": {
+    "timezone": "America/New_York",
+    "show": "Skipped",
+    "show_day": "Retained"
+  },
+  "discovery_ok": true,
+  "show_id": 200000076,
+  "selected_date": "2026-10-31",
+  "source_selected_date": "2026-10-30",
+  "next_show_check": "2026-11-02T03:00:00.000Z",
+  "summary": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-10-29 Skipped, 2026-10-30 Skipped, 2026-10-31 Unknown, 2026-11-01 Verified.",
+  "day_priority": {
+    "status": "Skipped",
+    "anchor": "2026-10-31"
+  },
+  "show_days": {
+    "ok": true,
+    "rows": 2,
+    "days": [
+      {
+        "date": "2026-10-29",
+        "status": "Skipped",
+        "retained": true,
+        "reason": "No newly saved eligible day; prior totals preserved"
+      },
+      {
+        "date": "2026-10-30",
+        "status": "Skipped",
+        "retained": true,
+        "reason": "No newly saved eligible day; prior totals preserved"
+      },
+      {
+        "date": "2026-10-31",
+        "status": "Unknown",
+        "record": "recV3qjf5oJAQW8SY",
+        "revision": "adaptive-2026-10-31T11:36:45.921404+00:00",
+        "digest": "78103698a476094ea1f84b39be93fcd89dcc21c8085d0d279831358453380fe9"
+      },
+      {
+        "date": "2026-11-01",
+        "status": "Verified",
+        "record": "recs1RPpDh6bGuHkY",
+        "revision": "adaptive-2026-10-31T11:40:43.912131+00:00",
+        "digest": "56ff67bab8091139948772ed80242231712455e7b9c89b1d110625160cd7a018"
+      }
+    ],
+    "errors": []
+  },
+  "error_records": [],
+  "observability": {
+    "sources": [
+      {
+        "key": "season-counts",
+        "at": "2026-10-31T11:44:16.994Z",
+        "result": "Success",
+        "error": "",
+        "successAt": "2026-10-31T11:44:17.360Z"
+      }
+    ],
+    "errors": [],
+    "ok": true,
+    "logging_errors": []
+  },
+  "completed": "2026-10-31T11:44:27.208Z"
+}

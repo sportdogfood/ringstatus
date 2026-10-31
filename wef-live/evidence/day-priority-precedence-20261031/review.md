@@ -1,0 +1,12 @@
+# Live day-priority and precedence review
+Review of actual preexisting runtime delta against Git HEAD, not a new writer summary. Owner approval October31: use Shows day-priority and verified Live overlap values includingzero, Data fallback, preserve links/logs, two normal runs.
+
+Inspected: publication-api.priorityZero exact show-day key/date/single native show link/numeric0/selected-date; publication.publish checks before Data inventory and again before each dispatch; existing TODAY/freshness guards and intent/readback stay intact. The actual Shows table is show-days tbl14MaCCDw6dAywH, verified via metadata; day-priority0 follows planning selected_date. Live collection remains calendarTODAY; Data overlay is restricted to corresponding priority0. No planningtomorrow acquisition.
+
+Overlap mapping is unchanged: only live-observation-json is written, no acquisition/native-link mutation. Zero/false survive property-presence parsing; missing remains null, not fabricatedzero. Existing acquiredData facts remain fallback; a later Data acquisition does not erase the Live overlay. This is publisher/storage verification, not a claim every external consumer implements effective selection. Timing source selection remains separatelyowned, no reader migration here.
+
+43 reviewer-executed targeted publication tests PASS including old regression and4new tests: priority missing/nonzero/duplicate/wrongidentity, mid-dispatchprioritychange, literalzero/false, Data source preservation and subsequentrefresh, replay no-op, expiry/matching/links/journal failures. target command/log in targeted-tests.json. Existing fixture lacked priorityZero and was updated to represent allowedcanonicalday; negative tests prove failclosed. No full suite or productcollector executed.
+
+No confirmed new defect in this narrow existing runtime delta. Review COMPLETE, candidate PASS within tested scope. Existing budgetdeferred/uncertain publications, unresolvedclass identities and logretentionstop are separate operational failures; no repairs authorized here. Six-minute dispatch scope unchanged; futuredate exclusion tested; natural rollover not claimed.
+
+No new runtime deployment necessary: installed code already contains reviewed guard. Record verified installed hashes, not a fictional deploy. Need two normal receipts, immutable write before/after proof preservinglinks/sourcefields, zero values and current Airtablereadback; partialruns must remain Partial.

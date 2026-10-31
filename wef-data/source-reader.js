@@ -24,10 +24,11 @@ async function read(route,params,{transport=fetchTextWithConfiguredTransport,tim
  const response=result.response;metric.http=response.status;metric.headers={};
  for(const name of ['content-type','cf-ray','server','x-rs-decoded']){const value=response.headers?.get(name);if(value)metric.headers[name]=String(value).slice(0,160);}
  finish();
- if(response.status!==200)return {ok:false,error:'Source HTTP '+response.status,metric};
- if(response.headers?.get('x-rs-decoded')!=='1')return {ok:false,error:'Source decoding not confirmed',metric};
- if(!Buffer.isBuffer(result.body))return {ok:false,error:'Original source bytes unavailable',metric};
- const body=result.body;metric.bytes=body.length;metric.sha256=crypto.createHash('sha256').update(body).digest('hex');
+ const body=Buffer.isBuffer(result.body)?result.body:null,capture={};
+ if(body){metric.bytes=body.length;metric.sha256=crypto.createHash('sha256').update(body).digest('hex');capture.body=body.toString('base64');}
+ if(response.status!==200)return {ok:false,error:'Source HTTP '+response.status,...capture,metric};
+ if(response.headers?.get('x-rs-decoded')!=='1')return {ok:false,error:'Source decoding not confirmed',...capture,metric};
+ if(!body)return {ok:false,error:'Original source bytes unavailable',metric};
  return {ok:true,body:body.toString('base64'),metric};
 }
 if(require.main===module){

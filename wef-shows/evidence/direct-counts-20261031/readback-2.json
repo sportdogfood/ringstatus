@@ -1,0 +1,206 @@
+{
+  "days": {
+    "records": [
+      {
+        "id": "recNKs86S27g79pl5",
+        "createdTime": "2026-10-29T14:05:13.000Z",
+        "cellValuesByFieldId": {
+          "fld5DPmWk34DYw9VK": "direct-proxy-counts-v1",
+          "fld5oeX8XMVUCgNYe": {
+            "id": "selIyCelEqNM5dp4n",
+            "name": "Verified",
+            "color": "grayLight2"
+          },
+          "fld9jdMjDeWo2OQBi": 173,
+          "fldA41GJyjFTr5ZSA": "2026-10-30",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-30",
+          "fldDZK4qhbAGc19i6": "{\"body\":{\"accepted-as-of\":\"2026-10-31T12:44:06.708Z\",\"completeness\":\"complete\",\"coverage\":\"competition-class-participation\",\"customer-id\":15,\"date\":\"2026-10-30\",\"day-key\":\"15|200000076|2026-10-30\",\"evidence\":{\"counted-class-count\":37,\"expected-class-count\":37,\"run-key\":\"8f67a445-62a1-449a-9920-fda6247662fb\",\"source\":\"direct-proxy\",\"state-sha256\":\"bfa7ee692d5c43deb86c4d9c85cb0fa5471bc21442a91c748256c281a87b4770\"},\"format\":\"wef-day-count-summary-v1\",\"policy-version\":\"direct-proxy-counts-v1\",\"proven-trip-count\":210,\"reasons\":[\"Scheduled competition-class counts; schooling and classless coverage is unproved.\"],\"show-key\":\"15|200000076\",\"unique-entry-count\":173,\"verified-at\":\"2026-10-31T12:44:15.130Z\"},\"sha256\":\"1d49786b901fac6134a45831225d2086a50b3ba7cc5c9f4c2aa7c18cad6c7291\"}",
+          "fldbK4VEp3aNOdJlB": -1,
+          "fldc23g2swz3yqmJl": "2026-10-31T12:44:15.130Z",
+          "fldc5ZobyFB5GJlRO": 210,
+          "fldzCqzzIBuU4vkX1": "2026-10-31T12:44:06.708Z"
+        }
+      },
+      {
+        "id": "recV3qjf5oJAQW8SY",
+        "createdTime": "2026-10-29T14:05:22.000Z",
+        "cellValuesByFieldId": {
+          "fld5DPmWk34DYw9VK": "direct-proxy-counts-v1",
+          "fld5oeX8XMVUCgNYe": {
+            "id": "selIyCelEqNM5dp4n",
+            "name": "Verified",
+            "color": "grayLight2"
+          },
+          "fld9jdMjDeWo2OQBi": 166,
+          "fldA41GJyjFTr5ZSA": "2026-10-31",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-31",
+          "fldDZK4qhbAGc19i6": "{\"body\":{\"accepted-as-of\":\"2026-10-31T12:44:06.709Z\",\"completeness\":\"complete\",\"coverage\":\"competition-class-participation\",\"customer-id\":15,\"date\":\"2026-10-31\",\"day-key\":\"15|200000076|2026-10-31\",\"evidence\":{\"counted-class-count\":70,\"expected-class-count\":70,\"run-key\":\"8f67a445-62a1-449a-9920-fda6247662fb\",\"source\":\"direct-proxy\",\"state-sha256\":\"bfa7ee692d5c43deb86c4d9c85cb0fa5471bc21442a91c748256c281a87b4770\"},\"format\":\"wef-day-count-summary-v1\",\"policy-version\":\"direct-proxy-counts-v1\",\"proven-trip-count\":271,\"reasons\":[\"Scheduled competition-class counts; schooling and classless coverage is unproved.\"],\"show-key\":\"15|200000076\",\"unique-entry-count\":166,\"verified-at\":\"2026-10-31T12:44:15.130Z\"},\"sha256\":\"ce3e7bc14ddbd1d2369f31e7686f677313758221d453453e7c62c7534e126219\"}",
+          "fldbK4VEp3aNOdJlB": 0,
+          "fldc23g2swz3yqmJl": "2026-10-31T12:44:15.130Z",
+          "fldc5ZobyFB5GJlRO": 271,
+          "fldzCqzzIBuU4vkX1": "2026-10-31T12:44:06.709Z"
+        }
+      },
+      {
+        "id": "recohTvwKk7pDGnk1",
+        "createdTime": "2026-10-29T14:05:08.000Z",
+        "cellValuesByFieldId": {
+          "fld5DPmWk34DYw9VK": "direct-proxy-counts-v1",
+          "fld5oeX8XMVUCgNYe": {
+            "id": "selIyCelEqNM5dp4n",
+            "name": "Verified",
+            "color": "grayLight2"
+          },
+          "fld9jdMjDeWo2OQBi": 0,
+          "fldA41GJyjFTr5ZSA": "2026-10-29",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-29",
+          "fldDZK4qhbAGc19i6": "{\"body\":{\"accepted-as-of\":\"2026-10-31T12:44:06.705Z\",\"completeness\":\"complete\",\"coverage\":\"competition-class-participation\",\"customer-id\":15,\"date\":\"2026-10-29\",\"day-key\":\"15|200000076|2026-10-29\",\"evidence\":{\"counted-class-count\":0,\"expected-class-count\":0,\"run-key\":\"8f67a445-62a1-449a-9920-fda6247662fb\",\"source\":\"direct-proxy\",\"state-sha256\":\"bfa7ee692d5c43deb86c4d9c85cb0fa5471bc21442a91c748256c281a87b4770\"},\"format\":\"wef-day-count-summary-v1\",\"policy-version\":\"direct-proxy-counts-v1\",\"proven-trip-count\":0,\"reasons\":[\"Scheduled competition-class counts; schooling and classless coverage is unproved.\"],\"show-key\":\"15|200000076\",\"unique-entry-count\":0,\"verified-at\":\"2026-10-31T12:44:15.129Z\"},\"sha256\":\"a0073b231e58ab7ffe9f1a3b2abea6696cb62d43e1361ddad1d6df7522d34d4f\"}",
+          "fldbK4VEp3aNOdJlB": -2,
+          "fldc23g2swz3yqmJl": "2026-10-31T12:44:15.129Z",
+          "fldc5ZobyFB5GJlRO": 0,
+          "fldzCqzzIBuU4vkX1": "2026-10-31T12:44:06.705Z"
+        }
+      },
+      {
+        "id": "recs1RPpDh6bGuHkY",
+        "createdTime": "2026-10-29T14:05:27.000Z",
+        "cellValuesByFieldId": {
+          "fld5DPmWk34DYw9VK": "direct-proxy-counts-v1",
+          "fld5oeX8XMVUCgNYe": {
+            "id": "selIyCelEqNM5dp4n",
+            "name": "Verified",
+            "color": "grayLight2"
+          },
+          "fld9jdMjDeWo2OQBi": 108,
+          "fldA41GJyjFTr5ZSA": "2026-11-01",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-11-01",
+          "fldDZK4qhbAGc19i6": "{\"body\":{\"accepted-as-of\":\"2026-10-31T12:44:06.710Z\",\"completeness\":\"complete\",\"coverage\":\"competition-class-participation\",\"customer-id\":15,\"date\":\"2026-11-01\",\"day-key\":\"15|200000076|2026-11-01\",\"evidence\":{\"counted-class-count\":118,\"expected-class-count\":118,\"run-key\":\"8f67a445-62a1-449a-9920-fda6247662fb\",\"source\":\"direct-proxy\",\"state-sha256\":\"bfa7ee692d5c43deb86c4d9c85cb0fa5471bc21442a91c748256c281a87b4770\"},\"format\":\"wef-day-count-summary-v1\",\"policy-version\":\"direct-proxy-counts-v1\",\"proven-trip-count\":164,\"reasons\":[\"Scheduled competition-class counts; schooling and classless coverage is unproved.\"],\"show-key\":\"15|200000076\",\"unique-entry-count\":108,\"verified-at\":\"2026-10-31T12:44:15.130Z\"},\"sha256\":\"16fd3590f8de9e2501318afb14e0f943dcf8d7f9438452b1635f04bed1c0cbce\"}",
+          "fldbK4VEp3aNOdJlB": 1,
+          "fldc23g2swz3yqmJl": "2026-10-31T12:44:15.130Z",
+          "fldc5ZobyFB5GJlRO": 164,
+          "fldzCqzzIBuU4vkX1": "2026-10-31T12:44:06.710Z"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 4
+    }
+  },
+  "run_log": {
+    "records": [
+      {
+        "id": "recvXbNJ0vKdHazro",
+        "createdTime": "2026-10-31T12:44:06.000Z",
+        "cellValuesByFieldId": {
+          "fld07ih8s9e3RtG5Z": "2026-10-31T12:44:02.759Z",
+          "fld5s9CfuFWHAmR7O": "Success",
+          "fldBuinqICo2okCwB": 1,
+          "fldEBH94TwKZf0ksV": 200000076,
+          "fldKx4JQgSbblmXZO": [
+            {
+              "id": "reckeakgTTSfskjvA",
+              "name": "direct-day-counts"
+            }
+          ],
+          "fldM8fmb7yMTer7qA": "8f67a445-62a1-449a-9920-fda6247662fb",
+          "fldi7V6lrDYhD0GL0": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-10-29 Verified, 2026-10-30 Verified, 2026-10-31 Verified, 2026-11-01 Verified.",
+          "fldtU7Vxn21teQB8V": "2026-10-31T12:44:41.066Z",
+          "fldwMbY6c0Ij4v89Z": 0
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "heartbeat": {
+    "records": [
+      {
+        "id": "recCpv3iPc1R8eAqX",
+        "createdTime": "2026-10-23T14:34:12.000Z",
+        "cellValuesByFieldId": {
+          "fld9jjnU8WuSUP0M4": 200000076,
+          "fldY5Ura2oIBQLrJI": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-10-29 Verified, 2026-10-30 Verified, 2026-10-31 Verified, 2026-11-01 Verified.",
+          "fldpDEq7ZjX8yit38": "WEF-default",
+          "fldtXUpsn3QYXrnfN": "Success",
+          "fldtrSDNqW7hGL0fq": "2026-10-31T12:44:41.066Z",
+          "fldzP95LOJ5cvdgcb": "2026-10-31"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "sources": {
+    "records": [
+      {
+        "id": "rec8pwcOzXDi0sjMO",
+        "createdTime": "2026-10-29T17:10:47.000Z",
+        "cellValuesByFieldId": {
+          "fldRayFRe3paZR4FX": "Success",
+          "fldi4jHgIW6ViSiAu": "season-counts",
+          "fldkXAnCIqZYbDFt7": "2026-10-31T12:34:09.542Z",
+          "fldlxOBpP58BeVi0x": "2026-10-31T12:34:08.832Z"
+        }
+      },
+      {
+        "id": "recVO4bhoqfHSWBGn",
+        "createdTime": "2026-10-29T17:10:47.000Z",
+        "cellValuesByFieldId": {
+          "fldRayFRe3paZR4FX": "Success",
+          "fldi4jHgIW6ViSiAu": "default-ring",
+          "fldkXAnCIqZYbDFt7": "2026-10-30T22:14:16.483Z",
+          "fldlxOBpP58BeVi0x": "2026-10-30T22:14:16.118Z"
+        }
+      },
+      {
+        "id": "recijgxkbeqk66BqB",
+        "createdTime": "2026-10-29T17:10:47.000Z",
+        "cellValuesByFieldId": {
+          "fldRayFRe3paZR4FX": "Success",
+          "fldi4jHgIW6ViSiAu": "default-schedule",
+          "fldkXAnCIqZYbDFt7": "2026-10-30T22:59:14.960Z",
+          "fldlxOBpP58BeVi0x": "2026-10-30T22:59:14.750Z"
+        }
+      },
+      {
+        "id": "reckeakgTTSfskjvA",
+        "createdTime": "2026-10-31T12:39:52.000Z",
+        "cellValuesByFieldId": {
+          "fldRayFRe3paZR4FX": "Success",
+          "fldi4jHgIW6ViSiAu": "direct-day-counts",
+          "fldkXAnCIqZYbDFt7": "2026-10-31T12:44:15.130Z",
+          "fldlxOBpP58BeVi0x": "2026-10-31T12:44:06.703Z"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 4
+    }
+  }
+}

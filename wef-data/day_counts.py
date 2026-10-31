@@ -163,3 +163,33 @@ def accepted_summaries(head,runs,collections,context):
         wanted=len(summary_dates(context))
         if len(accepted)!=wanted or len({e['body']['day-key'] for e in accepted})!=wanted:raise ValueError('Incomplete summary day set')
     return accepted
+
+
+def saved_day_summaries(runtime,context):
+    """Shows reads the latest saved day only; no predecessor replay or writes."""
+    import pathlib
+    from archive_evidence import EvidenceStore
+    root=pathlib.Path(runtime).resolve();heads=root/'day-heads'
+    if not heads.exists():return None
+    store=EvidenceStore(root/'retained-evidence',root/'archive-repository');output=[]
+    for day in context['canonical-days']:
+        if not context['start-date'][:10]<=day<=context['end-date'][:10]:raise ValueError('Count day outside canonical show')
+        if day<context['selected-date'][:10]:continue
+        offset=(datetime.date.fromisoformat(day)-datetime.date.fromisoformat(context['selected-date'][:10])).days
+        if offset>3:continue
+        head=heads/context['show-key'].replace('|','-')/(day+'.json')
+        if not head.exists():continue
+        pointer=json.loads(head.read_text(encoding='utf-8'));path=(root/pointer['path']).resolve()
+        if not path.is_relative_to(root):raise ValueError('Day receipt outside runtime')
+        body=json.loads(path.read_text(encoding='utf-8'))
+        if digest(packed(body))!=pointer['sha256'] or body.get('format')!='wef-data-day-save-v1':raise ValueError('Day receipt changed')
+        state=body['state'];authority=state.get('authority',[])
+        if state['show-key']!=context['show-key'] or state.get('publication-day')!=day or state.get('phase')!='Complete' or state.get('pending') or state.get('day-work') and day in state['day-work']:raise ValueError('Unfinished/wrong day receipt')
+        if authority[:3]!=[context[k] for k in ('show-key','start-date','end-date')]:raise ValueError('Count receipt authority changed')
+        rows={ref['key']:store.read(ref) for ref in state['observations']}
+        units=retained_units(state,rows)
+        value=summaries({**context,'canonical-days':[day]},units,body['run-key'],None,state['completed'])[0]['body']
+        value={k:v for k,v in value.items() if k not in ('memberships','input-collections')}
+        value['evidence']={'run-key':body['run-key'],'state-sha256':pointer['sha256'],'storage':'wef-data-day-save-v1','receipt':pointer['path']}
+        output.append(value)
+    return {'mode':'saved-day','days':output}
