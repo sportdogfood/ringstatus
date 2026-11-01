@@ -1,0 +1,199 @@
+[
+  {
+    "definition": {
+      "name": "Results — trips created",
+      "description": "Source alert: create qualifying X/Y results in snapshot and mark their expectation Complete; flag conflicts. No source changes.",
+      "trigger": {
+        "type": "recordCreated",
+        "inputs": {
+          "tableId": "tbldT7olKPcKlIIWx"
+        }
+      },
+      "config": {
+        "mode": "event",
+        "source": "wef-data.trips",
+        "recordId": {
+          "$ref": "trigger",
+          "path": [
+            "id"
+          ]
+        }
+      }
+    },
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wflwxdcMXfkhNnQyT",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wflwxdcMXfkhNnQyT",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "definition": {
+      "name": "Results — trips changed",
+      "description": "Source alert: create qualifying X/Y results in snapshot and mark their expectation Complete; flag conflicts. No source changes.",
+      "trigger": {
+        "type": "recordUpdated",
+        "inputs": {
+          "tableId": "tbldT7olKPcKlIIWx",
+          "watchFields": [
+            "fldsecCydYT3VXask",
+            "fldAX6qnRVS9eqPHX",
+            "fldbZt784U1kUC3C9",
+            "fldLcX5h985NUxZ5R",
+            "fld0TV8EVZ5SM6S11",
+            "fldLB8jampv0L6PXC",
+            "fldI9Cd98bSDH35pG",
+            "fldxRO6fxlwf1SIm5",
+            "fldStkm0OO860jI22"
+          ]
+        }
+      },
+      "config": {
+        "mode": "event",
+        "source": "wef-data.trips",
+        "recordId": {
+          "$ref": "trigger",
+          "path": [
+            "id"
+          ]
+        }
+      }
+    },
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wfl8tZCyB83OBtpDr",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wfl8tZCyB83OBtpDr",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "definition": {
+      "name": "Results — results created",
+      "description": "Source alert: create qualifying X/Y results in snapshot and mark their expectation Complete; flag conflicts. No source changes.",
+      "trigger": {
+        "type": "recordCreated",
+        "inputs": {
+          "tableId": "tbljKNTCoDG7Z3q6O"
+        }
+      },
+      "config": {
+        "mode": "event",
+        "source": "wef-data.results",
+        "recordId": {
+          "$ref": "trigger",
+          "path": [
+            "id"
+          ]
+        }
+      }
+    },
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wfltMpaxfnlR2AMUB",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wfltMpaxfnlR2AMUB",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "definition": {
+      "name": "Results — results changed",
+      "description": "Source alert: create qualifying X/Y results in snapshot and mark their expectation Complete; flag conflicts. No source changes.",
+      "trigger": {
+        "type": "recordUpdated",
+        "inputs": {
+          "tableId": "tbljKNTCoDG7Z3q6O",
+          "watchFields": [
+            "fldtbvwbv25xO4dus",
+            "fld4K3pC1N1WHMmX3",
+            "fldJTvbHl1Uz2w4jz",
+            "fldeZBJ7cF13RTUNf",
+            "fldADqgze3gmjh39X",
+            "fldIDSpwfAY40TFud",
+            "fld7dE878hT0lNRRq",
+            "fld6yce5foXYxZ52u",
+            "fldouhPyTO4vEMWMt",
+            "fld0GBeEzamg09NIL",
+            "fldZqxfLFrSQcH2xJ",
+            "fldClXu7zQhKTOa15",
+            "flduTcMeeIgU7Z7BX",
+            "fldLscB1n7suViLyX",
+            "fld606UBtBSTbHeNz",
+            "fldonI95bUfNmmRfP",
+            "fldx1BjW9vZrriU7y",
+            "fldiYSsehU1DOniUL",
+            "fldsQ3uFW43aBAFWg",
+            "fldDoYlcBDRG3iwPL",
+            "fldPLcfLRvmFr5ool",
+            "fldxRIEVl2mzhSjmy",
+            "flds4ijRfUGOMiHyy",
+            "fldSCaj4Pt94NcJH7",
+            "fldbAg5NfUZpfERol",
+            "fld93yJHViyAvukTO",
+            "fldPg81w3DHo4nXzx"
+          ]
+        }
+      },
+      "config": {
+        "mode": "event",
+        "source": "wef-data.results",
+        "recordId": {
+          "$ref": "trigger",
+          "path": [
+            "id"
+          ]
+        }
+      }
+    },
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wflrVQtNEheJV3McU",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wflrVQtNEheJV3McU",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "definition": {
+      "name": "Results — reconcile Expected / Complete / Conflict",
+      "description": "Every ten minutes, organize priority-zero expectations and identify duplicates/inconsistencies. Never create X/Y result records, delete records or repair source data.",
+      "trigger": {
+        "type": "cron",
+        "inputs": {
+          "type": "minutely",
+          "config": {
+            "width": 10
+          },
+          "start": "2026-11-01T18:00:18Z"
+        }
+      },
+      "config": {
+        "mode": "reconcile"
+      }
+    },
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wflqhnoFBMPmbRRyI",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wflqhnoFBMPmbRRyI",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  }
+]

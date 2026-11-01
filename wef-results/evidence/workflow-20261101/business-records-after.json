@@ -1,0 +1,66 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "snapshot",
+      "result": {
+        "content": [],
+        "structuredContent": {
+          "records": [],
+          "metadata": {
+            "totalRecordCount": 0
+          }
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "run-logs",
+      "result": {
+        "content": [],
+        "structuredContent": {
+          "records": [],
+          "metadata": {
+            "totalRecordCount": 0
+          }
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "heartbeat",
+      "result": {
+        "content": [],
+        "structuredContent": {
+          "records": [],
+          "metadata": {
+            "totalRecordCount": 0
+          }
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "errs-log",
+      "result": {
+        "content": [],
+        "structuredContent": {
+          "records": [],
+          "metadata": {
+            "totalRecordCount": 0
+          }
+        },
+        "isError": false
+      }
+    }
+  }
+]

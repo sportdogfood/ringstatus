@@ -1,0 +1,151 @@
+{
+  "at": "2026-11-01T17:25:17.950212+00:00",
+  "run_ids": {
+    "groups": "872f6535-4d46-46cc-9925-fe4fa3a6dc14",
+    "rings": "fe3a6bef-6547-41cd-aa7d-6e38699b67ba",
+    "classes": "27f9191e-2103-4315-bc90-d98943745020"
+  },
+  "source_counts": {
+    "groups": 25,
+    "class_appearances": 43,
+    "unique_classes": 41
+  },
+  "memberships": {
+    "groups": {
+      "Active": 25,
+      "Absent": 2
+    },
+    "appearances": {
+      "Active": 43
+    }
+  },
+  "appearance_ids": {
+    "200000076|2026-11-01|200028392|200030603": "rec0T8gWkqPooZxYR",
+    "200000076|2026-11-01|200028411|200030617": "rec2gYqbNVyVPorHl",
+    "200000076|2026-11-01|200028410|200030701": "rec5Dp2U3hS5Z6B3P",
+    "200000076|2026-11-01|200028402|200030660": "rec7q5oVinSOFR6Tl",
+    "200000076|2026-11-01|200028348|200030771": "rec89zc1IQMomTFck",
+    "200000076|2026-11-01|200028411|200030830": "rec9CrzwGNA6UhGfc",
+    "200000076|2026-11-01|200028402|200030659": "recE5lI8TFyKGgEbb",
+    "200000076|2026-11-01|200028346|200030826": "recFaoO3VLUajhzCA",
+    "200000076|2026-11-01|200028347|200030779": "recGEg5lb4hPr7Pb5",
+    "200000076|2026-11-01|200028344|200030823": "recIa9N0rclbWgZn5",
+    "200000076|2026-11-01|200028410|200030613": "recMSjqdbJASGpEmV",
+    "200000076|2026-11-01|200028410|200030830": "recMjFj2O5atD8Dwu",
+    "200000076|2026-11-01|200028362|200030759": "recNS7MeKMmt29vid",
+    "200000076|2026-11-01|200028411|200030618": "recOTlqog3OevJaT8",
+    "200000076|2026-11-01|200028406|200030638": "recQ8lwK6teqtxHiw",
+    "200000076|2026-11-01|200028358|200030808": "recRfSOcbLoAyST9a",
+    "200000076|2026-11-01|200028402|200030697": "recRz51z7bO8TJ5ZB",
+    "200000076|2026-11-01|200028411|200030701": "recUFI9Q8ysCV21gl",
+    "200000076|2026-11-01|200028363|200030811": "recUO1jUIFyTEIigF",
+    "200000076|2026-11-01|200028389|200030589": "recVybSmkeuO8ruRm",
+    "200000076|2026-11-01|200028405|200030647": "recWPti5599YgVNNW",
+    "200000076|2026-11-01|200028368|200030803": "recaUdxjDvrhpqPP2",
+    "200000076|2026-11-01|200028406|200030639": "recarHQ0agkv7DyuD",
+    "200000076|2026-11-01|200028357|200030746": "recb6bs3jbUeF4GuT",
+    "200000076|2026-11-01|200028364|200030762": "reccRFJywneBLESLf",
+    "200000076|2026-11-01|200028389|200030588": "reccgVuxUKJ89jxsF",
+    "200000076|2026-11-01|200028405|200030699": "recejiYSz6yrVRf5f",
+    "200000076|2026-11-01|200028392|200030604": "recfQwITFWnJpvXaG",
+    "200000076|2026-11-01|200028345|200030789": "rechDfzTD2L1bahtM",
+    "200000076|2026-11-01|200028384|200030718": "rechULX3jFNrNRfqA",
+    "200000076|2026-11-01|200028349|200030820": "reciDKTuo9R8e6rpQ",
+    "200000076|2026-11-01|200028359|200030749": "recirXOLGckPrifG5",
+    "200000076|2026-11-01|200028359|200030752": "reckXUCeBkQZlw4jN",
+    "200000076|2026-11-01|200028351|200030765": "reclOJyqGznQ2WjFQ",
+    "200000076|2026-11-01|200028410|200030614": "recnJhi881axqPk6K",
+    "200000076|2026-11-01|200028353|200030799": "recoC4NPHSdpnFjVt",
+    "200000076|2026-11-01|200028405|200030648": "recqL6IC0FBsG3dax",
+    "200000076|2026-11-01|200028392|200030676": "recrTH6Dwa6edrtem",
+    "200000076|2026-11-01|200028343|200030777": "rect6Mwgu5MUldehy",
+    "200000076|2026-11-01|200028406|200030678": "recvC3M568re0gLTP",
+    "200000076|2026-11-01|200028350|200030768": "recy7lx8VJPe4QGg8",
+    "200000076|2026-11-01|200028357|200030743": "recz9RHO9P3YjQn8v",
+    "200000076|2026-11-01|200028389|200030685": "reczvgOqsmGI0Q6vL"
+  },
+  "multi_group": {
+    "200030701": [
+      {
+        "appearance_key": "200000076|2026-11-01|200028410|200030701",
+        "id": "rec5Dp2U3hS5Z6B3P",
+        "group": [
+          "recnmkLpf4AYHpLiF"
+        ],
+        "class": [
+          "recyNYriIcM07cIBt"
+        ]
+      },
+      {
+        "appearance_key": "200000076|2026-11-01|200028411|200030701",
+        "id": "recUFI9Q8ysCV21gl",
+        "group": [
+          "recx0VMFDeOWcpSN2"
+        ],
+        "class": [
+          "recyNYriIcM07cIBt"
+        ]
+      }
+    ],
+    "200030830": [
+      {
+        "appearance_key": "200000076|2026-11-01|200028411|200030830",
+        "id": "rec9CrzwGNA6UhGfc",
+        "group": [
+          "recx0VMFDeOWcpSN2"
+        ],
+        "class": [
+          "recKNEhBfIA7k7j4o"
+        ]
+      },
+      {
+        "appearance_key": "200000076|2026-11-01|200028410|200030830",
+        "id": "recMjFj2O5atD8Dwu",
+        "group": [
+          "recnmkLpf4AYHpLiF"
+        ],
+        "class": [
+          "recKNEhBfIA7k7j4o"
+        ]
+      }
+    ]
+  },
+  "verification": "PASS",
+  "preservation": {
+    "ids_checked": 267,
+    "durable_links_checked": 987,
+    "errors": []
+  },
+  "errs": [
+    {
+      "message": "No decoded identity for trip 200400023",
+      "class_id": 200030779,
+      "trip_id": 200400023
+    },
+    {
+      "message": "No decoded identity for trip 200399616",
+      "class_id": 200030685,
+      "trip_id": 200399616
+    },
+    {
+      "message": "No decoded identity for trip 200399341",
+      "class_id": 200030808,
+      "trip_id": 200399341
+    },
+    {
+      "message": "No decoded identity for trip 200399094",
+      "class_id": 200030811,
+      "trip_id": 200399094
+    },
+    {
+      "message": "No decoded identity for trip 200399914",
+      "class_id": 200030762,
+      "trip_id": 200399914
+    },
+    {
+      "message": "No decoded identity for trip 200399164",
+      "class_id": 200030701,
+      "trip_id": 200399164
+    }
+  ]
+}

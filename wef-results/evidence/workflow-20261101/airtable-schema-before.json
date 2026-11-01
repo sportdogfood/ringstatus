@@ -1,0 +1,1404 @@
+{
+  "base": "appK9IX59jFwUkB2u",
+  "tables": [
+    {
+      "id": "tblwBvigcmqRlSYUb",
+      "name": "meta",
+      "primaryFieldId": "fld0Nf0WaJ2MloqqX",
+      "fields": [
+        {
+          "id": "fld0Nf0WaJ2MloqqX",
+          "name": "Name",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tblXVlQ8VGETl8RLB",
+      "name": "run-logs",
+      "description": "Results-owned run-logs; no collector activation or source writes.",
+      "primaryFieldId": "fldKza8XQ05TN8RNG",
+      "fields": [
+        {
+          "id": "fldKza8XQ05TN8RNG",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldy4NBiZ4ZwR8In0",
+          "name": "started",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldx1bBf5EXnRw4mL",
+          "name": "completed",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldnSgjDFVXsWz9am",
+          "name": "result",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldUIZ85QRccLaBrA",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldBbCHWaA4WPJBRf",
+          "name": "class-count",
+          "type": "number"
+        },
+        {
+          "id": "flds8zSj5uOd4TKi5",
+          "name": "ready-count",
+          "type": "number"
+        },
+        {
+          "id": "fldXuagoHre7fZTwc",
+          "name": "changed-count",
+          "type": "number"
+        },
+        {
+          "id": "fldAYrTPji8CLE2DD",
+          "name": "summary",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldNMqzo6zqF8qlt0",
+          "name": "errors",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tbld5k6m2wiKjy3pY",
+      "name": "heartbeat",
+      "description": "Results-owned heartbeat; no collector activation or source writes.",
+      "primaryFieldId": "fld0xv8MoaX81PcSD",
+      "fields": [
+        {
+          "id": "fld0xv8MoaX81PcSD",
+          "name": "heartbeat-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld9g20G2iLQQge6y",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld4RCWVfdVD3ADkH",
+          "name": "started",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldlhsv2AQiBrY1qk",
+          "name": "completed",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldLkr7CLFZaQUwDo",
+          "name": "checked-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldsbn7JvzDYud1WM",
+          "name": "last-success",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldMUOQ36mZd0dS0C",
+          "name": "result",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldzUXO1Z6I1aDbBl",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldKRl4QnInMet3Ft",
+          "name": "summary",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldAgHIACXFObYjqY",
+          "name": "errors",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tbllVvYbHdcAKmFzG",
+      "name": "errs-log",
+      "description": "Results-owned errs-log; no collector activation or source writes.",
+      "primaryFieldId": "fldDVYDrt6kgiGuvW",
+      "fields": [
+        {
+          "id": "fldDVYDrt6kgiGuvW",
+          "name": "error-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldmeuAe7yeEt8un2",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldeyDMTZcRuyl7W1",
+          "name": "occurred-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldtJ3oVMQKKSeYZ1",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldtNIr2AfExtePkz",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld68Jw2jkf0i5k9f",
+          "name": "err-class",
+          "type": "number"
+        },
+        {
+          "id": "fldnxf3QsgUJP9MVs",
+          "name": "message",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tbl0p1Me0zVdz1pzF",
+      "name": "code-reviews",
+      "description": "Results-owned code-reviews; no collector activation or source writes.",
+      "primaryFieldId": "fldaC7vAvVhFg88Qs",
+      "fields": [
+        {
+          "id": "fldaC7vAvVhFg88Qs",
+          "name": "routine",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldk3HlMhvrhv1Upw",
+          "name": "last-review",
+          "type": "date"
+        },
+        {
+          "id": "fldbW4DjvSOg3rKST",
+          "name": "last-result",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld1D3YCIzwIKyzqL",
+          "name": "next-review",
+          "type": "date"
+        },
+        {
+          "id": "fld9eLbhQzp47eQOm",
+          "name": "cadence",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldtooDwLRr2Rttha",
+          "name": "notes",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tblraM6Oo9pxUxKzV",
+      "name": "snapshot",
+      "description": "Results-owned class snapshots from existing Data evidence. Live is advisory. Task not activated.",
+      "primaryFieldId": "fldHtFXdUkhE1i9ip",
+      "fields": [
+        {
+          "id": "fldHtFXdUkhE1i9ip",
+          "name": "snapshot-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldQ7keT0IKbOJeTo",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldiywszJ6dHFFqim",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldknAK1CdjNqxYvF",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld0PCKe9ZVC3T7CG",
+          "name": "ring-number",
+          "type": "number"
+        },
+        {
+          "id": "fld28Vy5pBbUVODt1",
+          "name": "class-id",
+          "type": "number"
+        },
+        {
+          "id": "fldM3W0sHGRERDN2D",
+          "name": "class-number",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldwbvyHyX1Eif2rr",
+          "name": "class-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldW6uUIv28TjZ4ly",
+          "name": "class-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldY5OfsOjHTQsCJz",
+          "name": "check-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldEgZpzxkZgGVVJa",
+          "name": "check-reason",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldkYKXIMkiOvjGLt",
+          "name": "checked-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldzPmfPyTYHURH0c",
+          "name": "checked-run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldhwxN6RwZIYh1Ud",
+          "name": "source-observed-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldbzBH8tQlWPe90k",
+          "name": "accepted-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldS5awNkfmIXQzWp",
+          "name": "finality",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldKwkJNZtz5icWTh",
+          "name": "content-hash",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldGTrEg6fOvVmIYK",
+          "name": "previous-hash",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldlOgwiv3C44PZXh",
+          "name": "revision-number",
+          "type": "number"
+        },
+        {
+          "id": "fldp14mkaqrYBmJKA",
+          "name": "result-count",
+          "type": "number"
+        },
+        {
+          "id": "fldSXOAOQt703j6Ms",
+          "name": "results-verified",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldG98R5Ov5djQGcT",
+          "name": "show-results",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldWh7v1pZffL68Ci",
+          "name": "results-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld4naLYWtrVX8qOt",
+          "name": "phase-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldduIqyRBrF05YFb",
+          "name": "source-evidence-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldG89TNevWzqLOBe",
+          "name": "check-evidence-json",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "id": "tblsP48ycBHbSyJlZ",
+      "name": "wef-live.entries",
+      "primaryFieldId": "fldDWfmbXXRXJFIYl",
+      "fields": [
+        {
+          "id": "fldDWfmbXXRXJFIYl",
+          "name": "live-entry-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldVJ3I4210Dd4NTq",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldSNWKokUc0G55vM",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldBQ7CurU30vYX1t",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldHaojrIdDSl2dXU",
+          "name": "last-seen",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldEebYiM2IgiQ7lM",
+          "name": "source-updated-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld4E3TaXEBtaBCR9",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldkxs14s7TpYpknp",
+          "name": "trip-id",
+          "type": "number"
+        },
+        {
+          "id": "fldhYEERQ00kwQfcD",
+          "name": "entry-id",
+          "type": "number"
+        },
+        {
+          "id": "fldyrSznk0GKFtA7K",
+          "name": "entry-number",
+          "type": "number"
+        },
+        {
+          "id": "fldfkPctRkaYAHbuQ",
+          "name": "horse-id",
+          "type": "number"
+        },
+        {
+          "id": "fldmXwdRxl5Rp5pPo",
+          "name": "horse-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldU1KCQ8sVKLgQ19",
+          "name": "rider-id",
+          "type": "number"
+        },
+        {
+          "id": "fld5iAkWvIYLpA47n",
+          "name": "rider-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldLRfBzYwDIwItE3",
+          "name": "trainer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldUxnFfLSoKQOf0Q",
+          "name": "trainer-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldm6W3cQkDuuKfGV",
+          "name": "entry-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldSbn0RNhRmVSYgf",
+          "name": "order-of-go",
+          "type": "number"
+        },
+        {
+          "id": "fldlSMXKeEDxmcT7m",
+          "name": "actual-order",
+          "type": "number"
+        },
+        {
+          "id": "fldifgWLYSks9ylFk",
+          "name": "scratch",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldPorbTfJw4Amvdw",
+          "name": "gone",
+          "type": "number"
+        },
+        {
+          "id": "fldDZwGNppFcmnaEf",
+          "name": "position",
+          "type": "number"
+        },
+        {
+          "id": "fldc1cNHEeJfDQVh9",
+          "name": "class",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldsMjJ4rkEGO5YIM",
+          "name": "collection",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldfXqNqAgfQ0vM84",
+          "name": "entry",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldIAwXE1n7cyp7tw",
+          "name": "participation-link-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldDdvW8foWdIuAEG",
+          "name": "participation-link-reason",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldR7IGnH9Rvz1kDz",
+          "name": "participation-checked-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldSApwP6N6Q1DgZj",
+          "name": "participation-verified-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldyEUHL1AyInZIGi",
+          "name": "scope-status",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tblaXpRa45cak5I5Q",
+      "name": "wef-live.classes",
+      "primaryFieldId": "fldb56ISoXfktKpu4",
+      "fields": [
+        {
+          "id": "fldb56ISoXfktKpu4",
+          "name": "class-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "flduiLsfXGWSn7WWH",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldp5uU8kn2X2TY2T",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldFyMWZSogmOS0Ge",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldVinI3DdZ8Aogc2",
+          "name": "last-seen",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldl8CJBZ8zlpHD4E",
+          "name": "source-updated-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldL4XYFEaY34YtuU",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldVAQEptPSFGM4TE",
+          "name": "class-id",
+          "type": "number"
+        },
+        {
+          "id": "fldXtSnJtJfDRWJEV",
+          "name": "class-number",
+          "type": "number"
+        },
+        {
+          "id": "fldlHpCM8FLhnwYu2",
+          "name": "class-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldDCCSY74jYc5FMt",
+          "name": "detail-available",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldrDNxiU6sL4gMks",
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "id": "fldAELBhy5G1ooPjl",
+          "name": "gone",
+          "type": "number"
+        },
+        {
+          "id": "fldXdDdr6wYUdEd4m",
+          "name": "jo-gone",
+          "type": "number"
+        },
+        {
+          "id": "fldyhrgvRnwWNLIK8",
+          "name": "r2-gone",
+          "type": "number"
+        },
+        {
+          "id": "fldgCuc1fCRufyErR",
+          "name": "current-trip-id",
+          "type": "number"
+        },
+        {
+          "id": "fldrmnZ7wH2IFnk3g",
+          "name": "live-groups",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldQrljfBEVcGl7rR",
+          "name": "groups",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fld1xlhGLoa6ArYyf",
+          "name": "ring",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldWX4mo3AO5rncdx",
+          "name": "schedules",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldrNVh19NXZeKjt4",
+          "name": "collection",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldN2NXvTuEd2bfXY",
+          "name": "live-entries",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldsDfoWBWKOGD9T2",
+          "name": "scope-status",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tbles7z8gVwOKK1DM",
+      "name": "wef-live.groups",
+      "primaryFieldId": "fldJxk25bjEPFHiOz",
+      "fields": [
+        {
+          "id": "fldJxk25bjEPFHiOz",
+          "name": "group-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldV5VS1etUEpEHFu",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldEN7n8QSplW5Dqi",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldVVeHTeWZkzYHGj",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldCu6YC9uFgmfeXt",
+          "name": "last-seen",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldBuxCSJXGJMBG6G",
+          "name": "source-updated-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldKBfIokpD9gFyyZ",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldKJYPGZVrdUTeOb",
+          "name": "class-group-id",
+          "type": "number"
+        },
+        {
+          "id": "fldapeAPViWbhJPFn",
+          "name": "group-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldff6aIZxeuVeVoD",
+          "name": "group-sequence",
+          "type": "number"
+        },
+        {
+          "id": "fldXcCuLRPABjMdwd",
+          "name": "status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld5goOt5OSgumkco",
+          "name": "is-live",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldn7zvdOL0XiIeQG",
+          "name": "has-json",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldyMSfpqNlkVQznJ",
+          "name": "estimated-start-time",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldcV3V4UvUbyjJAn",
+          "name": "total",
+          "type": "number"
+        },
+        {
+          "id": "fldvPGp0Rdc7ZvMSx",
+          "name": "gone",
+          "type": "number"
+        },
+        {
+          "id": "fldwfB2MBfLeFCwwG",
+          "name": "jo-total",
+          "type": "number"
+        },
+        {
+          "id": "fldlUGDmt9ycgf3Wv",
+          "name": "jo-gone",
+          "type": "number"
+        },
+        {
+          "id": "fldl7TMwc8EpZDkJ3",
+          "name": "r2-total",
+          "type": "number"
+        },
+        {
+          "id": "fld5a7sjcnCOOxBEJ",
+          "name": "r2-gone",
+          "type": "number"
+        },
+        {
+          "id": "fldN1I7HbPoNcGzVs",
+          "name": "current-in-ring",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldrEDlmwg95HE433",
+          "name": "next-in-ring",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldVpHrNBcEwBHcHI",
+          "name": "completed-in-ring",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldAuDti4qhyNWFMK",
+          "name": "ring",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldsq6XDrDe8Xd7y2",
+          "name": "classes",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldYWd4A8YUzLVMo7",
+          "name": "schedules",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldgUVbb8AN6f0Dpi",
+          "name": "collection",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldOOiQebAifgJMLw",
+          "name": "live-classes",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldyNzj8JAoVY4y6Q",
+          "name": "scope-status",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tblBw8W9uq9zgpg0H",
+      "name": "wef-live.rings",
+      "primaryFieldId": "fldQVNA3n9gH3stwb",
+      "fields": [
+        {
+          "id": "fldQVNA3n9gH3stwb",
+          "name": "ring-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldLwhuJwahJsJQVd",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldpZoNH8fdN6g6g2",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldTyIXEhjjKM7gRt",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld6UF14MD9IZKbB0",
+          "name": "last-seen",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldCNI34JD8hOYYtE",
+          "name": "source-updated-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldcVfaaFY9PAFuXP",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldE5RLmMfnO71nT0",
+          "name": "ring-id",
+          "type": "number"
+        },
+        {
+          "id": "fldtfrSHAoU6brxf6",
+          "name": "ring-number",
+          "type": "number"
+        },
+        {
+          "id": "fldrhm0QuhvbcT5ps",
+          "name": "ring-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldn2TNPgv27AOYLx",
+          "name": "current-group",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldWxFCiArPXAGEid",
+          "name": "next-group",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldoltPrWHkEaeH7z",
+          "name": "completed-groups",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldBq7Prr4HMtctew",
+          "name": "collection",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld5NISvLgvGsPxFI",
+          "name": "live-groups",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldfdFUHa79vsiLFN",
+          "name": "live-classes",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldvA8luZEDztBtrp",
+          "name": "scope-status",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tblhBT5k7YQFCqjXr",
+      "name": "wef-shows.show-days",
+      "primaryFieldId": "fldwqnQBA37cUAptb",
+      "fields": [
+        {
+          "id": "fldwqnQBA37cUAptb",
+          "name": "show-day-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldGxDUhIY56A9747",
+          "name": "show",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fld7DMWK7m3VRO9oA",
+          "name": "date",
+          "type": "date"
+        },
+        {
+          "id": "fldo7ejZdiumZJoPS",
+          "name": "unique-entry-count",
+          "type": "number"
+        },
+        {
+          "id": "fld1nAtcCqtmuGm5o",
+          "name": "trip-count",
+          "type": "number"
+        },
+        {
+          "id": "fldPn15IPu7DFWQJh",
+          "name": "count-coverage",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldPXkvmPNsWz317P",
+          "name": "count-rules-version",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldTUR4qp2nBNeq5B",
+          "name": "count-observed-at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldz5weQZGdBkcgbz",
+          "name": "count-verified-at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldWINQlOsbgSLyze",
+          "name": "latest-attempt-at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldY0zqyt4nFHGzcD",
+          "name": "data-evidence-ref",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldHscMjBIOxSQWEi",
+          "name": "accepted-summary",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldqcGTS8fEMLmxoa",
+          "name": "latest-attempt-reason",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldBA5FPvc4OmtGgt",
+          "name": "publication-status",
+          "type": "singleSelect"
+        },
+        {
+          "id": "fldexfEWVZOoiQTyM",
+          "name": "latest-attempt-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld2vpJ71q1BjEtkH",
+          "name": "day-priority",
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "id": "tblmt3Lba7sboFKPS",
+      "name": "wef-shows.show",
+      "primaryFieldId": "fldCBbdgHDgq7U1QB",
+      "fields": [
+        {
+          "id": "fldCBbdgHDgq7U1QB",
+          "name": "show-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldEaMHnkQfz5NJgA",
+          "name": "show_id",
+          "type": "number"
+        },
+        {
+          "id": "fldE2jE2k9fustv9Q",
+          "name": "customer_id",
+          "type": "number"
+        },
+        {
+          "id": "fldSQyxWIjwOz0BXt",
+          "name": "facility_id",
+          "type": "number"
+        },
+        {
+          "id": "fldd8e0ynVPEZjJUN",
+          "name": "show_name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldEPLbFoJ5g6BY8H",
+          "name": "start_date",
+          "type": "date"
+        },
+        {
+          "id": "fldGZ2Sc4EPzss1Iq",
+          "name": "end_date",
+          "type": "date"
+        },
+        {
+          "id": "fldNuUu6Z4tjmyn4p",
+          "name": "selected_date",
+          "type": "date"
+        },
+        {
+          "id": "fldYUhGY2apzifPbx",
+          "name": "available_dates",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldzTUEiyZLEM759M",
+          "name": "is_default",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldyERMI6ebbRuB0z",
+          "name": "last_checked",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldsmryQuIentryGC",
+          "name": "default-payload-file",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldXPpZKxhjhChcDL",
+          "name": "default-payload-sha256",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld9diH3eJZzJKHCy",
+          "name": "show-days",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tbldT7olKPcKlIIWx",
+      "name": "wef-data.trips",
+      "primaryFieldId": "fldsecCydYT3VXask",
+      "fields": [
+        {
+          "id": "fldsecCydYT3VXask",
+          "name": "trip-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldAX6qnRVS9eqPHX",
+          "name": "class",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldbZt784U1kUC3C9",
+          "name": "entry",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldLcX5h985NUxZ5R",
+          "name": "horse",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld0TV8EVZ5SM6S11",
+          "name": "rider",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldI6zZHivhqzi4It",
+          "name": "trainer",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldkcM0FnPOxC6cgr",
+          "name": "owner",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldLB8jampv0L6PXC",
+          "name": "trip-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldkrD2tjuLpwVAN8",
+          "name": "source-uuid",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld4og37apapEnrC2",
+          "name": "order-of-go",
+          "type": "number"
+        },
+        {
+          "id": "fldBpiNbQUtWGDO3f",
+          "name": "actual-order",
+          "type": "number"
+        },
+        {
+          "id": "fldI9Cd98bSDH35pG",
+          "name": "gone-in",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldHxni7LJUSsP0T4",
+          "name": "placing",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldOn54HuE1HdVS3T",
+          "name": "scratch",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldDnFH62vTW1YltS",
+          "name": "estimated-go-time",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldxRO6fxlwf1SIm5",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldKqNZLDVxneXuNo",
+          "name": "fingerprint",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldINpbu0jaGrw2Zq",
+          "name": "last-success",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldAlac8ZI6UTCpYl",
+          "name": "last-run",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldelyy42B9OzlUOR",
+          "name": "record-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldcalYzRzgYxmJYU",
+          "name": "results",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld2ve8fixf0CmvlE",
+          "name": "live-observation-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldStkm0OO860jI22",
+          "name": "class_related_data.results_verified (from class)",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tbljKNTCoDG7Z3q6O",
+      "name": "wef-data.results",
+      "primaryFieldId": "fldtbvwbv25xO4dus",
+      "fields": [
+        {
+          "id": "fldtbvwbv25xO4dus",
+          "name": "result-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld4K3pC1N1WHMmX3",
+          "name": "trip",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldJTvbHl1Uz2w4jz",
+          "name": "class",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldeZBJ7cF13RTUNf",
+          "name": "entry",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldADqgze3gmjh39X",
+          "name": "class-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldIDSpwfAY40TFud",
+          "name": "placing",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld7dE878hT0lNRRq",
+          "name": "position",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld6yce5foXYxZ52u",
+          "name": "score1",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldouhPyTO4vEMWMt",
+          "name": "score2",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld0GBeEzamg09NIL",
+          "name": "score3",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldZqxfLFrSQcH2xJ",
+          "name": "score4",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldClXu7zQhKTOa15",
+          "name": "score5",
+          "type": "singleLineText"
+        },
+        {
+          "id": "flduTcMeeIgU7Z7BX",
+          "name": "score6",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldLscB1n7suViLyX",
+          "name": "time-one",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld606UBtBSTbHeNz",
+          "name": "time-two",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldonI95bUfNmmRfP",
+          "name": "time-three",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldx1BjW9vZrriU7y",
+          "name": "faults-one",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldiYSsehU1DOniUL",
+          "name": "faults-two",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldsQ3uFW43aBAFWg",
+          "name": "faults-three",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldDoYlcBDRG3iwPL",
+          "name": "time-fault-one",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldPLcfLRvmFr5ool",
+          "name": "time-fault-two",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldxRIEVl2mzhSjmy",
+          "name": "time-fault-three",
+          "type": "singleLineText"
+        },
+        {
+          "id": "flds4ijRfUGOMiHyy",
+          "name": "points-earned",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldSCaj4Pt94NcJH7",
+          "name": "prize-money",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldbAg5NfUZpfERol",
+          "name": "gone-in",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld93yJHViyAvukTO",
+          "name": "scratch",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldPg81w3DHo4nXzx",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldMERPbCR66fE4j9",
+          "name": "last-success",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldoQ3cjDn18evzcE",
+          "name": "last-run",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tblCx44gRMEM9f453",
+      "name": "w-horses",
+      "primaryFieldId": "fldBxVloCdHzALgPH",
+      "fields": [
+        {
+          "id": "fldBxVloCdHzALgPH",
+          "name": "horse-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldbVlhQtr3Y8EtFU",
+          "name": "horse-id",
+          "type": "number"
+        },
+        {
+          "id": "fldcIdpQWU1f3FStj",
+          "name": "horse-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldySZtTRgisEa3ti",
+          "name": "last-success",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldgVQq9vAm1WAcEr",
+          "name": "shows",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldLeV4COFwNzFxQG",
+          "name": "show-days",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tblxS6hR5t9MIllXh",
+      "name": "w-riders",
+      "primaryFieldId": "fldhztPQDJm1vAp7b",
+      "fields": [
+        {
+          "id": "fldhztPQDJm1vAp7b",
+          "name": "rider-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldJEhVUv9b63V47L",
+          "name": "rider-id",
+          "type": "number"
+        },
+        {
+          "id": "fldQn4nZpYtzcMZmG",
+          "name": "rider-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldW6FYtVy0SRCLEa",
+          "name": "last-success",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldfXNMw67jmKnU3C",
+          "name": "shows",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldZdClw2rc40hLwT",
+          "name": "show-days",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tblOVbvla3z94gHIw",
+      "name": "table-index",
+      "primaryFieldId": "fldwI2Mh5dDJMKwjA",
+      "fields": [
+        {
+          "id": "fldwI2Mh5dDJMKwjA",
+          "name": "table-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldd2cHqIMIhXsYlv",
+          "name": "Select",
+          "type": "singleSelect"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "command": "node --check workflow.js",
+  "exit_code": 0,
+  "output": [],
+  "protected_baseline": "PASS",
+  "verified_at": "2026-11-01T18:01:09.3762628Z"
+}

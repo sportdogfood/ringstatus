@@ -1,5 +1,83 @@
 # wef-live
 
+**README version: 2026.11.01.6**  
+**Updated: November 1, 2026, 12:28 p.m. Eastern.**
+
+## Current status
+
+**Functioning as expected for the approved day-0 collection workflow.** The normal **12:24 and 12:27 p.m. Eastern** invocations completed all three lanes, with no stage or logging failures. The latest task result is **0**, the task is Ready, and the next scheduled wake is 12:30 p.m. The current code hashes match the reviewed deployment.
+
+| Latest source / saved state | Count |
+| --- | ---: |
+| Live rings | 5 |
+| Active groups | 25 |
+| Active class appearances | 43 |
+| Unique class-detail records refreshed | 41 |
+| Resolved Live entry records refreshed | 134 |
+| Retained groups now Dropped | 2 |
+
+The two retained groups became **Absent** at 12:24 and **Dropped** at 12:27. All **267 existing records and 987 checked durable links** were preserved. All **43 appearance IDs** stayed stable, all **86 reciprocal appearance links** were verified, and the repeat run made no appearance business writes. Refreshed entry count does not imply deletion of other retained entries.
+
+**Source completeness remains Partial:** five trips have no decoded identity. Each is recorded separately in `errs-log`; other classes and entries continue. No source identities were repaired. These are source-record issues, not failed collection stages.
+
+[Current status check](evidence/day0-membership-20261101/readme-status-1228.json) · [Two-run acceptance and exact IDs](evidence/day0-membership-20261101/acceptance.json) · [Release](evidence/day0-membership-20261101/release.md).
+
+## Owned workflow
+
+- Existing hidden Windows task: `wef-live-collector` → `run-hidden.vbs` → `run.ps1` → `entry.js`.
+- Every **three minutes, 05:00–19:00 America/New_York**, unchanged. One scheduled process starts the three lanes together; each collects, saves and logs independently, and the task waits for all three.
+- Each lane stamps heartbeat and reads the default show and its **wef-shows show-days day-priority = 0**. Live owns **day 0 only**.
+- **Groups:** `ListAjax?from_wp_api=true` saves groups, source class references and group/class-appearance membership.
+- **Rings:** `LiveScoreWidget` saves rings and current/next/completed group observations.
+- **Class details:** latest saved same-show/day class references drive `getLiveClassData` and the existing decoded Worker `/classes/:id`; save unique class details and resolved entries. Repeated group appearances remain separate in the appearance table.
+- The live-status check is recorded, not a collection gate. **Active/Absent/Dropped, Completed, has_JSON, entry totals and source age do not gate collection.** Invalid or missing identities are logged rather than guessed.
+- Save changed business values only. Each lane retains separate collection/save timings, successful-collection coverage, last-changed evidence and field diffs. Unchanged polls do not rewrite native `last-seen` solely to stamp time.
+
+## Airtable and membership
+
+Owned base: [wef-live](https://airtable.com/appgzosUcVqA4vZdf).
+
+| Table | Role |
+| --- | --- |
+| `live-rings` | Ring observations |
+| `live-groups` | Groups; competition `status` is separate from `record-status` |
+| `live-class-appearances` | One appearance per **show + date + group + class**, linked to existing group and class details |
+| `live-classes` | Existing unique class details and preserved links |
+| `live-entries` | Resolved source trips/entry observations |
+| `heartbeat` | One cadence stamp per lane invocation, completed at lane finish |
+| `run-logs` | Run outcome, counts, timings and changed-field reports |
+| `errs-log` | One error per record, with class/trip/group identifiers when available |
+
+`record-status` is **Active** when returned; **Absent** after one complete successful missing observation; **Dropped** after the next; **Active** on return. Failed or incomplete inventories do not advance absence; valid returned records still continue. Absence and dropping preserve data, original source clocks and links. These states do not delete records or prevent collection.
+
+Counts are dynamic: **25 groups / 43 appearances** describes the verified payload, not a cap. The two repeated class IDs are retained as separate group appearances while using their existing unique detail records.
+
+## Boundaries and remaining limits
+
+**Stages 8 (cross-base publication) and 9 (archiving/cleanup, including log retention) are ON HOLD and are not invoked.** Source evidence archives remain part of collection; no retirement or deletion is enabled. This release does not claim updates to wef-data or 24-hour log cleanup.
+
+Schedules, Data, Entries and other collectors are untouched. Entries reads Live; Live does not read or enrich Entries. Existing keys, records and links remain; no manual collector/provider calls, record repairs, observers, new tasks or cadence changes.
+
+Immediate coordinator-chat failure delivery remains deferred under the owner's errs-log-only approval. Native heartbeat show/date cells remain blank, and decoded class-level fields are not all included in business diffs; those known limitations were not changed here. Missing/returning class-appearance and false-live-status cases passed offline checks but were not forced in production. Natural future rollover is not claimed proven by these two same-day runs.
+
+Deployment changed `lanes.js`, `schema.js`, `lane-store.js` and new `membership.js`; 18 other original JS files are unchanged. **31 offline checks passed.** Release review was author review, not independent review. [Review evidence](evidence/day0-membership-20261101/review.md), [deployed hashes](evidence/day0-membership-20261101/deployed.json).
+
+## Historical release and design notes
+
+The preserved sections below are dated history. The current workflow and status above supersede conflicting earlier plans, gates, publication, cleanup or acceptance statements.
+
+## Day-0 membership release — November 1, 2026, 12:22 Eastern
+
+Documentation version: **2026.11.01.5**. Deployed through the unchanged hidden three-minute task, 05:00–19:00 America/New_York. Normal **12:24 and 12:27 Eastern** invocations verified: 25 Active groups / 43 Active class appearances, with both retained groups progressing Absent to Dropped. All 267 existing records and 987 checked durable links were preserved; 43 appearance IDs stayed stable and 86 reciprocal links passed. No stage/logging failures; five unresolved source identities remain individually logged. Offline author checks: 31 PASS; review is author review, not independent review. [Exact acceptance](evidence/day0-membership-20261101/acceptance.json).
+
+Live reads the default show and its `wef-shows.show-days.day-priority = 0`. `live-groups.record-status` and the new `live-class-appearances` table label source presence: Active; Absent after one complete missing observation; Dropped after the next; Active on return. Failed/incomplete inventories do not advance absence. Competition status, including Completed, remains separate. False/failed live status, Completed groups, detail-availability, membership state, entry totals and source age do not gate collection. Missing/ambiguous show/day identity is logged rather than invented.
+
+The inspected payload contains 25 groups and 43 group-class appearances (41 unique class details). Counts are dynamic, not limits. Appearance key is show|date|group|class; links point to existing groups/details. Existing class/entry keys and records are not rekeyed, duplicated or removed. Historical links are retained. States apply only to day 0; other days are untouched.
+
+Stages 8 publication and 9 archiving/cleanup remain **ON HOLD**. Logs, per-lane timings, changed-only saves and errs-log-only reporting remain. No manual collector/provider run, record repair, task/cadence/dependency change or observer. Earlier conflicting design/status sections below are historical. [Release evidence](evidence/day0-membership-20261101/TASK.md), [author review](evidence/day0-membership-20261101/review.md), [deployment](evidence/day0-membership-20261101/deployed.json).
+
+# wef-live
+
 Documentation version: **2026.11.01.4**  
 Updated: **November 1, 2026**. Documentation only; not a runtime release.
 

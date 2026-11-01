@@ -1585,6 +1585,19 @@ def collect_day(schema_file, selection):
             except Exception as exception:error(table,exception)
         return written
 
+    def missing_rows(table,present,prefix,terminal,absent='Absent'):
+        # Saved status is the first-miss marker; absence never renews source clocks.
+        output=[]
+        try:
+            status_id=store.fields[table]['record-status']['id']
+            for key,prior in store.inventory(table).items():
+                if not key.startswith(prefix) or key in present:continue
+                old=prior['fields'].get(status_id)
+                status=terminal if old in (absent,terminal) else absent
+                if old!=status:output.append({store.primary[table]:key,'record-status':status})
+        except Exception as exception:error(table+' membership',exception)
+        return output
+
     def source_rows(rows):
         output=[]
         for row in rows:
@@ -1608,8 +1621,10 @@ def collect_day(schema_file, selection):
         error('Day inventory collection',exception);return report()
     timed('fetch-rings-groups-classes')
     inventory={table:{} for table in tables[:3]}
-    schedules={}
-    try:rings=iter(payload['rings'])
+    schedules={};inventory_complete=True
+    try:
+        if not isinstance(payload['rings'],list):raise ValueError('Schedule rings must be a list')
+        rings=iter(payload['rings'])
     except Exception as exception:error('Day inventory collection',exception);return report()
     for ring in rings:
         try:
@@ -1617,8 +1632,10 @@ def collect_day(schema_file, selection):
             inventory['rings'][rk]={'ring-key':rk,'ring-id':ring.get('ring_id'),
                 'ring-number':ring['ring_number'],'ring-name':ring.get('ring_name'),
                 'last-success':metric['completed'],**run_fields}
+            if not isinstance(ring['classes'],list):raise ValueError('Schedule classes must be a list')
             items=iter(ring['classes'])
-        except Exception as exception:error('Ring',exception);continue
+        except Exception as exception:
+            inventory_complete=False;error('Ring',exception);continue
         for pos,item in enumerate(items):
             try:
                 gid=item.get('class_group_id');gk=rk+'|'+str(gid) if gid is not None else None
@@ -1635,24 +1652,25 @@ def collect_day(schema_file, selection):
                     'source-position':pos,'source-id':str(item['class_groupxclasses_id']) if item.get('class_groupxclasses_id') is not None else None,
                     'name':item.get('class_name') or item.get('group_name'),
                     'start-time':item.get('estimated_start_time') or item.get('start_time_default'),
-                    'end-time':item.get('estimated_end_time'),'source-json':packed(item),'last-success':metric['completed']}
+                    'end-time':item.get('estimated_end_time'),'source-json':packed(item),'last-success':metric['completed'],'record-status':'Active'}
                 if ck is None:
-                    if not item.get('schedule_break'):error(rk,'Source class has no class_id')
+                    if not item.get('schedule_break'):
+                        inventory_complete=False;error(rk,'Source class has no class_id')
                     continue
                 row=inventory['classes'].setdefault(ck,{'class-key':ck,'ring':refs('rings',rk),
-                    'class-id':cid,'group':refs('groups')})
+                    'class-id':cid,'group':refs('groups'),'record-status':'Active'})
                 if item.get('class_number') is not None:row['class-number']=str(item['class_number'])
                 if item.get('class_name') is not None:row['class-name']=item['class_name']
                 if gk and ['groups',gk] not in row['group']['$links']:row['group']['$links'].append(['groups',gk])
-            except Exception as exception:error(rk,exception)
+            except Exception as exception:
+                inventory_complete=False;error(rk,exception)
     graph={table:list(rows.values()) for table,rows in inventory.items()}
     timed('prepare-rings-groups-classes')
     for table in tables[:3]:
         save(table,source_rows(graph[table]));timed('save-inventory-'+table)
-    save('schedules',schedules.values());timed('save-schedules')
 
     from record_mappings import RESULT_FIELDS
-    classes={};entries={};trips={};results={}
+    classes={};entries={};trips={};results={};missing_trips=[]
     def fetch(row):return source.fetch('/classes/'+str(row['class-id']),params)
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         requests={pool.submit(fetch,row):row for row in graph.get('classes',[])}
@@ -1660,10 +1678,15 @@ def collect_day(schema_file, selection):
             row=requests[future];key=row['class-key']
             try:
                 payload,metric=future.result();at=metric['completed']
-                classes[key]={'class-key':key,'source-json':packed(payload),'last-success':at,**run_fields}
+                classes[key]={'class-key':key,'source-json':packed(payload),'last-success':at,**run_fields,'record-status':'Active'}
                 if payload.get('class_related_data',{}).get('status') is not None:
                     classes[key]['status']=payload['class_related_data']['status']
-                if payload.get('total_entry_trips') is not None:classes[key]['entry-count']=payload['total_entry_trips']
+                if payload.get('total_entry_trips') is not None:
+                    classes[key]['entry-count']=payload['total_entry_trips']
+                    if type(payload['total_entry_trips']) in (int,float) and payload['total_entry_trips']==0:
+                        classes[key]['record-status']='Active \u2014 no entries'
+                if not isinstance(payload['trips'],list):raise ValueError('Class trips must be a list')
+                current_trips=set();trip_errors=len(errors)
                 for trip in payload['trips']:
                     try:
                         eid=int(trip['entry_id']);ek=str(context['show-id'])+'|'+str(eid)
@@ -1681,16 +1704,25 @@ def collect_day(schema_file, selection):
                                     try:value[field]=int(trip[raw])
                                     except (ValueError,TypeError):pass
                                 else:value[field]=str(trip[raw])
-                        trips[tk]=value
+                        trips[tk]=value;current_trips.add(tk)
                         result_values={name:trip.get(source) for name,source in RESULT_FIELDS.items()}
                         status=classes[key].get('status',store.inventory('classes').get(key,{}).get('fields',{}).get(store.fields['classes']['status']['id']))
                         results[tk]={'result-key':tk,'class-status':status,**{name:str(v) if v is not None else None for name,v in result_values.items()},'source-json':packed(result_values),'last-success':at}
                     except Exception as exception:error(key,exception)
+                if len(errors)==trip_errors:
+                    missing_trips.extend(missing_rows('trips',current_trips,key+'|','dropped','absent'))
             except Exception as exception:error(key,exception)
     timed('fetch-and-prepare-entries-trips')
-    save('classes',classes.values());timed('save-class-details')
+    for row in schedules.values():
+        targets=row['class']['$links']
+        if targets and targets[0][1] in classes:
+            row['record-status']=classes[targets[0][1]]['record-status']
+    absent_schedules=missing_rows('schedules',schedules,show+'|'+day+'|','Dropped') if inventory_complete else []
+    save('schedules',list(schedules.values())+absent_schedules);timed('save-schedules')
+    absent_classes=missing_rows('classes',inventory['classes'],show+'|'+day+'|','Dropped') if inventory_complete else []
+    save('classes',list(classes.values())+absent_classes);timed('save-class-details')
     save('entries',entries.values());timed('save-entries')
-    save('trips',trips.values());timed('save-trips')
+    save('trips',list(trips.values())+missing_trips);timed('save-trips')
     save('results',results.values());timed('save-results')
     return report()
 

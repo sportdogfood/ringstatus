@@ -13,6 +13,7 @@ const tables = {
   "live-rings": ["ring-key", ...common, "ring-id", "ring-number", "ring-name"],
   "live-groups": [
     "group-key",
+    "record-status",
     ...common,
     "class-group-id",
     "group-name",
@@ -28,6 +29,7 @@ const tables = {
     "r2-total",
     "r2-gone",
   ],
+  "live-class-appearances": ["appearance-key","show-id","date","class-group-id","class-id","record-status","last-seen"],
   "live-classes": [
     "class-key",
     ...common,
@@ -170,6 +172,7 @@ function field(name) {
   };
 }
 const links = {
+  "live-class-appearances": {group:"live-groups",class:"live-classes"},
   "live-rings": {
     "current-group": "live-groups",
     "next-group": "live-groups",

@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "verified_at_utc": "2026-11-01T18:18:33.229314+00:00",
+  "scope": "Saved draft script/config identity, disabled state, preserved baseline and empty business-table readback only; no live execution",
+  "automations": [
+    {
+      "id": "wflwxdcMXfkhNnQyT",
+      "name": "Results \u2014 trips created",
+      "status": "undeployed",
+      "script_sha256": "0e354d6a2e72fb2c958b046414982059faabc503c0841907d61456a7b52e54b0"
+    },
+    {
+      "id": "wfl8tZCyB83OBtpDr",
+      "name": "Results \u2014 trips changed",
+      "status": "undeployed",
+      "script_sha256": "0e354d6a2e72fb2c958b046414982059faabc503c0841907d61456a7b52e54b0"
+    },
+    {
+      "id": "wfltMpaxfnlR2AMUB",
+      "name": "Results \u2014 results created",
+      "status": "undeployed",
+      "script_sha256": "0e354d6a2e72fb2c958b046414982059faabc503c0841907d61456a7b52e54b0"
+    },
+    {
+      "id": "wflrVQtNEheJV3McU",
+      "name": "Results \u2014 results changed",
+      "status": "undeployed",
+      "script_sha256": "0e354d6a2e72fb2c958b046414982059faabc503c0841907d61456a7b52e54b0"
+    },
+    {
+      "id": "wflqhnoFBMPmbRRyI",
+      "name": "Results \u2014 reconcile Expected / Complete / Conflict",
+      "status": "undeployed",
+      "script_sha256": "0e354d6a2e72fb2c958b046414982059faabc503c0841907d61456a7b52e54b0"
+    }
+  ],
+  "offline_checks": 15,
+  "independent_review": "COMPLETE / candidate PASS",
+  "business_tables_empty": [
+    "snapshot",
+    "run-logs",
+    "heartbeat",
+    "errs-log"
+  ],
+  "activation": "NONE",
+  "live_execution": "UNVERIFIED"
+}

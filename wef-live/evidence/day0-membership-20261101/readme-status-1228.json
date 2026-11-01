@@ -1,0 +1,56 @@
+{
+  "checked_at_utc": "2026-11-01T17:29:13.945922+00:00",
+  "latest_normal_run_eastern": "2026-11-01 12:27",
+  "run_ids": {
+    "groups": "8b020f51-f713-408b-a24a-2474b8c4f5a3",
+    "rings": "803d8a93-a120-4549-93a7-857e75847f28",
+    "classes": "1ad64f45-8382-48c5-9c7d-8baad1ae9265"
+  },
+  "native_readback_reused": "normal-2.json; same exact latest run IDs, not a new readback",
+  "native_readback_at": "2026-11-01T17:27:41.449Z",
+  "source_counts": {
+    "groups": 25,
+    "class_appearances": 43,
+    "unique_classes": 41
+  },
+  "membership_counts": {
+    "groups": {
+      "Active": 25,
+      "Dropped": 2
+    },
+    "appearances": {
+      "Active": 43
+    }
+  },
+  "stage_errors": 0,
+  "logging_errors": 0,
+  "unresolved_source_identities": [
+    {
+      "message": "No decoded identity for trip 200399616",
+      "class_id": 200030685,
+      "trip_id": 200399616
+    },
+    {
+      "message": "No decoded identity for trip 200399341",
+      "class_id": 200030808,
+      "trip_id": 200399341
+    },
+    {
+      "message": "No decoded identity for trip 200399094",
+      "class_id": 200030811,
+      "trip_id": 200399094
+    },
+    {
+      "message": "No decoded identity for trip 200399914",
+      "class_id": 200030762,
+      "trip_id": 200399914
+    },
+    {
+      "message": "No decoded identity for trip 200399164",
+      "class_id": 200030701,
+      "trip_id": 200399164
+    }
+  ],
+  "installed_hashes_verified": true,
+  "scope": "README update and read-only scheduled status confirmation; no operational changes"
+}

@@ -987,6 +987,12 @@
           "id": "fldJRAL0bwhFqtt6j",
           "name": "wef-shows.show-days",
           "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldoCZT91yybRjlQy",
+          "name": "record-status",
+          "type": "singleLineText",
+          "options": {}
         }
       ]
     },
@@ -1134,6 +1140,12 @@
           "id": "fldXiKsetiAN0bMH9",
           "name": "runs",
           "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldXSh9Qj0ilXMOG4",
+          "name": "record-status",
+          "type": "singleLineText",
+          "options": {}
         }
       ]
     },

@@ -1,0 +1,29 @@
+{
+  "base": "appgzosUcVqA4vZdf",
+  "add_fields": [
+    {
+      "table": "live-groups",
+      "field": "record-status",
+      "type": "singleLineText"
+    }
+  ],
+  "add_table": {
+    "name": "live-class-appearances",
+    "fields": {
+      "appearance-key": "singleLineText (primary)",
+      "show-id": "number",
+      "date": "singleLineText",
+      "class-group-id": "number",
+      "class-id": "number",
+      "record-status": "singleLineText",
+      "last-seen": "singleLineText",
+      "group": "link to existing live-groups",
+      "class": "link to existing live-classes"
+    }
+  },
+  "key": "show-id|date|class-group-id|class-id",
+  "write_behavior": "Normal Groups lane upserts source memberships only. Preserve values, clocks and links on Absent/Dropped; no deletion. Class detail fetches remain unique; appearances are not merged.",
+  "consumer_effect": "Additive only; existing 41 unique class details, keys and historical links untouched.",
+  "rollback": "Restore candidate code delta to frozen baseline if separately authorized; leave additive fields/table/records intact. No repair, deletion or cadence change.",
+  "pending": "Explicit approval for schema prerequisite; then integrate, review, deploy and verify normal scheduled runs."
+}

@@ -1,0 +1,155 @@
+{
+  "verified_at": "2026-11-01T17:28:13.152387+00:00",
+  "status": "PASS",
+  "scope": "day0 collection and membership delivery; source identity completeness remains Partial",
+  "normal_runs": [
+    {
+      "time_eastern": "12:24",
+      "runs": {
+        "groups": {
+          "run_id": "872f6535-4d46-46cc-9925-fe4fa3a6dc14",
+          "started": "2026-11-01T17:24:03.889Z",
+          "completed": "2026-11-01T17:24:17.325Z",
+          "collection_ms": 910.3915,
+          "save_ms": 7492.2516000000005,
+          "stage_errors": 0,
+          "logging_errors": 0,
+          "issues": 0
+        },
+        "rings": {
+          "run_id": "fe3a6bef-6547-41cd-aa7d-6e38699b67ba",
+          "started": "2026-11-01T17:24:03.891Z",
+          "completed": "2026-11-01T17:24:07.736Z",
+          "collection_ms": 113.04660000000013,
+          "save_ms": 3.5913000000000466,
+          "stage_errors": 0,
+          "logging_errors": 0,
+          "issues": 0
+        },
+        "classes": {
+          "run_id": "27f9191e-2103-4315-bc90-d98943745020",
+          "started": "2026-11-01T17:24:03.892Z",
+          "completed": "2026-11-01T17:24:11.424Z",
+          "collection_ms": 3497.0029999999997,
+          "save_ms": 781.6549999999997,
+          "stage_errors": 0,
+          "logging_errors": 0,
+          "issues": 6
+        }
+      },
+      "source_counts": {
+        "groups": 25,
+        "class_appearances": 43,
+        "unique_classes": 41
+      },
+      "memberships": {
+        "groups": {
+          "Active": 25,
+          "Absent": 2
+        },
+        "appearances": {
+          "Active": 43
+        }
+      },
+      "preservation": {
+        "ids_checked": 267,
+        "durable_links_checked": 987,
+        "errors": []
+      }
+    },
+    {
+      "time_eastern": "12:27",
+      "runs": {
+        "groups": {
+          "run_id": "8b020f51-f713-408b-a24a-2474b8c4f5a3",
+          "started": "2026-11-01T17:27:04.244Z",
+          "completed": "2026-11-01T17:27:10.817Z",
+          "collection_ms": 804.2073,
+          "save_ms": 824.6178000000009,
+          "stage_errors": 0,
+          "logging_errors": 0,
+          "issues": 0
+        },
+        "rings": {
+          "run_id": "803d8a93-a120-4549-93a7-857e75847f28",
+          "started": "2026-11-01T17:27:04.249Z",
+          "completed": "2026-11-01T17:27:08.781Z",
+          "collection_ms": 128.1581000000001,
+          "save_ms": 3.57300000000032,
+          "stage_errors": 0,
+          "logging_errors": 0,
+          "issues": 0
+        },
+        "classes": {
+          "run_id": "1ad64f45-8382-48c5-9c7d-8baad1ae9265",
+          "started": "2026-11-01T17:27:04.251Z",
+          "completed": "2026-11-01T17:27:13.877Z",
+          "collection_ms": 1749.2942000000003,
+          "save_ms": 3382.3749,
+          "stage_errors": 0,
+          "logging_errors": 0,
+          "issues": 5
+        }
+      },
+      "source_counts": {
+        "groups": 25,
+        "class_appearances": 43,
+        "unique_classes": 41
+      },
+      "memberships": {
+        "groups": {
+          "Active": 25,
+          "Dropped": 2
+        },
+        "appearances": {
+          "Active": 43
+        }
+      },
+      "preservation": {
+        "ids_checked": 267,
+        "durable_links_checked": 987,
+        "errors": []
+      }
+    }
+  ],
+  "stable_appearance_ids": 43,
+  "reciprocal_appearance_links_checked": 86,
+  "retained_group_transitions": [
+    {
+      "id": "recgB0LcaiELFw7Oo",
+      "key": "200000076|2026-11-01|200028360",
+      "first": "Absent",
+      "second": "Dropped",
+      "source_and_links_preserved": true
+    },
+    {
+      "id": "recuV1EiEPmzgvt15",
+      "key": "200000076|2026-11-01|200028409",
+      "first": "Absent",
+      "second": "Dropped",
+      "source_and_links_preserved": true
+    }
+  ],
+  "appearance_business_writes_second_run": 0,
+  "offline_checks": 31,
+  "review": "Author review complete; not independent review",
+  "task_definition_unchanged": true,
+  "installed_hashes": {
+    "lanes.js": "b85d9dd806f433dc2e78c360561372dfbcb6047ad6168cb16673914bfac501a7",
+    "membership.js": "e383eae0dc7dca29f1908e5a8e47fe0e296bd047794ae22077f1c645e428b6c6",
+    "schema.js": "545b6284d0422355448b9bbaf123772f1901e4ab381db921e3fdc2bd08552d60",
+    "lane-store.js": "f1eadb030a51dcd8a837abb0e0fb01ac3e109cae017566cd48632b7d3914af93"
+  },
+  "protected_baseline_js": 18,
+  "stages_8_and_9": "on hold",
+  "manual_runs": 0,
+  "source_calls_by_codex": 0,
+  "record_repairs_or_deletes": 0,
+  "limits": [
+    "No naturally missing/returning class appearance occurred in these two runs; those transitions are offline proven.",
+    "False live status was offline tested, not forced in production.",
+    "All observations used canonical show200000076/day2026-11-01 priority0; future rollover not forced.",
+    "Five unresolved source identities remain logged after second run; no source repair.",
+    "Existing class-level business diff gap and blank heartbeat show/date fields are outside this change."
+  ]
+}

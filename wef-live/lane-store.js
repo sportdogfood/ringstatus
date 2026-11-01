@@ -1,7 +1,7 @@
 'use strict';
 const {isDeepStrictEqual:equal}=require('node:util');
 const OMIT=new Set(['last-seen','last-seen-at','last-success','last-changed','source-updated-at','curr_updated_at','run-id','collection','scope-status','participation-checked-at','participation-verified-at']);
-const LINKS=new Set(['ring','groups','classes','class','schedules','current-group','next-group','completed-groups']);
+const LINKS=new Set(['group','ring','groups','classes','class','schedules','current-group','next-group','completed-groups']);
 function business(value){
  if(Array.isArray(value))return value.map(business);
  if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).filter(([k])=>!OMIT.has(k)).map(([k,v])=>[k,business(v)]));

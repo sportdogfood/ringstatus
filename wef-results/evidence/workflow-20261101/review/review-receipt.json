@@ -1,0 +1,98 @@
+{
+  "reviewer": "/root/workflow_review",
+  "reviewed_at": "2026-11-01T13:01:49.333651-05:00",
+  "skill_sha256": "7c60e26ebe20cc7c4c83522993ab7b6f24691afc87bc87964f6434412b17b61a",
+  "objective": "Bounded independent read-only review and targeted offline verification of approved native Results creation/reconciliation workflow.",
+  "target": "HEAD 00f4271b8d4be7eba9639b7a711119f2104d17ac plus frozen uncommitted workflow candidate; no activation.",
+  "integration_coverage": "Captured schema/source identities, dynamic day0, event/reconcile boundary, nonzero instances, sequential repeats/conflicts, write readback/error trace. Live native runtime, saves/disabled state, delivery/cadence remain unverified and outside reviewer execution authority.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\package.json",
+      "sha256": "f63d1d46c3d29d6cd8ec772e39ee2842f1797e8560b8f3a03c1b3685835da717"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\schema.json",
+      "sha256": "f4b500e10a81f4f49cde4810b15c4793ae8b3ca5a822cdbbff09fecaf4378efa"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\runner.js",
+      "sha256": "3b7194c2a764ca2086c705bbd9f85b6309a81ad027d15276516f2b2905f0588d"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\reader.js",
+      "sha256": "20352f0bd0771bb6abdbcc734487a9391e89892e7001c7dff10ae5aaceff0a2a"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\workflow.js",
+      "sha256": "6a448a972a97ead8ff788d58a9a60fe6093a4470bb58d392239d5b6475783c40"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\test\\workflow.test.js",
+      "sha256": "f5071efccd5e335cd32c4d72d5aeac1a59752cc2beddcacd171b38023921da99"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\evidence\\workflow-20261101\\automation-definitions.json",
+      "sha256": "874e7703a1852076dcb709b85a0bfce7dcc0f8287f921a739455ebfe67b0d30e"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\evidence\\workflow-20261101\\review\\review.md",
+    "sha256": "44996421e1ed5e4928e7f4bb2d36cefeadd5be0c86c7a7db73122fe6ad1a0d1f"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\evidence\\workflow-20261101\\review\\command-log.json",
+      "sha256": "3651689378e3320e94cb11bfdf59463794e70a67eac526c75294320ef0440d14"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "FAIL",
+  "required_checks": [
+    {
+      "name": "independent offline suite",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "offline-suite"
+      ]
+    },
+    {
+      "name": "bounded offline counterexamples",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "counterexamples"
+      ]
+    },
+    {
+      "name": "approval-boundary inspection",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected coordinator-supplied owner authority, task record, original dependency contents and git comparison; other-owner changes excluded. No product edit or live call.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\evidence\\workflow-20261101\\task.md",
+          "sha256": "ef486b74dcae371c51c94ca3e9b79a6cf612c48acf66bb6855726f940eb38a7a"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\evidence\\workflow-20261101\\review\\protected-comparison.json",
+          "sha256": "9afbbad026d4241b2dfd9535bdf937d41f786503620c7f612a5f1c6afd2f0318"
+        }
+      ]
+    },
+    {
+      "name": "producer/schema/consumer/failure trace",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Read actual schema, current producer and retained Results runtime; inspected native draft definitions only. Live saves/execution not in delegated read-only scope.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\evidence\\workflow-20261101\\review\\source-manifest.json",
+          "sha256": "ef9bea1b8f47f120756c1d2009591bc2ba5d25e46338bf976a428f5bc583cbab"
+        }
+      ]
+    }
+  ]
+}

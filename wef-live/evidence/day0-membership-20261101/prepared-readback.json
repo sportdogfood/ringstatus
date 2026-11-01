@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-01T17:17:40.383453+00:00",
+  "production_unchanged": true,
+  "candidate_hashes": {
+    "activity.js": "31a61dcbc9229bf1a6f34a838084391710cccf34413f39614eaaacf071ff0c42",
+    "airtable.js": "f8aa56da19f3366cb0fab862041bbd6a77d24cd3c9a4fb69874d9d0119c4f61c",
+    "archive.js": "03326e694b7e7f06dccd6a73318d1a807aa4ef06cc4f3ea6e7510f2627c6f18c",
+    "collector.js": "8cd0247371f17a9c6552e104329fc00f9197612d0feee6ab74bd2bbd731915ae",
+    "configure.js": "c29b81c3e3e544e41ef457878201ac0af6cd0c92a6c37986548c52ef8450971a",
+    "entry.js": "69757818b266db559ad796e39361dbf080c167b3d16a3ed66c4d1ae2a3e1fd0f",
+    "lane-store.js": "17536074a81f94b7a309e278dc4fbe884824810e9527a8486ed033261b5e3f64",
+    "lanes.js": "6fb517b08e9a13c3e09804ff8de3b5cae838ccd82bd9469cf184c3b85b14610e",
+    "log-retention.js": "7d351cb97b711acdfa3d90120e4287e55f252a1ff1972693980f08b5d325f897",
+    "membership.js": "e00f3ae6ed4a762220a8fc3d51551e32886b42e858b34b6a314ffd5e663625ad",
+    "model.js": "08bfdabb5637511e17a979e2a6c0319be37f68a9edce323262128ebbc78c0468",
+    "participation.js": "bb42027bea9eaa9557e53e63f39eeb9403760fb491dd77a971a3e6a01a0a69f8",
+    "publication-api.js": "b25b6bd25760d7fabd53ef2077de3854a676c6e43b3a6221a59607eeba9f852f",
+    "publication-journal.js": "f97762d89fadba3f49c568e73b697d3ae4b2c1863cf210ad85bab391ea849809",
+    "publication.js": "91d083d7dbca2f474de56c9b560772b17aa892fe19b425d2796122c49c3cb96e",
+    "retirement.js": "67190601204fd73ea450c3bff6573073c4aff13728cd19533521f285c12f15e8",
+    "rollover.js": "5da578299c557e8dd541a6266640836feafa0243ee523631e521e30fe93e5180",
+    "runtime-utils.js": "d9cf17a572611705fa2854f9648382969bd8f10297d540a367446101a1a7344b",
+    "schema.js": "97696e34551b6eed9b676910940cb037937ebb930dd805edfada1300ea9a42ec",
+    "settings.js": "c577cad3b11cb8db0970da2a2092c0f21cc8c26eafd028f2308ca7bc5bb7ae35",
+    "source.js": "1430300ace41917b0557c0f852731da344931b637ac4719a314e111717cb7b6e",
+    "verify.js": "c0483558419c9d9ea90bd2741981da85136e509e666a0467f1048e1ae97e7976"
+  },
+  "offline_tests": {
+    "passed": 24,
+    "failed": 0,
+    "independent": false,
+    "original_tool_output_recovered": true
+  },
+  "schema_changes": 0,
+  "deployment": false,
+  "pending": "Schema prerequisite approval"
+}

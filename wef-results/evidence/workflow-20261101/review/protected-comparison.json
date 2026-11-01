@@ -1,0 +1,26 @@
+[
+  {
+    "path": "wef-results/package.json",
+    "baseline_sha256": "f63d1d46c3d29d6cd8ec772e39ee2842f1797e8560b8f3a03c1b3685835da717",
+    "current_sha256": "f63d1d46c3d29d6cd8ec772e39ee2842f1797e8560b8f3a03c1b3685835da717",
+    "unchanged": true
+  },
+  {
+    "path": "wef-results/schema.json",
+    "baseline_sha256": "f4b500e10a81f4f49cde4810b15c4793ae8b3ca5a822cdbbff09fecaf4378efa",
+    "current_sha256": "f4b500e10a81f4f49cde4810b15c4793ae8b3ca5a822cdbbff09fecaf4378efa",
+    "unchanged": true
+  },
+  {
+    "path": "wef-results/runner.js",
+    "baseline_sha256": "3b7194c2a764ca2086c705bbd9f85b6309a81ad027d15276516f2b2905f0588d",
+    "current_sha256": "3b7194c2a764ca2086c705bbd9f85b6309a81ad027d15276516f2b2905f0588d",
+    "unchanged": true
+  },
+  {
+    "path": "wef-results/reader.js",
+    "baseline_sha256": "20352f0bd0771bb6abdbcc734487a9391e89892e7001c7dff10ae5aaceff0a2a",
+    "current_sha256": "20352f0bd0771bb6abdbcc734487a9391e89892e7001c7dff10ae5aaceff0a2a",
+    "unchanged": true
+  }
+]

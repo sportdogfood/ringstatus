@@ -1,14 +1,51 @@
 # wef-data — current scheduled collector
 
-**README version:** `2026.11.01.2` (documentation revision).
+**README version:** `2026.11.01.5` (documentation revision).
 
 **Updated:** November 1, 2026 (America/New_York).
 
 This README describes the deployed workflow, superseding the older multiday/recovery descriptions. Production directory: `C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data`. Airtable: [wef-data](https://airtable.com/appdl16HJ5ETm8N69).
 
-## Results and independent linking deployed - November 1
+## Current delivery status and accepted membership states
 
-Current release deployed at **8:40:56 a.m. Eastern**. Working fast `scheduled.py` startup bytes, source error handler, source endpoints, four class workers, keys, existing data and collection cadences were preserved. The existing linking task was enabled after the first normal fast run passed; its task definition, interval and offset were unchanged. No manual collection, task start, stop clear, new adapter, quality gate, extra request delay or historical run scan was added.
+**Collection is working; the current membership states are accepted.** On November 1 the owner explicitly decided to keep **Active**, **Active — no entries**, **Absent** and **Dropped**, with existing `day-priority` separate. **No separate day0/day-* state is required.** Do not create one or reopen that superseded proposal from earlier notes.
+
+The membership release was deployed at **12:07:28 p.m. Eastern** and verified through the normal **12:09** and **12:12** runs. A later read-only check confirmed the normal **12:21** and **12:24** runs also succeeded with zero errors, refreshing 52 classes and 54 schedule items. Class competition status, such as Completed, remains separate from membership and day-priority.
+
+The earlier complaint about an expected day-* state is retained as historical evidence, with the owner's later decision recorded in the same [complaint](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recWnPEXguBWv99CF). Its former implementation proposal is withdrawn. No collector correction, new field or deployment is needed for that proposal. Complaint disposition concerns this specific decision and accepted existing behavior; it does not erase the historical communication issue or certify unrelated complaints.
+
+| Verification scope | Actual result |
+| --- | --- |
+| Collection and saving | Normal day-0 scheduled runs verified; zero errors in the named runs |
+| Membership labels | Active, Active — no entries, Absent and Dropped verified in classes/schedules and accepted by owner |
+| Separate day0/day-* state | **Not required; withdrawn by owner decision** |
+| Day-priority | Existing field remains separate and unchanged |
+| Days 1–3 | Shared implementation and all-state/cadence checks passed offline; no eligible future-day rows for populated live proof |
+| Preservation | 3,945 existing native IDs/keys and 24,318 nonmetadata links preserved; 1,313 past-day rows unchanged |
+| This update | README and the named complaint only; no collector code, business records, schema, tasks, cadences, stops or deployment changes |
+
+## Schedule membership states — November 1
+
+For every eligible collected day0–3, `classes.record-status` and `schedules.record-status` describe membership in that day's successful schedule: **Active**, **Absent** after one complete missing observation, **Dropped** after the next, and **Active** again on reappearance. A current class response with a numeric zero `total_entry_trips` labels its scheduled class/occurrences **Active — no entries**. Missing/failed/invalid entry counts are not verified zero. Class competition `status`, such as Completed, remains separate.
+
+These labels never gate source collection or delete records. All current schedule classes are fetched, including zero-entry classes. Absent/Dropped patches preserve saved facts, source success clocks, keys/native IDs and links. Failed/incomplete source responses do not advance absence. Retained rows remain available. Live is comparison evidence only and does not select membership. Existing trips.record-status uses active/absent/dropped from two complete class-response misses; a missing parent does not fabricate a trip response. Negative-priority days remain untouched, with original0/1/2/3 cadences preserved.
+
+This release changes only the collector's status handling, the two necessary native text field mappings and focused tests; adapters, endpoints, four class workers, result mappings, independent linking, tasks, locks, stops and other collectors remain unchanged. Review/deployment/normal-schedule acceptance evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-data-states-20261101/ACCEPTANCE.md`. No manual collection or record repair is part of this release.
+
+Native text fields are `classes.record-status` (`fldoCZT91yybRjlQy`) and `schedules.record-status` (`fldXSh9Qj0ilXMOG4`). Class `status` remains the source competition status. These membership labels contain no day designation. Trips retain the existing lowercase `active`, `absent`, `dropped` values.
+
+| Normal run start, Eastern | Collection/save seconds | Errors | Retained classes | Retained schedule items |
+| --- | ---: | ---: | --- | --- |
+| 12:09:17 p.m. | 52.732 | 0 | 66 Absent | 85 Absent |
+| 12:12:17 p.m. | 51.316 | 0 | 66 Dropped | 85 Dropped |
+
+Both readbacks showed 52 current classes: **37 Active** and **15 Active — no entries**. The 54 current schedule items comprised **38 Active** and **16 Active — no entries**. Those counts are observations, not hardcoded limits. Every zero-entry class was still fetched. The 66 retained classes and 85 retained schedule items kept their saved source JSON, source-success timestamps and links. Dropped is a label; it does not prevent collection if the source returns the record again. Reappearance was independently tested offline and was not manufactured in production.
+
+Independent review passed **38 focused checks**, with actual native field bindings and the four reviewed release files. The deployed runtime is `data_runner.py` SHA-256 `ab243e946be911adb0ebff0a2da5b08bba2bd6fba7077bdb3def3c69b2cd19db`. Source adapters, result mappings, linking and cadences stayed unchanged. [Native release review](https://airtable.com/appdl16HJ5ETm8N69/tblrpt7ZqoUGr2VFj/recGTvVuohQUSANva) and the evidence packet prove the named membership checks. The owner subsequently accepted these existing states and withdrew the separate day-* proposal. Historical concern and later decision are retained in the same complaint; no new runtime fix is claimed.
+
+## Previous release: results and independent linking — November 1
+
+The results/linking release deployed at **8:40:56 a.m. Eastern**, before the membership release above. Its functionality remains in use. Working fast `scheduled.py` startup bytes, source error handler, source endpoints, four class workers, keys, existing data and collection cadences were preserved. The existing linking task was enabled after the first normal fast run passed; its task definition, interval and offset were unchanged. No manual collection, task start, stop clear, new adapter, quality gate, extra request delay or historical run scan was added.
 
 Fast collection now saves the existing result-field mapping from the same class responses: result-key equals trip-key; class status, placing/position, scores, times/faults, points/prize money, gone-in and scratch retain established zero/null handling and source observation time. It continues existing ring/group/class/entry/trip/schedule scalar updates. It does not refresh horse/rider/trainer/owner names or add entity endpoints. Native relationship writes are separate.
 
@@ -22,13 +59,13 @@ Independent review passed 47 tests, both fresh private-Python startup imports an
 
 Evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-data-results-linking-20261101` (`ACCEPTANCE.md`, independent report/log/receipt/verifier, deployment/task XML, scheduled fast/link first/repeat reports, native-verification.json, native-preservation.json and operational-native.json). The earlier failed release/restoration evidence below remains historical; this release supersedes the restored collector's missing results/separate-linking limitation.
 
-## Working collector restored - November 1
+## Historical restoration — November 1, before results/linking deployment
 
-Current status: **collection restored and verified through the normal schedule**. At 8:17:47 a.m. Eastern, the eight runtime files were restored to their exact working pre-change bytes. Only the added `wef-data-linking` task was disabled, before restoring the launcher. The existing `wef-data-collector` task XML and three-minute cadence were unchanged. Days 0-3 retain their existing 3-minute/hourly/2-hour/3-hour refresh rules. Source error detail handling, saved runtime progress, data, keys and links were preserved; no manual collection, task start or stop clearing was used.
+Status at that restoration checkpoint: **collection restored and verified through the normal schedule**. At 8:17:47 a.m. Eastern, the eight runtime files were restored to their exact working pre-change bytes. Only the added `wef-data-linking` task was disabled then, before restoring the launcher; the later reviewed results/linking release re-enabled it. The existing `wef-data-collector` task XML and three-minute cadence were unchanged. Days 0-3 retained their existing 3-minute/hourly/2-hour/3-hour refresh rules. Source error detail handling, saved runtime progress, data, keys and links were preserved; no manual collection, task start or stop clearing was used.
 
 The normal **8:18 a.m.** run saved **419 records, zero errors**, in **41.554 seconds** of collection/save time. Native Airtable readback verified fresh data for 8 rings, 52 classes, 160 trips and 54 schedule occurrences, including current-run links on rings/classes/trips. The native run-log and heartbeat both report Succeeded and are linked. Retained rows absent from this response remain stored; these counts do not claim every retained row was refreshed.
 
-The failed October 31 field/link split was withdrawn from the active runner. This restoration returns the preceding collector; it does not deliver the separate linking/results expansion. Its inactive new modules remain on disk and the added task remains disabled. Do not rerun the registration helper to restore the existing task: the actual registered task remains PT3M. All failed release and independent-review evidence is preserved in the parent evidence directory.
+The failed October 31 field/link split was withdrawn from the active runner. That restoration returned the preceding collector and did not itself deliver the separate linking/results expansion. Linking/results were subsequently delivered by the 8:40:56 a.m. release documented above; the linking task is now enabled. Do not rerun the registration helper to restore the existing task: the actual registered task remains PT3M. All failed release and independent-review evidence is preserved in the parent evidence directory.
 
 Restoration work began **8:15:13 a.m.**, with native collection verification at **8:19:46 a.m. Eastern**: **272.855 seconds**, rounded to **4 minutes 33 seconds** in the complaint. The estimate was 10 minutes. Outage tracking starts at the first failed attempt, October 31 at 10:33:15 p.m. EDT; verified restoration was November 1 at 8:19:46 a.m. EST, including the daylight-saving clock change. The complaint's restored-at, actual-restoration-time, estimate and computed downtime were saved and read back. Complaint remains Open; service-restoration remediation is Verified.
 
@@ -42,7 +79,7 @@ The approved correction retains the existing three-minute scheduler and single-d
 
 Day 0 runs on every normal three-minute wake. Day 1 is due one hour after its previous attempt starts; day 2 after two hours; day 3 after three hours. Future days run on the first existing scheduled wake at or after they become due. A long multi-day invocation may span a scheduled wake; the existing no-overlap behavior remains in effect. No additional tasks are introduced.
 
-`runtime/day-cadence.json` stores only per-show/date attempt timestamps, outcomes and completion times. It is updated after each day returns, including a reported Partial attempt. Successful earlier days retain their cadence after interruption; a day interrupted before returning remains due. No class checkpoints, response replay, work queue, quality gate or old stop handling are added. The next collection of an eligible day uses the existing fresh single-day algorithm. Negative priorities are skipped on every wake, including after interruption.
+`runtime/day-cadence.json` stores per-show/date attempt timestamps, outcomes, completion times and the existing native run-key used by independent linking. It is updated after each day returns, including a reported Partial attempt. Successful earlier days retain their cadence after interruption; a day interrupted before returning remains due. No class checkpoints, response replay, work queue, quality gate or old stop handling are added. The next collection of an eligible day uses the existing fresh single-day algorithm. Negative priorities are skipped on every wake, including after interruption.
 
 Each day has its own existing `runs` record: day 0 retains `collection-<attempt ID>`; future days append `|<date>` so summaries and business last-run links remain distinct. The normal operational run-log/heartbeat describes the complete scheduled invocation. Its `counts-json.days` contains each attempted day's priority, date, start/completion, outcome, run key, saved count, errors and stage timings. Errors still flow into the existing err-logs and unaffected days continue.
 
@@ -86,12 +123,22 @@ Windows task `wef-data-collector` repeats every **three minutes**, with no overl
 ## Collection steps
 
 1. Read the default show from synced **wef-shows.shows inside wef-data**. Read its linked **wef-shows.show-days inside wef-data** and select **day-priorities 0–3**, in order. Apply the per-day cadence described above; skip negative priorities.
-2. Fetch that date from the existing decoded `/schedule` endpoint. Save rings, groups, the class list and every schedule occurrence, including breaks.
+2. Fetch that date from the existing decoded `/schedule` endpoint. Its returned items define current membership for that day. Save ring/group/class inventory fields; keep every schedule occurrence, including breaks and repeated class occurrences.
 3. Fetch **every current class**, including classes with zero entries, from the existing decoded `/classes/{id}` endpoint, using the existing maximum of four concurrent requests. Entries and trips arrive together in these class responses; no entry-directory request is made.
-4. Save complete class/trip source JSON and the authored scalar/link fields in batches of up to ten records. Existing stable keys match existing native IDs; only missing keys are created. Source-owned fields sent in the update are replaced; unrelated fields/links are omitted and preserved.
+4. Apply the membership labels and save schedule occurrences once after gathering class responses, so Active — no entries uses a current class count. Save complete class/trip source JSON, scalar fields, results and status-only absence changes in batches of up to ten records. Existing stable keys match existing native IDs; only missing keys are created. Source-owned fields sent in the update are replaced; unrelated fields/links are omitted and preserved. Native relationship updates remain in the independent linking stage.
 5. Finish each day’s simple `runs` record before the next eligible day. Finish operational logging for the whole invocation. Each selected day uses fresh collection; the cadence file only determines when future days are due. No deferred queue, quality comparison or global stop controls this active path.
 
 Source base remains `https://wef-schedules-decoded.gombcg.workers.dev`. No new adapter or endpoint was added.
+
+## Source requests, payloads and Live comparison
+
+Each due collection makes a new GET to the decoded `/schedule` endpoint for its show/date, followed by GETs to `/classes/{id}` for the current schedule's class keys. Requests have no JSON body. Retained Airtable class rows are not the source request list. For the inspected November 1 day-0 snapshot, 54 schedule occurrences represented 52 unique classes; the other 66 date-linked class records were retained records. These are dated observations, not fixed limits or a rule to exclude a returning source class.
+
+The deployed `wef-schedules-decoded` Worker was inspected through Cloudflare's management API on November 1. Its active version `7fe2e7e5-af4c-42e5-8747-afca8925a59b` served 100% of traffic, with upstream no-cache headers, `cf.cacheTtl: 0`, `cacheEverything: false`, response `Cache-Control: no-store`, and no response-cache code/storage bindings. That establishes the inspected proxy configuration, not proof that Wellington's own backend never caches data. Saved Data response metrics do not include cache-age/hit headers.
+
+Current `classes.source-json` retains complete saved class responses, including arrays and trips. `schedules.source-json` retains each occurrence item; the complete original schedule response envelope is **not retained by this fast path**. Older files under `runtime/source-responses` are historical captures and must not be presented as the latest run. The owner-requested latest-run export used actual saved native source JSON: `C:/Users/gombc/Documents/Codex/outputs/wef-data-day0-latest-scheduled-20261101`. Its 52 full class responses and 54 schedule items belong to the 10:48–10:50 a.m. Eastern run; the schedule-items file is explicitly not the complete original schedule response.
+
+Live is separate observation evidence. A read-only comparison of the 11:51 a.m. Data schedule and 11:54 a.m. saved Live feed matched 41 of 52 unique classes. The 11 unmatched were **four Under Saddle/Flat classes and seven Over Fences classes**, not eleven under-saddle classes as this agent initially assumed. The seven Over Fences classes had zero entries in their inspected class responses. All eleven were still on the schedule. Absence from Live alone never establishes Absent/Dropped membership, changes collection eligibility or permits deletion. Compare actual latest feed membership, source IDs and observation times; retained Live table rows alone can overstate the current feed.
 
 ## Authored data and keys
 
@@ -99,10 +146,10 @@ Source base remains `https://wef-schedules-decoded.gombcg.workers.dev`. No new a
 | --- | --- | --- |
 | rings | show key + date + ring number | ID/number/name, schedule observation time as last-success, current last-run |
 | groups | ring key + group ID | ID/name/ring link, existing subset of schedule source JSON, last-success |
-| classes | ring key + class ID | ID/number/name/ring/group links, full class JSON, status, total_entry_trips as entry-count, last-success, current last-run |
+| classes | ring key + class ID | ID/number/name, full class JSON, source competition status, total_entry_trips as entry-count, membership record-status and last-success; existing ring/group/last-run links maintained separately |
 | entries | source show ID + entry ID | Entry ID/number and last-success, derived from class trips |
-| trips | class key + entry ID + source UUID or trip ID | Existing trip scalar values, full trip JSON, class/entry links, last-success, active status, current last-run |
-| schedules | ring key + class_groupxclasses_id, otherwise position-N | Every ordered class/break occurrence, show/day/ring/group/class links, position, source ID, name, start/end times, full occurrence JSON and last-success |
+| trips | class key + entry ID + source UUID or trip ID | Existing trip scalar values, full trip JSON, last-success and active/absent/dropped labels; existing class/entry/last-run links maintained separately |
+| schedules | ring key + class_groupxclasses_id, otherwise position-N | Every ordered class/break occurrence, position, source ID, name, start/end times, full occurrence JSON, membership record-status and last-success; existing show/day/ring/group/class/run links maintained separately |
 | results | Same existing trip key | Result values, class status, result JSON and source last-success in fast; trip/class/entry/last-run relationships in linking |
 | runs | collection-attempt ID | One simple invocation record with started/completed/status, acknowledged business-record count, error count and elapsed time |
 
@@ -132,7 +179,7 @@ The owner selected only the 12 array columns from the supplied class JSON. These
 
 `cdm_data`, `class_group_order_of_go.entries`, `class_related_data.class_prizes`, `class_related_data.class_split_codes`, `class_related_data.judges`, `class_related_data.score_fields`, `my_entry_ids`, `phase_columns`, `phase_order_of_go`, `phase_rows`, `team_scoring_result`, `trips_json`.
 
-The original trips linked-record field is unchanged. Empty arrays remain `[]`, and all array elements stay together in one JSON text column. Formulas use the established JSON sibling/end-of-parent boundaries; source-format changes require checking those mappings. [Field definitions and native verification](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/fast-collector-20261031-candidate/class-array-exposure-proof.json>): all 4,872 array values across 406 saved class records matched the source arrays. IDs, keys and checked ring/group/trip links stayed unchanged. Collector runtime hashes and scheduling are unchanged.
+The original trips linked-record field is unchanged. Empty arrays remain `[]`, and all array elements stay together in one JSON text column. Formulas use the established JSON sibling/end-of-parent boundaries; source-format changes require checking those mappings. [Field definitions and native verification](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/fast-collector-20261031-candidate/class-array-exposure-proof.json>): all 4,872 array values across 406 saved class records matched the source arrays at that check. IDs, keys and checked ring/group/trip links stayed unchanged. That column-exposure change did not alter runtime or scheduling; later runtime releases are documented separately above.
 
 ## Operational logs
 
@@ -152,13 +199,24 @@ Fast authors the existing ring/group/class/entry/trip/schedule fields, results a
 
 Show/day and ring aggregate status/count columns, groups.sequence, class fingerprint/last-change and other enrichment fields are not refreshed by this correction. Existing values remain retained; a successful run log does not establish freshness of every field in every base table. Rendered UI behavior was not part of the live acceptance. Future show/day native-parent creation is outside this delta; schedules currently link to the existing parents.
 
-The narrower payload proposal and synced Live matching remain on hold. The days 0–3, duplicate-selection/timing and error-detail corrections are deployed; their verification limits are recorded below. The failure record does not open a new implementation task.
+The narrower payload reduction and automated synced-Live matching remain on hold. The owner's requested read-only Live/schedule comparison was performed; it did not authorize a matching writer or collection gate. The days 0–3, duplicate-selection/timing, error-detail, results/linking and membership corrections are deployed with their dated verification limits. The separate day-* proposal is withdrawn; keep the current membership labels and existing day-priority. This update changes the README and named complaint only; it does not change the collector.
+
+## November 1 day-state complaint and later owner decision
+
+Historical concern: this agent delivered membership labels with day-priority separate and reported completion before the owner questioned the absent day0/day-* stage. The original complaint and prior proposed correction remain historical evidence. They are not current implementation instructions.
+
+**Later owner decision:** "we will not use the missing day-* state using day-priority. we will keep your current membership state". The owner then requested updating this README and the complaint to reflect that no separate day-* state is needed. This later decision supersedes the former day-state implementation proposal.
+
+- **Complaint:** [recWnPEXguBWv99CF](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recWnPEXguBWv99CF). The same record now contains the owner decision and retains its original incident history. Remediation is **Verified** for the amended agreed outcome; the updated fields were read back. Administrative complaint-status remains **Open**, the only configured choice; no Closed option was invented.
+- **Current disposition:** existing membership behavior accepted; no separate day-* implementation remains. Verification concerns the owner decision, documentation/readback and previously observed working membership states; no new code correction or general prevention claim.
+- **Required reminder:** follow the complete human instruction history, including later withdrawals and accepted behavior. Do not continue implementing a superseded proposal or silently revive it from a complaint or old README.
+- **Protected behavior:** the schedule remains membership authority for every eligible day; collect zero-entry classes; preserve retained records, keys, links and source clocks. Keep day-priority and competition status separate. No gates, deletion, manual collection or additional systems.
 
 ## October 31 agent failure record
 
 Owner-requested record for Data chat `01a19273-bdf8-71b2-8503-cc8079efc129`. These are failures evidenced in this chat and its saved release/review artifacts, including owner corrections. They are not authority for further edits, cleanup, retries or changes to another collector.
 
-| Failure from today | Exact reminder to apply |
+| Historical October 31 failure | Exact reminder to apply |
 | --- | --- |
 | Treated the day-0 implementation as the finished workflow and omitted discovery/refresh for days 1–3 until the owner raised it again. | **Reconcile the entire accepted goal with later corrections; never call a completed substep the completed task.** |
 | Retained an unused optional day-0 selection path after adding selection in the scheduled wrapper. | **Keep one selection path; preserve working behavior without adding duplicate fallback implementations.** |
@@ -170,7 +228,7 @@ Owner-requested record for Data chat `01a19273-bdf8-71b2-8503-cc8079efc129`. The
 | Initially confused nonzero array instances with nonzero field values when applying the owner's ignore request. | **Distinguish `[0]`/`[8]` array positions from values. Use `[*]` as the field template; match trips by identity, never equal array positions.** |
 | The first error-detail candidate's compact JSON was damaged by a second pass of existing credential redaction; an editing pass also corrupted an existing UTF-8 test literal. Independent review caught both before deployment. | **Test the complete existing source-to-log path, including redaction, and compare the final diff with the baseline. Preserve original test fixtures and use explicit UTF-8. A passing isolated formatter test is insufficient.** |
 
-The duplicate-selection and timing-format correction is deployed in `data_runner.py` SHA-256 `80191995a0d382c5c48de7c9a86a7a6ada3fc3602cc1068b324b6993ca931a99`. The error-detail correction is deployed in `source-reader.js` SHA-256 `b2a9872b28b186a05987323d476797bb2ad543954d1903e9e2ebd1ab19545ae6`. These replace the earlier limitations; do not reimplement them from this failure record.
+The historical duplicate-selection/timing correction used `data_runner.py` SHA-256 `80191995a0d382c5c48de7c9a86a7a6ada3fc3602cc1068b324b6993ca931a99`; the current runtime hash is in the membership release section above. The unchanged source-error reader is `source-reader.js` SHA-256 `b2a9872b28b186a05987323d476797bb2ad543954d1903e9e2ebd1ab19545ae6`. Later releases preserve those corrections. Historical hashes are evidence, not rollback instructions.
 
 Evidence: [timing correction and Partial collection outcome](C:/Users/gombc/Documents/Codex/outputs/wef-data-timing-20261031/ACCEPTANCE.md), [independent error-detail review](C:/Users/gombc/Documents/Codex/outputs/wef-data-error-details-20261031/INDEPENDENT-REVIEW.md), and [error-detail deployment and scheduled acceptance](C:/Users/gombc/Documents/Codex/outputs/wef-data-error-details-20261031/ACCEPTANCE.md). Error-detail propagation passed independent end-to-end offline checks; the 8:45 p.m. scheduled run saved 484 records without errors, so that live run did not exercise a natural failure. Historical discarded causes cannot be reconstructed. Existing error-message length limits remain; do not promise unlimited traces.
 
@@ -179,8 +237,8 @@ Apply the reminders at the [frequency required in this agent's instructions](AGE
 
 ## Complaint records and document revision
 
-README revision `2026.11.01.2` records the current deployed corrections, this agent's dated failure account and the required scope-reminder frequency in [AGENTS.md](AGENTS.md#this-data-agents-failures-and-required-reminders--october-31-2026). This is a documentation version, not a collector, dependency or plugin version change.
+README revision `2026.11.01.5`, dated November 1, 2026, records the deployed membership release, its scheduled proof and the owner's decision to keep current membership states without a separate day-* state. The named complaint retains the historical concern and the superseding owner decision. It also reconciles historical restoration/linking statements, actual source/save behavior, payload limitations and the dated read-only Live comparison across this document. The reminder frequency remains in [AGENTS.md](AGENTS.md#this-data-agents-failures-and-required-reminders--october-31-2026). This update changes the README and the named administrative complaint only; no collector code, business data, schema, task or cadence change follows.
 
-Ten individual failures were added one record at a time to [agents → complaints](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U). Each was read back and verified, remains Open, and includes the complaint, corrective reminder, source evidence and actual remediation state. The final local failure-table entry contains two distinct defects (redaction/cause loss and UTF-8 fixture corruption); these have separate Airtable records. Documentation and recorded remedies do not establish prevention of recurrence.
+The original ten October 31 failures were added one record at a time to [agents → complaints](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U). That historical count is not a current total: later complaints include the November 1 outage/restoration and the day-state complaint with its later owner decision linked above. The original records were read back and remained Open at their recorded checks; do not infer current status for every historical complaint without re-reading it. The final October 31 failure-table entry contains two distinct defects (redaction/cause loss and UTF-8 fixture corruption), with separate Airtable records. Documentation and recorded remedies do not establish prevention of recurrence.
 
 Latest deployed source-error correction: October 31, 8:44 p.m. Eastern. Its normal 8:45 p.m. run saved 484 records with zero errors; actual error-message/cause delivery was independently verified end to end offline, not exercised by a natural failure in that live run. See the linked release evidence in the failure record. That earlier documentation-only revision changed no runtime; the subsequent failed field/link release and November 1 restoration are documented above.

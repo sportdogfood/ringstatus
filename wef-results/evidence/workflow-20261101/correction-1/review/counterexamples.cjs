@@ -1,0 +1,20 @@
+const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const root=process.cwd();
+const testFile=path.join(root,'test/workflow.test.js');
+let fixtureCode=fs.readFileSync(testFile,'utf8').split("test('alert creates")[0];
+fixtureCode=fixtureCode.replace("require('../workflow')",'require('+JSON.stringify(path.join(root,'workflow.js'))+')');
+const sandbox={require,structuredClone,console}; vm.createContext(sandbox); vm.runInContext(fixtureCode+'\nglobalThis.fixture=fixture; globalThis.workflow=resultsWorkflow;',sandbox);
+(async()=>{
+ const f=sandbox.fixture(); await f.event();
+ f.data['wef-data.results'][0].fields['last-success']='2031-05-04T10:03:00Z';
+ await sandbox.workflow(f.base,{mode:'reconcile'});
+ console.log(JSON.stringify({case:'clock-only refresh; values and identity unchanged',X:f.row('X').fields['check-status'],reason:f.row('X').fields['check-reason'],expectedX:f.row('expected|X').fields['check-status']}));
+ const g=sandbox.fixture(); await g.event();
+ g.data['wef-data.trips'][0].fields['source-json']=JSON.stringify({horse_id:51,rider_id:72,score1:0,time_one:0,faults_one:0,time_fault_one:0});
+ g.data['wef-data.trips'][0].fields['gone-in']='0';
+ await sandbox.workflow(g.base,{mode:'reconcile'});
+ console.log(JSON.stringify({case:'source Y loses all nonzero values and trigger',Y:g.row('Y').fields['check-status'],expectedY:g.row('expected|Y').fields['check-status'],reason:g.row('expected|Y').fields['check-reason']}));
+ const h=sandbox.fixture(); await h.event(); h.data.snapshot.push(h.record('recDup',h.row('X').fields)); h.data['wef-data.trips'].length=0;
+ await sandbox.workflow(h.base,{mode:'reconcile'});
+ console.log(JSON.stringify({case:'saved duplicate but source trip absent',savedX:h.data.snapshot.filter(r=>r.fields['snapshot-key']==='X|'+h.key).map(r=>r.fields['check-status'])}));
+})().catch(e=>{console.error(e);process.exitCode=1});

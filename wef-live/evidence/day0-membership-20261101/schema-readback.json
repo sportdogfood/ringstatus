@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-11-01T17:22:11.761453+00:00",
+  "existing_tables_and_field_ids_preserved": true,
+  "new_table": "tbluPDhRbFH6l1S3Z",
+  "group_status": "fld9KGjoIza9Mdato",
+  "fields": [
+    {
+      "id": "fldIc6ru0rDus0QZw",
+      "name": "appearance-key",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fldhkcaZwnRMD6Lq2",
+      "name": "show-id",
+      "type": "number"
+    },
+    {
+      "id": "fldOVQxVO2ZHuZLUV",
+      "name": "date",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fldRmYWvBnJUcMX0D",
+      "name": "class-group-id",
+      "type": "number"
+    },
+    {
+      "id": "fldMmCfVgkQ10HcGD",
+      "name": "class-id",
+      "type": "number"
+    },
+    {
+      "id": "fldIEpePcknf4juCE",
+      "name": "record-status",
+      "type": "singleLineText"
+    },
+    {
+      "id": "flda7owoeJ2D27Enx",
+      "name": "last-seen",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fld7cS8QumHD6ykx9",
+      "name": "group",
+      "type": "multipleRecordLinks"
+    },
+    {
+      "id": "fld9whUFw0seoWDHi",
+      "name": "class",
+      "type": "multipleRecordLinks"
+    }
+  ]
+}
