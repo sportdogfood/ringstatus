@@ -10,10 +10,10 @@ Recognition does not require Team membership or WEF access. Inputs policy retain
 
 Cookie and D1 device expiry renew together. A supplied expired/retired cookie cannot fall through to GeoIP. Explicit sign-out retires the current cookie and suppresses GeoIP until explicit sign-in. The widget serializes recognition and credential/retirement requests through the same browser lock, retains uncertain operations, and fences stale display responses.
 
-## Landing integration
+## Current owner-corrected integration
 
-Only /rs-recognize (page 6ac459b135ad0c4c3b253d97) is selected for this release. Its obsolete prototype footer/controller is replaced with the existing dark widget presentation and D1 adapter. Silent success stays on the page; explicit sign-in/profile-button activation navigates to /profile only. No Profile implementation, sitewide rollout or change to other demo pages is included. Existing rec2/Inputs consumers and unrelated routes remain protected.
+The owner rejected the legacy /rs-recognize target and confirmed the CURRENT /recognize and /profile models as the designs. Own unpublished /rs-recognize changes were restored exactly to their prior saved head/footer. Do not revive that target.
 
-Astro and Profile confirmed no overlapping edit/release reservations. Independent read-only source review: /root/recognize_boundary_review. Four targeted backend scenarios passed, including independent identity/private denial, renewal, unique/shared IP, mapping refresh survival and retirement. The legacy native-controller suite retains the same four obsolete SMS/OTP failures as the exact released baseline; it is not used as a new passing gate. Build passed; final package/live acceptance still pending at this checkpoint.
+Approved current scope is removal of embedded demo payloads on /, /ring-status, /about-ringstatus, /recognize and /profile, preserving the confirmed designs. Profile must use Recognize first, then exact real User/Team records. All publishing and deployment are prohibited by the current owner instruction. Four Recognize loaders and the Profile loader are saved only; no new live-five-page acceptance is claimed.
 
-Evidence and exact before/after page code: approved checkout .git/ringstatus-control/recognize-isolation-20261101/. No credential values belong in this record. Local checks and source review are not live completion.
+Current local Profile connection and required remaining real-record mappings are documented in profile-real-records-20261101.md. Existing unrelated page runtime, visitor code, shared site code and other application consumers remain protected. Backups and evidence: approved checkout .git/ringstatus-control/recognize-model-correction-20261101/.

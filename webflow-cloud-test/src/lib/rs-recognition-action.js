@@ -367,14 +367,15 @@ function getConfig(env) { return recognitionConfig(env, RecognitionActionError);
 
 // Server-only Tenants adapter: caller must first verify the target's membership.
 // Reuse credential lookup/writes without rebinding the manager's device/session.
-export async function prepareManagedCredentials({env,fetchImpl=fetch,personUid,name,email='',sms,pin=''}) {
+export async function prepareManagedCredentials({env,fetchImpl=fetch,personUid,name,email='',sms,pin='',requireInputAccess=true,requireExisting=false}) {
   const config=getConfig(env);
   if(!/^[A-Za-z0-9_-]{1,128}$/.test(personUid||''))throw new RecognitionActionError('invalid_person_uid',400);
   if(pin&&!/^\d{4}$/.test(pin))throw new RecognitionActionError('invalid_pin',400);
   const rows=await listRecords(config,config.people,`{person_uid} = '${escapeFormula(personUid)}'`,2,fetchImpl);
   if(rows.length>1)throw new RecognitionActionError('ambiguous_person',409);
   const existing=rows[0];
-  if(existing&&(!isActive(existing.fields.status)||!['approved','invited'].includes(existing.fields.input_access)))throw new RecognitionActionError('unauthorized_person',403);
+  if(requireExisting&&!existing)throw new RecognitionActionError('person_not_found',404);
+  if(existing&&(!isActive(existing.fields.status)||(requireInputAccess&&!['approved','invited'].includes(existing.fields.input_access))))throw new RecognitionActionError('unauthorized_person',403);
   const phone=phoneNumber(sms||existing?.fields.primary_phone_e164);
   const owner=await findPersonByPhone(config,phone,fetchImpl);
   if(owner&&owner.id!==existing?.id)throw new RecognitionActionError('phone_already_registered',409);

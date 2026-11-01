@@ -25,7 +25,7 @@ function finishSignOut(){
  if(!signOutWork)signOutWork=exclusive(drainSignOut).finally(()=>{signOutWork=null;});return signOutWork;
 }
 async function action(body){return exclusive(async()=>{await drainSignOut();return sendAction(body);});}
-const adapter={
+export const recognitionAdapter={
  async current(){
   if(persistentStorage.getItem(pendingKey)){void finishSignOut().catch(()=>{});return null;}
   let result;await exclusive(async()=>{if(persistentStorage.getItem(pendingKey))return;await runSilentRecognition({endpoint,persistentStorage,sessionStorageImpl:visitStorage,redirectOnRecognized:false,onOutcome:value=>{result=value;}});});
@@ -41,7 +41,7 @@ const adapter={
   const data=await action(pendingCredential);pendingCredential=null;
   if(!data.verified)return null;
   persistentStorage.setItem(tokenKey,data.device_token);
-  return adapter.current();
+  return recognitionAdapter.current();
  },
  async signOut(){
   const body={action:'retire_device',device_fingerprint:deviceFingerprint,session_uid:session(),session_event_uid:crypto.randomUUID()};
@@ -54,7 +54,7 @@ const adapter={
 
 export function mountRecognitionWidget(root,{landing=false}={}){
  if(!root||root.__rsRecognitionWidget)return root?.__rsRecognitionWidget;
- const widget=mountRecognize(root,{adapter,onRecognized:()=>location.assign('/profile'),onProfile:()=>location.assign('/profile')});
+ const widget=mountRecognize(root,{adapter:recognitionAdapter,onRecognized:()=>location.assign('/profile'),onProfile:()=>location.assign('/profile')});
  root.__rsRecognitionWidget=widget;
  const refresh=()=>widget.refresh({showFormWhenUnrecognized:landing}).catch(()=>{root.setAttribute('data-rs-recognition-status','unavailable');});
  void flushIamHistory({endpoint,persistentStorage});void refresh();
