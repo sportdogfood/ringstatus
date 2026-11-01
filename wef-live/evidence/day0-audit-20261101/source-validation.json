@@ -1,0 +1,21 @@
+{
+  "live_rows": 148,
+  "decoded_rows": 145,
+  "class_response_pairs": 41,
+  "archive_bytes": 682581,
+  "invalid_scope_or_trip_class": [],
+  "unresolved_identities": [
+    {
+      "class": 200030808,
+      "trip": 200399341
+    },
+    {
+      "class": 200030811,
+      "trip": 200399094
+    },
+    {
+      "class": 200030762,
+      "trip": 200399914
+    }
+  ]
+}

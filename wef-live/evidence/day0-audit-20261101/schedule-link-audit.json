@@ -1,0 +1,12 @@
+{
+  "linked_schedule_count": 42,
+  "wrong_or_dropped_schedule_links": [],
+  "missing_group_occurrence_links": [
+    {
+      "class": 200030830,
+      "unlinked_groups": [
+        200028411
+      ]
+    }
+  ]
+}

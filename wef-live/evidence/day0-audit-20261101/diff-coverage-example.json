@@ -1,0 +1,18 @@
+[
+  {
+    "run_id": "c3d3aa45-4912-48c9-ba0f-b4faf429784e",
+    "started": "2026-11-01T15:27:12.407Z",
+    "results_verified": 0,
+    "verification_detail": "",
+    "actual_time": "08:29:47",
+    "class_diff_paths": []
+  },
+  {
+    "run_id": "ce4c9436-5cf2-4356-aa65-9d7f3f36b67f",
+    "started": "2026-11-01T15:42:07.805Z",
+    "results_verified": 1,
+    "verification_detail": "11-01-26 - 10:30:41 - Jenn Glosson",
+    "actual_time": "08:29:47",
+    "class_diff_paths": []
+  }
+]

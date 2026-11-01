@@ -1,0 +1,509 @@
+{
+  "read_at": "2026-11-01T15:57:53.188Z",
+  "rows": [
+    {
+      "id": "rec1Vqv00zhIGU09s",
+      "fields": {
+        "ring": 3,
+        "class-id": 200030685,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028389_659",
+        "class-name": "Warm Up Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "rec4Mxh1uTE7UJMW4",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030617,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028411_424",
+        "class-name": "Medium/Large Pony Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "rec4UYzQ7uGilbIJY",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030648,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028405_606",
+        "class-name": "Short Stirrup Equitation",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "rec77KUG4QFNUdMtV",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030638,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028406_644",
+        "class-name": "Modified Hunter 2'/2'6\"",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "rec7wjNw1zKzUh7WV",
+      "fields": {
+        "ring": 3,
+        "class-id": 200030589,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028389_285",
+        "class-name": "Child/Adult Amateur Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "rec8uRL8SZmFlzfFI",
+      "fields": {
+        "ring": 1,
+        "class-id": 200030789,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028345_775",
+        "class-name": "$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recAQsLliFu4Cib98",
+      "fields": {
+        "ring": 4,
+        "class-id": 200030743,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028357_696",
+        "class-name": "Itty Bitty Jumper Open (.60-.65m) II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recAXVScwRR0BNjK5",
+      "fields": {
+        "ring": 6,
+        "class-id": 200030820,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028349_837",
+        "class-name": "$600 1.20m Young Jumper II2b",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recGyXTCWU4LymJ4f",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030647,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028405_605",
+        "class-name": "Short Stirrup Equitation",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recKeJidD4Pb4cpHx",
+      "fields": {
+        "ring": 1,
+        "class-id": 200030826,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028346_806",
+        "class-name": "$24,999 ProElite Grand Prix",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recL6JIKLP9oTb7Fd",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030614,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028410_415",
+        "class-name": "Small Pony Handy Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recLhWCvx1VJVCpdw",
+      "fields": {
+        "ring": 3,
+        "class-id": 200030718,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028384_555",
+        "class-name": "THIS Children's Medal",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recMEjmGoMM4InrvD",
+      "fields": {
+        "ring": 4,
+        "class-id": 200030759,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028362_753",
+        "class-name": "Training Jumper (.90m) II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recMUc6UPceGDpvyW",
+      "fields": {
+        "ring": 1,
+        "class-id": 200030779,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028347_701",
+        "class-name": "1.40m Open Jumper II2.1",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recNcltxc21ndLpNm",
+      "fields": {
+        "ring": 4,
+        "class-id": 200030803,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028368_739",
+        "class-name": "$1,580 1.0m Amateur/Junior Jumper Classic II2b",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recOejJEAvYtECrHz",
+      "fields": {
+        "ring": 3,
+        "class-id": 200030603,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028392_319",
+        "class-name": "Low Children's/Adult Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recPnR94WTwzvfSK1",
+      "fields": {
+        "ring": 4,
+        "class-id": 200030746,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028357_699",
+        "class-name": "Itty Bitty Jumper Junior/Amateur (.60-.65m) II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recT5EaTO16Hq8X5j",
+      "fields": {
+        "ring": 4,
+        "class-id": 200030762,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028364_782",
+        "class-name": "Training Jumper (1.0m) II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recVFTJYdpoZdqnex",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030699,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028405_614",
+        "class-name": "Stirrup Warm Up",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recWrDN27D9RcVkH0",
+      "fields": {
+        "ring": 4,
+        "class-id": 200030808,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028358_682",
+        "class-name": "Pony Jumper II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recWxXNQmcazo97jl",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030701,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028410_402",
+        "class-name": "Schooling Pony Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recX79i15oqgFGPvw",
+      "fields": {
+        "ring": 3,
+        "class-id": 200030604,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028392_320",
+        "class-name": "Low Children's/Adult Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recX86sb9dlzJwLqx",
+      "fields": {
+        "ring": 4,
+        "class-id": 200030749,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028359_785",
+        "class-name": "Puddle Jumper Open (.70-.80m) II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recY16E7SiDykqwyF",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030701,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028411_402",
+        "class-name": "Schooling Pony Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recYYv6C2SYhMOFmQ",
+      "fields": {
+        "ring": 3,
+        "class-id": 200030588,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028389_284",
+        "class-name": "Child/Adult Amateur Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recZXAkOqYRNHtb71",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030618,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028411_425",
+        "class-name": "Medium/Large Pony Handy Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recZrfLDkQukl6Pd5",
+      "fields": {
+        "ring": 4,
+        "class-id": 200030752,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028359_797",
+        "class-name": "Puddle Jumper Junior/Amateur (.70-.80m) II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "reccITaVS8OkzPX0n",
+      "fields": {
+        "ring": 6,
+        "class-id": 200030771,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028348_789",
+        "class-name": "1.20m Open Jumper II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recd6Pn0AMVxoNOd9",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030639,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028406_645",
+        "class-name": "Modified Hunter 2'/2'6\"",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recdVKBP0IQOe4EJH",
+      "fields": {
+        "ring": 1,
+        "class-id": 200030777,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028343_772",
+        "class-name": "1.30m Open Jumper II2.1",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "rece92BngYebKDSZk",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030660,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028402_146",
+        "class-name": "Younger Cross Rail Equitation",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "receVXhGhNUf8q8IT",
+      "fields": {
+        "ring": 1,
+        "class-id": 200030823,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028344_842",
+        "class-name": "$600 1.30m Young Jumper II2b",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recee7H9t73aCpZZi",
+      "fields": {
+        "ring": 3,
+        "class-id": 200030676,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028392_650",
+        "class-name": "Warm Up Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recemVT0UMOwC21Qn",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030678,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028406_652",
+        "class-name": "Warm Up Hunter",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recjk6AUivRKjLnzr",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030659,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028402_145",
+        "class-name": "Younger Cross Rail Equitation",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recjnHZdSt5EEj7Tk",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030830,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028410_906",
+        "class-name": "$500 Pony Hunter Classic (2nd Rd)",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recjoTx7UVRm0gkKk",
+      "fields": {
+        "ring": 4,
+        "class-id": 200030811,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028363_822",
+        "class-name": ".90m Young Jumper Table II",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "reclUI8o9w1rszS2Q",
+      "fields": {
+        "ring": 6,
+        "class-id": 200030799,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028353_762",
+        "class-name": "1.10m Junior/Amateur Jumper II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recnZzSzXaonE1hWB",
+      "fields": {
+        "ring": 6,
+        "class-id": 200030768,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028350_746",
+        "class-name": "1.15m Open Jumper II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recsWZ07DelVE6u4K",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030697,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028402_140",
+        "class-name": "Cross Rail Warm Up",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recuAqmKmh7uU3VH7",
+      "fields": {
+        "ring": 6,
+        "class-id": 200030765,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028351_717",
+        "class-name": "1.10m Open Jumper II2d",
+        "show-id": 200000076
+      }
+    },
+    {
+      "id": "recvr1UQwHu4vJikJ",
+      "fields": {
+        "ring": 5,
+        "class-id": 200030613,
+        "status": "active",
+        "date": "2026-11-01",
+        "stage-key": "200000076|2026-11-01|200028410_414",
+        "class-name": "Small Pony Hunter",
+        "show-id": 200000076
+      }
+    }
+  ]
+}

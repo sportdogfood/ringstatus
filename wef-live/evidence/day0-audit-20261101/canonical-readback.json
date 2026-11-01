@@ -1,0 +1,54 @@
+{
+  "readback_saved_at": "2026-11-01T15:59:10.263Z",
+  "shows": {
+    "records": [
+      {
+        "id": "recOAxMcqu1f75CQk",
+        "createdTime": "2026-10-26T16:02:47.000Z",
+        "cellValuesByFieldId": {
+          "fldA1aMRgG0eywgPb": "2026-11-01T15:49:09.363Z",
+          "fldhc0ngVDJ45neim": "2026-11-01",
+          "fldjn5SUt9HBgQdBs": "15|200000076",
+          "fldqdLdrX8LLTdHJg": true,
+          "fldzwGGWrAFMwh7mJ": 200000076
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "day0": {
+    "records": [
+      {
+        "id": "recs1RPpDh6bGuHkY",
+        "createdTime": "2026-10-29T14:05:27.000Z",
+        "cellValuesByFieldId": {
+          "fld27xwpuivsNAtQK": "competition-class-participation",
+          "fld5oeX8XMVUCgNYe": {
+            "id": "seli7KuBFi9JECgUl",
+            "name": "Unknown",
+            "color": "grayLight2"
+          },
+          "fld9jdMjDeWo2OQBi": 133,
+          "fldA41GJyjFTr5ZSA": "2026-11-01",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-11-01",
+          "fldbK4VEp3aNOdJlB": 0,
+          "fldc23g2swz3yqmJl": "2026-10-31T21:39:14.415Z",
+          "fldc5ZobyFB5GJlRO": 201,
+          "fldi1J37WeAtiQGxw": "Not active",
+          "fldzCqzzIBuU4vkX1": "2026-10-31T21:39:07.997Z"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  }
+}
