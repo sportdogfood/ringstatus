@@ -1,3 +1,26 @@
+# RingStatus Cloud app
+
+## Recognize -> Profile -> Team test status — 1 November 2026
+
+**Prepared locally; not deployed. No website publication authorized.**
+
+- Proposed test address: https://ringstatus.webflow.io/test/rs-profile/ . This is not a ready or verified real-record test link yet.
+- Source branch: `codex/profile-real-records-20261101`. Reviewed Profile connection: `95d249008b81ffb57a2f23b9552fcfa350f60a9d`; standalone test entry: `e07256ed8576af68bacd6bc4e900881d9e88b116`.
+- Flow: existing Recognize identifies the user first; the server validates the cookie and exact `person_uid` before loading that User's real Profile and permitted existing Team. User Profile does not require Team membership. WEF access checks remain outside Recognize; GeoIP identity alone does not authorize private Profile data.
+- Presentation: current `/recognize` dark fingerprint/single-input design and current `/profile` Profile/Team panels; no redesign or legacy `/rs-recognize` replacement.
+- Real records: existing Recognize People and canonical User/Team/membership/role records. No sample identities or production business-record writes were used for verification.
+- Passed: 16 scoped backend/service tests, independent bounded source review, local fixture browser journey, and build including the standalone entry. Live real-record journey remains **unverified**.
+- Five page custom-code blocks (`/`, `/ring-status`, `/about-ringstatus`, `/recognize`, `/profile`) are cleaned in saved drafts only. Shared site code is preserved. Published pages still use their prior version.
+- Remaining unimplemented controls: Independent/Preferred level storage, Team creation/invitations, inline file uploads and real modified-date sorting. No schema additions are approved or applied.
+
+Existing Cloud app `d7d97751-20e1-4148-a5cf-ee58671c128a`, environment `110f06dd-c1ea-4839-98af-d829cbe77941`, mount `/test`, is still on release `833ccbcc5b6b1810164384f6ba187f528c2e82ba` (last checked 1 November). Its configured branch `work/inputs-crm-20261006` auto-deploys when pushed; **do not push or deploy without the outstanding app-only approval and shared release coordination**.
+
+Next action: obtain approval to deploy only the prepared Cloud app under `/test`, resolve shared release reservations, then verify the actual test page against real records. Website publication remains prohibited. The application release must precede any later publication of the saved Profile loader.
+
+Implementation and proposed backing decisions: [Profile real-record connection](../docs/coordination/profile-real-records-20261101.md). Private acceptance evidence is in the main checkout's `.git/ringstatus-control/recognize-model-correction-20261101/`; raw evidence is not committed here.
+
+---
+
 # Astro Starter Kit: Basics
 
 ```sh
