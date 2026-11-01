@@ -1,3 +1,93 @@
+## Live normal-run verification - November 1, 2026, 09:54 Eastern
+
+Two populated normal scheduled invocations (09:51 and 09:54 Eastern) completed Groups, Rings and Class details with no stage/logging failures. Coverage: 25 groups, 5 rings, 41 class records and 145 entries. Six unresolved identities were individually logged; other records continued. Original collection-success clocks advance separately from last-changed; 190 unchanged records in the second invocation required no business updates. Stages 8 and 9 remain held and absent from the collection path. Immediate Records-chat delivery is deferred by explicit owner approval; errs-log is used for now. No manual runs/repairs/observers; no rollback needed. Full IDs and readback evidence: wef-live/evidence/three-lanes-20261101/normal-run-acceptance.json. This supersedes the pending-verification wording below.
+
+## Live deployment checkpoint - November 1, 2026
+
+Documentation version **2026.11.01.4**. At 09:45 Eastern, the three-lane collector was installed through the existing task route, with the owner-approved 05:00-19:00 Eastern / three-minute window. Owner explicitly permits failures in errs-log for now; immediate Records-chat delivery remains deferred. Stages 8 and 9 are held outside the new collection path. Normal scheduled verification remains in progress; no manual runs or record repairs. This supersedes the design-only/deployment-hold wording below, not the agreed workflow. Evidence: wef-live/evidence/three-lanes-20261101/{release.md,deployed.json,installed-readback.json,offline-tests.json}.
+
+## Current Live design: three independent lanes
+
+Documentation version: **2026.11.01.3**. Updated **November 1, 2026**.
+
+Owner-directed design only; not deployed. No code, Airtable, task, cadence or deployment changes are authorized by this documentation update. This section supersedes conflicting older Live design statements below; their implementation evidence remains historical.
+
+**Mission:** collect and save Live source data as quickly as possible. Three separate lanes run every three minutes between **5 AM and 7 PM Eastern (America/New_York)**. Each stamps its own heartbeat, checks live status and reads canonical show/day context from wef-shows. False live status is logged as a skip. Use wef-shows show-day priority for past/current/upcoming context, rather than adding a historical marker. Planning-day advance alone does not establish tomorrow's live activity.
+
+| Lane | Source and shared reads | Own writes in wef-live |
+| --- | --- | --- |
+| Groups | ListAjax; latest shared ring/class context | Groups, statuses, counts and class references |
+| Rings | LiveScoreWidget; latest shared group identities | Rings and current/next/completed group links |
+| Class details | Latest saved class references; getLiveClassData and existing decoded class Worker; shared ring context | Classes and entries, including decoded identities |
+
+**Sharing:** use the latest successfully collected saved data for the matching show/day and supported identity, based on its original **last-updated** timestamp. Reading or sharing does not renew that timestamp. Each lane writes its own fields, preserves existing links and finishes independently. Missing shared data is logged; collection continues without waiting for another lane. Class details uses the latest saved class list. No new age cutoff, guessed link, timestamp renewal or cross-lane completion gate is agreed here. Exact physical timestamp/field mapping remains implementation work, not schema approval.
+
+**Completed groups:** save final source Completed statuses before skipping further detail; the existing early exit does not yet do this.
+
+**Collection success, changes and field diffs - all three lanes:**
+
+| Lane | Compare the lane-owned collected values |
+| --- | --- |
+| Groups | Group status, counts, sequence, class references and other collected group values |
+| Rings | Ring values and current/next/completed group identities |
+| Class details | Class observations and entry identities, order, scratch, gone, position and other collected detail values |
+
+- **Last successful collection:** the original time a valid collection succeeded, even when no business values changed. This is collection evidence, not a business-change timestamp. A failed attempt does not advance it. Preserve which records were successfully covered; a successful response does not prove every record was valid.
+- **Last changed:** advances only when the lane's collected business values differ from the previously saved values. An unchanged successful collection leaves it unchanged.
+- **Field diffs - complete business-field coverage:** report diffs for ALL collected business fields owned by each lane, not a selected subset. Exclude timestamps and logging metadata from diff reporting and change detection. Identify the lane, run, stable record identity, field, previous value and new value. Preserve types and changes to/from zero or false. Missing/failed/unresolved input is not an instruction to clear an existing value. A newly discovered record is an initial creation, not a fabricated previous value.
+- **Only save changed values:** compare with the saved record and write only changed lane-owned business fields. Create new valid records as needed. If unchanged, make no business-record update solely to refresh a timestamp; keep successful collection/coverage evidence in the lane's existing run logging. Last-changed metadata travels with an actual change. Collection-success evidence remains available without rewriting unchanged rows.
+- **Compare business values, not bookkeeping:** collection timestamps, run IDs, publication metadata and changing response tokens do not themselves constitute a business diff. Shared reads do not become fresh source collections or create changes. Preserve source evidence and original clocks; no new archive/cleanup policy is agreed here.
+- **Shared freshness:** use the original last successful collection evidence for the matching lane/show/day/identity when deciding which shared observation is latest. Last changed describes when values changed, not whether unchanged data was recently recollected. A read does not advance either clock.
+
+These are logical meanings, not approval to add/rename physical fields or a new diff table. Existing Data `last-success` and Live `last-seen` must not be assumed interchangeable; physical mapping and coverage storage remain implementation details to settle within a separately approved change. Requirements only; no changed-only writer or new instrumentation is claimed deployed.
+
+**Separate measurements per lane:** collection start/end and elapsed time (first source request to last response); save start/end and elapsed time (first Airtable write to last confirmed write); total invocation-to-completion time; source-response-to-corresponding-save delay. Logs identify lane/run and counts. These are required measurements for evaluating the three-minute cadence, not currently verified instrumentation.
+
+**Checks and errors:** individual check/record issues go to the error log and do not fail the stage or stop other records/classes/lanes. Preserve unresolved evidence and existing links. Actual stage failures are logged and immediately alerted to **wef-records-coordinator**; independent work continues. Automatic coordinator alert delivery is not currently installed. The existing physical error table is errs-log; no rename or additional log tables are authorized. Each lane has separate heartbeat, run-log and error attribution.
+
+**Stage 8 - cross-base updates: ON HOLD.** Destination, fields and method remain unfinalized. Must not delay or block revised collection.
+
+**Stage 9 - archiving/removal: ON HOLD.** Cutoff, timing and removal rules remain unfinalized. Must not delay or block revised collection. Log cleanup rules also remain pending within log handling, not a duplicate stage.
+
+These design holds do not disable the existing publisher/archiver or clear the retained log-retention stop. Existing failed-path boundaries remain. No implementation changes have been made.
+
+```mermaid
+flowchart LR
+    subgraph G["Groups lane"]
+        direction TB
+        G1["Every 3 min: 5 AM-7 PM Eastern<br/>Heartbeat, Shows, live-status check"]
+        G2["Fetch ListAjax<br/>Collection start/end + duration"]
+        G3["Save groups + class references<br/>Original last-updated<br/>Save start/end + duration"]
+        G4["Own run-log + errors<br/>Record issues: log and continue"]
+        G1 --> G2 --> G3 --> G4
+    end
+    subgraph R["Rings lane"]
+        direction TB
+        R1["Every 3 min: 5 AM-7 PM Eastern<br/>Heartbeat, Shows, live-status check"]
+        R2["Fetch LiveScoreWidget<br/>Collection start/end + duration"]
+        R3["Save rings + activity links<br/>Original last-updated<br/>Save start/end + duration"]
+        R4["Own run-log + errors<br/>Record issues: log and continue"]
+        R1 --> R2 --> R3 --> R4
+    end
+    subgraph C["Class-details lane"]
+        direction TB
+        C1["Every 3 min: 5 AM-7 PM Eastern<br/>Heartbeat, Shows, live-status check"]
+        C2["Read saved class references<br/>Fetch details + decoded identities<br/>Collection start/end + duration"]
+        C3["Save classes + entries<br/>Original last-updated<br/>Save start/end + duration"]
+        C4["Own run-log + errors<br/>Record issues: log and continue"]
+        C1 --> C2 --> C3 --> C4
+    end
+    G3 -. "Latest shared group identities" .-> R3
+    G3 -. "Latest shared class references" .-> C2
+    R3 -. "Latest shared ring context" .-> G3
+    R3 -. "Latest shared ring context" .-> C3
+    C3 -. "Latest shared class observations" .-> G3
+```
+
+Dotted arrows are saved-data reads, not run dependencies. No common completion node. Stages 8 and 9 are intentionally outside the collection lanes.
+
+## Earlier implementation and historical decisions
+
 ## Controlling lane ownership and approved Live publication — 29 October 2026
 
 Owner APPROVED TO EDIT: add seven fields, implement/deploy Live publication, update ownership, verify two normal scheduled runs. Preserve records/links; no manual runs or task changes. Deployment subsequently verified at 20:28:06 Eastern (2026-10-30T00:28:06Z); all six deployed file hashes match the release receipt. Offline suite: 80 PASS; independent actual-code review PASS. See `wef-live/evidence/publication-v1-20261029/{deployed.json,review.md,deployed-tests.txt}`. Full operational acceptance remains pending. Earlier conflicting proposals/locks below are superseded only for this narrow release.

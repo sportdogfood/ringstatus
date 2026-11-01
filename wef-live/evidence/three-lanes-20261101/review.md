@@ -1,0 +1,22 @@
+# Candidate review — November 1, 2026
+
+Reviewer/writer: Live chat 01a16902-240a-7280-8661-90b0d8d7325a. This is an author review, not an independent review. Candidate hashes are frozen in candidate-hashes.json. Comparison: exact installed JS backup and baseline task XML in baseline/, manifest baseline.json; Git HEAD in TASK.md.
+
+## Finding / release blocker
+
+**Immediate Records chat delivery is unavailable.** No existing runner-to-Codex-chat transport was found in the inspected Live/Shows implementation. Candidate lanes.js supports a supplied alert function and records delivery failure honestly; its production entry currently supplies none. Offline injected delivery passes, but that does not install delivery. Deploying this candidate cannot satisfy the owner's immediate Records-chat requirement. No blind substitute, new observer, CLI chat runner or framework was added. Owner decision needed: permit collection release with errs-log/local stage-failure evidence while chat delivery remains pending, or supply/authorize an actual supported delivery route.
+
+## Inspected scope and behavior
+
+- Existing one hidden task remains the route: wef-live-collector -> wscript/run-hidden.vbs -> run.ps1 -> entry.js. Target remains the existing Live base. Candidate changes only entry.js, airtable.js (read-only show-days access), plus lanes.js and lane-store.js. No dependency/version changes, schema/contract mutation in another base, new task/base/framework, record repair, deletion or business observer.
+- Three lanes use independent run IDs, heartbeat, run/error logs, timing, saved coverage/change receipts. Dispatcher starts them together; one failed lane does not throw through another lane. Date window uses America/New_York including DST, not a fixed UTC offset. Production task's actual trigger still needs the approved 05:00–19:00 window at deployment; currently unchanged.
+- Existing source URLs, source reader, model and Airtable transport protections reused. Class requests have four concurrent workers without a class-count cap. Groups and Rings do not wait for class completion. Classes use the previous successfully saved group reference state. Last-success coverage stays separate from last-changed; unchanged business records are not timestamp-only PATCHed. All field diffs (including raw collected business properties) are retained; collection/provider bookkeeping clocks excluded, actual show activity times included.
+- Business writes use ten-record batches with scoped readback. No 45-second publication budget, per-record priority reread, cross-base publisher or retirement/log-retention invocation exists in the candidate entry path. Logs use UUID-based batched writes without inventorying accumulated historical logs. Per-record field diffs appear in existing run-logs with parent_run_id, plus the full local receipt.
+- Native relationships stay under one writer: Class lane owns class.groups, reciprocal group.classes maintained by Airtable; Groups does not race that inverse field. Missing references preserve links. No guesses, clearing unresolved records, or bypass of identity scope.
+- Completed Groups status is saved before future Class lane detail skips. Missing/invalid records log issues without failing the stage. Genuine source/stage-wide save failure invokes the alert hook; failed delivery remains Undelivered. Logs failing do not abort business collection.
+
+## Checks and limits
+
+18 targeted offline checks PASS, actual command/runtime/times/stdout/stderr in offline-tests.json. Tests cover Eastern window/DST, unchanged repeat clocks, zero/false/activity-time diffs, terminal statuses, malformed groups, partial trip identity, link preservation, missing shared data, corrupt shared state, failure isolation, source failure alert callback, whole-save failure, logs outage and explicit undelivered alerts. These are in-memory/offline checks, not production endpoints, Airtable writes or normal-run acceptance. Production preservation check confirms all 19 original JS files unchanged. Rollback script syntax inspected; it has NOT been executed and is not proven operational recovery.
+
+Deployment and normal scheduled verification are **BLOCKED** on the missing required alert delivery/owner decision. No new runtime was installed, task changed, manual collector invoked, source fetched, stop cleared or record repaired. Current production's known defects remain. No full-release or natural same-date/multi-group PASS is claimed.

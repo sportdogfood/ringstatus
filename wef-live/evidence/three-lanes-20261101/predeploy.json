@@ -1,0 +1,7 @@
+{
+  "at": "2026-11-01T14:42:39.6370531Z",
+  "authority": "Owner approved deployment with errs-log-only failures temporarily; stages 8/9 held; normal scheduled proof only; rollback on failure.",
+  "candidate_hashes_verified": true,
+  "baseline_19_js_preserved": true,
+  "state": "Running"
+}

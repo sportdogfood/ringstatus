@@ -2,6 +2,16 @@
 // Same configured transport used by wef-shows. Invoked only by scheduled Data.
 const {fetchTextWithConfiguredTransport}=require('../wef-schedules/lib/sgl_fetch_adapter');
 const crypto=require('node:crypto');
+const {safe}=require('./attempt-log');
+function errorText(error,seen=new Set()){
+ if(error===null||typeof error!=='object')return safe(String(error));
+ if(seen.has(error))return '[circular cause]';seen.add(error);
+ const lines=[safe(error.name||'Error')+': '+safe(error.message||String(error))];
+ for(const key of ['code','errno','syscall','hostname','address','port'])if(error[key]!==undefined)lines.push(key+': '+safe(error[key]));
+ if(error.cause!==undefined)lines.push('Cause:\n'+errorText(error.cause,seen));
+ if(Array.isArray(error.errors))for(const value of error.errors)lines.push('Related error:\n'+errorText(value,seen));
+ return lines.join('\n');
+}
 function target(route,params){
  if(!params||typeof params!=='object'||params.customer_id!==15||!Number.isSafeInteger(params.show_id)||params.show_id<=0)throw Error('Invalid Data source scope');
  const allowed=route==='/schedule'?['customer_id','show_id','date']:route==='/entries'?['customer_id','show_id','page','sort_on','sort_type','search_text']:/^\/classes\/[1-9]\d*$/.test(route)?['customer_id','show_id']:null;
@@ -20,7 +30,7 @@ async function read(route,params,{transport=fetchTextWithConfiguredTransport,tim
    const response=await fetch(endpoint,{signal:AbortSignal.timeout(timeout*1000),headers:{Accept:'application/json'}});
    const body=Buffer.from(await response.arrayBuffer());return {response,body,text:body.toString('utf8')};
   },{env:{SGL_FETCH_TRANSPORT:'node'}});
- }catch(error){finish();if(['TimeoutError','AbortError'].includes(error.name))metric.timeout=true;return {ok:false,error:'Source transport failed ('+(['TimeoutError','AbortError','TypeError'].includes(error.name)?error.name:'Error')+')',metric};}
+ }catch(error){finish();if(['TimeoutError','AbortError'].includes(error.name))metric.timeout=true;return {ok:false,error:'Source transport failed:\n'+errorText(error),metric};}
  const response=result.response;metric.http=response.status;metric.headers={};
  for(const name of ['content-type','cf-ray','server','x-rs-decoded']){const value=response.headers?.get(name);if(value)metric.headers[name]=String(value).slice(0,160);}
  finish();
@@ -34,6 +44,6 @@ async function read(route,params,{transport=fetchTextWithConfiguredTransport,tim
 if(require.main===module){
  Promise.resolve().then(()=>read(process.argv[2],JSON.parse(process.argv[3]),{timeout:Number(process.argv[4])||18})).then(result=>{
   console.log(JSON.stringify(result));process.exitCode=result.ok?0:1;
- }).catch(()=>{console.log(JSON.stringify({ok:false,error:'Invalid scheduled Data source request'}));process.exitCode=1;});
+ }).catch(error=>{console.log(JSON.stringify({ok:false,error:'Invalid scheduled Data source request:\n'+errorText(error)}));process.exitCode=1;});
 }
 module.exports={read,target};

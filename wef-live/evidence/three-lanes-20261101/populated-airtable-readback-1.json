@@ -1,0 +1,163 @@
+{
+  "at": "2026-11-01T14:51:46.165Z",
+  "runs": [
+    "af784364-8206-4e2b-9439-f0925980c269",
+    "1f875b65-47b2-4e18-ba7a-b2ed158d35c4",
+    "6886ca9e-62ed-468f-bd57-c7036c2ec2de"
+  ],
+  "tables": {
+    "heartbeat": {
+      "records": [
+        {
+          "id": "recD4dOspXjgnZt49",
+          "createdTime": "2026-11-01T14:51:07.000Z",
+          "cellValuesByFieldId": {
+            "fld8IrgGV18uytxo0": "2026-11-01T14:51:04.170Z",
+            "fld8TKLXrdL7BJRB8": "1f875b65-47b2-4e18-ba7a-b2ed158d35c4",
+            "fldLrhc5BlVINDbrn": "Success",
+            "fldhDlhhMjQTx8xvL": "{\"lane\":\"rings\",\"day_priority\":0,\"timings\":{\"collection_ms\":131.94540000000006,\"save_ms\":776.9794000000002,\"collection_started\":\"2026-11-01T14:51:05.879Z\",\"collection_completed\":\"2026-11-01T14:51:06.011Z\",\"save_started\":\"2026-11-01T14:51:06.722Z\",\"save_completed\":\"2026-11-01T14:51:07.499Z\",\"total_ms\":3329},\"counts\":{\"live-rings\":5},\"changed_records\":3,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-rings-1f875b65-47b2-4e18-ba7a-b2ed158d35c4.json\"}",
+            "fldvDgSo14YK9yIkL": "2026-11-01T14:51:07.499Z"
+          }
+        },
+        {
+          "id": "reclD8upRkzPxnNHh",
+          "createdTime": "2026-11-01T14:51:07.000Z",
+          "cellValuesByFieldId": {
+            "fld8IrgGV18uytxo0": "2026-11-01T14:51:04.171Z",
+            "fld8TKLXrdL7BJRB8": "6886ca9e-62ed-468f-bd57-c7036c2ec2de",
+            "fldLrhc5BlVINDbrn": "Partial",
+            "fldhDlhhMjQTx8xvL": "{\"lane\":\"classes\",\"day_priority\":0,\"timings\":{\"collection_ms\":1945.3361,\"save_ms\":7035.5882,\"collection_started\":\"2026-11-01T14:51:06.615Z\",\"collection_completed\":\"2026-11-01T14:51:08.560Z\",\"save_started\":\"2026-11-01T14:51:08.572Z\",\"save_completed\":\"2026-11-01T14:51:15.611Z\",\"total_ms\":11440},\"counts\":{\"live-classes\":41,\"live-entries\":145},\"changed_records\":65,\"issues\":6,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-classes-6886ca9e-62ed-468f-bd57-c7036c2ec2de.json\"}",
+            "fldvDgSo14YK9yIkL": "2026-11-01T14:51:15.611Z"
+          }
+        },
+        {
+          "id": "recxo1dKBbX8JFaEO",
+          "createdTime": "2026-11-01T14:51:07.000Z",
+          "cellValuesByFieldId": {
+            "fld8IrgGV18uytxo0": "2026-11-01T14:51:04.167Z",
+            "fld8TKLXrdL7BJRB8": "af784364-8206-4e2b-9439-f0925980c269",
+            "fldLrhc5BlVINDbrn": "Success",
+            "fldhDlhhMjQTx8xvL": "{\"lane\":\"groups\",\"day_priority\":0,\"timings\":{\"collection_ms\":851.1191999999999,\"save_ms\":1152.5504000000005,\"collection_started\":\"2026-11-01T14:51:05.842Z\",\"collection_completed\":\"2026-11-01T14:51:06.693Z\",\"save_started\":\"2026-11-01T14:51:07.051Z\",\"save_completed\":\"2026-11-01T14:51:08.204Z\",\"total_ms\":4037},\"counts\":{\"live-groups\":25},\"changed_records\":3,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-groups-af784364-8206-4e2b-9439-f0925980c269.json\"}",
+            "fldvDgSo14YK9yIkL": "2026-11-01T14:51:08.204Z"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 3
+      }
+    },
+    "run-logs": {
+      "records": [
+        {
+          "id": "recJWMFw3IZEVxag2",
+          "createdTime": "2026-11-01T14:51:10.000Z",
+          "cellValuesByFieldId": {
+            "fld5yvsEBvJ50WjV6": "2026-11-01",
+            "fldC6qE4BzSH7EdD9": "Success",
+            "fldWF8eWlCe449xe3": 200000076,
+            "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:07.499Z",
+            "fldbQDrUz1396ZiLC": "{\"lane\":\"rings\",\"day_priority\":0,\"timings\":{\"collection_ms\":131.94540000000006,\"save_ms\":776.9794000000002,\"collection_started\":\"2026-11-01T14:51:05.879Z\",\"collection_completed\":\"2026-11-01T14:51:06.011Z\",\"save_started\":\"2026-11-01T14:51:06.722Z\",\"save_completed\":\"2026-11-01T14:51:07.499Z\",\"total_ms\":3329},\"counts\":{\"live-rings\":5},\"changed_records\":3,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-rings-1f875b65-47b2-4e18-ba7a-b2ed158d35c4.json\"}",
+            "fldjzS1Dm5yxaErZk": "2026-11-01T14:51:04.170Z",
+            "fldzrFL2SMGej8f6D": "1f875b65-47b2-4e18-ba7a-b2ed158d35c4"
+          }
+        },
+        {
+          "id": "recslaaKIvuevYAj0",
+          "createdTime": "2026-11-01T14:51:18.000Z",
+          "cellValuesByFieldId": {
+            "fld5yvsEBvJ50WjV6": "2026-11-01",
+            "fldC6qE4BzSH7EdD9": "Partial",
+            "fldWF8eWlCe449xe3": 200000076,
+            "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+            "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"day_priority\":0,\"timings\":{\"collection_ms\":1945.3361,\"save_ms\":7035.5882,\"collection_started\":\"2026-11-01T14:51:06.615Z\",\"collection_completed\":\"2026-11-01T14:51:08.560Z\",\"save_started\":\"2026-11-01T14:51:08.572Z\",\"save_completed\":\"2026-11-01T14:51:15.611Z\",\"total_ms\":11440},\"counts\":{\"live-classes\":41,\"live-entries\":145},\"changed_records\":65,\"issues\":6,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-classes-6886ca9e-62ed-468f-bd57-c7036c2ec2de.json\"}",
+            "fldjzS1Dm5yxaErZk": "2026-11-01T14:51:04.171Z",
+            "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de"
+          }
+        },
+        {
+          "id": "recvWhVfCgTSPUcxu",
+          "createdTime": "2026-11-01T14:51:11.000Z",
+          "cellValuesByFieldId": {
+            "fld5yvsEBvJ50WjV6": "2026-11-01",
+            "fldC6qE4BzSH7EdD9": "Success",
+            "fldWF8eWlCe449xe3": 200000076,
+            "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:08.204Z",
+            "fldbQDrUz1396ZiLC": "{\"lane\":\"groups\",\"day_priority\":0,\"timings\":{\"collection_ms\":851.1191999999999,\"save_ms\":1152.5504000000005,\"collection_started\":\"2026-11-01T14:51:05.842Z\",\"collection_completed\":\"2026-11-01T14:51:06.693Z\",\"save_started\":\"2026-11-01T14:51:07.051Z\",\"save_completed\":\"2026-11-01T14:51:08.204Z\",\"total_ms\":4037},\"counts\":{\"live-groups\":25},\"changed_records\":3,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-groups-af784364-8206-4e2b-9439-f0925980c269.json\"}",
+            "fldjzS1Dm5yxaErZk": "2026-11-01T14:51:04.167Z",
+            "fldzrFL2SMGej8f6D": "af784364-8206-4e2b-9439-f0925980c269"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 3
+      }
+    },
+    "errs-log": {
+      "records": [
+        {
+          "id": "rec28VASfu0YSJzsT",
+          "createdTime": "2026-11-01T14:51:27.000Z",
+          "cellValuesByFieldId": {
+            "fldBuotPnn7x888zy": "6886ca9e-62ed-468f-bd57-c7036c2ec2de",
+            "fldUmRS6HRQlir2Nb": "2026-11-01",
+            "fldvlhRJm5OvBNwIt": "classes: No decoded identity for trip 200399341",
+            "fldwSQslvBcnGikCR": 200000076
+          }
+        },
+        {
+          "id": "recB0dtDuezc9vj6D",
+          "createdTime": "2026-11-01T14:51:27.000Z",
+          "cellValuesByFieldId": {
+            "fldBuotPnn7x888zy": "6886ca9e-62ed-468f-bd57-c7036c2ec2de",
+            "fldUmRS6HRQlir2Nb": "2026-11-01",
+            "fldvlhRJm5OvBNwIt": "classes: No decoded identity for trip 200399237",
+            "fldwSQslvBcnGikCR": 200000076
+          }
+        },
+        {
+          "id": "recMl50Uu8lcSYA2Y",
+          "createdTime": "2026-11-01T14:51:27.000Z",
+          "cellValuesByFieldId": {
+            "fldBuotPnn7x888zy": "6886ca9e-62ed-468f-bd57-c7036c2ec2de",
+            "fldUmRS6HRQlir2Nb": "2026-11-01",
+            "fldvlhRJm5OvBNwIt": "classes: No decoded identity for trip 200398413",
+            "fldwSQslvBcnGikCR": 200000076
+          }
+        },
+        {
+          "id": "recgbdHV9pNfZEX5r",
+          "createdTime": "2026-11-01T14:51:27.000Z",
+          "cellValuesByFieldId": {
+            "fldBuotPnn7x888zy": "6886ca9e-62ed-468f-bd57-c7036c2ec2de",
+            "fldUmRS6HRQlir2Nb": "2026-11-01",
+            "fldvlhRJm5OvBNwIt": "classes: No decoded identity for trip 200399920",
+            "fldwSQslvBcnGikCR": 200000076
+          }
+        },
+        {
+          "id": "reckrzLqcTHPCWWxg",
+          "createdTime": "2026-11-01T14:51:27.000Z",
+          "cellValuesByFieldId": {
+            "fldBuotPnn7x888zy": "6886ca9e-62ed-468f-bd57-c7036c2ec2de",
+            "fldUmRS6HRQlir2Nb": "2026-11-01",
+            "fldvlhRJm5OvBNwIt": "classes: No decoded identity for trip 200399914",
+            "fldwSQslvBcnGikCR": 200000076
+          }
+        },
+        {
+          "id": "recpMeArNsH86TnyG",
+          "createdTime": "2026-11-01T14:51:27.000Z",
+          "cellValuesByFieldId": {
+            "fldBuotPnn7x888zy": "6886ca9e-62ed-468f-bd57-c7036c2ec2de",
+            "fldUmRS6HRQlir2Nb": "2026-11-01",
+            "fldvlhRJm5OvBNwIt": "classes: No decoded identity for trip 200399094",
+            "fldwSQslvBcnGikCR": 200000076
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 6
+      }
+    }
+  }
+}

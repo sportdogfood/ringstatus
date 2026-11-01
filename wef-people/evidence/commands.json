@@ -1,0 +1,49 @@
+{
+  "reviewer": "01a19727-9a70-7283-a865-01dd38aacb9d (module author self-review)",
+  "commands": [
+    {
+      "id": "join-tests",
+      "command": "C:\\Python311\\python.exe -B -m unittest discover -s \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\" -p test_join.py -v",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "3.11.3 (tags/v3.11.3:f3909b8, Apr  4 2023, 23:49:59) [MSC v.1934 64 bit (AMD64)]",
+      "started_at": "2026-11-01T12:54:05.006333+00:00",
+      "ended_at": "2026-11-01T12:54:05.211877+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_duplicate_and_invalid_identity_retained (test_join.JoinTests.test_duplicate_and_invalid_identity_retained) ... ok\ntest_duplicate_destination_does_not_block_valid_people (test_join.JoinTests.test_duplicate_destination_does_not_block_valid_people) ... ok\ntest_empty_sources_do_not_invent_excluded_requirements (test_join.JoinTests.test_empty_sources_do_not_invent_excluded_requirements) ... ok\ntest_missing_and_conflicting_memberships_withheld_locally (test_join.JoinTests.test_missing_and_conflicting_memberships_withheld_locally) ... ok\ntest_more_than_one_page_and_batch (test_join.JoinTests.test_more_than_one_page_and_batch) ... ok\ntest_readback_mismatch_fails (test_join.JoinTests.test_readback_mismatch_fails) ... ok\ntest_repeat_unchanged_and_preserved_native_ids_links (test_join.JoinTests.test_repeat_unchanged_and_preserved_native_ids_links) ... ok\ntest_role_collision_and_no_attendance_horse_inference (test_join.JoinTests.test_role_collision_and_no_attendance_horse_inference) ... ok\ntest_source_clock_not_renewed_or_regressed (test_join.JoinTests.test_source_clock_not_renewed_or_regressed) ... ok\ntest_uncertain_write_not_retried (test_join.JoinTests.test_uncertain_write_not_retried) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.009s\n\nOK\n"
+    },
+    {
+      "id": "logging-tests",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\test_logging.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-01T12:54:05.211877+00:00",
+      "ended_at": "2026-11-01T12:54:05.404868+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: Every mismatch retains source context within existing redaction bound\nok 1 - Every mismatch retains source context within existing redaction bound\n  ---\n  duration_ms: 4.4004\n  type: 'test'\n  ...\n# Subtest: Existing logging retains partial attempt and errors when remote delivery fails\nok 2 - Existing logging retains partial attempt and errors when remote delivery fails\n  ---\n  duration_ms: 22.2901\n  type: 'test'\n  ...\n1..2\n# tests 2\n# suites 0\n# pass 2\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 111.1647\n",
+      "stderr": ""
+    },
+    {
+      "id": "entry-syntax",
+      "command": "node --check \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\entry.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-01T12:54:05.404868+00:00",
+      "ended_at": "2026-11-01T12:54:05.486365+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "logging-syntax",
+      "command": "node --check \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\logging.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-01T12:54:05.486365+00:00",
+      "ended_at": "2026-11-01T12:54:05.584461+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

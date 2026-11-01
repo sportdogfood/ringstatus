@@ -1,5 +1,41 @@
 # wef-ring-pace owner
 
+**README version: 1.0 | Updated: October 31, 2026 | Timezone: America/New_York**
+
+## Current responsibility
+
+Ring-pace calculates today's pace by ring from saved Live snapshots.
+
+- Read today's synced rings and linked groups. Discover the ring count from the source; do not assume five.
+- Use current/next/completed links, status, total, gone and source timestamps to interpret each ring's snapshot.
+- Calculate minutes per trip as elapsed observation minutes divided by the increase in gone between compatible snapshots of the same group and phase.
+- Keep one current result per ring and preserve today's immutable snapshot evidence.
+- Retain the last proven pace and its original measurement time when counts do not advance. Do not present a reread as a new measurement.
+- Isolate malformed ring data; report missing or conflicting evidence without inventing progress, starts or finishes.
+- Publish Ring results and review, deploy and verify only specifically approved Ring changes.
+
+Class calculations, fallback policy and Class consumption belong to Class/the coordinator. Entry predictions, collectors, source-record repairs, messaging and publication belong to their owners. Shared code or a shared scheduled task does not transfer those responsibilities to Ring.
+
+## Cadence and outputs
+
+The existing Windows task `wef-timing-data` runs every **three minutes** through hidden VBS → PowerShell → `entry-data.js` → `data-runner.js`. The runner executes the business workflow; Codex does not start manual runs.
+
+Ring reads synced `wef-live.rings` and `wef-live.groups` in base `appYOykKIy1kAquhP`. `wef-live.classes` and `wef-live.entries` are known source tables, not additional Ring calculation ownership. Ring answers are in `timing-answers` (`tblhIjSjeGs5td23c`): `ring-current`, `ring-observation` and `ring-pace`. Saved continuation state is in `engine-checkpoints` (`tblfWyTqeyvIvhAjb`).
+
+Keep source `source-updated-at`, collector `last-seen` and the measured interval endpoints distinct. Preserve raw source timestamps where their timezone interpretation is unverified. Pace measures interval throughput, including pauses, rather than an individual trip's duration.
+
+## Verified release and remaining gaps
+
+On October 31 the two Ring Date-field filters were corrected, independently reviewed and deployed. Ring saved-output readbacks passed for the normal **12:04 and 12:07 p.m. Eastern** runs. This proves the date-filter correction and Ring repeat-run behavior; it does not establish Class consumption or guarantee a numerical pace for every ring. Evidence: `C:/Users/gombc/Documents/Codex/staging/wef-ring-date-filter-20261031/two-normal-verification.json`.
+
+The current measurement selector accepts Underway/live groups. Upcoming/Completed links are retained as context; broader agreed status handling remains a known gap. The previously identified checkpoint-format and helper-refactor approval gaps remain unresolved; the date-only repair did not change them.
+
+No manual production runs, source-record repairs, unapproved structural changes or post-failure edits without fresh approval. Retention work and other stopped paths are not resumed by this documentation update. Follow [workspace instructions](WORKSPACE-INSTRUCTIONS.md), applicable AGENTS.md and the latest human scope.
+
+## Historical notes — not current operating status
+
+The dated material below preserves earlier decisions, evidence and stops. Its older “current,” “pending” and ownership statements are superseded by the October 31 scope and verified release above where they conflict. Skill version numbers below are historical installation receipts, not this README's version. This documentation version does not change software, tasks or deployment.
+
 ## Current procedures - installed0.2.2 application receipt, October30 2026
 
 Explicitly read this solely Ring-owned entrypoint on resumption; no autoload, scheduling or future-compliance guarantee is claimed. This section supersedes old installed0.2.1 and pending-clarification statements below only where current facts conflict; responsibilities, established cadence, source contracts and retention boundaries remain.

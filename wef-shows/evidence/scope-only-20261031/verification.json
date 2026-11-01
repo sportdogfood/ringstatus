@@ -1,0 +1,14 @@
+{
+  "count_removal": "Verified through normal scheduled run",
+  "code_review": "COMPLETE/PASS",
+  "offline_tests": 24,
+  "run_id": "343cdab8-1245-46d9-9e47-4808c4ccfede",
+  "task_exit": 0,
+  "deployed_hashes": "PASS",
+  "historical_stop_preserved": "PASS",
+  "Airtable_readback": "readback.json",
+  "automatic_alerts": "BLOCKED - no installed collector-to-chat route",
+  "scope_added": "none",
+  "manual_runs": 0,
+  "record_repairs": 0
+}

@@ -1525,8 +1525,8 @@ class Runner:
             if scope in existing:continue
             self.observation(scope,envelope,{'started':body['verified-at'],'completed':body['verified-at']},{})
 
-def run(schema_file):
-    """Fresh day-zero collection. Errors are reported; no work is queued or resumed."""
+def collect_day(schema_file, selection):
+    """Existing fresh single-day collection; no class work is queued or resumed."""
     errors=[];saved=set();show=None;day=None;runkey=None;run_started=stamp()
     started=time.perf_counter();stage_started=started;timings={}
     def timed(stage):
@@ -1536,7 +1536,7 @@ def run(schema_file):
         errors.append({'key':target,'error':type(exception).__name__+': '+str(exception) if isinstance(exception,Exception) else str(exception)})
     def report():
         if runkey:
-            save('runs',[{'run-key':runkey,'mode':'Scheduled day-zero collection',
+            save('runs',[{'run-key':runkey,'mode':'Scheduled day-zero collection' if priority==0 else 'Scheduled day-'+str(selection[2])+' collection',
                 'started':run_started,'completed':stamp(),'status':'Partial' if errors else 'Succeeded',
                 'records':len(saved),'errors':len(errors),'elapsed-seconds':round(time.perf_counter()-started,6)}])
             timed('save-run-summary')
@@ -1546,21 +1546,15 @@ def run(schema_file):
     try:
         client=Airtable();source=Source()
         store=DataStore(client,json.loads(pathlib.Path(schema_file).read_text(encoding='utf-8')),cache=True)
-        shows=client.records(DATA_BASE,SYNC_SHOWS,fields=list(SYNC_SHOW_FIELDS.values()))
-        owner=next(row for row in shows if row['fields'].get(SYNC_SHOW_FIELDS['default']) is True)
-        context={name:owner['fields'].get(field) for name,field in SYNC_SHOW_FIELDS.items()}
+        context,day,priority=selection
         show=context['show-key']
-        days=client.records(DATA_BASE,SYNC_DAYS,fields=['fld4RBSJRXKCbVU1A','fldu4VmXs9yz4mTEa','fldOeAP4c7F1lxIEd','fldP1IRkAD0E2HIND'])
-        selected=next(row for row in days if row['fields'].get('fldP1IRkAD0E2HIND')==0
-                      and owner['id'] in row['fields'].get('fldu4VmXs9yz4mTEa',[]))
-        day=selected['fields']['fldOeAP4c7F1lxIEd'][:10]
     except Exception as exception:
         error('Show and day selection',exception);return report()
     timed('select-show-and-day')
 
-    tables=('rings','groups','classes','entries','trips','schedules','runs')
+    tables=('rings','groups','classes','entries','trips','schedules','runs','results')
     def save(table,rows):
-        rows=list(rows);written=set()
+        rows=[{k:v for k,v in row.items() if not (isinstance(v,dict) and '$links' in v)} for row in rows];written=set()
         for start in range(0,len(rows),10):
             batch=rows[start:start+10]
             try:
@@ -1603,8 +1597,9 @@ def run(schema_file):
         return output
 
     runkey='collection-'+(os.environ.get('WEF_LOG_ATTEMPT_ID') or run_started)
+    if priority!=0:runkey+='|'+day
     run_fields={'last-run':refs('runs',runkey)} if runkey in save('runs',[
-        {'run-key':runkey,'mode':'Scheduled day-zero collection','started':run_started,'status':'Started'}]) else {}
+        {'run-key':runkey,'mode':'Scheduled day-zero collection' if priority==0 else 'Scheduled day-'+str(selection[2])+' collection','started':run_started,'status':'Started'}]) else {}
     timed('save-run-start')
     params={'show_id':context['show-id'],'customer_id':context['customer-id']}
     try:
@@ -1656,7 +1651,8 @@ def run(schema_file):
         save(table,source_rows(graph[table]));timed('save-inventory-'+table)
     save('schedules',schedules.values());timed('save-schedules')
 
-    classes={};entries={};trips={}
+    from record_mappings import RESULT_FIELDS
+    classes={};entries={};trips={};results={}
     def fetch(row):return source.fetch('/classes/'+str(row['class-id']),params)
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         requests={pool.submit(fetch,row):row for row in graph.get('classes',[])}
@@ -1686,10 +1682,72 @@ def run(schema_file):
                                     except (ValueError,TypeError):pass
                                 else:value[field]=str(trip[raw])
                         trips[tk]=value
+                        result_values={name:trip.get(source) for name,source in RESULT_FIELDS.items()}
+                        status=classes[key].get('status',store.inventory('classes').get(key,{}).get('fields',{}).get(store.fields['classes']['status']['id']))
+                        results[tk]={'result-key':tk,'class-status':status,**{name:str(v) if v is not None else None for name,v in result_values.items()},'source-json':packed(result_values),'last-success':at}
                     except Exception as exception:error(key,exception)
             except Exception as exception:error(key,exception)
     timed('fetch-and-prepare-entries-trips')
     save('classes',classes.values());timed('save-class-details')
     save('entries',entries.values());timed('save-entries')
     save('trips',trips.values());timed('save-trips')
+    save('results',results.values());timed('save-results')
     return report()
+
+
+def run(schema_file):
+    """Run eligible days in priority order on the existing three-minute wake."""
+    started=time.perf_counter();errors=[];reports=[];show=None
+    state_path=pathlib.Path(schema_file).parent/'runtime'/'day-cadence.json'
+    def error(target,exception):
+        errors.append({'key':target,'error':type(exception).__name__+': '+str(exception)})
+    try:
+        client=Airtable()
+        shows=client.records(DATA_BASE,SYNC_SHOWS,fields=list(SYNC_SHOW_FIELDS.values()))
+        owner=next(row for row in shows if row['fields'].get(SYNC_SHOW_FIELDS['default']) is True)
+        context={name:owner['fields'].get(field) for name,field in SYNC_SHOW_FIELDS.items()}
+        show=context['show-key']
+        rows=client.records(DATA_BASE,SYNC_DAYS,fields=['fld4RBSJRXKCbVU1A','fldu4VmXs9yz4mTEa','fldOeAP4c7F1lxIEd','fldP1IRkAD0E2HIND'])
+        days=[]
+        for row in rows:
+            fields=row['fields'];priority=fields.get('fldP1IRkAD0E2HIND')
+            if owner['id'] not in fields.get('fldu4VmXs9yz4mTEa',[]):continue
+            if type(priority) not in (int,float) or priority not in DAY_INTERVALS:continue
+            try:days.append((int(priority),datetime.date.fromisoformat(fields['fldOeAP4c7F1lxIEd'][:10]).isoformat()))
+            except Exception as exception:error('Show-day '+str(row.get('id')),exception)
+        days.sort()
+        if not days:raise ValueError('No synced days with priority 0-3')
+    except Exception as exception:
+        error('Show and day selection',exception);days=[]
+    try:
+        state=json.loads(state_path.read_text(encoding='utf-8')) if state_path.exists() else {}
+        if not isinstance(state,dict):raise ValueError('Day cadence timestamps must be an object')
+    except Exception as exception:
+        error('Day cadence read',exception);state={}
+    timings={'select-show-and-day':round(time.perf_counter()-started,6)}
+    for priority,day in days:
+        key=show+'|'+day;previous=state.get(key,{})
+        attempted=time.time()
+        # Day zero retains its proven every-wake behavior. Future days use
+        # elapsed time since their last attempt, including incomplete attempts.
+        try:
+            if priority!=0 and attempted-float(previous.get('attempted',0))<DAY_INTERVALS[priority]:continue
+        except (AttributeError,TypeError,ValueError) as exception:error('Day cadence '+day,exception)
+        at=stamp();lane='fast-discovery' if key not in state else 'fast-collector'
+        try:result=collect_day(schema_file,(context,day,priority))
+        except Exception as exception:
+            result={'ok':False,'state':'Partial','counts':{'saved':0},'item-errors':[{'key':day,'error':type(exception).__name__+': '+str(exception)}]}
+        state[key]={'attempted':attempted,'priority':priority,'status':result['state'],'completed':stamp(),'run-key':result.get('run-key')}
+        try:atomic(state_path,state)
+        except Exception as exception:error('Day cadence save '+day,exception)
+        for item in result.get('item-errors',[]):errors.append({**item,'day':day,'priority':priority})
+        reports.append({'day':day,'priority':priority,'lane':lane,'started':at,'completed':state[key]['completed'],
+                        'state':result['state'],'run-key':result.get('run-key'),'counts':result['counts'],
+                        'errors':len(result.get('item-errors',[]))})
+    for report in reports:
+        for stage,elapsed in report['counts'].get('stage-seconds',{}).items():
+            timings[stage]=round(timings.get(stage,0)+elapsed,6)
+    return {'ok':not errors,'state':'Partial' if errors else 'Saved','show-key':show,
+            'day':reports[0]['day'] if reports else None,'run-key':reports[0].get('run-key') if reports else None,
+            'counts':{'saved':sum(r['counts'].get('saved',0) for r in reports),
+                      'stage-seconds':timings,'days':reports,'total-seconds':round(time.perf_counter()-started,6)},'item-errors':errors}

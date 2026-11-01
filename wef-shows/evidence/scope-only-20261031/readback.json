@@ -1,0 +1,149 @@
+{
+  "scheduled_run": "343cdab8-1245-46d9-9e47-4808c4ccfede",
+  "started": "2026-11-01T00:34:03.289Z",
+  "completed": "2026-11-01T00:34:10.995Z",
+  "result": "Success",
+  "heartbeat_run_log_readback": "PASS",
+  "date_keys_links_priorities_historical_counts_unchanged": "PASS",
+  "manual_runs": 0,
+  "automatic_alert_delivery": "BLOCKED: no installed collector-to-chat transport",
+  "heartbeat": {
+    "records": [
+      {
+        "id": "recCpv3iPc1R8eAqX",
+        "createdTime": "2026-10-23T14:34:12.000Z",
+        "cellValuesByFieldId": {
+          "fldY5Ura2oIBQLrJI": "Show 200000076; selected 2026-11-01 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-10-29 Verified, 2026-10-30 Verified, 2026-10-31 Verified, 2026-11-01 Verified.",
+          "fldpDEq7ZjX8yit38": "WEF-default",
+          "fldtXUpsn3QYXrnfN": "Success",
+          "fldtrSDNqW7hGL0fq": "2026-11-01T00:34:10.995Z",
+          "fldzP95LOJ5cvdgcb": "2026-11-01"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "run": {
+    "records": [
+      {
+        "id": "recZrlbcaorEfx4yo",
+        "createdTime": "2026-11-01T00:34:08.000Z",
+        "cellValuesByFieldId": {
+          "fld07ih8s9e3RtG5Z": "2026-11-01T00:34:03.289Z",
+          "fld5s9CfuFWHAmR7O": "Success",
+          "fldM8fmb7yMTer7qA": "343cdab8-1245-46d9-9e47-4808c4ccfede",
+          "fldi7V6lrDYhD0GL0": "Show 200000076; selected 2026-11-01 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-10-29 Verified, 2026-10-30 Verified, 2026-10-31 Verified, 2026-11-01 Verified.",
+          "fldtU7Vxn21teQB8V": "2026-11-01T00:34:10.995Z"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "days": {
+    "records": [
+      {
+        "id": "recNKs86S27g79pl5",
+        "createdTime": "2026-10-29T14:05:13.000Z",
+        "cellValuesByFieldId": {
+          "fld5oeX8XMVUCgNYe": {
+            "id": "seli7KuBFi9JECgUl",
+            "name": "Unknown",
+            "color": "grayLight2"
+          },
+          "fld9jdMjDeWo2OQBi": 172,
+          "fldA41GJyjFTr5ZSA": "2026-10-30",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-30",
+          "fldQzLooeCHbSNTy4": "2026-10-31T21:45:25.385Z",
+          "fldbK4VEp3aNOdJlB": -2,
+          "fldc5ZobyFB5GJlRO": 209,
+          "fldi1J37WeAtiQGxw": "Failed"
+        }
+      },
+      {
+        "id": "recV3qjf5oJAQW8SY",
+        "createdTime": "2026-10-29T14:05:22.000Z",
+        "cellValuesByFieldId": {
+          "fld5oeX8XMVUCgNYe": {
+            "id": "seli7KuBFi9JECgUl",
+            "name": "Unknown",
+            "color": "grayLight2"
+          },
+          "fld9jdMjDeWo2OQBi": 165,
+          "fldA41GJyjFTr5ZSA": "2026-10-31",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-31",
+          "fldQzLooeCHbSNTy4": "2026-10-31T21:45:26.489Z",
+          "fldbK4VEp3aNOdJlB": -1,
+          "fldc5ZobyFB5GJlRO": 284,
+          "fldi1J37WeAtiQGxw": "Failed"
+        }
+      },
+      {
+        "id": "recohTvwKk7pDGnk1",
+        "createdTime": "2026-10-29T14:05:08.000Z",
+        "cellValuesByFieldId": {
+          "fld5oeX8XMVUCgNYe": {
+            "id": "seli7KuBFi9JECgUl",
+            "name": "Unknown",
+            "color": "grayLight2"
+          },
+          "fld9jdMjDeWo2OQBi": 0,
+          "fldA41GJyjFTr5ZSA": "2026-10-29",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-29",
+          "fldQzLooeCHbSNTy4": "2026-10-31T21:45:24.090Z",
+          "fldbK4VEp3aNOdJlB": -3,
+          "fldc5ZobyFB5GJlRO": 0,
+          "fldi1J37WeAtiQGxw": "Failed"
+        }
+      },
+      {
+        "id": "recs1RPpDh6bGuHkY",
+        "createdTime": "2026-10-29T14:05:27.000Z",
+        "cellValuesByFieldId": {
+          "fld5oeX8XMVUCgNYe": {
+            "id": "seli7KuBFi9JECgUl",
+            "name": "Unknown",
+            "color": "grayLight2"
+          },
+          "fld9jdMjDeWo2OQBi": 133,
+          "fldA41GJyjFTr5ZSA": "2026-11-01",
+          "fldASKXpAHgTv0sTM": [
+            {
+              "id": "recOAxMcqu1f75CQk",
+              "name": "15|200000076"
+            }
+          ],
+          "fldCIGv6kGhrIZh2K": "15|200000076|2026-11-01",
+          "fldQzLooeCHbSNTy4": "2026-10-31T21:45:27.622Z",
+          "fldbK4VEp3aNOdJlB": 0,
+          "fldc5ZobyFB5GJlRO": 201,
+          "fldi1J37WeAtiQGxw": "Failed"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 4
+    }
+  }
+}

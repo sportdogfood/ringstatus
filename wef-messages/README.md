@@ -1,5 +1,47 @@
 # WEF Messages: offline decision contract
 
+**Documentation version: 1.1 — updated 31 October 2026.** Documentation revision
+only; runtime policy `wef-messages-v1`, dependencies and code are unchanged.
+
+## Coordinator responsibilities
+
+The wef-messages-coordinator independently owns validated Timing-event consumption,
+alert decisions, eligible recipient selection using current Tenants permissions and
+consent, templates, notification threads, duplicate prevention, two-way SMS sender
+verification/request handling/replies, delivery attempts/retries/provider outcomes,
+safe history, and Messages code/tests/review/workflow acceptance within approvals.
+
+Timing owns ring/class/entry calculations and condition contracts. Records owns
+source identity/freshness. Tenants owns canonical permissions/preferences. Recognize
+owns identity and OTP, unchanged. Astro externally enforces exact WEF grants;
+service authentication grants no tenant rights. Publish and the confirmed
+application owner own schedule endpoints. Messages does not take over those roles.
+
+## Current acceptance and stop
+
+The first offline implementation exists but is **NOT ACCEPTED**. Writer and
+independent supplied-suite runs passed25/25; the independent reviewer ran10
+additional probes,5PASS/5FAIL, confirming four defects:
+
+- P1: nested confirmation/reference material can leak private data into snapshots.
+- P2: a consumed earlier reminder can suppress a fresh nearer reminder.
+- P2: missing timezone silently falls back to the host timezone.
+- P2: evaluation time changes material hashes for timing-change notices.
+
+Evidence: C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-related-to-sms/outputs/offline-implementation/review/report.md,
+execution-log.json, review-receipt.json and review-verification.json in that same
+directory. Packet integrity PASS is not candidate acceptance. The report applies
+to the earlier frozen candidate; this documentation-only revision changes README
+bytes, not the reviewed module, tests or fixture.
+
+Next implementation action requires fresh owner **APPROVED TO EDIT** for those
+module/test corrections, followed by fresh offline acceptance and independent
+review. This README update is not repair approval. No Airtable writes, runtime
+integration, task/schedule changes, deployment/publication or SMS are authorized.
+No collector or sender runs; preserve unrelated owners' changes and existing stops.
+
+## Approved first-step scope
+
 Approved scope: four new files only (alert-policy.js, alert-policy.test.js,
 fixtures/alert-policy.json, README.md). No runtime adapter, source reads, Airtable
 writes, sender, task, schedule, deployment or SMS. No package changes. All fixtures
@@ -74,7 +116,9 @@ memory. A future adapter owns predecessor/atomic overlap and uncertain-write gat
   integration supplies actual provider outcomes; this module never sends or marks
   delivered and does not implement a provider outcome writer.
 
-Input objects are not mutated. Invalid JSON objects (accessors, functions, cycles,
+The following safety properties describe the intended contract; the privacy and
+timing-change hash findings above remain unresolved. Input objects are not mutated.
+Invalid JSON objects (accessors, functions, cycles,
 exotic prototypes) reject before being read. Extra event/recipient fields are not
 copied into snapshots. Stable JSON hashes ignore evaluation time and template
 extras. Changed material cannot reuse a seen event ID. Replay returns noop with no
@@ -94,10 +138,12 @@ trip-key, phase, availability, decision, evaluated-at, observed-at, valid-until,
 policy-version, reason-codes-json, input-refs-json, payload-json, content-hash.
 IDs are integers (nonapplicable entry/trip null); remaining scalar fields text and
 three JSON fields long text. A later writer must map null to unpopulated cells.
-payload safely preserves opaque recipient/tenant IDs, preference revision, exact
+The intended payload preserves opaque recipient/tenant IDs, preference revision, exact
 conditions, logical notification/attempt IDs, predecessor state hash/revision and
-recoverable nextState. Conditions and provenance are allowlisted; no phones,
-credentials, OTP/private links, arbitrary bodies or raw caller payload.
+recoverable nextState. Conditions and provenance must be recursively allowlisted;
+the current candidate's nested privacy defects remain uncorrected. Phones,
+credentials, OTP/private links, arbitrary bodies and raw caller payload are excluded
+by the required contract, not proven absent on every path by the supplied tests.
 
 Allowed emitted decisions: baseline, eligible, suppressed, withheld, expired, noop.
 noop has no snapshot. Accepted/send-intent/submitted/delivered/failed/unknown and

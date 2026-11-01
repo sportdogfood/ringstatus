@@ -1,0 +1,1 @@
+{"at":"2026-11-01T12:56:09.255Z","result":{"status":"Partial","stage":"JoinReadback","counts":{"added":919,"updated":0,"unchanged":0,"withheld":0,"source-people":919,"issues":851},"reason":"Shared-input join completed; owners excluded and horses unlinked by owner"},"delivery":{"ok":true,"operations":84}}

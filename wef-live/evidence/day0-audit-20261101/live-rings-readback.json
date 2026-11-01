@@ -1,0 +1,207 @@
+{
+  "read_at": "2026-11-01T15:53:25.605Z",
+  "rows": [
+    {
+      "id": "recGoJ3AtVGxp0oge",
+      "fields": {
+        "completed-groups": [
+          {
+            "id": "recnmkLpf4AYHpLiF",
+            "name": "200000076|2026-11-01|200028410"
+          },
+          {
+            "id": "recKSmKnPOXAqleVO",
+            "name": "200000076|2026-11-01|200028402"
+          },
+          {
+            "id": "recEHWFCut4VmdQ85",
+            "name": "200000076|2026-11-01|200028405"
+          },
+          {
+            "id": "rec2ooyCz9toz0fL4",
+            "name": "200000076|2026-11-01|200028406"
+          }
+        ],
+        "collection": [
+          {
+            "id": "rec5nGRwTV6x2jCLm",
+            "name": "200000076|2026-11-01|rings|200000076"
+          }
+        ],
+        "show-id": 200000076,
+        "ring-number": 5,
+        "ring-key": "200000076|2026-11-01|25",
+        "ring-id": 25,
+        "current-group": [
+          {
+            "id": "recx0VMFDeOWcpSN2",
+            "name": "200000076|2026-11-01|200028411"
+          }
+        ],
+        "date": "2026-11-01",
+        "last-seen": "2026-11-01T15:51:05.032Z"
+      }
+    },
+    {
+      "id": "recMOmhqXbr6XZPLS",
+      "fields": {
+        "completed-groups": [
+          {
+            "id": "rec4IomldAl30cS95",
+            "name": "200000076|2026-11-01|200028362"
+          },
+          {
+            "id": "recG1K5Pj8CFPnRL5",
+            "name": "200000076|2026-11-01|200028364"
+          },
+          {
+            "id": "recYYLae4NG9qVGT5",
+            "name": "200000076|2026-11-01|200028363"
+          },
+          {
+            "id": "rec8asWKU8HXZO8rd",
+            "name": "200000076|2026-11-01|200028358"
+          },
+          {
+            "id": "recjUtoXg1Ta5tkXB",
+            "name": "200000076|2026-11-01|200028357"
+          },
+          {
+            "id": "recOh4tGPmy7Dti0w",
+            "name": "200000076|2026-11-01|200028359"
+          },
+          {
+            "id": "recuNvETHhY0f0kwx",
+            "name": "200000076|2026-11-01|200028368"
+          }
+        ],
+        "collection": [
+          {
+            "id": "rec5nGRwTV6x2jCLm",
+            "name": "200000076|2026-11-01|rings|200000076"
+          }
+        ],
+        "show-id": 200000076,
+        "ring-number": 4,
+        "ring-key": "200000076|2026-11-01|52",
+        "ring-id": 52,
+        "date": "2026-11-01",
+        "last-seen": "2026-11-01T15:45:05.109Z"
+      }
+    },
+    {
+      "id": "recNLJbenEMle5dbF",
+      "fields": {
+        "completed-groups": [
+          {
+            "id": "recHEn99kc4cdgb9B",
+            "name": "200000076|2026-11-01|200028346"
+          }
+        ],
+        "collection": [
+          {
+            "id": "rec5nGRwTV6x2jCLm",
+            "name": "200000076|2026-11-01|rings|200000076"
+          }
+        ],
+        "show-id": 200000076,
+        "ring-number": 1,
+        "ring-key": "200000076|2026-11-01|51",
+        "ring-id": 51,
+        "next-group": [
+          {
+            "id": "recpLaBRdP7xAdTSc",
+            "name": "200000076|2026-11-01|200028344"
+          },
+          {
+            "id": "rectgdgF84P61X2ob",
+            "name": "200000076|2026-11-01|200028345"
+          },
+          {
+            "id": "recCBl4tLc1GRiqsX",
+            "name": "200000076|2026-11-01|200028347"
+          }
+        ],
+        "current-group": [
+          {
+            "id": "recDb6M8F6kBzk3DL",
+            "name": "200000076|2026-11-01|200028343"
+          }
+        ],
+        "date": "2026-11-01",
+        "last-seen": "2026-11-01T15:51:05.032Z"
+      }
+    },
+    {
+      "id": "recO1Rm5hhBgZ4i9K",
+      "fields": {
+        "completed-groups": [
+          {
+            "id": "rec7bTCNiQE4Wn2Xs",
+            "name": "200000076|2026-11-01|200028389"
+          },
+          {
+            "id": "rec0zRr32L4NblBwr",
+            "name": "200000076|2026-11-01|200028384"
+          },
+          {
+            "id": "reci5BPeWTmcWqRGK",
+            "name": "200000076|2026-11-01|200028392"
+          }
+        ],
+        "collection": [
+          {
+            "id": "rec5nGRwTV6x2jCLm",
+            "name": "200000076|2026-11-01|rings|200000076"
+          }
+        ],
+        "show-id": 200000076,
+        "ring-number": 3,
+        "ring-key": "200000076|2026-11-01|37",
+        "ring-id": 37,
+        "date": "2026-11-01",
+        "last-seen": "2026-11-01T15:48:07.439Z"
+      }
+    },
+    {
+      "id": "recOTE4uEWsqP1Aw0",
+      "fields": {
+        "source-updated-at": "1793560349",
+        "completed-groups": [
+          {
+            "id": "recsspbT0GM6biB6q",
+            "name": "200000076|2026-11-01|200028348"
+          },
+          {
+            "id": "rec0I3wPOQHG8ry8N",
+            "name": "200000076|2026-11-01|200028349"
+          },
+          {
+            "id": "recypDrinvxLTOp76",
+            "name": "200000076|2026-11-01|200028350"
+          },
+          {
+            "id": "recs1RwhCyjK2B0hw",
+            "name": "200000076|2026-11-01|200028351"
+          },
+          {
+            "id": "recgsupENNBL94e2W",
+            "name": "200000076|2026-11-01|200028353"
+          }
+        ],
+        "collection": [
+          {
+            "id": "rec5nGRwTV6x2jCLm",
+            "name": "200000076|2026-11-01|rings|200000076"
+          }
+        ],
+        "show-id": 200000076,
+        "ring-number": 6,
+        "ring-key": "200000076|2026-11-01|56",
+        "ring-id": 56,
+        "date": "2026-11-01",
+        "last-seen": "2026-11-01T14:41:21.971Z"
+      }
+    }
+  ]
+}

@@ -692,6 +692,18 @@
                 "prefersSingleRecordLink": false,
                 "inverseLinkFieldId": "fldfHwjebrmF3s4g2"
               }
+            },
+            {
+              "id": "fldtUh5WtRHYsDjq6",
+              "name": "rider-associations",
+              "type": "multilineText",
+              "description": "Season-owned JSON keyed by the unchanged rider-key; supported existing shows, show-days and entry/trip source keys. Multiple riders are valid; append/upsert only."
+            },
+            {
+              "id": "fldSo6L3GZj5joi40",
+              "name": "trainer-associations",
+              "type": "multilineText",
+              "description": "Season-owned JSON keyed by the unchanged trainer-key; supported existing shows, show-days and entry/trip source keys. Multiple trainers across shows/trips are valid; append/upsert only."
             }
           ],
           "views": [
@@ -706,6 +718,46 @@
       "heartbeat": {
         "id": "tblTAnUc3Ep3nD5nQ",
         "checkpoint-field": "fld9z9AynzbrU0xZC"
+      },
+      "conflicts": {
+        "base": "appETrjio9Yj9Pv17",
+        "tables": {
+          "conflicts": {
+            "id": "tblZlDewVNlXmPRqS",
+            "name": "conflicts",
+            "description": "Season horse association conflicts. Existing source keys; conflicts are logged without stopping unrelated associations or entity upserts.",
+            "primaryFieldId": "fldIhvajop5pgxlMz",
+            "fields": [
+              {
+                "id": "fldIhvajop5pgxlMz",
+                "name": "source-key",
+                "type": "singleLineText",
+                "description": "Unchanged existing entry-key, trip-key or horse-key. No generated business identity."
+              },
+              {
+                "id": "fldwb5PsbBqIjfonC",
+                "name": "source-type",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fld7tBYSEfQ3QnvZ6",
+                "name": "horse-key",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fldPEVNaM2p0gGGro",
+                "name": "details",
+                "type": "multilineText",
+                "description": "Competing source identities/context and original source observation time when supplied. Repeated issues deduplicate."
+              },
+              {
+                "id": "fldAhGDbdp0iBdtta",
+                "name": "status",
+                "type": "singleLineText"
+              }
+            ]
+          }
+        }
       }
     },
     "rings": {

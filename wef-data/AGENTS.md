@@ -31,3 +31,22 @@ The owner's **65% context threshold** controls over the skill's generic70% prepa
 
 
 Owner cancellation — October30: People management and w-people are CANCELLED/out of scope. Preserve existing People base/data and historical evidence; no collection, writer, membership/schema work, reviews, sharing or replacement task. Four separate Season transfers and independently approved Data corrections are unchanged. Business observers are removed; do not recreate or replace them. Review jobs/context bookkeeping remain separate.
+
+## This Data agent's failures and required reminders — October 31, 2026
+
+Owner requested this entry after scope drift, unnecessary complexity and repeated corrections in Data chat `01a19273-bdf8-71b2-8503-cc8079efc129`. Read the [dated failure record and exact reminders](README.md#october-31-agent-failure-record) at startup/resumption. These are instructions for this agent, not new collector controls or authorization to repair anything.
+
+Keep these exact reminders in the existing task record:
+
+- **Do only the current approved change. Preserve the proven implementation, data, keys, links and cadence. No adjacent improvements, duplicate paths, new log contracts, quality gates, queues, adapters or tasks. A skill or reminder does not expand approval.**
+- **Finish the whole accepted request. Initial discovery saves days 0, 1, 2, 3 in order; refresh day 0 every 3 minutes, day 1 hourly, day 2 every 2 hours and day 3 every 3 hours. Skip negative priorities. Day 0 alone is not completion. State what is deployed, independently reviewed, verified through the schedule, or still unverified separately.**
+- **Data only reads the synced `wef-shows.shows` and `wef-shows.show-days` inside `wef-data`. Do not invent responsibility for writing to Shows or completing another collector's work.**
+- **Log the original error message and cause, preserve credential redaction, save unaffected work and report Partial honestly. Never infer a network root cause from a generic TypeError.**
+- **Codex is not the runner. No manual collection, substitute source calls, record repairs, task changes or stop clearing. A failed scheduled verification does not authorize a patch or retry.**
+- **Respect the owner's time and tokens. Reuse valid evidence, explain collector runtime separately from agent work time, and do not impose an hour-long observation wait or repeatedly poll to make a completion claim. Never manufacture a live failure for proof.**
+
+Recheck frequency: at every startup/resumption; before each edit batch, delegation, review, deployment and final delivery; immediately after an owner correction, observed mismatch or failed verification; and at the next tool boundary after **10 minutes of active work**. Rechecks are brief and silent unless scope, evidence or a required owner decision changed. The agent owns these rechecks; do not require repeated owner reminders or confirmations for already-approved work.
+
+Use Rebalance/Instruction Loader for the applicable boundary, retaining the existing context-check procedure. Do not reread the whole chat or all skills at every check. No reminder automation, observer, timer, hook, new chat or business-workflow gate is created by this instruction. Live matching and the narrower class-payload proposal remain on hold. Do not resume them or historical backlog from these notes.
+
+The current Data task is `wef-data-collector`, repeating every three minutes. Earlier `Data1minute`/one-minute references in this module are historical, not a direction to change the current task. Read the latest release evidence below the README's failure record; loading these instructions does not reopen a completed correction or an older coordinator assignment.

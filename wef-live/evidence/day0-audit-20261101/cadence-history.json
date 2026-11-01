@@ -1,0 +1,1063 @@
+{
+  "groups": [
+    {
+      "run_id": "d4887dba-bc6c-4339-9d08-4132a00b65fb",
+      "started": "2026-11-01T14:48:03.494Z",
+      "completed": "2026-11-01T14:48:10.010Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 903.9588000000003,
+      "save_ms": 1333.1961000000001,
+      "core_ms": 6516
+    },
+    {
+      "run_id": "af784364-8206-4e2b-9439-f0925980c269",
+      "started": "2026-11-01T14:51:04.167Z",
+      "completed": "2026-11-01T14:51:08.204Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 851.1191999999999,
+      "save_ms": 1152.5504000000005,
+      "core_ms": 4037
+    },
+    {
+      "run_id": "c3c79ca2-cbd9-4146-9f76-533988e7dcbb",
+      "started": "2026-11-01T14:54:05.047Z",
+      "completed": "2026-11-01T14:54:09.981Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 654.6646999999998,
+      "save_ms": 2359.2191,
+      "core_ms": 4934
+    },
+    {
+      "run_id": "8376b90f-6bab-4603-a61d-03fc8b9fcc04",
+      "started": "2026-11-01T14:57:03.717Z",
+      "completed": "2026-11-01T14:57:08.582Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 1080.1221999999998,
+      "save_ms": 1226.4719999999998,
+      "core_ms": 4865
+    },
+    {
+      "run_id": "9efafd8d-1d6a-48e5-83c2-e34a4d99df45",
+      "started": "2026-11-01T15:00:03.588Z",
+      "completed": "2026-11-01T15:00:08.047Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 691.4728,
+      "save_ms": 1236.9139,
+      "core_ms": 4459
+    },
+    {
+      "run_id": "8971e4a3-e627-47da-a4da-a061bcd1580c",
+      "started": "2026-11-01T15:03:02.965Z",
+      "completed": "2026-11-01T15:03:06.812Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 621.1228999999998,
+      "save_ms": 1143.9076,
+      "core_ms": 3847
+    },
+    {
+      "run_id": "7139645a-aac2-4492-a3b7-588fc2ffa6e2",
+      "started": "2026-11-01T15:06:03.186Z",
+      "completed": "2026-11-01T15:06:08.057Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 966.7769000000001,
+      "save_ms": 1207.9315000000001,
+      "core_ms": 4871
+    },
+    {
+      "run_id": "a010520d-d2e8-47ca-b08f-052d982f9deb",
+      "started": "2026-11-01T15:09:03.800Z",
+      "completed": "2026-11-01T15:09:07.736Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 832.6015999999997,
+      "save_ms": 1144.9906,
+      "core_ms": 3936
+    },
+    {
+      "run_id": "923e863a-a480-4a94-a0a9-6f8b2c013755",
+      "started": "2026-11-01T15:12:03.402Z",
+      "completed": "2026-11-01T15:12:07.563Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 904.2369000000001,
+      "save_ms": 1175.8564999999999,
+      "core_ms": 4161
+    },
+    {
+      "run_id": "143e9bdf-4441-4385-9741-55c26dbcd33d",
+      "started": "2026-11-01T15:15:07.721Z",
+      "completed": "2026-11-01T15:15:12.033Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 1746.3706999999997,
+      "save_ms": 360.4740999999999,
+      "core_ms": 4312
+    },
+    {
+      "run_id": "4605b77b-ae9e-423a-8c98-ce7816c115ef",
+      "started": "2026-11-01T15:18:03.847Z",
+      "completed": "2026-11-01T15:18:07.654Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 687.3911,
+      "save_ms": 1105.1318,
+      "core_ms": 3807
+    },
+    {
+      "run_id": "6e577884-24e6-4eb1-b2dd-65d7bf6cdf99",
+      "started": "2026-11-01T15:21:03.527Z",
+      "completed": "2026-11-01T15:21:06.740Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 753.6120000000001,
+      "save_ms": 362.50909999999976,
+      "core_ms": 3213
+    },
+    {
+      "run_id": "ed0136e4-d094-4a57-81e3-057b17d38ee9",
+      "started": "2026-11-01T15:24:03.752Z",
+      "completed": "2026-11-01T15:24:09.848Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 912.4739,
+      "save_ms": 1903.9592999999995,
+      "core_ms": 6096
+    },
+    {
+      "run_id": "96df008f-0d59-4f71-856d-9215c7c87583",
+      "started": "2026-11-01T15:27:12.396Z",
+      "completed": "2026-11-01T15:27:16.468Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 791.1817999999998,
+      "save_ms": 1123.0973,
+      "core_ms": 4072
+    },
+    {
+      "run_id": "33355ae8-eeb3-4dca-9c4c-ddf35e7f58df",
+      "started": "2026-11-01T15:30:03.517Z",
+      "completed": "2026-11-01T15:30:07.618Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 832.0236000000002,
+      "save_ms": 1167.8352999999997,
+      "core_ms": 4101
+    },
+    {
+      "run_id": "7ef15967-afad-4f64-b174-75aa28d0f8c8",
+      "started": "2026-11-01T15:33:03.245Z",
+      "completed": "2026-11-01T15:33:07.317Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 808.1972000000001,
+      "save_ms": 1235.9963999999995,
+      "core_ms": 4072
+    },
+    {
+      "run_id": "e730e3b6-1aa4-45cc-af9e-aef3762872b4",
+      "started": "2026-11-01T15:36:03.448Z",
+      "completed": "2026-11-01T15:36:10.350Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 1092.8595,
+      "save_ms": 1959.0827,
+      "core_ms": 6902
+    },
+    {
+      "run_id": "7715c149-5207-4193-b6c2-0c4bbf33ff52",
+      "started": "2026-11-01T15:39:04.902Z",
+      "completed": "2026-11-01T15:39:11.110Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 684.9045000000001,
+      "save_ms": 3570.7801,
+      "core_ms": 6208
+    },
+    {
+      "run_id": "06d6bfcf-7dd4-47e8-9fce-b66e5178ab07",
+      "started": "2026-11-01T15:42:07.800Z",
+      "completed": "2026-11-01T15:42:11.669Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 657.2168000000001,
+      "save_ms": 1164.6052999999997,
+      "core_ms": 3869
+    },
+    {
+      "run_id": "22509a6a-0fad-4fbd-bd30-ddbd9620fd15",
+      "started": "2026-11-01T15:45:03.383Z",
+      "completed": "2026-11-01T15:45:07.231Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 691.6988000000001,
+      "save_ms": 1103.3429,
+      "core_ms": 3848
+    },
+    {
+      "run_id": "b807684c-1968-41df-aaee-bef9d1d1e184",
+      "started": "2026-11-01T15:48:05.171Z",
+      "completed": "2026-11-01T15:48:09.650Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 948.0909999999999,
+      "save_ms": 1107.1176999999998,
+      "core_ms": 4479
+    },
+    {
+      "run_id": "67fc9586-4f2d-46df-a444-94dabd1b2153",
+      "started": "2026-11-01T15:51:03.330Z",
+      "completed": "2026-11-01T15:51:07.166Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 737.6468000000002,
+      "save_ms": 1138.6752000000001,
+      "core_ms": 3836
+    },
+    {
+      "run_id": "42720b75-f5dd-453b-9463-09fc045962d0",
+      "started": "2026-11-01T15:54:03.942Z",
+      "completed": "2026-11-01T15:54:10.559Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-groups": 25
+      },
+      "collection_ms": 667.2181,
+      "save_ms": 2889.0913,
+      "core_ms": 6617
+    }
+  ],
+  "rings": [
+    {
+      "run_id": "99c95b8b-27ad-4552-893e-6ab6d7b49140",
+      "started": "2026-11-01T14:48:03.494Z",
+      "completed": "2026-11-01T14:48:09.036Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 122.14340000000038,
+      "save_ms": 836.5041999999994,
+      "core_ms": 5542
+    },
+    {
+      "run_id": "1f875b65-47b2-4e18-ba7a-b2ed158d35c4",
+      "started": "2026-11-01T14:51:04.170Z",
+      "completed": "2026-11-01T14:51:07.499Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 131.94540000000006,
+      "save_ms": 776.9794000000002,
+      "core_ms": 3329
+    },
+    {
+      "run_id": "f8ae2b55-406a-4a84-a5f7-2eca181d9026",
+      "started": "2026-11-01T14:54:05.050Z",
+      "completed": "2026-11-01T14:54:08.320Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 123.2686000000001,
+      "save_ms": 799.3977000000004,
+      "core_ms": 3270
+    },
+    {
+      "run_id": "c1d28b15-cb18-40a5-be1f-ba4e3b06a702",
+      "started": "2026-11-01T14:57:03.720Z",
+      "completed": "2026-11-01T14:57:08.119Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 271.67470000000003,
+      "save_ms": 825.306,
+      "core_ms": 4399
+    },
+    {
+      "run_id": "6599407c-10d7-4993-b699-d5b8c815cff1",
+      "started": "2026-11-01T15:00:03.590Z",
+      "completed": "2026-11-01T15:00:07.938Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 707.2438999999999,
+      "save_ms": 802.8970000000004,
+      "core_ms": 4348
+    },
+    {
+      "run_id": "f60331d8-6eb2-4143-960a-c3a4c801298d",
+      "started": "2026-11-01T15:03:02.967Z",
+      "completed": "2026-11-01T15:03:06.331Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 123.27009999999996,
+      "save_ms": 816.8309999999997,
+      "core_ms": 3364
+    },
+    {
+      "run_id": "1d12c97d-8a6b-4380-8c6d-d24bd5065f0e",
+      "started": "2026-11-01T15:06:03.189Z",
+      "completed": "2026-11-01T15:06:07.611Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 201.89190000000008,
+      "save_ms": 769.8606000000004,
+      "core_ms": 4422
+    },
+    {
+      "run_id": "dffdba7a-4c74-4d63-bc2a-f995e3c64471",
+      "started": "2026-11-01T15:09:03.804Z",
+      "completed": "2026-11-01T15:09:07.151Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 130.91910000000007,
+      "save_ms": 789.9369000000002,
+      "core_ms": 3347
+    },
+    {
+      "run_id": "efc9d77c-b23b-4b6a-bb02-acbe0c5a499f",
+      "started": "2026-11-01T15:12:03.567Z",
+      "completed": "2026-11-01T15:12:06.650Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 128.95529999999985,
+      "save_ms": 749.5218,
+      "core_ms": 3083
+    },
+    {
+      "run_id": "4c7536a2-c8bd-4f67-9dc8-6458423b8ebd",
+      "started": "2026-11-01T15:15:07.727Z",
+      "completed": "2026-11-01T15:15:11.573Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 1141.0181,
+      "save_ms": 3.376900000000205,
+      "core_ms": 3846
+    },
+    {
+      "run_id": "53f1bf95-ce18-46b5-a2a7-e5ea6d2c0523",
+      "started": "2026-11-01T15:18:03.850Z",
+      "completed": "2026-11-01T15:18:06.274Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 121.8315,
+      "save_ms": 1.6898000000001048,
+      "core_ms": 2424
+    },
+    {
+      "run_id": "0b2816fb-d133-4e44-9bd4-5bdab1ed8b2a",
+      "started": "2026-11-01T15:21:03.530Z",
+      "completed": "2026-11-01T15:21:07.045Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 122.69779999999992,
+      "save_ms": 777.5124999999998,
+      "core_ms": 3515
+    },
+    {
+      "run_id": "7d725893-f1b5-4140-8b7e-0b6b3bb43579",
+      "started": "2026-11-01T15:24:03.755Z",
+      "completed": "2026-11-01T15:24:09.930Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 687.6769000000004,
+      "save_ms": 842.1732000000002,
+      "core_ms": 6175
+    },
+    {
+      "run_id": "5c095484-b5b8-4e92-8360-f2a7cc87499c",
+      "started": "2026-11-01T15:27:12.404Z",
+      "completed": "2026-11-01T15:27:16.143Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 125.35929999999985,
+      "save_ms": 1255.5099999999998,
+      "core_ms": 3739
+    },
+    {
+      "run_id": "6595f37f-9134-4f57-b0cf-e16bcfb5d4f1",
+      "started": "2026-11-01T15:30:03.520Z",
+      "completed": "2026-11-01T15:30:06.824Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 131.1889000000001,
+      "save_ms": 815.2469999999998,
+      "core_ms": 3304
+    },
+    {
+      "run_id": "64c7c57d-460f-43ad-812b-49d1c0db229f",
+      "started": "2026-11-01T15:33:03.247Z",
+      "completed": "2026-11-01T15:33:06.561Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 135.64470000000006,
+      "save_ms": 767.1259,
+      "core_ms": 3314
+    },
+    {
+      "run_id": "d7cd2b37-7547-4915-8238-059082da2812",
+      "started": "2026-11-01T15:36:03.451Z",
+      "completed": "2026-11-01T15:36:10.438Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 886.1825000000003,
+      "save_ms": 1612.9480999999996,
+      "core_ms": 6987
+    },
+    {
+      "run_id": "31a00d88-d5b6-4806-8f51-aaa592ec6057",
+      "started": "2026-11-01T15:39:04.905Z",
+      "completed": "2026-11-01T15:39:10.764Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 156.65679999999998,
+      "save_ms": 3253.1027999999997,
+      "core_ms": 5859
+    },
+    {
+      "run_id": "d49ea393-6586-4c95-9796-45e23d23d5a5",
+      "started": "2026-11-01T15:42:07.802Z",
+      "completed": "2026-11-01T15:42:10.263Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 134.03600000000006,
+      "save_ms": 1.7690999999999804,
+      "core_ms": 2461
+    },
+    {
+      "run_id": "4d7f16b3-df58-4a48-9b7b-746cf8d168d0",
+      "started": "2026-11-01T15:45:03.386Z",
+      "completed": "2026-11-01T15:45:06.657Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 120.70080000000007,
+      "save_ms": 816.9162999999999,
+      "core_ms": 3271
+    },
+    {
+      "run_id": "7a76a0eb-bc5d-4269-b3b2-420fcc003ae0",
+      "started": "2026-11-01T15:48:05.173Z",
+      "completed": "2026-11-01T15:48:09.530Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 216.9623999999999,
+      "save_ms": 784.5225000000005,
+      "core_ms": 4357
+    },
+    {
+      "run_id": "8b97d723-cd41-4b5b-a4a7-4f42d4c4ada7",
+      "started": "2026-11-01T15:51:03.332Z",
+      "completed": "2026-11-01T15:51:06.542Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 127.36310000000003,
+      "save_ms": 789.4409,
+      "core_ms": 3210
+    },
+    {
+      "run_id": "6d0f4730-ba43-48d1-ab21-0113593e03d5",
+      "started": "2026-11-01T15:54:03.945Z",
+      "completed": "2026-11-01T15:54:09.915Z",
+      "ok": true,
+      "issues": 0,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-rings": 5
+      },
+      "collection_ms": 127.29430000000002,
+      "save_ms": 2278.4523,
+      "core_ms": 5970
+    }
+  ],
+  "classes": [
+    {
+      "run_id": "8665250b-cb97-4584-9c6d-9551f015360c",
+      "started": "2026-11-01T14:48:03.495Z",
+      "completed": "2026-11-01T14:48:07.029Z",
+      "ok": true,
+      "issues": 1,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {},
+      "collection_ms": 0,
+      "save_ms": 0,
+      "core_ms": 3534
+    },
+    {
+      "run_id": "6886ca9e-62ed-468f-bd57-c7036c2ec2de",
+      "started": "2026-11-01T14:51:04.171Z",
+      "completed": "2026-11-01T14:51:15.611Z",
+      "ok": true,
+      "issues": 6,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 1945.3361,
+      "save_ms": 7035.5882,
+      "core_ms": 11440
+    },
+    {
+      "run_id": "fc93c546-d336-47f3-b0a4-65b482e2c24e",
+      "started": "2026-11-01T14:54:05.052Z",
+      "completed": "2026-11-01T14:54:16.188Z",
+      "ok": true,
+      "issues": 6,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 3684.3739000000005,
+      "save_ms": 3697.3351999999995,
+      "core_ms": 11136
+    },
+    {
+      "run_id": "b6d6d76c-e2f4-4c1c-b611-2d085c275200",
+      "started": "2026-11-01T14:57:03.722Z",
+      "completed": "2026-11-01T14:57:12.561Z",
+      "ok": true,
+      "issues": 6,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 1593.4033000000004,
+      "save_ms": 3592.4134000000004,
+      "core_ms": 8839
+    },
+    {
+      "run_id": "aac1d012-3642-46d2-b0ce-92323888d6fe",
+      "started": "2026-11-01T15:00:03.591Z",
+      "completed": "2026-11-01T15:00:12.125Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 1646.2842999999998,
+      "save_ms": 3910.5827,
+      "core_ms": 8534
+    },
+    {
+      "run_id": "33931dab-fc28-4685-9246-cb943d846943",
+      "started": "2026-11-01T15:03:02.969Z",
+      "completed": "2026-11-01T15:03:10.729Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 1495.0262000000002,
+      "save_ms": 3864.4392999999995,
+      "core_ms": 7760
+    },
+    {
+      "run_id": "a25bfaa4-0926-4279-b650-44cc6a4873d7",
+      "started": "2026-11-01T15:06:03.190Z",
+      "completed": "2026-11-01T15:06:10.761Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 2093.4718000000003,
+      "save_ms": 2744.0976,
+      "core_ms": 7571
+    },
+    {
+      "run_id": "546e32ad-5c29-4eb8-af70-e0c263e64582",
+      "started": "2026-11-01T15:09:03.805Z",
+      "completed": "2026-11-01T15:09:12.393Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 1480.5695,
+      "save_ms": 4766.713,
+      "core_ms": 8588
+    },
+    {
+      "run_id": "5746d7fe-0dbc-4c44-91ce-4af057c540ee",
+      "started": "2026-11-01T15:12:03.573Z",
+      "completed": "2026-11-01T15:12:10.977Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 1555.4105,
+      "save_ms": 3541.4359000000004,
+      "core_ms": 7404
+    },
+    {
+      "run_id": "b1b23790-f462-42d1-8e07-d662c1a1732d",
+      "started": "2026-11-01T15:15:07.729Z",
+      "completed": "2026-11-01T15:15:16.146Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 3901.5732,
+      "save_ms": 1150.4983000000002,
+      "core_ms": 8417
+    },
+    {
+      "run_id": "92747392-8464-4652-a4af-68c4e61af967",
+      "started": "2026-11-01T15:18:03.852Z",
+      "completed": "2026-11-01T15:18:10.346Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 1427.83,
+      "save_ms": 2780.4877999999994,
+      "core_ms": 6494
+    },
+    {
+      "run_id": "950f3eb2-65f2-466b-8863-a2854b05c165",
+      "started": "2026-11-01T15:21:03.532Z",
+      "completed": "2026-11-01T15:21:11.283Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 3776.3658000000005,
+      "save_ms": 1433.8625000000002,
+      "core_ms": 7751
+    },
+    {
+      "run_id": "7781448b-d695-4d32-91b4-cd31fa10a844",
+      "started": "2026-11-01T15:24:03.756Z",
+      "completed": "2026-11-01T15:24:13.235Z",
+      "ok": true,
+      "issues": 4,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 144
+      },
+      "collection_ms": 3171.6155999999996,
+      "save_ms": 2943.1699,
+      "core_ms": 9479
+    },
+    {
+      "run_id": "c3d3aa45-4912-48c9-ba0f-b4faf429784e",
+      "started": "2026-11-01T15:27:12.407Z",
+      "completed": "2026-11-01T15:27:21.592Z",
+      "ok": true,
+      "issues": 4,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 144
+      },
+      "collection_ms": 1523.8251,
+      "save_ms": 5286.0143,
+      "core_ms": 9185
+    },
+    {
+      "run_id": "2a524ab2-928d-4ff8-ac52-492c69b8f2a2",
+      "started": "2026-11-01T15:30:03.522Z",
+      "completed": "2026-11-01T15:30:11.121Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 144
+      },
+      "collection_ms": 1431.0982,
+      "save_ms": 3770.9938,
+      "core_ms": 7599
+    },
+    {
+      "run_id": "93af9118-3dbf-466e-a7ac-67f851e06167",
+      "started": "2026-11-01T15:33:03.248Z",
+      "completed": "2026-11-01T15:33:14.658Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 144
+      },
+      "collection_ms": 1445.987,
+      "save_ms": 7632.704700000001,
+      "core_ms": 11410
+    },
+    {
+      "run_id": "a6989312-e9cc-4378-bb97-9ba3168df87e",
+      "started": "2026-11-01T15:36:03.452Z",
+      "completed": "2026-11-01T15:36:14.442Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 144
+      },
+      "collection_ms": 2785.2852999999996,
+      "save_ms": 3289.5327000000007,
+      "core_ms": 10990
+    },
+    {
+      "run_id": "12f1e9f5-f0c0-48b7-98cf-81414c01638f",
+      "started": "2026-11-01T15:39:04.907Z",
+      "completed": "2026-11-01T15:39:15.540Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 144
+      },
+      "collection_ms": 4453.900299999999,
+      "save_ms": 3773.4050000000007,
+      "core_ms": 10633
+    },
+    {
+      "run_id": "ce4c9436-5cf2-4356-aa65-9d7f3f36b67f",
+      "started": "2026-11-01T15:42:07.805Z",
+      "completed": "2026-11-01T15:42:16.520Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 144
+      },
+      "collection_ms": 1500.1928000000003,
+      "save_ms": 4835.576999999999,
+      "core_ms": 8715
+    },
+    {
+      "run_id": "6d649080-4271-43d5-89ca-0b3832923bb3",
+      "started": "2026-11-01T15:45:03.387Z",
+      "completed": "2026-11-01T15:45:10.925Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 144
+      },
+      "collection_ms": 1408.248,
+      "save_ms": 3784.0925999999995,
+      "core_ms": 7538
+    },
+    {
+      "run_id": "2f2b666c-84d3-48e8-856b-59b922347c97",
+      "started": "2026-11-01T15:48:05.174Z",
+      "completed": "2026-11-01T15:48:14.224Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 1472.5207999999998,
+      "save_ms": 4539.676099999999,
+      "core_ms": 9050
+    },
+    {
+      "run_id": "606d32d3-4472-41bb-be9c-b5ddcf6dd26c",
+      "started": "2026-11-01T15:51:03.333Z",
+      "completed": "2026-11-01T15:51:09.931Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 1449.2047000000002,
+      "save_ms": 2792.5448,
+      "core_ms": 6598
+    },
+    {
+      "run_id": "8a0cdb42-649a-4626-b996-c305550b2c57",
+      "started": "2026-11-01T15:54:03.946Z",
+      "completed": "2026-11-01T15:54:13.611Z",
+      "ok": true,
+      "issues": 3,
+      "stage_errors": [],
+      "logging_errors": [],
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "collection_ms": 4664.361800000001,
+      "save_ms": 2797.1508000000003,
+      "core_ms": 9665
+    }
+  ]
+}

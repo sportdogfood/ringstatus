@@ -1,0 +1,787 @@
+{
+  "records": [
+    {
+      "id": "rec1I9vc3QH0nBMDl",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030779|200399619\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"13:49:00\",\"after\":\"13:24:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|32"
+      }
+    },
+    {
+      "id": "rec1UPg78ehmlHP6O",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030779|200399933\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"13:31:00\",\"after\":\"13:06:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|26"
+      }
+    },
+    {
+      "id": "rec1tivYtLO9Kc2hb",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030768|200399826\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":10},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":1},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"1<sup>st</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|54"
+      }
+    },
+    {
+      "id": "rec25kwFzSFpuAWl7",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030826|200399841\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Pos\",\"before\":\"4\",\"after\":\"5\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"4\",\"after\":\"5\"},{\"field\":\"source-json.identity.position\",\"before\":4,\"after\":5},{\"field\":\"source-json.identity.place\",\"before\":4,\"after\":5},{\"field\":\"position\",\"before\":4,\"after\":5}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|37"
+      }
+    },
+    {
+      "id": "rec3ZbsUHTC0DXTTY",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030789|200399371\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"12:39:00\",\"after\":\"12:14:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|15"
+      }
+    },
+    {
+      "id": "rec5Pbugnz0u6jIe1",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030823|200399954\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"11:44:00\",\"after\":\"11:19:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|20"
+      }
+    },
+    {
+      "id": "rec5qjnWKjIN88GNO",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030743|200399185\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":6},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":2},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"2<sup>nd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|45"
+      }
+    },
+    {
+      "id": "rec6NwSwdOBclEalZ",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030603|200399775\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Pos\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.J1\",\"before\":\"\",\"after\":\"82\"},{\"field\":\"source-json.live.Score\",\"before\":\"\",\"after\":\"82\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"09:07:00\",\"after\":\"00:00:00\"},{\"field\":\"source-json.identity.place\",\"before\":3,\"after\":1},{\"field\":\"actual-order\",\"before\":null,\"after\":1},{\"field\":\"gone\",\"before\":0,\"after\":1},{\"field\":\"position\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|38"
+      }
+    },
+    {
+      "id": "rec6mV2iq7NsNQimY",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030613|200399599\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"\",\"after\":\"2\"},{\"field\":\"source-json.live.R2_Qualified\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_Upcoming\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"4\"},{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"09:17:00\",\"after\":\"00:00:00\"},{\"field\":\"actual-order\",\"before\":null,\"after\":4},{\"field\":\"gone\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|50"
+      }
+    },
+    {
+      "id": "rec7pQI0pEhI8b1L9",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030777|200399970\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"10:32:00\",\"after\":\"10:41:00\"},{\"field\":\"source-json.identity.order_of_go\",\"before\":3,\"after\":2},{\"field\":\"source-json.identity.place\",\"before\":3,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|6"
+      }
+    },
+    {
+      "id": "rec8s0nnhicUGdfSj",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030779|200399911\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"13:46:00\",\"after\":\"13:21:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|31"
+      }
+    },
+    {
+      "id": "rec9otSHbxkklcUtr",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030660|200398959\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":6},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":2},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"2<sup>nd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":2},{\"field\":\"source-json.identity.place\",\"before\":1,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|48"
+      }
+    },
+    {
+      "id": "recAHi3TJDmsNRf3S",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030789|200399577\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"12:35:00\",\"after\":\"12:10:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|13"
+      }
+    },
+    {
+      "id": "recAuGXcruTY4N1QL",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030768|200399909\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":4},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":3},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"3<sup>rd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":3}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|56"
+      }
+    },
+    {
+      "id": "recCCJPwnGNX0qyri",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030771|200399901\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":1},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":5},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"5<sup>th</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":5}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|61"
+      }
+    },
+    {
+      "id": "recCP581xBTnqoBoX",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030789|200399847\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"12:29:00\",\"after\":\"12:04:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|10"
+      }
+    },
+    {
+      "id": "recDYvZOQWDncXZlZ",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030603|200399835\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.place\",\"before\":1,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|40"
+      }
+    },
+    {
+      "id": "recEOzHF4UFQP5Yfd",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030746|200399267\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":10},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":1},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"1<sup>st</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":1},{\"field\":\"source-json.identity.place\",\"before\":2,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|43"
+      }
+    },
+    {
+      "id": "recFGuCFimaFbmcBc",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030820|200399708\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":10},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":1},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"1<sup>st</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|53"
+      }
+    },
+    {
+      "id": "recFZmTp4oDITQ1os",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030779|200399860\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"13:43:00\",\"after\":\"13:18:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|30"
+      }
+    },
+    {
+      "id": "recFpxLsrFS5Nhanf",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030826|200399862\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Actual_OOG_R2\",\"before\":\"\",\"after\":\"2\"},{\"field\":\"source-json.live.Pos\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"source-json.live.jo_start\",\"before\":\"\",\"after\":\"Sun, 01 Nov 2026 14:50:39 GMT\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.identity.position\",\"before\":3,\"after\":4},{\"field\":\"source-json.identity.place\",\"before\":3,\"after\":4},{\"field\":\"position\",\"before\":3,\"after\":4}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|36"
+      }
+    },
+    {
+      "id": "recFu8u17Lsj9vVvJ",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030826|200399524\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Actual_OOG_R2\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Pos\",\"before\":\"5\",\"after\":\"1\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"4\",\"after\":\"1\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"36.781\"},{\"field\":\"source-json.live.jo_start\",\"before\":\"\",\"after\":\"Sun, 01 Nov 2026 14:49:18 GMT\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"5\",\"after\":\"1\"},{\"field\":\"source-json.identity.time_two\",\"before\":0,\"after\":36.781},{\"field\":\"source-json.identity.position\",\"before\":5,\"after\":1},{\"field\":\"source-json.identity.place\",\"before\":5,\"after\":1},{\"field\":\"position\",\"before\":5,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|33"
+      }
+    },
+    {
+      "id": "recHZFGubFxuTNR7U",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030789|200398990\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"12:37:00\",\"after\":\"12:12:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|14"
+      }
+    },
+    {
+      "id": "recHmddACTn27eGvE",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030771|200399913\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":0.5},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":6},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"6<sup>th</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":6}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|62"
+      }
+    },
+    {
+      "id": "recHoz75deBLD5k1q",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030718|200399173\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":1},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"1<sup>st</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|21"
+      }
+    },
+    {
+      "id": "recIL08HCi6u8dYsf",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030771|200400007\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":10},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":1},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"1<sup>st</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|57"
+      }
+    },
+    {
+      "id": "recJy6sifNqKhmBkn",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-classes\",\"key\":\"200000076|2026-11-01|200030826\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"200396722,200399929,200399862,200399841,200399524,200399861,200399894,200399899,200399069,200399141,200398981,200398950,200399163,200399651,200399853,200399316,200399904,200399082,200398969,200399955,200399905,200398951,200399882,200399915,200399007,200399115,200399086,200399906,200399902,200399704,200399345\",\"after\":\"200399524,200396722,200399929,200399862,200399841,200399861,200399894,200399899,200399069,200399141,200398981,200398950,200399163,200399651,200399853,200399316,200399904,200399082,200398969,200399955,200399905,200398951,200399882,200399915,200399007,200399115,200399086,200399906,200399902,200399704,200399345\"},{\"field\":\"source-json.jo_gone_trips\",\"before\":\"\",\"after\":\"200399524\"},{\"field\":\"source-json.curr\",\"before\":\"200399905\",\"after\":\"200399862\"},{\"field\":\"jo-gone\",\"before\":0,\"after\":1},{\"field\":\"current-trip-id\",\"before\":200399905,\"after\":200399862}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|0"
+      }
+    },
+    {
+      "id": "recK4fUowPM9Xd6ix",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-classes\",\"key\":\"200000076|2026-11-01|200030604\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"\",\"after\":\"200399776\"},{\"field\":\"source-json.curr\",\"before\":\"\",\"after\":\"200399776\"},{\"field\":\"gone\",\"before\":0,\"after\":1},{\"field\":\"current-trip-id\",\"before\":null,\"after\":200399776}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|2"
+      }
+    },
+    {
+      "id": "recMiwuHaeiNfltT7",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030823|200399805\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"11:41:00\",\"after\":\"11:16:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|17"
+      }
+    },
+    {
+      "id": "recMnrm6FLNVPmYrv",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030779|200399854\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"13:28:00\",\"after\":\"13:03:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|25"
+      }
+    },
+    {
+      "id": "recNk8NVULBRRnOdH",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030603|200399119\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"09:07:00\",\"after\":\"00:00:00\"},{\"field\":\"source-json.identity.place\",\"before\":2,\"after\":3}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|39"
+      }
+    },
+    {
+      "id": "recQBQdHk2iARd97D",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030777|200399910\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"10:31:00\",\"after\":\"10:40:00\"},{\"field\":\"source-json.identity.order_of_go\",\"before\":2,\"after\":1},{\"field\":\"source-json.identity.place\",\"before\":2,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|5"
+      }
+    },
+    {
+      "id": "recRIJbl7RX0asIk1",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030659|200399254\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":6},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":2},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"2<sup>nd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|47"
+      }
+    },
+    {
+      "id": "recVGCH9F5F3p6Xut",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030743|200399270\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":10},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":1},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"1<sup>st</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|44"
+      }
+    },
+    {
+      "id": "recYHjV6iVOlU36F7",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030771|200399935\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":2},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":4},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"4<sup>th</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":4}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|60"
+      }
+    },
+    {
+      "id": "recYahs6GGrCkVydb",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-classes\",\"key\":\"200000076|2026-11-01|200030603\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"\",\"after\":\"200399775\"},{\"field\":\"source-json.curr\",\"before\":\"\",\"after\":\"200399775\"},{\"field\":\"gone\",\"before\":0,\"after\":1},{\"field\":\"current-trip-id\",\"before\":null,\"after\":200399775}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|1"
+      }
+    },
+    {
+      "id": "recYtYJykow284wvQ",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030659|200398958\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":10},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":1},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"1<sup>st</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|46"
+      }
+    },
+    {
+      "id": "recaT51CjgWkgqpkd",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030771|200399675\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":7},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"7<sup>th</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":7}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|63"
+      }
+    },
+    {
+      "id": "reccdQtG52827axtN",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030765|200399932\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":10},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":1},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"1<sup>st</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|64"
+      }
+    },
+    {
+      "id": "recdrxg2ByYG3AKXQ",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030614|200399600\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"\",\"after\":\"2\"},{\"field\":\"source-json.live.R2_Qualified\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_Upcoming\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"5\"},{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"09:17:00\",\"after\":\"00:00:00\"},{\"field\":\"actual-order\",\"before\":null,\"after\":5},{\"field\":\"gone\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|52"
+      }
+    },
+    {
+      "id": "recemTHmkaVNCknNK",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030789|200399859\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"12:25:00\",\"after\":\"12:00:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|8"
+      }
+    },
+    {
+      "id": "recevhaFNzdQISKuh",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030613|200399682\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"\",\"after\":\"3\"},{\"field\":\"source-json.live.R2_Qualified\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_Upcoming\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"6\"},{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"09:17:00\",\"after\":\"00:00:00\"},{\"field\":\"actual-order\",\"before\":null,\"after\":6},{\"field\":\"gone\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|51"
+      }
+    },
+    {
+      "id": "recgQtTvZoGeXTCNQ",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030779|200399763\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"13:40:00\",\"after\":\"13:15:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|29"
+      }
+    },
+    {
+      "id": "recgf8wBP1CpY6Ff7",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030771|200399873\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":6},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":2},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"2<sup>nd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|58"
+      }
+    },
+    {
+      "id": "reck9vZMyzYeecBcX",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030823|200399922\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"11:43:00\",\"after\":\"11:18:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|19"
+      }
+    },
+    {
+      "id": "reckFYQqvWCRodFP3",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030604|200399776\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"2\"},{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"09:07:00\",\"after\":\"00:00:00\"},{\"field\":\"actual-order\",\"before\":null,\"after\":2},{\"field\":\"gone\",\"before\":0,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|41"
+      }
+    },
+    {
+      "id": "reclo3iDxPi0Pj59s",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030779|200399676\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"13:37:00\",\"after\":\"13:12:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|28"
+      }
+    },
+    {
+      "id": "recmui9elkrSADBMk",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030718|200399582\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":3},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"3<sup>rd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":3}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|23"
+      }
+    },
+    {
+      "id": "recndw1vA54lAk2NO",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030823|200399956\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"11:40:00\",\"after\":\"11:15:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|16"
+      }
+    },
+    {
+      "id": "reco1VuNywRjEM26g",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-classes\",\"key\":\"200000076|2026-11-01|200030613\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"200399687\",\"after\":\"200399599,200399682,200399687\"},{\"field\":\"source-json.curr\",\"before\":\"200399687\",\"after\":\"200399682\"},{\"field\":\"gone\",\"before\":1,\"after\":3},{\"field\":\"current-trip-id\",\"before\":200399687,\"after\":200399682}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|3"
+      }
+    },
+    {
+      "id": "recp9VBoRyPCS6EtW",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030768|200399865\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":6},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":2},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"2<sup>nd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|55"
+      }
+    },
+    {
+      "id": "recpP5TEu3VQzvAZR",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030789|200398832\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"12:27:00\",\"after\":\"12:02:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|9"
+      }
+    },
+    {
+      "id": "recsSKn70QTKZyfjG",
+      "createdTime": "2026-11-01T14:51:26.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030771|200400008\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":4},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":3},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"3<sup>rd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":3}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|59"
+      }
+    },
+    {
+      "id": "recsUXfAnAsjY0yC6",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-classes\",\"key\":\"200000076|2026-11-01|200030614\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"200399693\",\"after\":\"200399600,200399693\"},{\"field\":\"source-json.curr\",\"before\":\"200399693\",\"after\":\"200399600\"},{\"field\":\"gone\",\"before\":1,\"after\":2},{\"field\":\"current-trip-id\",\"before\":200399693,\"after\":200399600}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|4"
+      }
+    },
+    {
+      "id": "rect5DnH73noig3F8",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030718|200399891\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":2},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"2<sup>nd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|22"
+      }
+    },
+    {
+      "id": "recutUv7PGqcJehtJ",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030779|200399843\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"13:25:00\",\"after\":\"13:00:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|24"
+      }
+    },
+    {
+      "id": "recv6PNiXLLTrQGQf",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030746|200399188\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":6},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":2},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"2<sup>nd</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":2},{\"field\":\"source-json.identity.place\",\"before\":1,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|42"
+      }
+    },
+    {
+      "id": "recwEwhiVKrv4eerz",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030826|200396722\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Pos\",\"before\":\"1\",\"after\":\"2\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"1\",\"after\":\"2\"},{\"field\":\"source-json.identity.position\",\"before\":1,\"after\":2},{\"field\":\"source-json.identity.place\",\"before\":1,\"after\":2},{\"field\":\"position\",\"before\":1,\"after\":2}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|34"
+      }
+    },
+    {
+      "id": "recwTkPrNJ8qJG81L",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030823|200399640\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"11:42:00\",\"after\":\"11:17:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|18"
+      }
+    },
+    {
+      "id": "recwpKnDeUnIgcy3L",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030826|200399929\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Pos\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"1\",\"after\":\"2\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"source-json.identity.position\",\"before\":2,\"after\":3},{\"field\":\"source-json.identity.place\",\"before\":2,\"after\":3},{\"field\":\"position\",\"before\":2,\"after\":3}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|35"
+      }
+    },
+    {
+      "id": "recxCIE8JJQ6n1kmN",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030777|200399205\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"10:33:00\",\"after\":\"10:42:00\"},{\"field\":\"source-json.identity.order_of_go\",\"before\":4,\"after\":3},{\"field\":\"source-json.identity.place\",\"before\":5,\"after\":3}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|7"
+      }
+    },
+    {
+      "id": "recxQ2jKKXy3NUgUW",
+      "createdTime": "2026-11-01T14:51:25.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030660|200399255\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.points_earned\",\"before\":0,\"after\":10},{\"field\":\"source-json.identity.placing\",\"before\":100000,\"after\":1},{\"field\":\"source-json.identity.rank_placing\",\"before\":\"\",\"after\":\"1<sup>st</sup>\"},{\"field\":\"source-json.identity.rank\",\"before\":0,\"after\":1},{\"field\":\"source-json.identity.place\",\"before\":2,\"after\":1}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|49"
+      }
+    },
+    {
+      "id": "recxaAUGOoMZWeqKk",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030789|200399077\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"12:33:00\",\"after\":\"12:08:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|12"
+      }
+    },
+    {
+      "id": "reczuavewKMUbKsje",
+      "createdTime": "2026-11-01T14:51:20.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030779|200399898\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"13:34:00\",\"after\":\"13:09:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|27"
+      }
+    },
+    {
+      "id": "reczyGNlFlWWyiL75",
+      "createdTime": "2026-11-01T14:51:19.000Z",
+      "cellValuesByFieldId": {
+        "fld5yvsEBvJ50WjV6": "2026-11-01",
+        "fldC6qE4BzSH7EdD9": "Success",
+        "fldWF8eWlCe449xe3": 200000076,
+        "fldZsMHo6AqEMy3lE": "2026-11-01T14:51:15.611Z",
+        "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"6886ca9e-62ed-468f-bd57-c7036c2ec2de\",\"table\":\"live-entries\",\"key\":\"200000076|2026-11-01|200030789|200399907\",\"created\":false,\"fields\":[{\"field\":\"source-json.identity.estimated_go_time\",\"before\":\"12:31:00\",\"after\":\"12:06:00\"}]}",
+        "fldzrFL2SMGej8f6D": "6886ca9e-62ed-468f-bd57-c7036c2ec2de|diff|11"
+      }
+    }
+  ],
+  "metadata": {
+    "totalRecordCount": 65
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "deployed": true,
+  "at": "2026-11-01T00:29:18.820192+00:00",
+  "files": [
+    {
+      "path": "wef-shows/collector.js",
+      "before": "a6c31167d26d0064a6715727f1cdd169ca322c9c125d479f6c152b250d3a86d7",
+      "sha256": "65e93b249793c1960477e9da9c71790d6bbf572aa15ac5a474f7e4eff895939c"
+    },
+    {
+      "path": "wef-shows/show-days.js",
+      "before": "d1e31248265f3a8f28fbf66e64d569afdf18ba4f1dcfa9a0606cd459300aef4e",
+      "sha256": "eb04aa65739da1ad5772fadcb0de5db88b6ba4b9eea1a14f044ae14f3f7c5425"
+    },
+    {
+      "path": "wef-shows/tests/direct-integration.test.js",
+      "before": "f4e35a36dc7c81b3ae6ee24e7a969886809a1d2ff6c2f911d048000e7f6033e3",
+      "sha256": "95d6cab5c16ac300e2e1c77dc0cca4ffe64afdb3dad410c1aee244d5d007c8fb"
+    },
+    {
+      "path": "wef-shows/tests/shows.test.js",
+      "before": "b862b37afdab1b43d3ef13e092590c6a7bfdb4ca71b64f802119c3a2f97d1863",
+      "sha256": "a8f2c8e68d24c463338794bf6b8cacb8f7eec28a62afaae62c3e6e5cc4f56fa9"
+    },
+    {
+      "path": "wef-shows/tests/day-priority.test.js",
+      "before": "d37e60a5dd4f85b874c04df1ddac0ae60145009b0281daeb85b7432e104373a5",
+      "sha256": "8cbd8685f47d48b000e7c7f55ab533e47d7d6ba965d1f669efc781f99d6cce28"
+    }
+  ],
+  "count_stop_sha256": "0a9a3366cd7417ef63c6a7c231922a03d78e2cb2ff5ef5732d4a99bba4e48add",
+  "count_stop_changed": false,
+  "manual_runs": 0,
+  "tasks_changed": false,
+  "automatic_alerts": "Not installed; no supported collector ingress"
+}

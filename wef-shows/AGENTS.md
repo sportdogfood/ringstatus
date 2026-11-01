@@ -1,5 +1,76 @@
 # Shows workspace instructions
 
+## Current owner-approved scope - October 31, 2026
+
+The latest approval cancels entry/trip counting and its timeout repair. Only
+shows, dates, selected day/day-priority and Records transition alerts remain.
+The scope-only runtime release removes count invocation and count-stop dependency;
+retain historical counts, evidence and stop files unchanged. Preserve existing
+source/calendar/priority rules, archives, heartbeat/logging and task cadence.
+No Data dependency, timeout fix, new service/observer/alert framework, schema or
+record repair is authorized. Automatic Records delivery remains unimplemented
+because no installed runner-to-chat route exists; do not call manual delivery
+recurring automation. The failure record below is historical; this newer scope
+supersedes its open-count-repair statement and earlier count ownership text.
+
+
+## Owner correction and failure record - October 31, 2026 - v1.0
+
+This dated entry applies to the wef-shows owning chat. The owner requested it
+after missed follow-through. It adds no runtime, Airtable, deployment or repair
+permission. Current owner-approved README/scope amendments supersede older
+baseline descriptions below: Shows counts directly through its proxy, independent
+of Data. Do not restore the historical Data count dependency.
+
+### Failures to retain
+
+- I sent Records an alert requirement but did not implement or establish automatic
+  delivery. Sending a requirement is not completing the requested outcome.
+- After verifying the October 31 normal 19:04 Eastern rollover to November 1 and
+  four day-priority updates, I failed to send the already-authorized Records
+  notification until the owner challenged the omission. There was no demonstrated
+  access or permission blocker to that manual handoff.
+- I substituted explanations and acknowledgments for completing that authorized
+  handoff. The owner, not this agent, decides which requested outcomes to drop,
+  defer or replace. Routine execution choices do not authorize ignoring a request.
+- The direct-count release tests/review missed native TimeoutError(code23).
+  Existing error classification discarded the name, defeating bounded recovery.
+  Initial successful runs did not prove timeout handling. The exact reason source
+  requests became slow remains unverified; do not invent that explanation.
+
+### Reminders and frequency
+
+- At the start of EVERY owner turn and EVERY resume: recover the active request,
+  still-open earlier requirements, approvals, prohibitions and promised handoffs.
+  New requests supplement earlier ones unless the owner explicitly replaces them.
+- Before EACH mutation, handoff or scope decision: compare the next action with
+  the owner's accepted outcome. Do not add work, change ownership, decide a request
+  is unnecessary, or treat diagnosis/review as repair approval.
+- After EACH verified show or selected-day change observed during authorized work:
+  complete the owner-authorized notification to wef-records-coordinator, with
+  old/new values, normal-run time and evidence. Do not wait for another reminder.
+  This does not authorize new polling, observers or a new messaging transport.
+- Before EVERY final response or milestone handoff: check each requested outcome
+  separately. Report completed, still open and specifically blocked items; finish
+  executable authorized work first. Message sent, recipient acknowledgment and
+  automatic delivery installed are three different claims requiring evidence.
+- At EVERY correction/failure or material phase change: apply Rebalance before
+  another action. Retain the existing 30-minute active-work context checkpoint;
+  these reminders are in-session checks, not new timers or background jobs.
+
+### State at this entry
+
+Records was sent the verified November 1 rollover and priorities in chat
+01a169bc-e58a-7de0-94c6-5d3931fcf745; recipient acknowledgment has not been checked.
+Automatic discovery alerts remain unimplemented. Count publication is stopped
+after the October 31 17:44 run; investigation/review is complete, but no timeout
+repair, stop release or new verification run is authorized. Selected-day and
+priority publication succeeded independently. Preserve existing workflows and
+stops; no manual collector runs or record repairs.
+
+This entry records procedural checks, not a guarantee of future compliance or
+unattended alerts. Read it with current owner instructions and current evidence.
+
 Applies only to `wef-shows`. Preserve root AGENTS.md and higher-priority
 instructions. Shows remains LOCKED scope v1.4, runtime release
 `count-replay-fix-20261030`; documentation/review coordination does not reopen it.

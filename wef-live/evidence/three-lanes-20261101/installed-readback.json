@@ -1,0 +1,132 @@
+{
+  "at": "2026-11-01T14:45:27.241706+00:00",
+  "files": [
+    {
+      "name": "activity.js",
+      "expected": "31a61dcbc9229bf1a6f34a838084391710cccf34413f39614eaaacf071ff0c42",
+      "actual": "31a61dcbc9229bf1a6f34a838084391710cccf34413f39614eaaacf071ff0c42",
+      "match": true
+    },
+    {
+      "name": "airtable.js",
+      "expected": "f8aa56da19f3366cb0fab862041bbd6a77d24cd3c9a4fb69874d9d0119c4f61c",
+      "actual": "f8aa56da19f3366cb0fab862041bbd6a77d24cd3c9a4fb69874d9d0119c4f61c",
+      "match": true
+    },
+    {
+      "name": "archive.js",
+      "expected": "03326e694b7e7f06dccd6a73318d1a807aa4ef06cc4f3ea6e7510f2627c6f18c",
+      "actual": "03326e694b7e7f06dccd6a73318d1a807aa4ef06cc4f3ea6e7510f2627c6f18c",
+      "match": true
+    },
+    {
+      "name": "collector.js",
+      "expected": "8cd0247371f17a9c6552e104329fc00f9197612d0feee6ab74bd2bbd731915ae",
+      "actual": "8cd0247371f17a9c6552e104329fc00f9197612d0feee6ab74bd2bbd731915ae",
+      "match": true
+    },
+    {
+      "name": "configure.js",
+      "expected": "c29b81c3e3e544e41ef457878201ac0af6cd0c92a6c37986548c52ef8450971a",
+      "actual": "c29b81c3e3e544e41ef457878201ac0af6cd0c92a6c37986548c52ef8450971a",
+      "match": true
+    },
+    {
+      "name": "entry.js",
+      "expected": "69757818b266db559ad796e39361dbf080c167b3d16a3ed66c4d1ae2a3e1fd0f",
+      "actual": "69757818b266db559ad796e39361dbf080c167b3d16a3ed66c4d1ae2a3e1fd0f",
+      "match": true
+    },
+    {
+      "name": "log-retention.js",
+      "expected": "7d351cb97b711acdfa3d90120e4287e55f252a1ff1972693980f08b5d325f897",
+      "actual": "7d351cb97b711acdfa3d90120e4287e55f252a1ff1972693980f08b5d325f897",
+      "match": true
+    },
+    {
+      "name": "model.js",
+      "expected": "08bfdabb5637511e17a979e2a6c0319be37f68a9edce323262128ebbc78c0468",
+      "actual": "08bfdabb5637511e17a979e2a6c0319be37f68a9edce323262128ebbc78c0468",
+      "match": true
+    },
+    {
+      "name": "participation.js",
+      "expected": "bb42027bea9eaa9557e53e63f39eeb9403760fb491dd77a971a3e6a01a0a69f8",
+      "actual": "bb42027bea9eaa9557e53e63f39eeb9403760fb491dd77a971a3e6a01a0a69f8",
+      "match": true
+    },
+    {
+      "name": "publication-api.js",
+      "expected": "b25b6bd25760d7fabd53ef2077de3854a676c6e43b3a6221a59607eeba9f852f",
+      "actual": "b25b6bd25760d7fabd53ef2077de3854a676c6e43b3a6221a59607eeba9f852f",
+      "match": true
+    },
+    {
+      "name": "publication-journal.js",
+      "expected": "f97762d89fadba3f49c568e73b697d3ae4b2c1863cf210ad85bab391ea849809",
+      "actual": "f97762d89fadba3f49c568e73b697d3ae4b2c1863cf210ad85bab391ea849809",
+      "match": true
+    },
+    {
+      "name": "publication.js",
+      "expected": "91d083d7dbca2f474de56c9b560772b17aa892fe19b425d2796122c49c3cb96e",
+      "actual": "91d083d7dbca2f474de56c9b560772b17aa892fe19b425d2796122c49c3cb96e",
+      "match": true
+    },
+    {
+      "name": "retirement.js",
+      "expected": "67190601204fd73ea450c3bff6573073c4aff13728cd19533521f285c12f15e8",
+      "actual": "67190601204fd73ea450c3bff6573073c4aff13728cd19533521f285c12f15e8",
+      "match": true
+    },
+    {
+      "name": "rollover.js",
+      "expected": "5da578299c557e8dd541a6266640836feafa0243ee523631e521e30fe93e5180",
+      "actual": "5da578299c557e8dd541a6266640836feafa0243ee523631e521e30fe93e5180",
+      "match": true
+    },
+    {
+      "name": "runtime-utils.js",
+      "expected": "d9cf17a572611705fa2854f9648382969bd8f10297d540a367446101a1a7344b",
+      "actual": "d9cf17a572611705fa2854f9648382969bd8f10297d540a367446101a1a7344b",
+      "match": true
+    },
+    {
+      "name": "schema.js",
+      "expected": "97696e34551b6eed9b676910940cb037937ebb930dd805edfada1300ea9a42ec",
+      "actual": "97696e34551b6eed9b676910940cb037937ebb930dd805edfada1300ea9a42ec",
+      "match": true
+    },
+    {
+      "name": "settings.js",
+      "expected": "c577cad3b11cb8db0970da2a2092c0f21cc8c26eafd028f2308ca7bc5bb7ae35",
+      "actual": "c577cad3b11cb8db0970da2a2092c0f21cc8c26eafd028f2308ca7bc5bb7ae35",
+      "match": true
+    },
+    {
+      "name": "source.js",
+      "expected": "1430300ace41917b0557c0f852731da344931b637ac4719a314e111717cb7b6e",
+      "actual": "1430300ace41917b0557c0f852731da344931b637ac4719a314e111717cb7b6e",
+      "match": true
+    },
+    {
+      "name": "verify.js",
+      "expected": "c0483558419c9d9ea90bd2741981da85136e509e666a0467f1048e1ae97e7976",
+      "actual": "c0483558419c9d9ea90bd2741981da85136e509e666a0467f1048e1ae97e7976",
+      "match": true
+    },
+    {
+      "name": "lanes.js",
+      "expected": "5f3c0bbcfbbc2a0bc048301e5825b47088ccab7f2297062cf82de89689b38965",
+      "actual": "5f3c0bbcfbbc2a0bc048301e5825b47088ccab7f2297062cf82de89689b38965",
+      "match": true
+    },
+    {
+      "name": "lane-store.js",
+      "expected": "17536074a81f94b7a309e278dc4fbe884824810e9527a8486ed033261b5e3f64",
+      "actual": "17536074a81f94b7a309e278dc4fbe884824810e9527a8486ed033261b5e3f64",
+      "match": true
+    }
+  ],
+  "all_match": true
+}

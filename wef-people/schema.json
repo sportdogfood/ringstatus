@@ -1,0 +1,809 @@
+{
+  "base": "app6uHgUYCCKTVlJE",
+  "tables": {
+    "meta": {
+      "id": "tblwBvigcmqRlSYUb",
+      "name": "meta",
+      "primaryFieldId": "fld0Nf0WaJ2MloqqX",
+      "fields": [
+        {
+          "id": "fld0Nf0WaJ2MloqqX",
+          "name": "Name",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    "w-trainers": {
+      "id": "tblnA6yeQtZhKYkQ5",
+      "name": "w-trainers",
+      "primaryFieldId": "fld9i0kfQkYIUdAib",
+      "fields": [
+        {
+          "id": "fld9i0kfQkYIUdAib",
+          "name": "trainer-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldyPvem7WRtn4zdf",
+          "name": "trainer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldbyKzwS3oXt9SyV",
+          "name": "trainer-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld4mhjYQLvPPnyLp",
+          "name": "last-success",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldlNhoz6xtGsWNna",
+          "name": "shows",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldbiz7SYGCAreAMp",
+          "name": "show-days",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    "w-rings": {
+      "id": "tblO7lZ7hLyLOKynn",
+      "name": "w-rings",
+      "primaryFieldId": "fld3VlgMbobokpFN1",
+      "fields": [
+        {
+          "id": "fld3VlgMbobokpFN1",
+          "name": "ring-uid",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldKDIoySbcmtQpah",
+          "name": "ring-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldxrieXZOCnw3aVH",
+          "name": "ring-uuid",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldOiTDepnt07yOss",
+          "name": "ring-number",
+          "type": "number"
+        },
+        {
+          "id": "fldA0Hhfe87V5sunR",
+          "name": "ring-id",
+          "type": "number"
+        },
+        {
+          "id": "fldxjNONQq5ewHRK6",
+          "name": "name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldw0oVQzbxkLsPDq",
+          "name": "ring-nickname",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldg6kVjUsWDM2QUu",
+          "name": "ring-unq",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldTkZ0RSHw77P0ov",
+          "name": "active",
+          "type": "checkbox"
+        }
+      ]
+    },
+    "w-horses": {
+      "id": "tblbRctpu5tpvJYdg",
+      "name": "w-horses",
+      "primaryFieldId": "fldwPkZ5TuKCmjMiA",
+      "fields": [
+        {
+          "id": "fldwPkZ5TuKCmjMiA",
+          "name": "horse-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldSrlobU4GaHUzRX",
+          "name": "horse-id",
+          "type": "number"
+        },
+        {
+          "id": "fld7IZTbnpp01alDe",
+          "name": "horse-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldOfclh8BXzhwCaS",
+          "name": "last-success",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldmhoWG6GKWN8Q9y",
+          "name": "shows",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldbUCdZFDYIxAGDe",
+          "name": "show-days",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    "w-riders": {
+      "id": "tblGjqYudtbGD3dsY",
+      "name": "w-riders",
+      "primaryFieldId": "fld68eFgVL05fVrNC",
+      "fields": [
+        {
+          "id": "fld68eFgVL05fVrNC",
+          "name": "rider-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldqwAQT7hj4FSi4m",
+          "name": "rider-id",
+          "type": "number"
+        },
+        {
+          "id": "fld963VAOsQkwrl1n",
+          "name": "rider-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldlCsX0ZxuriRH3P",
+          "name": "last-success",
+          "type": "dateTime"
+        },
+        {
+          "id": "flddChNZIoewXgeRU",
+          "name": "shows",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldSjKx3QZKOPX7E9",
+          "name": "show-days",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    "w-days": {
+      "id": "tblyANazuTky0Yy31",
+      "name": "w-days",
+      "primaryFieldId": "fldZ4N88v9HPsfChO",
+      "fields": [
+        {
+          "id": "fldZ4N88v9HPsfChO",
+          "name": "show-day-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldaDR98AjOkOwqSS",
+          "name": "show",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldx6zfWb2gKUAFIn",
+          "name": "date",
+          "type": "date"
+        },
+        {
+          "id": "fldhEaVJ9cYqzJHeP",
+          "name": "unique-entry-count",
+          "type": "number"
+        },
+        {
+          "id": "fldaqLulGDz90EkOr",
+          "name": "trip-count",
+          "type": "number"
+        },
+        {
+          "id": "fldk5jC9Z1b7ZcWUU",
+          "name": "count-coverage",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldpdJjBfesmKl2qg",
+          "name": "count-rules-version",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldxOQRdwgnY74KGW",
+          "name": "count-observed-at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldd3KWT6ywAynHtK",
+          "name": "count-verified-at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldZXJgXtGG2MjV74",
+          "name": "latest-attempt-at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldgbyUjoaPOBmhCc",
+          "name": "data-evidence-ref",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldenknvmGwGriO7i",
+          "name": "accepted-summary",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldtd0asJ9UMSOodl",
+          "name": "latest-attempt-reason",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldas6HTyzjtw4nHK",
+          "name": "publication-status",
+          "type": "singleSelect"
+        },
+        {
+          "id": "fldMnlMvvCQ4EXGhI",
+          "name": "latest-attempt-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldPQXX6UpMEZdGP4",
+          "name": "day-priority",
+          "type": "number"
+        }
+      ]
+    },
+    "w-shows": {
+      "id": "tblXZGPbcoz4gbfwq",
+      "name": "w-shows",
+      "primaryFieldId": "fldd8p5fOg686zOCb",
+      "fields": [
+        {
+          "id": "fldd8p5fOg686zOCb",
+          "name": "show-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldfR1C6VoUEcs3TA",
+          "name": "show_id",
+          "type": "number"
+        },
+        {
+          "id": "fldNU0bGtzv7c8lUU",
+          "name": "customer_id",
+          "type": "number"
+        },
+        {
+          "id": "fldKKvPRDauYmMgzD",
+          "name": "facility_id",
+          "type": "number"
+        },
+        {
+          "id": "fldYe60PgdY4f0Lmv",
+          "name": "show_name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldoFCQfJ1KwnlLDh",
+          "name": "start_date",
+          "type": "date"
+        },
+        {
+          "id": "fldALQJ3uY6gMu38Z",
+          "name": "end_date",
+          "type": "date"
+        },
+        {
+          "id": "fldeYwOjRcf00GvRc",
+          "name": "selected_date",
+          "type": "date"
+        },
+        {
+          "id": "fldIjhPfrhSD5Vt2g",
+          "name": "available_dates",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldNp3qPmv8jKI6fi",
+          "name": "is_default",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldof3iwlxLtaoEDG",
+          "name": "last_checked",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldmBw0Xjl1X8a4AR",
+          "name": "default-payload-file",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldEeInBpAqNnU1Pn",
+          "name": "default-payload-sha256",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld0UR0mtVmmvRU80",
+          "name": "show-days",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    "people": {
+      "id": "tbl1bRy6ftpQKIoX2",
+      "name": "people",
+      "primaryFieldId": "fldIZhHxILvbjJvYJ",
+      "fields": [
+        {
+          "id": "fldIZhHxILvbjJvYJ",
+          "name": "person-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldptLz6L0JlcB6V3",
+          "name": "person-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "flduppOXFC4p25S0h",
+          "name": "roles",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld84btMTRNOVuAPZ",
+          "name": "source-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldJuLTzszcsRXFxl",
+          "name": "identity-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldgPpUdytkjiW9Ak",
+          "name": "source-evidence",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldEoPktVyNiWP78H",
+          "name": "unresolved",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldDUpUA8W7HAUkqo",
+          "name": "source-observed-at",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            },
+            "timeFormat": {
+              "name": "24hour",
+              "format": "HH:mm"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "id": "fldtidDOpRND44WHw",
+          "name": "riders",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGjqYudtbGD3dsY",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld1v6vdbqwgQ09FE"
+          }
+        },
+        {
+          "id": "fldHW2KBLXFCj7miC",
+          "name": "trainers",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblnA6yeQtZhKYkQ5",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldlQGCMTih65CpiE"
+          }
+        },
+        {
+          "id": "fldQ1vfeHYSpbUr1w",
+          "name": "shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblXZGPbcoz4gbfwq",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld31p42dAtdIaaAT"
+          }
+        },
+        {
+          "id": "fldrWkznu5VcwOV2L",
+          "name": "days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblyANazuTky0Yy31",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldvGlrfw6jPTFCol"
+          }
+        },
+        {
+          "id": "fldE7MJNf4FH8sDFh",
+          "name": "horses",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblbRctpu5tpvJYdg",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldUFWH6L8glBAnkL"
+          }
+        },
+        {
+          "id": "fldwMvmQEIkrkEUNC",
+          "name": "relationship-evidence",
+          "type": "multilineText"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwpSSrhVqeFDJ03v",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    "run-logs": {
+      "id": "tblkszE4vwlZggf7k",
+      "name": "run-logs",
+      "primaryFieldId": "fldh9rW14IljmiMpc",
+      "fields": [
+        {
+          "id": "fldh9rW14IljmiMpc",
+          "name": "attempt-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldc40kZe0y2zktNF",
+          "name": "workflow",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldI1m0UfgvTZs4k3",
+          "name": "status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldDAblmybDRORrq5",
+          "name": "stage",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldI6pvkouv2Fnhod",
+          "name": "run-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld5ypZ4WDJ5sn5Dl",
+          "name": "source-revision",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldOxglPbpZGDAgyh",
+          "name": "show-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldpF3VqckBxGSHkI",
+          "name": "started",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            },
+            "timeFormat": {
+              "name": "24hour",
+              "format": "HH:mm"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "id": "fldbpYDyAygWPdL1a",
+          "name": "completed",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            },
+            "timeFormat": {
+              "name": "24hour",
+              "format": "HH:mm"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "id": "fldRkB3ilvF31fhh1",
+          "name": "elapsed-seconds",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "id": "fldguHoLTlDcuHdiD",
+          "name": "counts-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldoJMp5uKZmxcMWS",
+          "name": "reason",
+          "type": "multilineText"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwCdiE8FL72GYLq4",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    "err-logs": {
+      "id": "tblCf5Td8wMfJMeyJ",
+      "name": "err-logs",
+      "primaryFieldId": "fldHfFoiLckhXKW0M",
+      "fields": [
+        {
+          "id": "fldHfFoiLckhXKW0M",
+          "name": "error-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldFbv1yDAnzj192Z",
+          "name": "run",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblkszE4vwlZggf7k",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldBe5lswSLZwoiHt"
+          }
+        },
+        {
+          "id": "fldWGa37c316NakTk",
+          "name": "occurred-at",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            },
+            "timeFormat": {
+              "name": "24hour",
+              "format": "HH:mm"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "id": "fldTUzI9boZ2cMX1J",
+          "name": "stage",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldYCkrRNACtqDvQo",
+          "name": "category",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldDH3dr73ors4G9b",
+          "name": "operation",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld3c3cSXfBt3AhF5",
+          "name": "target",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld2aX8EiGhFdXCZj",
+          "name": "message",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld8Me6MHBvslMYbs",
+          "name": "write-outcome",
+          "type": "singleLineText"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwEsztPgTr6KaxJN",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    "heartbeat": {
+      "id": "tblrbrB0TvUDFg65U",
+      "name": "heartbeat",
+      "primaryFieldId": "fld8wEV2N6wCfMwwq",
+      "fields": [
+        {
+          "id": "fld8wEV2N6wCfMwwq",
+          "name": "heartbeat-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldbwl4lX7G4v9omz",
+          "name": "workflow",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldleDNXTN5Xdk3zv",
+          "name": "status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldiKHW3qvhWdqqCl",
+          "name": "last-wake",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            },
+            "timeFormat": {
+              "name": "24hour",
+              "format": "HH:mm"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "id": "fldwVLS2tFVCPQaG9",
+          "name": "last-attempt",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            },
+            "timeFormat": {
+              "name": "24hour",
+              "format": "HH:mm"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "id": "fldVFXpe0PfnEGnTE",
+          "name": "last-success",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            },
+            "timeFormat": {
+              "name": "24hour",
+              "format": "HH:mm"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "id": "fldu59bAtWXHHzNz9",
+          "name": "last-error",
+          "type": "dateTime",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            },
+            "timeFormat": {
+              "name": "24hour",
+              "format": "HH:mm"
+            },
+            "timeZone": "utc"
+          }
+        },
+        {
+          "id": "fldiyLGJM3nZruAmR",
+          "name": "last-run",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblkszE4vwlZggf7k",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldSe6OGnsEY80jcA"
+          }
+        },
+        {
+          "id": "fldeNNwpzG1cwTZpg",
+          "name": "message",
+          "type": "multilineText"
+        }
+      ],
+      "views": [
+        {
+          "id": "viw85XMITO4AI5DTy",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    },
+    "code-review": {
+      "id": "tblpBEZbKMWIvX7ud",
+      "name": "code-review",
+      "primaryFieldId": "fldjJlqsHGRuPWuli",
+      "fields": [
+        {
+          "id": "fldjJlqsHGRuPWuli",
+          "name": "routine",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldTw1xViNT1wrgb1",
+          "name": "last-review",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "id": "fldcaeVzDZN5uZVJn",
+          "name": "last-result",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldbE5cNNvjDe0GP2",
+          "name": "next-review",
+          "type": "date",
+          "options": {
+            "dateFormat": {
+              "name": "iso",
+              "format": "YYYY-MM-DD"
+            }
+          }
+        },
+        {
+          "id": "fldtEGHsWiIRvfI5r",
+          "name": "cadence",
+          "type": "singleLineText"
+        },
+        {
+          "id": "flddkrLpHaIQjYtFX",
+          "name": "notes",
+          "type": "multilineText"
+        }
+      ],
+      "views": [
+        {
+          "id": "viwvryltgxRlYNTXe",
+          "name": "Grid view",
+          "type": "grid"
+        }
+      ]
+    }
+  }
+}

@@ -1,6 +1,32 @@
 # wef-class-calculator owner
 
-## Operating Skills 0.2.2 current adoption - 30 October 2026
+README version: **1.0** (first explicit document version). Updated **31 October 2026**, America/New_York. This version identifies this README, not a runtime or skill-package release.
+
+## Current responsibilities
+
+Owner: `wef-class-calculator`, chat `01a16f18-25b9-7222-9b53-b64496ec84d9`. The human owner approves scope; `wef-timing-coordinator` (`01a169bc-0bd6-77d3-b7b4-283a07061e90`) coordinates shared contracts and delivery.
+
+- Own group/class occurrence timing: accepted inputs, duration, estimated start/end, completion evidence, fallback and unavailable reasons.
+- Own class condition detection and class input validation; preserve exact occurrence identity, provenance and original observation times. Proposed condition rules are not claimed implemented.
+- Validate compatible Ring pace for the correct class/group/phase, including membership, original measurement time and applicable freshness rules. Ring produces pace; Class owns its consumption and Class output disposition.
+- Independently review code and verification evidence when assigned. Separate offline checks, deployment, normal scheduled execution and usable downstream results.
+- Report concrete Class blockers and evidence to the coordinator. A completed stage does not establish usable end estimates.
+
+Class does not own source collection, Ring pace production, Entry implementation, source-record repair, retention execution, message delivery or publication. Codex is not the runner; no manual production runs or substitute workflow proof. Runtime edits, deployment and failed-path retries require the applicable explicit approval. No dependency upgrades, contract changes, refactoring or adjacent work are included without approval.
+
+Current Class implementation: `wef-timing/class-timing.js`, `class-adapter.js`, `class-live-source.js` and `class-worker.js`. Class answers are saved in `appeqxxJyPGS1iqdm/tblmoBFySYW2TkDHf` through the existing shared `wef-timing-data` route. There is no separate Class runner. The approved default pace is **2.5746 minutes per trip** when compatible Ring pace is unavailable; original evidence clocks and the existing active-pace age limit remain intact.
+
+## Latest verified evidence — 31 October 2026
+
+Independent Ring date-filter review and two normal scheduled run readbacks passed. Separate Class review of the second run (`5720dbb7-b396-4b03-9444-38323b4dbac8`) verified 72 saved answers evaluated at `2026-10-31T16:09:26.730Z`: all unavailable, all using the approved fallback, none with an accepted start/count or selected Ring pace component. The prior run safely deferred Class publication after a source change. This is dated evidence, not a claim about later runs or proof that the inputs are physically absent upstream.
+
+Evidence: [independent review](C:/Users/gombc/Documents/Codex/staging/wef-ring-date-filter-20261031/reviewer-class-live/review.md), [execution log](C:/Users/gombc/Documents/Codex/staging/wef-ring-date-filter-20261031/reviewer-class-live/command-log.json), [receipt](C:/Users/gombc/Documents/Codex/staging/wef-ring-date-filter-20261031/reviewer-class-live/review-receipt.json), and [packet verification](C:/Users/gombc/Documents/Codex/staging/wef-ring-date-filter-20261031/reviewer-class-live/review-verification.json). Class count/age proposals, Entry expansion and retention remain separate and stopped; this documentation update grants no operational authority.
+
+## Historical adoption and operating snapshots
+
+The dated receipts below preserve earlier evidence. The current responsibilities and dated evidence above supersede conflicting older shell-only, output-destination, fallback, task-state and pending-approval statements. Historical skill-package versions are not README versions or current installation claims.
+
+### Operating Skills 0.2.2 adoption - 30 October 2026
 
 This dated receipt supersedes0.2.1 as the applied version; existing responsibilities, cadence, retention protections and actual product approvals/stops remain unchanged. Human Timing turn `01a18f1c-9175-7dc1-8ca6-4ca0fc659d93` authorized this guidance plus distinct neutral offline application only. No automatic loading, schedule or future-compliance guarantee is claimed.
 
@@ -29,7 +55,7 @@ Evidence checked October 30, 2026, approximately 11:07 America/New_York. This is
 
 ## Responsibility and hierarchy
 
-Owner chat: `wef-class-calculator`, `01a16f18-25b9-7222-9b53-b64496ec84d9`. Coordinator: `wef-timing-coordinator`, `01a169bc-0bd6-77d3-b7b4-283a07061e90`. Human owner sets scope and approvals; Timing coordinator reconciles shared contracts and delivery. This owner covers group/class occurrence timing, estimated duration/end and completion evidence, class input adaptation and validation. Ring-pace owns pace/delay and the shared runner; entry timing, condition transitions, conflicts, shared freshness, Results and publishing remain separately owned.
+Owner chat: `wef-class-calculator`, `01a16f18-25b9-7222-9b53-b64496ec84d9`. Coordinator: `wef-timing-coordinator`, `01a169bc-0bd6-77d3-b7b4-283a07061e90`. Human owner sets scope and approvals; Timing coordinator reconciles shared contracts and delivery. This owner covers group/class occurrence timing, estimated duration/end and completion evidence, class condition detection, class input adaptation and validation, and authorized independent review. Ring-pace owns pace production and the shared runner; entry timing, entry/ring conditions, conflicts, shared freshness policy, Results and publishing remain separately owned. Class consumption is not Ring's acceptance responsibility.
 
 The existing implementation is `wef-timing/class-timing.js`, `class-adapter.js`, `class-live-source.js`, `class-worker.js` and their tests. Shared `data-runner.js`, `api.js`, retention and task integration are dependencies. The ring-pace owner is the sole writer for the current shared retention release. A review finding does not authorize this chat to patch those files.
 

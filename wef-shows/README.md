@@ -1,3 +1,44 @@
+# wef-shows
+
+Version: **1.7**
+
+Updated: **October 31, 2026 (America/New_York)**
+
+## Current scope - owner-approved October 31, 2026
+
+Shows manages canonical show identity, dates, selected day and day-priority.
+Entry/trip counting is cancelled, including the proposed timeout fix. The
+scheduled collector no longer invokes direct counts, Data or retained count
+replay as of the scope-only deployment at 20:29 Eastern October 31. Historical count totals,
+fields, evidence, helpers and the existing count stop are preserved, not repaired
+or cleared. A successful current run verifies shows/dates/priorities and logs;
+it does not verify the historical count values or their attempt-status fields.
+
+Discovery stays Sunday 22:00 America/New_York, with three-hour retries until a
+new show is found. After 19:00 daily, day 0 advances when tomorrow is available
+within the current show range; day-priority uses that selected day as zero.
+The existing five-minute task supplies due-work wakes, heartbeat and run/error
+logging. No task/cadence changes or downstream collector triggers.
+
+Records alerts are required only for a changed default show or verified day-0
+advance, with old/new values, normal-run time and evidence. Manual chat delivery
+is supported and authorized; automatic collector-to-chat delivery has no installed
+route and remains unimplemented. No new service, outbox, observer, polling job,
+notification framework or schema is added under this change. Records acknowledged
+and forwarded the October31 19:04 day-0 change to all five owning chats; that is a
+manual delivery receipt, not recurring-delivery proof.
+
+Release preparation and verification: [scope-only release](evidence/scope-only-20261031/README.md).
+This section supersedes older count responsibilities and status snapshots below.
+
+Normal-run acceptance: October31 20:34 Eastern PASS (run 343cdab8-1245-46d9-9e47-4808c4ccfede, task exit0); heartbeat/run-logs readback Success, four date records and historical counts unchanged. Automatic alerts remain unimplemented.
+
+## Historical release records - superseded
+
+The dated records below preserve earlier implementations and evidence. They do
+not authorize counting or reopen cancelled work. Version 1.7 above is current;
+the established discovery and day-priority cadence remains unchanged.
+
 ## Direct proxy count ownership — approved October31, 2026
 
 Shows now invokes dated schedule and decoded class endpoints itself for every canonical show-day, including past days. Entry/trip IDs and response details remain in memory; only totals, coverage, check timestamps, hash attestation and safe logs are saved. Data is unchanged and is not a count input. Existing discovery, calendar/priority policy, native links and five-minute task remain. Count failures retain last accepted totals, log failure, and preserve existing stop behavior. Historical Data count readers remain verification utilities only. Deployed08:35Eastern after23offline checks and independent review; two normal runs at08:39and08:44Eastern PASS:4daysVerified,233proxychecks/225classes each, taskexit0 and heartbeat/logSuccess. Data58filesunchanged; no manualruns/recordrepairs. Currentcounts:Oct29 0entries/0trips;Oct30 173/210;Oct31 166/271;Nov1 108/164. [Exact current release](evidence/direct-counts-20261031/README.md).

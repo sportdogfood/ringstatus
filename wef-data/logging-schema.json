@@ -44,6 +44,15 @@
         "err-logs": "tblqOm2bonpArnu4T",
         "heartbeat": "tblO9jrYgOlZRsHQj"
       }
+    },
+    "wef-data-linking": {
+      "base": "appdl16HJ5ETm8N69",
+      "workflow": "wef-data-linking",
+      "tables": {
+        "run-logs": "tblKMNAtvvIFSvgLh",
+        "err-logs": "tblhPcSD6UPp5jkCa",
+        "heartbeat": "tbl2r6hhTnlZh3leX"
+      }
     }
   }
 }

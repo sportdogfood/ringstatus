@@ -1,0 +1,1441 @@
+{
+  "at": "2026-11-01T14:55:00.221999+00:00",
+  "lanes": {
+    "groups": {
+      "runs": [
+        {
+          "run_id": "af784364-8206-4e2b-9439-f0925980c269",
+          "receipt": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\lane-groups-af784364-8206-4e2b-9439-f0925980c269.json",
+          "sha256": "d3e53810f9e9f4e03c9189851af35074c7a6cf48c76b2ac7e62b5f057f5dd0e3",
+          "scope": {
+            "show": 200000076,
+            "customer": 15,
+            "date": "2026-11-01",
+            "selected_date": "2026-11-01",
+            "authority": "recOAxMcqu1f75CQk",
+            "checked_at": "2026-10-30T22:59:14.976Z",
+            "active": true
+          },
+          "day_priority": 0,
+          "started": "2026-11-01T14:51:04.167Z",
+          "completed": "2026-11-01T14:51:08.204Z",
+          "ok": true,
+          "counts": {
+            "live-groups": 25
+          },
+          "timings": {
+            "collection_ms": 851.1191999999999,
+            "save_ms": 1152.5504000000005,
+            "collection_started": "2026-11-01T14:51:05.842Z",
+            "collection_completed": "2026-11-01T14:51:06.693Z",
+            "save_started": "2026-11-01T14:51:07.051Z",
+            "save_completed": "2026-11-01T14:51:08.204Z",
+            "total_ms": 4037
+          },
+          "changed_records": 3,
+          "issues": [],
+          "stage_errors": [],
+          "logging_errors": [],
+          "coverage_records": 25
+        },
+        {
+          "run_id": "c3c79ca2-cbd9-4146-9f76-533988e7dcbb",
+          "receipt": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\lane-groups-c3c79ca2-cbd9-4146-9f76-533988e7dcbb.json",
+          "sha256": "a0bc39f7dff11308d25f4da3d7243a408aa7c35647b3d388d1676b04973e0816",
+          "scope": {
+            "show": 200000076,
+            "customer": 15,
+            "date": "2026-11-01",
+            "selected_date": "2026-11-01",
+            "authority": "recOAxMcqu1f75CQk",
+            "checked_at": "2026-10-30T22:59:14.976Z",
+            "active": true
+          },
+          "day_priority": 0,
+          "started": "2026-11-01T14:54:05.047Z",
+          "completed": "2026-11-01T14:54:09.981Z",
+          "ok": true,
+          "counts": {
+            "live-groups": 25
+          },
+          "timings": {
+            "collection_ms": 654.6646999999998,
+            "save_ms": 2359.2191,
+            "collection_started": "2026-11-01T14:54:06.613Z",
+            "collection_completed": "2026-11-01T14:54:07.268Z",
+            "save_started": "2026-11-01T14:54:07.621Z",
+            "save_completed": "2026-11-01T14:54:09.980Z",
+            "total_ms": 4934
+          },
+          "changed_records": 3,
+          "issues": [],
+          "stage_errors": [],
+          "logging_errors": [],
+          "coverage_records": 25
+        }
+      ],
+      "unchanged_repeat": [
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028343",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028344",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028345",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028347",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028384",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028389",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028357",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028358",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028359",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028362",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028363",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028364",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028368",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028402",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028405",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028406",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028411",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028348",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028349",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028350",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028351",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028353",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        }
+      ]
+    },
+    "rings": {
+      "runs": [
+        {
+          "run_id": "1f875b65-47b2-4e18-ba7a-b2ed158d35c4",
+          "receipt": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\lane-rings-1f875b65-47b2-4e18-ba7a-b2ed158d35c4.json",
+          "sha256": "c04324f0716df35e83dd2eaf6e395c21a5ad52f393042c65b20c242b4df91d8b",
+          "scope": {
+            "show": 200000076,
+            "customer": 15,
+            "date": "2026-11-01",
+            "selected_date": "2026-11-01",
+            "authority": "recOAxMcqu1f75CQk",
+            "checked_at": "2026-10-30T22:59:14.976Z",
+            "active": true
+          },
+          "day_priority": 0,
+          "started": "2026-11-01T14:51:04.170Z",
+          "completed": "2026-11-01T14:51:07.499Z",
+          "ok": true,
+          "counts": {
+            "live-rings": 5
+          },
+          "timings": {
+            "collection_ms": 131.94540000000006,
+            "save_ms": 776.9794000000002,
+            "collection_started": "2026-11-01T14:51:05.879Z",
+            "collection_completed": "2026-11-01T14:51:06.011Z",
+            "save_started": "2026-11-01T14:51:06.722Z",
+            "save_completed": "2026-11-01T14:51:07.499Z",
+            "total_ms": 3329
+          },
+          "changed_records": 3,
+          "issues": [],
+          "stage_errors": [],
+          "logging_errors": [],
+          "coverage_records": 5
+        },
+        {
+          "run_id": "f8ae2b55-406a-4a84-a5f7-2eca181d9026",
+          "receipt": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\lane-rings-f8ae2b55-406a-4a84-a5f7-2eca181d9026.json",
+          "sha256": "cf51290f2a449206f7b2106c547e7ece729cef70423599679684a5ed21878b01",
+          "scope": {
+            "show": 200000076,
+            "customer": 15,
+            "date": "2026-11-01",
+            "selected_date": "2026-11-01",
+            "authority": "recOAxMcqu1f75CQk",
+            "checked_at": "2026-10-30T22:59:14.976Z",
+            "active": true
+          },
+          "day_priority": 0,
+          "started": "2026-11-01T14:54:05.050Z",
+          "completed": "2026-11-01T14:54:08.320Z",
+          "ok": true,
+          "counts": {
+            "live-rings": 5
+          },
+          "timings": {
+            "collection_ms": 123.2686000000001,
+            "save_ms": 799.3977000000004,
+            "collection_started": "2026-11-01T14:54:06.683Z",
+            "collection_completed": "2026-11-01T14:54:06.806Z",
+            "save_started": "2026-11-01T14:54:07.520Z",
+            "save_completed": "2026-11-01T14:54:08.320Z",
+            "total_ms": 3270
+          },
+          "changed_records": 2,
+          "issues": [],
+          "stage_errors": [],
+          "logging_errors": [],
+          "coverage_records": 5
+        }
+      ],
+      "unchanged_repeat": [
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|37",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|52",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|56",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        }
+      ]
+    },
+    "classes": {
+      "runs": [
+        {
+          "run_id": "6886ca9e-62ed-468f-bd57-c7036c2ec2de",
+          "receipt": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\lane-classes-6886ca9e-62ed-468f-bd57-c7036c2ec2de.json",
+          "sha256": "794342e8c577c9d63b3ed1dd8156ebeb18425413c671baedb947989a258eb6dc",
+          "scope": {
+            "show": 200000076,
+            "customer": 15,
+            "date": "2026-11-01",
+            "selected_date": "2026-11-01",
+            "authority": "recOAxMcqu1f75CQk",
+            "checked_at": "2026-10-30T22:59:14.976Z",
+            "active": true
+          },
+          "day_priority": 0,
+          "started": "2026-11-01T14:51:04.171Z",
+          "completed": "2026-11-01T14:51:15.611Z",
+          "ok": true,
+          "counts": {
+            "live-classes": 41,
+            "live-entries": 145
+          },
+          "timings": {
+            "collection_ms": 1945.3361,
+            "save_ms": 7035.5882,
+            "collection_started": "2026-11-01T14:51:06.615Z",
+            "collection_completed": "2026-11-01T14:51:08.560Z",
+            "save_started": "2026-11-01T14:51:08.572Z",
+            "save_completed": "2026-11-01T14:51:15.611Z",
+            "total_ms": 11440
+          },
+          "changed_records": 65,
+          "issues": [
+            {
+              "message": "No decoded identity for trip 200399237",
+              "class_id": 200030777,
+              "trip_id": 200399237
+            },
+            {
+              "message": "No decoded identity for trip 200399920",
+              "class_id": 200030777,
+              "trip_id": 200399920
+            },
+            {
+              "message": "No decoded identity for trip 200398413",
+              "class_id": 200030777,
+              "trip_id": 200398413
+            },
+            {
+              "message": "No decoded identity for trip 200399341",
+              "class_id": 200030808,
+              "trip_id": 200399341
+            },
+            {
+              "message": "No decoded identity for trip 200399914",
+              "class_id": 200030762,
+              "trip_id": 200399914
+            },
+            {
+              "message": "No decoded identity for trip 200399094",
+              "class_id": 200030811,
+              "trip_id": 200399094
+            }
+          ],
+          "stage_errors": [],
+          "logging_errors": [],
+          "coverage_records": 186
+        },
+        {
+          "run_id": "fc93c546-d336-47f3-b0a4-65b482e2c24e",
+          "receipt": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\lane-classes-fc93c546-d336-47f3-b0a4-65b482e2c24e.json",
+          "sha256": "c08721cd0f46dd9ddc1159f9929e5e1b5c59c7d1dd29889408ad1e626d6e1ec2",
+          "scope": {
+            "show": 200000076,
+            "customer": 15,
+            "date": "2026-11-01",
+            "selected_date": "2026-11-01",
+            "authority": "recOAxMcqu1f75CQk",
+            "checked_at": "2026-10-30T22:59:14.976Z",
+            "active": true
+          },
+          "day_priority": 0,
+          "started": "2026-11-01T14:54:05.052Z",
+          "completed": "2026-11-01T14:54:16.188Z",
+          "ok": true,
+          "counts": {
+            "live-classes": 41,
+            "live-entries": 145
+          },
+          "timings": {
+            "collection_ms": 3684.3739000000005,
+            "save_ms": 3697.3351999999995,
+            "collection_started": "2026-11-01T14:54:08.802Z",
+            "collection_completed": "2026-11-01T14:54:12.486Z",
+            "save_started": "2026-11-01T14:54:12.488Z",
+            "save_completed": "2026-11-01T14:54:16.188Z",
+            "total_ms": 11136
+          },
+          "changed_records": 21,
+          "issues": [
+            {
+              "message": "No decoded identity for trip 200399237",
+              "class_id": 200030777,
+              "trip_id": 200399237
+            },
+            {
+              "message": "No decoded identity for trip 200399920",
+              "class_id": 200030777,
+              "trip_id": 200399920
+            },
+            {
+              "message": "No decoded identity for trip 200398413",
+              "class_id": 200030777,
+              "trip_id": 200398413
+            },
+            {
+              "message": "No decoded identity for trip 200399341",
+              "class_id": 200030808,
+              "trip_id": 200399341
+            },
+            {
+              "message": "No decoded identity for trip 200399094",
+              "class_id": 200030811,
+              "trip_id": 200399094
+            },
+            {
+              "message": "No decoded identity for trip 200399914",
+              "class_id": 200030762,
+              "trip_id": 200399914
+            }
+          ],
+          "stage_errors": [],
+          "logging_errors": [],
+          "coverage_records": 186
+        }
+      ],
+      "unchanged_repeat": [
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030777",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030823",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030789",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030779",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030718",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030588",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030589",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030685",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030604",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030676",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030743",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030808",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030746",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030749",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030752",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030811",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030762",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030803",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030759",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030697",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030660",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030659",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030647",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030648",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030699",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030638",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030639",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030678",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030701",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030613",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030614",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030617",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030618",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030771",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030820",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030765",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030799",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030768",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030777|200399910",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030777|200399970",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030777|200399205",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399956",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399805",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399640",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399922",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399954",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399524",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399853",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399316",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399904",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399082",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200398969",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399955",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399905",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200398951",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399882",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399915",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399007",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399115",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399086",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399906",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399902",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399704",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399345",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399859",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200398832",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399847",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399907",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399077",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399577",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200398990",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399371",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399843",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399854",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399933",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399898",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399676",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399763",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399860",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399911",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399619",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030718|200399173",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030718|200399891",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030718|200399582",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200399452",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200398966",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200399790",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200398942",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200399792",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200399594",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200399794",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200399453",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200399786",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200398967",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200399595",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200398943",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399610",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399730",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399884",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399616",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399175",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030603|200399775",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030603|200399835",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030743|200399270",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030743|200399185",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030746|200399188",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030746|200399267",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030749|200399659",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030752|200399661",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030803|200399575",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030803|200399282",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030803|200399343",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030759|200399877",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030759|200399903",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030759|200400018",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030660|200398959",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030660|200399255",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030659|200398958",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030659|200399254",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030647|200399105",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030648|200399106",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030638|200399830",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030638|200399057",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030639|200399828",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030639|200399058",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030678|200399059",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030701|200399164",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030613|200399599",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030613|200399682",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030613|200399687",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030614|200399600",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030614|200399693",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030614|200399685",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399692",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399812",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399821",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399822",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399681",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399817",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030617|200399487",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030617|200399701",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030617|200399814",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030617|200399819",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030618|200399488",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030618|200399699",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030618|200399811",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030618|200399818",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200400007",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399873",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200400008",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399935",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399901",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399913",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399675",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399713",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399586",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200398427",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030820|200399708",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030765|200399932",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030799|200399930",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030799|200399482",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030799|200399927",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030768|200399826",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030768|200399865",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030768|200399909",
+          "last_success_advanced": true,
+          "last_changed_preserved": true
+        }
+      ]
+    }
+  },
+  "no_manual_runs": true,
+  "no_repairs": true,
+  "stages_8_9": "Held; absent from new entry path",
+  "rollback": "Not needed; no stage/logging failures"
+}

@@ -1,0 +1,130 @@
+{
+  "read_at": "2026-11-01T14:52:32.162Z",
+  "tables": {
+    "live-groups": {
+      "records": [
+        {
+          "id": "recHEn99kc4cdgb9B",
+          "createdTime": "2026-11-01T04:03:10.000Z",
+          "cellValuesByFieldId": {
+            "fld0IoGPIIPoKzeB1": [
+              {
+                "id": "recNLJbenEMle5dbF",
+                "name": "200000076|2026-11-01|51"
+              }
+            ],
+            "fldJH2GmyFEAIk1fl": "2026-11-01",
+            "fldThKyYt7iiK0Hoi": "Underway",
+            "fldWmWFWsHbxGr8Vn": 200000076,
+            "fldch05P0MAnVmnsd": "2026-11-01T14:51:06.693Z",
+            "fldqp8iJphmhvEz7s": "200000076|2026-11-01|200028346",
+            "fldrn2IRKzEem0RW3": 31,
+            "fldyVzmceUibk8r43": 31
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 1
+      }
+    },
+    "live-rings": {
+      "records": [
+        {
+          "id": "recNLJbenEMle5dbF",
+          "createdTime": "2026-11-01T04:03:08.000Z",
+          "cellValuesByFieldId": {
+            "fldTayxyMT8UQzDz9": 200000076,
+            "flddR5w8Wj4pwp3fm": "200000076|2026-11-01|51",
+            "fldnLhishIf2bmDo5": [
+              {
+                "id": "recDb6M8F6kBzk3DL",
+                "name": "200000076|2026-11-01|200028343"
+              },
+              {
+                "id": "recpLaBRdP7xAdTSc",
+                "name": "200000076|2026-11-01|200028344"
+              },
+              {
+                "id": "rectgdgF84P61X2ob",
+                "name": "200000076|2026-11-01|200028345"
+              },
+              {
+                "id": "recCBl4tLc1GRiqsX",
+                "name": "200000076|2026-11-01|200028347"
+              }
+            ],
+            "fldodcUEVDCDxXFJd": [
+              {
+                "id": "recHEn99kc4cdgb9B",
+                "name": "200000076|2026-11-01|200028346"
+              }
+            ],
+            "fldy8v54f2SN6BPYX": "2026-11-01",
+            "fldyzkWo5CIjFF0BT": "2026-11-01T14:51:06.011Z"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 1
+      }
+    },
+    "live-classes": {
+      "records": [
+        {
+          "id": "reczVfgwnSkkeZMTf",
+          "createdTime": "2026-11-01T04:03:14.000Z",
+          "cellValuesByFieldId": {
+            "fld3xlkG3LijBHgUA": 200399862,
+            "fldEHefueewfhU2Am": 31,
+            "fldHnLaPKFS9sH90h": [
+              {
+                "id": "recHEn99kc4cdgb9B",
+                "name": "200000076|2026-11-01|200028346"
+              }
+            ],
+            "fldIXYMAkQnJ3U09F": [
+              {
+                "id": "recNLJbenEMle5dbF",
+                "name": "200000076|2026-11-01|51"
+              }
+            ],
+            "fldJndpmUiZyPoJ3n": "200000076|2026-11-01|200030826",
+            "fldKNgC2LOp16Ypim": 200000076,
+            "flddb04ABao8a4V7c": "2026-11-01T14:51:06.705Z",
+            "flder8GxJUGdjCpkQ": 31,
+            "fldnjYKtPufr9mp44": "2026-11-01"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 1
+      }
+    },
+    "live-entries": {
+      "records": [
+        {
+          "id": "rec8HFUXvRky3kdBK",
+          "createdTime": "2026-11-01T04:03:30.000Z",
+          "cellValuesByFieldId": {
+            "fld0AM7FuLctperFR": "2026-11-01",
+            "fld5NnFWvI0xQgqQq": "2026-11-01T14:51:06.741Z",
+            "fldJJ3AUpWooZ0OYV": [
+              {
+                "id": "recuZHg9z6AxGpo91",
+                "name": "200000076|2026-11-01|200030777"
+              }
+            ],
+            "fldiLlo6KfxFPmYyx": "GOODGRAF",
+            "fldmgaqN984eBERdX": "200000076|2026-11-01|200030777|200399910",
+            "fldr6FlglHGuId1pg": 200000076,
+            "fldtvRjva4scGwxvO": "JUAN ANDRES RODRIGUEZ SILVA",
+            "fldxHUOhFtr5WvTbe": 0
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 1
+      }
+    }
+  }
+}

@@ -13,20 +13,23 @@ function fixture(t){
  return{tables,requests,opts,dir,set:(at,id=sid,bad=false)=>{now=at;sid=id;fail=bad;},run:extra=>runShows({...opts,...extra}),consume:()=>readShowFocus({read:()=>api.list('shows'),now,statePath:path.join(dir,'consumer.json'),archiveRoot:history})};
 }
 
-test('two scheduled-function fixture invocations count every day without Data reads or entity/raw-payload persistence',async t=>{
- t.mock.method(Date,'now',()=>Date.parse('2026-10-31T12:00:00Z'));const f=fixture(t);f.set('2026-10-31T12:00:00Z');let calls=0;const originalFetch=global.fetch;t.after(()=>global.fetch=originalFetch);
- const sid=76,start='2026-10-29',end='2026-11-04';global.fetch=async url=>{calls++;const u=new URL(url);assert.equal(u.hostname,'wef-schedules-decoded.gombcg.workers.dev');let p;
- if(u.pathname==='/schedule'){const date=u.searchParams.get('date'),cid=Number(date.replaceAll('-',''));p={show:{show_id:sid,start_date:start,end_date:end},show_date:date,rings:[{ring_number:6,classes:[{class_id:cid}]}]};}
- else{const cid=Number(u.pathname.split('/').at(-1)),v=String(cid),date=v.slice(0,4)+'-'+v.slice(4,6)+'-'+v.slice(6);p={show_id:sid,class:{class_id:cid},class_related_data:{date,ring:6},total_entry_trips:1,trips:[{entry_id:123,trip_id:cid,horse:'PRIVATE_HORSE_NAME',rider:'PRIVATE_RIDER_NAME'}]};}
- return new Response(JSON.stringify(p),{headers:{'x-rs-decoded':'1'}});};
- const list=f.opts.api.list;f.opts.api.list=async(table,base)=>{assert.notEqual(base,'appdl16HJ5ETm8N69');assert(!['runs','collections','entries','horses','riders','trips'].includes(table));return list(table);};
- for(let n=0;n<2;n++){const r=await f.run({publishDays:require('../show-days').publishDays});assert.equal(r.ok,true,JSON.stringify(r));assert.equal(r.show_days.rows,7);if(n===0)assert.equal(r.show_days.created,7);assert.equal(r.direct_counts.request_count,21);assert.equal(r.archives.length,0);assert(r.observability.sources.some(s=>s.key==='direct-day-counts'));assert(!r.observability.sources.some(s=>s.key==='season-counts'));assert.equal(f.tables['show-days'].length,7);assert(f.tables['show-days'].every(r=>r.fields['unique-entry-count']===1&&r.fields['trip-count']===1));assert.equal(f.tables['show-days'].find(r=>r.fields.date==='2026-10-30').fields['day-priority'],0);assert(!JSON.stringify(f.tables).includes('PRIVATE_'));}
- assert.equal(calls,42);assert.equal(f.tables['run-logs'].length,2);assert.equal(f.tables.heartbeat.length,1);
+test('normal repeats manage dates without count requests, Data reads or historical count mutations',async t=>{
+ const f=fixture(t),legacy={error:'prior count timeout'};fs.writeFileSync(f.opts.dayStopPath,JSON.stringify(legacy));
+ const days=f.tables.shows[0].fields.available_dates.split(', ');for(const date of days)f.tables['show-days'].push({id:'day'+date,fields:{'show-day-key':'15|76|'+date,show:['canonical'],date,'unique-entry-count':17,'trip-count':21,'latest-attempt-status':'Failed','publication-status':'Unknown'}});
+ const prior=structuredClone(f.tables['show-days']),list=f.opts.api.list;f.opts.api.list=async(name,base)=>{assert(!base||base===require('../settings').BASE_ID);assert(!['runs','collections','entries','trips'].includes(name));return list(name);};
+ const native=global.fetch;t.after(()=>global.fetch=native);global.fetch=async()=>{throw Error('No count/provider requests permitted');};
+ for(const at of ['2026-10-31T22:59:00Z','2026-10-31T23:04:00Z','2026-10-31T23:09:00Z']){f.set(at);const r=await f.run({readSummaries:()=>{throw Error('No Data or direct counts');},publishDays:()=>{throw Error('Retired count publisher must not run');}});assert.equal(r.ok,true,JSON.stringify(r));assert.equal(r.direct_counts,undefined);}
+ assert.equal(f.tables.shows[0].fields.selected_date,'2026-11-01');assert.equal(f.tables['show-days'].find(x=>x.fields.date==='2026-11-01').fields['day-priority'],0);
+ for(const before of prior){const after=f.tables['show-days'].find(r=>r.id===before.id);for(const [k,v]of Object.entries(before.fields))assert.deepEqual(after.fields[k],v);}
+ assert.equal(f.requests.length,0);assert.equal(f.tables.heartbeat[0].fields.result,'Success');assert.equal(f.tables['run-logs'].length,3);assert.equal(fs.readFileSync(f.opts.dayStopPath,'utf8'),JSON.stringify(legacy));
 });
-
-test('failed class response retains previous totals, publishes safe other days, and marks run/heartbeat Partial with durable count stop',async t=>{
- t.mock.method(Date,'now',()=>Date.parse('2026-10-31T12:00:00Z'));const f=fixture(t);f.set('2026-10-31T12:00:00Z');const prior=global.fetch;t.after(()=>global.fetch=prior);
- const date='2026-10-29';f.tables['show-days'].push({id:'existing',fields:{'show-day-key':'15|76|'+date,show:['canonical'],date,'unique-entry-count':99,'trip-count':199,'day-priority':-1}});
- global.fetch=async url=>{const u=new URL(url);let p;if(u.pathname==='/schedule')p={show:{show_id:76,start_date:'2026-10-29',end_date:'2026-11-04'},show_date:u.searchParams.get('date'),rings:u.searchParams.get('date')===date?[{ring_number:6,classes:[{class_id:1}]}]:[]};else p={show_id:76,class:{class_id:1},class_related_data:{date,ring:6},total_entry_trips:1,trips:[{entry_id:1}]};return new Response(JSON.stringify(p),{headers:{'x-rs-decoded':'1'}});};
- const r=await f.run({publishDays:require('../show-days').publishDays});assert.equal(r.ok,false);assert.equal(r.discovery_ok,true);assert.equal(f.tables.heartbeat[0].fields.result,'Partial');assert.equal(f.tables['run-logs'][0].fields.result,'Partial');assert(fs.existsSync(f.opts.dayStopPath));assert.equal(f.tables['show-days'][0].fields['unique-entry-count'],99);assert.equal(f.tables['show-days'][0].fields['trip-count'],199);assert.equal(f.tables['show-days'][0].fields['latest-attempt-status'],'Failed');assert.equal(r.show_days.rows,6);assert(f.tables['err-logs'].length>0);
+test('missing canonical dates are created with existing keys and links, without count metadata',async t=>{
+ const f=fixture(t);const native=global.fetch;t.after(()=>global.fetch=native);global.fetch=async()=>{throw Error('No count requests');};
+ const r=await f.run();assert.equal(r.ok,true,JSON.stringify(r));assert.equal(r.show_days.created,7);assert.equal(f.tables['show-days'].length,7);
+ for(const row of f.tables['show-days']){const offset=(Date.parse(row.fields.date)-Date.parse('2026-10-30'))/86400000;assert.deepEqual(Object.keys(row.fields).sort(),Math.abs(offset)<=3?['date','day-priority','show','show-day-key']:['date','show','show-day-key']);}
+ const ids=f.tables['show-days'].map(r=>r.id);assert.equal((await f.run()).ok,true);assert.deepEqual(f.tables['show-days'].map(r=>r.id),ids);
+});
+test('date publication refuses duplicate keys and wrong existing native links',async()=>{
+ const {publishDates}=require('../show-days'),show={id:'show',fields:{'show-key':'15|76',customer_id:15,show_id:76,start_date:'2026-10-29',end_date:'2026-10-29',available_dates:'2026-10-29'}};
+ for(const rows of [[{fields:{'show-day-key':'15|76|2026-10-29'}},{fields:{'show-day-key':'15|76|2026-10-29'}}],[{fields:{'show-day-key':'15|76|2026-10-29',show:['wrong'],date:'2026-10-29'}}]])await assert.rejects(publishDates({show,api:{list:async()=>rows,upsert:async()=>assert.fail('must not repair')}}),/Duplicate|identity/);
 });

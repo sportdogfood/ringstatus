@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-01T12:56:19.750148+00:00",
+  "records": 919,
+  "expected": 919,
+  "unique_keys": 919,
+  "mismatches": [],
+  "roles": {
+    "rider": 647,
+    "trainer": 272
+  },
+  "horse_links": 0,
+  "issues": 851,
+  "issue_messages": {
+    "Unmatched/ambiguous day 15|200000075|2026-10-23": 184,
+    "Unmatched/ambiguous day 15|200000075|2026-10-24": 204,
+    "Unmatched/ambiguous day 15|200000075|2026-10-25": 157,
+    "Equal cross-role ID is unverified; no merge": 306
+  },
+  "result": "PASS",
+  "boundary": "Independent connector readback versus pre-run shared snapshot; natural repeat not yet observed"
+}

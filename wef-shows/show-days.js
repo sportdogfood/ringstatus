@@ -9,6 +9,23 @@ function dates(show){
  for(const day of days)if(!/^\d{4}-\d{2}-\d{2}$/.test(day)||new Date(day+'T00:00:00Z').toISOString().slice(0,10)!==day||day<f.start_date||day>f.end_date)throw Error('Invalid canonical show date');
  return days.sort();
 }
+// Current scheduled responsibility: publish canonical dates and native links only.
+// Historical count helpers below remain available for inspecting saved evidence.
+async function publishDates({api,show}){
+ const days=dates(show),existing=await api.list('show-days'),keys=existing.map(r=>r.fields['show-day-key']);
+ if(new Set(keys).size!==keys.length)throw Error('Duplicate canonical day keys');
+ const rows=days.map(date=>({'show-day-key':`${show.fields['show-key']}|${date}`,show:[show.id],date}));
+ for(const fields of rows){const old=existing.find(r=>r.fields['show-day-key']===fields['show-day-key']);
+  if(old&&(old.fields.date!==fields.date||JSON.stringify(old.fields.show)!==JSON.stringify(fields.show)))throw Error('Canonical date identity mismatch');
+ }
+ const missing=rows.filter(f=>!keys.includes(f['show-day-key']));
+ if(missing.length)await api.upsert('show-days','show-day-key',missing);
+ const after=await api.list('show-days');
+ for(const fields of rows){const matches=after.filter(r=>r.fields['show-day-key']===fields['show-day-key']);
+  if(matches.length!==1||matches[0].fields.date!==fields.date||JSON.stringify(matches[0].fields.show)!==JSON.stringify(fields.show))throw Error('Canonical date readback mismatch');
+ }
+ return{ok:true,rows:rows.length,created:missing.length,days:days.map(date=>({date,status:'Verified'})),errors:[]};
+}
 function projection(body){return{'unique-entry-count':body['unique-entry-count']??null,'trip-count':body['proven-trip-count']??null,'count-coverage':body.coverage,'count-rules-version':body['policy-version'],'count-observed-at':body['accepted-as-of']||null,'count-verified-at':body['verified-at']||null,'data-evidence-ref':canonical(body.evidence)};}
 function validateBody(body,show,day){
  if(body.format!=='wef-day-count-summary-v1'||!['dated-registrations-v1','direct-proxy-counts-v1'].includes(body['policy-version'])||body['show-key']!==show.fields['show-key']||String(body['customer-id'])!==String(show.fields.customer_id)||body.date!==day||body['day-key']!==`${show.fields['show-key']}|${day}`)throw Error('Count summary scope/policy mismatch');
@@ -66,4 +83,4 @@ async function publishDays({api,show,clock=()=>new Date().toISOString(),readSumm
  }
  return report;
 }
-module.exports={dates,canonical,hash,projection,validateBody,status,envelope,decode,readAccepted,publishDays};
+module.exports={publishDates,dates,canonical,hash,projection,validateBody,status,envelope,decode,readAccepted,publishDays};

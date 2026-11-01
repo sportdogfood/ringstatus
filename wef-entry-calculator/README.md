@@ -1,16 +1,38 @@
 # wef-entry-calculator
 
-## Current authority and operating guidance â€” 30 October 2026
+**README version:** 1.0  
+**Updated:** 31 October 2026 (America/New_York)  
+**Document owner:** Entry chat `01a16f18-32b3-7900-8bbc-e8de123ca3b8`
 
-Entry owns entry timing and consolidated conflicts/conditions/validation planning. Current approved work: finish native Ring proof handoff, safe prewrite deferral, TODAY independent of canonical planning, and necessary Entry-owned fixture corrections; Class independent review before isolated deployment/two normal scheduled runs. Fresh release stage: `C:/Users/gombc/Documents/Codex/staging/wef-entry-release-20261031`. Current test fixture adapts the real native canonical-day protocol and uses a deterministic historical clock without shared producer/test changes. Older failed checks and logs remain preserved at the prior stages; none is silently replaced with PASS.
+## Responsibilities
 
-Prepared Entry-only route: `wef-entry-calculator` three-minute Windows task → `run-hidden.vbs` → `run.ps1` → `entry.js` → `runner.js`, own lock/journal/checkpoint and Entry-only writes. It remains unregistered pending full Class review/coordinator reconciliation. Upstream inputs read-only; canonical authority unchanged; no Ring/collector/retention edits or manual business runs. Historical shared deployment below is dated evidence of a later-disconnected route.
+- Own Entry calculations: observed eligibility/status, known order, supported trips/entries ahead, workload and go-time estimates using existing Data, Live and Ring inputs.
+- Preserve exact show/date/ring/group/class/trip/phase identities and original source timestamps. Numeric or string `100000` is unknown order; provider estimates and derived ETA remain distinct.
+- Maintain Entry code, publication/readback controls, failure handling and its isolated scheduled route.
+- Obtain Class's independent full-path review, then deploy approved Entry changes and verify two normal scheduled runs with saved Airtable evidence.
+- Maintain consolidated planning for horse/rider timing conflicts, entry conditions and validation. Those additional features are not delivered.
+
+Timing coordinator: `01a169bc-0bd6-77d3-b7b4-283a07061e90`. Class independent reviewer: `01a16f18-25b9-7222-9b53-b64496ec84d9`. Ring owns Ring calculations and its workflow; Data/Live owners own collectors. Entry has no authority to change those implementations through this assignment.
+
+## Current status and authority
+
+**Entry remains undeployed and stopped after failed verification.** The latest candidate is frozen at `C:/Users/gombc/Documents/Codex/staging/wef-entry-release-20261031`. Its first Python verification had one passing protocol check and four errors at the legacy retained-feed publication boundary. Current Data saves native day receipts; Entry's existing input adapter still expects the older historical handoff. The previous 38 passing Node checks are historical evidence and do not prove current native-input integration.
+
+The concrete pending scope is [native input and proof compatibility](C:/Users/gombc/Documents/Codex/staging/wef-entry-release-20261031/NATIVE-INPUT-PLAN.md), with [current verification evidence](C:/Users/gombc/Documents/Codex/staging/wef-entry-release-20261031/VERIFICATION-STATUS.md). Fresh explicit approval is required for this compatibility expansion and further repair/retest after failure. This README update grants no implementation permission. Preserve the latest owner AGENTS boundary against unapproved upgrades, contract changes, rewrites and adjacent cleanup.
+
+The coordinator reports Ring's deployed contract is now `live-ring-pace-v2`, with two normal output runs verified separately. Before an approved Entry build, inspect the actual deployed contract and hashes and reuse its accepted validator. Preserve accepted pace method, original endpoints/as-of and unchanged component age rules; Class end-time unavailability alone does not prove pace is unusable. Direct Ring evidence must not be labelled a verified Class component without matching saved Class proof.
+
+Prepared Entry-only route: `wef-entry-calculator` three-minute Windows task → `run-hidden.vbs` → `run.ps1` → `entry.js` → `runner.js`, with its own lock, journal and checkpoint. The task has not been registered or deployed. Canonical planning-date authority remains unchanged; Entry's working day is TODAY in America/New_York. Full Class review and coordinator reconciliation precede deployment and two ordinary scheduled runs. No manual business runs, Ring/collector changes, record repairs or retention deletion are authorized.
+
+## Operating guidance
+
+Use the current canonical procedures below when applicable. Private checkpoint preparation supports host-native automatic compaction; it does not configure its threshold or require an owner-entered command. The owner's 65% preparation threshold is separate from native compaction settings. No automatic compaction event or threshold configuration is claimed here.
 
 When code review is invoked or required, follow [canonical Code Review](C:/Users/gombc/.agents/skills/code-review/SKILL.md): inspect actual changes, dependencies and downstream/failure paths independently; save reviewer-owned findings and exact command/cwd/runtime/UTC/exit/stdout-stderr evidence. Separate executed, inspected and recovered evidence from deployment and normal scheduled proof. Passing component tests are not integration proof; review failure grants no repair or retry permission.
 
 At invocation, resumption, material authority/failure/handoff changes and applicable context boundaries, follow [canonical Context Compact](C:/Users/gombc/.codex/skills/context-compact/SKILL.md) and its [helper](C:/Users/gombc/.codex/skills/context-compact/scripts/inspect_context.py). Use this chat's exact session and private folder `C:/Users/gombc/.codex/context-archives/01a16f18-32b3-7900-8bbc-e8de123ca3b8`; preserve prior state, maintain one current resume, privately archive/hash-check history, read back semantic evidence, then verify the checkpoint. Mechanical PASS is not semantic continuity proof. Do not execute historical next actions.
 
-Installed receipt: ringstatus-operating-skills **0.2.2**, release `pluginrel_6ae52435d3988191a144d87f9807acf6`, applied 2026-10-30. Both SKILL files and helpers match canonical SHA-256 values recorded in `.git/ringstatus-control/skill-proof-20261030-v022/timing-subagents/entry/skill-hashes.json`. For delegated/release/handoff review, save the [canonical review packet](C:/Users/gombc/.agents/skills/code-review/references/review-receipt.md), execute [verify_review.py](C:/Users/gombc/.agents/skills/code-review/scripts/verify_review.py) with `--receipt`, and preserve actual output; required independent execution cannot be replaced by inspecting writer logs. Candidate FAIL may coexist with review COMPLETE. For context, reconcile the owner's actual target first; populate task_scope objective/target/effects/next_action and owner timestamp/hash from helper metadata, semantically read back then run `--verify-checkpoint`. Neither mechanical verifier certifies reasoning or live operation.
+Historical installed receipt: ringstatus-operating-skills **0.2.2**, release `pluginrel_6ae52435d3988191a144d87f9807acf6`, applied 2026-10-30. Both SKILL files and helpers match canonical SHA-256 values recorded in `.git/ringstatus-control/skill-proof-20261030-v022/timing-subagents/entry/skill-hashes.json`. For delegated/release/handoff review, save the [canonical review packet](C:/Users/gombc/.agents/skills/code-review/references/review-receipt.md), execute [verify_review.py](C:/Users/gombc/.agents/skills/code-review/scripts/verify_review.py) with `--receipt`, and preserve actual output; required independent execution cannot be replaced by inspecting writer logs. Candidate FAIL may coexist with review COMPLETE. For context, reconcile the owner's actual target first; populate task_scope objective/target/effects/next_action and owner timestamp/hash from helper metadata, semantically read back then run `--verify-checkpoint`. Neither mechanical verifier certifies reasoning or live operation.
 
 0.2.2 application evidence: `.git/ringstatus-control/skill-proof-20261030-v022/timing-subagents/entry/adoption-receipt.json`. Neutral disposable fixture independently reviewed (COMPLETE, candidate FAIL); this is not a product retest or repair. Concrete continuation scenario is labelled SIMULATED; no host compaction invoked. README is an explicit procedure pointer, not an auto-loader, scheduler or future-compliance guarantee.
 
@@ -46,7 +68,7 @@ Base `appyoLTcNmLrgpHcg`; exact field IDs and created/read-back schema in [schem
 
 Tables were created and independently listed. Business answers were written by the scheduled runner. No operational review records or recurring review automation were created by this owner task. No active periodic review ID is claimed.
 
-## Source and implementation
+## Historical source and implementation
 
 Data authority is its verified immutable retained handoff, base `appdl16HJ5ETm8N69`; Shows `appCaSmL819KK7UFJ` supplies canonical context. Live `appgzosUcVqA4vZdf` supplies independently validated current observations/frozen archives. Ring answers use `appYOykKIy1kAquhP/tblhIjSjeGs5td23c`; Class answers use `appeqxxJyPGS1iqdm/tblmoBFySYW2TkDHf`.
 
@@ -58,7 +80,7 @@ Data authority is its verified immutable retained handoff, base `appdl16HJ5ETm8N
 
 `stage.js` plus `operations.js` implement preflight, shared and entry-local durable intent, exact answer ID/key/field readback, own checkpoint/run-log/heartbeat/error records and blocking failure state. Written counters advance only after readback. `retention.js` creates protected 24-hour candidate manifests only; it cannot delete.
 
-## Shared integration contract
+## Historical shared integration contract
 
 Existing route: `wef-timing-data -> run-hidden-data.vbs -> run-data.ps1 -> entry-data.js -> data-runner.run`, every three minutes. TODAY in America/New_York only. Preserve existing160-second worker/165-second process budgets and8MiB projection buffer. No caps, SQLite, Schedules lane, legacy changes or manual production runs.
 
@@ -73,7 +95,7 @@ Shared save persists intent before entry PATCH; entry also mirrors its checkpoin
 
 Shared deployed staging: `C:/Users/gombc/Documents/Codex/staging/wef-timing-entry-malformed-20261030`. Deployment receipt and first readback are under `deployment-a39241cc-fa09-4f4b-95ff-50025cc3b70d`. The earlier integration staging and 162-test result are superseded.
 
-## Remaining acceptance
+## Historical acceptance list — current pending scope above controls
 
 1. Resolve the two ambiguous occurrence scopes through the authoritative producer; no manual record repair.
 2. Observed current-workload scheduled duration was 100.873 seconds then 82.583 seconds under existing budgets. Broader workload capacity is unproved; no general capacity claim.

@@ -1,0 +1,5538 @@
+{
+  "read_at": "2026-11-01T15:53:25.670Z",
+  "rows": [
+    {
+      "id": "rec0C944gv3RuEf2P",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 13946,
+        "entry-id": 200245184,
+        "trip-id": 200399524,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399524",
+        "trainer-id": 52238,
+        "show-id": 200000076,
+        "horse-id": 146211,
+        "entry-key": "200000076|2026-11-01|200245184|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec0qwRrckkl0nR2o",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recsRKuQwoYzMUbJ4",
+            "name": "200000076|2026-11-01|class|200030752"
+          }
+        ],
+        "last-seen": "2026-11-01T12:29:26.698Z",
+        "rider-id": 74873,
+        "entry-id": 200247491,
+        "trip-id": 200399875,
+        "class": [
+          {
+            "id": "recsLqFEPhNhDUdkg",
+            "name": "200000076|2026-11-01|200030752"
+          }
+        ],
+        "source-updated-at": "29oct2026 16:30:13",
+        "live-entry-key": "200000076|2026-11-01|200030752|200399875",
+        "trainer-id": 71874,
+        "show-id": 200000076,
+        "horse-id": 142439,
+        "entry-key": "200000076|2026-11-01|200247491|200030752",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec0vtmCKf4MgrQWe",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.354Z",
+        "rider-id": 51156,
+        "entry-id": 200247804,
+        "trip-id": 200399077,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200399077",
+        "trainer-id": 54349,
+        "show-id": 200000076,
+        "horse-id": 138572,
+        "entry-key": "200000076|2026-11-01|200247804|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec16SE2211BXM5zM",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 35658,
+        "entry-id": 200246141,
+        "trip-id": 200399704,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399704",
+        "trainer-id": 35658,
+        "show-id": 200000076,
+        "horse-id": 200005091,
+        "entry-key": "200000076|2026-11-01|200246141|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec1P82yyE6hG7pp9",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recYDm16jYr7H8iSh",
+            "name": "200000076|2026-11-01|class|200030659"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:07.671Z",
+        "rider-id": 1000003497,
+        "entry-id": 200247389,
+        "trip-id": 200399254,
+        "class": [
+          {
+            "id": "recidP15u2ccRoqwf",
+            "name": "200000076|2026-11-01|200030659"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:02:38",
+        "live-entry-key": "200000076|2026-11-01|200030659|200399254",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 138006,
+        "entry-key": "200000076|2026-11-01|200247389|200030659",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec1TuIiZ5RgXoK8p",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rechdAHUTmxf2ZwLX",
+            "name": "200000076|2026-11-01|class|200030614"
+          }
+        ],
+        "last-seen": "2026-11-01T15:03:06.489Z",
+        "rider-id": 67420,
+        "entry-id": 200248561,
+        "trip-id": 200399685,
+        "class": [
+          {
+            "id": "recvOzYiAxuZkIkX3",
+            "name": "200000076|2026-11-01|200030614"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:55:57",
+        "live-entry-key": "200000076|2026-11-01|200030614|200399685",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 200001565,
+        "entry-key": "200000076|2026-11-01|200248561|200030614",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec1cCpim1SZlJZpA",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.354Z",
+        "rider-id": 6214,
+        "entry-id": 200247306,
+        "trip-id": 200398832,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200398832",
+        "trainer-id": 3997,
+        "show-id": 200000076,
+        "horse-id": 200001805,
+        "entry-key": "200000076|2026-11-01|200247306|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec2L7px082iNg2xG",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.252Z",
+        "rider-id": 3049,
+        "entry-id": 200242407,
+        "trip-id": 200399873,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200399873",
+        "trainer-id": 17008,
+        "show-id": 200000076,
+        "horse-id": 142531,
+        "entry-key": "200000076|2026-11-01|200242407|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec2TTbCwyY0TXHJR",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recke6gbWcDEhIGeG",
+            "name": "200000076|2026-11-01|class|200030823"
+          }
+        ],
+        "last-seen": "2026-11-01T15:30:06.090Z",
+        "rider-id": 5057,
+        "entry-id": 200247568,
+        "trip-id": 200399640,
+        "class": [
+          {
+            "id": "recO8XAVXfveOHrzJ",
+            "name": "200000076|2026-11-01|200030823"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:19:07",
+        "live-entry-key": "200000076|2026-11-01|200030823|200399640",
+        "trainer-id": 5057,
+        "show-id": 200000076,
+        "horse-id": 200005353,
+        "entry-key": "200000076|2026-11-01|200247568|200030823",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec2dSDuexwyusbkF",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recYDm16jYr7H8iSh",
+            "name": "200000076|2026-11-01|class|200030659"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:26.629Z",
+        "rider-id": 83628,
+        "entry-id": 200241259,
+        "trip-id": 200399923,
+        "class": [
+          {
+            "id": "recidP15u2ccRoqwf",
+            "name": "200000076|2026-11-01|200030659"
+          }
+        ],
+        "source-updated-at": "26oct2026 18:07:10",
+        "live-entry-key": "200000076|2026-11-01|200030659|200399923",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 110183,
+        "entry-key": "200000076|2026-11-01|200241259|200030659",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec2e3zz6Mo91bl2j",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T13:44:26.977Z",
+        "rider-id": 86122,
+        "entry-id": 200247783,
+        "trip-id": 200399664,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200399664",
+        "trainer-id": 18334,
+        "show-id": 200000076,
+        "horse-id": 152546,
+        "entry-key": "200000076|2026-11-01|200247783|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec40lXGT9UgFk9x1",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reclLoCkcUg1nKq2L",
+            "name": "200000076|2026-11-01|class|200030746"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:07.306Z",
+        "rider-id": 1000003554,
+        "entry-id": 200247573,
+        "trip-id": 200399267,
+        "class": [
+          {
+            "id": "recPp3souSoDrdPvv",
+            "name": "200000076|2026-11-01|200030746"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:12:52",
+        "live-entry-key": "200000076|2026-11-01|200030746|200399267",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 200005355,
+        "entry-key": "200000076|2026-11-01|200247573|200030746",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec44vx7Wv5A4J0nb",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwuvMxkzbY96p3q",
+            "name": "200000076|2026-11-01|class|200030639"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:27.482Z",
+        "rider-id": 16481,
+        "entry-id": 200241260,
+        "trip-id": 200399227,
+        "class": [
+          {
+            "id": "recsJGnC6lpvmSz8h",
+            "name": "200000076|2026-11-01|200030639"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:17:09",
+        "live-entry-key": "200000076|2026-11-01|200030639|200399227",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 137935,
+        "entry-key": "200000076|2026-11-01|200241260|200030639",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec4NE3wNIFKC196K",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:24.935Z",
+        "rider-id": 36516,
+        "entry-id": 200247400,
+        "trip-id": 200399890,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399890",
+        "trainer-id": 73880,
+        "show-id": 200000076,
+        "horse-id": 200001020,
+        "entry-key": "200000076|2026-11-01|200247400|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec4Oko3gN802JwA6",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwWjLKWXmWdLwoT",
+            "name": "200000076|2026-11-01|class|200030685"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.087Z",
+        "rider-id": 1000000974,
+        "entry-id": 200243811,
+        "trip-id": 200399610,
+        "class": [
+          {
+            "id": "recp0WeV8wqaeURvH",
+            "name": "200000076|2026-11-01|200030685"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:59:00",
+        "live-entry-key": "200000076|2026-11-01|200030685|200399610",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200000808,
+        "entry-key": "200000076|2026-11-01|200243811|200030685",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec4dGyPPmFNODVNT",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 50914,
+        "entry-id": 200245740,
+        "trip-id": 200399007,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399007",
+        "trainer-id": 50914,
+        "show-id": 200000076,
+        "horse-id": 148624,
+        "entry-key": "200000076|2026-11-01|200245740|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec5KZPUS13RlcHwT",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.252Z",
+        "rider-id": 14401,
+        "entry-id": 200244807,
+        "trip-id": 200399901,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200399901",
+        "trainer-id": 11516,
+        "show-id": 200000076,
+        "horse-id": 200005122,
+        "entry-key": "200000076|2026-11-01|200244807|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec5YpQaCA7x5ZQsO",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recqnp6i5o93axppD",
+            "name": "200000076|2026-11-01|class|200030718"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:06.931Z",
+        "rider-id": 83752,
+        "entry-id": 200243094,
+        "trip-id": 200399891,
+        "class": [
+          {
+            "id": "recSrZgkN8JVIFjDa",
+            "name": "200000076|2026-11-01|200030718"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:11:43",
+        "live-entry-key": "200000076|2026-11-01|200030718|200399891",
+        "trainer-id": 28290,
+        "show-id": 200000076,
+        "horse-id": 138967,
+        "entry-key": "200000076|2026-11-01|200243094|200030718",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec5cf9IFjuyOABoQ",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 1000000570,
+        "entry-id": 200248111,
+        "trip-id": 200399853,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399853",
+        "trainer-id": 1000000570,
+        "show-id": 200000076,
+        "horse-id": 200005018,
+        "entry-key": "200000076|2026-11-01|200248111|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec6261be32004SVp",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recAXKw3x8UyXxOsU",
+            "name": "200000076|2026-11-01|class|200030589"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.061Z",
+        "rider-id": 3179,
+        "entry-id": 200244783,
+        "trip-id": 200398943,
+        "class": [
+          {
+            "id": "recWfoQ82E9UpX7PJ",
+            "name": "200000076|2026-11-01|200030589"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:10:08",
+        "live-entry-key": "200000076|2026-11-01|200030589|200398943",
+        "trainer-id": 3179,
+        "show-id": 200000076,
+        "horse-id": 200003920,
+        "entry-key": "200000076|2026-11-01|200244783|200030589",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec69PJUbY0BKMvRJ",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recPyYzTyPzS7Eixw",
+            "name": "200000076|2026-11-01|class|200030618"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:30.497Z",
+        "rider-id": 76111,
+        "entry-id": 200248607,
+        "trip-id": 200399811,
+        "class": [
+          {
+            "id": "recIp1gf3AG7wCWYy",
+            "name": "200000076|2026-11-01|200030618"
+          }
+        ],
+        "source-updated-at": "29oct2026 22:07:12",
+        "live-entry-key": "200000076|2026-11-01|200030618|200399811",
+        "trainer-id": 76112,
+        "show-id": 200000076,
+        "horse-id": 133202,
+        "entry-key": "200000076|2026-11-01|200248607|200030618",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec6CRfscaqhD5eFi",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwWjLKWXmWdLwoT",
+            "name": "200000076|2026-11-01|class|200030685"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.087Z",
+        "rider-id": 1000003545,
+        "entry-id": 200247420,
+        "trip-id": 200399884,
+        "class": [
+          {
+            "id": "recp0WeV8wqaeURvH",
+            "name": "200000076|2026-11-01|200030685"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:59:00",
+        "live-entry-key": "200000076|2026-11-01|200030685|200399884",
+        "trainer-id": 6199,
+        "show-id": 200000076,
+        "horse-id": 131950,
+        "entry-key": "200000076|2026-11-01|200247420|200030685",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec6iTs633UglcYq6",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recqnp6i5o93axppD",
+            "name": "200000076|2026-11-01|class|200030718"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:06.931Z",
+        "rider-id": 61690,
+        "entry-id": 200247446,
+        "trip-id": 200399173,
+        "class": [
+          {
+            "id": "recSrZgkN8JVIFjDa",
+            "name": "200000076|2026-11-01|200030718"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:11:43",
+        "live-entry-key": "200000076|2026-11-01|200030718|200399173",
+        "trainer-id": 3857,
+        "show-id": 200000076,
+        "horse-id": 153475,
+        "entry-key": "200000076|2026-11-01|200247446|200030718",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec7TZtkfhn8mGu9B",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recjXXIIRqbBwXBtM",
+            "name": "200000076|2026-11-01|class|200030588"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:05.988Z",
+        "rider-id": 1000003545,
+        "entry-id": 200247420,
+        "trip-id": 200399594,
+        "class": [
+          {
+            "id": "recIjcrv328S0fYvf",
+            "name": "200000076|2026-11-01|200030588"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:40",
+        "live-entry-key": "200000076|2026-11-01|200030588|200399594",
+        "trainer-id": 6199,
+        "show-id": 200000076,
+        "horse-id": 131950,
+        "entry-key": "200000076|2026-11-01|200247420|200030588",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec7fJZWvRGZB0zir",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recYDm16jYr7H8iSh",
+            "name": "200000076|2026-11-01|class|200030659"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:28.568Z",
+        "rider-id": 74258,
+        "entry-id": 200246100,
+        "trip-id": 200399939,
+        "class": [
+          {
+            "id": "recidP15u2ccRoqwf",
+            "name": "200000076|2026-11-01|200030659"
+          }
+        ],
+        "source-updated-at": "26oct2026 18:07:10",
+        "live-entry-key": "200000076|2026-11-01|200030659|200399939",
+        "trainer-id": 46307,
+        "show-id": 200000076,
+        "horse-id": 151541,
+        "entry-key": "200000076|2026-11-01|200246100|200030659",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec7nnbspl3oEvxiD",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recaMUWcgPx4Qn11I",
+            "name": "200000076|2026-11-01|class|200030749"
+          }
+        ],
+        "last-seen": "2026-11-01T12:44:28.063Z",
+        "rider-id": 66899,
+        "entry-id": 200246798,
+        "trip-id": 200399919,
+        "class": [
+          {
+            "id": "reczLlc36KPwqQLcu",
+            "name": "200000076|2026-11-01|200030749"
+          }
+        ],
+        "source-updated-at": "29oct2026 16:30:14",
+        "live-entry-key": "200000076|2026-11-01|200030749|200399919",
+        "trainer-id": 40507,
+        "show-id": 200000076,
+        "horse-id": 200005257,
+        "entry-key": "200000076|2026-11-01|200246798|200030749",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec8HFUXvRky3kdBK",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T15:51:05.738Z",
+        "rider-id": 40913,
+        "entry-id": 200244601,
+        "trip-id": 200399910,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:50:57",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399910",
+        "trainer-id": 40913,
+        "show-id": 200000076,
+        "horse-id": 200000831,
+        "entry-key": "200000076|2026-11-01|200244601|200030777",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec9fwagDSbwh611X",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recPyYzTyPzS7Eixw",
+            "name": "200000076|2026-11-01|class|200030618"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:30.497Z",
+        "rider-id": 61690,
+        "entry-id": 200247445,
+        "trip-id": 200399818,
+        "class": [
+          {
+            "id": "recIp1gf3AG7wCWYy",
+            "name": "200000076|2026-11-01|200030618"
+          }
+        ],
+        "source-updated-at": "29oct2026 22:07:12",
+        "live-entry-key": "200000076|2026-11-01|200030618|200399818",
+        "trainer-id": 3857,
+        "show-id": 200000076,
+        "horse-id": 200003618,
+        "entry-key": "200000076|2026-11-01|200247445|200030618",
+        "gone": 0
+      }
+    },
+    {
+      "id": "rec9kW4L8XGj9AfUz",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recOg1yRXbH26XC59",
+            "name": "200000076|2026-11-01|class|200030743"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:07.273Z",
+        "rider-id": 1000003554,
+        "entry-id": 200247573,
+        "trip-id": 200399270,
+        "class": [
+          {
+            "id": "recGuVHuLClQXDf2i",
+            "name": "200000076|2026-11-01|200030743"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:06:30",
+        "live-entry-key": "200000076|2026-11-01|200030743|200399270",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 200005355,
+        "entry-key": "200000076|2026-11-01|200247573|200030743",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rec9zbe0SocimV6bc",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.793Z",
+        "rider-id": 69311,
+        "entry-id": 200247931,
+        "trip-id": 200399763,
+        "class": [
+          {
+            "id": "recdokMGpE89qP3Cm",
+            "name": "200000076|2026-11-01|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "live-entry-key": "200000076|2026-11-01|200030779|200399763",
+        "trainer-id": 69311,
+        "show-id": 200000076,
+        "horse-id": 200005372,
+        "entry-key": "200000076|2026-11-01|200247931|200030779",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recA0p6oAZhEhVdLi",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.793Z",
+        "rider-id": 40913,
+        "entry-id": 200244615,
+        "trip-id": 200399911,
+        "class": [
+          {
+            "id": "recdokMGpE89qP3Cm",
+            "name": "200000076|2026-11-01|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "live-entry-key": "200000076|2026-11-01|200030779|200399911",
+        "trainer-id": 40913,
+        "show-id": 200000076,
+        "horse-id": 200005116,
+        "entry-key": "200000076|2026-11-01|200244615|200030779",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recAIuxCEYxEhD77Z",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec6FJIoShPTwDtEe",
+            "name": "200000076|2026-11-01|class|200030617"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:30.381Z",
+        "rider-id": 76111,
+        "entry-id": 200248607,
+        "trip-id": 200399814,
+        "class": [
+          {
+            "id": "recgKYtzhm7mynr1y",
+            "name": "200000076|2026-11-01|200030617"
+          }
+        ],
+        "source-updated-at": "29oct2026 22:07:11",
+        "live-entry-key": "200000076|2026-11-01|200030617|200399814",
+        "trainer-id": 76112,
+        "show-id": 200000076,
+        "horse-id": 133202,
+        "entry-key": "200000076|2026-11-01|200248607|200030617",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recAshHn9ZahJ4DW5",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec1uvF6D7l7beTkJ",
+            "name": "200000076|2026-11-01|class|200030660"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:26.759Z",
+        "rider-id": 79110,
+        "entry-id": 200247572,
+        "trip-id": 200399950,
+        "class": [
+          {
+            "id": "recPKjKBtdLEGLUQ4",
+            "name": "200000076|2026-11-01|200030660"
+          }
+        ],
+        "source-updated-at": "26oct2026 18:07:11",
+        "live-entry-key": "200000076|2026-11-01|200030660|200399950",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 135263,
+        "entry-key": "200000076|2026-11-01|200247572|200030660",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recB2YwT3M2Z4QTTB",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recjXXIIRqbBwXBtM",
+            "name": "200000076|2026-11-01|class|200030588"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:05.988Z",
+        "rider-id": 2856,
+        "entry-id": 200247863,
+        "trip-id": 200399452,
+        "class": [
+          {
+            "id": "recIjcrv328S0fYvf",
+            "name": "200000076|2026-11-01|200030588"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:40",
+        "live-entry-key": "200000076|2026-11-01|200030588|200399452",
+        "trainer-id": 5708,
+        "show-id": 200000076,
+        "horse-id": 132994,
+        "entry-key": "200000076|2026-11-01|200247863|200030588",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recBExbPpCrN72u2Y",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.354Z",
+        "rider-id": 62117,
+        "entry-id": 200245276,
+        "trip-id": 200399907,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200399907",
+        "trainer-id": 13946,
+        "show-id": 200000076,
+        "horse-id": 200002033,
+        "entry-key": "200000076|2026-11-01|200245276|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recBIQPFupWm61U7x",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recYNIp7A4fIOoYWo",
+            "name": "200000076|2026-11-01|class|200030701"
+          }
+        ],
+        "last-seen": "2026-11-01T15:51:06.693Z",
+        "rider-id": 61690,
+        "entry-id": 200247445,
+        "trip-id": 200399164,
+        "class": [
+          {
+            "id": "recyNYriIcM07cIBt",
+            "name": "200000076|2026-11-01|200030701"
+          }
+        ],
+        "source-updated-at": "29oct2026 13:51:08",
+        "live-entry-key": "200000076|2026-11-01|200030701|200399164",
+        "trainer-id": 3857,
+        "show-id": 200000076,
+        "horse-id": 200003618,
+        "entry-key": "200000076|2026-11-01|200247445|200030701",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recBIzI6PWHf1nunF",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rechdAHUTmxf2ZwLX",
+            "name": "200000076|2026-11-01|class|200030614"
+          }
+        ],
+        "last-seen": "2026-11-01T15:03:06.489Z",
+        "rider-id": 76111,
+        "entry-id": 200243827,
+        "trip-id": 200399600,
+        "class": [
+          {
+            "id": "recvOzYiAxuZkIkX3",
+            "name": "200000076|2026-11-01|200030614"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:55:57",
+        "live-entry-key": "200000076|2026-11-01|200030614|200399600",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200005149,
+        "entry-key": "200000076|2026-11-01|200243827|200030614",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recBSs7xU6cFaPMw5",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.252Z",
+        "rider-id": 43168,
+        "entry-id": 200245322,
+        "trip-id": 200399913,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200399913",
+        "trainer-id": 43168,
+        "show-id": 200000076,
+        "horse-id": 200004987,
+        "entry-key": "200000076|2026-11-01|200245322|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recBmKMQiLB5rKymn",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reck8WfOADJ8hVzz4",
+            "name": "200000076|2026-11-01|class|200030830"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:11.350Z",
+        "rider-id": 76111,
+        "entry-id": 200244561,
+        "trip-id": 200399821,
+        "class": [
+          {
+            "id": "recKNEhBfIA7k7j4o",
+            "name": "200000076|2026-11-01|200030830"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:41:06",
+        "live-entry-key": "200000076|2026-11-01|200030830|200399821",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200005226,
+        "entry-key": "200000076|2026-11-01|200244561|200030830",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recByrmsZMCdyezAe",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recqnp6i5o93axppD",
+            "name": "200000076|2026-11-01|class|200030718"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:06.931Z",
+        "rider-id": 89884,
+        "entry-id": 200247056,
+        "trip-id": 200399582,
+        "class": [
+          {
+            "id": "recSrZgkN8JVIFjDa",
+            "name": "200000076|2026-11-01|200030718"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:11:43",
+        "live-entry-key": "200000076|2026-11-01|200030718|200399582",
+        "trainer-id": 7782,
+        "show-id": 200000076,
+        "horse-id": 146836,
+        "entry-key": "200000076|2026-11-01|200247056|200030718",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recCA056Ld05UPGpH",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reck8WfOADJ8hVzz4",
+            "name": "200000076|2026-11-01|class|200030830"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:11.350Z",
+        "rider-id": 67420,
+        "entry-id": 200248563,
+        "trip-id": 200399822,
+        "class": [
+          {
+            "id": "recKNEhBfIA7k7j4o",
+            "name": "200000076|2026-11-01|200030830"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:41:06",
+        "live-entry-key": "200000076|2026-11-01|200030830|200399822",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 139671,
+        "entry-key": "200000076|2026-11-01|200248563|200030830",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recCD7MVHdghydEVf",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:24.935Z",
+        "rider-id": 19347,
+        "entry-id": 200247867,
+        "trip-id": 200399947,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399947",
+        "trainer-id": 19347,
+        "show-id": 200000076,
+        "horse-id": 126862,
+        "entry-key": "200000076|2026-11-01|200247867|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recCoKlfxY6F7h4ik",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwWjLKWXmWdLwoT",
+            "name": "200000076|2026-11-01|class|200030685"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.087Z",
+        "rider-id": 50438,
+        "entry-id": 200243839,
+        "trip-id": 200399616,
+        "class": [
+          {
+            "id": "recp0WeV8wqaeURvH",
+            "name": "200000076|2026-11-01|200030685"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:59:00",
+        "live-entry-key": "200000076|2026-11-01|200030685|200399616",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200000902,
+        "entry-key": "200000076|2026-11-01|200243839|200030685",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recEdAEiR1JpWBnD2",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 13946,
+        "entry-id": 200247853,
+        "trip-id": 200399906,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399906",
+        "trainer-id": 13946,
+        "show-id": 200000076,
+        "horse-id": 200002366,
+        "entry-key": "200000076|2026-11-01|200247853|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recEjACCTKVzE0CAM",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recqr708asbJ06I3z",
+            "name": "200000076|2026-11-01|class|200030720"
+          }
+        ],
+        "last-seen": "2026-11-01T14:08:31.374Z",
+        "rider-id": 67420,
+        "entry-id": 200248562,
+        "trip-id": 200399688,
+        "class": [
+          {
+            "id": "rec84jjzawYTvK5kJ",
+            "name": "200000076|2026-11-01|200030720"
+          }
+        ],
+        "source-updated-at": "27oct2026 17:24:10",
+        "live-entry-key": "200000076|2026-11-01|200030720|200399688",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 123742,
+        "entry-key": "200000076|2026-11-01|200248562|200030720",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recEsSMoYx7aQHh8M",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec6ZOr59tA2PT8od",
+            "name": "200000076|2026-11-01|class|200030768"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.287Z",
+        "rider-id": 53432,
+        "entry-id": 200244414,
+        "trip-id": 200399865,
+        "class": [
+          {
+            "id": "recPuz5fidAP42PTF",
+            "name": "200000076|2026-11-01|200030768"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:45:34",
+        "live-entry-key": "200000076|2026-11-01|200030768|200399865",
+        "trainer-id": 53432,
+        "show-id": 200000076,
+        "horse-id": 200002474,
+        "entry-key": "200000076|2026-11-01|200244414|200030768",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recF0acDLpyl9IwDo",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reck8WfOADJ8hVzz4",
+            "name": "200000076|2026-11-01|class|200030830"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:11.350Z",
+        "rider-id": 67420,
+        "entry-id": 200248562,
+        "trip-id": 200399692,
+        "class": [
+          {
+            "id": "recKNEhBfIA7k7j4o",
+            "name": "200000076|2026-11-01|200030830"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:41:06",
+        "live-entry-key": "200000076|2026-11-01|200030830|200399692",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 123742,
+        "entry-key": "200000076|2026-11-01|200248562|200030830",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recF7M6S2towWxGet",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recxX3zUkThA8M4Sp",
+            "name": "200000076|2026-11-01|class|200030765"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.405Z",
+        "rider-id": 77641,
+        "entry-id": 200247388,
+        "trip-id": 200399932,
+        "class": [
+          {
+            "id": "recv9S0IfcGITmj4R",
+            "name": "200000076|2026-11-01|200030765"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:03:41",
+        "live-entry-key": "200000076|2026-11-01|200030765|200399932",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 138005,
+        "entry-key": "200000076|2026-11-01|200247388|200030765",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recG0DYrE5m0TKkeE",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recAT183nGaw8skGo",
+            "name": "200000076|2026-11-01|class|200030759"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:10.843Z",
+        "rider-id": 43168,
+        "entry-id": 200245316,
+        "trip-id": 200400018,
+        "class": [
+          {
+            "id": "recbIg0Ehbj4JRyVA",
+            "name": "200000076|2026-11-01|200030759"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:42:06",
+        "live-entry-key": "200000076|2026-11-01|200030759|200400018",
+        "trainer-id": 43168,
+        "show-id": 200000076,
+        "horse-id": 200004237,
+        "entry-key": "200000076|2026-11-01|200245316|200030759",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recG4EuVuWILcstHb",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recPyYzTyPzS7Eixw",
+            "name": "200000076|2026-11-01|class|200030618"
+          }
+        ],
+        "last-seen": "2026-11-01T15:24:10.090Z",
+        "rider-id": 67420,
+        "entry-id": 200248563,
+        "trip-id": 200399699,
+        "class": [
+          {
+            "id": "recIp1gf3AG7wCWYy",
+            "name": "200000076|2026-11-01|200030618"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:21:44",
+        "live-entry-key": "200000076|2026-11-01|200030618|200399699",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 139671,
+        "entry-key": "200000076|2026-11-01|200248563|200030618",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recGCPrVi1zJo07bd",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:30.625Z",
+        "rider-id": 44288,
+        "entry-id": 200243241,
+        "trip-id": 200399586,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200399586",
+        "trainer-id": 56018,
+        "show-id": 200000076,
+        "horse-id": 152312,
+        "entry-key": "200000076|2026-11-01|200243241|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recGhayqIdUY7zy3r",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recGqNDfkCc9tVjOA",
+            "name": "200000076|2026-11-01|class|200030638"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:27.360Z",
+        "rider-id": 88508,
+        "entry-id": 200246106,
+        "trip-id": 200399210,
+        "class": [
+          {
+            "id": "recZSfN0GylzXSU5z",
+            "name": "200000076|2026-11-01|200030638"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:17:09",
+        "live-entry-key": "200000076|2026-11-01|200030638|200399210",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 200001611,
+        "entry-key": "200000076|2026-11-01|200246106|200030638",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recGmfWZszfsjpW0g",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.793Z",
+        "rider-id": 1000000570,
+        "entry-id": 200248112,
+        "trip-id": 200399854,
+        "class": [
+          {
+            "id": "recdokMGpE89qP3Cm",
+            "name": "200000076|2026-11-01|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "live-entry-key": "200000076|2026-11-01|200030779|200399854",
+        "trainer-id": 1000000570,
+        "show-id": 200000076,
+        "horse-id": 200004142,
+        "entry-key": "200000076|2026-11-01|200248112|200030779",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recGvWpAbjHGWWlKO",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 18334,
+        "entry-id": 200247778,
+        "trip-id": 200399069,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399069",
+        "trainer-id": 18334,
+        "show-id": 200000076,
+        "horse-id": 148640,
+        "entry-key": "200000076|2026-11-01|200247778|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recHC03EZOu2fE9DL",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwWjLKWXmWdLwoT",
+            "name": "200000076|2026-11-01|class|200030685"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.087Z",
+        "rider-id": 6016,
+        "entry-id": 200244959,
+        "trip-id": 200399730,
+        "class": [
+          {
+            "id": "recp0WeV8wqaeURvH",
+            "name": "200000076|2026-11-01|200030685"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:59:00",
+        "live-entry-key": "200000076|2026-11-01|200030685|200399730",
+        "trainer-id": 6016,
+        "show-id": 200000076,
+        "horse-id": 113055,
+        "entry-key": "200000076|2026-11-01|200244959|200030685",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recHSXeU8eN1Z1R6Y",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwuvMxkzbY96p3q",
+            "name": "200000076|2026-11-01|class|200030639"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:29.482Z",
+        "rider-id": 1000001285,
+        "entry-id": 200247668,
+        "trip-id": 200399058,
+        "class": [
+          {
+            "id": "recsJGnC6lpvmSz8h",
+            "name": "200000076|2026-11-01|200030639"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:08:41",
+        "live-entry-key": "200000076|2026-11-01|200030639|200399058",
+        "trainer-id": 1000001285,
+        "show-id": 200000076,
+        "horse-id": 200005285,
+        "entry-key": "200000076|2026-11-01|200247668|200030639",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recHc7KefoMTlGcbc",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recaMUWcgPx4Qn11I",
+            "name": "200000076|2026-11-01|class|200030749"
+          }
+        ],
+        "last-seen": "2026-11-01T12:44:28.063Z",
+        "rider-id": 66122,
+        "entry-id": 200246765,
+        "trip-id": 200399917,
+        "class": [
+          {
+            "id": "reczLlc36KPwqQLcu",
+            "name": "200000076|2026-11-01|200030749"
+          }
+        ],
+        "source-updated-at": "29oct2026 16:30:14",
+        "live-entry-key": "200000076|2026-11-01|200030749|200399917",
+        "trainer-id": 40507,
+        "show-id": 200000076,
+        "horse-id": 200005251,
+        "entry-key": "200000076|2026-11-01|200246765|200030749",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recHyLtLNJHDTolLb",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recAT183nGaw8skGo",
+            "name": "200000076|2026-11-01|class|200030759"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:10.843Z",
+        "rider-id": 70532,
+        "entry-id": 200243188,
+        "trip-id": 200399903,
+        "class": [
+          {
+            "id": "recbIg0Ehbj4JRyVA",
+            "name": "200000076|2026-11-01|200030759"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:42:06",
+        "live-entry-key": "200000076|2026-11-01|200030759|200399903",
+        "trainer-id": 33002,
+        "show-id": 200000076,
+        "horse-id": 200005192,
+        "entry-key": "200000076|2026-11-01|200243188|200030759",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recIzvU2uq2w20SGT",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:24.935Z",
+        "rider-id": 48810,
+        "entry-id": 200243514,
+        "trip-id": 200398423,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200398423",
+        "trainer-id": 46221,
+        "show-id": 200000076,
+        "horse-id": 130520,
+        "entry-key": "200000076|2026-11-01|200243514|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recJGHYGdTNPjwX2n",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 64469,
+        "entry-id": 200248483,
+        "trip-id": 200399904,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399904",
+        "trainer-id": 48806,
+        "show-id": 200000076,
+        "horse-id": 149604,
+        "entry-key": "200000076|2026-11-01|200248483|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recKFlIHHmhcppevJ",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.354Z",
+        "rider-id": 69071,
+        "entry-id": 200247415,
+        "trip-id": 200398990,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200398990",
+        "trainer-id": 69071,
+        "show-id": 200000076,
+        "horse-id": 152569,
+        "entry-key": "200000076|2026-11-01|200247415|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recKciiMbU4bXbNUr",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recYDm16jYr7H8iSh",
+            "name": "200000076|2026-11-01|class|200030659"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:26.629Z",
+        "rider-id": 79110,
+        "entry-id": 200247572,
+        "trip-id": 200399949,
+        "class": [
+          {
+            "id": "recidP15u2ccRoqwf",
+            "name": "200000076|2026-11-01|200030659"
+          }
+        ],
+        "source-updated-at": "26oct2026 18:07:10",
+        "live-entry-key": "200000076|2026-11-01|200030659|200399949",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 135263,
+        "entry-key": "200000076|2026-11-01|200247572|200030659",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recKzUiYN7QO78Lwo",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.252Z",
+        "rider-id": 11105,
+        "entry-id": 200243897,
+        "trip-id": 200399675,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200399675",
+        "trainer-id": 52073,
+        "show-id": 200000076,
+        "horse-id": 200005094,
+        "entry-key": "200000076|2026-11-01|200243897|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recLGXfikX4Dd72uo",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.793Z",
+        "rider-id": 52073,
+        "entry-id": 200243921,
+        "trip-id": 200399676,
+        "class": [
+          {
+            "id": "recdokMGpE89qP3Cm",
+            "name": "200000076|2026-11-01|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "live-entry-key": "200000076|2026-11-01|200030779|200399676",
+        "trainer-id": 52073,
+        "show-id": 200000076,
+        "horse-id": 128967,
+        "entry-key": "200000076|2026-11-01|200243921|200030779",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recLSDU7cpkAqwWo6",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec1XYDN9MCkqHMuK",
+            "name": "200000076|2026-11-01|class|200030648"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:29.024Z",
+        "rider-id": 83118,
+        "entry-id": 200247838,
+        "trip-id": 200399106,
+        "class": [
+          {
+            "id": "recuQ43rFtqyAks4o",
+            "name": "200000076|2026-11-01|200030648"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:39:31",
+        "live-entry-key": "200000076|2026-11-01|200030648|200399106",
+        "trainer-id": 7589,
+        "show-id": 200000076,
+        "horse-id": 200005364,
+        "entry-key": "200000076|2026-11-01|200247838|200030648",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recLSuODQy4Eh36KV",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recPyYzTyPzS7Eixw",
+            "name": "200000076|2026-11-01|class|200030618"
+          }
+        ],
+        "last-seen": "2026-11-01T15:36:10.750Z",
+        "rider-id": 76111,
+        "entry-id": 200244561,
+        "trip-id": 200399488,
+        "class": [
+          {
+            "id": "recIp1gf3AG7wCWYy",
+            "name": "200000076|2026-11-01|200030618"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:35:01",
+        "live-entry-key": "200000076|2026-11-01|200030618|200399488",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200005226,
+        "entry-key": "200000076|2026-11-01|200244561|200030618",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recLT2KGhdIBfBaCP",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recSxsvSC4z21xxCQ",
+            "name": "200000076|2026-11-01|class|200030613"
+          }
+        ],
+        "last-seen": "2026-11-01T15:03:06.461Z",
+        "rider-id": 67420,
+        "entry-id": 200248561,
+        "trip-id": 200399682,
+        "class": [
+          {
+            "id": "recjbVmoGYluRcbPo",
+            "name": "200000076|2026-11-01|200030613"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:50:22",
+        "live-entry-key": "200000076|2026-11-01|200030613|200399682",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 200001565,
+        "entry-key": "200000076|2026-11-01|200248561|200030613",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recLt5vTSIDAgFN6U",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwdNiBmDt5RQsLV",
+            "name": "200000076|2026-11-01|class|200030803"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:26.364Z",
+        "rider-id": 62142,
+        "entry-id": 200241258,
+        "trip-id": 200399354,
+        "class": [
+          {
+            "id": "recnQDCbl2XqlhVje",
+            "name": "200000076|2026-11-01|200030803"
+          }
+        ],
+        "source-updated-at": "29oct2026 17:34:08",
+        "live-entry-key": "200000076|2026-11-01|200030803|200399354",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 200001645,
+        "entry-key": "200000076|2026-11-01|200241258|200030803",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recLxU6BiJi8Ng5ZH",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwdNiBmDt5RQsLV",
+            "name": "200000076|2026-11-01|class|200030803"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:26.364Z",
+        "rider-id": 16482,
+        "entry-id": 200241261,
+        "trip-id": 200399352,
+        "class": [
+          {
+            "id": "recnQDCbl2XqlhVje",
+            "name": "200000076|2026-11-01|200030803"
+          }
+        ],
+        "source-updated-at": "29oct2026 17:34:08",
+        "live-entry-key": "200000076|2026-11-01|200030803|200399352",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 137808,
+        "entry-key": "200000076|2026-11-01|200241261|200030803",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recM2yZBz5xivLiIS",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recAT183nGaw8skGo",
+            "name": "200000076|2026-11-01|class|200030759"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:10.843Z",
+        "rider-id": 85081,
+        "entry-id": 200247608,
+        "trip-id": 200399877,
+        "class": [
+          {
+            "id": "recbIg0Ehbj4JRyVA",
+            "name": "200000076|2026-11-01|200030759"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:42:06",
+        "live-entry-key": "200000076|2026-11-01|200030759|200399877",
+        "trainer-id": 6149,
+        "show-id": 200000076,
+        "horse-id": 142190,
+        "entry-key": "200000076|2026-11-01|200247608|200030759",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recMQw2q7utIuI9IM",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reclLoCkcUg1nKq2L",
+            "name": "200000076|2026-11-01|class|200030746"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:07.306Z",
+        "rider-id": 72217,
+        "entry-id": 200247835,
+        "trip-id": 200399188,
+        "class": [
+          {
+            "id": "recPp3souSoDrdPvv",
+            "name": "200000076|2026-11-01|200030746"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:12:52",
+        "live-entry-key": "200000076|2026-11-01|200030746|200399188",
+        "trainer-id": 7589,
+        "show-id": 200000076,
+        "horse-id": 200005166,
+        "entry-key": "200000076|2026-11-01|200247835|200030746",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recMcsL9ZtgXjCpHC",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recke6gbWcDEhIGeG",
+            "name": "200000076|2026-11-01|class|200030823"
+          }
+        ],
+        "last-seen": "2026-11-01T15:30:06.090Z",
+        "rider-id": 36455,
+        "entry-id": 200247956,
+        "trip-id": 200399922,
+        "class": [
+          {
+            "id": "recO8XAVXfveOHrzJ",
+            "name": "200000076|2026-11-01|200030823"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:19:07",
+        "live-entry-key": "200000076|2026-11-01|200030823|200399922",
+        "trainer-id": 19686,
+        "show-id": 200000076,
+        "horse-id": 200003336,
+        "entry-key": "200000076|2026-11-01|200247956|200030823",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recMyGp4YmfDUTrwo",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recsRKuQwoYzMUbJ4",
+            "name": "200000076|2026-11-01|class|200030752"
+          }
+        ],
+        "last-seen": "2026-11-01T12:29:26.698Z",
+        "rider-id": 85966,
+        "entry-id": 200246765,
+        "trip-id": 200399504,
+        "class": [
+          {
+            "id": "recsLqFEPhNhDUdkg",
+            "name": "200000076|2026-11-01|200030752"
+          }
+        ],
+        "source-updated-at": "29oct2026 16:30:13",
+        "live-entry-key": "200000076|2026-11-01|200030752|200399504",
+        "trainer-id": 40507,
+        "show-id": 200000076,
+        "horse-id": 200005251,
+        "entry-key": "200000076|2026-11-01|200246765|200030752",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recNq07vqjJAuv2Fk",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec6FJIoShPTwDtEe",
+            "name": "200000076|2026-11-01|class|200030617"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:06.784Z",
+        "rider-id": 76111,
+        "entry-id": 200244561,
+        "trip-id": 200399487,
+        "class": [
+          {
+            "id": "recgKYtzhm7mynr1y",
+            "name": "200000076|2026-11-01|200030617"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:31:46",
+        "live-entry-key": "200000076|2026-11-01|200030617|200399487",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200005226,
+        "entry-key": "200000076|2026-11-01|200244561|200030617",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recO2QKnxG8YITbZx",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 14401,
+        "entry-id": 200244813,
+        "trip-id": 200398969,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200398969",
+        "trainer-id": 11516,
+        "show-id": 200000076,
+        "horse-id": 118603,
+        "entry-key": "200000076|2026-11-01|200244813|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recO39pTHE5cCv89J",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:24.935Z",
+        "rider-id": 50914,
+        "entry-id": 200245732,
+        "trip-id": 200399845,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399845",
+        "trainer-id": 50914,
+        "show-id": 200000076,
+        "horse-id": 200005247,
+        "entry-key": "200000076|2026-11-01|200245732|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recOKCWD8ykCiCljs",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec6ZOr59tA2PT8od",
+            "name": "200000076|2026-11-01|class|200030768"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.287Z",
+        "rider-id": 36107,
+        "entry-id": 200246033,
+        "trip-id": 200399826,
+        "class": [
+          {
+            "id": "recPuz5fidAP42PTF",
+            "name": "200000076|2026-11-01|200030768"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:45:34",
+        "live-entry-key": "200000076|2026-11-01|200030768|200399826",
+        "trainer-id": 46572,
+        "show-id": 200000076,
+        "horse-id": 200003821,
+        "entry-key": "200000076|2026-11-01|200246033|200030768",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recOPFrWey5kyStFc",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T14:32:27.181Z",
+        "rider-id": 20113,
+        "entry-id": 200248636,
+        "trip-id": 200399920,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399920",
+        "trainer-id": 20113,
+        "show-id": 200000076,
+        "horse-id": 200002376,
+        "entry-key": "200000076|2026-11-01|200248636|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recOrhlK2NXxKR464",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec4l2AG0Vn72Wpmm",
+            "name": "200000076|2026-11-01|class|200030799"
+          }
+        ],
+        "last-seen": "2026-11-01T12:17:31.584Z",
+        "rider-id": 60879,
+        "entry-id": 200247474,
+        "trip-id": 200399014,
+        "class": [
+          {
+            "id": "rec6g8tuXZYTJHQia",
+            "name": "200000076|2026-11-01|200030799"
+          }
+        ],
+        "source-updated-at": "27oct2026 16:25:12",
+        "live-entry-key": "200000076|2026-11-01|200030799|200399014",
+        "trainer-id": 69167,
+        "show-id": 200000076,
+        "horse-id": 142384,
+        "entry-key": "200000076|2026-11-01|200247474|200030799",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recP0Hqjh4nZMCpF0",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.252Z",
+        "rider-id": 66122,
+        "entry-id": 200245796,
+        "trip-id": 200399935,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200399935",
+        "trainer-id": 40913,
+        "show-id": 200000076,
+        "horse-id": 146633,
+        "entry-key": "200000076|2026-11-01|200245796|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recPCTaOie1T06mZA",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recsRKuQwoYzMUbJ4",
+            "name": "200000076|2026-11-01|class|200030752"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.350Z",
+        "rider-id": 1000003390,
+        "entry-id": 200247390,
+        "trip-id": 200399661,
+        "class": [
+          {
+            "id": "recsLqFEPhNhDUdkg",
+            "name": "200000076|2026-11-01|200030752"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:48:21",
+        "live-entry-key": "200000076|2026-11-01|200030752|200399661",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 152405,
+        "entry-key": "200000076|2026-11-01|200247390|200030752",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recPIZRoYVqqwsP71",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec6ZOr59tA2PT8od",
+            "name": "200000076|2026-11-01|class|200030768"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:29.012Z",
+        "rider-id": 1000001090,
+        "entry-id": 200245598,
+        "trip-id": 200399567,
+        "class": [
+          {
+            "id": "recPuz5fidAP42PTF",
+            "name": "200000076|2026-11-01|200030768"
+          }
+        ],
+        "source-updated-at": "30oct2026 15:45:08",
+        "live-entry-key": "200000076|2026-11-01|200030768|200399567",
+        "trainer-id": 1000001090,
+        "show-id": 200000076,
+        "horse-id": 200001724,
+        "entry-key": "200000076|2026-11-01|200245598|200030768",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recPSDmMu9fbAJ1Dt",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recNgF2uTxftYT84X",
+            "name": "200000076|2026-11-01|class|200030604"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.615Z",
+        "rider-id": 70242,
+        "entry-id": 200248101,
+        "trip-id": 200399776,
+        "class": [
+          {
+            "id": "recEfla7pHQunCmpg",
+            "name": "200000076|2026-11-01|200030604"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:10:30",
+        "live-entry-key": "200000076|2026-11-01|200030604|200399776",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 138199,
+        "entry-key": "200000076|2026-11-01|200248101|200030604",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recQ30T2mBOiTkT1o",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:06.750Z",
+        "rider-id": 65871,
+        "entry-id": 200247166,
+        "trip-id": 200399847,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200399847",
+        "trainer-id": 1000001677,
+        "show-id": 200000076,
+        "horse-id": 200005273,
+        "entry-key": "200000076|2026-11-01|200247166|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recQCFLLwGIJbW0Gj",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recaoVFiYdrj7JOef",
+            "name": "200000076|2026-11-01|class|200030762"
+          }
+        ],
+        "last-seen": "2026-11-01T14:08:30.130Z",
+        "rider-id": 43168,
+        "entry-id": 200245316,
+        "trip-id": 200399914,
+        "class": [
+          {
+            "id": "recszy0rO39tW1aJZ",
+            "name": "200000076|2026-11-01|200030762"
+          }
+        ],
+        "source-updated-at": "24oct2026 13:34:11",
+        "live-entry-key": "200000076|2026-11-01|200030762|200399914",
+        "trainer-id": 43168,
+        "show-id": 200000076,
+        "horse-id": 200004237,
+        "entry-key": "200000076|2026-11-01|200245316|200030762",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recQmHdEipiF7dRPJ",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recK53FXCIU1kgC65",
+            "name": "200000076|2026-11-01|class|200030647"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:28.911Z",
+        "rider-id": 83118,
+        "entry-id": 200247838,
+        "trip-id": 200399105,
+        "class": [
+          {
+            "id": "recbsaRNcGS65oaTX",
+            "name": "200000076|2026-11-01|200030647"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:34:43",
+        "live-entry-key": "200000076|2026-11-01|200030647|200399105",
+        "trainer-id": 7589,
+        "show-id": 200000076,
+        "horse-id": 200005364,
+        "entry-key": "200000076|2026-11-01|200247838|200030647",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recRcWqgnhYmyOp7S",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.793Z",
+        "rider-id": 4799,
+        "entry-id": 200247516,
+        "trip-id": 200399619,
+        "class": [
+          {
+            "id": "recdokMGpE89qP3Cm",
+            "name": "200000076|2026-11-01|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "live-entry-key": "200000076|2026-11-01|200030779|200399619",
+        "trainer-id": 4799,
+        "show-id": 200000076,
+        "horse-id": 200002759,
+        "entry-key": "200000076|2026-11-01|200247516|200030779",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recRvbVkBHWRQ9X2T",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 57785,
+        "entry-id": 200246421,
+        "trip-id": 200399915,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399915",
+        "trainer-id": 57785,
+        "show-id": 200000076,
+        "horse-id": 147034,
+        "entry-key": "200000076|2026-11-01|200246421|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recSJ1DYLyHmwXfoW",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recjXXIIRqbBwXBtM",
+            "name": "200000076|2026-11-01|class|200030588"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:05.988Z",
+        "rider-id": 61690,
+        "entry-id": 200247446,
+        "trip-id": 200399792,
+        "class": [
+          {
+            "id": "recIjcrv328S0fYvf",
+            "name": "200000076|2026-11-01|200030588"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:40",
+        "live-entry-key": "200000076|2026-11-01|200030588|200399792",
+        "trainer-id": 3857,
+        "show-id": 200000076,
+        "horse-id": 153475,
+        "entry-key": "200000076|2026-11-01|200247446|200030588",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recSM74Al3kxEF8zE",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recPDjd6ZakAtkC9f",
+            "name": "200000076|2026-11-01|class|200030811"
+          }
+        ],
+        "last-seen": "2026-11-01T05:17:26.423Z",
+        "rider-id": 33631,
+        "entry-id": 200247831,
+        "trip-id": 200399094,
+        "class": [
+          {
+            "id": "recULdhZV2QuS2pQT",
+            "name": "200000076|2026-11-01|200030811"
+          }
+        ],
+        "source-updated-at": "28oct2026 22:50:13",
+        "live-entry-key": "200000076|2026-11-01|200030811|200399094",
+        "trainer-id": 83512,
+        "show-id": 200000076,
+        "horse-id": 200002267,
+        "entry-key": "200000076|2026-11-01|200247831|200030811",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recSjF9mCDW0XAa4Y",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.793Z",
+        "rider-id": 70946,
+        "entry-id": 200248086,
+        "trip-id": 200399843,
+        "class": [
+          {
+            "id": "recdokMGpE89qP3Cm",
+            "name": "200000076|2026-11-01|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "live-entry-key": "200000076|2026-11-01|200030779|200399843",
+        "trainer-id": 70946,
+        "show-id": 200000076,
+        "horse-id": 140724,
+        "entry-key": "200000076|2026-11-01|200248086|200030779",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recSqjh6aazy3k3c1",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:12:05.970Z",
+        "rider-id": 74857,
+        "entry-id": 200245755,
+        "trip-id": 200399841,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399841",
+        "trainer-id": 74857,
+        "show-id": 200000076,
+        "horse-id": 200003828,
+        "entry-key": "200000076|2026-11-01|200245755|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recTLQd5FYTPtcvC6",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recAXKw3x8UyXxOsU",
+            "name": "200000076|2026-11-01|class|200030589"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.061Z",
+        "rider-id": 1000003545,
+        "entry-id": 200247420,
+        "trip-id": 200399595,
+        "class": [
+          {
+            "id": "recWfoQ82E9UpX7PJ",
+            "name": "200000076|2026-11-01|200030589"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:10:08",
+        "live-entry-key": "200000076|2026-11-01|200030589|200399595",
+        "trainer-id": 6199,
+        "show-id": 200000076,
+        "horse-id": 131950,
+        "entry-key": "200000076|2026-11-01|200247420|200030589",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recTQMcA2FfhpzhVV",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec4l2AG0Vn72Wpmm",
+            "name": "200000076|2026-11-01|class|200030799"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:31.159Z",
+        "rider-id": 1000001274,
+        "entry-id": 200242738,
+        "trip-id": 200399482,
+        "class": [
+          {
+            "id": "rec6g8tuXZYTJHQia",
+            "name": "200000076|2026-11-01|200030799"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:12:29",
+        "live-entry-key": "200000076|2026-11-01|200030799|200399482",
+        "trainer-id": 47261,
+        "show-id": 200000076,
+        "horse-id": 200002009,
+        "entry-key": "200000076|2026-11-01|200242738|200030799",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recTjSSUenmv5DW9y",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 62316,
+        "entry-id": 200244066,
+        "trip-id": 200399929,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399929",
+        "trainer-id": 62316,
+        "show-id": 200000076,
+        "horse-id": 151634,
+        "entry-key": "200000076|2026-11-01|200244066|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recUEyPepsMKD8jHN",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recu0QP2ibAdgXcCa",
+            "name": "200000076|2026-11-01|class|200030820"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.280Z",
+        "rider-id": 79618,
+        "entry-id": 200243980,
+        "trip-id": 200399708,
+        "class": [
+          {
+            "id": "reckJqcpepVhBIhxN",
+            "name": "200000076|2026-11-01|200030820"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:19:21",
+        "live-entry-key": "200000076|2026-11-01|200030820|200399708",
+        "trainer-id": 79618,
+        "show-id": 200000076,
+        "horse-id": 200005042,
+        "entry-key": "200000076|2026-11-01|200243980|200030820",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recUNVsrjPgRMetd9",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec4l2AG0Vn72Wpmm",
+            "name": "200000076|2026-11-01|class|200030799"
+          }
+        ],
+        "last-seen": "2026-11-01T12:17:31.584Z",
+        "rider-id": 1000001950,
+        "entry-id": 200247475,
+        "trip-id": 200399928,
+        "class": [
+          {
+            "id": "rec6g8tuXZYTJHQia",
+            "name": "200000076|2026-11-01|200030799"
+          }
+        ],
+        "source-updated-at": "27oct2026 16:25:12",
+        "live-entry-key": "200000076|2026-11-01|200030799|200399928",
+        "trainer-id": 69167,
+        "show-id": 200000076,
+        "horse-id": 141707,
+        "entry-key": "200000076|2026-11-01|200247475|200030799",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recV1DS9hrkXNw603",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T12:38:30.368Z",
+        "rider-id": 47682,
+        "entry-id": 200247536,
+        "trip-id": 200399893,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:22:11",
+        "live-entry-key": "200000076|2026-11-01|200030771|200399893",
+        "trainer-id": 47682,
+        "show-id": 200000076,
+        "horse-id": 200001574,
+        "entry-key": "200000076|2026-11-01|200247536|200030771",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recVAmCimQKkPktoL",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 1000000773,
+        "entry-id": 200247864,
+        "trip-id": 200399115,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399115",
+        "trainer-id": 74367,
+        "show-id": 200000076,
+        "horse-id": 200005131,
+        "entry-key": "200000076|2026-11-01|200247864|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recVckL6sEjrys1cz",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:24.935Z",
+        "rider-id": 46306,
+        "entry-id": 200244181,
+        "trip-id": 200399674,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399674",
+        "trainer-id": 46306,
+        "show-id": 200000076,
+        "horse-id": 146902,
+        "entry-key": "200000076|2026-11-01|200244181|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recVhD9q9WHtDv6Dh",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recAXKw3x8UyXxOsU",
+            "name": "200000076|2026-11-01|class|200030589"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.061Z",
+        "rider-id": 18318,
+        "entry-id": 200244959,
+        "trip-id": 200398967,
+        "class": [
+          {
+            "id": "recWfoQ82E9UpX7PJ",
+            "name": "200000076|2026-11-01|200030589"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:10:08",
+        "live-entry-key": "200000076|2026-11-01|200030589|200398967",
+        "trainer-id": 6016,
+        "show-id": 200000076,
+        "horse-id": 113055,
+        "entry-key": "200000076|2026-11-01|200244959|200030589",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recVoM0QwvKkDuDy7",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:23.882Z",
+        "rider-id": 70518,
+        "entry-id": 200246426,
+        "trip-id": 200399918,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200399918",
+        "trainer-id": 57785,
+        "show-id": 200000076,
+        "horse-id": 138815,
+        "entry-key": "200000076|2026-11-01|200246426|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recVzlLv02SuHBgJi",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.793Z",
+        "rider-id": 21295,
+        "entry-id": 200245286,
+        "trip-id": 200399898,
+        "class": [
+          {
+            "id": "recdokMGpE89qP3Cm",
+            "name": "200000076|2026-11-01|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "live-entry-key": "200000076|2026-11-01|200030779|200399898",
+        "trainer-id": 21295,
+        "show-id": 200000076,
+        "horse-id": 200005043,
+        "entry-key": "200000076|2026-11-01|200245286|200030779",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recW7Uz0kHK6GQcIt",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 79265,
+        "entry-id": 200245060,
+        "trip-id": 200399316,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399316",
+        "trainer-id": 45939,
+        "show-id": 200000076,
+        "horse-id": 137564,
+        "entry-key": "200000076|2026-11-01|200245060|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recWdAlcluoyaPXrx",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:30.625Z",
+        "rider-id": 71874,
+        "entry-id": 200247494,
+        "trip-id": 200399713,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200399713",
+        "trainer-id": 71874,
+        "show-id": 200000076,
+        "horse-id": 200001211,
+        "entry-key": "200000076|2026-11-01|200247494|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recWfD3GdVEhkVRSY",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recGqNDfkCc9tVjOA",
+            "name": "200000076|2026-11-01|class|200030638"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:29.238Z",
+        "rider-id": 1000001285,
+        "entry-id": 200247668,
+        "trip-id": 200399057,
+        "class": [
+          {
+            "id": "recZSfN0GylzXSU5z",
+            "name": "200000076|2026-11-01|200030638"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:43",
+        "live-entry-key": "200000076|2026-11-01|200030638|200399057",
+        "trainer-id": 1000001285,
+        "show-id": 200000076,
+        "horse-id": 200005285,
+        "entry-key": "200000076|2026-11-01|200247668|200030638",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recWfmq61q2IPZ291",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.354Z",
+        "rider-id": 85875,
+        "entry-id": 200245222,
+        "trip-id": 200399371,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200399371",
+        "trainer-id": 30442,
+        "show-id": 200000076,
+        "horse-id": 200002181,
+        "entry-key": "200000076|2026-11-01|200245222|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recXEC4P6XmgHhvQX",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 58624,
+        "entry-id": 200243858,
+        "trip-id": 200399082,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399082",
+        "trainer-id": 58624,
+        "show-id": 200000076,
+        "horse-id": 200002317,
+        "entry-key": "200000076|2026-11-01|200243858|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recXgOJsJ93dqHkKe",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 13946,
+        "entry-id": 200247852,
+        "trip-id": 200399905,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399905",
+        "trainer-id": 13946,
+        "show-id": 200000076,
+        "horse-id": 200004735,
+        "entry-key": "200000076|2026-11-01|200247852|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recXlSmG9vyHYJTmk",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recaMUWcgPx4Qn11I",
+            "name": "200000076|2026-11-01|class|200030749"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.345Z",
+        "rider-id": 1000003390,
+        "entry-id": 200247390,
+        "trip-id": 200399659,
+        "class": [
+          {
+            "id": "reczLlc36KPwqQLcu",
+            "name": "200000076|2026-11-01|200030749"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:45:42",
+        "live-entry-key": "200000076|2026-11-01|200030749|200399659",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 152405,
+        "entry-key": "200000076|2026-11-01|200247390|200030749",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recYnaCVGYShtytDq",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 35658,
+        "entry-id": 200245875,
+        "trip-id": 200396722,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200396722",
+        "trainer-id": 35658,
+        "show-id": 200000076,
+        "horse-id": 200000262,
+        "entry-key": "200000076|2026-11-01|200245875|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recZBSJBrQxt5P3Hk",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 62241,
+        "entry-id": 200247408,
+        "trip-id": 200398981,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200398981",
+        "trainer-id": 62241,
+        "show-id": 200000076,
+        "horse-id": 152398,
+        "entry-key": "200000076|2026-11-01|200247408|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recZQJogYDeBw6Qwd",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recEABEjtpvrrCze6",
+            "name": "200000076|2026-11-01|class|200030603"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.581Z",
+        "rider-id": 70242,
+        "entry-id": 200248101,
+        "trip-id": 200399775,
+        "class": [
+          {
+            "id": "recc0NyzSVCu3EdL5",
+            "name": "200000076|2026-11-01|200030603"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:08:04",
+        "live-entry-key": "200000076|2026-11-01|200030603|200399775",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 138199,
+        "entry-key": "200000076|2026-11-01|200248101|200030603",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recZVzu9Omo4cR1TT",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rect8iSRkASHMT4cz",
+            "name": "200000076|2026-11-01|class|200030678"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:27.613Z",
+        "rider-id": 42341,
+        "entry-id": 200246106,
+        "trip-id": 200399217,
+        "class": [
+          {
+            "id": "recPrHHyRCgyYDtxJ",
+            "name": "200000076|2026-11-01|200030678"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:17:10",
+        "live-entry-key": "200000076|2026-11-01|200030678|200399217",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 200001611,
+        "entry-key": "200000076|2026-11-01|200246106|200030678",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recZl0Z08AIpUweam",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwWjLKWXmWdLwoT",
+            "name": "200000076|2026-11-01|class|200030685"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.087Z",
+        "rider-id": 61690,
+        "entry-id": 200247446,
+        "trip-id": 200399175,
+        "class": [
+          {
+            "id": "recp0WeV8wqaeURvH",
+            "name": "200000076|2026-11-01|200030685"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:59:00",
+        "live-entry-key": "200000076|2026-11-01|200030685|200399175",
+        "trainer-id": 3857,
+        "show-id": 200000076,
+        "horse-id": 153475,
+        "entry-key": "200000076|2026-11-01|200247446|200030685",
+        "gone": 0
+      }
+    },
+    {
+      "id": "reca6WfFNhKTfDRGd",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recNgF2uTxftYT84X",
+            "name": "200000076|2026-11-01|class|200030604"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.615Z",
+        "rider-id": 86119,
+        "entry-id": 200247866,
+        "trip-id": 200399120,
+        "class": [
+          {
+            "id": "recEfla7pHQunCmpg",
+            "name": "200000076|2026-11-01|200030604"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:10:30",
+        "live-entry-key": "200000076|2026-11-01|200030604|200399120",
+        "trainer-id": 7589,
+        "show-id": 200000076,
+        "horse-id": 126367,
+        "entry-key": "200000076|2026-11-01|200247866|200030604",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recaRndgHrwAnvcwe",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 46733,
+        "entry-id": 200247234,
+        "trip-id": 200398950,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200398950",
+        "trainer-id": 77792,
+        "show-id": 200000076,
+        "horse-id": 200003498,
+        "entry-key": "200000076|2026-11-01|200247234|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recaelbRphpENdPDv",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reck8WfOADJ8hVzz4",
+            "name": "200000076|2026-11-01|class|200030830"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:11.350Z",
+        "rider-id": 67420,
+        "entry-id": 200248561,
+        "trip-id": 200399681,
+        "class": [
+          {
+            "id": "recKNEhBfIA7k7j4o",
+            "name": "200000076|2026-11-01|200030830"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:41:06",
+        "live-entry-key": "200000076|2026-11-01|200030830|200399681",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 200001565,
+        "entry-key": "200000076|2026-11-01|200248561|200030830",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recbX4kHAuQjpRjLV",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recSxsvSC4z21xxCQ",
+            "name": "200000076|2026-11-01|class|200030613"
+          }
+        ],
+        "last-seen": "2026-11-01T15:03:06.461Z",
+        "rider-id": 67420,
+        "entry-id": 200248562,
+        "trip-id": 200399687,
+        "class": [
+          {
+            "id": "recjbVmoGYluRcbPo",
+            "name": "200000076|2026-11-01|200030613"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:50:22",
+        "live-entry-key": "200000076|2026-11-01|200030613|200399687",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 123742,
+        "entry-key": "200000076|2026-11-01|200248562|200030613",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recbnH6417Qm9RA4h",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec6FJIoShPTwDtEe",
+            "name": "200000076|2026-11-01|class|200030617"
+          }
+        ],
+        "last-seen": "2026-11-01T15:51:06.840Z",
+        "rider-id": 61690,
+        "entry-id": 200247445,
+        "trip-id": 200399819,
+        "class": [
+          {
+            "id": "recgKYtzhm7mynr1y",
+            "name": "200000076|2026-11-01|200030617"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:48:42",
+        "live-entry-key": "200000076|2026-11-01|200030617|200399819",
+        "trainer-id": 3857,
+        "show-id": 200000076,
+        "horse-id": 200003618,
+        "entry-key": "200000076|2026-11-01|200247445|200030617",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recbpgotht6Rt2jhR",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 57785,
+        "entry-id": 200247342,
+        "trip-id": 200399902,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399902",
+        "trainer-id": 6708,
+        "show-id": 200000076,
+        "horse-id": 200005331,
+        "entry-key": "200000076|2026-11-01|200247342|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reccl329zvKJd2GGH",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 46733,
+        "entry-id": 200247235,
+        "trip-id": 200398951,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200398951",
+        "trainer-id": 77792,
+        "show-id": 200000076,
+        "horse-id": 151518,
+        "entry-key": "200000076|2026-11-01|200247235|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reccuuB11wDBsNajb",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T14:32:27.181Z",
+        "rider-id": 48810,
+        "entry-id": 200243502,
+        "trip-id": 200398413,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200398413",
+        "trainer-id": 46221,
+        "show-id": 200000076,
+        "horse-id": 139873,
+        "entry-key": "200000076|2026-11-01|200243502|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recdKMXKB8muiqp5v",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recEABEjtpvrrCze6",
+            "name": "200000076|2026-11-01|class|200030603"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.581Z",
+        "rider-id": 86119,
+        "entry-id": 200247866,
+        "trip-id": 200399119,
+        "class": [
+          {
+            "id": "recc0NyzSVCu3EdL5",
+            "name": "200000076|2026-11-01|200030603"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:08:04",
+        "live-entry-key": "200000076|2026-11-01|200030603|200399119",
+        "trainer-id": 7589,
+        "show-id": 200000076,
+        "horse-id": 126367,
+        "entry-key": "200000076|2026-11-01|200247866|200030603",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recdM3vPL2rjE09AI",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.354Z",
+        "rider-id": 70881,
+        "entry-id": 200248416,
+        "trip-id": 200399859,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200399859",
+        "trainer-id": 20113,
+        "show-id": 200000076,
+        "horse-id": 152651,
+        "entry-key": "200000076|2026-11-01|200248416|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recdwqfWD3KFiD0mY",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rect8iSRkASHMT4cz",
+            "name": "200000076|2026-11-01|class|200030678"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:29.591Z",
+        "rider-id": 1000001285,
+        "entry-id": 200247668,
+        "trip-id": 200399059,
+        "class": [
+          {
+            "id": "recPrHHyRCgyYDtxJ",
+            "name": "200000076|2026-11-01|200030678"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:01:32",
+        "live-entry-key": "200000076|2026-11-01|200030678|200399059",
+        "trainer-id": 1000001285,
+        "show-id": 200000076,
+        "horse-id": 200005285,
+        "entry-key": "200000076|2026-11-01|200247668|200030678",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rece1FAKo1nNs5abD",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 55614,
+        "entry-id": 200245898,
+        "trip-id": 200399163,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399163",
+        "trainer-id": 69311,
+        "show-id": 200000076,
+        "horse-id": 200004733,
+        "entry-key": "200000076|2026-11-01|200245898|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "receZddfCpYYzdrGR",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recke6gbWcDEhIGeG",
+            "name": "200000076|2026-11-01|class|200030823"
+          }
+        ],
+        "last-seen": "2026-11-01T15:30:06.090Z",
+        "rider-id": 59034,
+        "entry-id": 200244016,
+        "trip-id": 200399805,
+        "class": [
+          {
+            "id": "recO8XAVXfveOHrzJ",
+            "name": "200000076|2026-11-01|200030823"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:19:07",
+        "live-entry-key": "200000076|2026-11-01|200030823|200399805",
+        "trainer-id": 59034,
+        "show-id": 200000076,
+        "horse-id": 200002221,
+        "entry-key": "200000076|2026-11-01|200244016|200030823",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recfBCUhlTMSe7pIR",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recTlAxC4DStBj7zc",
+            "name": "200000076|2026-11-01|class|200030699"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:29.058Z",
+        "rider-id": 71992,
+        "entry-id": 200246095,
+        "trip-id": 200399944,
+        "class": [
+          {
+            "id": "recyWId3MXstuc9Rj",
+            "name": "200000076|2026-11-01|200030699"
+          }
+        ],
+        "source-updated-at": "31oct2026 18:59:18",
+        "live-entry-key": "200000076|2026-11-01|200030699|200399944",
+        "trainer-id": 46307,
+        "show-id": 200000076,
+        "horse-id": 96684,
+        "entry-key": "200000076|2026-11-01|200246095|200030699",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recfmsM1KYSezKheS",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec6ZOr59tA2PT8od",
+            "name": "200000076|2026-11-01|class|200030768"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.287Z",
+        "rider-id": 89863,
+        "entry-id": 200247108,
+        "trip-id": 200399909,
+        "class": [
+          {
+            "id": "recPuz5fidAP42PTF",
+            "name": "200000076|2026-11-01|200030768"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:45:34",
+        "live-entry-key": "200000076|2026-11-01|200030768|200399909",
+        "trainer-id": 89863,
+        "show-id": 200000076,
+        "horse-id": 142125,
+        "entry-key": "200000076|2026-11-01|200247108|200030768",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recfobzR1Lg5C00o8",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reck8WfOADJ8hVzz4",
+            "name": "200000076|2026-11-01|class|200030830"
+          }
+        ],
+        "last-seen": "2026-11-01T15:18:07.237Z",
+        "rider-id": 76111,
+        "entry-id": 200243827,
+        "trip-id": 200399601,
+        "class": [
+          {
+            "id": "recKNEhBfIA7k7j4o",
+            "name": "200000076|2026-11-01|200030830"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:03:28",
+        "live-entry-key": "200000076|2026-11-01|200030830|200399601",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200005149,
+        "entry-key": "200000076|2026-11-01|200243827|200030830",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recfxAw7wsCVvhkyF",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 64469,
+        "entry-id": 200247448,
+        "trip-id": 200399894,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399894",
+        "trainer-id": 48806,
+        "show-id": 200000076,
+        "horse-id": 148139,
+        "entry-key": "200000076|2026-11-01|200247448|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recfz09yGJ7u3QtWA",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.354Z",
+        "rider-id": 66899,
+        "entry-id": 200244594,
+        "trip-id": 200399577,
+        "class": [
+          {
+            "id": "recmOUn1a5RwZeIRS",
+            "name": "200000076|2026-11-01|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "live-entry-key": "200000076|2026-11-01|200030789|200399577",
+        "trainer-id": 40913,
+        "show-id": 200000076,
+        "horse-id": 200001830,
+        "entry-key": "200000076|2026-11-01|200244594|200030789",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recgGZoCm9t2s2YHw",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.793Z",
+        "rider-id": 70994,
+        "entry-id": 200247367,
+        "trip-id": 200399860,
+        "class": [
+          {
+            "id": "recdokMGpE89qP3Cm",
+            "name": "200000076|2026-11-01|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "live-entry-key": "200000076|2026-11-01|200030779|200399860",
+        "trainer-id": 1000001719,
+        "show-id": 200000076,
+        "horse-id": 200002827,
+        "entry-key": "200000076|2026-11-01|200247367|200030779",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recgkaEVJjOSETjCb",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recOg1yRXbH26XC59",
+            "name": "200000076|2026-11-01|class|200030743"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:07.273Z",
+        "rider-id": 72217,
+        "entry-id": 200247835,
+        "trip-id": 200399185,
+        "class": [
+          {
+            "id": "recGuVHuLClQXDf2i",
+            "name": "200000076|2026-11-01|200030743"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:06:30",
+        "live-entry-key": "200000076|2026-11-01|200030743|200399185",
+        "trainer-id": 7589,
+        "show-id": 200000076,
+        "horse-id": 200005166,
+        "entry-key": "200000076|2026-11-01|200247835|200030743",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recgsdUYyhxUIdPjn",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recjXXIIRqbBwXBtM",
+            "name": "200000076|2026-11-01|class|200030588"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:05.988Z",
+        "rider-id": 3179,
+        "entry-id": 200244783,
+        "trip-id": 200398942,
+        "class": [
+          {
+            "id": "recIjcrv328S0fYvf",
+            "name": "200000076|2026-11-01|200030588"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:40",
+        "live-entry-key": "200000076|2026-11-01|200030588|200398942",
+        "trainer-id": 3179,
+        "show-id": 200000076,
+        "horse-id": 200003920,
+        "entry-key": "200000076|2026-11-01|200244783|200030588",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recgzPJPzmRFDHBof",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 86122,
+        "entry-id": 200247783,
+        "trip-id": 200399882,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399882",
+        "trainer-id": 18334,
+        "show-id": 200000076,
+        "horse-id": 152546,
+        "entry-key": "200000076|2026-11-01|200247783|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rechersh0ztPohrlY",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recYDm16jYr7H8iSh",
+            "name": "200000076|2026-11-01|class|200030659"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:07.671Z",
+        "rider-id": 1000001330,
+        "entry-id": 200244965,
+        "trip-id": 200398958,
+        "class": [
+          {
+            "id": "recidP15u2ccRoqwf",
+            "name": "200000076|2026-11-01|200030659"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:02:38",
+        "live-entry-key": "200000076|2026-11-01|200030659|200398958",
+        "trainer-id": 6016,
+        "show-id": 200000076,
+        "horse-id": 1936,
+        "entry-key": "200000076|2026-11-01|200244965|200030659",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reci0pPbgOmLxcsX8",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec1XYDN9MCkqHMuK",
+            "name": "200000076|2026-11-01|class|200030648"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:28.954Z",
+        "rider-id": 71992,
+        "entry-id": 200246095,
+        "trip-id": 200399943,
+        "class": [
+          {
+            "id": "recuQ43rFtqyAks4o",
+            "name": "200000076|2026-11-01|200030648"
+          }
+        ],
+        "source-updated-at": "15oct2026 14:06:27",
+        "live-entry-key": "200000076|2026-11-01|200030648|200399943",
+        "trainer-id": 46307,
+        "show-id": 200000076,
+        "horse-id": 96684,
+        "entry-key": "200000076|2026-11-01|200246095|200030648",
+        "gone": 0
+      }
+    },
+    {
+      "id": "reciSE8YFxeHhXwUx",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec1uvF6D7l7beTkJ",
+            "name": "200000076|2026-11-01|class|200030660"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:07.683Z",
+        "rider-id": 1000003497,
+        "entry-id": 200247389,
+        "trip-id": 200399255,
+        "class": [
+          {
+            "id": "recPKjKBtdLEGLUQ4",
+            "name": "200000076|2026-11-01|200030660"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:06:31",
+        "live-entry-key": "200000076|2026-11-01|200030660|200399255",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 138006,
+        "entry-key": "200000076|2026-11-01|200247389|200030660",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reciZM0uPh3yODqX1",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T15:51:05.738Z",
+        "rider-id": 77733,
+        "entry-id": 200247552,
+        "trip-id": 200399970,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:50:57",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399970",
+        "trainer-id": 77733,
+        "show-id": 200000076,
+        "horse-id": 142180,
+        "entry-key": "200000076|2026-11-01|200247552|200030777",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reciepyqWSrRV9dVi",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T13:11:24.693Z",
+        "rider-id": 24454,
+        "entry-id": 200247590,
+        "trip-id": 200399900,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399900",
+        "trainer-id": 24454,
+        "show-id": 200000076,
+        "horse-id": 147815,
+        "entry-key": "200000076|2026-11-01|200247590|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recjC4ZC72tnCVSnD",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recGqNDfkCc9tVjOA",
+            "name": "200000076|2026-11-01|class|200030638"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:29.238Z",
+        "rider-id": 86125,
+        "entry-id": 200247849,
+        "trip-id": 200399830,
+        "class": [
+          {
+            "id": "recZSfN0GylzXSU5z",
+            "name": "200000076|2026-11-01|200030638"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:43",
+        "live-entry-key": "200000076|2026-11-01|200030638|200399830",
+        "trainer-id": 7589,
+        "show-id": 200000076,
+        "horse-id": 200003353,
+        "entry-key": "200000076|2026-11-01|200247849|200030638",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reck0pdOTnj6fcK2N",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T14:32:27.181Z",
+        "rider-id": 48810,
+        "entry-id": 200247256,
+        "trip-id": 200399237,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399237",
+        "trainer-id": 46221,
+        "show-id": 200000076,
+        "horse-id": 137969,
+        "entry-key": "200000076|2026-11-01|200247256|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "reckARNzEhrX97xhV",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recqnp6i5o93axppD",
+            "name": "200000076|2026-11-01|class|200030718"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:25.430Z",
+        "rider-id": 68980,
+        "entry-id": 200248741,
+        "trip-id": 200399864,
+        "class": [
+          {
+            "id": "recSrZgkN8JVIFjDa",
+            "name": "200000076|2026-11-01|200030718"
+          }
+        ],
+        "source-updated-at": "29oct2026 13:57:12",
+        "live-entry-key": "200000076|2026-11-01|200030718|200399864",
+        "trainer-id": 22197,
+        "show-id": 200000076,
+        "horse-id": 200002031,
+        "entry-key": "200000076|2026-11-01|200248741|200030718",
+        "gone": 0
+      }
+    },
+    {
+      "id": "reckICbvjupbxLZ34",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.252Z",
+        "rider-id": 66899,
+        "entry-id": 200246126,
+        "trip-id": 200400008,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200400008",
+        "trainer-id": 40913,
+        "show-id": 200000076,
+        "horse-id": 127337,
+        "entry-key": "200000076|2026-11-01|200246126|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reckQoAOArivl5Hk2",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recjXXIIRqbBwXBtM",
+            "name": "200000076|2026-11-01|class|200030588"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:05.988Z",
+        "rider-id": 1000000974,
+        "entry-id": 200243811,
+        "trip-id": 200399790,
+        "class": [
+          {
+            "id": "recIjcrv328S0fYvf",
+            "name": "200000076|2026-11-01|200030588"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:40",
+        "live-entry-key": "200000076|2026-11-01|200030588|200399790",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200000808,
+        "entry-key": "200000076|2026-11-01|200243811|200030588",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reclIFq36h05U6J6s",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recke6gbWcDEhIGeG",
+            "name": "200000076|2026-11-01|class|200030823"
+          }
+        ],
+        "last-seen": "2026-11-01T15:30:06.090Z",
+        "rider-id": 27815,
+        "entry-id": 200247679,
+        "trip-id": 200399956,
+        "class": [
+          {
+            "id": "recO8XAVXfveOHrzJ",
+            "name": "200000076|2026-11-01|200030823"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:19:07",
+        "live-entry-key": "200000076|2026-11-01|200030823|200399956",
+        "trainer-id": 27815,
+        "show-id": 200000076,
+        "horse-id": 200002539,
+        "entry-key": "200000076|2026-11-01|200247679|200030823",
+        "gone": 0
+      }
+    },
+    {
+      "id": "reclL1Yg1kLkgrmXR",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:30.625Z",
+        "rider-id": 48810,
+        "entry-id": 200243548,
+        "trip-id": 200398427,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200398427",
+        "trainer-id": 46221,
+        "show-id": 200000076,
+        "horse-id": 200005203,
+        "entry-key": "200000076|2026-11-01|200243548|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reclRSv5Iga2wWBSr",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwdNiBmDt5RQsLV",
+            "name": "200000076|2026-11-01|class|200030803"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:10.973Z",
+        "rider-id": 1000000118,
+        "entry-id": 200245101,
+        "trip-id": 200399343,
+        "class": [
+          {
+            "id": "recnQDCbl2XqlhVje",
+            "name": "200000076|2026-11-01|200030803"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:40:23",
+        "live-entry-key": "200000076|2026-11-01|200030803|200399343",
+        "trainer-id": 61652,
+        "show-id": 200000076,
+        "horse-id": 142638,
+        "entry-key": "200000076|2026-11-01|200245101|200030803",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reclZyKn2QEmGvc0K",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recqxMEP4TklP0A08",
+            "name": "200000076|2026-11-01|class|200030697"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:28.464Z",
+        "rider-id": 74258,
+        "entry-id": 200246100,
+        "trip-id": 200399937,
+        "class": [
+          {
+            "id": "recGo3z3xH3OkRj9o",
+            "name": "200000076|2026-11-01|200030697"
+          }
+        ],
+        "source-updated-at": "31oct2026 18:59:08",
+        "live-entry-key": "200000076|2026-11-01|200030697|200399937",
+        "trainer-id": 46307,
+        "show-id": 200000076,
+        "horse-id": 151541,
+        "entry-key": "200000076|2026-11-01|200246100|200030697",
+        "gone": 0
+      }
+    },
+    {
+      "id": "reclcwT8awmcXphse",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recK53FXCIU1kgC65",
+            "name": "200000076|2026-11-01|class|200030647"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:28.797Z",
+        "rider-id": 71992,
+        "entry-id": 200246095,
+        "trip-id": 200399942,
+        "class": [
+          {
+            "id": "recbsaRNcGS65oaTX",
+            "name": "200000076|2026-11-01|200030647"
+          }
+        ],
+        "source-updated-at": "15oct2026 14:06:26",
+        "live-entry-key": "200000076|2026-11-01|200030647|200399942",
+        "trainer-id": 46307,
+        "show-id": 200000076,
+        "horse-id": 96684,
+        "entry-key": "200000076|2026-11-01|200246095|200030647",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recmT0MtvBeMIVSzX",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recqr708asbJ06I3z",
+            "name": "200000076|2026-11-01|class|200030720"
+          }
+        ],
+        "last-seen": "2026-11-01T14:08:31.374Z",
+        "rider-id": 61690,
+        "entry-id": 200247445,
+        "trip-id": 200399166,
+        "class": [
+          {
+            "id": "rec84jjzawYTvK5kJ",
+            "name": "200000076|2026-11-01|200030720"
+          }
+        ],
+        "source-updated-at": "27oct2026 17:24:10",
+        "live-entry-key": "200000076|2026-11-01|200030720|200399166",
+        "trainer-id": 3857,
+        "show-id": 200000076,
+        "horse-id": 200003618,
+        "entry-key": "200000076|2026-11-01|200247445|200030720",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recnE3UQV5A9YKCQ4",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec4l2AG0Vn72Wpmm",
+            "name": "200000076|2026-11-01|class|200030799"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:31.159Z",
+        "rider-id": 66166,
+        "entry-id": 200247954,
+        "trip-id": 200399930,
+        "class": [
+          {
+            "id": "rec6g8tuXZYTJHQia",
+            "name": "200000076|2026-11-01|200030799"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:12:29",
+        "live-entry-key": "200000076|2026-11-01|200030799|200399930",
+        "trainer-id": 19686,
+        "show-id": 200000076,
+        "horse-id": 200003173,
+        "entry-key": "200000076|2026-11-01|200247954|200030799",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recnXdpienakDcTdj",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recSxsvSC4z21xxCQ",
+            "name": "200000076|2026-11-01|class|200030613"
+          }
+        ],
+        "last-seen": "2026-11-01T15:03:06.461Z",
+        "rider-id": 76111,
+        "entry-id": 200243827,
+        "trip-id": 200399599,
+        "class": [
+          {
+            "id": "recjbVmoGYluRcbPo",
+            "name": "200000076|2026-11-01|200030613"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:50:22",
+        "live-entry-key": "200000076|2026-11-01|200030613|200399599",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200005149,
+        "entry-key": "200000076|2026-11-01|200243827|200030613",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recnzlIlm7kehw23Q",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwuvMxkzbY96p3q",
+            "name": "200000076|2026-11-01|class|200030639"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:29.482Z",
+        "rider-id": 86125,
+        "entry-id": 200247849,
+        "trip-id": 200399828,
+        "class": [
+          {
+            "id": "recsJGnC6lpvmSz8h",
+            "name": "200000076|2026-11-01|200030639"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:08:41",
+        "live-entry-key": "200000076|2026-11-01|200030639|200399828",
+        "trainer-id": 7589,
+        "show-id": 200000076,
+        "horse-id": 200003353,
+        "entry-key": "200000076|2026-11-01|200247849|200030639",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recoFgEFwUF3bSA9N",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "last-seen": "2026-11-01T15:27:14.930Z",
+        "rider-id": 64999,
+        "entry-id": 200247958,
+        "trip-id": 200399205,
+        "class": [
+          {
+            "id": "recuZHg9z6AxGpo91",
+            "name": "200000076|2026-11-01|200030777"
+          }
+        ],
+        "source-updated-at": "23oct2026 12:19:12",
+        "live-entry-key": "200000076|2026-11-01|200030777|200399205",
+        "trainer-id": 19686,
+        "show-id": 200000076,
+        "horse-id": 200003381,
+        "entry-key": "200000076|2026-11-01|200247958|200030777",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recoOECuAZa109SY2",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recke6gbWcDEhIGeG",
+            "name": "200000076|2026-11-01|class|200030823"
+          }
+        ],
+        "last-seen": "2026-11-01T15:30:06.090Z",
+        "rider-id": 27815,
+        "entry-id": 200244378,
+        "trip-id": 200399954,
+        "class": [
+          {
+            "id": "recO8XAVXfveOHrzJ",
+            "name": "200000076|2026-11-01|200030823"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:19:07",
+        "live-entry-key": "200000076|2026-11-01|200030823|200399954",
+        "trainer-id": 27815,
+        "show-id": 200000076,
+        "horse-id": 200005060,
+        "entry-key": "200000076|2026-11-01|200244378|200030823",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recoyfAK0oHyrvkAQ",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 6199,
+        "entry-id": 200245848,
+        "trip-id": 200399345,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399345",
+        "trainer-id": 6199,
+        "show-id": 200000076,
+        "horse-id": 141072,
+        "entry-key": "200000076|2026-11-01|200245848|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recpJKANrqZQQ7Vfq",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recxX3zUkThA8M4Sp",
+            "name": "200000076|2026-11-01|class|200030765"
+          }
+        ],
+        "last-seen": "2026-11-01T05:17:29.500Z",
+        "rider-id": 33631,
+        "entry-id": 200247928,
+        "trip-id": 200399155,
+        "class": [
+          {
+            "id": "recv9S0IfcGITmj4R",
+            "name": "200000076|2026-11-01|200030765"
+          }
+        ],
+        "source-updated-at": "29oct2026 13:42:11",
+        "live-entry-key": "200000076|2026-11-01|200030765|200399155",
+        "trainer-id": 83512,
+        "show-id": 200000076,
+        "horse-id": 200005065,
+        "entry-key": "200000076|2026-11-01|200247928|200030765",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recpNSQmv6Z1RhWlu",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec1uvF6D7l7beTkJ",
+            "name": "200000076|2026-11-01|class|200030660"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:07.683Z",
+        "rider-id": 1000001330,
+        "entry-id": 200244965,
+        "trip-id": 200398959,
+        "class": [
+          {
+            "id": "recPKjKBtdLEGLUQ4",
+            "name": "200000076|2026-11-01|200030660"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:06:31",
+        "live-entry-key": "200000076|2026-11-01|200030660|200398959",
+        "trainer-id": 6016,
+        "show-id": 200000076,
+        "horse-id": 1936,
+        "entry-key": "200000076|2026-11-01|200244965|200030660",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recpn1q3M2nypkA29",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.793Z",
+        "rider-id": 62316,
+        "entry-id": 200244087,
+        "trip-id": 200399933,
+        "class": [
+          {
+            "id": "recdokMGpE89qP3Cm",
+            "name": "200000076|2026-11-01|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "live-entry-key": "200000076|2026-11-01|200030779|200399933",
+        "trainer-id": 62316,
+        "show-id": 200000076,
+        "horse-id": 200005050,
+        "entry-key": "200000076|2026-11-01|200244087|200030779",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recqV82Pgc3I2sugz",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 52275,
+        "entry-id": 200247303,
+        "trip-id": 200399899,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399899",
+        "trainer-id": 52275,
+        "show-id": 200000076,
+        "horse-id": 152383,
+        "entry-key": "200000076|2026-11-01|200247303|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recqYBxTxTEIQjS9U",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwuvMxkzbY96p3q",
+            "name": "200000076|2026-11-01|class|200030639"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:27.482Z",
+        "rider-id": 88508,
+        "entry-id": 200246106,
+        "trip-id": 200399211,
+        "class": [
+          {
+            "id": "recsJGnC6lpvmSz8h",
+            "name": "200000076|2026-11-01|200030639"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:17:09",
+        "live-entry-key": "200000076|2026-11-01|200030639|200399211",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 200001611,
+        "entry-key": "200000076|2026-11-01|200246106|200030639",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recqbTFJCxXcNaoXD",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recAXKw3x8UyXxOsU",
+            "name": "200000076|2026-11-01|class|200030589"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.061Z",
+        "rider-id": 1000000974,
+        "entry-id": 200243811,
+        "trip-id": 200399786,
+        "class": [
+          {
+            "id": "recWfoQ82E9UpX7PJ",
+            "name": "200000076|2026-11-01|200030589"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:10:08",
+        "live-entry-key": "200000076|2026-11-01|200030589|200399786",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200000808,
+        "entry-key": "200000076|2026-11-01|200243811|200030589",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recqu3YdRlsm9ExsS",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec1uvF6D7l7beTkJ",
+            "name": "200000076|2026-11-01|class|200030660"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:26.759Z",
+        "rider-id": 83628,
+        "entry-id": 200241259,
+        "trip-id": 200399924,
+        "class": [
+          {
+            "id": "recPKjKBtdLEGLUQ4",
+            "name": "200000076|2026-11-01|200030660"
+          }
+        ],
+        "source-updated-at": "26oct2026 18:07:11",
+        "live-entry-key": "200000076|2026-11-01|200030660|200399924",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 110183,
+        "entry-key": "200000076|2026-11-01|200241259|200030660",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recs8v8H9dGnUHzKM",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recsRKuQwoYzMUbJ4",
+            "name": "200000076|2026-11-01|class|200030752"
+          }
+        ],
+        "last-seen": "2026-11-01T12:29:26.698Z",
+        "rider-id": 85966,
+        "entry-id": 200246798,
+        "trip-id": 200399502,
+        "class": [
+          {
+            "id": "recsLqFEPhNhDUdkg",
+            "name": "200000076|2026-11-01|200030752"
+          }
+        ],
+        "source-updated-at": "29oct2026 16:30:13",
+        "live-entry-key": "200000076|2026-11-01|200030752|200399502",
+        "trainer-id": 40507,
+        "show-id": 200000076,
+        "horse-id": 200005257,
+        "entry-key": "200000076|2026-11-01|200246798|200030752",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recsDA8xPUwLeL8db",
+      "fields": {
+        "date": "2026-11-01",
+        "last-seen": "2026-11-01T15:48:08.654Z",
+        "rider-id": 50438,
+        "entry-id": 200243839,
+        "trip-id": 200400022,
+        "class": [
+          {
+            "id": "recxyl8ZgVUXUrWDT",
+            "name": "200000076|2026-11-01|200030676"
+          }
+        ],
+        "source-updated-at": "01nov2026 3:00:02",
+        "live-entry-key": "200000076|2026-11-01|200030676|200400022",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200000902,
+        "entry-key": "200000076|2026-11-01|200243839|200030676",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recsJoLJEgzhk76pl",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwdNiBmDt5RQsLV",
+            "name": "200000076|2026-11-01|class|200030803"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:10.973Z",
+        "rider-id": 84917,
+        "entry-id": 200247058,
+        "trip-id": 200399282,
+        "class": [
+          {
+            "id": "recnQDCbl2XqlhVje",
+            "name": "200000076|2026-11-01|200030803"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:40:23",
+        "live-entry-key": "200000076|2026-11-01|200030803|200399282",
+        "trainer-id": 7782,
+        "show-id": 200000076,
+        "horse-id": 103064,
+        "entry-key": "200000076|2026-11-01|200247058|200030803",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recswAZAYO9LrNbsW",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 50153,
+        "entry-id": 200247556,
+        "trip-id": 200399862,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399862",
+        "trainer-id": 50153,
+        "show-id": 200000076,
+        "horse-id": 134150,
+        "entry-key": "200000076|2026-11-01|200247556|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rectPKmrqhBN8DNvZ",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 36516,
+        "entry-id": 200247401,
+        "trip-id": 200399141,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399141",
+        "trainer-id": 73880,
+        "show-id": 200000076,
+        "horse-id": 200005342,
+        "entry-key": "200000076|2026-11-01|200247401|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rectnBnedOaROWeSi",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recAXKw3x8UyXxOsU",
+            "name": "200000076|2026-11-01|class|200030589"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.061Z",
+        "rider-id": 2856,
+        "entry-id": 200247863,
+        "trip-id": 200399453,
+        "class": [
+          {
+            "id": "recWfoQ82E9UpX7PJ",
+            "name": "200000076|2026-11-01|200030589"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:10:08",
+        "live-entry-key": "200000076|2026-11-01|200030589|200399453",
+        "trainer-id": 5708,
+        "show-id": 200000076,
+        "horse-id": 132994,
+        "entry-key": "200000076|2026-11-01|200247863|200030589",
+        "gone": 1
+      }
+    },
+    {
+      "id": "rectxAXZBpKzRs7E4",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recjXXIIRqbBwXBtM",
+            "name": "200000076|2026-11-01|class|200030588"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:05.988Z",
+        "rider-id": 18318,
+        "entry-id": 200244959,
+        "trip-id": 200398966,
+        "class": [
+          {
+            "id": "recIjcrv328S0fYvf",
+            "name": "200000076|2026-11-01|200030588"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:40",
+        "live-entry-key": "200000076|2026-11-01|200030588|200398966",
+        "trainer-id": 6016,
+        "show-id": 200000076,
+        "horse-id": 113055,
+        "entry-key": "200000076|2026-11-01|200244959|200030588",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recuGsb8Mq1Mv6Ugo",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recNgF2uTxftYT84X",
+            "name": "200000076|2026-11-01|class|200030604"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.615Z",
+        "rider-id": 50438,
+        "entry-id": 200243839,
+        "trip-id": 200399833,
+        "class": [
+          {
+            "id": "recEfla7pHQunCmpg",
+            "name": "200000076|2026-11-01|200030604"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:10:30",
+        "live-entry-key": "200000076|2026-11-01|200030604|200399833",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200000902,
+        "entry-key": "200000076|2026-11-01|200243839|200030604",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recuWR5iyV5swvzhQ",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec4l2AG0Vn72Wpmm",
+            "name": "200000076|2026-11-01|class|200030799"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:31.159Z",
+        "rider-id": 77641,
+        "entry-id": 200247388,
+        "trip-id": 200399927,
+        "class": [
+          {
+            "id": "rec6g8tuXZYTJHQia",
+            "name": "200000076|2026-11-01|200030799"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:12:29",
+        "live-entry-key": "200000076|2026-11-01|200030799|200399927",
+        "trainer-id": 13120,
+        "show-id": 200000076,
+        "horse-id": 138005,
+        "entry-key": "200000076|2026-11-01|200247388|200030799",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recv9QYxCZRhRsbUd",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:12:05.970Z",
+        "rider-id": 59540,
+        "entry-id": 200246502,
+        "trip-id": 200399651,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399651",
+        "trainer-id": 59540,
+        "show-id": 200000076,
+        "horse-id": 148652,
+        "entry-key": "200000076|2026-11-01|200246502|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recv9pU8FYzBlIQOf",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reck8WfOADJ8hVzz4",
+            "name": "200000076|2026-11-01|class|200030830"
+          }
+        ],
+        "last-seen": "2026-11-01T15:27:15.913Z",
+        "rider-id": 76111,
+        "entry-id": 200248607,
+        "trip-id": 200399812,
+        "class": [
+          {
+            "id": "recKNEhBfIA7k7j4o",
+            "name": "200000076|2026-11-01|200030830"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:27:08",
+        "live-entry-key": "200000076|2026-11-01|200030830|200399812",
+        "trainer-id": 76112,
+        "show-id": 200000076,
+        "horse-id": 133202,
+        "entry-key": "200000076|2026-11-01|200248607|200030830",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recvMLhIxiGoaWX0j",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4TZpboaEU0K80",
+            "name": "200000076|2026-11-01|class|200030808"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:25.323Z",
+        "rider-id": 1000000118,
+        "entry-id": 200245118,
+        "trip-id": 200399341,
+        "class": [
+          {
+            "id": "reclnq7cwPw8Acotj",
+            "name": "200000076|2026-11-01|200030808"
+          }
+        ],
+        "source-updated-at": "29oct2026 18:59:11",
+        "live-entry-key": "200000076|2026-11-01|200030808|200399341",
+        "trainer-id": 61652,
+        "show-id": 200000076,
+        "horse-id": 200004928,
+        "entry-key": "200000076|2026-11-01|200245118|200030808",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recvWXb1xIR6PuIkM",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 1000000198,
+        "entry-id": 200246363,
+        "trip-id": 200399086,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399086",
+        "trainer-id": 1000000198,
+        "show-id": 200000076,
+        "horse-id": 200000459,
+        "entry-key": "200000076|2026-11-01|200246363|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recvY3Ymk9aZnkJSD",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rect8iSRkASHMT4cz",
+            "name": "200000076|2026-11-01|class|200030678"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:27.613Z",
+        "rider-id": 42341,
+        "entry-id": 200241260,
+        "trip-id": 200399223,
+        "class": [
+          {
+            "id": "recPrHHyRCgyYDtxJ",
+            "name": "200000076|2026-11-01|200030678"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:17:10",
+        "live-entry-key": "200000076|2026-11-01|200030678|200399223",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 137935,
+        "entry-key": "200000076|2026-11-01|200241260|200030678",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recw9VqCidcadjmnu",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reck8WfOADJ8hVzz4",
+            "name": "200000076|2026-11-01|class|200030830"
+          }
+        ],
+        "last-seen": "2026-11-01T15:27:15.913Z",
+        "rider-id": 61690,
+        "entry-id": 200247445,
+        "trip-id": 200399817,
+        "class": [
+          {
+            "id": "recKNEhBfIA7k7j4o",
+            "name": "200000076|2026-11-01|200030830"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:27:08",
+        "live-entry-key": "200000076|2026-11-01|200030830|200399817",
+        "trainer-id": 3857,
+        "show-id": 200000076,
+        "horse-id": 200003618,
+        "entry-key": "200000076|2026-11-01|200247445|200030830",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recwVRoviLxd0YtYS",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec1uvF6D7l7beTkJ",
+            "name": "200000076|2026-11-01|class|200030660"
+          }
+        ],
+        "last-seen": "2026-11-01T12:14:28.678Z",
+        "rider-id": 74258,
+        "entry-id": 200246100,
+        "trip-id": 200399940,
+        "class": [
+          {
+            "id": "recPKjKBtdLEGLUQ4",
+            "name": "200000076|2026-11-01|200030660"
+          }
+        ],
+        "source-updated-at": "26oct2026 18:07:11",
+        "live-entry-key": "200000076|2026-11-01|200030660|200399940",
+        "trainer-id": 46307,
+        "show-id": 200000076,
+        "horse-id": 151541,
+        "entry-key": "200000076|2026-11-01|200246100|200030660",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recwenkZBwvFCDfcK",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rechdAHUTmxf2ZwLX",
+            "name": "200000076|2026-11-01|class|200030614"
+          }
+        ],
+        "last-seen": "2026-11-01T15:03:06.489Z",
+        "rider-id": 67420,
+        "entry-id": 200248562,
+        "trip-id": 200399693,
+        "class": [
+          {
+            "id": "recvOzYiAxuZkIkX3",
+            "name": "200000076|2026-11-01|200030614"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:55:57",
+        "live-entry-key": "200000076|2026-11-01|200030614|200399693",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 123742,
+        "entry-key": "200000076|2026-11-01|200248562|200030614",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recwf7hXDMrPKRiBx",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recAXKw3x8UyXxOsU",
+            "name": "200000076|2026-11-01|class|200030589"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.061Z",
+        "rider-id": 61690,
+        "entry-id": 200247446,
+        "trip-id": 200399794,
+        "class": [
+          {
+            "id": "recWfoQ82E9UpX7PJ",
+            "name": "200000076|2026-11-01|200030589"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:10:08",
+        "live-entry-key": "200000076|2026-11-01|200030589|200399794",
+        "trainer-id": 3857,
+        "show-id": 200000076,
+        "horse-id": 153475,
+        "entry-key": "200000076|2026-11-01|200247446|200030589",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recwtoRQpOXEbosRL",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recwdNiBmDt5RQsLV",
+            "name": "200000076|2026-11-01|class|200030803"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:10.973Z",
+        "rider-id": 67376,
+        "entry-id": 200244696,
+        "trip-id": 200399575,
+        "class": [
+          {
+            "id": "recnQDCbl2XqlhVje",
+            "name": "200000076|2026-11-01|200030803"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:40:23",
+        "live-entry-key": "200000076|2026-11-01|200030803|200399575",
+        "trainer-id": 53809,
+        "show-id": 200000076,
+        "horse-id": 200005099,
+        "entry-key": "200000076|2026-11-01|200244696|200030803",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recxHTKrYOnbHyC6S",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:25.312Z",
+        "rider-id": 27815,
+        "entry-id": 200248226,
+        "trip-id": 200399955,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:35:32",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399955",
+        "trainer-id": 27815,
+        "show-id": 200000076,
+        "horse-id": 148448,
+        "entry-key": "200000076|2026-11-01|200248226|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recxdYHnMkjBsrQBs",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recGqNDfkCc9tVjOA",
+            "name": "200000076|2026-11-01|class|200030638"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:27.360Z",
+        "rider-id": 16481,
+        "entry-id": 200241260,
+        "trip-id": 200399226,
+        "class": [
+          {
+            "id": "recZSfN0GylzXSU5z",
+            "name": "200000076|2026-11-01|200030638"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:17:09",
+        "live-entry-key": "200000076|2026-11-01|200030638|200399226",
+        "trainer-id": 16480,
+        "show-id": 200000076,
+        "horse-id": 137935,
+        "entry-key": "200000076|2026-11-01|200241260|200030638",
+        "gone": 0
+      }
+    },
+    {
+      "id": "recxlOTQ874PCAAld",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:08.252Z",
+        "rider-id": 86235,
+        "entry-id": 200246136,
+        "trip-id": 200400007,
+        "class": [
+          {
+            "id": "recQdIdQCpnGxMk0g",
+            "name": "200000076|2026-11-01|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "live-entry-key": "200000076|2026-11-01|200030771|200400007",
+        "trainer-id": 40913,
+        "show-id": 200000076,
+        "horse-id": 150062,
+        "entry-key": "200000076|2026-11-01|200246136|200030771",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recxwexRDwYolaA5J",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "last-seen": "2026-11-01T15:33:05.657Z",
+        "rider-id": 50153,
+        "entry-id": 200247553,
+        "trip-id": 200399861,
+        "class": [
+          {
+            "id": "reczVfgwnSkkeZMTf",
+            "name": "200000076|2026-11-01|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "live-entry-key": "200000076|2026-11-01|200030826|200399861",
+        "trainer-id": 50153,
+        "show-id": 200000076,
+        "horse-id": 140539,
+        "entry-key": "200000076|2026-11-01|200247553|200030826",
+        "gone": 1
+      }
+    },
+    {
+      "id": "recypaeBBCpZC6rE7",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "recEABEjtpvrrCze6",
+            "name": "200000076|2026-11-01|class|200030603"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.581Z",
+        "rider-id": 50438,
+        "entry-id": 200243839,
+        "trip-id": 200399835,
+        "class": [
+          {
+            "id": "recc0NyzSVCu3EdL5",
+            "name": "200000076|2026-11-01|200030603"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:08:04",
+        "live-entry-key": "200000076|2026-11-01|200030603|200399835",
+        "trainer-id": 3881,
+        "show-id": 200000076,
+        "horse-id": 200000902,
+        "entry-key": "200000076|2026-11-01|200243839|200030603",
+        "gone": 1
+      }
+    },
+    {
+      "id": "reczlQT82AYvctlYI",
+      "fields": {
+        "date": "2026-11-01",
+        "collection": [
+          {
+            "id": "rec6FJIoShPTwDtEe",
+            "name": "200000076|2026-11-01|class|200030617"
+          }
+        ],
+        "last-seen": "2026-11-01T15:18:07.272Z",
+        "rider-id": 67420,
+        "entry-id": 200248563,
+        "trip-id": 200399701,
+        "class": [
+          {
+            "id": "recgKYtzhm7mynr1y",
+            "name": "200000076|2026-11-01|200030617"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:17:58",
+        "live-entry-key": "200000076|2026-11-01|200030617|200399701",
+        "trainer-id": 34508,
+        "show-id": 200000076,
+        "horse-id": 139671,
+        "entry-key": "200000076|2026-11-01|200248563|200030617",
+        "gone": 1
+      }
+    }
+  ]
+}

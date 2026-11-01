@@ -1,0 +1,1637 @@
+{
+  "read_at": "2026-11-01T15:53:25.648Z",
+  "rows": [
+    {
+      "id": "rec6g8tuXZYTJHQia",
+      "fields": {
+        "current-trip-id": 200399482,
+        "collection": [
+          {
+            "id": "rec4l2AG0Vn72Wpmm",
+            "name": "200000076|2026-11-01|class|200030799"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:12:29",
+        "total": 3,
+        "groups": [
+          {
+            "id": "recgsupENNBL94e2W",
+            "name": "200000076|2026-11-01|200028353"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recOTE4uEWsqP1Aw0",
+            "name": "200000076|2026-11-01|56"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030799",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "reclUI8o9w1rszS2Q",
+            "name": "200000076|2026-11-01|200028353_762"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 3,
+        "class-id": 200030799,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "rec84jjzawYTvK5kJ",
+      "fields": {
+        "collection": [
+          {
+            "id": "recqr708asbJ06I3z",
+            "name": "200000076|2026-11-01|class|200030720"
+          }
+        ],
+        "source-updated-at": "27oct2026 17:24:10",
+        "total": 2,
+        "groups": [
+          {
+            "id": "recuV1EiEPmzgvt15",
+            "name": "200000076|2026-11-01|200028409"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030720",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recHDC3xkE3YO3Z2a",
+            "name": "200000076|2026-11-01|200028409_541"
+          }
+        ],
+        "last-seen": "2026-11-01T14:08:22.602Z",
+        "gone": 0,
+        "class-id": 200030720,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recEfla7pHQunCmpg",
+      "fields": {
+        "current-trip-id": 200399833,
+        "collection": [
+          {
+            "id": "recNgF2uTxftYT84X",
+            "name": "200000076|2026-11-01|class|200030604"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:10:30",
+        "total": 3,
+        "groups": [
+          {
+            "id": "reci5BPeWTmcWqRGK",
+            "name": "200000076|2026-11-01|200028392"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recO1Rm5hhBgZ4i9K",
+            "name": "200000076|2026-11-01|37"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030604",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recX79i15oqgFGPvw",
+            "name": "200000076|2026-11-01|200028392_320"
+          }
+        ],
+        "last-seen": "2026-11-01T15:12:06.312Z",
+        "gone": 3,
+        "class-id": 200030604,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recGo3z3xH3OkRj9o",
+      "fields": {
+        "collection": [
+          {
+            "id": "recqxMEP4TklP0A08",
+            "name": "200000076|2026-11-01|class|200030697"
+          }
+        ],
+        "source-updated-at": "31oct2026 18:59:08",
+        "total": 0,
+        "groups": [
+          {
+            "id": "recKSmKnPOXAqleVO",
+            "name": "200000076|2026-11-01|200028402"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030697",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recsWZ07DelVE6u4K",
+            "name": "200000076|2026-11-01|200028402_140"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 0,
+        "class-id": 200030697,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recGuVHuLClQXDf2i",
+      "fields": {
+        "current-trip-id": 200399185,
+        "collection": [
+          {
+            "id": "recOg1yRXbH26XC59",
+            "name": "200000076|2026-11-01|class|200030743"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:06:30",
+        "total": 2,
+        "groups": [
+          {
+            "id": "recjUtoXg1Ta5tkXB",
+            "name": "200000076|2026-11-01|200028357"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030743",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recAQsLliFu4Cib98",
+            "name": "200000076|2026-11-01|200028357_696"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 2,
+        "class-id": 200030743,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recIjcrv328S0fYvf",
+      "fields": {
+        "current-trip-id": 200399790,
+        "collection": [
+          {
+            "id": "recjXXIIRqbBwXBtM",
+            "name": "200000076|2026-11-01|class|200030588"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:40",
+        "total": 6,
+        "groups": [
+          {
+            "id": "rec7bTCNiQE4Wn2Xs",
+            "name": "200000076|2026-11-01|200028389"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recO1Rm5hhBgZ4i9K",
+            "name": "200000076|2026-11-01|37"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030588",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recYYv6C2SYhMOFmQ",
+            "name": "200000076|2026-11-01|200028389_284"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 6,
+        "class-id": 200030588,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recIp1gf3AG7wCWYy",
+      "fields": {
+        "current-trip-id": 200399488,
+        "collection": [
+          {
+            "id": "recPyYzTyPzS7Eixw",
+            "name": "200000076|2026-11-01|class|200030618"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:35:01",
+        "total": 4,
+        "groups": [
+          {
+            "id": "recx0VMFDeOWcpSN2",
+            "name": "200000076|2026-11-01|200028411"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030618",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recZXAkOqYRNHtb71",
+            "name": "200000076|2026-11-01|200028411_425"
+          }
+        ],
+        "last-seen": "2026-11-01T15:36:10.750Z",
+        "gone": 2,
+        "class-id": 200030618,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recKNEhBfIA7k7j4o",
+      "fields": {
+        "current-trip-id": 200399821,
+        "collection": [
+          {
+            "id": "reck8WfOADJ8hVzz4",
+            "name": "200000076|2026-11-01|class|200030830"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:41:06",
+        "total": 7,
+        "groups": [
+          {
+            "id": "recnmkLpf4AYHpLiF",
+            "name": "200000076|2026-11-01|200028410"
+          },
+          {
+            "id": "recx0VMFDeOWcpSN2",
+            "name": "200000076|2026-11-01|200028411"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030830",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recjnHZdSt5EEj7Tk",
+            "name": "200000076|2026-11-01|200028410_906"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:11.350Z",
+        "gone": 5,
+        "class-id": 200030830,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recO8XAVXfveOHrzJ",
+      "fields": {
+        "collection": [
+          {
+            "id": "recke6gbWcDEhIGeG",
+            "name": "200000076|2026-11-01|class|200030823"
+          }
+        ],
+        "source-updated-at": "28oct2026 18:19:07",
+        "total": 5,
+        "groups": [
+          {
+            "id": "recpLaBRdP7xAdTSc",
+            "name": "200000076|2026-11-01|200028344"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recNLJbenEMle5dbF",
+            "name": "200000076|2026-11-01|51"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030823",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "receVXhGhNUf8q8IT",
+            "name": "200000076|2026-11-01|200028344_842"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 0,
+        "class-id": 200030823,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recPKjKBtdLEGLUQ4",
+      "fields": {
+        "current-trip-id": 200398959,
+        "collection": [
+          {
+            "id": "rec1uvF6D7l7beTkJ",
+            "name": "200000076|2026-11-01|class|200030660"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:06:31",
+        "total": 2,
+        "groups": [
+          {
+            "id": "recKSmKnPOXAqleVO",
+            "name": "200000076|2026-11-01|200028402"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030660",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "rece92BngYebKDSZk",
+            "name": "200000076|2026-11-01|200028402_146"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 2,
+        "class-id": 200030660,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recPp3souSoDrdPvv",
+      "fields": {
+        "current-trip-id": 200399188,
+        "collection": [
+          {
+            "id": "reclLoCkcUg1nKq2L",
+            "name": "200000076|2026-11-01|class|200030746"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:12:52",
+        "total": 2,
+        "groups": [
+          {
+            "id": "recjUtoXg1Ta5tkXB",
+            "name": "200000076|2026-11-01|200028357"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030746",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recPnR94WTwzvfSK1",
+            "name": "200000076|2026-11-01|200028357_699"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 2,
+        "class-id": 200030746,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recPrHHyRCgyYDtxJ",
+      "fields": {
+        "current-trip-id": 200399059,
+        "collection": [
+          {
+            "id": "rect8iSRkASHMT4cz",
+            "name": "200000076|2026-11-01|class|200030678"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:01:32",
+        "total": 1,
+        "groups": [
+          {
+            "id": "rec2ooyCz9toz0fL4",
+            "name": "200000076|2026-11-01|200028406"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030678",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recemVT0UMOwC21Qn",
+            "name": "200000076|2026-11-01|200028406_652"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 1,
+        "class-id": 200030678,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recPuz5fidAP42PTF",
+      "fields": {
+        "current-trip-id": 200399826,
+        "collection": [
+          {
+            "id": "rec6ZOr59tA2PT8od",
+            "name": "200000076|2026-11-01|class|200030768"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:45:34",
+        "total": 3,
+        "groups": [
+          {
+            "id": "recypDrinvxLTOp76",
+            "name": "200000076|2026-11-01|200028350"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recOTE4uEWsqP1Aw0",
+            "name": "200000076|2026-11-01|56"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030768",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recnZzSzXaonE1hWB",
+            "name": "200000076|2026-11-01|200028350_746"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 3,
+        "class-id": 200030768,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recQdIdQCpnGxMk0g",
+      "fields": {
+        "current-trip-id": 200399913,
+        "collection": [
+          {
+            "id": "reco4hCGK3JQgeTAN",
+            "name": "200000076|2026-11-01|class|200030771"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:14:20",
+        "total": 10,
+        "groups": [
+          {
+            "id": "recsspbT0GM6biB6q",
+            "name": "200000076|2026-11-01|200028348"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recOTE4uEWsqP1Aw0",
+            "name": "200000076|2026-11-01|56"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030771",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "reccITaVS8OkzPX0n",
+            "name": "200000076|2026-11-01|200028348_789"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 10,
+        "class-id": 200030771,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recSrZgkN8JVIFjDa",
+      "fields": {
+        "current-trip-id": 200399582,
+        "collection": [
+          {
+            "id": "recqnp6i5o93axppD",
+            "name": "200000076|2026-11-01|class|200030718"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:11:43",
+        "total": 3,
+        "groups": [
+          {
+            "id": "rec0zRr32L4NblBwr",
+            "name": "200000076|2026-11-01|200028384"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recO1Rm5hhBgZ4i9K",
+            "name": "200000076|2026-11-01|37"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030718",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recLhWCvx1VJVCpdw",
+            "name": "200000076|2026-11-01|200028384_555"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 3,
+        "class-id": 200030718,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recULdhZV2QuS2pQT",
+      "fields": {
+        "collection": [
+          {
+            "id": "recPDjd6ZakAtkC9f",
+            "name": "200000076|2026-11-01|class|200030811"
+          }
+        ],
+        "source-updated-at": "28oct2026 22:50:13",
+        "total": 1,
+        "groups": [
+          {
+            "id": "recYYLae4NG9qVGT5",
+            "name": "200000076|2026-11-01|200028363"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030811",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recjoTx7UVRm0gkKk",
+            "name": "200000076|2026-11-01|200028363_822"
+          }
+        ],
+        "last-seen": "2026-11-01T05:17:20.829Z",
+        "gone": 0,
+        "class-id": 200030811,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recWfoQ82E9UpX7PJ",
+      "fields": {
+        "current-trip-id": 200399786,
+        "collection": [
+          {
+            "id": "recAXKw3x8UyXxOsU",
+            "name": "200000076|2026-11-01|class|200030589"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:10:08",
+        "total": 6,
+        "groups": [
+          {
+            "id": "rec7bTCNiQE4Wn2Xs",
+            "name": "200000076|2026-11-01|200028389"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recO1Rm5hhBgZ4i9K",
+            "name": "200000076|2026-11-01|37"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030589",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "rec7wjNw1zKzUh7WV",
+            "name": "200000076|2026-11-01|200028389_285"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 6,
+        "class-id": 200030589,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recZSfN0GylzXSU5z",
+      "fields": {
+        "current-trip-id": 200399057,
+        "collection": [
+          {
+            "id": "recGqNDfkCc9tVjOA",
+            "name": "200000076|2026-11-01|class|200030638"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:06:43",
+        "total": 2,
+        "groups": [
+          {
+            "id": "rec2ooyCz9toz0fL4",
+            "name": "200000076|2026-11-01|200028406"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030638",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "rec77KUG4QFNUdMtV",
+            "name": "200000076|2026-11-01|200028406_644"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 2,
+        "class-id": 200030638,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recbIg0Ehbj4JRyVA",
+      "fields": {
+        "current-trip-id": 200400018,
+        "collection": [
+          {
+            "id": "recAT183nGaw8skGo",
+            "name": "200000076|2026-11-01|class|200030759"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:42:06",
+        "total": 3,
+        "groups": [
+          {
+            "id": "rec4IomldAl30cS95",
+            "name": "200000076|2026-11-01|200028362"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030759",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recMEjmGoMM4InrvD",
+            "name": "200000076|2026-11-01|200028362_753"
+          }
+        ],
+        "last-seen": "2026-11-01T15:42:10.843Z",
+        "gone": 3,
+        "class-id": 200030759,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recbsaRNcGS65oaTX",
+      "fields": {
+        "current-trip-id": 200399105,
+        "collection": [
+          {
+            "id": "recK53FXCIU1kgC65",
+            "name": "200000076|2026-11-01|class|200030647"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:34:43",
+        "total": 1,
+        "groups": [
+          {
+            "id": "recEHWFCut4VmdQ85",
+            "name": "200000076|2026-11-01|200028405"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030647",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recGyXTCWU4LymJ4f",
+            "name": "200000076|2026-11-01|200028405_605"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 1,
+        "class-id": 200030647,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recc0NyzSVCu3EdL5",
+      "fields": {
+        "current-trip-id": 200399835,
+        "collection": [
+          {
+            "id": "recEABEjtpvrrCze6",
+            "name": "200000076|2026-11-01|class|200030603"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:05:58",
+        "total": 3,
+        "groups": [
+          {
+            "id": "reci5BPeWTmcWqRGK",
+            "name": "200000076|2026-11-01|200028392"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recO1Rm5hhBgZ4i9K",
+            "name": "200000076|2026-11-01|37"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030603",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recOejJEAvYtECrHz",
+            "name": "200000076|2026-11-01|200028392_319"
+          }
+        ],
+        "last-seen": "2026-11-01T15:06:06.903Z",
+        "gone": 3,
+        "class-id": 200030603,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recdokMGpE89qP3Cm",
+      "fields": {
+        "collection": [
+          {
+            "id": "recnD9GByxWQYS3Vd",
+            "name": "200000076|2026-11-01|class|200030779"
+          }
+        ],
+        "source-updated-at": "28oct2026 20:38:08",
+        "total": 9,
+        "groups": [
+          {
+            "id": "recCBl4tLc1GRiqsX",
+            "name": "200000076|2026-11-01|200028347"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recNLJbenEMle5dbF",
+            "name": "200000076|2026-11-01|51"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030779",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recMUc6UPceGDpvyW",
+            "name": "200000076|2026-11-01|200028347_701"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 0,
+        "class-id": 200030779,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recgKYtzhm7mynr1y",
+      "fields": {
+        "current-trip-id": 200399819,
+        "collection": [
+          {
+            "id": "rec6FJIoShPTwDtEe",
+            "name": "200000076|2026-11-01|class|200030617"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:48:42",
+        "total": 4,
+        "groups": [
+          {
+            "id": "recx0VMFDeOWcpSN2",
+            "name": "200000076|2026-11-01|200028411"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030617",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "rec4Mxh1uTE7UJMW4",
+            "name": "200000076|2026-11-01|200028411_424"
+          }
+        ],
+        "last-seen": "2026-11-01T15:51:06.840Z",
+        "gone": 3,
+        "class-id": 200030617,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recidP15u2ccRoqwf",
+      "fields": {
+        "current-trip-id": 200398958,
+        "collection": [
+          {
+            "id": "recYDm16jYr7H8iSh",
+            "name": "200000076|2026-11-01|class|200030659"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:02:38",
+        "total": 2,
+        "groups": [
+          {
+            "id": "recKSmKnPOXAqleVO",
+            "name": "200000076|2026-11-01|200028402"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030659",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recjk6AUivRKjLnzr",
+            "name": "200000076|2026-11-01|200028402_145"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 2,
+        "class-id": 200030659,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recjbVmoGYluRcbPo",
+      "fields": {
+        "current-trip-id": 200399682,
+        "collection": [
+          {
+            "id": "recSxsvSC4z21xxCQ",
+            "name": "200000076|2026-11-01|class|200030613"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:50:22",
+        "total": 3,
+        "groups": [
+          {
+            "id": "recnmkLpf4AYHpLiF",
+            "name": "200000076|2026-11-01|200028410"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030613",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recvr1UQwHu4vJikJ",
+            "name": "200000076|2026-11-01|200028410_414"
+          }
+        ],
+        "last-seen": "2026-11-01T14:51:07.980Z",
+        "gone": 3,
+        "class-id": 200030613,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "reckJqcpepVhBIhxN",
+      "fields": {
+        "current-trip-id": 200399708,
+        "collection": [
+          {
+            "id": "recu0QP2ibAdgXcCa",
+            "name": "200000076|2026-11-01|class|200030820"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:19:21",
+        "total": 1,
+        "groups": [
+          {
+            "id": "rec0I3wPOQHG8ry8N",
+            "name": "200000076|2026-11-01|200028349"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recOTE4uEWsqP1Aw0",
+            "name": "200000076|2026-11-01|56"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030820",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recAXVScwRR0BNjK5",
+            "name": "200000076|2026-11-01|200028349_837"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 1,
+        "class-id": 200030820,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "reclnq7cwPw8Acotj",
+      "fields": {
+        "collection": [
+          {
+            "id": "reco4TZpboaEU0K80",
+            "name": "200000076|2026-11-01|class|200030808"
+          }
+        ],
+        "source-updated-at": "29oct2026 18:59:11",
+        "total": 1,
+        "groups": [
+          {
+            "id": "rec8asWKU8HXZO8rd",
+            "name": "200000076|2026-11-01|200028358"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030808",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recWrDN27D9RcVkH0",
+            "name": "200000076|2026-11-01|200028358_682"
+          }
+        ],
+        "last-seen": "2026-11-01T06:41:20.231Z",
+        "gone": 0,
+        "class-id": 200030808,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recmOUn1a5RwZeIRS",
+      "fields": {
+        "collection": [
+          {
+            "id": "recZLJwIGpQQfNkmo",
+            "name": "200000076|2026-11-01|class|200030789"
+          }
+        ],
+        "source-updated-at": "24oct2026 17:43:11",
+        "total": 7,
+        "groups": [
+          {
+            "id": "rectgdgF84P61X2ob",
+            "name": "200000076|2026-11-01|200028345"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recNLJbenEMle5dbF",
+            "name": "200000076|2026-11-01|51"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030789",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "rec8uRL8SZmFlzfFI",
+            "name": "200000076|2026-11-01|200028345_775"
+          }
+        ],
+        "last-seen": "2026-11-01T15:30:06.092Z",
+        "gone": 0,
+        "class-id": 200030789,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recnQDCbl2XqlhVje",
+      "fields": {
+        "current-trip-id": 200399575,
+        "collection": [
+          {
+            "id": "recwdNiBmDt5RQsLV",
+            "name": "200000076|2026-11-01|class|200030803"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:40:23",
+        "total": 3,
+        "groups": [
+          {
+            "id": "recuNvETHhY0f0kwx",
+            "name": "200000076|2026-11-01|200028368"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030803",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recNcltxc21ndLpNm",
+            "name": "200000076|2026-11-01|200028368_739"
+          }
+        ],
+        "last-seen": "2026-11-01T15:45:06.455Z",
+        "gone": 3,
+        "class-id": 200030803,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recp0WeV8wqaeURvH",
+      "fields": {
+        "current-trip-id": 200399610,
+        "collection": [
+          {
+            "id": "recwWjLKWXmWdLwoT",
+            "name": "200000076|2026-11-01|class|200030685"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:59:00",
+        "total": 5,
+        "groups": [
+          {
+            "id": "rec7bTCNiQE4Wn2Xs",
+            "name": "200000076|2026-11-01|200028389"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recO1Rm5hhBgZ4i9K",
+            "name": "200000076|2026-11-01|37"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030685",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "rec1Vqv00zhIGU09s",
+            "name": "200000076|2026-11-01|200028389_659"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 3,
+        "class-id": 200030685,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recsJGnC6lpvmSz8h",
+      "fields": {
+        "current-trip-id": 200399058,
+        "collection": [
+          {
+            "id": "recwuvMxkzbY96p3q",
+            "name": "200000076|2026-11-01|class|200030639"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:08:41",
+        "total": 2,
+        "groups": [
+          {
+            "id": "rec2ooyCz9toz0fL4",
+            "name": "200000076|2026-11-01|200028406"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030639",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recd6Pn0AMVxoNOd9",
+            "name": "200000076|2026-11-01|200028406_645"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 2,
+        "class-id": 200030639,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recsLqFEPhNhDUdkg",
+      "fields": {
+        "current-trip-id": 200399661,
+        "collection": [
+          {
+            "id": "recsRKuQwoYzMUbJ4",
+            "name": "200000076|2026-11-01|class|200030752"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:48:21",
+        "total": 1,
+        "groups": [
+          {
+            "id": "recOh4tGPmy7Dti0w",
+            "name": "200000076|2026-11-01|200028359"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030752",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recZrfLDkQukl6Pd5",
+            "name": "200000076|2026-11-01|200028359_797"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 1,
+        "class-id": 200030752,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recszy0rO39tW1aJZ",
+      "fields": {
+        "collection": [
+          {
+            "id": "recaoVFiYdrj7JOef",
+            "name": "200000076|2026-11-01|class|200030762"
+          }
+        ],
+        "source-updated-at": "24oct2026 13:34:11",
+        "total": 1,
+        "groups": [
+          {
+            "id": "recG1K5Pj8CFPnRL5",
+            "name": "200000076|2026-11-01|200028364"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030762",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recT5EaTO16Hq8X5j",
+            "name": "200000076|2026-11-01|200028364_782"
+          }
+        ],
+        "last-seen": "2026-11-01T14:08:22.602Z",
+        "gone": 0,
+        "class-id": 200030762,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recuQ43rFtqyAks4o",
+      "fields": {
+        "current-trip-id": 200399106,
+        "collection": [
+          {
+            "id": "rec1XYDN9MCkqHMuK",
+            "name": "200000076|2026-11-01|class|200030648"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:39:31",
+        "total": 1,
+        "groups": [
+          {
+            "id": "recEHWFCut4VmdQ85",
+            "name": "200000076|2026-11-01|200028405"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030648",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "rec4UYzQ7uGilbIJY",
+            "name": "200000076|2026-11-01|200028405_606"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 1,
+        "class-id": 200030648,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recuZHg9z6AxGpo91",
+      "fields": {
+        "current-trip-id": 200399970,
+        "collection": [
+          {
+            "id": "rec3WDOW54oETku0L",
+            "name": "200000076|2026-11-01|class|200030777"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:50:57",
+        "total": 3,
+        "groups": [
+          {
+            "id": "recDb6M8F6kBzk3DL",
+            "name": "200000076|2026-11-01|200028343"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recNLJbenEMle5dbF",
+            "name": "200000076|2026-11-01|51"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030777",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recdVKBP0IQOe4EJH",
+            "name": "200000076|2026-11-01|200028343_772"
+          }
+        ],
+        "last-seen": "2026-11-01T15:51:05.738Z",
+        "gone": 2,
+        "class-id": 200030777,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recv9S0IfcGITmj4R",
+      "fields": {
+        "current-trip-id": 200399932,
+        "collection": [
+          {
+            "id": "recxX3zUkThA8M4Sp",
+            "name": "200000076|2026-11-01|class|200030765"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:03:41",
+        "total": 1,
+        "groups": [
+          {
+            "id": "recs1RwhCyjK2B0hw",
+            "name": "200000076|2026-11-01|200028351"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recOTE4uEWsqP1Aw0",
+            "name": "200000076|2026-11-01|56"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030765",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recuAqmKmh7uU3VH7",
+            "name": "200000076|2026-11-01|200028351_717"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 1,
+        "class-id": 200030765,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recvOzYiAxuZkIkX3",
+      "fields": {
+        "current-trip-id": 200399685,
+        "collection": [
+          {
+            "id": "rechdAHUTmxf2ZwLX",
+            "name": "200000076|2026-11-01|class|200030614"
+          }
+        ],
+        "source-updated-at": "01nov2026 14:55:57",
+        "total": 3,
+        "groups": [
+          {
+            "id": "recnmkLpf4AYHpLiF",
+            "name": "200000076|2026-11-01|200028410"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030614",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recL6JIKLP9oTb7Fd",
+            "name": "200000076|2026-11-01|200028410_415"
+          }
+        ],
+        "last-seen": "2026-11-01T14:57:08.588Z",
+        "gone": 3,
+        "class-id": 200030614,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recxyl8ZgVUXUrWDT",
+      "fields": {
+        "collection": [
+          {
+            "id": "recTuOCeK4iC7xm5g",
+            "name": "200000076|2026-11-01|class|200030676"
+          }
+        ],
+        "source-updated-at": "01nov2026 3:00:02",
+        "total": 1,
+        "groups": [
+          {
+            "id": "reci5BPeWTmcWqRGK",
+            "name": "200000076|2026-11-01|200028392"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recO1Rm5hhBgZ4i9K",
+            "name": "200000076|2026-11-01|37"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030676",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recee7H9t73aCpZZi",
+            "name": "200000076|2026-11-01|200028392_650"
+          }
+        ],
+        "last-seen": "2026-11-01T15:48:08.654Z",
+        "gone": 1,
+        "class-id": 200030676,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recyNYriIcM07cIBt",
+      "fields": {
+        "collection": [
+          {
+            "id": "recYNIp7A4fIOoYWo",
+            "name": "200000076|2026-11-01|class|200030701"
+          }
+        ],
+        "source-updated-at": "29oct2026 13:51:08",
+        "total": 1,
+        "groups": [
+          {
+            "id": "recnmkLpf4AYHpLiF",
+            "name": "200000076|2026-11-01|200028410"
+          },
+          {
+            "id": "recx0VMFDeOWcpSN2",
+            "name": "200000076|2026-11-01|200028411"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030701",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recWxXNQmcazo97jl",
+            "name": "200000076|2026-11-01|200028410_402"
+          },
+          {
+            "id": "recY16E7SiDykqwyF",
+            "name": "200000076|2026-11-01|200028411_402"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 0,
+        "class-id": 200030701,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recyWId3MXstuc9Rj",
+      "fields": {
+        "collection": [
+          {
+            "id": "recTlAxC4DStBj7zc",
+            "name": "200000076|2026-11-01|class|200030699"
+          }
+        ],
+        "source-updated-at": "31oct2026 18:59:18",
+        "total": 0,
+        "groups": [
+          {
+            "id": "recEHWFCut4VmdQ85",
+            "name": "200000076|2026-11-01|200028405"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recGoJ3AtVGxp0oge",
+            "name": "200000076|2026-11-01|25"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030699",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recVFTJYdpoZdqnex",
+            "name": "200000076|2026-11-01|200028405_614"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 0,
+        "class-id": 200030699,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "recywxmWdyOat1r27",
+      "fields": {
+        "collection": [
+          {
+            "id": "recJoOpBY6ilj2wDM",
+            "name": "200000076|2026-11-01|class|200030755"
+          }
+        ],
+        "source-updated-at": "1793469247",
+        "groups": [
+          {
+            "id": "recgB0LcaiELFw7Oo",
+            "name": "200000076|2026-11-01|200028360"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030755",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "rec7VCOLAjfBnuklt",
+            "name": "200000076|2026-11-01|200028360_792"
+          }
+        ],
+        "last-seen": "2026-11-01T04:02:43.001Z",
+        "class-id": 200030755,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "reczLlc36KPwqQLcu",
+      "fields": {
+        "current-trip-id": 200399659,
+        "collection": [
+          {
+            "id": "recaMUWcgPx4Qn11I",
+            "name": "200000076|2026-11-01|class|200030749"
+          }
+        ],
+        "source-updated-at": "01nov2026 13:45:42",
+        "total": 1,
+        "groups": [
+          {
+            "id": "recOh4tGPmy7Dti0w",
+            "name": "200000076|2026-11-01|200028359"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recMOmhqXbr6XZPLS",
+            "name": "200000076|2026-11-01|52"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030749",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recX86sb9dlzJwLqx",
+            "name": "200000076|2026-11-01|200028359_785"
+          }
+        ],
+        "last-seen": "2026-11-01T14:41:21.971Z",
+        "gone": 1,
+        "class-id": 200030749,
+        "date": "2026-11-01"
+      }
+    },
+    {
+      "id": "reczVfgwnSkkeZMTf",
+      "fields": {
+        "current-trip-id": 200398950,
+        "collection": [
+          {
+            "id": "recRWpR9AcH8L6uwg",
+            "name": "200000076|2026-11-01|class|200030826"
+          }
+        ],
+        "source-updated-at": "01nov2026 15:09:58",
+        "total": 31,
+        "groups": [
+          {
+            "id": "recHEn99kc4cdgb9B",
+            "name": "200000076|2026-11-01|200028346"
+          }
+        ],
+        "ring": [
+          {
+            "id": "recNLJbenEMle5dbF",
+            "name": "200000076|2026-11-01|51"
+          }
+        ],
+        "class-key": "200000076|2026-11-01|200030826",
+        "show-id": 200000076,
+        "schedules": [
+          {
+            "id": "recKeJidD4Pb4cpHx",
+            "name": "200000076|2026-11-01|200028346_806"
+          }
+        ],
+        "last-seen": "2026-11-01T15:12:05.970Z",
+        "gone": 31,
+        "class-id": 200030826,
+        "date": "2026-11-01"
+      }
+    }
+  ]
+}

@@ -1,0 +1,4918 @@
+{
+  "groups": {
+    "receipt_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\lane-groups-67fc9586-4f2d-46df-a444-94dabd1b2153.json",
+    "receipt_sha256": "986ee64e3198a9349caa203fc784cf7fa1156bde6279e1fa67b362a359957ce4",
+    "report": {
+      "lane": "groups",
+      "run_id": "67fc9586-4f2d-46df-a444-94dabd1b2153",
+      "started": "2026-11-01T15:51:03.330Z",
+      "ok": true,
+      "issues": [],
+      "stage_errors": [],
+      "logging_errors": [],
+      "changes": [
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028343",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.status",
+              "before": "Upcoming",
+              "after": "Underway"
+            },
+            {
+              "field": "source-json.gone",
+              "before": "0",
+              "after": "2"
+            },
+            {
+              "field": "source-json.is_live",
+              "before": false,
+              "after": true
+            },
+            {
+              "field": "source-json.grid",
+              "before": "#Upcoming",
+              "after": "#LiveNow"
+            },
+            {
+              "field": "source-json.trips",
+              "before": "3",
+              "after": "2/3"
+            },
+            {
+              "field": "source-json.time",
+              "before": "10:45 AM",
+              "after": null
+            },
+            {
+              "field": "status",
+              "before": "Upcoming",
+              "after": "Underway"
+            },
+            {
+              "field": "is-live",
+              "before": null,
+              "after": true
+            },
+            {
+              "field": "gone",
+              "before": 0,
+              "after": 2
+            }
+          ]
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028347",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.estimated_start_time",
+              "before": "23:59:00",
+              "after": "12:45:00"
+            },
+            {
+              "field": "source-json.time",
+              "before": "11:59 PM",
+              "after": "12:45 PM"
+            },
+            {
+              "field": "estimated-start-time",
+              "before": "23:59:00",
+              "after": "12:45:00"
+            }
+          ]
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028410",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.total",
+              "before": "14",
+              "after": "13"
+            },
+            {
+              "field": "source-json.trips",
+              "before": "14",
+              "after": "13"
+            },
+            {
+              "field": "total",
+              "before": 14,
+              "after": 13
+            }
+          ]
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028411",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.gone",
+              "before": "9",
+              "after": "10"
+            },
+            {
+              "field": "source-json.total",
+              "before": "16",
+              "after": "15"
+            },
+            {
+              "field": "source-json.last_updated_class",
+              "before": "200030830",
+              "after": "200030617"
+            },
+            {
+              "field": "source-json.recent_updated_classes",
+              "before": [
+                "200030830",
+                "200030618",
+                "200030617",
+                "200030701"
+              ],
+              "after": [
+                "200030617",
+                "200030830",
+                "200030618",
+                "200030701"
+              ]
+            },
+            {
+              "field": "source-json.trips",
+              "before": "9/16",
+              "after": "10/15"
+            },
+            {
+              "field": "total",
+              "before": 16,
+              "after": 15
+            },
+            {
+              "field": "gone",
+              "before": 9,
+              "after": 10
+            }
+          ]
+        }
+      ],
+      "coverage": [
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028346",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:12:06.026Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028344",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:30:05.976Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028345",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:48:08.173Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028384",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028389",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:45:05.767Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028392",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:48:08.173Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028357",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028358",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028359",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028362",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:42:10.132Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028363",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028364",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028368",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:42:10.132Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028402",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028405",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028406",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028348",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028349",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028350",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028351",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028353",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028343",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:51:05.669Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028347",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:51:05.669Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028410",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:51:05.669Z"
+        },
+        {
+          "table": "live-groups",
+          "key": "200000076|2026-11-01|200028411",
+          "last_success": "2026-11-01T15:51:05.669Z",
+          "last_changed": "2026-11-01T15:51:05.669Z"
+        }
+      ],
+      "archives": [
+        {
+          "at": "2026-11-01T15:51:05.680Z",
+          "kind": "source-groups",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\547fcf02b64e71cfa5e63ffc7f0b397b55fbc46af0b879074f6cccf0e20d787b.json.gz",
+          "records": 1,
+          "sha256": "547fcf02b64e71cfa5e63ffc7f0b397b55fbc46af0b879074f6cccf0e20d787b",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        }
+      ],
+      "timings": {
+        "collection_ms": 737.6468000000002,
+        "save_ms": 1138.6752000000001,
+        "collection_started": "2026-11-01T15:51:04.931Z",
+        "collection_completed": "2026-11-01T15:51:05.669Z",
+        "requests": [
+          {
+            "label": "groups",
+            "started": "2026-11-01T15:51:04.931Z",
+            "completed": "2026-11-01T15:51:05.669Z"
+          }
+        ],
+        "save_started": "2026-11-01T15:51:06.027Z",
+        "saves": [
+          {
+            "table": "live-groups",
+            "started": "2026-11-01T15:51:06.027Z",
+            "completed": "2026-11-01T15:51:07.165Z",
+            "rows": 25,
+            "changed": 4,
+            "source_to_save": [
+              {
+                "key": "200000076|2026-11-01|200028346",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028344",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028345",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028384",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028389",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028392",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028357",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028358",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028359",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028362",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028363",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028364",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028368",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028402",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028405",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028406",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028348",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028349",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028350",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028351",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028353",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028343",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028347",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028410",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1496
+              },
+              {
+                "key": "200000076|2026-11-01|200028411",
+                "source_response_at": "2026-11-01T15:51:05.669Z",
+                "elapsed_ms": 1497
+              }
+            ]
+          }
+        ],
+        "save_completed": "2026-11-01T15:51:07.166Z",
+        "total_ms": 3836
+      },
+      "counts": {
+        "live-groups": 25
+      },
+      "scope": {
+        "show": 200000076,
+        "customer": 15,
+        "date": "2026-11-01",
+        "selected_date": "2026-11-01",
+        "authority": "recOAxMcqu1f75CQk",
+        "checked_at": "2026-10-30T22:59:14.976Z",
+        "active": true
+      },
+      "day_priority": 0,
+      "completed": "2026-11-01T15:51:07.166Z"
+    }
+  },
+  "rings": {
+    "receipt_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\lane-rings-8b97d723-cd41-4b5b-a4a7-4f42d4c4ada7.json",
+    "receipt_sha256": "5955120fcd7c9c6fd320b44816a2b8dc170382def28a693ce98d0a9ef5b73227",
+    "report": {
+      "lane": "rings",
+      "run_id": "8b97d723-cd41-4b5b-a4a7-4f42d4c4ada7",
+      "started": "2026-11-01T15:51:03.332Z",
+      "ok": true,
+      "issues": [],
+      "stage_errors": [],
+      "logging_errors": [],
+      "changes": [
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|51",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.upcoming",
+              "before": [
+                {
+                  "class_group_id": "200028343",
+                  "group_name": "1.30m Open Jumper II2.1",
+                  "day": "2026-11-01",
+                  "group_sequence": "2",
+                  "estimated_start_time": "10:45:00",
+                  "jumper_table": "USEF Table II.2.1",
+                  "hunter_type": "",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "1",
+                  "classes": [
+                    "200030777"
+                  ],
+                  "classNumbers": [
+                    "772"
+                  ],
+                  "classNames": [
+                    "1.30m Open Jumper II2.1"
+                  ],
+                  "class_numbers": "772",
+                  "status": "Upcoming",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 0,
+                  "total": 3,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030777",
+                  "recent_updated_classes": [
+                    "200030777"
+                  ],
+                  "ring_id": "51",
+                  "ring": "International Ring",
+                  "link": "/liveclass/detail?cid=200030777&class_group_id=200028343",
+                  "time": "10:45 AM"
+                },
+                {
+                  "class_group_id": "200028344",
+                  "group_name": "$600 1.30m Young Jumper II2b",
+                  "day": "2026-11-01",
+                  "group_sequence": "3",
+                  "estimated_start_time": "11:05:00",
+                  "jumper_table": "USEF Table II.2.b",
+                  "hunter_type": "",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "1",
+                  "classes": [
+                    "200030823"
+                  ],
+                  "classNumbers": [
+                    "842"
+                  ],
+                  "classNames": [
+                    "$600 1.30m Young Jumper II2b"
+                  ],
+                  "class_numbers": "842",
+                  "status": "Upcoming",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 0,
+                  "total": 3,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030823",
+                  "recent_updated_classes": [
+                    "200030823"
+                  ],
+                  "ring_id": "51",
+                  "ring": "International Ring",
+                  "link": "/liveclass/detail?cid=200030823&class_group_id=200028344",
+                  "time": "11:05 AM"
+                },
+                {
+                  "class_group_id": "200028345",
+                  "group_name": "$2,625 NAL 1.30m Junior/Amateur Jumper Classic II2b",
+                  "day": "2026-11-01",
+                  "group_sequence": "4",
+                  "estimated_start_time": "11:45:00",
+                  "jumper_table": "USEF Table II.2.b",
+                  "hunter_type": "",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "1",
+                  "classes": [
+                    "200030789"
+                  ],
+                  "classNumbers": [
+                    "775"
+                  ],
+                  "classNames": [
+                    "$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b"
+                  ],
+                  "class_numbers": "775",
+                  "status": "Upcoming",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 0,
+                  "total": 7,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030789",
+                  "recent_updated_classes": [
+                    "200030789"
+                  ],
+                  "ring_id": "51",
+                  "ring": "International Ring",
+                  "link": "/liveclass/detail?cid=200030789&class_group_id=200028345",
+                  "time": "11:45 AM"
+                },
+                {
+                  "class_group_id": "200028347",
+                  "group_name": "1.40m Open Jumper II2.1",
+                  "day": "2026-11-01",
+                  "group_sequence": "5",
+                  "estimated_start_time": "23:59:00",
+                  "jumper_table": "USEF Table II.2.1",
+                  "hunter_type": "",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "1",
+                  "classes": [
+                    "200030779"
+                  ],
+                  "classNumbers": [
+                    "701"
+                  ],
+                  "classNames": [
+                    "1.40m Open Jumper II2.1"
+                  ],
+                  "class_numbers": "701",
+                  "status": "Upcoming",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 0,
+                  "total": 9,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030779",
+                  "recent_updated_classes": [
+                    "200030779"
+                  ],
+                  "ring_id": "51",
+                  "ring": "International Ring",
+                  "link": "/liveclass/detail?cid=200030779&class_group_id=200028347",
+                  "time": "11:59 PM"
+                }
+              ],
+              "after": [
+                {
+                  "class_group_id": "200028344",
+                  "group_name": "$600 1.30m Young Jumper II2b",
+                  "day": "2026-11-01",
+                  "group_sequence": "3",
+                  "estimated_start_time": "11:05:00",
+                  "jumper_table": "USEF Table II.2.b",
+                  "hunter_type": "",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "1",
+                  "classes": [
+                    "200030823"
+                  ],
+                  "classNumbers": [
+                    "842"
+                  ],
+                  "classNames": [
+                    "$600 1.30m Young Jumper II2b"
+                  ],
+                  "class_numbers": "842",
+                  "status": "Upcoming",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 0,
+                  "total": 3,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030823",
+                  "recent_updated_classes": [
+                    "200030823"
+                  ],
+                  "ring_id": "51",
+                  "ring": "International Ring",
+                  "link": "/liveclass/detail?cid=200030823&class_group_id=200028344",
+                  "time": "11:05 AM"
+                },
+                {
+                  "class_group_id": "200028345",
+                  "group_name": "$2,625 NAL 1.30m Junior/Amateur Jumper Classic II2b",
+                  "day": "2026-11-01",
+                  "group_sequence": "4",
+                  "estimated_start_time": "11:45:00",
+                  "jumper_table": "USEF Table II.2.b",
+                  "hunter_type": "",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "1",
+                  "classes": [
+                    "200030789"
+                  ],
+                  "classNumbers": [
+                    "775"
+                  ],
+                  "classNames": [
+                    "$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b"
+                  ],
+                  "class_numbers": "775",
+                  "status": "Upcoming",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 0,
+                  "total": 7,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030789",
+                  "recent_updated_classes": [
+                    "200030789"
+                  ],
+                  "ring_id": "51",
+                  "ring": "International Ring",
+                  "link": "/liveclass/detail?cid=200030789&class_group_id=200028345",
+                  "time": "11:45 AM"
+                },
+                {
+                  "class_group_id": "200028347",
+                  "group_name": "1.40m Open Jumper II2.1",
+                  "day": "2026-11-01",
+                  "group_sequence": "5",
+                  "estimated_start_time": "12:45:00",
+                  "jumper_table": "USEF Table II.2.1",
+                  "hunter_type": "",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "1",
+                  "classes": [
+                    "200030779"
+                  ],
+                  "classNumbers": [
+                    "701"
+                  ],
+                  "classNames": [
+                    "1.40m Open Jumper II2.1"
+                  ],
+                  "class_numbers": "701",
+                  "status": "Upcoming",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 0,
+                  "total": 9,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030779",
+                  "recent_updated_classes": [
+                    "200030779"
+                  ],
+                  "ring_id": "51",
+                  "ring": "International Ring",
+                  "link": "/liveclass/detail?cid=200030779&class_group_id=200028347",
+                  "time": "12:45 PM"
+                }
+              ]
+            },
+            {
+              "field": "source-json.livenow",
+              "before": [],
+              "after": [
+                {
+                  "class_group_id": "200028343",
+                  "group_name": "1.30m Open Jumper II2.1",
+                  "day": "2026-11-01",
+                  "group_sequence": "2",
+                  "estimated_start_time": "10:45:00",
+                  "jumper_table": "USEF Table II.2.1",
+                  "hunter_type": "",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "1",
+                  "classes": [
+                    "200030777"
+                  ],
+                  "classNumbers": [
+                    "772"
+                  ],
+                  "classNames": [
+                    "1.30m Open Jumper II2.1"
+                  ],
+                  "class_numbers": "772",
+                  "status": "Underway",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 1,
+                  "total": 3,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": true,
+                  "has_JSON": true,
+                  "last_updated_class": "200030777",
+                  "recent_updated_classes": [
+                    "200030777"
+                  ],
+                  "ring_id": "51",
+                  "ring": "International Ring",
+                  "link": "/liveclass/detail?cid=200030777&class_group_id=200028343",
+                  "trips": "1/3"
+                }
+              ]
+            },
+            {
+              "field": "current-group",
+              "before": null,
+              "after": [
+                "recDb6M8F6kBzk3DL"
+              ]
+            },
+            {
+              "field": "next-group",
+              "before": [
+                "recDb6M8F6kBzk3DL",
+                "recpLaBRdP7xAdTSc",
+                "rectgdgF84P61X2ob",
+                "recCBl4tLc1GRiqsX"
+              ],
+              "after": [
+                "recpLaBRdP7xAdTSc",
+                "rectgdgF84P61X2ob",
+                "recCBl4tLc1GRiqsX"
+              ]
+            }
+          ]
+        },
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|25",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.livenow",
+              "before": [
+                {
+                  "class_group_id": "200028411",
+                  "group_name": "Medium/Large Pony Hunter",
+                  "day": "2026-11-01",
+                  "group_sequence": "9",
+                  "estimated_start_time": "10:15:00",
+                  "jumper_table": "",
+                  "hunter_type": "Score W/ Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "10",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030701",
+                    "200030617",
+                    "200030618",
+                    "200030830"
+                  ],
+                  "classNumbers": [
+                    "402",
+                    "424",
+                    "425",
+                    "906"
+                  ],
+                  "classNames": [
+                    "Schooling Pony Hunter",
+                    "Medium/Large Pony Hunter",
+                    "Medium/Large Pony Handy Hunter",
+                    "$500 Pony Hunter Classic (2nd Rd)"
+                  ],
+                  "class_numbers": "402, 424, 425, 906",
+                  "status": "Underway",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 9,
+                  "total": 16,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": true,
+                  "has_JSON": true,
+                  "last_updated_class": "200030830",
+                  "recent_updated_classes": [
+                    "200030830",
+                    "200030618",
+                    "200030617",
+                    "200030701"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030701&class_group_id=200028411",
+                  "trips": "9/16"
+                }
+              ],
+              "after": [
+                {
+                  "class_group_id": "200028411",
+                  "group_name": "Medium/Large Pony Hunter",
+                  "day": "2026-11-01",
+                  "group_sequence": "9",
+                  "estimated_start_time": "10:15:00",
+                  "jumper_table": "",
+                  "hunter_type": "Score W/ Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "10",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030701",
+                    "200030617",
+                    "200030618",
+                    "200030830"
+                  ],
+                  "classNumbers": [
+                    "402",
+                    "424",
+                    "425",
+                    "906"
+                  ],
+                  "classNames": [
+                    "Schooling Pony Hunter",
+                    "Medium/Large Pony Hunter",
+                    "Medium/Large Pony Handy Hunter",
+                    "$500 Pony Hunter Classic (2nd Rd)"
+                  ],
+                  "class_numbers": "402, 424, 425, 906",
+                  "status": "Underway",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 10,
+                  "total": 15,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": true,
+                  "has_JSON": true,
+                  "last_updated_class": "200030617",
+                  "recent_updated_classes": [
+                    "200030617",
+                    "200030830",
+                    "200030618",
+                    "200030701"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030701&class_group_id=200028411",
+                  "trips": "10/15"
+                }
+              ]
+            },
+            {
+              "field": "source-json.completed",
+              "before": [
+                {
+                  "class_group_id": "200028410",
+                  "group_name": "Small Pony Hunter",
+                  "day": "2026-11-01",
+                  "group_sequence": "8",
+                  "estimated_start_time": "09:20:00",
+                  "jumper_table": "",
+                  "hunter_type": "Score W/ Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "10",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030701",
+                    "200030613",
+                    "200030614",
+                    "200030830"
+                  ],
+                  "classNumbers": [
+                    "402",
+                    "414",
+                    "415",
+                    "906"
+                  ],
+                  "classNames": [
+                    "Schooling Pony Hunter",
+                    "Small Pony Hunter",
+                    "Small Pony Handy Hunter",
+                    "$500 Pony Hunter Classic (2nd Rd)"
+                  ],
+                  "class_numbers": "402, 414, 415, 906",
+                  "status": "Underway",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 11,
+                  "total": 14,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": true,
+                  "has_JSON": true,
+                  "last_updated_class": "200030830",
+                  "recent_updated_classes": [
+                    "200030830",
+                    "200030614",
+                    "200030613",
+                    "200030701"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030701&class_group_id=200028410",
+                  "trips": 14
+                },
+                {
+                  "class_group_id": "200028402",
+                  "group_name": "Cross Rail Equitation ",
+                  "day": "2026-11-01",
+                  "group_sequence": "2",
+                  "estimated_start_time": "08:00:00",
+                  "jumper_table": "",
+                  "hunter_type": "No Score, No Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030697",
+                    "200030659",
+                    "200030660"
+                  ],
+                  "classNumbers": [
+                    "140",
+                    "145",
+                    "146"
+                  ],
+                  "classNames": [
+                    "Cross Rail Warm Up",
+                    "Cross Rail Equitation ",
+                    "Cross Rail Equitation "
+                  ],
+                  "class_numbers": "140, 145, 146",
+                  "status": "Completed",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 4,
+                  "total": 4,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030660",
+                  "recent_updated_classes": [
+                    "200030660",
+                    "200030659",
+                    "200030697"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030697&class_group_id=200028402",
+                  "trips": 4
+                },
+                {
+                  "class_group_id": "200028405",
+                  "group_name": "Short Stirrup Equitation",
+                  "day": "2026-11-01",
+                  "group_sequence": "4",
+                  "estimated_start_time": "08:30:00",
+                  "jumper_table": "",
+                  "hunter_type": "No Score, No Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030647",
+                    "200030648",
+                    "200030699"
+                  ],
+                  "classNumbers": [
+                    "605",
+                    "606",
+                    "614"
+                  ],
+                  "classNames": [
+                    "Short Stirrup Equitation",
+                    "Short Stirrup Equitation",
+                    "Stirrup Warm Up"
+                  ],
+                  "class_numbers": "605, 606, 614",
+                  "status": "Completed",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 2,
+                  "total": 2,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030648",
+                  "recent_updated_classes": [
+                    "200030648",
+                    "200030647",
+                    "200030699"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030647&class_group_id=200028405",
+                  "trips": 2
+                },
+                {
+                  "class_group_id": "200028406",
+                  "group_name": "Modified Hunter 2'/2'6\"",
+                  "day": "2026-11-01",
+                  "group_sequence": "5",
+                  "estimated_start_time": "08:55:00",
+                  "jumper_table": "",
+                  "hunter_type": "No Score, No Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030638",
+                    "200030639",
+                    "200030678"
+                  ],
+                  "classNumbers": [
+                    "644",
+                    "645",
+                    "652"
+                  ],
+                  "classNames": [
+                    "Modified Hunter 2'/2'6\"",
+                    "Modified Hunter 2'/2'6\"",
+                    "Warm Up Hunter"
+                  ],
+                  "class_numbers": "644, 645, 652",
+                  "status": "Completed",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 5,
+                  "total": 5,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030639",
+                  "recent_updated_classes": [
+                    "200030639",
+                    "200030638",
+                    "200030678"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030638&class_group_id=200028406",
+                  "trips": 5
+                }
+              ],
+              "after": [
+                {
+                  "class_group_id": "200028410",
+                  "group_name": "Small Pony Hunter",
+                  "day": "2026-11-01",
+                  "group_sequence": "8",
+                  "estimated_start_time": "09:20:00",
+                  "jumper_table": "",
+                  "hunter_type": "Score W/ Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "10",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030701",
+                    "200030613",
+                    "200030614",
+                    "200030830"
+                  ],
+                  "classNumbers": [
+                    "402",
+                    "414",
+                    "415",
+                    "906"
+                  ],
+                  "classNames": [
+                    "Schooling Pony Hunter",
+                    "Small Pony Hunter",
+                    "Small Pony Handy Hunter",
+                    "$500 Pony Hunter Classic (2nd Rd)"
+                  ],
+                  "class_numbers": "402, 414, 415, 906",
+                  "status": "Underway",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 11,
+                  "total": 13,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": true,
+                  "has_JSON": true,
+                  "last_updated_class": "200030830",
+                  "recent_updated_classes": [
+                    "200030830",
+                    "200030614",
+                    "200030613",
+                    "200030701"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030701&class_group_id=200028410",
+                  "trips": 13
+                },
+                {
+                  "class_group_id": "200028402",
+                  "group_name": "Cross Rail Equitation ",
+                  "day": "2026-11-01",
+                  "group_sequence": "2",
+                  "estimated_start_time": "08:00:00",
+                  "jumper_table": "",
+                  "hunter_type": "No Score, No Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030697",
+                    "200030659",
+                    "200030660"
+                  ],
+                  "classNumbers": [
+                    "140",
+                    "145",
+                    "146"
+                  ],
+                  "classNames": [
+                    "Cross Rail Warm Up",
+                    "Cross Rail Equitation ",
+                    "Cross Rail Equitation "
+                  ],
+                  "class_numbers": "140, 145, 146",
+                  "status": "Completed",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 4,
+                  "total": 4,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030660",
+                  "recent_updated_classes": [
+                    "200030660",
+                    "200030659",
+                    "200030697"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030697&class_group_id=200028402",
+                  "trips": 4
+                },
+                {
+                  "class_group_id": "200028405",
+                  "group_name": "Short Stirrup Equitation",
+                  "day": "2026-11-01",
+                  "group_sequence": "4",
+                  "estimated_start_time": "08:30:00",
+                  "jumper_table": "",
+                  "hunter_type": "No Score, No Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030647",
+                    "200030648",
+                    "200030699"
+                  ],
+                  "classNumbers": [
+                    "605",
+                    "606",
+                    "614"
+                  ],
+                  "classNames": [
+                    "Short Stirrup Equitation",
+                    "Short Stirrup Equitation",
+                    "Stirrup Warm Up"
+                  ],
+                  "class_numbers": "605, 606, 614",
+                  "status": "Completed",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 2,
+                  "total": 2,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030648",
+                  "recent_updated_classes": [
+                    "200030648",
+                    "200030647",
+                    "200030699"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030647&class_group_id=200028405",
+                  "trips": 2
+                },
+                {
+                  "class_group_id": "200028406",
+                  "group_name": "Modified Hunter 2'/2'6\"",
+                  "day": "2026-11-01",
+                  "group_sequence": "5",
+                  "estimated_start_time": "08:55:00",
+                  "jumper_table": "",
+                  "hunter_type": "No Score, No Jog",
+                  "hunter_scoreby": "",
+                  "jogordertrips": "0",
+                  "ring_number": "5",
+                  "classes": [
+                    "200030638",
+                    "200030639",
+                    "200030678"
+                  ],
+                  "classNumbers": [
+                    "644",
+                    "645",
+                    "652"
+                  ],
+                  "classNames": [
+                    "Modified Hunter 2'/2'6\"",
+                    "Modified Hunter 2'/2'6\"",
+                    "Warm Up Hunter"
+                  ],
+                  "class_numbers": "644, 645, 652",
+                  "status": "Completed",
+                  "JOUnderway": false,
+                  "JOUpcoming": false,
+                  "gone": 5,
+                  "total": 5,
+                  "jo_gone": 0,
+                  "jo_total": 0,
+                  "R2Underway": false,
+                  "R2Upcoming": false,
+                  "r2_gone": 0,
+                  "r2_total": 0,
+                  "is_live": false,
+                  "has_JSON": true,
+                  "last_updated_class": "200030639",
+                  "recent_updated_classes": [
+                    "200030639",
+                    "200030638",
+                    "200030678"
+                  ],
+                  "ring_id": "25",
+                  "ring": "Ring 6",
+                  "link": "/liveclass/detail?cid=200030638&class_group_id=200028406",
+                  "trips": 5
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "coverage": [
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|37",
+          "last_success": "2026-11-01T15:51:05.032Z",
+          "last_changed": "2026-11-01T15:48:07.439Z"
+        },
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|52",
+          "last_success": "2026-11-01T15:51:05.032Z",
+          "last_changed": "2026-11-01T15:45:05.109Z"
+        },
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|56",
+          "last_success": "2026-11-01T15:51:05.032Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|51",
+          "last_success": "2026-11-01T15:51:05.032Z",
+          "last_changed": "2026-11-01T15:51:05.032Z"
+        },
+        {
+          "table": "live-rings",
+          "key": "200000076|2026-11-01|25",
+          "last_success": "2026-11-01T15:51:05.032Z",
+          "last_changed": "2026-11-01T15:51:05.032Z"
+        }
+      ],
+      "archives": [
+        {
+          "at": "2026-11-01T15:51:05.046Z",
+          "kind": "source-widget",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\0295e5d48e1466a1bb3ff105e5f4c466601ca13c4c30df8df0eff2e50eab1c87.json.gz",
+          "records": 1,
+          "sha256": "0295e5d48e1466a1bb3ff105e5f4c466601ca13c4c30df8df0eff2e50eab1c87",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        }
+      ],
+      "timings": {
+        "collection_ms": 127.36310000000003,
+        "save_ms": 789.4409,
+        "collection_started": "2026-11-01T15:51:04.905Z",
+        "collection_completed": "2026-11-01T15:51:05.032Z",
+        "requests": [
+          {
+            "label": "rings",
+            "started": "2026-11-01T15:51:04.905Z",
+            "completed": "2026-11-01T15:51:05.032Z"
+          }
+        ],
+        "save_started": "2026-11-01T15:51:05.752Z",
+        "saves": [
+          {
+            "table": "live-rings",
+            "started": "2026-11-01T15:51:05.752Z",
+            "completed": "2026-11-01T15:51:06.542Z",
+            "rows": 5,
+            "changed": 2,
+            "source_to_save": [
+              {
+                "key": "200000076|2026-11-01|37",
+                "source_response_at": "2026-11-01T15:51:05.032Z",
+                "elapsed_ms": 1510
+              },
+              {
+                "key": "200000076|2026-11-01|52",
+                "source_response_at": "2026-11-01T15:51:05.032Z",
+                "elapsed_ms": 1510
+              },
+              {
+                "key": "200000076|2026-11-01|56",
+                "source_response_at": "2026-11-01T15:51:05.032Z",
+                "elapsed_ms": 1510
+              },
+              {
+                "key": "200000076|2026-11-01|51",
+                "source_response_at": "2026-11-01T15:51:05.032Z",
+                "elapsed_ms": 1510
+              },
+              {
+                "key": "200000076|2026-11-01|25",
+                "source_response_at": "2026-11-01T15:51:05.032Z",
+                "elapsed_ms": 1510
+              }
+            ]
+          }
+        ],
+        "save_completed": "2026-11-01T15:51:06.542Z",
+        "total_ms": 3210
+      },
+      "counts": {
+        "live-rings": 5
+      },
+      "scope": {
+        "show": 200000076,
+        "customer": 15,
+        "date": "2026-11-01",
+        "selected_date": "2026-11-01",
+        "authority": "recOAxMcqu1f75CQk",
+        "checked_at": "2026-10-30T22:59:14.976Z",
+        "active": true
+      },
+      "day_priority": 0,
+      "completed": "2026-11-01T15:51:06.542Z"
+    }
+  },
+  "classes": {
+    "receipt_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\lane-classes-606d32d3-4472-41bb-be9c-b5ddcf6dd26c.json",
+    "receipt_sha256": "3807c3b3fe66f02eb26b9719aebe9c18b2aab7e6210fb2b3ede7114da561aad6",
+    "report": {
+      "lane": "classes",
+      "run_id": "606d32d3-4472-41bb-be9c-b5ddcf6dd26c",
+      "started": "2026-11-01T15:51:03.333Z",
+      "ok": true,
+      "issues": [
+        {
+          "message": "No decoded identity for trip 200399341",
+          "class_id": 200030808,
+          "trip_id": 200399341
+        },
+        {
+          "message": "No decoded identity for trip 200399094",
+          "class_id": 200030811,
+          "trip_id": 200399094
+        },
+        {
+          "message": "No decoded identity for trip 200399914",
+          "class_id": 200030762,
+          "trip_id": 200399914
+        }
+      ],
+      "stage_errors": [],
+      "logging_errors": [],
+      "changes": [
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030777",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.gone_trips",
+              "before": "",
+              "after": "200399910,200399970"
+            },
+            {
+              "field": "source-json.curr",
+              "before": "",
+              "after": "200399970"
+            },
+            {
+              "field": "gone",
+              "before": 0,
+              "after": 2
+            },
+            {
+              "field": "current-trip-id",
+              "before": null,
+              "after": 200399970
+            }
+          ]
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030617",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.gone_trips",
+              "before": "200399487,200399701",
+              "after": "200399487,200399701,200399819"
+            },
+            {
+              "field": "source-json.curr",
+              "before": "200399487",
+              "after": "200399819"
+            },
+            {
+              "field": "gone",
+              "before": 2,
+              "after": 3
+            },
+            {
+              "field": "current-trip-id",
+              "before": 200399487,
+              "after": 200399819
+            }
+          ]
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030777|200399910",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.live.Gone",
+              "before": "0",
+              "after": "1"
+            },
+            {
+              "field": "source-json.live.Actual_OOG",
+              "before": "",
+              "after": "1"
+            },
+            {
+              "field": "source-json.live.Pos",
+              "before": "0",
+              "after": "1"
+            },
+            {
+              "field": "source-json.live.OldPos",
+              "before": "0",
+              "after": "1"
+            },
+            {
+              "field": "source-json.live.R1JF",
+              "before": "",
+              "after": "8"
+            },
+            {
+              "field": "source-json.live.R1F",
+              "before": "",
+              "after": "8"
+            },
+            {
+              "field": "source-json.live.R1T",
+              "before": "",
+              "after": "68.426"
+            },
+            {
+              "field": "source-json.live.ActualPos",
+              "before": "0",
+              "after": "1"
+            },
+            {
+              "field": "actual-order",
+              "before": null,
+              "after": 1
+            },
+            {
+              "field": "gone",
+              "before": 0,
+              "after": 1
+            },
+            {
+              "field": "position",
+              "before": 0,
+              "after": 1
+            }
+          ]
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030777|200399970",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.live.Gone",
+              "before": "0",
+              "after": "1"
+            },
+            {
+              "field": "source-json.live.Actual_OOG",
+              "before": "",
+              "after": "2"
+            },
+            {
+              "field": "actual-order",
+              "before": null,
+              "after": 2
+            },
+            {
+              "field": "gone",
+              "before": 0,
+              "after": 1
+            }
+          ]
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030701|200399164",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.live.Scr",
+              "before": "0",
+              "after": "1"
+            },
+            {
+              "field": "source-json.live.R1JF",
+              "before": "",
+              "after": "DNS"
+            },
+            {
+              "field": "source-json.live.R1TF",
+              "before": "",
+              "after": "DNS"
+            },
+            {
+              "field": "source-json.live.R1F",
+              "before": "",
+              "after": "DNS"
+            },
+            {
+              "field": "source-json.live.R1T",
+              "before": "",
+              "after": "DNS"
+            },
+            {
+              "field": "source-json.live.Score",
+              "before": "",
+              "after": "DNS"
+            },
+            {
+              "field": "source-json.identity.estimated_go_time",
+              "before": "09:17:00",
+              "after": "00:00:00"
+            },
+            {
+              "field": "source-json.identity.scratch_trip",
+              "before": 0,
+              "after": 1
+            },
+            {
+              "field": "source-json.identity.disqualify_status_one",
+              "before": "",
+              "after": "DNS"
+            },
+            {
+              "field": "scratch",
+              "before": null,
+              "after": true
+            }
+          ]
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030617|200399819",
+          "created": false,
+          "fields": [
+            {
+              "field": "source-json.live.Gone",
+              "before": "0",
+              "after": "1"
+            },
+            {
+              "field": "source-json.live.R2_OOG",
+              "before": "",
+              "after": "3"
+            },
+            {
+              "field": "source-json.live.R2_Qualified",
+              "before": "",
+              "after": "1"
+            },
+            {
+              "field": "source-json.live.R2_Upcoming",
+              "before": "",
+              "after": "1"
+            },
+            {
+              "field": "source-json.live.Actual_OOG",
+              "before": "",
+              "after": "16"
+            },
+            {
+              "field": "source-json.identity.estimated_go_time",
+              "before": "10:12:00",
+              "after": "00:00:00"
+            },
+            {
+              "field": "actual-order",
+              "before": null,
+              "after": 16
+            },
+            {
+              "field": "gone",
+              "before": 0,
+              "after": 1
+            }
+          ]
+        }
+      ],
+      "coverage": [
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030823",
+          "last_success": "2026-11-01T15:51:05.808Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030789",
+          "last_success": "2026-11-01T15:51:05.809Z",
+          "last_changed": "2026-11-01T15:30:06.092Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030826",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:12:05.970Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030718",
+          "last_success": "2026-11-01T15:51:05.930Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030589",
+          "last_success": "2026-11-01T15:51:05.972Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030588",
+          "last_success": "2026-11-01T15:51:05.971Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030779",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030685",
+          "last_success": "2026-11-01T15:51:06.046Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030603",
+          "last_success": "2026-11-01T15:51:06.110Z",
+          "last_changed": "2026-11-01T15:06:06.903Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030604",
+          "last_success": "2026-11-01T15:51:06.127Z",
+          "last_changed": "2026-11-01T15:12:06.312Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030676",
+          "last_success": "2026-11-01T15:51:06.154Z",
+          "last_changed": "2026-11-01T15:48:08.654Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030743",
+          "last_success": "2026-11-01T15:51:06.216Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030746",
+          "last_success": "2026-11-01T15:51:06.226Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030808",
+          "last_success": "2026-11-01T15:51:06.249Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030749",
+          "last_success": "2026-11-01T15:51:06.291Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030752",
+          "last_success": "2026-11-01T15:51:06.325Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030759",
+          "last_success": "2026-11-01T15:51:06.334Z",
+          "last_changed": "2026-11-01T15:42:10.843Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030811",
+          "last_success": "2026-11-01T15:51:06.364Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030762",
+          "last_success": "2026-11-01T15:51:06.414Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030803",
+          "last_success": "2026-11-01T15:51:06.428Z",
+          "last_changed": "2026-11-01T15:45:06.455Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030697",
+          "last_success": "2026-11-01T15:51:06.456Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030659",
+          "last_success": "2026-11-01T15:51:06.468Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030660",
+          "last_success": "2026-11-01T15:51:06.522Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030647",
+          "last_success": "2026-11-01T15:51:06.551Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030648",
+          "last_success": "2026-11-01T15:51:06.581Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030699",
+          "last_success": "2026-11-01T15:51:06.582Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030638",
+          "last_success": "2026-11-01T15:51:06.628Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030678",
+          "last_success": "2026-11-01T15:51:06.683Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030701",
+          "last_success": "2026-11-01T15:51:06.693Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030639",
+          "last_success": "2026-11-01T15:51:06.673Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030613",
+          "last_success": "2026-11-01T15:51:06.734Z",
+          "last_changed": "2026-11-01T14:51:07.980Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030614",
+          "last_success": "2026-11-01T15:51:06.806Z",
+          "last_changed": "2026-11-01T14:57:08.588Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030830",
+          "last_success": "2026-11-01T15:51:06.839Z",
+          "last_changed": "2026-11-01T15:42:11.350Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030618",
+          "last_success": "2026-11-01T15:51:06.889Z",
+          "last_changed": "2026-11-01T15:36:10.750Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030771",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030820",
+          "last_success": "2026-11-01T15:51:06.985Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030768",
+          "last_success": "2026-11-01T15:51:07.005Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030799",
+          "last_success": "2026-11-01T15:51:07.081Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030765",
+          "last_success": "2026-11-01T15:51:07.049Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030777",
+          "last_success": "2026-11-01T15:51:05.738Z",
+          "last_changed": "2026-11-01T15:51:05.738Z"
+        },
+        {
+          "table": "live-classes",
+          "key": "200000076|2026-11-01|200030617",
+          "last_success": "2026-11-01T15:51:06.840Z",
+          "last_changed": "2026-11-01T15:51:06.840Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399956",
+          "last_success": "2026-11-01T15:51:05.808Z",
+          "last_changed": "2026-11-01T15:30:06.090Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399805",
+          "last_success": "2026-11-01T15:51:05.808Z",
+          "last_changed": "2026-11-01T15:30:06.090Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399640",
+          "last_success": "2026-11-01T15:51:05.808Z",
+          "last_changed": "2026-11-01T15:30:06.090Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399922",
+          "last_success": "2026-11-01T15:51:05.808Z",
+          "last_changed": "2026-11-01T15:30:06.090Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030823|200399954",
+          "last_success": "2026-11-01T15:51:05.808Z",
+          "last_changed": "2026-11-01T15:30:06.090Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399859",
+          "last_success": "2026-11-01T15:51:05.809Z",
+          "last_changed": "2026-11-01T15:48:08.354Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200398832",
+          "last_success": "2026-11-01T15:51:05.809Z",
+          "last_changed": "2026-11-01T15:48:08.354Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399907",
+          "last_success": "2026-11-01T15:51:05.809Z",
+          "last_changed": "2026-11-01T15:48:08.354Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399077",
+          "last_success": "2026-11-01T15:51:05.809Z",
+          "last_changed": "2026-11-01T15:48:08.354Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399577",
+          "last_success": "2026-11-01T15:51:05.809Z",
+          "last_changed": "2026-11-01T15:48:08.354Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200398990",
+          "last_success": "2026-11-01T15:51:05.809Z",
+          "last_changed": "2026-11-01T15:48:08.354Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030789|200399371",
+          "last_success": "2026-11-01T15:51:05.809Z",
+          "last_changed": "2026-11-01T15:48:08.354Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030777|200399205",
+          "last_success": "2026-11-01T15:51:05.738Z",
+          "last_changed": "2026-11-01T15:27:14.930Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200396722",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399524",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200398950",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399929",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399899",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399141",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399862",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399861",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200398981",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399163",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399069",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399894",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:33:05.657Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399841",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:12:05.970Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399651",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": "2026-11-01T15:12:05.970Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399853",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399316",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399904",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399082",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200398969",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399955",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399905",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200398951",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399882",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399915",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399007",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399115",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399086",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399906",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399902",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399704",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030826|200399345",
+          "last_success": "2026-11-01T15:51:05.765Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030718|200399173",
+          "last_success": "2026-11-01T15:51:05.930Z",
+          "last_changed": "2026-11-01T14:51:06.931Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030718|200399891",
+          "last_success": "2026-11-01T15:51:05.930Z",
+          "last_changed": "2026-11-01T14:51:06.931Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030718|200399582",
+          "last_success": "2026-11-01T15:51:05.930Z",
+          "last_changed": "2026-11-01T14:51:06.931Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200399794",
+          "last_success": "2026-11-01T15:51:05.972Z",
+          "last_changed": "2026-11-01T15:45:06.061Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200399453",
+          "last_success": "2026-11-01T15:51:05.972Z",
+          "last_changed": "2026-11-01T15:45:06.061Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200399786",
+          "last_success": "2026-11-01T15:51:05.972Z",
+          "last_changed": "2026-11-01T15:45:06.061Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200398967",
+          "last_success": "2026-11-01T15:51:05.972Z",
+          "last_changed": "2026-11-01T15:45:06.061Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200399595",
+          "last_success": "2026-11-01T15:51:05.972Z",
+          "last_changed": "2026-11-01T15:45:06.061Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030589|200398943",
+          "last_success": "2026-11-01T15:51:05.972Z",
+          "last_changed": "2026-11-01T15:45:06.061Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200399452",
+          "last_success": "2026-11-01T15:51:05.971Z",
+          "last_changed": "2026-11-01T15:45:05.988Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200398966",
+          "last_success": "2026-11-01T15:51:05.971Z",
+          "last_changed": "2026-11-01T15:45:05.988Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200399790",
+          "last_success": "2026-11-01T15:51:05.971Z",
+          "last_changed": "2026-11-01T15:45:05.988Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200398942",
+          "last_success": "2026-11-01T15:51:05.971Z",
+          "last_changed": "2026-11-01T15:45:05.988Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200399792",
+          "last_success": "2026-11-01T15:51:05.971Z",
+          "last_changed": "2026-11-01T15:45:05.988Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030588|200399594",
+          "last_success": "2026-11-01T15:51:05.971Z",
+          "last_changed": "2026-11-01T15:45:05.988Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399843",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": "2026-11-01T15:33:05.793Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399854",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": "2026-11-01T15:33:05.793Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399933",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": "2026-11-01T15:33:05.793Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399898",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": "2026-11-01T15:33:05.793Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399676",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": "2026-11-01T15:33:05.793Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399763",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": "2026-11-01T15:33:05.793Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399860",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": "2026-11-01T15:33:05.793Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399911",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": "2026-11-01T15:33:05.793Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030779|200399619",
+          "last_success": "2026-11-01T15:51:05.925Z",
+          "last_changed": "2026-11-01T15:33:05.793Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399610",
+          "last_success": "2026-11-01T15:51:06.046Z",
+          "last_changed": "2026-11-01T15:45:06.087Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399730",
+          "last_success": "2026-11-01T15:51:06.046Z",
+          "last_changed": "2026-11-01T15:45:06.087Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399884",
+          "last_success": "2026-11-01T15:51:06.046Z",
+          "last_changed": "2026-11-01T15:45:06.087Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399616",
+          "last_success": "2026-11-01T15:51:06.046Z",
+          "last_changed": "2026-11-01T15:45:06.087Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030685|200399175",
+          "last_success": "2026-11-01T15:51:06.046Z",
+          "last_changed": "2026-11-01T15:45:06.087Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030603|200399119",
+          "last_success": "2026-11-01T15:51:06.110Z",
+          "last_changed": "2026-11-01T15:48:08.581Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030603|200399775",
+          "last_success": "2026-11-01T15:51:06.110Z",
+          "last_changed": "2026-11-01T15:48:08.581Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030603|200399835",
+          "last_success": "2026-11-01T15:51:06.110Z",
+          "last_changed": "2026-11-01T15:48:08.581Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030604|200399833",
+          "last_success": "2026-11-01T15:51:06.127Z",
+          "last_changed": "2026-11-01T15:48:08.615Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030604|200399120",
+          "last_success": "2026-11-01T15:51:06.127Z",
+          "last_changed": "2026-11-01T15:48:08.615Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030604|200399776",
+          "last_success": "2026-11-01T15:51:06.127Z",
+          "last_changed": "2026-11-01T15:48:08.615Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030676|200400022",
+          "last_success": "2026-11-01T15:51:06.154Z",
+          "last_changed": "2026-11-01T15:48:08.654Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030743|200399270",
+          "last_success": "2026-11-01T15:51:06.216Z",
+          "last_changed": "2026-11-01T14:51:07.273Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030743|200399185",
+          "last_success": "2026-11-01T15:51:06.216Z",
+          "last_changed": "2026-11-01T14:51:07.273Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030746|200399188",
+          "last_success": "2026-11-01T15:51:06.226Z",
+          "last_changed": "2026-11-01T14:51:07.306Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030746|200399267",
+          "last_success": "2026-11-01T15:51:06.226Z",
+          "last_changed": "2026-11-01T14:51:07.306Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030749|200399659",
+          "last_success": "2026-11-01T15:51:06.291Z",
+          "last_changed": "2026-11-01T15:45:06.345Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030752|200399661",
+          "last_success": "2026-11-01T15:51:06.325Z",
+          "last_changed": "2026-11-01T15:45:06.350Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030759|200399877",
+          "last_success": "2026-11-01T15:51:06.334Z",
+          "last_changed": "2026-11-01T15:42:10.843Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030759|200399903",
+          "last_success": "2026-11-01T15:51:06.334Z",
+          "last_changed": "2026-11-01T15:42:10.843Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030759|200400018",
+          "last_success": "2026-11-01T15:51:06.334Z",
+          "last_changed": "2026-11-01T15:42:10.843Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030803|200399575",
+          "last_success": "2026-11-01T15:51:06.428Z",
+          "last_changed": "2026-11-01T15:42:10.973Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030803|200399282",
+          "last_success": "2026-11-01T15:51:06.428Z",
+          "last_changed": "2026-11-01T15:42:10.973Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030803|200399343",
+          "last_success": "2026-11-01T15:51:06.428Z",
+          "last_changed": "2026-11-01T15:42:10.973Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030659|200398958",
+          "last_success": "2026-11-01T15:51:06.468Z",
+          "last_changed": "2026-11-01T14:51:07.671Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030659|200399254",
+          "last_success": "2026-11-01T15:51:06.468Z",
+          "last_changed": "2026-11-01T14:51:07.671Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030660|200398959",
+          "last_success": "2026-11-01T15:51:06.522Z",
+          "last_changed": "2026-11-01T14:51:07.683Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030660|200399255",
+          "last_success": "2026-11-01T15:51:06.522Z",
+          "last_changed": "2026-11-01T14:51:07.683Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030647|200399105",
+          "last_success": "2026-11-01T15:51:06.551Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030648|200399106",
+          "last_success": "2026-11-01T15:51:06.581Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030638|200399830",
+          "last_success": "2026-11-01T15:51:06.628Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030638|200399057",
+          "last_success": "2026-11-01T15:51:06.628Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030678|200399059",
+          "last_success": "2026-11-01T15:51:06.683Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030639|200399828",
+          "last_success": "2026-11-01T15:51:06.673Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030639|200399058",
+          "last_success": "2026-11-01T15:51:06.673Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030613|200399599",
+          "last_success": "2026-11-01T15:51:06.734Z",
+          "last_changed": "2026-11-01T15:03:06.461Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030613|200399682",
+          "last_success": "2026-11-01T15:51:06.734Z",
+          "last_changed": "2026-11-01T15:03:06.461Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030613|200399687",
+          "last_success": "2026-11-01T15:51:06.734Z",
+          "last_changed": "2026-11-01T15:03:06.461Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030614|200399600",
+          "last_success": "2026-11-01T15:51:06.806Z",
+          "last_changed": "2026-11-01T15:03:06.489Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030614|200399685",
+          "last_success": "2026-11-01T15:51:06.806Z",
+          "last_changed": "2026-11-01T15:03:06.489Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030614|200399693",
+          "last_success": "2026-11-01T15:51:06.806Z",
+          "last_changed": "2026-11-01T15:03:06.489Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030617|200399487",
+          "last_success": "2026-11-01T15:51:06.840Z",
+          "last_changed": "2026-11-01T15:33:06.784Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030617|200399701",
+          "last_success": "2026-11-01T15:51:06.840Z",
+          "last_changed": "2026-11-01T15:18:07.272Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030617|200399814",
+          "last_success": "2026-11-01T15:51:06.840Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399601",
+          "last_success": "2026-11-01T15:51:06.839Z",
+          "last_changed": "2026-11-01T15:18:07.237Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399821",
+          "last_success": "2026-11-01T15:51:06.839Z",
+          "last_changed": "2026-11-01T15:42:11.350Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399692",
+          "last_success": "2026-11-01T15:51:06.839Z",
+          "last_changed": "2026-11-01T15:42:11.350Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399822",
+          "last_success": "2026-11-01T15:51:06.839Z",
+          "last_changed": "2026-11-01T15:42:11.350Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399681",
+          "last_success": "2026-11-01T15:51:06.839Z",
+          "last_changed": "2026-11-01T15:42:11.350Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399812",
+          "last_success": "2026-11-01T15:51:06.839Z",
+          "last_changed": "2026-11-01T15:27:15.913Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030830|200399817",
+          "last_success": "2026-11-01T15:51:06.839Z",
+          "last_changed": "2026-11-01T15:27:15.913Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030618|200399488",
+          "last_success": "2026-11-01T15:51:06.889Z",
+          "last_changed": "2026-11-01T15:36:10.750Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030618|200399699",
+          "last_success": "2026-11-01T15:51:06.889Z",
+          "last_changed": "2026-11-01T15:24:10.090Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030618|200399811",
+          "last_success": "2026-11-01T15:51:06.889Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030618|200399818",
+          "last_success": "2026-11-01T15:51:06.889Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200400007",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": "2026-11-01T14:51:08.252Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399873",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": "2026-11-01T14:51:08.252Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200400008",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": "2026-11-01T14:51:08.252Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399935",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": "2026-11-01T14:51:08.252Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399901",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": "2026-11-01T14:51:08.252Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399913",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": "2026-11-01T14:51:08.252Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399675",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": "2026-11-01T14:51:08.252Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399713",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200399586",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030771|200398427",
+          "last_success": "2026-11-01T15:51:06.939Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030820|200399708",
+          "last_success": "2026-11-01T15:51:06.985Z",
+          "last_changed": "2026-11-01T14:51:08.280Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030768|200399826",
+          "last_success": "2026-11-01T15:51:07.005Z",
+          "last_changed": "2026-11-01T14:51:08.287Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030768|200399865",
+          "last_success": "2026-11-01T15:51:07.005Z",
+          "last_changed": "2026-11-01T14:51:08.287Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030768|200399909",
+          "last_success": "2026-11-01T15:51:07.005Z",
+          "last_changed": "2026-11-01T14:51:08.287Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030799|200399930",
+          "last_success": "2026-11-01T15:51:07.081Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030799|200399482",
+          "last_success": "2026-11-01T15:51:07.081Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030799|200399927",
+          "last_success": "2026-11-01T15:51:07.081Z",
+          "last_changed": null
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030765|200399932",
+          "last_success": "2026-11-01T15:51:07.049Z",
+          "last_changed": "2026-11-01T14:51:08.405Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030777|200399910",
+          "last_success": "2026-11-01T15:51:05.738Z",
+          "last_changed": "2026-11-01T15:51:05.738Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030777|200399970",
+          "last_success": "2026-11-01T15:51:05.738Z",
+          "last_changed": "2026-11-01T15:51:05.738Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030701|200399164",
+          "last_success": "2026-11-01T15:51:06.693Z",
+          "last_changed": "2026-11-01T15:51:06.693Z"
+        },
+        {
+          "table": "live-entries",
+          "key": "200000076|2026-11-01|200030617|200399819",
+          "last_success": "2026-11-01T15:51:06.840Z",
+          "last_changed": "2026-11-01T15:51:06.840Z"
+        }
+      ],
+      "archives": [
+        {
+          "at": "2026-11-01T15:51:05.870Z",
+          "kind": "class-200030823",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030823\\365d386e11e5a882488e5931df58c2262176bda7d25cbfc0474d9e48617cedf7.json.gz",
+          "records": 1,
+          "sha256": "365d386e11e5a882488e5931df58c2262176bda7d25cbfc0474d9e48617cedf7",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:05.876Z",
+          "kind": "class-200030789",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030789\\42c9ece2cd923c5b5efeeaafc3e5ee062a54518140d2cbb5e051d0b3378f772b.json.gz",
+          "records": 1,
+          "sha256": "42c9ece2cd923c5b5efeeaafc3e5ee062a54518140d2cbb5e051d0b3378f772b",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:05.917Z",
+          "kind": "class-200030777",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030777\\5bcf63a5f50058cba948a4e88fa8aaf79115d4026d377b7e254e99d122b548a5.json.gz",
+          "records": 1,
+          "sha256": "5bcf63a5f50058cba948a4e88fa8aaf79115d4026d377b7e254e99d122b548a5",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:05.923Z",
+          "kind": "class-200030826",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030826\\9867df1e94908fb31f609f544cf376025ccdbc80537d39b1c32c88afe6cca650.json.gz",
+          "records": 1,
+          "sha256": "9867df1e94908fb31f609f544cf376025ccdbc80537d39b1c32c88afe6cca650",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:05.994Z",
+          "kind": "class-200030718",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030718\\34b75875305a43fed1303ea79cacd36a9b032dacfe798e629179ce84fe06d72a.json.gz",
+          "records": 1,
+          "sha256": "34b75875305a43fed1303ea79cacd36a9b032dacfe798e629179ce84fe06d72a",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.060Z",
+          "kind": "class-200030589",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030589\\f464630a998dd0438537aff81ceba6aaff37506d81f5c35df4ca810e153f1b0e.json.gz",
+          "records": 1,
+          "sha256": "f464630a998dd0438537aff81ceba6aaff37506d81f5c35df4ca810e153f1b0e",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.075Z",
+          "kind": "class-200030588",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030588\\6bd6daf55262083105b730fa69bce1baa5372fe6ee063df35ab643aa506f90da.json.gz",
+          "records": 1,
+          "sha256": "6bd6daf55262083105b730fa69bce1baa5372fe6ee063df35ab643aa506f90da",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.105Z",
+          "kind": "class-200030779",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030779\\1fe44bc6283d3a41de2d4f836e668af214eb29c8d4508680b2e98e0be5280226.json.gz",
+          "records": 1,
+          "sha256": "1fe44bc6283d3a41de2d4f836e668af214eb29c8d4508680b2e98e0be5280226",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.167Z",
+          "kind": "class-200030685",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030685\\321a11502b6f8c82ac4cc9896d006e64eda13e8a817d1c63e6ed95948306fc5f.json.gz",
+          "records": 1,
+          "sha256": "321a11502b6f8c82ac4cc9896d006e64eda13e8a817d1c63e6ed95948306fc5f",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.176Z",
+          "kind": "class-200030603",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030603\\1ce87e9f3ce0edf25a34a2b9166225267407b85eee30bb8b4b74f9e588a78478.json.gz",
+          "records": 1,
+          "sha256": "1ce87e9f3ce0edf25a34a2b9166225267407b85eee30bb8b4b74f9e588a78478",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.201Z",
+          "kind": "class-200030604",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030604\\0804c60b08c6dcd9026f7e1cadc7569668c05d93071902817fa160b25a8390d0.json.gz",
+          "records": 1,
+          "sha256": "0804c60b08c6dcd9026f7e1cadc7569668c05d93071902817fa160b25a8390d0",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.242Z",
+          "kind": "class-200030676",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030676\\101086973a8539621172f36cfae3e64c9b3aaf8178bd5ec1f285ad7c248da913.json.gz",
+          "records": 1,
+          "sha256": "101086973a8539621172f36cfae3e64c9b3aaf8178bd5ec1f285ad7c248da913",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.275Z",
+          "kind": "class-200030743",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030743\\3bab06e55b031d4cb600fdae9141b4c986594e0a86720cb2bb138fda32fecb0b.json.gz",
+          "records": 1,
+          "sha256": "3bab06e55b031d4cb600fdae9141b4c986594e0a86720cb2bb138fda32fecb0b",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.285Z",
+          "kind": "class-200030746",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030746\\00ebafecbc5b2250beb38957a4d753c252244dcd1350707a6cb3f6e33d2f25cf.json.gz",
+          "records": 1,
+          "sha256": "00ebafecbc5b2250beb38957a4d753c252244dcd1350707a6cb3f6e33d2f25cf",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.315Z",
+          "kind": "class-200030808",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030808\\bba12aeede4601264047b2f11fe932183c6021b67d220c35d8e0e766b28bcf44.json.gz",
+          "records": 1,
+          "sha256": "bba12aeede4601264047b2f11fe932183c6021b67d220c35d8e0e766b28bcf44",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.366Z",
+          "kind": "class-200030749",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030749\\5675e4f83620c0f5af235aedc3457040e9f3e54bb3340d11ffc504ee29940408.json.gz",
+          "records": 1,
+          "sha256": "5675e4f83620c0f5af235aedc3457040e9f3e54bb3340d11ffc504ee29940408",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.379Z",
+          "kind": "class-200030752",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030752\\82f85a217a0e9130fa4f75cc75b98c664ec7285992acb3c9283410c5b95994a7.json.gz",
+          "records": 1,
+          "sha256": "82f85a217a0e9130fa4f75cc75b98c664ec7285992acb3c9283410c5b95994a7",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.409Z",
+          "kind": "class-200030759",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030759\\67b0a4269ce7b4208206c73584bb99b86af8e5fbe480952444da4eebab873b39.json.gz",
+          "records": 1,
+          "sha256": "67b0a4269ce7b4208206c73584bb99b86af8e5fbe480952444da4eebab873b39",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.419Z",
+          "kind": "class-200030811",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030811\\9f32fee4127bcc1ca75ae7394f79336cf711500e6f6085604826000d0976db47.json.gz",
+          "records": 1,
+          "sha256": "9f32fee4127bcc1ca75ae7394f79336cf711500e6f6085604826000d0976db47",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.467Z",
+          "kind": "class-200030762",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030762\\9b2e81cd610a64511a579432be460fcd1dd1f2ce63ad2150d1a5d99dfb4e0698.json.gz",
+          "records": 1,
+          "sha256": "9b2e81cd610a64511a579432be460fcd1dd1f2ce63ad2150d1a5d99dfb4e0698",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.499Z",
+          "kind": "class-200030803",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030803\\601d19c7202e49a74a11d489627bce8f2597ec6104669d3a5977498b996c9c0c.json.gz",
+          "records": 1,
+          "sha256": "601d19c7202e49a74a11d489627bce8f2597ec6104669d3a5977498b996c9c0c",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.532Z",
+          "kind": "class-200030697",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030697\\acf6f88d27e5ea18e6e84f9ee786b80c825ee7c8900e707f314872dd25878cc0.json.gz",
+          "records": 1,
+          "sha256": "acf6f88d27e5ea18e6e84f9ee786b80c825ee7c8900e707f314872dd25878cc0",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.534Z",
+          "kind": "class-200030659",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030659\\bbde52e6776ff271a58b10430b805c2208af6e0bb3cc893206c31d2bbed9abfa.json.gz",
+          "records": 1,
+          "sha256": "bbde52e6776ff271a58b10430b805c2208af6e0bb3cc893206c31d2bbed9abfa",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.576Z",
+          "kind": "class-200030660",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030660\\7080b97658c1869c48f51031ee91649a12f27ffc6692978ffec702f77d2f1d60.json.gz",
+          "records": 1,
+          "sha256": "7080b97658c1869c48f51031ee91649a12f27ffc6692978ffec702f77d2f1d60",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.624Z",
+          "kind": "class-200030647",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030647\\c99623940cd5e6c71149a7fcb50a4b8734222a302473ac1860df8105d8c6578e.json.gz",
+          "records": 1,
+          "sha256": "c99623940cd5e6c71149a7fcb50a4b8734222a302473ac1860df8105d8c6578e",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.634Z",
+          "kind": "class-200030648",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030648\\1735c44207d05b1a426f91d34ed55387e4baeda479c5dc1f87ea9a97b9f9e59c.json.gz",
+          "records": 1,
+          "sha256": "1735c44207d05b1a426f91d34ed55387e4baeda479c5dc1f87ea9a97b9f9e59c",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.645Z",
+          "kind": "class-200030699",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030699\\49e7f1aa6df52f757f01f97d27682f82cb62a8e5110dc6f448cd9eb2ef6dbc1a.json.gz",
+          "records": 1,
+          "sha256": "49e7f1aa6df52f757f01f97d27682f82cb62a8e5110dc6f448cd9eb2ef6dbc1a",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.685Z",
+          "kind": "class-200030638",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030638\\58c155cdb499325eed021c3df776c9df6d0d32c99e34e1a71cb4be75431a00fb.json.gz",
+          "records": 1,
+          "sha256": "58c155cdb499325eed021c3df776c9df6d0d32c99e34e1a71cb4be75431a00fb",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.753Z",
+          "kind": "class-200030678",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030678\\d916d0cbf950a612663800d44b7de777eecc8aedc2f4cc19c6e63e218adada58.json.gz",
+          "records": 1,
+          "sha256": "d916d0cbf950a612663800d44b7de777eecc8aedc2f4cc19c6e63e218adada58",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.790Z",
+          "kind": "class-200030701",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030701\\fb677462a0600e30d23d220b0d3465877c33380dfef70437e9ca13d47c05029c.json.gz",
+          "records": 1,
+          "sha256": "fb677462a0600e30d23d220b0d3465877c33380dfef70437e9ca13d47c05029c",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.792Z",
+          "kind": "class-200030639",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030639\\a2fa3f9beeeb713dd549bec49a7a8619d642d35776c193533cfb8e9aada50928.json.gz",
+          "records": 1,
+          "sha256": "a2fa3f9beeeb713dd549bec49a7a8619d642d35776c193533cfb8e9aada50928",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.838Z",
+          "kind": "class-200030613",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030613\\f8a6f231e27647a2599fb5cd6091317dd893464311fd9cb0d1cdbf92954bccd1.json.gz",
+          "records": 1,
+          "sha256": "f8a6f231e27647a2599fb5cd6091317dd893464311fd9cb0d1cdbf92954bccd1",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.887Z",
+          "kind": "class-200030614",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030614\\08a1a982601baf8944a1d0fe49526909fff6181ed09a1fdd788b39eb0ff60fb1.json.gz",
+          "records": 1,
+          "sha256": "08a1a982601baf8944a1d0fe49526909fff6181ed09a1fdd788b39eb0ff60fb1",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.938Z",
+          "kind": "class-200030617",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030617\\3a3de0adbc869380a801a4ac9d80704410e197a79cd8c19519890d5eab6abe09.json.gz",
+          "records": 1,
+          "sha256": "3a3de0adbc869380a801a4ac9d80704410e197a79cd8c19519890d5eab6abe09",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:06.956Z",
+          "kind": "class-200030830",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030830\\d9f1b2a55361a3f3520d207194f004797bc62be8b70b9f6b34b0238ec47c3f45.json.gz",
+          "records": 1,
+          "sha256": "d9f1b2a55361a3f3520d207194f004797bc62be8b70b9f6b34b0238ec47c3f45",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:07.001Z",
+          "kind": "class-200030618",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030618\\94df438d725d67b5a9e8c3b9fe211d6961ffe17cc261cee60b16729962a2a28f.json.gz",
+          "records": 1,
+          "sha256": "94df438d725d67b5a9e8c3b9fe211d6961ffe17cc261cee60b16729962a2a28f",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:07.027Z",
+          "kind": "class-200030771",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030771\\c2df37e5ce121b25b27d5a0b4d8e7613a3ee2a4ea63a6b8c74381f3c8302c09f.json.gz",
+          "records": 1,
+          "sha256": "c2df37e5ce121b25b27d5a0b4d8e7613a3ee2a4ea63a6b8c74381f3c8302c09f",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:07.063Z",
+          "kind": "class-200030820",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030820\\8852ab9b65d595b2df58cb0935c1b427c62486cfbb298a0f5677be4c76e47327.json.gz",
+          "records": 1,
+          "sha256": "8852ab9b65d595b2df58cb0935c1b427c62486cfbb298a0f5677be4c76e47327",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:07.076Z",
+          "kind": "class-200030768",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030768\\13250df77279e55fbad0821fe28f5246d73a6d9b3043b483638c83d9cce30010.json.gz",
+          "records": 1,
+          "sha256": "13250df77279e55fbad0821fe28f5246d73a6d9b3043b483638c83d9cce30010",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:07.128Z",
+          "kind": "class-200030799",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030799\\e47af3d919d9d72ee812f8a0be002f7214ac088ad5a82d8f2c83331caca0d383.json.gz",
+          "records": 1,
+          "sha256": "e47af3d919d9d72ee812f8a0be002f7214ac088ad5a82d8f2c83331caca0d383",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        },
+        {
+          "at": "2026-11-01T15:51:07.135Z",
+          "kind": "class-200030765",
+          "outcome": "Reused",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\class-200030765\\2413c41b1d5ca1ae35c8fa0b7ba5331e18a7bd238f4865ec9474ad80b988e329.json.gz",
+          "records": 1,
+          "sha256": "2413c41b1d5ca1ae35c8fa0b7ba5331e18a7bd238f4865ec9474ad80b988e329",
+          "shows": [
+            200000076
+          ],
+          "dates": [
+            "2026-11-01"
+          ]
+        }
+      ],
+      "timings": {
+        "collection_ms": 1449.2047000000002,
+        "save_ms": 2792.5448,
+        "collection_started": "2026-11-01T15:51:05.685Z",
+        "collection_completed": "2026-11-01T15:51:07.134Z",
+        "requests": [
+          {
+            "label": "class-200030777",
+            "started": "2026-11-01T15:51:05.687Z",
+            "completed": "2026-11-01T15:51:05.738Z"
+          },
+          {
+            "label": "class-200030826",
+            "started": "2026-11-01T15:51:05.685Z",
+            "completed": "2026-11-01T15:51:05.765Z"
+          },
+          {
+            "label": "class-200030823",
+            "started": "2026-11-01T15:51:05.689Z",
+            "completed": "2026-11-01T15:51:05.808Z"
+          },
+          {
+            "label": "class-200030789",
+            "started": "2026-11-01T15:51:05.692Z",
+            "completed": "2026-11-01T15:51:05.809Z"
+          },
+          {
+            "label": "identity-200030823",
+            "started": "2026-11-01T15:51:05.691Z",
+            "completed": "2026-11-01T15:51:05.868Z"
+          },
+          {
+            "label": "identity-200030789",
+            "started": "2026-11-01T15:51:05.694Z",
+            "completed": "2026-11-01T15:51:05.874Z"
+          },
+          {
+            "label": "identity-200030777",
+            "started": "2026-11-01T15:51:05.688Z",
+            "completed": "2026-11-01T15:51:05.912Z"
+          },
+          {
+            "label": "identity-200030826",
+            "started": "2026-11-01T15:51:05.686Z",
+            "completed": "2026-11-01T15:51:05.921Z"
+          },
+          {
+            "label": "class-200030779",
+            "started": "2026-11-01T15:51:05.872Z",
+            "completed": "2026-11-01T15:51:05.925Z"
+          },
+          {
+            "label": "class-200030718",
+            "started": "2026-11-01T15:51:05.877Z",
+            "completed": "2026-11-01T15:51:05.930Z"
+          },
+          {
+            "label": "class-200030588",
+            "started": "2026-11-01T15:51:05.918Z",
+            "completed": "2026-11-01T15:51:05.971Z"
+          },
+          {
+            "label": "class-200030589",
+            "started": "2026-11-01T15:51:05.924Z",
+            "completed": "2026-11-01T15:51:05.972Z"
+          },
+          {
+            "label": "identity-200030718",
+            "started": "2026-11-01T15:51:05.879Z",
+            "completed": "2026-11-01T15:51:05.993Z"
+          },
+          {
+            "label": "class-200030685",
+            "started": "2026-11-01T15:51:05.994Z",
+            "completed": "2026-11-01T15:51:06.046Z"
+          },
+          {
+            "label": "identity-200030589",
+            "started": "2026-11-01T15:51:05.924Z",
+            "completed": "2026-11-01T15:51:06.058Z"
+          },
+          {
+            "label": "identity-200030588",
+            "started": "2026-11-01T15:51:05.918Z",
+            "completed": "2026-11-01T15:51:06.072Z"
+          },
+          {
+            "label": "identity-200030779",
+            "started": "2026-11-01T15:51:05.873Z",
+            "completed": "2026-11-01T15:51:06.101Z"
+          },
+          {
+            "label": "class-200030603",
+            "started": "2026-11-01T15:51:06.061Z",
+            "completed": "2026-11-01T15:51:06.110Z"
+          },
+          {
+            "label": "class-200030604",
+            "started": "2026-11-01T15:51:06.075Z",
+            "completed": "2026-11-01T15:51:06.127Z"
+          },
+          {
+            "label": "class-200030676",
+            "started": "2026-11-01T15:51:06.106Z",
+            "completed": "2026-11-01T15:51:06.154Z"
+          },
+          {
+            "label": "identity-200030685",
+            "started": "2026-11-01T15:51:05.994Z",
+            "completed": "2026-11-01T15:51:06.165Z"
+          },
+          {
+            "label": "identity-200030603",
+            "started": "2026-11-01T15:51:06.062Z",
+            "completed": "2026-11-01T15:51:06.175Z"
+          },
+          {
+            "label": "identity-200030604",
+            "started": "2026-11-01T15:51:06.076Z",
+            "completed": "2026-11-01T15:51:06.198Z"
+          },
+          {
+            "label": "class-200030743",
+            "started": "2026-11-01T15:51:06.167Z",
+            "completed": "2026-11-01T15:51:06.216Z"
+          },
+          {
+            "label": "class-200030746",
+            "started": "2026-11-01T15:51:06.176Z",
+            "completed": "2026-11-01T15:51:06.226Z"
+          },
+          {
+            "label": "identity-200030676",
+            "started": "2026-11-01T15:51:06.107Z",
+            "completed": "2026-11-01T15:51:06.240Z"
+          },
+          {
+            "label": "class-200030808",
+            "started": "2026-11-01T15:51:06.201Z",
+            "completed": "2026-11-01T15:51:06.249Z"
+          },
+          {
+            "label": "identity-200030743",
+            "started": "2026-11-01T15:51:06.168Z",
+            "completed": "2026-11-01T15:51:06.274Z"
+          },
+          {
+            "label": "identity-200030746",
+            "started": "2026-11-01T15:51:06.177Z",
+            "completed": "2026-11-01T15:51:06.284Z"
+          },
+          {
+            "label": "class-200030749",
+            "started": "2026-11-01T15:51:06.242Z",
+            "completed": "2026-11-01T15:51:06.291Z"
+          },
+          {
+            "label": "identity-200030808",
+            "started": "2026-11-01T15:51:06.202Z",
+            "completed": "2026-11-01T15:51:06.314Z"
+          },
+          {
+            "label": "class-200030752",
+            "started": "2026-11-01T15:51:06.275Z",
+            "completed": "2026-11-01T15:51:06.325Z"
+          },
+          {
+            "label": "class-200030759",
+            "started": "2026-11-01T15:51:06.285Z",
+            "completed": "2026-11-01T15:51:06.334Z"
+          },
+          {
+            "label": "class-200030811",
+            "started": "2026-11-01T15:51:06.315Z",
+            "completed": "2026-11-01T15:51:06.364Z"
+          },
+          {
+            "label": "identity-200030749",
+            "started": "2026-11-01T15:51:06.242Z",
+            "completed": "2026-11-01T15:51:06.365Z"
+          },
+          {
+            "label": "identity-200030752",
+            "started": "2026-11-01T15:51:06.275Z",
+            "completed": "2026-11-01T15:51:06.377Z"
+          },
+          {
+            "label": "identity-200030759",
+            "started": "2026-11-01T15:51:06.285Z",
+            "completed": "2026-11-01T15:51:06.407Z"
+          },
+          {
+            "label": "class-200030762",
+            "started": "2026-11-01T15:51:06.367Z",
+            "completed": "2026-11-01T15:51:06.414Z"
+          },
+          {
+            "label": "identity-200030811",
+            "started": "2026-11-01T15:51:06.315Z",
+            "completed": "2026-11-01T15:51:06.419Z"
+          },
+          {
+            "label": "class-200030803",
+            "started": "2026-11-01T15:51:06.379Z",
+            "completed": "2026-11-01T15:51:06.428Z"
+          },
+          {
+            "label": "class-200030697",
+            "started": "2026-11-01T15:51:06.409Z",
+            "completed": "2026-11-01T15:51:06.456Z"
+          },
+          {
+            "label": "identity-200030762",
+            "started": "2026-11-01T15:51:06.367Z",
+            "completed": "2026-11-01T15:51:06.467Z"
+          },
+          {
+            "label": "class-200030659",
+            "started": "2026-11-01T15:51:06.419Z",
+            "completed": "2026-11-01T15:51:06.468Z"
+          },
+          {
+            "label": "identity-200030803",
+            "started": "2026-11-01T15:51:06.379Z",
+            "completed": "2026-11-01T15:51:06.497Z"
+          },
+          {
+            "label": "class-200030660",
+            "started": "2026-11-01T15:51:06.468Z",
+            "completed": "2026-11-01T15:51:06.522Z"
+          },
+          {
+            "label": "identity-200030697",
+            "started": "2026-11-01T15:51:06.410Z",
+            "completed": "2026-11-01T15:51:06.531Z"
+          },
+          {
+            "label": "identity-200030659",
+            "started": "2026-11-01T15:51:06.420Z",
+            "completed": "2026-11-01T15:51:06.533Z"
+          },
+          {
+            "label": "class-200030647",
+            "started": "2026-11-01T15:51:06.499Z",
+            "completed": "2026-11-01T15:51:06.551Z"
+          },
+          {
+            "label": "identity-200030660",
+            "started": "2026-11-01T15:51:06.468Z",
+            "completed": "2026-11-01T15:51:06.575Z"
+          },
+          {
+            "label": "class-200030648",
+            "started": "2026-11-01T15:51:06.532Z",
+            "completed": "2026-11-01T15:51:06.581Z"
+          },
+          {
+            "label": "class-200030699",
+            "started": "2026-11-01T15:51:06.534Z",
+            "completed": "2026-11-01T15:51:06.582Z"
+          },
+          {
+            "label": "identity-200030647",
+            "started": "2026-11-01T15:51:06.500Z",
+            "completed": "2026-11-01T15:51:06.623Z"
+          },
+          {
+            "label": "class-200030638",
+            "started": "2026-11-01T15:51:06.576Z",
+            "completed": "2026-11-01T15:51:06.628Z"
+          },
+          {
+            "label": "identity-200030648",
+            "started": "2026-11-01T15:51:06.532Z",
+            "completed": "2026-11-01T15:51:06.634Z"
+          },
+          {
+            "label": "identity-200030699",
+            "started": "2026-11-01T15:51:06.534Z",
+            "completed": "2026-11-01T15:51:06.644Z"
+          },
+          {
+            "label": "class-200030639",
+            "started": "2026-11-01T15:51:06.624Z",
+            "completed": "2026-11-01T15:51:06.673Z"
+          },
+          {
+            "label": "class-200030678",
+            "started": "2026-11-01T15:51:06.634Z",
+            "completed": "2026-11-01T15:51:06.683Z"
+          },
+          {
+            "label": "identity-200030638",
+            "started": "2026-11-01T15:51:06.577Z",
+            "completed": "2026-11-01T15:51:06.684Z"
+          },
+          {
+            "label": "class-200030701",
+            "started": "2026-11-01T15:51:06.645Z",
+            "completed": "2026-11-01T15:51:06.693Z"
+          },
+          {
+            "label": "class-200030613",
+            "started": "2026-11-01T15:51:06.685Z",
+            "completed": "2026-11-01T15:51:06.734Z"
+          },
+          {
+            "label": "identity-200030678",
+            "started": "2026-11-01T15:51:06.635Z",
+            "completed": "2026-11-01T15:51:06.752Z"
+          },
+          {
+            "label": "identity-200030701",
+            "started": "2026-11-01T15:51:06.645Z",
+            "completed": "2026-11-01T15:51:06.784Z"
+          },
+          {
+            "label": "identity-200030639",
+            "started": "2026-11-01T15:51:06.624Z",
+            "completed": "2026-11-01T15:51:06.791Z"
+          },
+          {
+            "label": "class-200030614",
+            "started": "2026-11-01T15:51:06.753Z",
+            "completed": "2026-11-01T15:51:06.806Z"
+          },
+          {
+            "label": "identity-200030613",
+            "started": "2026-11-01T15:51:06.685Z",
+            "completed": "2026-11-01T15:51:06.833Z"
+          },
+          {
+            "label": "class-200030830",
+            "started": "2026-11-01T15:51:06.790Z",
+            "completed": "2026-11-01T15:51:06.839Z"
+          },
+          {
+            "label": "class-200030617",
+            "started": "2026-11-01T15:51:06.792Z",
+            "completed": "2026-11-01T15:51:06.840Z"
+          },
+          {
+            "label": "identity-200030614",
+            "started": "2026-11-01T15:51:06.753Z",
+            "completed": "2026-11-01T15:51:06.883Z"
+          },
+          {
+            "label": "class-200030618",
+            "started": "2026-11-01T15:51:06.838Z",
+            "completed": "2026-11-01T15:51:06.889Z"
+          },
+          {
+            "label": "identity-200030617",
+            "started": "2026-11-01T15:51:06.792Z",
+            "completed": "2026-11-01T15:51:06.927Z"
+          },
+          {
+            "label": "class-200030771",
+            "started": "2026-11-01T15:51:06.887Z",
+            "completed": "2026-11-01T15:51:06.939Z"
+          },
+          {
+            "label": "identity-200030830",
+            "started": "2026-11-01T15:51:06.790Z",
+            "completed": "2026-11-01T15:51:06.951Z"
+          },
+          {
+            "label": "class-200030820",
+            "started": "2026-11-01T15:51:06.938Z",
+            "completed": "2026-11-01T15:51:06.985Z"
+          },
+          {
+            "label": "identity-200030618",
+            "started": "2026-11-01T15:51:06.839Z",
+            "completed": "2026-11-01T15:51:06.995Z"
+          },
+          {
+            "label": "class-200030768",
+            "started": "2026-11-01T15:51:06.956Z",
+            "completed": "2026-11-01T15:51:07.005Z"
+          },
+          {
+            "label": "identity-200030771",
+            "started": "2026-11-01T15:51:06.888Z",
+            "completed": "2026-11-01T15:51:07.025Z"
+          },
+          {
+            "label": "class-200030765",
+            "started": "2026-11-01T15:51:07.001Z",
+            "completed": "2026-11-01T15:51:07.049Z"
+          },
+          {
+            "label": "identity-200030820",
+            "started": "2026-11-01T15:51:06.938Z",
+            "completed": "2026-11-01T15:51:07.062Z"
+          },
+          {
+            "label": "identity-200030768",
+            "started": "2026-11-01T15:51:06.957Z",
+            "completed": "2026-11-01T15:51:07.075Z"
+          },
+          {
+            "label": "class-200030799",
+            "started": "2026-11-01T15:51:07.027Z",
+            "completed": "2026-11-01T15:51:07.081Z"
+          },
+          {
+            "label": "identity-200030799",
+            "started": "2026-11-01T15:51:07.028Z",
+            "completed": "2026-11-01T15:51:07.127Z"
+          },
+          {
+            "label": "identity-200030765",
+            "started": "2026-11-01T15:51:07.002Z",
+            "completed": "2026-11-01T15:51:07.134Z"
+          }
+        ],
+        "save_started": "2026-11-01T15:51:07.136Z",
+        "saves": [
+          {
+            "table": "live-classes",
+            "started": "2026-11-01T15:51:07.136Z",
+            "completed": "2026-11-01T15:51:08.330Z",
+            "rows": 41,
+            "changed": 2,
+            "source_to_save": [
+              {
+                "key": "200000076|2026-11-01|200030823",
+                "source_response_at": "2026-11-01T15:51:05.808Z",
+                "elapsed_ms": 2522
+              },
+              {
+                "key": "200000076|2026-11-01|200030789",
+                "source_response_at": "2026-11-01T15:51:05.809Z",
+                "elapsed_ms": 2521
+              },
+              {
+                "key": "200000076|2026-11-01|200030826",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 2565
+              },
+              {
+                "key": "200000076|2026-11-01|200030718",
+                "source_response_at": "2026-11-01T15:51:05.930Z",
+                "elapsed_ms": 2400
+              },
+              {
+                "key": "200000076|2026-11-01|200030589",
+                "source_response_at": "2026-11-01T15:51:05.972Z",
+                "elapsed_ms": 2358
+              },
+              {
+                "key": "200000076|2026-11-01|200030588",
+                "source_response_at": "2026-11-01T15:51:05.971Z",
+                "elapsed_ms": 2359
+              },
+              {
+                "key": "200000076|2026-11-01|200030779",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 2405
+              },
+              {
+                "key": "200000076|2026-11-01|200030685",
+                "source_response_at": "2026-11-01T15:51:06.046Z",
+                "elapsed_ms": 2284
+              },
+              {
+                "key": "200000076|2026-11-01|200030603",
+                "source_response_at": "2026-11-01T15:51:06.110Z",
+                "elapsed_ms": 2220
+              },
+              {
+                "key": "200000076|2026-11-01|200030604",
+                "source_response_at": "2026-11-01T15:51:06.127Z",
+                "elapsed_ms": 2203
+              },
+              {
+                "key": "200000076|2026-11-01|200030676",
+                "source_response_at": "2026-11-01T15:51:06.154Z",
+                "elapsed_ms": 2176
+              },
+              {
+                "key": "200000076|2026-11-01|200030743",
+                "source_response_at": "2026-11-01T15:51:06.216Z",
+                "elapsed_ms": 2114
+              },
+              {
+                "key": "200000076|2026-11-01|200030746",
+                "source_response_at": "2026-11-01T15:51:06.226Z",
+                "elapsed_ms": 2104
+              },
+              {
+                "key": "200000076|2026-11-01|200030808",
+                "source_response_at": "2026-11-01T15:51:06.249Z",
+                "elapsed_ms": 2081
+              },
+              {
+                "key": "200000076|2026-11-01|200030749",
+                "source_response_at": "2026-11-01T15:51:06.291Z",
+                "elapsed_ms": 2039
+              },
+              {
+                "key": "200000076|2026-11-01|200030752",
+                "source_response_at": "2026-11-01T15:51:06.325Z",
+                "elapsed_ms": 2005
+              },
+              {
+                "key": "200000076|2026-11-01|200030759",
+                "source_response_at": "2026-11-01T15:51:06.334Z",
+                "elapsed_ms": 1996
+              },
+              {
+                "key": "200000076|2026-11-01|200030811",
+                "source_response_at": "2026-11-01T15:51:06.364Z",
+                "elapsed_ms": 1966
+              },
+              {
+                "key": "200000076|2026-11-01|200030762",
+                "source_response_at": "2026-11-01T15:51:06.414Z",
+                "elapsed_ms": 1916
+              },
+              {
+                "key": "200000076|2026-11-01|200030803",
+                "source_response_at": "2026-11-01T15:51:06.428Z",
+                "elapsed_ms": 1902
+              },
+              {
+                "key": "200000076|2026-11-01|200030697",
+                "source_response_at": "2026-11-01T15:51:06.456Z",
+                "elapsed_ms": 1874
+              },
+              {
+                "key": "200000076|2026-11-01|200030659",
+                "source_response_at": "2026-11-01T15:51:06.468Z",
+                "elapsed_ms": 1862
+              },
+              {
+                "key": "200000076|2026-11-01|200030660",
+                "source_response_at": "2026-11-01T15:51:06.522Z",
+                "elapsed_ms": 1808
+              },
+              {
+                "key": "200000076|2026-11-01|200030647",
+                "source_response_at": "2026-11-01T15:51:06.551Z",
+                "elapsed_ms": 1779
+              },
+              {
+                "key": "200000076|2026-11-01|200030648",
+                "source_response_at": "2026-11-01T15:51:06.581Z",
+                "elapsed_ms": 1749
+              },
+              {
+                "key": "200000076|2026-11-01|200030699",
+                "source_response_at": "2026-11-01T15:51:06.582Z",
+                "elapsed_ms": 1748
+              },
+              {
+                "key": "200000076|2026-11-01|200030638",
+                "source_response_at": "2026-11-01T15:51:06.628Z",
+                "elapsed_ms": 1702
+              },
+              {
+                "key": "200000076|2026-11-01|200030678",
+                "source_response_at": "2026-11-01T15:51:06.683Z",
+                "elapsed_ms": 1647
+              },
+              {
+                "key": "200000076|2026-11-01|200030701",
+                "source_response_at": "2026-11-01T15:51:06.693Z",
+                "elapsed_ms": 1637
+              },
+              {
+                "key": "200000076|2026-11-01|200030639",
+                "source_response_at": "2026-11-01T15:51:06.673Z",
+                "elapsed_ms": 1657
+              },
+              {
+                "key": "200000076|2026-11-01|200030613",
+                "source_response_at": "2026-11-01T15:51:06.734Z",
+                "elapsed_ms": 1596
+              },
+              {
+                "key": "200000076|2026-11-01|200030614",
+                "source_response_at": "2026-11-01T15:51:06.806Z",
+                "elapsed_ms": 1524
+              },
+              {
+                "key": "200000076|2026-11-01|200030830",
+                "source_response_at": "2026-11-01T15:51:06.839Z",
+                "elapsed_ms": 1491
+              },
+              {
+                "key": "200000076|2026-11-01|200030618",
+                "source_response_at": "2026-11-01T15:51:06.889Z",
+                "elapsed_ms": 1441
+              },
+              {
+                "key": "200000076|2026-11-01|200030771",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 1391
+              },
+              {
+                "key": "200000076|2026-11-01|200030820",
+                "source_response_at": "2026-11-01T15:51:06.985Z",
+                "elapsed_ms": 1345
+              },
+              {
+                "key": "200000076|2026-11-01|200030768",
+                "source_response_at": "2026-11-01T15:51:07.005Z",
+                "elapsed_ms": 1325
+              },
+              {
+                "key": "200000076|2026-11-01|200030799",
+                "source_response_at": "2026-11-01T15:51:07.081Z",
+                "elapsed_ms": 1249
+              },
+              {
+                "key": "200000076|2026-11-01|200030765",
+                "source_response_at": "2026-11-01T15:51:07.049Z",
+                "elapsed_ms": 1281
+              },
+              {
+                "key": "200000076|2026-11-01|200030777",
+                "source_response_at": "2026-11-01T15:51:05.738Z",
+                "elapsed_ms": 2592
+              },
+              {
+                "key": "200000076|2026-11-01|200030617",
+                "source_response_at": "2026-11-01T15:51:06.840Z",
+                "elapsed_ms": 1490
+              }
+            ]
+          },
+          {
+            "table": "live-entries",
+            "started": "2026-11-01T15:51:08.332Z",
+            "completed": "2026-11-01T15:51:09.931Z",
+            "rows": 145,
+            "changed": 4,
+            "source_to_save": [
+              {
+                "key": "200000076|2026-11-01|200030823|200399956",
+                "source_response_at": "2026-11-01T15:51:05.808Z",
+                "elapsed_ms": 4123
+              },
+              {
+                "key": "200000076|2026-11-01|200030823|200399805",
+                "source_response_at": "2026-11-01T15:51:05.808Z",
+                "elapsed_ms": 4123
+              },
+              {
+                "key": "200000076|2026-11-01|200030823|200399640",
+                "source_response_at": "2026-11-01T15:51:05.808Z",
+                "elapsed_ms": 4123
+              },
+              {
+                "key": "200000076|2026-11-01|200030823|200399922",
+                "source_response_at": "2026-11-01T15:51:05.808Z",
+                "elapsed_ms": 4123
+              },
+              {
+                "key": "200000076|2026-11-01|200030823|200399954",
+                "source_response_at": "2026-11-01T15:51:05.808Z",
+                "elapsed_ms": 4123
+              },
+              {
+                "key": "200000076|2026-11-01|200030789|200399859",
+                "source_response_at": "2026-11-01T15:51:05.809Z",
+                "elapsed_ms": 4122
+              },
+              {
+                "key": "200000076|2026-11-01|200030789|200398832",
+                "source_response_at": "2026-11-01T15:51:05.809Z",
+                "elapsed_ms": 4122
+              },
+              {
+                "key": "200000076|2026-11-01|200030789|200399907",
+                "source_response_at": "2026-11-01T15:51:05.809Z",
+                "elapsed_ms": 4122
+              },
+              {
+                "key": "200000076|2026-11-01|200030789|200399077",
+                "source_response_at": "2026-11-01T15:51:05.809Z",
+                "elapsed_ms": 4122
+              },
+              {
+                "key": "200000076|2026-11-01|200030789|200399577",
+                "source_response_at": "2026-11-01T15:51:05.809Z",
+                "elapsed_ms": 4122
+              },
+              {
+                "key": "200000076|2026-11-01|200030789|200398990",
+                "source_response_at": "2026-11-01T15:51:05.809Z",
+                "elapsed_ms": 4122
+              },
+              {
+                "key": "200000076|2026-11-01|200030789|200399371",
+                "source_response_at": "2026-11-01T15:51:05.809Z",
+                "elapsed_ms": 4122
+              },
+              {
+                "key": "200000076|2026-11-01|200030777|200399205",
+                "source_response_at": "2026-11-01T15:51:05.738Z",
+                "elapsed_ms": 4193
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200396722",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399524",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200398950",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399929",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399899",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399141",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399862",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399861",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200398981",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399163",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399069",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399894",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399841",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399651",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399853",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399316",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399904",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399082",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200398969",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399955",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399905",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200398951",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399882",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399915",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399007",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399115",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399086",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399906",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399902",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399704",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030826|200399345",
+                "source_response_at": "2026-11-01T15:51:05.765Z",
+                "elapsed_ms": 4166
+              },
+              {
+                "key": "200000076|2026-11-01|200030718|200399173",
+                "source_response_at": "2026-11-01T15:51:05.930Z",
+                "elapsed_ms": 4001
+              },
+              {
+                "key": "200000076|2026-11-01|200030718|200399891",
+                "source_response_at": "2026-11-01T15:51:05.930Z",
+                "elapsed_ms": 4001
+              },
+              {
+                "key": "200000076|2026-11-01|200030718|200399582",
+                "source_response_at": "2026-11-01T15:51:05.930Z",
+                "elapsed_ms": 4001
+              },
+              {
+                "key": "200000076|2026-11-01|200030589|200399794",
+                "source_response_at": "2026-11-01T15:51:05.972Z",
+                "elapsed_ms": 3959
+              },
+              {
+                "key": "200000076|2026-11-01|200030589|200399453",
+                "source_response_at": "2026-11-01T15:51:05.972Z",
+                "elapsed_ms": 3959
+              },
+              {
+                "key": "200000076|2026-11-01|200030589|200399786",
+                "source_response_at": "2026-11-01T15:51:05.972Z",
+                "elapsed_ms": 3959
+              },
+              {
+                "key": "200000076|2026-11-01|200030589|200398967",
+                "source_response_at": "2026-11-01T15:51:05.972Z",
+                "elapsed_ms": 3959
+              },
+              {
+                "key": "200000076|2026-11-01|200030589|200399595",
+                "source_response_at": "2026-11-01T15:51:05.972Z",
+                "elapsed_ms": 3959
+              },
+              {
+                "key": "200000076|2026-11-01|200030589|200398943",
+                "source_response_at": "2026-11-01T15:51:05.972Z",
+                "elapsed_ms": 3959
+              },
+              {
+                "key": "200000076|2026-11-01|200030588|200399452",
+                "source_response_at": "2026-11-01T15:51:05.971Z",
+                "elapsed_ms": 3960
+              },
+              {
+                "key": "200000076|2026-11-01|200030588|200398966",
+                "source_response_at": "2026-11-01T15:51:05.971Z",
+                "elapsed_ms": 3960
+              },
+              {
+                "key": "200000076|2026-11-01|200030588|200399790",
+                "source_response_at": "2026-11-01T15:51:05.971Z",
+                "elapsed_ms": 3960
+              },
+              {
+                "key": "200000076|2026-11-01|200030588|200398942",
+                "source_response_at": "2026-11-01T15:51:05.971Z",
+                "elapsed_ms": 3960
+              },
+              {
+                "key": "200000076|2026-11-01|200030588|200399792",
+                "source_response_at": "2026-11-01T15:51:05.971Z",
+                "elapsed_ms": 3960
+              },
+              {
+                "key": "200000076|2026-11-01|200030588|200399594",
+                "source_response_at": "2026-11-01T15:51:05.971Z",
+                "elapsed_ms": 3960
+              },
+              {
+                "key": "200000076|2026-11-01|200030779|200399843",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 4006
+              },
+              {
+                "key": "200000076|2026-11-01|200030779|200399854",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 4006
+              },
+              {
+                "key": "200000076|2026-11-01|200030779|200399933",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 4006
+              },
+              {
+                "key": "200000076|2026-11-01|200030779|200399898",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 4006
+              },
+              {
+                "key": "200000076|2026-11-01|200030779|200399676",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 4006
+              },
+              {
+                "key": "200000076|2026-11-01|200030779|200399763",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 4006
+              },
+              {
+                "key": "200000076|2026-11-01|200030779|200399860",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 4006
+              },
+              {
+                "key": "200000076|2026-11-01|200030779|200399911",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 4006
+              },
+              {
+                "key": "200000076|2026-11-01|200030779|200399619",
+                "source_response_at": "2026-11-01T15:51:05.925Z",
+                "elapsed_ms": 4006
+              },
+              {
+                "key": "200000076|2026-11-01|200030685|200399610",
+                "source_response_at": "2026-11-01T15:51:06.046Z",
+                "elapsed_ms": 3885
+              },
+              {
+                "key": "200000076|2026-11-01|200030685|200399730",
+                "source_response_at": "2026-11-01T15:51:06.046Z",
+                "elapsed_ms": 3885
+              },
+              {
+                "key": "200000076|2026-11-01|200030685|200399884",
+                "source_response_at": "2026-11-01T15:51:06.046Z",
+                "elapsed_ms": 3885
+              },
+              {
+                "key": "200000076|2026-11-01|200030685|200399616",
+                "source_response_at": "2026-11-01T15:51:06.046Z",
+                "elapsed_ms": 3885
+              },
+              {
+                "key": "200000076|2026-11-01|200030685|200399175",
+                "source_response_at": "2026-11-01T15:51:06.046Z",
+                "elapsed_ms": 3885
+              },
+              {
+                "key": "200000076|2026-11-01|200030603|200399119",
+                "source_response_at": "2026-11-01T15:51:06.110Z",
+                "elapsed_ms": 3821
+              },
+              {
+                "key": "200000076|2026-11-01|200030603|200399775",
+                "source_response_at": "2026-11-01T15:51:06.110Z",
+                "elapsed_ms": 3821
+              },
+              {
+                "key": "200000076|2026-11-01|200030603|200399835",
+                "source_response_at": "2026-11-01T15:51:06.110Z",
+                "elapsed_ms": 3821
+              },
+              {
+                "key": "200000076|2026-11-01|200030604|200399833",
+                "source_response_at": "2026-11-01T15:51:06.127Z",
+                "elapsed_ms": 3804
+              },
+              {
+                "key": "200000076|2026-11-01|200030604|200399120",
+                "source_response_at": "2026-11-01T15:51:06.127Z",
+                "elapsed_ms": 3804
+              },
+              {
+                "key": "200000076|2026-11-01|200030604|200399776",
+                "source_response_at": "2026-11-01T15:51:06.127Z",
+                "elapsed_ms": 3804
+              },
+              {
+                "key": "200000076|2026-11-01|200030676|200400022",
+                "source_response_at": "2026-11-01T15:51:06.154Z",
+                "elapsed_ms": 3777
+              },
+              {
+                "key": "200000076|2026-11-01|200030743|200399270",
+                "source_response_at": "2026-11-01T15:51:06.216Z",
+                "elapsed_ms": 3715
+              },
+              {
+                "key": "200000076|2026-11-01|200030743|200399185",
+                "source_response_at": "2026-11-01T15:51:06.216Z",
+                "elapsed_ms": 3715
+              },
+              {
+                "key": "200000076|2026-11-01|200030746|200399188",
+                "source_response_at": "2026-11-01T15:51:06.226Z",
+                "elapsed_ms": 3705
+              },
+              {
+                "key": "200000076|2026-11-01|200030746|200399267",
+                "source_response_at": "2026-11-01T15:51:06.226Z",
+                "elapsed_ms": 3705
+              },
+              {
+                "key": "200000076|2026-11-01|200030749|200399659",
+                "source_response_at": "2026-11-01T15:51:06.291Z",
+                "elapsed_ms": 3640
+              },
+              {
+                "key": "200000076|2026-11-01|200030752|200399661",
+                "source_response_at": "2026-11-01T15:51:06.325Z",
+                "elapsed_ms": 3606
+              },
+              {
+                "key": "200000076|2026-11-01|200030759|200399877",
+                "source_response_at": "2026-11-01T15:51:06.334Z",
+                "elapsed_ms": 3597
+              },
+              {
+                "key": "200000076|2026-11-01|200030759|200399903",
+                "source_response_at": "2026-11-01T15:51:06.334Z",
+                "elapsed_ms": 3597
+              },
+              {
+                "key": "200000076|2026-11-01|200030759|200400018",
+                "source_response_at": "2026-11-01T15:51:06.334Z",
+                "elapsed_ms": 3597
+              },
+              {
+                "key": "200000076|2026-11-01|200030803|200399575",
+                "source_response_at": "2026-11-01T15:51:06.428Z",
+                "elapsed_ms": 3503
+              },
+              {
+                "key": "200000076|2026-11-01|200030803|200399282",
+                "source_response_at": "2026-11-01T15:51:06.428Z",
+                "elapsed_ms": 3503
+              },
+              {
+                "key": "200000076|2026-11-01|200030803|200399343",
+                "source_response_at": "2026-11-01T15:51:06.428Z",
+                "elapsed_ms": 3503
+              },
+              {
+                "key": "200000076|2026-11-01|200030659|200398958",
+                "source_response_at": "2026-11-01T15:51:06.468Z",
+                "elapsed_ms": 3463
+              },
+              {
+                "key": "200000076|2026-11-01|200030659|200399254",
+                "source_response_at": "2026-11-01T15:51:06.468Z",
+                "elapsed_ms": 3463
+              },
+              {
+                "key": "200000076|2026-11-01|200030660|200398959",
+                "source_response_at": "2026-11-01T15:51:06.522Z",
+                "elapsed_ms": 3409
+              },
+              {
+                "key": "200000076|2026-11-01|200030660|200399255",
+                "source_response_at": "2026-11-01T15:51:06.522Z",
+                "elapsed_ms": 3409
+              },
+              {
+                "key": "200000076|2026-11-01|200030647|200399105",
+                "source_response_at": "2026-11-01T15:51:06.551Z",
+                "elapsed_ms": 3380
+              },
+              {
+                "key": "200000076|2026-11-01|200030648|200399106",
+                "source_response_at": "2026-11-01T15:51:06.581Z",
+                "elapsed_ms": 3350
+              },
+              {
+                "key": "200000076|2026-11-01|200030638|200399830",
+                "source_response_at": "2026-11-01T15:51:06.628Z",
+                "elapsed_ms": 3303
+              },
+              {
+                "key": "200000076|2026-11-01|200030638|200399057",
+                "source_response_at": "2026-11-01T15:51:06.628Z",
+                "elapsed_ms": 3303
+              },
+              {
+                "key": "200000076|2026-11-01|200030678|200399059",
+                "source_response_at": "2026-11-01T15:51:06.683Z",
+                "elapsed_ms": 3248
+              },
+              {
+                "key": "200000076|2026-11-01|200030639|200399828",
+                "source_response_at": "2026-11-01T15:51:06.673Z",
+                "elapsed_ms": 3258
+              },
+              {
+                "key": "200000076|2026-11-01|200030639|200399058",
+                "source_response_at": "2026-11-01T15:51:06.673Z",
+                "elapsed_ms": 3258
+              },
+              {
+                "key": "200000076|2026-11-01|200030613|200399599",
+                "source_response_at": "2026-11-01T15:51:06.734Z",
+                "elapsed_ms": 3197
+              },
+              {
+                "key": "200000076|2026-11-01|200030613|200399682",
+                "source_response_at": "2026-11-01T15:51:06.734Z",
+                "elapsed_ms": 3197
+              },
+              {
+                "key": "200000076|2026-11-01|200030613|200399687",
+                "source_response_at": "2026-11-01T15:51:06.734Z",
+                "elapsed_ms": 3197
+              },
+              {
+                "key": "200000076|2026-11-01|200030614|200399600",
+                "source_response_at": "2026-11-01T15:51:06.806Z",
+                "elapsed_ms": 3125
+              },
+              {
+                "key": "200000076|2026-11-01|200030614|200399685",
+                "source_response_at": "2026-11-01T15:51:06.806Z",
+                "elapsed_ms": 3125
+              },
+              {
+                "key": "200000076|2026-11-01|200030614|200399693",
+                "source_response_at": "2026-11-01T15:51:06.806Z",
+                "elapsed_ms": 3125
+              },
+              {
+                "key": "200000076|2026-11-01|200030617|200399487",
+                "source_response_at": "2026-11-01T15:51:06.840Z",
+                "elapsed_ms": 3091
+              },
+              {
+                "key": "200000076|2026-11-01|200030617|200399701",
+                "source_response_at": "2026-11-01T15:51:06.840Z",
+                "elapsed_ms": 3091
+              },
+              {
+                "key": "200000076|2026-11-01|200030617|200399814",
+                "source_response_at": "2026-11-01T15:51:06.840Z",
+                "elapsed_ms": 3091
+              },
+              {
+                "key": "200000076|2026-11-01|200030830|200399601",
+                "source_response_at": "2026-11-01T15:51:06.839Z",
+                "elapsed_ms": 3092
+              },
+              {
+                "key": "200000076|2026-11-01|200030830|200399821",
+                "source_response_at": "2026-11-01T15:51:06.839Z",
+                "elapsed_ms": 3092
+              },
+              {
+                "key": "200000076|2026-11-01|200030830|200399692",
+                "source_response_at": "2026-11-01T15:51:06.839Z",
+                "elapsed_ms": 3092
+              },
+              {
+                "key": "200000076|2026-11-01|200030830|200399822",
+                "source_response_at": "2026-11-01T15:51:06.839Z",
+                "elapsed_ms": 3092
+              },
+              {
+                "key": "200000076|2026-11-01|200030830|200399681",
+                "source_response_at": "2026-11-01T15:51:06.839Z",
+                "elapsed_ms": 3092
+              },
+              {
+                "key": "200000076|2026-11-01|200030830|200399812",
+                "source_response_at": "2026-11-01T15:51:06.839Z",
+                "elapsed_ms": 3092
+              },
+              {
+                "key": "200000076|2026-11-01|200030830|200399817",
+                "source_response_at": "2026-11-01T15:51:06.839Z",
+                "elapsed_ms": 3092
+              },
+              {
+                "key": "200000076|2026-11-01|200030618|200399488",
+                "source_response_at": "2026-11-01T15:51:06.889Z",
+                "elapsed_ms": 3042
+              },
+              {
+                "key": "200000076|2026-11-01|200030618|200399699",
+                "source_response_at": "2026-11-01T15:51:06.889Z",
+                "elapsed_ms": 3042
+              },
+              {
+                "key": "200000076|2026-11-01|200030618|200399811",
+                "source_response_at": "2026-11-01T15:51:06.889Z",
+                "elapsed_ms": 3042
+              },
+              {
+                "key": "200000076|2026-11-01|200030618|200399818",
+                "source_response_at": "2026-11-01T15:51:06.889Z",
+                "elapsed_ms": 3042
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200400007",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200399873",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200400008",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200399935",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200399901",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200399913",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200399675",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200399713",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200399586",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030771|200398427",
+                "source_response_at": "2026-11-01T15:51:06.939Z",
+                "elapsed_ms": 2992
+              },
+              {
+                "key": "200000076|2026-11-01|200030820|200399708",
+                "source_response_at": "2026-11-01T15:51:06.985Z",
+                "elapsed_ms": 2946
+              },
+              {
+                "key": "200000076|2026-11-01|200030768|200399826",
+                "source_response_at": "2026-11-01T15:51:07.005Z",
+                "elapsed_ms": 2926
+              },
+              {
+                "key": "200000076|2026-11-01|200030768|200399865",
+                "source_response_at": "2026-11-01T15:51:07.005Z",
+                "elapsed_ms": 2926
+              },
+              {
+                "key": "200000076|2026-11-01|200030768|200399909",
+                "source_response_at": "2026-11-01T15:51:07.005Z",
+                "elapsed_ms": 2926
+              },
+              {
+                "key": "200000076|2026-11-01|200030799|200399930",
+                "source_response_at": "2026-11-01T15:51:07.081Z",
+                "elapsed_ms": 2850
+              },
+              {
+                "key": "200000076|2026-11-01|200030799|200399482",
+                "source_response_at": "2026-11-01T15:51:07.081Z",
+                "elapsed_ms": 2850
+              },
+              {
+                "key": "200000076|2026-11-01|200030799|200399927",
+                "source_response_at": "2026-11-01T15:51:07.081Z",
+                "elapsed_ms": 2850
+              },
+              {
+                "key": "200000076|2026-11-01|200030765|200399932",
+                "source_response_at": "2026-11-01T15:51:07.049Z",
+                "elapsed_ms": 2882
+              },
+              {
+                "key": "200000076|2026-11-01|200030777|200399910",
+                "source_response_at": "2026-11-01T15:51:05.738Z",
+                "elapsed_ms": 4193
+              },
+              {
+                "key": "200000076|2026-11-01|200030777|200399970",
+                "source_response_at": "2026-11-01T15:51:05.738Z",
+                "elapsed_ms": 4193
+              },
+              {
+                "key": "200000076|2026-11-01|200030701|200399164",
+                "source_response_at": "2026-11-01T15:51:06.693Z",
+                "elapsed_ms": 3238
+              },
+              {
+                "key": "200000076|2026-11-01|200030617|200399819",
+                "source_response_at": "2026-11-01T15:51:06.840Z",
+                "elapsed_ms": 3091
+              }
+            ]
+          }
+        ],
+        "save_completed": "2026-11-01T15:51:09.931Z",
+        "total_ms": 6598
+      },
+      "counts": {
+        "live-classes": 41,
+        "live-entries": 145
+      },
+      "scope": {
+        "show": 200000076,
+        "customer": 15,
+        "date": "2026-11-01",
+        "selected_date": "2026-11-01",
+        "authority": "recOAxMcqu1f75CQk",
+        "checked_at": "2026-10-30T22:59:14.976Z",
+        "active": true
+      },
+      "day_priority": 0,
+      "completed": "2026-11-01T15:51:09.931Z"
+    }
+  }
+}

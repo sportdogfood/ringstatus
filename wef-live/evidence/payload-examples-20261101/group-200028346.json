@@ -1,0 +1,45 @@
+{
+  "class_group_id": "200028346",
+  "group_name": "$24,999 ProElite Grand Prix",
+  "day": "2026-11-01",
+  "group_sequence": "1",
+  "estimated_start_time": "08:30:00",
+  "jumper_table": "USEF Table II.2.a",
+  "hunter_type": "",
+  "hunter_scoreby": "",
+  "jogordertrips": "0",
+  "ring_number": "1",
+  "classes": [
+    "200030826"
+  ],
+  "classNumbers": [
+    "806"
+  ],
+  "classNames": [
+    "$24,999 ProElite Grand Prix"
+  ],
+  "class_numbers": "806",
+  "status": "Completed",
+  "JOUnderway": false,
+  "JOUpcoming": true,
+  "gone": "31",
+  "total": "31",
+  "jo_gone": "14",
+  "jo_total": "14",
+  "R2Underway": false,
+  "R2Upcoming": false,
+  "r2_gone": "0",
+  "r2_total": "0",
+  "is_live": false,
+  "has_JSON": true,
+  "curr_updated_at": "1793563798",
+  "last_updated_class": "200030826",
+  "recent_updated_classes": [
+    "200030826"
+  ],
+  "ring_id": "51",
+  "ring": "International Ring",
+  "class_numbers_list": "806",
+  "grid": "#Completed",
+  "trips": "31"
+}

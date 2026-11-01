@@ -13,7 +13,7 @@ async function fetchSource(url){
  if(result.response.headers?.get('x-rs-decoded')!=='1')throw Error('Show source decoding not confirmed');
  const payload=JSON.parse(result.text);if(!payload||typeof payload!=='object'||Array.isArray(payload)||payload._t)throw Error('Invalid show source payload');return payload;
 }
-async function runShows({api=require('./airtable').airtable(),fetchJson=fetchSource,clock=()=>new Date().toISOString(),archive=(kind,value,scope)=>archiveFile(path.join(settings.RUNTIME,'history'),kind,value,scope),statePath=path.join(settings.RUNTIME,'focus.json'),policyPath=path.join(path.dirname(statePath),'discovery-policy.json'),archiveRoot=path.join(settings.RUNTIME,'history'),logLimit=1000,publishDays=require('./show-days').publishDays,readSummaries,dayStopPath=path.join(settings.RUNTIME,'show-days-stopped.json')}={}){
+async function runShows({api=require('./airtable').airtable(),fetchJson=fetchSource,clock=()=>new Date().toISOString(),archive=(kind,value,scope)=>archiveFile(path.join(settings.RUNTIME,'history'),kind,value,scope),statePath=path.join(settings.RUNTIME,'focus.json'),policyPath=path.join(path.dirname(statePath),'discovery-policy.json'),archiveRoot=path.join(settings.RUNTIME,'history'),logLimit=1000,publishDates=require('./show-days').publishDates}={}){
  const report={ok:false,run_id:crypto.randomUUID(),started:clock(),rows:0,errors:[],archives:[],telemetry_errors:[]};
  const audit=require('./audit').createAudit({api,runId:report.run_id,clock});let runRecord=null,errorLogSaved=false;
  let log={'run-id':report.run_id,started:report.started,result:'Running',summary:'Scheduled Shows run started',errors:'',archives:'','archive-count':0},ready=false;
@@ -80,23 +80,21 @@ async function runShows({api=require('./airtable').airtable(),fetchJson=fetchSou
   }catch(error){audit.capture(error);report.ok=false;report.errors.push('Day-priority: '+error.message);report.summary+=' Day-priority failed: '+error.message;}
   try{
    audit.stage('day-publication');
-   if(fs.existsSync(dayStopPath))throw Error('Day publication stopped after prior failure; owner authorization required');
-   report.show_days=await publishDays({api,show:savedShow,clock,readSummaries:async show=>{const value=await audit.observe('direct-day-counts',()=>readSummaries?readSummaries(show):require('./direct-counts').countDays({show,runId:report.run_id,clock,deadline:Date.parse(report.started)+150000}));report.direct_counts={request_count:value.request_count,days:value.diagnostics};for(const d of value.diagnostics||[])if(d.errors.length){audit.stage('direct-count-validation','direct-day-counts');audit.capture(Error(d.date+': '+d.errors.join('; ').slice(0,1500)));}audit.stage('day-publication');return value;}});
+   report.show_days=await publishDates({api,show:savedShow});
    if(!report.show_days.ok)throw Error(report.show_days.errors.join('; '));
    if(report.show_days.created){
     // New canonical day rows are created by the existing publisher. Label them
-    // before Data admission instead of waiting for another discovery/evening.
+    // before returning instead of waiting for another discovery/evening.
     report.day_priority=await require('./day-priority').updatePriority({api,show:savedShow,now:clock(),discovered:true,statePath:path.join(path.dirname(statePath),'day-priority.json')});
    }
    report.summary+=' Show-days: '+report.show_days.days.map(d=>d.date+' '+d.status).join(', ')+'.';
   }catch(error){
    audit.capture(error);report.ok=false;report.errors.push('Show-days: '+error.message);report.summary+=' Show authority retained; show-days publication failed: '+error.message;
-   if(!fs.existsSync(dayStopPath))await require('../wef-schedules/collect').atomicReport(dayStopPath,{at:clock(),run_id:report.run_id,error:error.message});
   }
 
  }catch(e){audit.capture(e);report.ok=false;report.errors.push(e.message);report.summary='Discovery failed; last verified show retained. '+e.message;}
  // Telemetry writes occur after business work; a telemetry failure does not
- // erase discovery or count publication already completed.
+ // erase discovery or date publication already completed.
  try{audit.stage('source-log');log.sources=await audit.saveSources();}catch(e){audit.capture(e);report.telemetry_errors.push('Source logging: '+e.message);}
  try{report.error_records=await audit.saveErrors(runRecord);errorLogSaved=true;}catch(e){report.telemetry_errors.push('Error logging: '+e.message);}
  report.observability={...audit.snapshot(),ok:report.telemetry_errors.length===0,logging_errors:[...report.telemetry_errors]};

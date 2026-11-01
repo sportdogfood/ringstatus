@@ -14,7 +14,7 @@ function airtable({
       settings.BASE_ID,
       new Set([...writable, "wef-schedules.schedules"]),
     ],
-    [settings.SHOWS_BASE, new Set(["shows"])],
+    [settings.SHOWS_BASE, new Set(["shows", "show-days"])],
     [settings.SCHEDULES_BASE, new Set(['schedules','show-collection'])],
   ]);
   async function call(base, table, method = "GET", body, query = "", limit = {}) {

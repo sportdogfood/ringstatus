@@ -1,0 +1,19 @@
+{
+  "verified_at": "2026-11-01T14:56:22.569396+00:00",
+  "installed_hashes": {
+    "lanes.js": true,
+    "lane-store.js": true,
+    "entry.js": true,
+    "airtable.js": true
+  },
+  "deployment": "Verified normal collection; source identities Partial",
+  "normal_evidence": "normal-run-acceptance.json",
+  "stage_failures": 0,
+  "logging_failures": 0,
+  "source_identity_issues_per_populated_run": 6,
+  "stages_8_9": "Held",
+  "chat_alerts": "Deferred by owner; errs-log used",
+  "rollback": "Not needed; baseline retained",
+  "no_manual_runs": true,
+  "no_record_repairs": true
+}

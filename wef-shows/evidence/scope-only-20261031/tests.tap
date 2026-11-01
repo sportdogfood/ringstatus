@@ -1,0 +1,183 @@
+TAP version 13
+# Subtest: Airtable timestamp readback accepts equivalent source offsets without repeated writes
+ok 1 - Airtable timestamp readback accepts equivalent source offsets without repeated writes
+  ---
+  duration_ms: 5.9767
+  type: 'test'
+  ...
+# Subtest: repeat error persistence is idempotent; previous source success survives a later failed attempt
+ok 2 - repeat error persistence is idempotent; previous source success survives a later failed attempt
+  ---
+  duration_ms: 3.5939
+  type: 'test'
+  ...
+# Subtest: priority phase runs despite count stop, preserves selected anchor and skips midnight repeat
+ok 3 - priority phase runs despite count stop, preserves selected anchor and skips midnight repeat
+  ---
+  duration_ms: 74.9511
+  type: 'test'
+  ...
+# Subtest: discovery trigger works before19, leaves out-of-range and other-show rows untouched; repeated daily phase skips
+ok 4 - discovery trigger works before19, leaves out-of-range and other-show rows untouched; repeated daily phase skips
+  ---
+  duration_ms: 10.7919
+  type: 'test'
+  ...
+# Subtest: duplicate inventory fails before writes and durably stops only priority phase
+ok 5 - duplicate inventory fails before writes and durably stops only priority phase
+  ---
+  duration_ms: 8.1353
+  type: 'test'
+  ...
+# Subtest: ambiguous multi-show link is withheld before writes
+ok 6 - ambiguous multi-show link is withheld before writes
+  ---
+  duration_ms: 6.8478
+  type: 'test'
+  ...
+# Subtest: normal repeats manage dates without count requests, Data reads or historical count mutations
+ok 7 - normal repeats manage dates without count requests, Data reads or historical count mutations
+  ---
+  duration_ms: 80.1106
+  type: 'test'
+  ...
+# Subtest: missing canonical dates are created with existing keys and links, without count metadata
+not ok 8 - missing canonical dates are created with existing keys and links, without count metadata
+  ---
+  duration_ms: 14.3958
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\scope-only-20261031\\wef-shows\\tests\\direct-integration.test.js:26:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'date',
+    -   'day-priority',
+        'show',
+        'show-day-key'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'date'
+    1: 'day-priority'
+    2: 'show'
+    3: 'show-day-key'
+  actual:
+    0: 'date'
+    1: 'show'
+    2: 'show-day-key'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-shows\staged\scope-only-20261031\wef-shows\tests\direct-integration.test.js:29:48)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: date publication refuses duplicate keys and wrong existing native links
+ok 9 - date publication refuses duplicate keys and wrong existing native links
+  ---
+  duration_ms: 1.535
+  type: 'test'
+  ...
+# Subtest: Sunday 22 Eastern including DST, three-hour durable retry, stop and next cycle
+ok 10 - Sunday 22 Eastern including DST, three-hour durable retry, stop and next cycle
+  ---
+  duration_ms: 3.1804
+  type: 'test'
+  ...
+# Subtest: 7 p.m. calendar selection uses tomorrow within inclusive show range, never repeats or rolls backward
+ok 11 - 7 p.m. calendar selection uses tomorrow within inclusive show range, never repeats or rolls backward
+  ---
+  duration_ms: 0.2824
+  type: 'test'
+  ...
+# Subtest: normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+ok 12 - normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+  ---
+  duration_ms: 77.3152
+  type: 'test'
+  ...
+# Subtest: Sunday poll repeats after three hours until show changes then stops until next Sunday
+ok 13 - Sunday poll repeats after three hours until show changes then stops until next Sunday
+  ---
+  duration_ms: 62.8659
+  type: 'test'
+  ...
+# Subtest: failed source logs linked error, retains authority time and does not retry on five-minute wakes
+ok 14 - failed source logs linked error, retains authority time and does not retry on five-minute wakes
+  ---
+  duration_ms: 12.673
+  type: 'test'
+  ...
+# Subtest: existing count stop stays byte-identical while calendar and heartbeat proceed
+ok 15 - existing count stop stays byte-identical while calendar and heartbeat proceed
+  ---
+  duration_ms: 13.492
+  type: 'test'
+  ...
+# Subtest: tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+ok 16 - tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+  ---
+  duration_ms: 13.8849
+  type: 'test'
+  ...
+# Subtest: archive failure prevents calendar mutation
+ok 17 - archive failure prevents calendar mutation
+  ---
+  duration_ms: 7.0066
+  type: 'test'
+  ...
+# Subtest: adapter still rejects cross-base writes and deletes
+ok 18 - adapter still rejects cross-base writes and deletes
+  ---
+  duration_ms: 7.2836
+  type: 'test'
+  ...
+# Subtest: consumer freshness expires without authority heartbeat even when source date is retained
+ok 19 - consumer freshness expires without authority heartbeat even when source date is retained
+  ---
+  duration_ms: 82.0387
+  type: 'test'
+  ...
+# Subtest: transient source failure recovers on same URL with bounded GETs
+ok 20 - transient source failure recovers on same URL with bounded GETs
+  ---
+  duration_ms: 2.013
+  type: 'test'
+  ...
+# Subtest: exhausted source reads stop after three and retain safe nested cause
+ok 21 - exhausted source reads stop after three and retain safe nested cause
+  ---
+  duration_ms: 1.3082
+  type: 'test'
+  ...
+# Subtest: HTTP 503 recovers but 401 and 404 do not retry
+ok 22 - HTTP 503 recovers but 401 and 404 do not retry
+  ---
+  duration_ms: 1.6809
+  type: 'test'
+  ...
+# Subtest: body transport failure is recovered; invalid JSON and missing decode proof are not retried
+ok 23 - body transport failure is recovered; invalid JSON and missing decode proof are not retried
+  ---
+  duration_ms: 32.6086
+  type: 'test'
+  ...
+# Subtest: unapproved endpoints and certificate errors never fall back or retry
+ok 24 - unapproved endpoints and certificate errors never fall back or retry
+  ---
+  duration_ms: 0.7504
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 23
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 485.034

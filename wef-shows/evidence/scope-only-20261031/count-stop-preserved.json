@@ -1,0 +1,5 @@
+{
+  "at": "2026-10-31T21:45:28.754Z",
+  "run_id": "c02b2b8b-00fd-43b3-9de3-2b02655e2c3e",
+  "error": "2026-10-29: Show source GET /schedule failed after 1 attempts: request failed [23]; 2026-10-30: Class 200030747: Show source GET /classes/200030747 failed after 1 attempts: request failed [23]; Class 200030561: Show source GET /classes/200030561 failed after 1 attempts: request failed [23]; 2026-10-31: Class 200030443: Show source GET /classes/200030443 failed after 1 attempts: request failed [23]; Class 200030684: Show source GET /classes/200030684 failed after 1 attempts: request failed [23]; Class 200030584: Show source GET /classes/200030584 failed after 1 attempts: request failed [23]; Class 200030770: Show source GET /classes/200030770 failed after 1 attempts: request failed [23]; 2026-11-01: Class 200030826: Show source GET /classes/200030826 failed after 1 attempts: request failed [23]; Class 200030852: Show source GET /classes/200030852 failed after 1 attempts: request failed [23]; Class 200030851: Show source GET /classes/200030851 failed after 1 attempts: request failed [23]"
+}

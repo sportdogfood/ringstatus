@@ -1,3 +1,13 @@
+# Deprecated — 31 October 2026
+
+Owner decision: wef-schedules is deprecated. This chat is scheduled for archive on 7 November 2026 (America/New_York). Existing documentation below is historical reference, not an active build plan.
+
+No collector code, Windows task, cadence, Airtable records/schema, links or archives are changed by this deprecation. Runtime retirement and downstream cutover are not performed or verified. Do not infer that the collector has stopped or that consumers have migrated. Any runtime shutdown or replacement needs a separately agreed scope.
+
+wef-records-coordinator receives the ownership handoff. Preserve existing evidence and records; do not resume historical work from this chat. Other owners, including Data, Shows, Entries, Live and CWF, retain their independent scope. The CWF Monday review currently targets this chat and needs coordinator attention before chat archival; this deprecation does not retire CWF.
+
+---
+
 ## Shows calendar policy companion - deployed October 30, 2026
 
 Shows now selects tomorrow at 19:00 Eastern within show dates and checks new shows Sunday 22:00, then every three hours until changed. Readers validate authority_checked_at with their original 30-minute/future-clock tolerances; last_checked remains the original source timestamp and must be valid/non-future. Legacy rows retain the prior fallback until normal publication. All unrelated source/count freshness checks remain. Live and Timing use TODAY independently while preserving the canonical Data fence and original retirement guards. [Release and normal-run evidence](../wef-shows/evidence/calendar-discovery-20261030/README.md).

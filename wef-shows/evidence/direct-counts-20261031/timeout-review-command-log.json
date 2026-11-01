@@ -1,0 +1,91 @@
+{
+  "reviewer_chat": "01a16976-f0a6-72a1-a75f-75de7f19a815",
+  "kind": "standalone read-only review",
+  "runtime": "v22.22.2",
+  "checks": [
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "started": "2026-11-01T00:11:32.549953+00:00",
+      "completed": "2026-11-01T00:11:32.582950+00:00",
+      "exit_code": 0,
+      "stdout": "v22.22.2\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--test",
+        "wef-shows/tests/source-fetch.test.js",
+        "wef-shows/tests/direct-counts.test.js",
+        "wef-shows/tests/direct-integration.test.js"
+      ],
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "started": "2026-11-01T00:11:32.582950+00:00",
+      "completed": "2026-11-01T00:11:33.311585+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: all days including past are counted directly; unique entries, scratches and duplicate schedule classes; no entity detail survives\nok 1 - all days including past are counted directly; unique entries, scratches and duplicate schedule classes; no entity detail survives\n  ---\n  duration_ms: 8.7784\n  type: 'test'\n  ...\n# Subtest: explicit empty inventory and class trips are verified zero, missing identities remain incomplete\nok 2 - explicit empty inventory and class trips are verified zero, missing identities remain incomplete\n  ---\n  duration_ms: 2.761\n  type: 'test'\n  ...\n# Subtest: short class payload, pagination, wrong dated class and conflicting cross-class trip IDs never certify complete\nok 3 - short class payload, pagination, wrong dated class and conflicting cross-class trip IDs never certify complete\n  ---\n  duration_ms: 28.4479\n  type: 'test'\n  ...\n# Subtest: changed final inventory is failed, per-day failure preserves last totals while other days publish\nok 4 - changed final inventory is failed, per-day failure preserves last totals while other days publish\n  ---\n  duration_ms: 3.775\n  type: 'test'\n  ...\n# Subtest: request deadline withholds unknown totals and still completes without substitute data\nok 5 - request deadline withholds unknown totals and still completes without substitute data\n  ---\n  duration_ms: 0.6297\n  type: 'test'\n  ...\n# Subtest: source uses decoded proxy only, bounded retry and no response detail in errors\nok 6 - source uses decoded proxy only, bounded retry and no response detail in errors\n  ---\n  duration_ms: 513.9029\n  type: 'test'\n  ...\n# Subtest: invalid JSON diagnostics never disclose response detail\nok 7 - invalid JSON diagnostics never disclose response detail\n  ---\n  duration_ms: 0.8264\n  type: 'test'\n  ...\n# Subtest: two scheduled-function fixture invocations count every day without Data reads or entity/raw-payload persistence\nok 8 - two scheduled-function fixture invocations count every day without Data reads or entity/raw-payload persistence\n  ---\n  duration_ms: 93.3759\n  type: 'test'\n  ...\n# Subtest: failed class response retains previous totals, publishes safe other days, and marks run/heartbeat Partial with durable count stop\nok 9 - failed class response retains previous totals, publishes safe other days, and marks run/heartbeat Partial with durable count stop\n  ---\n  duration_ms: 13.4681\n  type: 'test'\n  ...\n# Subtest: transient source failure recovers on same URL with bounded GETs\nok 10 - transient source failure recovers on same URL with bounded GETs\n  ---\n  duration_ms: 3.0483\n  type: 'test'\n  ...\n# Subtest: exhausted source reads stop after three and retain safe nested cause\nok 11 - exhausted source reads stop after three and retain safe nested cause\n  ---\n  duration_ms: 1.0373\n  type: 'test'\n  ...\n# Subtest: HTTP 503 recovers but 401 and 404 do not retry\nok 12 - HTTP 503 recovers but 401 and 404 do not retry\n  ---\n  duration_ms: 0.5922\n  type: 'test'\n  ...\n# Subtest: body transport failure is recovered; invalid JSON and missing decode proof are not retried\nok 13 - body transport failure is recovered; invalid JSON and missing decode proof are not retried\n  ---\n  duration_ms: 24.9507\n  type: 'test'\n  ...\n# Subtest: unapproved endpoints and certificate errors never fall back or retry\nok 14 - unapproved endpoints and certificate errors never fall back or retry\n  ---\n  duration_ms: 0.5722\n  type: 'test'\n  ...\n1..14\n# tests 14\n# suites 0\n# pass 14\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 662.5226\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "-e",
+        "const {fetchSourceText}=require('./wef-shows/source-fetch');let n=0;fetchSourceText('https://wef-schedules-decoded.gombcg.workers.dev/schedule',{request:async()=>{n++;throw new DOMException('offline','TimeoutError');},pause:async()=>{}}).catch(e=>console.log(JSON.stringify({networkRequests:0,attempts:n,error:e.message}))); "
+      ],
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "started": "2026-11-01T00:11:33.312586+00:00",
+      "completed": "2026-11-01T00:11:33.374206+00:00",
+      "exit_code": 0,
+      "stdout": "{\"networkRequests\":0,\"attempts\":1,\"error\":\"Show source GET /schedule failed after 1 attempts: request failed [23]\"}\n",
+      "stderr": ""
+    }
+  ],
+  "candidate_hashes": [
+    {
+      "path": "wef-shows/collector.js",
+      "actual": "a6c31167d26d0064a6715727f1cdd169ca322c9c125d479f6c152b250d3a86d7",
+      "release": "a6c31167d26d0064a6715727f1cdd169ca322c9c125d479f6c152b250d3a86d7",
+      "matches": true
+    },
+    {
+      "path": "wef-shows/audit.js",
+      "actual": "95649c14e6acf807721a81c3449fca321a2a855bf748262d5708513f3ff59f30",
+      "release": "95649c14e6acf807721a81c3449fca321a2a855bf748262d5708513f3ff59f30",
+      "matches": true
+    },
+    {
+      "path": "wef-shows/source-fetch.js",
+      "actual": "11df76a20ed236aa6ebe068ea376585d1adceb877b3b6346cb122a47fdad6104",
+      "release": "11df76a20ed236aa6ebe068ea376585d1adceb877b3b6346cb122a47fdad6104",
+      "matches": true
+    },
+    {
+      "path": "wef-shows/show-days.js",
+      "actual": "d1e31248265f3a8f28fbf66e64d569afdf18ba4f1dcfa9a0606cd459300aef4e",
+      "release": "d1e31248265f3a8f28fbf66e64d569afdf18ba4f1dcfa9a0606cd459300aef4e",
+      "matches": true
+    },
+    {
+      "path": "wef-shows/direct-counts.js",
+      "actual": "1f295b267984c462e7eedbfef89c9d0120135d8ada13e0ea34f058681416802e",
+      "release": "1f295b267984c462e7eedbfef89c9d0120135d8ada13e0ea34f058681416802e",
+      "matches": true
+    },
+    {
+      "path": "wef-shows/tests/direct-counts.test.js",
+      "actual": "d3b551280930840c7bc56170163313bdfea5a9663dd9eeeaa8bb6733502beff5",
+      "release": "d3b551280930840c7bc56170163313bdfea5a9663dd9eeeaa8bb6733502beff5",
+      "matches": true
+    },
+    {
+      "path": "wef-shows/tests/direct-integration.test.js",
+      "actual": "f4e35a36dc7c81b3ae6ee24e7a969886809a1d2ff6c2f911d048000e7f6033e3",
+      "release": "f4e35a36dc7c81b3ae6ee24e7a969886809a1d2ff6c2f911d048000e7f6033e3",
+      "matches": true
+    }
+  ]
+}

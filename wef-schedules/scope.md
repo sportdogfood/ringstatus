@@ -1,3 +1,13 @@
+# Deprecated — 31 October 2026
+
+Owner decision: wef-schedules is deprecated. This chat is scheduled for archive on 7 November 2026 (America/New_York). Existing documentation below is historical reference, not an active build plan.
+
+No collector code, Windows task, cadence, Airtable records/schema, links or archives are changed by this deprecation. Runtime retirement and downstream cutover are not performed or verified. Do not infer that the collector has stopped or that consumers have migrated. Any runtime shutdown or replacement needs a separately agreed scope.
+
+wef-records-coordinator receives the ownership handoff. Preserve existing evidence and records; do not resume historical work from this chat. Other owners, including Data, Shows, Entries, Live and CWF, retain their independent scope. The CWF Monday review currently targets this chat and needs coordinator attention before chat archival; this deprecation does not retire CWF.
+
+---
+
 # Schedules-owned entry/trip collection - 29 October 2026
 
 Owner-approved: collect every source entry and dated trip independently inside Schedules, without trainer filters or artificial total-row caps. Use existing decoded endpoints; four concurrent class requests are only an in-flight bound. No other collector is an input, output or runtime dependency. The existing five-minute task and schedule collection remain unchanged.

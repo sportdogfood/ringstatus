@@ -1,0 +1,267 @@
+[
+  {
+    "ok": true,
+    "run_id": "dd872966-dfe0-4b41-bdf5-a345ad4f78f7",
+    "started": "2026-10-31T21:39:02.609Z",
+    "rows": 1,
+    "errors": [],
+    "archives": [],
+    "telemetry_errors": [],
+    "discovery": {
+      "timezone": "America/New_York",
+      "show": "Skipped",
+      "show_day": "Retained"
+    },
+    "discovery_ok": true,
+    "show_id": 200000076,
+    "selected_date": "2026-10-31",
+    "source_selected_date": "2026-10-30",
+    "next_show_check": "2026-11-02T03:00:00.000Z",
+    "summary": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-10-29 Verified, 2026-10-30 Verified, 2026-10-31 Verified, 2026-11-01 Verified.",
+    "day_priority": {
+      "status": "Skipped",
+      "anchor": "2026-10-31"
+    },
+    "direct_counts": {
+      "request_count": 167,
+      "days": [
+        {
+          "date": "2026-10-29",
+          "expected_classes": 0,
+          "counted_classes": 0,
+          "complete": true,
+          "errors": []
+        },
+        {
+          "date": "2026-10-30",
+          "expected_classes": 37,
+          "counted_classes": 37,
+          "complete": true,
+          "errors": []
+        },
+        {
+          "date": "2026-10-31",
+          "expected_classes": 70,
+          "counted_classes": 70,
+          "complete": true,
+          "errors": []
+        },
+        {
+          "date": "2026-11-01",
+          "expected_classes": 52,
+          "counted_classes": 52,
+          "complete": true,
+          "errors": []
+        }
+      ]
+    },
+    "show_days": {
+      "ok": true,
+      "rows": 4,
+      "days": [
+        {
+          "date": "2026-10-29",
+          "status": "Verified",
+          "record": "recohTvwKk7pDGnk1",
+          "revision": "dd872966-dfe0-4b41-bdf5-a345ad4f78f7",
+          "digest": "196a2300b1c1b7a45dd9c92b284d97a5f8e3fdccfb8565fd37a431b76cd4319a"
+        },
+        {
+          "date": "2026-10-30",
+          "status": "Verified",
+          "record": "recNKs86S27g79pl5",
+          "revision": "dd872966-dfe0-4b41-bdf5-a345ad4f78f7",
+          "digest": "da19384a6fe105a7cc6a30c6b6232f9e6817b62711861afd304ba5291a78e89c"
+        },
+        {
+          "date": "2026-10-31",
+          "status": "Verified",
+          "record": "recV3qjf5oJAQW8SY",
+          "revision": "dd872966-dfe0-4b41-bdf5-a345ad4f78f7",
+          "digest": "89f673c4be219cd0f50e6600a07af70dd0fce5305ddb2f81696b7abfa9630074"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "Verified",
+          "record": "recs1RPpDh6bGuHkY",
+          "revision": "dd872966-dfe0-4b41-bdf5-a345ad4f78f7",
+          "digest": "c03da2b5c488f978f6bfd89eb23feb2ac1cfb0b5bd18637049f25bfdf0246ae0"
+        }
+      ],
+      "errors": []
+    },
+    "error_records": [],
+    "observability": {
+      "sources": [
+        {
+          "key": "direct-day-counts",
+          "at": "2026-10-31T21:39:07.991Z",
+          "result": "Success",
+          "error": "",
+          "successAt": "2026-10-31T21:39:14.415Z"
+        }
+      ],
+      "errors": [],
+      "ok": true,
+      "logging_errors": []
+    },
+    "completed": "2026-10-31T21:39:40.436Z"
+  },
+  {
+    "ok": false,
+    "run_id": "c02b2b8b-00fd-43b3-9de3-2b02655e2c3e",
+    "started": "2026-10-31T21:44:02.637Z",
+    "rows": 1,
+    "errors": [
+      "Show-days: 2026-10-29: Show source GET /schedule failed after 1 attempts: request failed [23]; 2026-10-30: Class 200030747: Show source GET /classes/200030747 failed after 1 attempts: request failed [23]; Class 200030561: Show source GET /classes/200030561 failed after 1 attempts: request failed [23]; 2026-10-31: Class 200030443: Show source GET /classes/200030443 failed after 1 attempts: request failed [23]; Class 200030684: Show source GET /classes/200030684 failed after 1 attempts: request failed [23]; Class 200030584: Show source GET /classes/200030584 failed after 1 attempts: request failed [23]; Class 200030770: Show source GET /classes/200030770 failed after 1 attempts: request failed [23]; 2026-11-01: Class 200030826: Show source GET /classes/200030826 failed after 1 attempts: request failed [23]; Class 200030852: Show source GET /classes/200030852 failed after 1 attempts: request failed [23]; Class 200030851: Show source GET /classes/200030851 failed after 1 attempts: request failed [23]"
+    ],
+    "archives": [],
+    "telemetry_errors": [],
+    "discovery": {
+      "timezone": "America/New_York",
+      "show": "Skipped",
+      "show_day": "Retained"
+    },
+    "discovery_ok": true,
+    "show_id": 200000076,
+    "selected_date": "2026-10-31",
+    "source_selected_date": "2026-10-30",
+    "next_show_check": "2026-11-02T03:00:00.000Z",
+    "summary": "Show 200000076; selected 2026-10-31 (calendar); source date 2026-10-30, last checked 2026-10-30T22:59:14.976Z. New-show check Skipped; next 2026-11-02T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show authority retained; show-days publication failed: 2026-10-29: Show source GET /schedule failed after 1 attempts: request failed [23]; 2026-10-30: Class 200030747: Show source GET /classes/200030747 failed after 1 attempts: request failed [23]; Class 200030561: Show source GET /classes/200030561 failed after 1 attempts: request failed [23]; 2026-10-31: Class 200030443: Show source GET /classes/200030443 failed after 1 attempts: request failed [23]; Class 200030684: Show source GET /classes/200030684 failed after 1 attempts: request failed [23]; Class 200030584: Show source GET /classes/200030584 failed after 1 attempts: request failed [23]; Class 200030770: Show source GET /classes/200030770 failed after 1 attempts: request failed [23]; 2026-11-01: Class 200030826: Show source GET /classes/200030826 failed after 1 attempts: request failed [23]; Class 200030852: Show source GET /classes/200030852 failed after 1 attempts: request failed [23]; Class 200030851: Show source GET /classes/200030851 failed after 1 attempts: request failed [23]",
+    "day_priority": {
+      "status": "Skipped",
+      "anchor": "2026-10-31"
+    },
+    "direct_counts": {
+      "request_count": 166,
+      "days": [
+        {
+          "date": "2026-10-29",
+          "expected_classes": 0,
+          "counted_classes": 0,
+          "complete": null,
+          "errors": [
+            "Show source GET /schedule failed after 1 attempts: request failed [23]"
+          ]
+        },
+        {
+          "date": "2026-10-30",
+          "expected_classes": 37,
+          "counted_classes": 35,
+          "complete": false,
+          "errors": [
+            "Class 200030747: Show source GET /classes/200030747 failed after 1 attempts: request failed [23]",
+            "Class 200030561: Show source GET /classes/200030561 failed after 1 attempts: request failed [23]"
+          ]
+        },
+        {
+          "date": "2026-10-31",
+          "expected_classes": 70,
+          "counted_classes": 66,
+          "complete": false,
+          "errors": [
+            "Class 200030443: Show source GET /classes/200030443 failed after 1 attempts: request failed [23]",
+            "Class 200030684: Show source GET /classes/200030684 failed after 1 attempts: request failed [23]",
+            "Class 200030584: Show source GET /classes/200030584 failed after 1 attempts: request failed [23]",
+            "Class 200030770: Show source GET /classes/200030770 failed after 1 attempts: request failed [23]"
+          ]
+        },
+        {
+          "date": "2026-11-01",
+          "expected_classes": 52,
+          "counted_classes": 49,
+          "complete": false,
+          "errors": [
+            "Class 200030826: Show source GET /classes/200030826 failed after 1 attempts: request failed [23]",
+            "Class 200030852: Show source GET /classes/200030852 failed after 1 attempts: request failed [23]",
+            "Class 200030851: Show source GET /classes/200030851 failed after 1 attempts: request failed [23]"
+          ]
+        }
+      ]
+    },
+    "show_days": {
+      "ok": false,
+      "rows": 0,
+      "days": [
+        {
+          "date": "2026-10-29",
+          "status": "Failed",
+          "retained": true
+        },
+        {
+          "date": "2026-10-30",
+          "status": "Failed",
+          "retained": true
+        },
+        {
+          "date": "2026-10-31",
+          "status": "Failed",
+          "retained": true
+        },
+        {
+          "date": "2026-11-01",
+          "status": "Failed",
+          "retained": true
+        }
+      ],
+      "errors": [
+        "2026-10-29: Show source GET /schedule failed after 1 attempts: request failed [23]",
+        "2026-10-30: Class 200030747: Show source GET /classes/200030747 failed after 1 attempts: request failed [23]; Class 200030561: Show source GET /classes/200030561 failed after 1 attempts: request failed [23]",
+        "2026-10-31: Class 200030443: Show source GET /classes/200030443 failed after 1 attempts: request failed [23]; Class 200030684: Show source GET /classes/200030684 failed after 1 attempts: request failed [23]; Class 200030584: Show source GET /classes/200030584 failed after 1 attempts: request failed [23]; Class 200030770: Show source GET /classes/200030770 failed after 1 attempts: request failed [23]",
+        "2026-11-01: Class 200030826: Show source GET /classes/200030826 failed after 1 attempts: request failed [23]; Class 200030852: Show source GET /classes/200030852 failed after 1 attempts: request failed [23]; Class 200030851: Show source GET /classes/200030851 failed after 1 attempts: request failed [23]"
+      ]
+    },
+    "error_records": [
+      "recQL9kTMuTkj4zIu",
+      "recfG15yIFoacqgHB",
+      "rect1h5gdwYE76arj",
+      "recLRcUjjyZHCxY4W",
+      "recTfvYE7URFLjduP"
+    ],
+    "observability": {
+      "sources": [
+        {
+          "key": "direct-day-counts",
+          "at": "2026-10-31T21:44:07.923Z",
+          "result": "Partial",
+          "error": "One or more day counts have incomplete source coverage"
+        }
+      ],
+      "errors": [
+        {
+          "at": "2026-10-31T21:45:24.090Z",
+          "phase": "direct-count-validation",
+          "source": "direct-day-counts",
+          "message": "2026-10-29: Show source GET /schedule failed after 1 attempts: request failed [23]"
+        },
+        {
+          "at": "2026-10-31T21:45:24.090Z",
+          "phase": "direct-count-validation",
+          "source": "direct-day-counts",
+          "message": "2026-10-30: Class 200030747: Show source GET /classes/200030747 failed after 1 attempts: request failed [23]; Class 200030561: Show source GET /classes/200030561 failed after 1 attempts: request failed [23]"
+        },
+        {
+          "at": "2026-10-31T21:45:24.090Z",
+          "phase": "direct-count-validation",
+          "source": "direct-day-counts",
+          "message": "2026-10-31: Class 200030443: Show source GET /classes/200030443 failed after 1 attempts: request failed [23]; Class 200030684: Show source GET /classes/200030684 failed after 1 attempts: request failed [23]; Class 200030584: Show source GET /classes/200030584 failed after 1 attempts: request failed [23]; Class 200030770: Show source GET /classes/200030770 failed after 1 attempts: request failed [23]"
+        },
+        {
+          "at": "2026-10-31T21:45:24.090Z",
+          "phase": "direct-count-validation",
+          "source": "direct-day-counts",
+          "message": "2026-11-01: Class 200030826: Show source GET /classes/200030826 failed after 1 attempts: request failed [23]; Class 200030852: Show source GET /classes/200030852 failed after 1 attempts: request failed [23]; Class 200030851: Show source GET /classes/200030851 failed after 1 attempts: request failed [23]"
+        },
+        {
+          "at": "2026-10-31T21:45:28.754Z",
+          "phase": "day-publication",
+          "source": null,
+          "message": "2026-10-29: Show source GET /schedule failed after 1 attempts: request failed [23]; 2026-10-30: Class 200030747: Show source GET /classes/200030747 failed after 1 attempts: request failed [23]; Class 200030561: Show source GET /classes/200030561 failed after 1 attempts: request failed [23]; 2026-10-31: Class 200030443: Show source GET /classes/200030443 failed after 1 attempts: request failed [23]; Class 200030684: Show source GET /classes/200030684 failed after 1 attempts: request failed [23]; Class 200030584: Show source GET /classes/200030584 failed after 1 attempts: request failed [23]; Class 200030770: Show source GET /classes/200030770 failed after 1 attempts: request failed [23]; 2026-11-01: Class 200030826: Show source GET /classes/200030826 failed after 1 attempts: request failed [23]; Class 200030852: Show source GET /classes/200030852 failed after 1 attempts: request failed [23]; Class 200030851: Show source GET /classes/200030851 failed after 1 attempts: request failed [23]"
+        }
+      ],
+      "ok": true,
+      "logging_errors": []
+    },
+    "completed": "2026-10-31T21:45:31.388Z"
+  }
+]

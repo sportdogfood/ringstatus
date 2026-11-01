@@ -1,0 +1,56 @@
+{
+  "read_at": "2026-11-01T14:48:43.362485+00:00",
+  "runs": [
+    {
+      "lane": "groups",
+      "run_id": "d4887dba-bc6c-4339-9d08-4132a00b65fb",
+      "ok": true,
+      "started": "2026-11-01T14:48:03.494Z",
+      "completed": "2026-11-01T14:48:10.010Z",
+      "counts": {
+        "live-groups": 25
+      },
+      "issues": [],
+      "stage_errors": [],
+      "logging_errors": [],
+      "collection_ms": 903.9588000000003,
+      "save_ms": 1333.1961000000001,
+      "changed_records": 6
+    },
+    {
+      "lane": "rings",
+      "run_id": "99c95b8b-27ad-4552-893e-6ab6d7b49140",
+      "ok": true,
+      "started": "2026-11-01T14:48:03.494Z",
+      "completed": "2026-11-01T14:48:09.036Z",
+      "counts": {
+        "live-rings": 5
+      },
+      "issues": [],
+      "stage_errors": [],
+      "logging_errors": [],
+      "collection_ms": 122.14340000000038,
+      "save_ms": 836.5041999999994,
+      "changed_records": 3
+    },
+    {
+      "lane": "classes",
+      "run_id": "8665250b-cb97-4584-9c6d-9551f015360c",
+      "ok": true,
+      "started": "2026-11-01T14:48:03.495Z",
+      "completed": "2026-11-01T14:48:07.029Z",
+      "counts": {},
+      "issues": [
+        {
+          "message": "No matching saved class references"
+        }
+      ],
+      "stage_errors": [],
+      "logging_errors": [],
+      "collection_ms": 0,
+      "save_ms": 0,
+      "changed_records": 0
+    }
+  ],
+  "note": "Class lane bootstraps from previously saved group references. Missing references logged without blocking other lanes."
+}

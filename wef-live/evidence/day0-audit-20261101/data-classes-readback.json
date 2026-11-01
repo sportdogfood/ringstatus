@@ -1,0 +1,1781 @@
+{
+  "read_at": "2026-11-01T15:50:13.455Z",
+  "base": "appdl16HJ5ETm8N69",
+  "scope": {
+    "customer": 15,
+    "show": 200000076,
+    "date": "2026-11-01"
+  },
+  "rows": [
+    {
+      "recordId": "rec0Fny5mW1mV0UI7",
+      "key": "15|200000076|2026-11-01|5|200030628",
+      "id": 200030628,
+      "name": "Green Pony Conformation Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:48.877Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec0xdiWEn9HPjbqx",
+      "key": "15|200000076|2026-11-01|5|200030649",
+      "id": 200030649,
+      "name": "Rusty Stirrup Equitation Flat",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:46.163Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec1tSilzXd3wlAMv",
+      "key": "15|200000076|2026-11-01|1|200030777",
+      "id": 200030777,
+      "name": "1.30m Open Jumper II2.1",
+      "entries": 3,
+      "status": "Underway",
+      "lastSuccess": "2026-11-01T15:49:05.040Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec2eOEt7nKSnsuFd",
+      "key": "15|200000076|2026-11-01|3|200030640",
+      "id": 200030640,
+      "name": "Pleasure Horse",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:29.670Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec2ybUtO6S4WWbkP",
+      "key": "15|200000076|2026-11-01|3|200030538",
+      "id": 200030538,
+      "name": "Junior Hunter 3'3\" 16-17",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:31.514Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec37zP50UdVNwjiC",
+      "key": "15|200000076|2026-11-01|5|200030669",
+      "id": 200030669,
+      "name": "Walk/Trot Pleasure",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:45.214Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec3e9LlhqD2bohzF",
+      "key": "15|200000076|2026-11-01|3|200030676",
+      "id": 200030676,
+      "name": "Warm Up Hunter",
+      "entries": 1,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:06.771Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec4LvpZ5DnD6006f",
+      "key": "15|200000076|2026-11-01|5|200030659",
+      "id": 200030659,
+      "name": "Cross Rail Equitation ",
+      "entries": 2,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:09.542Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec4N2jwLXeti453F",
+      "key": "15|200000076|2026-11-01|5|200030661",
+      "id": 200030661,
+      "name": "Older Cross Rail Equitation Flat",
+      "entries": 1,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:45.488Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec56SHYEiSmfMlWF",
+      "key": "15|200000076|2026-11-01|6|200030799",
+      "id": 200030799,
+      "name": "1.10m Junior/Amateur Jumper II2d",
+      "entries": 3,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:11.849Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec5RXuSSGjJ4WLFb",
+      "key": "15|200000076|2026-11-01|5|200030723",
+      "id": 200030723,
+      "name": "SFHJA Children's Pony Hunter Seat Medal (Flat Phase)",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:49.725Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec69531MYtPhkKuo",
+      "key": "15|200000076|2026-11-01|1|200030789",
+      "id": 200030789,
+      "name": "$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b",
+      "entries": 7,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:05.088Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec6k2s5xlbIYFmh5",
+      "key": "15|200000076|2026-11-01|3|200030594",
+      "id": 200030594,
+      "name": "Children's Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:32.044Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec6mdd6haHAJfLxh",
+      "key": "15|200000076|2026-11-01|5|200030701",
+      "id": 200030701,
+      "name": "Schooling Pony Hunter",
+      "entries": 1,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:10.281Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec7ZrMfPagSxa3VV",
+      "key": "15|200000076|2026-11-01|3|200030603",
+      "id": 200030603,
+      "name": "Low Children's/Adult Hunter",
+      "entries": 3,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:06.776Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec7qRJ5mJqJpxuT6",
+      "key": "15|200000076|2026-11-01|3|200030685",
+      "id": 200030685,
+      "name": "Warm Up Hunter",
+      "entries": 5,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:05.858Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec7v8BS7Uw4DGCKr",
+      "key": "15|200000076|2026-11-01|4|200030825",
+      "id": 200030825,
+      "name": "$250 .85m Jumper Classic II2b",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:08.731Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec9eLxdCHaDjHcCg",
+      "key": "15|200000076|2026-11-01|6|200030796",
+      "id": 200030796,
+      "name": "$1,580 M&S 1.10m Junior/Amateur Jumper Classic II2b",
+      "entries": 2,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:51.860Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rec9yXYFyNj1aWCHG",
+      "key": "15|200000076|2026-11-01|4|200030785",
+      "id": 200030785,
+      "name": "Take2 Thoroughbred Jumper (1.0m) II2d",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:44.658Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recA0OGdKIVRlbOCz",
+      "key": "15|200000076|2026-11-01|5|200030618",
+      "id": 200030618,
+      "name": "Medium/Large Pony Handy Hunter",
+      "entries": 4,
+      "status": "Underway",
+      "lastSuccess": "2026-11-01T15:49:11.283Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recAKOE3gLtSleC2L",
+      "key": "15|200000076|2026-11-01|5|200030613",
+      "id": 200030613,
+      "name": "Small Pony Hunter",
+      "entries": 3,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:10.918Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recATq4SlWon2tFf4",
+      "key": "15|200000076|2026-11-01|1|200030779",
+      "id": 200030779,
+      "name": "1.40m Open Jumper II2.1",
+      "entries": 9,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:05.850Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recB2LEknJRGcKyD2",
+      "key": "15|200000076|2026-11-01|5|200030678",
+      "id": 200030678,
+      "name": "Warm Up Hunter",
+      "entries": 1,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:09.851Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recBs8aqgKhavEXQi",
+      "key": "15|200000076|2026-11-01|3|200030533",
+      "id": 200030533,
+      "name": "Junior Hunter 3'3\" 15 & Under",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:31.469Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recCMYXdJxa7SCuKG",
+      "key": "15|200000076|2026-11-01|4|200030749",
+      "id": 200030749,
+      "name": "Puddle Jumper Open (.70-.80m) II2d",
+      "entries": 1,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:08.247Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recD8EFALsjz1vsoM",
+      "key": "15|200000076|2026-11-01|5|200030668",
+      "id": 200030668,
+      "name": "Walk/Trot",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:45.133Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recDaqfSADeM65Hfj",
+      "key": "15|200000076|2026-11-01|3|200030514",
+      "id": 200030514,
+      "name": "Amateur Owner Hunter 3'3\" 18-35 Handy",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:30.006Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recEEbJ2CyTZkBdjH",
+      "key": "15|200000076|2026-11-01|3|200030852",
+      "id": 200030852,
+      "name": "Mulligan Class",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:07.799Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recEi7uJ1UQrGRFpF",
+      "key": "15|200000076|2026-11-01|4|200030743",
+      "id": 200030743,
+      "name": "Itty Bitty Jumper Open (.60-.65m) II2d",
+      "entries": 2,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:07.811Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recEviiT75iLbVRn5",
+      "key": "15|200000076|2026-11-01|6|200030788",
+      "id": 200030788,
+      "name": "$2,640 NAL 1.20m Junior/Amateur Jumper Classic II2b",
+      "entries": 2,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:51.859Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recFQgCgKzkwMUJ1L",
+      "key": "15|200000076|2026-11-01|4|200030762",
+      "id": 200030762,
+      "name": "Training Jumper (1.0m) II2d",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:08.722Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recFUtWLJVkfxTfQO",
+      "key": "15|200000076|2026-11-01|5|200030639",
+      "id": 200030639,
+      "name": "Modified Hunter 2'/2'6\"",
+      "entries": 2,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:10.246Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recFiRcwC2W9KrBOJ",
+      "key": "15|200000076|2026-11-01|4|200030746",
+      "id": 200030746,
+      "name": "Itty Bitty Jumper Junior/Amateur (.60-.65m) II2d",
+      "entries": 2,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:07.856Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recGQP9WZDl7NSRGS",
+      "key": "15|200000076|2026-11-01|3|200030519",
+      "id": 200030519,
+      "name": "Amateur Owner Hunter 3'3\" 36 & Over Handy",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:30.447Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recHVQY2udd6WiweK",
+      "key": "15|200000076|2026-11-01|3|200030518",
+      "id": 200030518,
+      "name": "Amateur Owner Hunter 3'3\" 36 & Over",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:30.161Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recHwouW5v2FDHhYx",
+      "key": "15|200000076|2026-11-01|3|200030529",
+      "id": 200030529,
+      "name": "Large Junior Hunter 3'6\" Handy",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:30.826Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recHxaP1iuIHtNnMF",
+      "key": "15|200000076|2026-11-01|3|200030593",
+      "id": 200030593,
+      "name": "Children's Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:31.908Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recMXE2i9i5ZXqYid",
+      "key": "15|200000076|2026-11-01|6|200030820",
+      "id": 200030820,
+      "name": "$600 1.20m Young Jumper II2b",
+      "entries": 1,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:11.347Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recMk7pKexqmOXuMb",
+      "key": "15|200000076|2026-11-01|3|200030524",
+      "id": 200030524,
+      "name": "Small Junior Hunter 3'6\" Handy",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:31.019Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recMmXMtbZg2bNA4H",
+      "key": "15|200000076|2026-11-01|3|200030534",
+      "id": 200030534,
+      "name": "Junior Hunter 3'3\" 15 & Under Handy",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:31.472Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recOjTOXbgsp5YpQ9",
+      "key": "15|200000076|2026-11-01|5|200030641",
+      "id": 200030641,
+      "name": "Pleasure Pony",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:47.095Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recOllgppi055nWS8",
+      "key": "15|200000076|2026-11-01|3|200030727",
+      "id": 200030727,
+      "name": "IHSA/USHJA 3'3\" Hunter Seat Medal",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:29.200Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recP7uctGBd25All8",
+      "key": "15|200000076|2026-11-01|3|200030836",
+      "id": 200030836,
+      "name": "$1,000 Junior Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:31.309Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recPE6Y16aGlWCiQy",
+      "key": "15|200000076|2026-11-01|3|200030717",
+      "id": 200030717,
+      "name": "SFHJA Junior/Adult Hunter Seat Medal (Flat Phase)",
+      "entries": 4,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:05.866Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recPa6i7rwYqjG2M6",
+      "key": "15|200000076|2026-11-01|6|200030768",
+      "id": 200030768,
+      "name": "1.15m Open Jumper II2d",
+      "entries": 3,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:11.706Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recPfFcluUCyoPpmp",
+      "key": "15|200000076|2026-11-01|3|200030528",
+      "id": 200030528,
+      "name": "Large Junior Hunter 3'6\"",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:30.662Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recQ1zeuNs0GedL05",
+      "key": "15|200000076|2026-11-01|5|200030646",
+      "id": 200030646,
+      "name": "Short Stirrup Equitation Flat",
+      "entries": 1,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:09.541Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recQQxKy8sz4Qxa8Q",
+      "key": "15|200000076|2026-11-01|3|200030504",
+      "id": 200030504,
+      "name": "Amateur Owner Hunter 3'6\" 18-35 Handy",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:30.662Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recQdvLrumMkIsriL",
+      "key": "15|200000076|2026-11-01|3|200030508",
+      "id": 200030508,
+      "name": "Amateur Owner Hunter 3'6\" 36 & Over",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:31.064Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recRs2hvBITiFSihj",
+      "key": "15|200000076|2026-11-01|1|200030823",
+      "id": 200030823,
+      "name": "$600 1.30m Young Jumper II2b",
+      "entries": 5,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:05.109Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recRsuIF9FbODnVVy",
+      "key": "15|200000076|2026-11-01|5|200030624",
+      "id": 200030624,
+      "name": "Large Pony Handy Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:48.689Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recS2AUtESoAqyc3q",
+      "key": "15|200000076|2026-11-01|4|200030814",
+      "id": 200030814,
+      "name": "1.0m Young Jumper Table II",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:43.745Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recSZdKyGQgV5LvSy",
+      "key": "15|200000076|2026-11-01|5|200030651",
+      "id": 200030651,
+      "name": "Rusty Stirrup Equitation",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:46.610Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recSl503JI0MJWNpB",
+      "key": "15|200000076|2026-11-01|5|200030629",
+      "id": 200030629,
+      "name": "Green Pony Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:48.766Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recSnVCoAFGJ4xcXU",
+      "key": "15|200000076|2026-11-01|4|200030803",
+      "id": 200030803,
+      "name": "1.0m Amateur/Junior Jumper Classic II2b",
+      "entries": 3,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:09.090Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recT51ZkwPmwSlRcN",
+      "key": "15|200000076|2026-11-01|4|200030755",
+      "id": 200030755,
+      "name": "Hopeful Jumper (.85m) II2d",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:08.348Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recT6Ml1XvPkw4QlD",
+      "key": "15|200000076|2026-11-01|3|200030731",
+      "id": 200030731,
+      "name": "USEF / Valencia Saddlery Hunter Seat Medal",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:29.644Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recTbXhAbEw6tJR33",
+      "key": "15|200000076|2026-11-01|3|200030589",
+      "id": 200030589,
+      "name": "Child/Adult Amateur Hunter",
+      "entries": 6,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:07.441Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recUEdV1BPlM7vWKG",
+      "key": "15|200000076|2026-11-01|4|200030759",
+      "id": 200030759,
+      "name": "Training Jumper (.90m) II2d",
+      "entries": 3,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:08.673Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recUpk8tJsGv4zeme",
+      "key": "15|200000076|2026-11-01|5|200030829",
+      "id": 200030829,
+      "name": "$500 Green Pony Hunter Classic (2nd Rd)",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:49.182Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recV5JBPhQe4IQazn",
+      "key": "15|200000076|2026-11-01|3|200030598",
+      "id": 200030598,
+      "name": "Low Adult Amateur Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:33.311Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recVPbQ60bvfqitFz",
+      "key": "15|200000076|2026-11-01|3|200030599",
+      "id": 200030599,
+      "name": "Low Adult Amateur Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:33.531Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recVgGXM2Xly8nVk0",
+      "key": "15|200000076|2026-11-01|4|200030752",
+      "id": 200030752,
+      "name": "Puddle Jumper Junior/Amateur (.70-.80m) II2d",
+      "entries": 1,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:08.240Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recVqzzPRxhWZ4bVI",
+      "key": "15|200000076|2026-11-01|5|200030832",
+      "id": 200030832,
+      "name": "$500 Large Pony Hunter Classic (2nd Rd)",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:48.773Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recWPos1b9QXNsg7y",
+      "key": "15|200000076|2026-11-01|6|200030765",
+      "id": 200030765,
+      "name": "1.10m Open Jumper II2d",
+      "entries": 1,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:11.726Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recWcXIZbjjwaG1Hn",
+      "key": "15|200000076|2026-11-01|3|200030604",
+      "id": 200030604,
+      "name": "Low Children's/Adult Hunter",
+      "entries": 3,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:07.845Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recXaTeGqOCtntMAy",
+      "key": "15|200000076|2026-11-01|5|200030697",
+      "id": 200030697,
+      "name": "Cross Rail Warm Up",
+      "entries": 0,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:09.128Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recXpTDlcpQAm13Jo",
+      "key": "15|200000076|2026-11-01|3|200030703",
+      "id": 200030703,
+      "name": "2'6\" Child/Adult Amateur Equitation",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:32.796Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recY57sGJfufgRYcQ",
+      "key": "15|200000076|2026-11-01|5|200030663",
+      "id": 200030663,
+      "name": "Older Cross Rail Equitation",
+      "entries": 1,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:45.847Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recYgJLb7XepMPMku",
+      "key": "15|200000076|2026-11-01|3|200030674",
+      "id": 200030674,
+      "name": "Add Back Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:30.127Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recZRIiPOLJRwSO0u",
+      "key": "15|200000076|2026-11-01|4|200030802",
+      "id": 200030802,
+      "name": "$1,580 1.0m Amateur Jumper Classic II2b",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:44.708Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recafkjyvB8wFXmFD",
+      "key": "15|200000076|2026-11-01|5|200030650",
+      "id": 200030650,
+      "name": "Rusty Stirrup Equitation",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:46.438Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recah4a711YV4dlx4",
+      "key": "15|200000076|2026-11-01|5|200030831",
+      "id": 200030831,
+      "name": "$500 Medium Pony Hunter Classic (2nd Rd)",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:48.359Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recbd63yA74NfxBN9",
+      "key": "15|200000076|2026-11-01|1|200030826",
+      "id": 200030826,
+      "name": "$24,999 ProElite Grand Prix",
+      "entries": 31,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:05.092Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recbnR4ojaQoHnLHg",
+      "key": "15|200000076|2026-11-01|5|200030642",
+      "id": 200030642,
+      "name": "Leadline",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:44.985Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "reccQemhbQnqG3cUr",
+      "key": "15|200000076|2026-11-01|5|200030699",
+      "id": 200030699,
+      "name": "Stirrup Warm Up",
+      "entries": 0,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:09.551Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "reccUTKGZsMS0hg2B",
+      "key": "15|200000076|2026-11-01|6|200030795",
+      "id": 200030795,
+      "name": "$1,580 M&S 1.10m Junior Jumper Classic II2b",
+      "entries": 1,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:51.147Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "reccqUecSoYUVmWwr",
+      "key": "15|200000076|2026-11-01|5|200030608",
+      "id": 200030608,
+      "name": "Children's Pony Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:49.323Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recd4PdZntugglQ8v",
+      "key": "15|200000076|2026-11-01|5|200030638",
+      "id": 200030638,
+      "name": "Modified Hunter 2'/2'6\"",
+      "entries": 2,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:09.894Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recd6Z65PEo0ZTqhM",
+      "key": "15|200000076|2026-11-01|5|200030658",
+      "id": 200030658,
+      "name": "Cross Rail Equitation Flat",
+      "entries": 2,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:09.143Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recd7SVDJOWek6y3v",
+      "key": "15|200000076|2026-11-01|3|200030702",
+      "id": 200030702,
+      "name": "2'6\" Child/Adult Amateur Equitation Flat",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:32.805Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recdLZzfVEIoWZn1x",
+      "key": "15|200000076|2026-11-01|3|200030588",
+      "id": 200030588,
+      "name": "Child/Adult Amateur Hunter",
+      "entries": 6,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:06.775Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recdvMgwjUBSD2x9j",
+      "key": "15|200000076|2026-11-01|6|200030794",
+      "id": 200030794,
+      "name": "1.10m Junior Jumper II2d",
+      "entries": 1,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:50.955Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rececHKqwgWqunABK",
+      "key": "15|200000076|2026-11-01|5|200030662",
+      "id": 200030662,
+      "name": "Older Cross Rail Equitation",
+      "entries": 1,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:45.819Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recf9TDvxf3YQysTY",
+      "key": "15|200000076|2026-11-01|5|200030724",
+      "id": 200030724,
+      "name": "M&S Children's Pony Medal",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:49.596Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recfY1c6pNf6RYsMK",
+      "key": "15|200000076|2026-11-01|3|200030718",
+      "id": 200030718,
+      "name": "THIS Children's Medal",
+      "entries": 3,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:05.855Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recfx5S14Tee9X68q",
+      "key": "15|200000076|2026-11-01|5|200030648",
+      "id": 200030648,
+      "name": "Short Stirrup Equitation",
+      "entries": 1,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:09.876Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recgGt1a7fgrRvMa0",
+      "key": "15|200000076|2026-11-01|3|200030539",
+      "id": 200030539,
+      "name": "Junior Hunter 3'3\" 16-17 Handy",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:31.647Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recgrFu9OWUJaWJkc",
+      "key": "15|200000076|2026-11-01|3|200030721",
+      "id": 200030721,
+      "name": "SFHJA Adult Amateur Hunter Seat Medal (Flat Phase)",
+      "entries": 1,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:32.268Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rech0KJyUm5K43uYU",
+      "key": "15|200000076|2026-11-01|5|200030720",
+      "id": 200030720,
+      "name": "WIHS Pony Equitation-TAKES 3",
+      "entries": 2,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:10.311Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "rechimVxM7mBULBa1",
+      "key": "15|200000076|2026-11-01|5|200030854",
+      "id": 200030854,
+      "name": "Mulligan Class",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:11.235Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "reciDMMOlwLPnfQxT",
+      "key": "15|200000076|2026-11-01|6|200030771",
+      "id": 200030771,
+      "name": "1.20m Open Jumper II2d",
+      "entries": 10,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:11.303Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "reciJpRnhymTScf7d",
+      "key": "15|200000076|2026-11-01|3|200030513",
+      "id": 200030513,
+      "name": "Amateur Owner Hunter 3'3\" 18-35",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:29.761Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recijIeZyo73ycAN1",
+      "key": "15|200000076|2026-11-01|3|200030509",
+      "id": 200030509,
+      "name": "Amateur Owner Hunter 3'6\" 36 & Over Handy",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:31.196Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recj7POkQHaocDUfR",
+      "key": "15|200000076|2026-11-01|3|200030704",
+      "id": 200030704,
+      "name": "2'6\" Child/Adult Amateur Equitation",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:32.896Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recja9UrU8U5kUZoC",
+      "key": "15|200000076|2026-11-01|5|200030719",
+      "id": 200030719,
+      "name": "SFHJA Pony Hunter Seat Medal (Flat Phase)- TAKES 3",
+      "entries": 2,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:10.270Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "reclOZ0P241nRrDwd",
+      "key": "15|200000076|2026-11-01|5|200030680",
+      "id": 200030680,
+      "name": "Warm Up Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:49.464Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recllYl2XJFNGGU1d",
+      "key": "15|200000076|2026-11-01|4|200030851",
+      "id": 200030851,
+      "name": "Mulligan Class",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:09.086Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recm2pohR4ssU3BLq",
+      "key": "15|200000076|2026-11-01|5|200030647",
+      "id": 200030647,
+      "name": "Short Stirrup Equitation",
+      "entries": 1,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:09.824Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recmPpIMV8S2bkX5g",
+      "key": "15|200000076|2026-11-01|5|200030670",
+      "id": 200030670,
+      "name": "Walk/Trot Jump",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:45.388Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recoLdOSO5JxIC7hW",
+      "key": "15|200000076|2026-11-01|6|200030849",
+      "id": 200030849,
+      "name": "Mulligan Class",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:11.831Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recpMj2hqwBl8eKpL",
+      "key": "15|200000076|2026-11-01|4|200030811",
+      "id": 200030811,
+      "name": ".90m Young Jumper Table II",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:08.650Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recpUGoXxovIRnI1x",
+      "key": "15|200000076|2026-11-01|5|200030614",
+      "id": 200030614,
+      "name": "Small Pony Handy Hunter",
+      "entries": 3,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:10.975Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recpg73RMCoeWWYoC",
+      "key": "15|200000076|2026-11-01|5|200030660",
+      "id": 200030660,
+      "name": "Cross Rail Equitation ",
+      "entries": 2,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:09.476Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recq3LSocdywBQuGy",
+      "key": "15|200000076|2026-11-01|3|200030503",
+      "id": 200030503,
+      "name": "Amateur Owner Hunter 3'6\" 18-35",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:30.483Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recq8HqYbAa9z0O1f",
+      "key": "15|200000076|2026-11-01|5|200030617",
+      "id": 200030617,
+      "name": "Medium/Large Pony Hunter",
+      "entries": 4,
+      "status": "Underway",
+      "lastSuccess": "2026-11-01T15:49:10.934Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recqDieAgPr2iMSsJ",
+      "key": "15|200000076|2026-11-01|3|200030732",
+      "id": 200030732,
+      "name": "USEF / NCEA Junior Hunter Seat Medal",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:29.276Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recqSwMQdJ0w4iAQQ",
+      "key": "15|200000076|2026-11-01|5|200030623",
+      "id": 200030623,
+      "name": "Large Pony Conformation Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:48.358Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recqhvUMxooPcUQ1Y",
+      "key": "15|200000076|2026-11-01|6|200030817",
+      "id": 200030817,
+      "name": "$300 1.10m Young Jumper II2b",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:50.679Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recquGzPb7Pp0QnyL",
+      "key": "15|200000076|2026-11-01|4|200030808",
+      "id": 200030808,
+      "name": "Pony Jumper II2d",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-11-01T15:49:08.256Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recrO43qUtEllddS7",
+      "key": "15|200000076|2026-11-01|3|200030722",
+      "id": 200030722,
+      "name": "Ariat Adult Medal",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:32.295Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recrglZjL3yfDBZF6",
+      "key": "15|200000076|2026-11-01|3|200030738",
+      "id": 200030738,
+      "name": "Hamel Foundation NHS 3'3\" Medal",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:29.225Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recs4OhhZReWSNzIR",
+      "key": "15|200000076|2026-11-01|5|200030609",
+      "id": 200030609,
+      "name": "Children's Pony Hunter",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:49.276Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recuKDItaPxi4hMnE",
+      "key": "15|200000076|2026-11-01|5|200030667",
+      "id": 200030667,
+      "name": "Walk",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:45.066Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recvIp0wYbbYMHhmv",
+      "key": "15|200000076|2026-11-01|3|200030740",
+      "id": 200030740,
+      "name": "ASPCA Maclay",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:29.562Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recw9Rrz0IGE3geP4",
+      "key": "15|200000076|2026-11-01|3|200030523",
+      "id": 200030523,
+      "name": "Small Junior Hunter 3'6\"",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:30.908Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recxrmH3QZ0lrJfHg",
+      "key": "15|200000076|2026-11-01|3|200030837",
+      "id": 200030837,
+      "name": "$1,000 Amateur Owner Hunter 3'3\"/3'6\" Classic (2nd Rd)",
+      "entries": 0,
+      "status": "Not Started",
+      "lastSuccess": "2026-10-31T15:43:29.995Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    },
+    {
+      "recordId": "recz7T6adlYd5SVZg",
+      "key": "15|200000076|2026-11-01|5|200030830",
+      "id": 200030830,
+      "name": "$500 Pony Hunter Classic (2nd Rd)",
+      "entries": 7,
+      "status": "Completed",
+      "lastSuccess": "2026-11-01T15:49:10.932Z",
+      "day": [
+        {
+          "id": "recXzQI2py2NBAKJc",
+          "name": "15|200000076|2026-11-01"
+        }
+      ]
+    }
+  ]
+}

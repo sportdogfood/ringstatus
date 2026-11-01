@@ -1,0 +1,580 @@
+[
+  {
+    "name": "run-logs",
+    "records": [
+      {
+        "id": "recjRKCLt9dsbbimJ",
+        "createdTime": "2026-11-01T12:55:50.000Z",
+        "cellValuesByFieldId": {
+          "fldDAblmybDRORrq5": "JoinReadback",
+          "fldI1m0UfgvTZs4k3": "Partial",
+          "fldRkB3ilvF31fhh1": 61.006,
+          "fldbpYDyAygWPdL1a": "2026-11-01T12:55:47.359Z",
+          "fldc40kZe0y2zktNF": "wef-people",
+          "fldguHoLTlDcuHdiD": "{\"added\":919,\"updated\":0,\"unchanged\":0,\"withheld\":0,\"source-people\":919,\"issues\":851}",
+          "fldh9rW14IljmiMpc": "3c1d7050-eeb6-465e-8198-75258898f071",
+          "fldoJMp5uKZmxcMWS": "Shared-input join completed; owners excluded and horses unlinked by owner",
+          "fldpF3VqckBxGSHkI": "2026-11-01T12:54:46.353Z"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  {
+    "name": "err-logs",
+    "records": [
+      {
+        "id": "rec0gorVMeeTTpiPX",
+        "createdTime": "2026-11-01T12:56:05.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Equal cross-role ID is unverified; no merge; source-context=[\"w-riders/recAlBRbRAaLfn41n\",\"w-riders/recAu5CXAsZ0zsVmG\",\"w-riders/recBeeYYjWerDUjJP\",\"w-riders/recCHf8UT2Hjmu4OF\",\"w-riders/recCoMtkNlXyUoKw0\",\"w-riders/recCzOasxz4jNc6cQ\",\"w-riders/recDZIVyorvDt8NNZ\",\"w-riders/recDuMZPyKqzyhr0K\",\"w-riders/recEh2m5yVaB4TcGP\",\"w-riders/recEt6YZnLgUVT78a\",\"w-riders/recGBR7MjFCYPsFp8\",\"w-riders/recH3pIwtUXIK8Ht2\",\"w-riders/recH71avLqr2KkrK2\",\"w-riders/recHEh1vOLQR376k7\",\"w-riders/recHRZkqSZJ5aNgli\",\"w-riders/recIOUoGh21WLEPIe\",\"w-riders/recJYJ3G8xU9SqCCL\",\"w-riders/recJZypJFZOk33Ek9\",\"w-riders/recJrUvl2MDTHiN3P\",\"w-riders/recJrlb0j8DiAivhJ\",\"w-riders/recKG3q5IxDPP5Q6X\",\"w-riders/recKMIjD9wTI9fURa\",\"w-riders/recKucLHi9YySlOP2\",\"w-riders/recL75W0wLmrBieKS\",\"w-riders/recLaUOLfyx0GmRb0\",\"w-riders/recLbG7YbDCJjwzkc\",\"w-riders/recLbsrLgYnLX1MWq\",\"w-riders/recMZPhq0FowqTL2O\",\"w-riders/recNgk5smVOyfQjfR\",\"w-riders/recNxNjIjXQ6HzSbq\",\"w-riders/recOC3QwkyCZpJIIL\",\"w-riders/recOM0WLLkBdtinwK\",\"w-riders/recOZUQsWJ2OmWhWf\",\"w-riders/recOrilDpALAvnwqB\",\"w-riders/recOuxohm2U73843i\",\"w-riders/recP2oCqJ4w20fY4M\",\"w-riders/recPwHbwSilnbeSAt\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0019",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.235Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "rec186dFMgIXP9YLG",
+        "createdTime": "2026-11-01T12:55:57.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-24; source-context=[\"w-riders/recYxLm7cDnGE6Ifj\",\"w-riders/recZDla3inbMJkLjk\",\"w-riders/recZkN1WhGe0kekDT\",\"w-riders/reca0r9yCpFD5VXDJ\",\"w-riders/recaKTOlXfz5f3H3l\",\"w-riders/recadqqdLWhFQTwly\",\"w-riders/recbRMhoBvJX6nMOG\",\"w-riders/recbSSvnYNaFM17Np\",\"w-riders/recbZh9XJQIYgQvQa\",\"w-riders/recbzmCrCUmeeL17v\",\"w-riders/recc4yEcWJRvV2v6J\",\"w-riders/recchz6txAa7NNB9Y\",\"w-riders/recd7UG4G9wDO3vnl\",\"w-riders/recdaMK0Whx1KY51b\",\"w-riders/recdd3a8qzzT0CNEu\",\"w-riders/recdvdQVWrAZ2Xg9i\",\"w-riders/recei7qr3TIUeIoIw\",\"w-riders/recfPdIa7Z8XCfimx\",\"w-riders/recfXln7E1zJjFpXY\",\"w-riders/recg2II4ho9HJV7FB\",\"w-riders/recgPhlPkEctREMFJ\",\"w-riders/rechOMiWgIxDbZIlF\",\"w-riders/rechdjkVdfGQSHZMl\",\"w-riders/reciLTBD2hnGoltaW\",\"w-riders/recitHRqA6ie9uFjK\",\"w-riders/recjQn8tFueXu5o5Y\",\"w-riders/recjUtYK0WVRDMTN8\",\"w-riders/recjWVBERTPCw858p\",\"w-riders/recjnotRIH1Rsba1n\",\"w-riders/reckQLF8HQ8p4LxLI\",\"w-riders/recm0Gzgxm5ZJjH3d\",\"w-riders/recmUXmZHcRS6kJXc\",\"w-riders/recoAlIrgvmDB68PX\",\"w-riders/recoPtX68ATE8ISuj\",\"w-riders/recouAUst1hMAWziH\",\"w-riders/recovm5TKGkyJIKWg\",\"w-riders/recozJr11YnZEQb7p\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0009",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.134Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "rec314H33uTvx8VvK",
+        "createdTime": "2026-11-01T12:56:10.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Equal cross-role ID is unverified; no merge; source-context=[\"w-trainers/recdArAribnqF7X30\",\"w-trainers/recdRyH4xEkMKng1T\",\"w-trainers/rece55qEHZUcUYZLO\",\"w-trainers/rece8VCFRsbFwAs29\",\"w-trainers/receFMRk0B5Fdy5mF\",\"w-trainers/receR101aZnhctYwp\",\"w-trainers/recefnK9axHI6QY8N\",\"w-trainers/recf00KFmF5B0BQSa\",\"w-trainers/recfoRQG9zCzABbTM\",\"w-trainers/recgHweSJ4b1AkqpF\",\"w-trainers/rechAPxzCh7v0pvHA\",\"w-trainers/rechY7TV1vCJODcUL\",\"w-trainers/reciIohUzcRoQSPf6\",\"w-trainers/reciLqVOqoRMJ2C8N\",\"w-trainers/reciqEmE5iZRN64Rp\",\"w-trainers/recjHS9sCNoDLY7p5\",\"w-trainers/recjYzP5gR7w9ixnO\",\"w-trainers/recjbA4Q05so7NkAD\",\"w-trainers/reckHjGXhZyjEq1Sn\",\"w-trainers/reckb5IZIoXT6orgJ\",\"w-trainers/reckfVJNPjp7BLGO2\",\"w-trainers/reclkWfpaTUBZgSGP\",\"w-trainers/recm9LNAdU9lXIcte\",\"w-trainers/recmLJVcyfBswWVU4\",\"w-trainers/recmQsMI2YNRtOkN3\",\"w-trainers/recnisG4BtirkebDq\",\"w-trainers/recoCnBwhlqhOdI6x\",\"w-trainers/recoT2hr236j76LPc\",\"w-trainers/recqA9K5waagbJw7w\",\"w-trainers/recqFFxfDQrpMKEAK\",\"w-trainers/recqGxPRk4hEKnerI\",\"w-trainers/recqiZQS4EBvqgHAB\",\"w-trainers/recqq60IXOReFUKie\",\"w-trainers/recrC3sS1oc3Hmrby\",\"w-trainers/recrcjvsSY7ioxBOr\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0025",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.321Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "rec3sGNnK1OyThE78",
+        "createdTime": "2026-11-01T12:55:54.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-23; source-context=[\"w-trainers/recLz1Tr6vV6IlIW3\",\"w-trainers/recNYA48kNCQFrpTv\",\"w-trainers/recNvhfzU6ViKUa8s\",\"w-trainers/recOUAAQUEEIXwQ4s\",\"w-trainers/recOmaBNRnEZj4XVX\",\"w-trainers/recOra5eHgoSiKofp\",\"w-trainers/recQQB8gIl4GD9Jmg\",\"w-trainers/recSl6aeAicnw1rFd\",\"w-trainers/recTBwxbKuYX7zqDd\",\"w-trainers/recYysbKV0sTSYM8P\",\"w-trainers/recablGVmSgLGT0j6\",\"w-trainers/reccqz4hqwsYSwla3\",\"w-trainers/reccsZIydsILXwx7B\",\"w-trainers/recdgMmwZ93A2SLcg\",\"w-trainers/receFMRk0B5Fdy5mF\",\"w-trainers/recfoRQG9zCzABbTM\",\"w-trainers/rechAPxzCh7v0pvHA\",\"w-trainers/reci3hjlMj5cY6Pgv\",\"w-trainers/recjHS9sCNoDLY7p5\",\"w-trainers/recjYzP5gR7w9ixnO\",\"w-trainers/recjnBBMegqbbHR8u\",\"w-trainers/recjpnsZFRjz1uGiy\",\"w-trainers/reckfVJNPjp7BLGO2\",\"w-trainers/reclkWfpaTUBZgSGP\",\"w-trainers/recnisG4BtirkebDq\",\"w-trainers/recoCnBwhlqhOdI6x\",\"w-trainers/recpWCodpY85jYPaP\",\"w-trainers/recqA9K5waagbJw7w\",\"w-trainers/recqFFxfDQrpMKEAK\",\"w-trainers/recrC3sS1oc3Hmrby\",\"w-trainers/recuW6HMDwiqwULIS\",\"w-trainers/recvKaXgghUO0kzqg\",\"w-trainers/recweYejjlzApdb3I\",\"w-trainers/recwseIoCkhZKenQG\",\"w-trainers/recwzxffqV5wKnRyV\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0005",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.112Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "rec4zq4I5QUVydeUO",
+        "createdTime": "2026-11-01T12:56:03.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-25; source-context=[\"w-trainers/rec76h1MGnIW78zKm\",\"w-trainers/rec7kYyxsZHFJ4q3q\",\"w-trainers/rec818GfVh0odHiCQ\",\"w-trainers/rec94TlDg9WKWg3W9\",\"w-trainers/recA6s7KLfOTuS5Qx\",\"w-trainers/recAxEKdiBB58L7yE\",\"w-trainers/recB4kkH9F2znl46y\",\"w-trainers/recBJkH5txNvMoA2g\",\"w-trainers/recCGYMUpbdZX338e\",\"w-trainers/recFHvjhumGLGWwez\",\"w-trainers/recFYGkKzel8Oyyri\",\"w-trainers/recFdCS91owOGE5F5\",\"w-trainers/recGGpgZ9GM9Lav8l\",\"w-trainers/recGWw0vRwiLnvCsA\",\"w-trainers/recJ3lghziUPh1rmd\",\"w-trainers/recK5nkAvEvmMzFBm\",\"w-trainers/recLmMz20dyKvr5oz\",\"w-trainers/recLoANuxYvR4BFvt\",\"w-trainers/recLwTp1NeHHJQAWp\",\"w-trainers/recLz1Tr6vV6IlIW3\",\"w-trainers/recMibMEfkx2sBPwh\",\"w-trainers/recOUAAQUEEIXwQ4s\",\"w-trainers/recSQu8ZpsNgRIMCN\",\"w-trainers/recTBwxbKuYX7zqDd\",\"w-trainers/recXH3gPkiEI85oub\",\"w-trainers/recYysbKV0sTSYM8P\",\"w-trainers/recaF1gc8dNdAAStd\",\"w-trainers/reccCi0xeU0qxkQo6\",\"w-trainers/reccqz4hqwsYSwla3\",\"w-trainers/rechbTJKQwAbvhyI7\",\"w-trainers/reci3hjlMj5cY6Pgv\",\"w-trainers/recjYzP5gR7w9ixnO\",\"w-trainers/recjgmL2etGqSwOZA\",\"w-trainers/recnisG4BtirkebDq\",\"w-trainers/recqA9K5waagbJw7w\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0016",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.193Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "rec5WG37YFX0LeeH0",
+        "createdTime": "2026-11-01T12:56:07.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Equal cross-role ID is unverified; no merge; source-context=[\"w-riders/recg2II4ho9HJV7FB\",\"w-riders/rechBrTR7t2qfekii\",\"w-riders/rechOMiWgIxDbZIlF\",\"w-riders/rechkjH8A4WSQBzmd\",\"w-riders/recjEyWcUTb5bst0H\",\"w-riders/recjGRL5jjvJUYzl7\",\"w-riders/recjQn8tFueXu5o5Y\",\"w-riders/recjUtYK0WVRDMTN8\",\"w-riders/recjtvuClsEomdCTL\",\"w-riders/reckQLF8HQ8p4LxLI\",\"w-riders/recku21kJM4WHPOVW\",\"w-riders/recleB8OKhuq5TLW7\",\"w-riders/recm0TQzoS08wTnhW\",\"w-riders/recmE0Tvs0d2MzZmD\",\"w-riders/recmKacKdNHKbkmo6\",\"w-riders/recmySp00h8qEKaPQ\",\"w-riders/recnqYma5if72zFZD\",\"w-riders/recomA760szI6kkjI\",\"w-riders/recp5aPe2f8F0OYPj\",\"w-riders/recpPV5iXXuJCkpnl\",\"w-riders/recpyo8ExqE8v9tKs\",\"w-riders/recq90wW0Z5VCSFPj\",\"w-riders/recrAKULHtwKGO6VD\",\"w-riders/recrANSgVMuJl13hm\",\"w-riders/recrFLUJ4kKh5Ge7x\",\"w-riders/recrX8iAaAsPA35d9\",\"w-riders/recrvqELZyPQJvmNT\",\"w-riders/recsKTk80ozTSXzXi\",\"w-riders/recsg0TpmfwWc8zef\",\"w-riders/rectkvsdNLvLQAKFO\",\"w-riders/recuBwUCxgUNUc5sw\",\"w-riders/recuRelETNMNTvP7H\",\"w-riders/recugGrP6vArXGAAc\",\"w-riders/recvBrUTnw2vWV0mi\",\"w-riders/recvDPvDnnGKTtuA7\",\"w-riders/recvUVZgrLKPEZcYW\",\"w-riders/recxD3RdXk45i5hzR\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0021",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.264Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "rec5iGxoKrBMve0RO",
+        "createdTime": "2026-11-01T12:55:52.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-23; source-context=[\"w-riders/recLar8aKDUigr7St\",\"w-riders/recLbsrLgYnLX1MWq\",\"w-riders/recLqLC6Cfn77uyDU\",\"w-riders/recMZPhq0FowqTL2O\",\"w-riders/recMzcSftxG7BVzQp\",\"w-riders/recNeBzENP3bGabVI\",\"w-riders/recNfbmQaqbBfTCcR\",\"w-riders/recPI1aAfu1xTng3G\",\"w-riders/recPwHbwSilnbeSAt\",\"w-riders/recQLxFtz0lClijZs\",\"w-riders/recR0FI4phgGNiETK\",\"w-riders/recS6wyWlHbJwqpZC\",\"w-riders/recSlrZZZZjNjkdfm\",\"w-riders/recTYfnRww5Zzwnlg\",\"w-riders/recTc5XijdlpvWzxY\",\"w-riders/recTga7UFDekrPicJ\",\"w-riders/recThuyjpHbgxiKEf\",\"w-riders/recUndSMwPR0K3gRm\",\"w-riders/recVMhjbNkhvPpsLQ\",\"w-riders/recWNhP7tcwpfK1SA\",\"w-riders/recWxEldnkzXHSquY\",\"w-riders/recXoSFikSLekhKvU\",\"w-riders/recY5yifmtnavEJK1\",\"w-riders/recYm9WlArqQFWJ3p\",\"w-riders/recYwBoliddxOSDto\",\"w-riders/recYxLm7cDnGE6Ifj\",\"w-riders/recZkN1WhGe0kekDT\",\"w-riders/recaKTOlXfz5f3H3l\",\"w-riders/recbRMhoBvJX6nMOG\",\"w-riders/recbZh9XJQIYgQvQa\",\"w-riders/recbzmCrCUmeeL17v\",\"w-riders/reccvB4IE2ssgEY0U\",\"w-riders/recczBWX91rV7rMsP\",\"w-riders/recd2WrRpUHDDvEbo\",\"w-riders/recdaMK0Whx1KY51b\",\"w-riders/recdvdQVWrAZ2Xg9i\",\"w-riders/recfJu5LdsSu8Nrjk\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0002",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.100Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "rec7h8nM2VAfNljg2",
+        "createdTime": "2026-11-01T12:55:58.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-24; source-context=[\"w-riders/recpJdeUl6XkHg06b\",\"w-riders/recpMNAfUSDjMSPC9\",\"w-riders/recpQAcEi5k6WQcjp\",\"w-riders/recpTwNttKo3PzbUr\",\"w-riders/recqq0CLCpYg71Wst\",\"w-riders/recrAKULHtwKGO6VD\",\"w-riders/recrUpEvkfk946fC5\",\"w-riders/recrmTErvEOZrAKNR\",\"w-riders/recsdKTuICiWBDWCo\",\"w-riders/recshyxabKHabiZZs\",\"w-riders/recssLsm8xVdHf2AX\",\"w-riders/rectToXo5DvIyMos3\",\"w-riders/rectWrDxyqCl3uQbg\",\"w-riders/rectqCVOPr7BOdxXq\",\"w-riders/recu258XKaOj4OISK\",\"w-riders/recvSLc1xNLDjQi9x\",\"w-riders/recvuHoB8qEfXsqSU\",\"w-riders/recw1FGMP0Q4ccvFZ\",\"w-riders/recwPsT60CbAN46DY\",\"w-riders/recxaociyWqoG5BFI\",\"w-riders/recxlkiAq2j0TvA0U\",\"w-riders/recxx8Vl0srQcVZtz\",\"w-riders/recy1WKMreSAoETVT\",\"w-riders/recyULkIfAHtRYr2h\",\"w-riders/recyYSbdg63W2UECC\",\"w-riders/recyoVUmKjTyVnVG9\",\"w-trainers/rec0s7kPf9qo2DxUV\",\"w-trainers/rec0tN3W7DPe6eTd6\",\"w-trainers/rec2GZLvF0u88RbII\",\"w-trainers/rec2eAApvi0WqD2ZE\",\"w-trainers/rec3Y2Nf6bHAPfoyt\",\"w-trainers/rec4EB4bNqziSFHYa\",\"w-trainers/rec53pR9MB4odlrwr\",\"w-trainers/rec6dy6B01O7PPtoQ\",\"w-trainers/rec7kYyxsZHFJ4q3q\",\"w-trainers/rec818GfVh0odHiCQ\",\"w-trainers/rec9SVgZR7ZUSSuHk\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0010",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.141Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "rec9gFteVHFNxADFa",
+        "createdTime": "2026-11-01T12:55:51.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-23; source-context=[\"w-riders/rec01j7El5s2jlCmf\",\"w-riders/rec0OxnviEonpjbNF\",\"w-riders/rec0WTH5F3fAiy25q\",\"w-riders/rec20VFau5RK7s03p\",\"w-riders/rec2Ds39aInmZwVa2\",\"w-riders/rec2el3tquCcsPUWG\",\"w-riders/rec308Lx5vgyGHRU9\",\"w-riders/rec3H7Vdafg5c2ncF\",\"w-riders/rec4nrfeINYLxpmpV\",\"w-riders/rec5hQHXRUtdBTs3P\",\"w-riders/rec6AgrZyBTyFeAVC\",\"w-riders/rec6BM8qyoMReuJ7P\",\"w-riders/rec6kJaxD94EqsUod\",\"w-riders/rec7AFgvu0NWPpzIk\",\"w-riders/rec9Fz78eTDgMmokD\",\"w-riders/rec9iwkHlQYtE2iSf\",\"w-riders/rec9jPHNMqsV9fwES\",\"w-riders/rec9kPRWHpuwZ11qW\",\"w-riders/rec9pkfLi9Z7Vgo8Z\",\"w-riders/recA1ecdnn4BFRkmb\",\"w-riders/recAYh69ae9y22vsQ\",\"w-riders/recAl5rPpi7pD0n1D\",\"w-riders/recAu5CXAsZ0zsVmG\",\"w-riders/recB987AiZs2EiDgL\",\"w-riders/recBHOHbSLZrXCkxW\",\"w-riders/recC225tSIskq1qoD\",\"w-riders/recCHf8UT2Hjmu4OF\",\"w-riders/recCdXIiuEd6zADXq\",\"w-riders/recCn4REFuD0vfcMm\",\"w-riders/recHLSHU0DuNMOevI\",\"w-riders/recHRZkqSZJ5aNgli\",\"w-riders/recHbxuWCHvZp6HDV\",\"w-riders/recHjm8p9tjZg8x3p\",\"w-riders/recIZdkVaqzPMMpgB\",\"w-riders/recJrUvl2MDTHiN3P\",\"w-riders/recJs65FuxGD89wVS\",\"w-riders/recKNRA7qAfZjAMvV\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0001",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.096Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recAGnT803zPqzygj",
+        "createdTime": "2026-11-01T12:56:01.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-25; source-context=[\"w-riders/rec0LQvCvzwUI3FeM\",\"w-riders/rec0OxnviEonpjbNF\",\"w-riders/rec0YyaRV1HVorjoJ\",\"w-riders/rec2Ds39aInmZwVa2\",\"w-riders/rec2IDOuXQ48twqur\",\"w-riders/rec308Lx5vgyGHRU9\",\"w-riders/rec3H7Vdafg5c2ncF\",\"w-riders/rec4nrfeINYLxpmpV\",\"w-riders/rec6RyaT1aolMIK2R\",\"w-riders/rec7AFgvu0NWPpzIk\",\"w-riders/rec7bsXw1G7pWEps8\",\"w-riders/rec9Ovw3INFJiqTGq\",\"w-riders/rec9jPHNMqsV9fwES\",\"w-riders/rec9pkfLi9Z7Vgo8Z\",\"w-riders/recAfLzR6Uvk59edo\",\"w-riders/recAu5CXAsZ0zsVmG\",\"w-riders/recC225tSIskq1qoD\",\"w-riders/recCEvDs6oYoSk1nl\",\"w-riders/recCHf8UT2Hjmu4OF\",\"w-riders/recCdXIiuEd6zADXq\",\"w-riders/recCn4REFuD0vfcMm\",\"w-riders/recFlAw4WMsHtkQBH\",\"w-riders/recH3oNsp5DDrt5PT\",\"w-riders/recHLSHU0DuNMOevI\",\"w-riders/recHN0r52Te2cwn3M\",\"w-riders/recHbxuWCHvZp6HDV\",\"w-riders/recHjm8p9tjZg8x3p\",\"w-riders/recIUkxjH6ah9vZLd\",\"w-riders/recJ4icXO0EqyFmGN\",\"w-riders/recJCzBPGiLJ7Odso\",\"w-riders/recJrUvl2MDTHiN3P\",\"w-riders/recKNRA7qAfZjAMvV\",\"w-riders/recKqoF9i78KPoGly\",\"w-riders/recLqLC6Cfn77uyDU\",\"w-riders/recMDTeYkPzG4GWff\",\"w-riders/recNfbmQaqbBfTCcR\",\"w-riders/recOXYUDWpXiPfjI1\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0013",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.164Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recBjLB3Y4jelo4cj",
+        "createdTime": "2026-11-01T12:56:09.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Equal cross-role ID is unverified; no merge; source-context=[\"w-trainers/recNYA48kNCQFrpTv\",\"w-trainers/recNvhfzU6ViKUa8s\",\"w-trainers/recO6ye2YUJEthZbV\",\"w-trainers/recQQB8gIl4GD9Jmg\",\"w-trainers/recRlUAmWKTQeHEQs\",\"w-trainers/recSSrcmyxDysuvnd\",\"w-trainers/recSl6aeAicnw1rFd\",\"w-trainers/recSycu8WU88bhe1t\",\"w-trainers/recSynKgVELDaCEe9\",\"w-trainers/recTBwxbKuYX7zqDd\",\"w-trainers/recTO2pApAjA3kAzw\",\"w-trainers/recU2QaEMa6mhFlKp\",\"w-trainers/recUexVtME3PoooCG\",\"w-trainers/recUy6X10q83sFfXA\",\"w-trainers/recVErN1xzjnS7f0L\",\"w-trainers/recVxdetiR0qbgsR8\",\"w-trainers/recWEmdTLof6FSKK3\",\"w-trainers/recXjaw2IsHQRlZvA\",\"w-trainers/recXp1igS4iQkDDrX\",\"w-trainers/recXsq6cZwQyyabH5\",\"w-trainers/recYZBF2KrzqleEVG\",\"w-trainers/recYwKW4cq3yOUfnQ\",\"w-trainers/recZ8PxeEGlvnY6nJ\",\"w-trainers/recZYFKC32m2o06xT\",\"w-trainers/recZcsRX7OJvWqtuQ\",\"w-trainers/recZznENpGYH6Nnxt\",\"w-trainers/recaZ8rLZfWQqo58k\",\"w-trainers/recablGVmSgLGT0j6\",\"w-trainers/recatYBSeG3eRglGO\",\"w-trainers/recawHdBRRLIxElOi\",\"w-trainers/recbTaK4fYLZ3CtMx\",\"w-trainers/recbeIXtRTaoqUg3S\",\"w-trainers/recbjYFpjh7DzUUIC\",\"w-trainers/recbnPQXOWwUckm4g\",\"w-trainers/recczGR9Dj4JZff3U\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0024",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.305Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recH9WpnByN98JvWQ",
+        "createdTime": "2026-11-01T12:55:53.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-23; source-context=[\"w-riders/recyzx3cOiJ8agiTu\",\"w-riders/recz8UXGL7xgoAfFB\",\"w-trainers/rec0s7kPf9qo2DxUV\",\"w-trainers/rec0tN3W7DPe6eTd6\",\"w-trainers/rec2GZLvF0u88RbII\",\"w-trainers/rec3Y2Nf6bHAPfoyt\",\"w-trainers/rec4EB4bNqziSFHYa\",\"w-trainers/rec53pR9MB4odlrwr\",\"w-trainers/rec5raEETMGp4gCDM\",\"w-trainers/rec6dy6B01O7PPtoQ\",\"w-trainers/rec76h1MGnIW78zKm\",\"w-trainers/rec7kYyxsZHFJ4q3q\",\"w-trainers/rec94TlDg9WKWg3W9\",\"w-trainers/rec97SZjOblHCbTN6\",\"w-trainers/rec9SVgZR7ZUSSuHk\",\"w-trainers/recA6s7KLfOTuS5Qx\",\"w-trainers/recAxEKdiBB58L7yE\",\"w-trainers/recB4kkH9F2znl46y\",\"w-trainers/recCGYMUpbdZX338e\",\"w-trainers/recCJgz3aSVoegzZm\",\"w-trainers/recEbDNIepr205nW9\",\"w-trainers/recEfrHXzzcGPoWJM\",\"w-trainers/recFHvjhumGLGWwez\",\"w-trainers/recFdCS91owOGE5F5\",\"w-trainers/recFkJNLK3NynPa3B\",\"w-trainers/recGGpgZ9GM9Lav8l\",\"w-trainers/recGWw0vRwiLnvCsA\",\"w-trainers/recGo8Zm23QUnf1Ol\",\"w-trainers/recGxbRm4QEJoCP93\",\"w-trainers/recJ3lghziUPh1rmd\",\"w-trainers/recK5nkAvEvmMzFBm\",\"w-trainers/recKdbClchsqtWxd0\",\"w-trainers/recLmMz20dyKvr5oz\",\"w-trainers/recLoANuxYvR4BFvt\",\"w-trainers/recLwTp1NeHHJQAWp\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0004",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.108Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recJkHzq2D3cs8Qsx",
+        "createdTime": "2026-11-01T12:55:53.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-23; source-context=[\"w-riders/recfPdIa7Z8XCfimx\",\"w-riders/recfXln7E1zJjFpXY\",\"w-riders/recg2II4ho9HJV7FB\",\"w-riders/rechOMiWgIxDbZIlF\",\"w-riders/recitHRqA6ie9uFjK\",\"w-riders/recjEyWcUTb5bst0H\",\"w-riders/recjQn8tFueXu5o5Y\",\"w-riders/recjUtYK0WVRDMTN8\",\"w-riders/recjr2pqoLHWeo1Xs\",\"w-riders/reckQLF8HQ8p4LxLI\",\"w-riders/recl9ptHzn4An9uMi\",\"w-riders/recmE0Tvs0d2MzZmD\",\"w-riders/recmUXmZHcRS6kJXc\",\"w-riders/recoVK3t8RGC5pA5t\",\"w-riders/recomA760szI6kkjI\",\"w-riders/recouAUst1hMAWziH\",\"w-riders/recpJdeUl6XkHg06b\",\"w-riders/recpQAcEi5k6WQcjp\",\"w-riders/recrAKULHtwKGO6VD\",\"w-riders/recrVgQxPUm5s8nPG\",\"w-riders/recrX8iAaAsPA35d9\",\"w-riders/recrmTErvEOZrAKNR\",\"w-riders/recsdKTuICiWBDWCo\",\"w-riders/recshyxabKHabiZZs\",\"w-riders/recssLsm8xVdHf2AX\",\"w-riders/rectqCVOPr7BOdxXq\",\"w-riders/recuMir2vZ4uQ3sEd\",\"w-riders/recuRelETNMNTvP7H\",\"w-riders/recvSLc1xNLDjQi9x\",\"w-riders/recvUVZgrLKPEZcYW\",\"w-riders/recwPsT60CbAN46DY\",\"w-riders/recxGBta0nLgMzemr\",\"w-riders/recxaociyWqoG5BFI\",\"w-riders/recxlkiAq2j0TvA0U\",\"w-riders/recxx8Vl0srQcVZtz\",\"w-riders/recy1WKMreSAoETVT\",\"w-riders/recyoVUmKjTyVnVG9\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0003",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.103Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recMgYaisVRC6J1Al",
+        "createdTime": "2026-11-01T12:56:07.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Equal cross-role ID is unverified; no merge; source-context=[\"w-riders/recxGBta0nLgMzemr\",\"w-riders/recxIptMzddCbINo5\",\"w-riders/recyuVIDCy0P3zJIm\",\"w-riders/recyzx3cOiJ8agiTu\",\"w-riders/reczvEcmJrqnHaxxc\",\"w-trainers/rec0tN3W7DPe6eTd6\",\"w-trainers/rec17UNbZiucuqIpR\",\"w-trainers/rec1Ba7zKAC9zZwgL\",\"w-trainers/rec1KIYP4lUhElYvs\",\"w-trainers/rec2GZLvF0u88RbII\",\"w-trainers/rec2PGOLBoKoTy2ST\",\"w-trainers/rec2WCycKUOK7h9QX\",\"w-trainers/rec2eAApvi0WqD2ZE\",\"w-trainers/rec2y4dPTQFYHZAGh\",\"w-trainers/rec3Y2Nf6bHAPfoyt\",\"w-trainers/rec3fuZg1PS7Vwcm2\",\"w-trainers/rec3l5pDJQUPd8Vzv\",\"w-trainers/rec44muDz5cVPgfoq\",\"w-trainers/rec4C85Ts50ZFOa2M\",\"w-trainers/rec53pR9MB4odlrwr\",\"w-trainers/rec5B7yC3LgtuN05E\",\"w-trainers/rec5XPcZV0A1NLYk1\",\"w-trainers/rec5hwf7hBBDHpFPG\",\"w-trainers/rec5raEETMGp4gCDM\",\"w-trainers/rec6dy6B01O7PPtoQ\",\"w-trainers/rec6rLfuR9ThqrJne\",\"w-trainers/rec76h1MGnIW78zKm\",\"w-trainers/rec7dUBh1TtQu2Eyq\",\"w-trainers/rec818GfVh0odHiCQ\",\"w-trainers/rec89m9tMk2z2Fzwn\",\"w-trainers/rec94TlDg9WKWg3W9\",\"w-trainers/rec97SZjOblHCbTN6\",\"w-trainers/recA6s7KLfOTuS5Qx\",\"w-trainers/recAxEKdiBB58L7yE\",\"w-trainers/recCJgz3aSVoegzZm\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0022",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.277Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recMl7QfVFhBWLh7L",
+        "createdTime": "2026-11-01T12:56:01.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-25; source-context=[\"w-riders/recPI1aAfu1xTng3G\",\"w-riders/recPTMG5zbFRyALMA\",\"w-riders/recPrjhfXnKSHQLgG\",\"w-riders/recPtgy1MgKdcVxVo\",\"w-riders/recPwHbwSilnbeSAt\",\"w-riders/recR0FI4phgGNiETK\",\"w-riders/recS1K5EDpk1ghLUK\",\"w-riders/recU7auVdLBvnAYh1\",\"w-riders/recUGPW7A4FrT9977\",\"w-riders/recVhTp9QgLhott2D\",\"w-riders/recWNhP7tcwpfK1SA\",\"w-riders/recWpQwIhtKduXcIo\",\"w-riders/recXpq99Wr5BukIA7\",\"w-riders/recXuwfHabMfS7nZJ\",\"w-riders/recYF2gANhapTUf6s\",\"w-riders/recYwBoliddxOSDto\",\"w-riders/recYxLm7cDnGE6Ifj\",\"w-riders/recZDla3inbMJkLjk\",\"w-riders/reca0r9yCpFD5VXDJ\",\"w-riders/recadqqdLWhFQTwly\",\"w-riders/recbSSvnYNaFM17Np\",\"w-riders/recbzmCrCUmeeL17v\",\"w-riders/recc4yEcWJRvV2v6J\",\"w-riders/reccPVTB5r0yuDZTc\",\"w-riders/recchz6txAa7NNB9Y\",\"w-riders/recd2WrRpUHDDvEbo\",\"w-riders/recd7UG4G9wDO3vnl\",\"w-riders/recdvdQVWrAZ2Xg9i\",\"w-riders/receUbv6U51xx0XQm\",\"w-riders/recei7qr3TIUeIoIw\",\"w-riders/recf4afGj1XAmyJQa\",\"w-riders/recfPdIa7Z8XCfimx\",\"w-riders/recfXln7E1zJjFpXY\",\"w-riders/recg2II4ho9HJV7FB\",\"w-riders/rechdjkVdfGQSHZMl\",\"w-riders/reci3lLzHzl9kcmC5\",\"w-riders/reciLTBD2hnGoltaW\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0014",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.172Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recOZMr8Xeu9AIrML",
+        "createdTime": "2026-11-01T12:56:04.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-25; source-context=[\"w-trainers/recqFFxfDQrpMKEAK\",\"w-trainers/recuJC8ppttbUEcNW\",\"w-trainers/recuW6HMDwiqwULIS\",\"w-trainers/recumZr18qHRQxHyL\",\"w-trainers/recvKaXgghUO0kzqg\",\"w-trainers/recwdBRIYrwNXwgYg\",\"w-trainers/recwseIoCkhZKenQG\",\"w-trainers/recwzxffqV5wKnRyV\",\"w-trainers/recx6qNsNshzqHrdt\",\"w-trainers/recygUzJxebg0z7R1\",\"w-trainers/recyzO0Xo0xDYf9cV\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0017",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.204Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recPnfzoRNqXf6bEV",
+        "createdTime": "2026-11-01T12:55:56.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-24; source-context=[\"w-riders/rec0A4iHTYpY0OFS8\",\"w-riders/rec0OxnviEonpjbNF\",\"w-riders/rec0WTH5F3fAiy25q\",\"w-riders/rec0YyaRV1HVorjoJ\",\"w-riders/rec1bckC0FU1xozhM\",\"w-riders/rec2Ds39aInmZwVa2\",\"w-riders/rec2IDOuXQ48twqur\",\"w-riders/rec2el3tquCcsPUWG\",\"w-riders/rec308Lx5vgyGHRU9\",\"w-riders/rec3H7Vdafg5c2ncF\",\"w-riders/rec3tcd5LlvxcIEMQ\",\"w-riders/rec5hQHXRUtdBTs3P\",\"w-riders/rec63HAqrj2GcrbJt\",\"w-riders/rec6AgrZyBTyFeAVC\",\"w-riders/rec6RyaT1aolMIK2R\",\"w-riders/rec6kJaxD94EqsUod\",\"w-riders/rec78rXMZZ9weksa0\",\"w-riders/rec7AFgvu0NWPpzIk\",\"w-riders/rec7bsXw1G7pWEps8\",\"w-riders/rec9Fz78eTDgMmokD\",\"w-riders/rec9Ovw3INFJiqTGq\",\"w-riders/rec9jPHNMqsV9fwES\",\"w-riders/rec9pkfLi9Z7Vgo8Z\",\"w-riders/recA1ecdnn4BFRkmb\",\"w-riders/recASaoSokG0zYgNg\",\"w-riders/recAYh69ae9y22vsQ\",\"w-riders/recAfLzR6Uvk59edo\",\"w-riders/recAu5CXAsZ0zsVmG\",\"w-riders/recB987AiZs2EiDgL\",\"w-riders/recBHOHbSLZrXCkxW\",\"w-riders/recCEvDs6oYoSk1nl\",\"w-riders/recCHf8UT2Hjmu4OF\",\"w-riders/recCdXIiuEd6zADXq\",\"w-riders/recDQRF7U6Wd4mbNF\",\"w-riders/recFlAw4WMsHtkQBH\",\"w-riders/recH3oNsp5DDrt5PT\",\"w-riders/recHLSHU0DuNMOevI\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0007",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.122Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recRwFExifltaU8xA",
+        "createdTime": "2026-11-01T12:55:55.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-23; source-context=[\"w-trainers/recx6qNsNshzqHrdt\",\"w-trainers/recygUzJxebg0z7R1\",\"w-trainers/recyzO0Xo0xDYf9cV\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0006",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.116Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recTyeEdIr02Lhk3p",
+        "createdTime": "2026-11-01T12:56:08.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Equal cross-role ID is unverified; no merge; source-context=[\"w-trainers/recCNJyG4kfIHmZRN\",\"w-trainers/recCgGGbbbMhEm1nZ\",\"w-trainers/recCmksMPvauYIGgx\",\"w-trainers/recCtvct4toY1fVBp\",\"w-trainers/recDAhO2WqeDEYsMa\",\"w-trainers/recDDpEncXu5Q9fhf\",\"w-trainers/recDFCRDQ1JbBUmeD\",\"w-trainers/recDbEUn7IS8NCXbW\",\"w-trainers/recEZMismsQPR7gCI\",\"w-trainers/recErCg2LLibV5QB3\",\"w-trainers/recEwgc77PyRUCtNq\",\"w-trainers/recFHvjhumGLGWwez\",\"w-trainers/recFYGkKzel8Oyyri\",\"w-trainers/recFdCS91owOGE5F5\",\"w-trainers/recFkJNLK3NynPa3B\",\"w-trainers/recFpO5lEFu910iS7\",\"w-trainers/recGGpgZ9GM9Lav8l\",\"w-trainers/recGo8Zm23QUnf1Ol\",\"w-trainers/recGseqNzWKcmCzT7\",\"w-trainers/recGxbRm4QEJoCP93\",\"w-trainers/recIdWR5sIfthdK8x\",\"w-trainers/recIfgzD3PsBYepLW\",\"w-trainers/recK5nkAvEvmMzFBm\",\"w-trainers/recKTpIRzmvs4Pfts\",\"w-trainers/recKdbClchsqtWxd0\",\"w-trainers/recLCLIUqOTD7da5f\",\"w-trainers/recLSdlFYRFx57EAx\",\"w-trainers/recLoANuxYvR4BFvt\",\"w-trainers/recLwTp1NeHHJQAWp\",\"w-trainers/recLz1Tr6vV6IlIW3\",\"w-trainers/recMChEbnChZT8m20\",\"w-trainers/recMLmpH9oaVW5utL\",\"w-trainers/recMXWlKh2tKXwqsq\",\"w-trainers/recMxRaotH9l3yW6R\",\"w-trainers/recN5IuprgNjmzFfR\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0023",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.291Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recU7NFEpfYIN7Jsv",
+        "createdTime": "2026-11-01T12:55:59.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-24; source-context=[\"w-trainers/recA6s7KLfOTuS5Qx\",\"w-trainers/recB4kkH9F2znl46y\",\"w-trainers/recBJkH5txNvMoA2g\",\"w-trainers/recCGYMUpbdZX338e\",\"w-trainers/recCJgz3aSVoegzZm\",\"w-trainers/recEbDNIepr205nW9\",\"w-trainers/recEfrHXzzcGPoWJM\",\"w-trainers/recFHvjhumGLGWwez\",\"w-trainers/recFYGkKzel8Oyyri\",\"w-trainers/recFdCS91owOGE5F5\",\"w-trainers/recFkJNLK3NynPa3B\",\"w-trainers/recGGpgZ9GM9Lav8l\",\"w-trainers/recGo8Zm23QUnf1Ol\",\"w-trainers/recGxbRm4QEJoCP93\",\"w-trainers/recKdbClchsqtWxd0\",\"w-trainers/recLmMz20dyKvr5oz\",\"w-trainers/recLoANuxYvR4BFvt\",\"w-trainers/recLz1Tr6vV6IlIW3\",\"w-trainers/recNvhfzU6ViKUa8s\",\"w-trainers/recOUAAQUEEIXwQ4s\",\"w-trainers/recRlUAmWKTQeHEQs\",\"w-trainers/recS6zWYd1DWLgjI8\",\"w-trainers/recSQu8ZpsNgRIMCN\",\"w-trainers/recTBwxbKuYX7zqDd\",\"w-trainers/recViVVKfU1DgURVJ\",\"w-trainers/recXH3gPkiEI85oub\",\"w-trainers/recXp1igS4iQkDDrX\",\"w-trainers/recaF1gc8dNdAAStd\",\"w-trainers/recaZ8rLZfWQqo58k\",\"w-trainers/reccCi0xeU0qxkQo6\",\"w-trainers/reccqz4hqwsYSwla3\",\"w-trainers/reccsZIydsILXwx7B\",\"w-trainers/recdgMmwZ93A2SLcg\",\"w-trainers/receFMRk0B5Fdy5mF\",\"w-trainers/recfoRQG9zCzABbTM\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0011",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.148Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recXV1UxRONwDAbqA",
+        "createdTime": "2026-11-01T12:55:56.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-24; source-context=[\"w-riders/recHN0r52Te2cwn3M\",\"w-riders/recHbxuWCHvZp6HDV\",\"w-riders/recIZdkVaqzPMMpgB\",\"w-riders/recJ4icXO0EqyFmGN\",\"w-riders/recJCzBPGiLJ7Odso\",\"w-riders/recJrUvl2MDTHiN3P\",\"w-riders/recJs65FuxGD89wVS\",\"w-riders/recKNRA7qAfZjAMvV\",\"w-riders/recKqoF9i78KPoGly\",\"w-riders/recLar8aKDUigr7St\",\"w-riders/recLbsrLgYnLX1MWq\",\"w-riders/recMDTeYkPzG4GWff\",\"w-riders/recMZPhq0FowqTL2O\",\"w-riders/recNfbmQaqbBfTCcR\",\"w-riders/recOXYUDWpXiPfjI1\",\"w-riders/recOrilDpALAvnwqB\",\"w-riders/recPI1aAfu1xTng3G\",\"w-riders/recPTMG5zbFRyALMA\",\"w-riders/recPrjhfXnKSHQLgG\",\"w-riders/recPtgy1MgKdcVxVo\",\"w-riders/recR0FI4phgGNiETK\",\"w-riders/recS1K5EDpk1ghLUK\",\"w-riders/recS6wyWlHbJwqpZC\",\"w-riders/recTYfnRww5Zzwnlg\",\"w-riders/recTc5XijdlpvWzxY\",\"w-riders/recTga7UFDekrPicJ\",\"w-riders/recU7auVdLBvnAYh1\",\"w-riders/recUndSMwPR0K3gRm\",\"w-riders/recVHaYVw4CGlkLcP\",\"w-riders/recVMhjbNkhvPpsLQ\",\"w-riders/recVhTp9QgLhott2D\",\"w-riders/recWpQwIhtKduXcIo\",\"w-riders/recWxEldnkzXHSquY\",\"w-riders/recXoSFikSLekhKvU\",\"w-riders/recY5yifmtnavEJK1\",\"w-riders/recYF2gANhapTUf6s\",\"w-riders/recYm9WlArqQFWJ3p\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0008",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.127Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recgQVWFpU8YTjgKT",
+        "createdTime": "2026-11-01T12:56:04.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Equal cross-role ID is unverified; no merge; source-context=[\"w-riders/rec0Ob7OnmuAFSp6i\",\"w-riders/rec0SzTMGUTk0fBdb\",\"w-riders/rec0eYoCYsn9rKg0O\",\"w-riders/rec0m0AgbtYxMRrfc\",\"w-riders/rec0uKL2aimw2n0Rb\",\"w-riders/rec1pxEeOqS1LUawW\",\"w-riders/rec1vJeMpNEd8gvNC\",\"w-riders/rec2PqNXurqmyhVKq\",\"w-riders/rec2RMWvW2TeNLFeq\",\"w-riders/rec2armz3rlIFKjtO\",\"w-riders/rec2beLZ6aciyv1Wd\",\"w-riders/rec2el3tquCcsPUWG\",\"w-riders/rec2fXq1o73LxhpLs\",\"w-riders/rec308Lx5vgyGHRU9\",\"w-riders/rec30ZbnpU9FHEAV6\",\"w-riders/rec3H7Vdafg5c2ncF\",\"w-riders/rec3ZX4PpJ5PR71wS\",\"w-riders/rec3sbZEeuXLW1iVl\",\"w-riders/rec4TPuxLIDZtqipK\",\"w-riders/rec4jeKSVugRCZq6j\",\"w-riders/rec4nrfeINYLxpmpV\",\"w-riders/rec5FtAIbaGGcMpUs\",\"w-riders/rec5TPTeOFrGLE1SG\",\"w-riders/rec6RyaT1aolMIK2R\",\"w-riders/rec6kJaxD94EqsUod\",\"w-riders/rec6zTZvYg0ENySwb\",\"w-riders/rec74fzbXUpwhpIUp\",\"w-riders/rec7I4SiJGZAOnOZW\",\"w-riders/rec7kaF0xnvIgkvxd\",\"w-riders/rec81b7lkl2FXNdcV\",\"w-riders/rec8d24Ra5tnyIDA0\",\"w-riders/rec9VU9C89ZBtxD0f\",\"w-riders/rec9jPHNMqsV9fwES\",\"w-riders/rec9l8WgFNtiCSHDu\",\"w-riders/recABrj6jF9x1zJTG\",\"w-riders/recAYh69ae9y22vsQ\",\"w-riders/recAbEBMHW78jFAzu\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0018",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.223Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "rech3QdHL5hHDkj6c",
+        "createdTime": "2026-11-01T12:56:00.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-24; source-context=[\"w-trainers/rechAPxzCh7v0pvHA\",\"w-trainers/reci3hjlMj5cY6Pgv\",\"w-trainers/recjHS9sCNoDLY7p5\",\"w-trainers/recjYzP5gR7w9ixnO\",\"w-trainers/recjgmL2etGqSwOZA\",\"w-trainers/recjnBBMegqbbHR8u\",\"w-trainers/reckfVJNPjp7BLGO2\",\"w-trainers/recnisG4BtirkebDq\",\"w-trainers/recoCnBwhlqhOdI6x\",\"w-trainers/recqA9K5waagbJw7w\",\"w-trainers/recqFFxfDQrpMKEAK\",\"w-trainers/recqq60IXOReFUKie\",\"w-trainers/recrC3sS1oc3Hmrby\",\"w-trainers/recuJC8ppttbUEcNW\",\"w-trainers/recuW6HMDwiqwULIS\",\"w-trainers/recumZr18qHRQxHyL\",\"w-trainers/recvKaXgghUO0kzqg\",\"w-trainers/recwdBRIYrwNXwgYg\",\"w-trainers/recweYejjlzApdb3I\",\"w-trainers/recwzxffqV5wKnRyV\",\"w-trainers/recygUzJxebg0z7R1\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0012",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.156Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recn7pXUlXnJyaVE0",
+        "createdTime": "2026-11-01T12:56:11.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Equal cross-role ID is unverified; no merge; source-context=[\"w-trainers/recs28zDUfEHzqVXK\",\"w-trainers/recsL2aqnhZRAZxPs\",\"w-trainers/rectAcDBYA830xil3\",\"w-trainers/rectt98rEYolsh1Gf\",\"w-trainers/recuJC8ppttbUEcNW\",\"w-trainers/recuukblCPWw0PJ9q\",\"w-trainers/recvKaXgghUO0kzqg\",\"w-trainers/recvhsNKCvuqQgm3b\",\"w-trainers/recweYejjlzApdb3I\",\"w-trainers/recwnGGVlU5T2kL9Z\",\"w-trainers/recx9IIBXRSlzXMje\",\"w-trainers/recxoeZ858g7IbBYw\",\"w-trainers/recxugVg5fBjf1YVY\",\"w-trainers/recyOEduO27zrPr0n\",\"w-trainers/recygUzJxebg0z7R1\",\"w-trainers/recyzO0Xo0xDYf9cV\",\"w-trainers/reczVPvVaO5rll4NA\",\"w-trainers/reczl8coXZUFFhyBj\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0026",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.341Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recqF3lcuc41pi0Ed",
+        "createdTime": "2026-11-01T12:56:02.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Unmatched/ambiguous day 15|200000075|2026-10-25; source-context=[\"w-riders/recitHRqA6ie9uFjK\",\"w-riders/recjQn8tFueXu5o5Y\",\"w-riders/recjWVBERTPCw858p\",\"w-riders/recjnotRIH1Rsba1n\",\"w-riders/reckQLF8HQ8p4LxLI\",\"w-riders/recm0Gzgxm5ZJjH3d\",\"w-riders/reco6JOm47Bjl43si\",\"w-riders/recoAlIrgvmDB68PX\",\"w-riders/recoPtX68ATE8ISuj\",\"w-riders/recovm5TKGkyJIKWg\",\"w-riders/recozJr11YnZEQb7p\",\"w-riders/recpQAcEi5k6WQcjp\",\"w-riders/recqq0CLCpYg71Wst\",\"w-riders/recrUpEvkfk946fC5\",\"w-riders/recrX8iAaAsPA35d9\",\"w-riders/recrmTErvEOZrAKNR\",\"w-riders/recshyxabKHabiZZs\",\"w-riders/rectWrDxyqCl3uQbg\",\"w-riders/recu258XKaOj4OISK\",\"w-riders/recuMir2vZ4uQ3sEd\",\"w-riders/recvSLc1xNLDjQi9x\",\"w-riders/recvuHoB8qEfXsqSU\",\"w-riders/recw1FGMP0Q4ccvFZ\",\"w-riders/recxGBta0nLgMzemr\",\"w-riders/recy1WKMreSAoETVT\",\"w-riders/recyULkIfAHtRYr2h\",\"w-riders/recyoVUmKjTyVnVG9\",\"w-riders/recyzx3cOiJ8agiTu\",\"w-trainers/rec0s7kPf9qo2DxUV\",\"w-trainers/rec0tN3W7DPe6eTd6\",\"w-trainers/rec2GZLvF0u88RbII\",\"w-trainers/rec2eAApvi0WqD2ZE\",\"w-trainers/rec3Y2Nf6bHAPfoyt\",\"w-trainers/rec3efxLYOebE2Rq1\",\"w-trainers/rec44muDz5cVPgfoq\",\"w-trainers/rec53pR9MB4odlrwr\",\"w-trainers/rec6dy6B01O7PPtoQ\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0015",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.182Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      },
+      {
+        "id": "recqhfZFlUUYRLETV",
+        "createdTime": "2026-11-01T12:56:06.000Z",
+        "cellValuesByFieldId": {
+          "fld2aX8EiGhFdXCZj": "Equal cross-role ID is unverified; no merge; source-context=[\"w-riders/recQAdTANxevbB17r\",\"w-riders/recQIt8psRkbLX4Mf\",\"w-riders/recS9LlLdaFDO8Ezf\",\"w-riders/recSeb2C4eZa213mr\",\"w-riders/recShhrA4T1GdkiK7\",\"w-riders/recSlrZZZZjNjkdfm\",\"w-riders/recTc5XijdlpvWzxY\",\"w-riders/recTmZPcoxAjcJ2Dy\",\"w-riders/recTwCPMVzEIW0TRK\",\"w-riders/recUH6as7iXwVaEBl\",\"w-riders/recV9mfOKinKtcB4G\",\"w-riders/recWKlx3C6n4Gg17R\",\"w-riders/recWfbO2IMSHjCzRl\",\"w-riders/recWnJFIN1nbpqNMK\",\"w-riders/recWotbNFKGv4rFJV\",\"w-riders/recWxEldnkzXHSquY\",\"w-riders/recX87MrP81IxwAKk\",\"w-riders/recXoDjro9JWJUzIN\",\"w-riders/recXoSFikSLekhKvU\",\"w-riders/recXuiyApQ91FYVmB\",\"w-riders/recYm9WlArqQFWJ3p\",\"w-riders/recYxV0njVnMvPDAq\",\"w-riders/recZJn6Bjt2wMQb4R\",\"w-riders/recZzRZfePuTFEhF9\",\"w-riders/recb321OD9u0ia3D2\",\"w-riders/recbJB6vjYHpBtdXh\",\"w-riders/reccMZEpFtnr95SLZ\",\"w-riders/reccQDdPCIUg7EE2H\",\"w-riders/recd2WrRpUHDDvEbo\",\"w-riders/recdS9AFPBEq9DfEq\",\"w-riders/recdd3a8qzzT0CNEu\",\"w-riders/recdhnli02BbERtdP\",\"w-riders/recf1cY6ldcUtVIOY\",\"w-riders/recf2HGJYYnGptwmy\",\"w-riders/recfPdIa7Z8XCfimx\",\"w-riders/recfkJwGPOrS42CcD\",\"w-riders/recfvpS7DOrEA4yDu\"]",
+          "fld3c3cSXfBt3AhF5": "Shared source records",
+          "fld8Me6MHBvslMYbs": "NotApplicable",
+          "fldDH3dr73ors4G9b": "Join",
+          "fldFbv1yDAnzj192Z": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldHfFoiLckhXKW0M": "3c1d7050-eeb6-465e-8198-75258898f071-0020",
+          "fldTUzI9boZ2cMX1J": "Join",
+          "fldWGa37c316NakTk": "2026-11-01T12:55:47.249Z",
+          "fldYCkrRNACtqDvQo": "Unresolved"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 26
+    }
+  },
+  {
+    "name": "heartbeat",
+    "records": [
+      {
+        "id": "recgujbVoWMUnSZhj",
+        "createdTime": "2026-11-01T12:56:11.000Z",
+        "cellValuesByFieldId": {
+          "fld8wEV2N6wCfMwwq": "wef-people",
+          "fldbwl4lX7G4v9omz": "wef-people",
+          "fldeNNwpzG1cwTZpg": "Shared-input join completed; owners excluded and horses unlinked by owner",
+          "fldiKHW3qvhWdqqCl": "2026-11-01T12:54:46.353Z",
+          "fldiyLGJM3nZruAmR": [
+            {
+              "id": "recjRKCLt9dsbbimJ",
+              "name": "3c1d7050-eeb6-465e-8198-75258898f071"
+            }
+          ],
+          "fldleDNXTN5Xdk3zv": "Partial",
+          "fldu59bAtWXHHzNz9": "2026-11-01T12:55:47.341Z",
+          "fldwVLS2tFVCPQaG9": "2026-11-01T12:54:46.353Z"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  }
+]
