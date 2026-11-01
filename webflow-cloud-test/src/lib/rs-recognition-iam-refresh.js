@@ -1,8 +1,9 @@
+import {iamActor} from './rs-inputs-iam-policy.js';
 import {recognitionConfig} from './rs-recognition-config.js';
 import {createInputRecognition} from './rs-inputs-recognition.js';
 import {createTenantRecognitionPolicy} from './rs-tenant-recognition-policy.js';
 import {createTenantRest,TABLE} from './rs-tenant-barn.js';
-import {refreshIam,iamEnabled,iamActor} from './rs-recognition-iam.js';
+import {refreshIam,iamEnabled} from './rs-recognition-iam.js';
 
 // Trusted server-side caller after an authorized Tenants save; no public bypass.
 export async function loadIamSnapshot({env,fetchImpl=fetch,requiredOwnerUid,activeDeviceToken}){

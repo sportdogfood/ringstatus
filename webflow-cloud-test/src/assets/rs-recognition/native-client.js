@@ -14,13 +14,13 @@ export function flushIamHistory({endpoint,fetchImpl=fetch,persistentStorage=brow
  const work=(async()=>{for(let processed=0;processed<20;processed++){try{const id=JSON.parse(storage.getItem(historyKey)||'[]')[0];if(!id)break;const target=new URL(endpoint);target.searchParams.set('operation','session');const response=await fetchImpl(target,{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({history_event_uid:id})});const data=await response.json();if(!response.ok||!data.exported)break;const current=JSON.parse(storage.getItem(historyKey)||'[]').filter(x=>x!==id);storage.setItem(historyKey,JSON.stringify(current));}catch{break;}}})();
  historyFlushes.set(storage,work);void work.finally(()=>historyFlushes.delete(storage));return work;
 }
-function safeStorage(storage) {
+export function safeStorage(storage) {
   if (safeStores.has(storage)) return safeStores.get(storage);
   const memory = new Map();
   const safe = {getItem(k){try{return storage.getItem(k) ?? memory.get(k) ?? null;}catch{return memory.get(k) ?? null;}},setItem(k,v){memory.set(k,String(v));try{storage.setItem(k,String(v));}catch{}},removeItem(k){memory.delete(k);try{storage.removeItem(k);}catch{}}};
   safeStores.set(storage,safe); safeStores.set(safe,safe); return safe;
 }
-function browserStorage(name) {try{return globalThis[name] || {};}catch{return {};}}
+export function browserStorage(name) {try{return globalThis[name] || {};}catch{return {};}}
 function clearConfirmation(storage) {
   const generation = (confirmationGenerations.get(storage) || 0) + 1;
   confirmationGenerations.set(storage, generation);

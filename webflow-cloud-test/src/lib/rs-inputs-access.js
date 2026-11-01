@@ -1,6 +1,7 @@
+import {iamActor} from './rs-inputs-iam-policy.js';
 // Invitation access for the owned isolated trial. Recognition is not authentication.
 import { InputError } from './rs-inputs.js';
-import {iamActor,handleIamRecognition,iamEnabled} from './rs-recognition-iam.js';
+import {handleIamRecognition,iamEnabled} from './rs-recognition-iam.js';
 import { claimOnce, requireClaimDatabase } from './rs-recognition-claims.js';
 import { createInputRecognition } from './rs-inputs-recognition.js';
 import {createTenantRecognitionPolicy} from './rs-tenant-recognition-policy.js';
