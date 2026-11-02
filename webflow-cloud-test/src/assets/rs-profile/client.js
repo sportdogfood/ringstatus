@@ -68,7 +68,7 @@ async function refreshProfile(){const check=++profileGeneration;try{const next=a
 const widget=mountRecognize($('#recognize-root'),{adapter:recognitionAdapter,css:recognitionCss,onRecognized:()=>{void refreshProfile();},onProfile:()=>{if(p())open('home');else void refreshProfile();},onSignedOut:()=>{profileGeneration++;clearProfile();state=emptyState();$('#panel-content').replaceChildren();$('#status').textContent='';error='';update();}});
 
 function update(){$('#gate').querySelector('p').hidden=true;$('#gate').querySelector('p').textContent='';$('#widget').hidden=!p();$('#recognize-root').hidden=!!p();$('#panel').hidden=!p()||!panelOpen;$('#gate').hidden=!!p();const roster=$('#widget [data-go=users]');roster.hidden=!member()?.active;syncToolbar();}
-function syncToolbar(){for(const b of root.querySelectorAll('#widget [data-go]')){b.setAttribute('aria-controls','panel');b.setAttribute('aria-expanded',String(panelOpen&&b.dataset.go===screen));b.title=b.getAttribute('aria-label');}}
+function syncToolbar(){for(const b of root.querySelectorAll('#widget [data-go]')){b.setAttribute('aria-controls','panel');b.setAttribute('aria-expanded',String(panelOpen&&b.dataset.go===(lastTrigger?.dataset.go||'home')));b.title=b.getAttribute('aria-label');}}
 
 function close(){panelOpen=false;$('#panel').hidden=true;syncToolbar();const trigger=lastTrigger?.isConnected?lastTrigger:$('#widget [data-go=home]');trigger?.focus();}
 
