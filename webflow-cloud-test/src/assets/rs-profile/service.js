@@ -18,7 +18,7 @@ export async function loadProfile(){
  if(currentUid!==uid)pending=null;currentUid=uid;
  try{pending=JSON.parse(storage.getItem(pendingKey(uid))||'null')||pending;}catch{}
  if(pending?.uid!==uid)pending=null;
- if(pending?.body.operation==='member_status'){const {operation,requestId,...values}=pending.body;try{return await saveProfile(operation,values);}catch(error){data.state.pendingError=error.message;}}
+ if(pending&&['member_status','team_create','invitation_create','invitation_response'].includes(pending.body.operation)){const {operation,requestId,...values}=pending.body;try{return await saveProfile(operation,values);}catch(error){data.state.pendingError=error.message;}}
  if(pending){data.state.pendingSave=true;data.state.pendingNeedsPin=!!pending.needsPin;const own=data.state.profiles.find(p=>p.id===uid);if(own&&pending.body.operation==='profile'){Object.assign(own,pending.body.fields);own.revision=pending.body.expectedRevision;}}
  return viewPreferences(data.state);
 }
@@ -34,7 +34,7 @@ export async function saveProfile(operation,values){
  if(!pending)pending={uid:currentUid,fingerprint,body:{...input,requestId:crypto.randomUUID()}};
  retainPending();const operationPending=pending;
  const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-RS-Actor-Scope':actor},body:JSON.stringify(operationPending.body),signal:AbortSignal.timeout(20000)});
- const data=await response.json();if(!response.ok||!data.ok){if([400,403,404].includes(response.status)||response.status===409&&['actor_changed','record_changed','profile_operation_not_connected'].includes(data.error)){storage.removeItem(pendingKey(actor));if(pending===operationPending)pending=null;}throw Error(data.error||'The save has not been confirmed.');}
+ const data=await response.json();if(!response.ok||!data.ok){if([400,403,404].includes(response.status)||response.status===409&&['actor_changed','record_changed','profile_operation_not_connected','team_membership_exists','invitation_pending'].includes(data.error)){storage.removeItem(pendingKey(actor));if(pending===operationPending)pending=null;}throw Error(data.error||'The save has not been confirmed.');}
  if(actor!==currentUid||data.state?.identity.currentId!==actor)throw Error('Profile changed during this save.');
  storage.removeItem(pendingKey(actor));if(pending===operationPending)pending=null;return viewPreferences(data.state);
 }

@@ -15,13 +15,16 @@ const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const selected=['barn','riders','users'];
 const DIRECT_FIELDS={ [TABLE.barn]:['tenant_official_name','tenant_logo_url'],[TABLE.riders]:['name','people'],[TABLE.people]:['entity_uid','recognition_person_uid','name','email','status','record_mode','phone_e164','display-name','profile-img','tags','revision','request_uid','request_hash'],[TABLE.memberships]:['Name','Person','Tenant','Roles','Status'],[TABLE.roster]:['Name','Tenant','Rider','Status'],[TABLE.sources]:['mapping_uid','entity_type','entity_uid','source_system','source_entity_type','source_scope','external_id','record_mode'],[TABLE.events]:['event_uid','actor_uid','entity_uid','barn_uid','action','kind','outcome','request_uid','input_hash','result_json','occurred_at','record_mode'] };
 
-export function createTenantRest(env,fetchImpl=fetch){
+export function createTenantRest(env,fetchImpl=fetch,{profile=false}={}){
  if(!env.AIRTABLE_TOKEN||env.RS_INPUTS_WRITE_MODE!=='isolated-trial')fail('tenant_configuration_required',503);
  let last=0;const cache=new Map();
+ const profileInvitations='tblOmDd6CDOBkf7Fh';
+ const allowedTables=profile?[...Object.values(TABLE),profileInvitations]:Object.values(TABLE);
+ const writeFields=profile?{...DIRECT_FIELDS,[TABLE.barn]:[...DIRECT_FIELDS[TABLE.barn],'tenant_active','profile_request_uid'],[TABLE.people]:[...DIRECT_FIELDS[TABLE.people],'profile_photo'],[profileInvitations]:['Invitation ID','Team','Recipient','Invited by','Status','revision','request_uid','request_hash']}:DIRECT_FIELDS;
  return async function call(table,{id,formula,fields,method='GET',fresh=false}={}){
   if(fresh)cache.clear();
-  if(!Object.values(TABLE).includes(table)||!['GET','POST','PATCH'].includes(method))fail('tenant_write_boundary',403);
-  if(method!=='GET'){if(!DIRECT_FIELDS[table]||!fields||Object.keys(fields).some(k=>!DIRECT_FIELDS[table].includes(k))||(method==='PATCH'&&!id))fail('tenant_write_boundary',403);for(const key of cache.keys())if(new URL(key).pathname.split('/')[3]===table)cache.delete(key);}
+  if(!allowedTables.includes(table)||!['GET','POST','PATCH'].includes(method))fail('tenant_write_boundary',403);
+  if(method!=='GET'){if(!writeFields[table]||!fields||Object.keys(fields).some(k=>!writeFields[table].includes(k))||(method==='PATCH'&&!id))fail('tenant_write_boundary',403);for(const key of cache.keys())if(new URL(key).pathname.split('/')[3]===table)cache.delete(key);}
   const url=new URL(`https://api.airtable.com/v0/${BASE}/${table}${id&&method==='GET'?'/'+id:''}`);
   if(formula)url.searchParams.set('filterByFormula',formula);
   const cacheKey=String(url);if(method==='GET'&&cache.has(cacheKey))return structuredClone(cache.get(cacheKey));

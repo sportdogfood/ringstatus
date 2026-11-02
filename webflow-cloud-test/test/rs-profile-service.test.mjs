@@ -41,3 +41,10 @@ test('logout fences a delayed Profile load and a save awaiting its fingerprint',
   const saving=second.saveProfile('profile',{fields:{email:'new@example.test'},expectedRevision:0});second.clearProfile();await assert.rejects(saving,/changed before/);assert.equal(posts,0);
  }finally{globalThis.fetch=oldFetch;globalThis.localStorage=oldStorage;}
 });
+
+for(const [operation,values] of [['team_create',{name:'Test Team'}],['invitation_create',{userId:'existing_user'}],['invitation_response',{invitationId:'invitation',accept:true,expectedRevision:0}]])test('pending '+operation+' preserves the same request across reload',{concurrency:false},async()=>{
+ const oldFetch=globalThis.fetch,oldStorage=globalThis.localStorage,store=storage(),sent=[];
+ try{const first=await client(store,async(_url,options)=>{if(options?.method==='POST'){sent.push(JSON.parse(options.body));throw Error('lost reply');}return ok();});await first.loadProfile();await assert.rejects(first.saveProfile(operation,values),/lost reply/);
+ const next=await client(store,async(_url,options)=>{if(options?.method==='POST')sent.push(JSON.parse(options.body));return ok();});await next.loadProfile();assert.deepEqual(sent[1],sent[0]);assert.equal(store.values.size,0);
+ }finally{globalThis.fetch=oldFetch;globalThis.localStorage=oldStorage;}
+});

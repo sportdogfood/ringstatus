@@ -7,12 +7,13 @@ import {handleProfile} from '../src/lib/rs-profile.js';
 import {accessHash} from '../src/lib/rs-inputs-access.js';
 const origin='https://ringstatus.com',base='app7BXcw801n19QKF',recognize='app9kOZdIaGyKk5uG';
 const ids={person:'recUserOwner00001',other:'recUserOther00001',identity:'recIdentityOwn001',otherIdentity:'recIdentityUsr001',team:'recTeam0000000001',ownMembership:'recMemberOwn00001',membership:'recMemberUsr00001',ownerRole:'recRoleOwner00001',memberRole:'recRoleUser000001'};
-const table={people:'tblyTBgrgdhT3Tcg7',team:'tbled1saw01Thffs1',memberships:'tblFf4aWQYA2RRsWo',roles:'tblRqRbjmqmNfJtIP',identities:'tbly1PM5iFYqVzKSm',aliases:'tblgDWKi0Bb6OcoqS'};
+const table={people:'tblyTBgrgdhT3Tcg7',team:'tbled1saw01Thffs1',memberships:'tblFf4aWQYA2RRsWo',roles:'tblRqRbjmqmNfJtIP',identities:'tbly1PM5iFYqVzKSm',aliases:'tblgDWKi0Bb6OcoqS',invitations:'tblOmDd6CDOBkf7Fh'};
 function database(){const sql=new DatabaseSync(':memory:');for(const file of ['0001_claims.sql','0003_iam.sql'])sql.exec(readFileSync(new URL('../migrations/recognize-control/'+file,import.meta.url),'utf8'));return {prepare(text){let args=[];return {bind(...v){args=v;return this;},async run(){return {meta:{changes:Number(sql.prepare(text).run(...args).changes)}};},async first(){return sql.prepare(text).get(...args)||null;},async all(){return {results:sql.prepare(text).all(...args)};}};},async batch(rows){sql.exec('BEGIN');try{const out=[];for(const r of rows)out.push(await r.run());sql.exec('COMMIT');return out;}catch(e){sql.exec('ROLLBACK');throw e;}},close(){sql.close();}};}
 const row=(id,fields)=>({id,createdTime:'2026-01-01T00:00:00.000Z',fields});
 async function fixture(withTeam=false){
  const db=database(),env={RS_RECOGNITION_CONTROL_DB:db,RS_INPUTS_SESSION_SECRET:'1'.repeat(64),AIRTABLE_TOKEN:'local-fixture-only',RS_INPUTS_WRITE_MODE:'isolated-trial',AIRTABLE_RS_RECOGNITION_BASE_ID:recognize};
  const records={
+  [base+'/'+table.invitations]:[],
   [base+'/'+table.people]:[row(ids.person,{entity_uid:'user_owner',recognition_person_uid:'user_owner',name:'First Owner',email:'owner@example.test',phone_e164:'+12025550101',status:'Active',revision:0}),row(ids.other,{entity_uid:'user_other',recognition_person_uid:'user_other',name:'Other User',email:'private@example.test',phone_e164:'+12025550102',status:'Active',revision:0})],
   [base+'/'+table.team]:[row(ids.team,{tenant_active:true,tenant_official_name:'Existing Team',tenant_id:7})],
   [base+'/'+table.memberships]:withTeam?[row(ids.ownMembership,{Person:[ids.person],Tenant:[ids.team],Roles:[ids.ownerRole],Status:'Enabled'}),row(ids.membership,{Person:[ids.other],Tenant:[ids.team],Roles:[ids.memberRole],Status:'Enabled'})]:[],
@@ -21,8 +22,8 @@ async function fixture(withTeam=false){
   [recognize+'/'+table.aliases]:[row('recAliasOwn000001',{alias_phone_e164:'+12025550101',person:[ids.identity],status:'Active'}),row('recAliasUsr000001',{alias_phone_e164:'+12025550102',person:[ids.otherIdentity],status:'Active'})]
  };
  await refreshIam({env,people:records[base+'/'+table.people],identities:records[recognize+'/'+table.identities],memberships:records[base+'/'+table.memberships],tenants:records[base+'/'+table.team],roles:records[base+'/'+table.roles]});
- const writes=[],reads=[];
- const fetchImpl=async(input,options={})=>{const url=new URL(input),[,version,b,t,id]=url.pathname.split('/');assert.equal(url.hostname,'api.airtable.com');assert.equal(version,'v0');let rows=records[b+'/'+t];if(!rows)throw Error('Unexpected fixture table '+t);if(options.method==='PATCH'||options.method==='POST'){const payload=JSON.parse(options.body);const result=payload.records.map(update=>{let r=rows.find(r=>r.id===update.id);if(!r){r=row(update.id||'recFixture0000001',{});rows.push(r);}Object.assign(r.fields,update.fields);writes.push({table:t,id:r.id,fieldNames:Object.keys(update.fields)});return structuredClone(r);});return Response.json({records:result});}reads.push(t);if(id)return Response.json(structuredClone(rows.find(r=>r.id===id)));const formula=url.searchParams.get('filterByFormula')||'';if(formula.includes('recognition_person_uid'))rows=rows.filter(r=>formula.includes("'"+r.fields.recognition_person_uid+"'"));else if(formula.includes('{person_uid}'))rows=rows.filter(r=>formula.includes("'"+r.fields.person_uid+"'"));else if(formula.includes('primary_phone_e164'))rows=rows.filter(r=>formula.includes(String(r.fields.primary_phone_e164||'').replace(/^\+/,''))||formula.includes(r.fields.primary_phone_e164));else if(formula.includes('alias_phone_e164'))rows=rows.filter(r=>formula.includes(String(r.fields.alias_phone_e164||'').replace(/^\+/,''))||formula.includes(r.fields.alias_phone_e164));return Response.json({records:structuredClone(rows)});};
+ const writes=[],reads=[];let sequence=0;
+ const fetchImpl=async(input,options={})=>{const url=new URL(input),[,version,b,t,id]=url.pathname.split('/');if(url.hostname==='content.airtable.com'){const payload=JSON.parse(options.body),person=records[base+'/'+table.people].find(r=>r.id===t);const attachment={id:'attFixture'+(++sequence),filename:payload.filename,url:'https://attachments.example.test/'+payload.filename};person.fields.profile_photo=[...(person.fields.profile_photo||[]),attachment];writes.push({table:'upload',id:person.id,fieldNames:['profile_photo']});return Response.json({id:person.id,fields:{profile_photo:person.fields.profile_photo}});}assert.equal(url.hostname,'api.airtable.com');assert.equal(version,'v0');let rows=records[b+'/'+t];if(!rows)throw Error('Unexpected fixture table '+t);if(options.method==='PATCH'||options.method==='POST'){const payload=JSON.parse(options.body);const result=payload.records.map(update=>{let r=rows.find(r=>r.id===update.id);if(!r){r=row(update.id||'recFixture'+String(++sequence).padStart(7,'0'),{});rows.push(r);}if(update.fields.profile_photo)update.fields.profile_photo=update.fields.profile_photo.map(a=>a.id?(r.fields.profile_photo||[]).find(old=>old.id===a.id)||a:a);Object.assign(r.fields,update.fields);if(t===table.people)r.fields.modified_at=new Date().toISOString();writes.push({table:t,id:r.id,fieldNames:Object.keys(update.fields)});return structuredClone(r);});return Response.json({records:result});}reads.push(t);if(id)return Response.json(structuredClone(rows.find(r=>r.id===id)));const formula=url.searchParams.get('filterByFormula')||'';if(formula.includes('profile_request_uid'))rows=rows.filter(r=>formula.includes("'"+r.fields.profile_request_uid+"'"));else if(formula.includes('recognition_person_uid'))rows=rows.filter(r=>formula.includes("'"+r.fields.recognition_person_uid+"'"));else if(formula.includes('{person_uid}'))rows=rows.filter(r=>formula.includes("'"+r.fields.person_uid+"'"));else if(formula.includes('primary_phone_e164'))rows=rows.filter(r=>formula.includes(String(r.fields.primary_phone_e164||'').replace(/^\+/,''))||formula.includes(r.fields.primary_phone_e164));else if(formula.includes('alias_phone_e164'))rows=rows.filter(r=>formula.includes(String(r.fields.alias_phone_e164||'').replace(/^\+/,''))||formula.includes(r.fields.alias_phone_e164));return Response.json({records:structuredClone(rows)});};
  const credential=await handleIamRecognition(new Request(origin+'/test/rs-inputs/native-recognition?operation=action',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({action:'credential',kind:'phone',value:'2025550101',request_id:crypto.randomUUID()})}),env);const login=await credential.json();assert.equal(login.verified,true);
  return {db,env,records,writes,reads,fetchImpl,token:login.device_token,cookie:'__Host-rs_recognition_device='+login.device_token};
 }
@@ -36,3 +37,98 @@ test('account switch rejects the displayed actor before records are read or writ
 test('disabled membership and inactive Team do not expose Team or roster data',async()=>{for(const variant of ['disabled','inactive']){const f=await fixture(true);try{if(variant==='disabled')f.records[base+'/'+table.memberships][0].fields.Status='Disabled';else f.records[base+'/'+table.team][0].fields.tenant_active=false;const r=await call(f);assert.equal(r.response.status,200);assert.equal(r.body.state.teams.length,0);assert.equal(r.body.state.profiles.length,1);assert.equal(r.body.state.profiles[0].id,'user_owner');}finally{f.db.close();}}});
 test('omitted name fields read back as empty rather than causing a permanent save failure',async()=>{const f=await fixture();try{delete f.records[recognize+'/'+table.identities][0].fields.last_name;const r=await call(f,{operation:'profile',requestId:crypto.randomUUID(),expectedRevision:0,fields:{email:'missing-name@example.test'}});assert.equal(r.response.status,200,JSON.stringify(r.body));assert.equal(r.body.state.profiles[0].last,'');}finally{f.db.close();}});
 test('uncertain canonical write is read back on same-request retry without a duplicate write',async()=>{const f=await fixture();try{const actual=f.fetchImpl;let lost=true;f.fetchImpl=async(url,options)=>{const response=await actual(url,options);if(lost&&options?.method==='PATCH'&&String(url).includes(table.people)){lost=false;throw Error('fixture lost acknowledgement');}return response;};const body={operation:'profile',requestId:crypto.randomUUID(),expectedRevision:0,fields:{email:'ack@example.test'}};assert.equal((await call(f,body)).response.status,503);const writes=f.writes.length;const retry=await call(f,body);assert.equal(retry.response.status,200,JSON.stringify(retry.body));assert.equal(f.writes.length,writes);}finally{f.db.close();}});
+
+async function otherCall(f,body){
+ const response=await handleIamRecognition(new Request(origin+'/test/rs-inputs/native-recognition?operation=action',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({action:'credential',kind:'phone',value:'2025550102',request_id:crypto.randomUUID()})}),f.env);
+ const login=await response.json();assert.equal(login.verified,true);
+ const result=await handleProfile(new Request(origin+'/test/rs-profile/data',{method:body?'POST':'GET',headers:{Cookie:'__Host-rs_recognition_device='+login.device_token,Origin:origin,'X-RS-Actor-Scope':'user_other','Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})}),f.env,f.fetchImpl);
+ return {response:result,body:await result.json()};
+}
+test('level is explicit/read-only; Preferred creation persists one Owner membership and replays once',async()=>{
+ const f=await fixture();try{
+  assert.equal((await call(f)).body.state.profiles[0].level,'');
+  const body={operation:'team_create',name:'My Team',requestId:crypto.randomUUID()};
+  assert.equal((await call(f,body)).response.status,403);
+  f.records[base+'/'+table.people][0].fields.user_level='Preferred';
+  const made=await call(f,body);assert.equal(made.response.status,200,JSON.stringify(made.body));
+  assert.equal(made.body.state.profiles[0].level,'Preferred');assert.equal(made.body.state.memberships[0].role,'Owner');assert.equal(made.body.state.teams[0].name,'My Team');
+  const count=f.writes.length;assert.equal((await call(f,body)).response.status,200);assert.equal(f.writes.length,count);
+  assert.equal((await call(f,{...body,requestId:crypto.randomUUID()})).response.status,409);
+  f.records[base+'/'+table.memberships][0].fields.Status='Disabled';
+  assert.equal((await call(f,{...body,requestId:crypto.randomUUID()})).response.status,409);
+  assert.equal((await call(f,{operation:'profile',expectedRevision:0,requestId:crypto.randomUUID(),fields:{level:'Preferred'}})).response.status,400);
+ }finally{f.db.close();}
+});
+test('Owner invites existing User; recipient accepts explicitly; repeated response creates no duplicate',async()=>{
+ const f=await fixture(true);try{
+  f.records[base+'/'+table.memberships].pop();
+  const state=(await call(f)).body.state;assert.ok(state.profiles.some(p=>p.id==='user_other'));assert.equal(state.profiles.find(p=>p.id==='user_other').phone,undefined);
+  const sent=await call(f,{operation:'invitation_create',userId:'user_other',requestId:crypto.randomUUID()});assert.equal(sent.response.status,200,JSON.stringify(sent.body));
+  const invitation=f.records[base+'/'+table.invitations][0];assert.equal(invitation.fields.Status,'Pending');
+  const recipient=await otherCall(f);assert.equal(recipient.body.state.memberships.length,0);assert.equal(recipient.body.state.invitations[0].teamId,ids.team);assert.equal(recipient.body.state.profiles.length,1);
+  const body={operation:'invitation_response',invitationId:invitation.id,accept:true,expectedRevision:0,requestId:crypto.randomUUID()};
+  assert.equal((await call(f,body)).response.status,403);
+  const accepted=await otherCall(f,body);assert.equal(accepted.response.status,200,JSON.stringify(accepted.body));assert.equal(invitation.fields.Status,'Accepted');assert.equal(accepted.body.state.memberships.find(m=>m.userId==='user_other').role,'Member');
+  const count=f.writes.length;assert.equal((await otherCall(f,body)).response.status,200);assert.equal(f.writes.length,count);assert.equal(f.records[base+'/'+table.memberships].filter(m=>m.fields.Person.includes(ids.other)).length,1);
+ }finally{f.db.close();}
+});
+test('decline preserves no membership and permits a new invitation; inactive Team cannot accept',async()=>{
+ const f=await fixture(true);try{
+  f.records[base+'/'+table.memberships].pop();
+  const invite=()=>call(f,{operation:'invitation_create',userId:'user_other',requestId:crypto.randomUUID()});
+  assert.equal((await invite()).response.status,200);assert.equal((await invite()).response.status,409);
+  const invitation=f.records[base+'/'+table.invitations][0];
+  const declined=await otherCall(f,{operation:'invitation_response',invitationId:invitation.id,accept:false,expectedRevision:0,requestId:crypto.randomUUID()});assert.equal(declined.response.status,200,JSON.stringify(declined.body));assert.equal(invitation.fields.Status,'Declined');assert.equal(f.records[base+'/'+table.memberships].length,1);
+  assert.equal((await invite()).response.status,200);
+  f.records[base+'/'+table.team][0].fields.tenant_active=false;
+  assert.equal((await otherCall(f,{operation:'invitation_response',invitationId:f.records[base+'/'+table.invitations][1].id,accept:true,expectedRevision:0,requestId:crypto.randomUUID()})).response.status,403);
+ }finally{f.db.close();}
+});
+test('concurrent creation and invitation acceptance cannot create two memberships',async()=>{
+ const f=await fixture(true);try{
+  f.records[base+'/'+table.people][0].fields.user_level='Preferred';
+  f.records[base+'/'+table.memberships].shift();f.records[base+'/'+table.memberships][0].fields.Roles=[ids.ownerRole];
+  const invitation=row('recInvitation001',{Team:[ids.team],Recipient:[ids.person],'Invited by':[ids.other],Status:'Pending',revision:0});f.records[base+'/'+table.invitations].push(invitation);
+  const results=await Promise.all([call(f,{operation:'team_create',name:'Concurrent Team',requestId:crypto.randomUUID()}),call(f,{operation:'invitation_response',invitationId:invitation.id,accept:true,expectedRevision:0,requestId:crypto.randomUUID()})]);
+  assert.equal(results.filter(r=>r.response.status===200).length,1,JSON.stringify(results.map(r=>r.body)));assert.equal(f.records[base+'/'+table.memberships].filter(m=>m.fields.Person.includes(ids.person)).length,1);
+ }finally{f.db.close();}
+});
+test('uploaded photo is validated, read back, replayed once, retained on unrelated edits and removed',async()=>{
+ const f=await fixture();try{
+  const photo='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a9X8AAAAASUVORK5CYII=';
+  const body={operation:'profile',expectedRevision:0,requestId:crypto.randomUUID(),fields:{photo}};
+  const uploaded=await call(f,body);assert.equal(uploaded.response.status,200,JSON.stringify(uploaded.body));assert.match(uploaded.body.state.profiles[0].photo,/^https:\/\/attachments/);assert.equal(f.writes.filter(w=>w.table==='upload').length,1);
+  assert.equal((await call(f,body)).response.status,200);assert.equal(f.writes.filter(w=>w.table==='upload').length,1);
+  assert.equal((await call(f,{operation:'profile',expectedRevision:1,requestId:crypto.randomUUID(),fields:{tags:['rider']}})).response.status,200);assert.equal(f.records[base+'/'+table.people][0].fields.profile_photo.length,1);
+  const cleared=await call(f,{operation:'profile',expectedRevision:2,requestId:crypto.randomUUID(),fields:{photo:''}});assert.equal(cleared.response.status,200);assert.equal(cleared.body.state.profiles[0].photo,'');assert.ok(cleared.body.state.profiles[0].modified_at);
+  assert.equal((await call(f,{operation:'profile',expectedRevision:3,requestId:crypto.randomUUID(),fields:{photo:'data:image/png;base64,YmFk'}})).response.status,400);
+ }finally{f.db.close();}
+});
+
+test('saving the displayed uploaded-photo URL preserves durable attachment backing',async()=>{
+ const f=await fixture();try{
+  const photo='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a9X8AAAAASUVORK5CYII=';
+  const uploaded=await call(f,{operation:'profile',expectedRevision:0,requestId:crypto.randomUUID(),fields:{photo}});
+  assert.equal(uploaded.response.status,200,JSON.stringify(uploaded.body));
+  const original=structuredClone(f.records[base+'/'+table.people][0].fields.profile_photo);
+  const saved=await call(f,{operation:'profile',expectedRevision:1,requestId:crypto.randomUUID(),fields:{photo:uploaded.body.state.profiles[0].photo}});
+  assert.equal(saved.response.status,200,JSON.stringify(saved.body));
+  assert.deepEqual(f.records[base+'/'+table.people][0].fields.profile_photo,original);
+  assert.equal(f.records[base+'/'+table.people][0].fields['profile-img'],'');
+  assert.match(readFileSync(new URL('../src/assets/rs-profile/client.js',import.meta.url),'utf8'),/if\(key==='photo'&&fields\.photo===p\(\)\.photo\)delete fields\.photo/);
+ }finally{f.db.close();}
+});
+
+test('lost Team-create reply recovers the same Team by operation ID and finishes one Owner membership',async()=>{
+ const f=await fixture();try{
+  f.records[base+'/'+table.people][0].fields.user_level='Preferred';
+  const actual=f.fetchImpl;let lost=true;
+  f.fetchImpl=async(url,options)=>{const response=await actual(url,options);if(lost&&options?.method==='POST'&&new URL(url).pathname.endsWith('/'+table.team)){lost=false;throw Error('lost Team acknowledgement');}return response;};
+  const body={operation:'team_create',name:'Recovered Team',requestId:crypto.randomUUID()};
+  assert.equal((await call(f,body)).response.status,503);
+  assert.equal(f.records[base+'/'+table.team].length,2);assert.equal(f.records[base+'/'+table.memberships].length,0);
+  const recovered=await call(f,body);assert.equal(recovered.response.status,200,JSON.stringify(recovered.body));
+  assert.equal(f.records[base+'/'+table.team].length,2);assert.equal(f.records[base+'/'+table.memberships].length,1);assert.equal(recovered.body.state.memberships[0].role,'Owner');
+  const count=f.writes.length;assert.equal((await call(f,body)).response.status,200);assert.equal(f.writes.length,count);
+ }finally{f.db.close();}
+});
