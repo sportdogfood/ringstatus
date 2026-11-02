@@ -4,7 +4,8 @@
   "offline_tests": "24/24 PASS independently",
   "review": "COMPLETE/PASS telemetry-review/review-verifier.json",
   "production": "Unchanged",
-  "deployment": "Pending explicit owner approval",
+  "deployment": "Pending; held outside owner-locked baseline",
   "route": "Existing wef-shows-collector task; current source workspace files replaced atomically under idle collector.lock; five-minute task unchanged",
-  "next_action": "Obtain deployment approval, install exact reviewed manifest, verify normal outside-show telemetry suppression and an hourly update; preserve5mincanonicalvalidation and source/daycadence. No manual collector runs or record repairs."
+  "next_action": "No deployment until owner explicitly reopens and approves it. Merge current locked documentation into the prepared release before deployment; do not overwrite newer owner instructions with frozen README/scope.",
+  "lock_decision_at": "2026-11-02T18:27:18.498991+00:00"
 }

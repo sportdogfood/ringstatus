@@ -1,3 +1,5 @@
+**LOCKED — November 2, 2026 · documentation version 2026.11.02.13.** Further code/workflow changes require explicit owner approval. Normal scheduled collection, logs and delete-only cleanup continue. This is a documented freeze; no file permissions or Airtable permissions changed. See [LOCK.md](LOCK.md) for the exact baseline and remaining verification gaps.
+
 # wef-live workspace instructions
 
 Applies only to this module; preserve root AGENTS.md and higher-priority instructions. On startup/resume, scope changes and handoff read the physically accessible [canonical owner block](../docs/coordination/wef-owner-operating-instructions.md), [Live README](README.md), [scope](scope.md), and [handoff](HANDOFF.md). Reading instructions does not resume stopped implementation.
@@ -35,6 +37,6 @@ October30 publication correction approval was verified directly in Records human
 
 Current correction authority: owner turn01a18db8-eb52-7340-80dd-4e53ea3d9b14 in Records explicitly superseded the prior failed-gate approval hold for these journal/cursor/exact-group paths. Reviewed publication-continuation-20261030 deployed13:00:48Eastern;112 offline PASS, independent review PASS,18 other runtime files preserved. First normal13:02 run safely Skipped all completed groups without errors; two populated postdeployment runs remain pending only for natural activity. Do not revive duplicate approval requests, false ambiguities as unfinished code, observers or speculative future-scenario tasks. Preserve safe intent-before-write and existing task/repair boundaries.
 
-## Owner correction and deployment � 2026-11-02T12:58:44-05:00
+## Owner correction and deployment � 2026-11-02T12:58:44-05:00
 
 Latest direct human approval supersedes archive-before-delete and pending-deployment notes for cleanup: DELETE ONLY. New show deletes nonmatching-show rows; new Eastern day alone applies1000/500 to heartbeat/run-logs/errs-log; unchanged show/day does not inventory logs. No new cleanup archive files or deleted-record-field backups. Preserve existing historical files/catalogs. Cadence correction and delete-only cleanup are deployed; exact source/task readback in evidence/delete-only-20261102/deployed.json, normal proof separately recorded. Stage8/old24h retention remain disabled; no manual runs, repairs or observers. Existing two reporting P2s remain separate. Do not revive superseded archive requirements from older instructions.

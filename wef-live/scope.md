@@ -1,3 +1,5 @@
+**LOCKED — November 2, 2026 · documentation version 2026.11.02.13.** Further code/workflow changes require explicit owner approval. Normal scheduled collection, logs and delete-only cleanup continue. This is a documented freeze; no file permissions or Airtable permissions changed. See [LOCK.md](LOCK.md) for the exact baseline and remaining verification gaps.
+
 # Current Live release — delete only
 
 Version **2026.11.02.12** · Updated **2026-11-02T12:58:44-05:00**.

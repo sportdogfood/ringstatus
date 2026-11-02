@@ -1,5 +1,23 @@
 # Shows workspace instructions
 
+## LOCKED - owner decision November 2, 2026
+
+Verified deployed baseline: `day-state-20261102`. Shows owns show identity/dates,
+planning day0, day-priority and existing archives/heartbeat/logs. Current show-days
+are Active/relative priority; historical days are Not active/999, with ISO last_checked.
+New-show discovery stays Sunday22:00 Eastern with three-hour retries; day selection
+stays after19:00. Deployed heartbeat/run-logs remain every five minutes.
+Routine runs and the existing read-only Monday review continue unchanged.
+
+Pending, outside verified lock: hourly out-of-show heartbeat/logging is prepared,
+reviewed and registered but NOT deployed; automatic discovery delivery to all five
+coordinators is NOT configured. The required recipient policy is in
+[discovery-notices.md](discovery-notices.md). Do not treat either pending item as live.
+No further implementation/deployment without explicit owner approval reopening the
+specific requirement. Read-only defect investigation is not repair authorization.
+Preserve cancelled counts, historical evidence, archives and existing stops.
+Lock record: [locked-20261102](evidence/locked-20261102/lock.json).
+
 ## Discovery notice recipients - owner instruction November 2, 2026
 
 For verified NEW SHOW and NEW SHOW-DAY events, Shows sends the same evidence
