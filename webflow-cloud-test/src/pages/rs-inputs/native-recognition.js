@@ -10,10 +10,13 @@ export const ALL = async ({ request, locals }) => {
     const probe = request.headers.get('X-RS-IP-Transport-Probe');
     if (request.method === 'POST' && request.headers.get('Origin') === new URL(request.url).origin && ['normal', 'forged-xff', 'forged-cf', 'duplicate-xff', 'ipv6-xff'].includes(probe)) {
       const forwarded = (request.headers.get('X-Forwarded-For') || '').split(',').map(value => value.trim()).filter(Boolean);
+      const expected = (request.headers.get('X-RS-IP-Expected') || '').trim().toLowerCase();
       metadata = {
         probe,
         forwardedCount: forwarded.length,
         forwardedAllValid: forwarded.length > 0 && forwarded.every(value => isIP(value) !== 0),
+        forwardedMatchesExpected: isIP(expected) ? forwarded.slice(0, 8).map(value => value.toLowerCase() === expected) : [],
+        forwardedAllEqual: forwarded.length > 0 && forwarded.every(value => value === forwarded[0]),
         forwardedKinds: forwarded.slice(0, 8).map(value => {
           const family = isIP(value), [a, b] = value.split('.').map(Number);
           const privateIp = family === 4 ? a === 10 || a === 127 || a === 0 || a === 172 && b >= 16 && b <= 31 || a === 192 && b === 168 || a === 169 && b === 254 || a === 100 && b >= 64 && b <= 127 : /^(?:f[cd]|fe[89ab]|::1$|::$)/i.test(value);
