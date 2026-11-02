@@ -4,14 +4,16 @@ const TABLES={answers:'tblHnV5iEJ13DOsBF',checkpoint:'tblepakByOH4G4ruV'};
 const TIMING='appYOykKIy1kAquhP',SHOWS='appCaSmL819KK7UFJ',DATA_TABLES={answers:'tblhIjSjeGs5td23c',checkpoint:'tblfWyTqeyvIvhAjb'};
 const SYNC_GROUPS='tblSmVxVsHlpudxlQ',SYNC_RINGS='tbleertfMY7ISGZCh';
 const CLASS_TIMING='appeqxxJyPGS1iqdm',CLASS_ANSWERS='tblmoBFySYW2TkDHf';
+const CLEANUP_TABLES={answers:DATA_TABLES.answers,checkpoint:DATA_TABLES.checkpoint,'run-logs':'tblpWjnTv7S0CBKLV',heartbeat:'tblOeNxsfjCawlEmu','errs-log':'tbliHowblBdSL51ov',cleanup:'tblWluOJP3X1NNhTO'};
+const CLEANUP_DELETABLE=[DATA_TABLES.answers,CLEANUP_TABLES['run-logs'],CLEANUP_TABLES.heartbeat,CLEANUP_TABLES['errs-log']];
 const allowed=new Map([[ENGINE,new Set(Object.values(TABLES))],[SCHEDULES,new Set(['shows','rings','schedules','show-collection'])],[LIVE,new Set(['collections','live-classes','live-groups'])]]);
 function api({token,deadline,request=fetch,lane='schedules_live'}) {
-  if(!['schedules_live','data_live','class_live'].includes(lane))throw Error('Unsupported API lane');
-  const destination=lane==='class_live'?CLASS_TIMING:lane==='data_live'?TIMING:ENGINE,tables=lane==='class_live'?{answers:CLASS_ANSWERS}:lane==='data_live'?DATA_TABLES:TABLES;
-  const targets=lane==='class_live'?new Map([[CLASS_TIMING,new Set([CLASS_ANSWERS])]]):lane==='data_live'?new Map([[TIMING,new Set([...Object.values(DATA_TABLES),SYNC_GROUPS,SYNC_RINGS])],[SHOWS,new Set(['shows'])],[LIVE,new Set(['collections','live-classes','live-groups'])]]):allowed;
+  if(!['schedules_live','data_live','class_live','ring_cleanup'].includes(lane))throw Error('Unsupported API lane');
+  const destination=lane==='ring_cleanup'?TIMING:lane==='class_live'?CLASS_TIMING:lane==='data_live'?TIMING:ENGINE,tables=lane==='class_live'?{answers:CLASS_ANSWERS}:lane==='data_live'?DATA_TABLES:TABLES;
+  const targets=lane==='ring_cleanup'?new Map([[TIMING,new Set(Object.values(CLEANUP_TABLES))],[SHOWS,new Set(['shows'])],[CLASS_TIMING,new Set([CLASS_ANSWERS])]]):lane==='class_live'?new Map([[CLASS_TIMING,new Set([CLASS_ANSWERS])]]):lane==='data_live'?new Map([[TIMING,new Set([...Object.values(DATA_TABLES),SYNC_GROUPS,SYNC_RINGS])],[SHOWS,new Set(['shows'])],[LIVE,new Set(['collections','live-classes','live-groups'])]]):allowed;
   let clockVerified=false;
   async function call(base,table,method='GET',body,query='') {
-    const writable=base===destination&&((method==='PATCH'&&Object.values(tables).includes(table))||(lane!=='class_live'&&method==='DELETE'&&table===tables.answers));
+    const writable=lane==='ring_cleanup'?(base===TIMING&&((method==='PATCH'&&table===CLEANUP_TABLES.cleanup)||(method==='DELETE'&&CLEANUP_DELETABLE.includes(table)))):base===destination&&((method==='PATCH'&&Object.values(tables).includes(table))||(lane!=='class_live'&&method==='DELETE'&&table===tables.answers));
     if (!targets.get(base)?.has(table) || (method!=='GET'&&!writable)) throw Error('Forbidden Airtable target/method');
     const remaining=deadline-Date.now();if(remaining<1500)throw Error('Deadline exhausted before request');
     await new Promise(r=>setTimeout(r,210));
@@ -40,9 +42,26 @@ function api({token,deadline,request=fetch,lane='schedules_live'}) {
     if(remaining.some(r=>ids.includes(r.id)))throw Error('Snapshot deletion readback failed');
     return ids;
   }
-  return{list,upsert,removeSnapshots,get clockVerified(){return clockVerified;}};
+  async function removeCleanupRows(table,ids){
+    if(lane!=='ring_cleanup'||!CLEANUP_DELETABLE.includes(table)||!ids.length||ids.length>10||new Set(ids).size!==ids.length||ids.some(id=>!/^rec[A-Za-z0-9]{14}$/.test(id)))throw Error('Invalid cleanup deletion target');
+    const q=new URLSearchParams();for(const id of ids)q.append('records[]',id);
+    const result=await call(TIMING,table,'DELETE',undefined,'?'+q);
+    if(result.records?.length!==ids.length||new Set(result.records.map(r=>r.id)).size!==ids.length||result.records.some(r=>r.deleted!==true||!ids.includes(r.id)))throw Error('Cleanup deletion response mismatch');
+    const remaining=await list(TIMING,table,'OR('+ids.map(id=>`RECORD_ID()='${id}'`).join(',')+')');
+    if(remaining.length)throw Error('Cleanup deletion absence unconfirmed');return ids;
+  }
+  async function updateCleanup(id,fields){
+    const allowedFields=['records','started','completed','result','old-show-id','new-show-id','records-archived','records-deleted','archive-file','error'];
+    if(lane!=='ring_cleanup'||!/^rec[A-Za-z0-9]{14}$/.test(id)||Object.keys(fields).some(k=>!allowedFields.includes(k)))throw Error('Invalid cleanup summary target');
+    const reply=await call(TIMING,CLEANUP_TABLES.cleanup,'PATCH',{records:[{id,fields}]});
+    if(reply.records?.length!==1||reply.records[0].id!==id)throw Error('Cleanup summary response mismatch');
+    const saved=await list(TIMING,CLEANUP_TABLES.cleanup,`RECORD_ID()='${id}'`);
+    if(saved.length!==1||saved[0].id!==id)throw Error('Cleanup summary readback missing');
+    for(const [key,value]of Object.entries(fields))if(JSON.stringify(saved[0].fields[key]??null)!==JSON.stringify(value??null)&&!((value===''||value===null)&&!saved[0].fields[key]))throw Error('Cleanup summary readback mismatch '+key);
+  }
+  return{list,upsert,removeSnapshots,removeCleanupRows,updateCleanup,get clockVerified(){return clockVerified;}};
 }
-module.exports={SYNC_GROUPS,SYNC_RINGS,syncSample,syncToken,api,ENGINE,SCHEDULES,LIVE,TABLES,TIMING,SHOWS,DATA_TABLES,CLASS_TIMING,CLASS_ANSWERS};
+module.exports={CLEANUP_TABLES,CLEANUP_DELETABLE,SYNC_GROUPS,SYNC_RINGS,syncSample,syncToken,api,ENGINE,SCHEDULES,LIVE,TABLES,TIMING,SHOWS,DATA_TABLES,CLASS_TIMING,CLASS_ANSWERS};
 
 // Stable native sync fields, not sync delivery/edit timestamps.
 function syncToken(rows){const {hash}=require('./pace');return hash(rows.map(r=>({id:r.id,fields:r.fields})).sort((a,b)=>a.id.localeCompare(b.id)));}

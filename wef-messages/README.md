@@ -1,7 +1,92 @@
 # WEF Messages: offline decision contract
 
-**Documentation version: 1.1 — updated 31 October 2026.** Documentation revision
-only; runtime policy `wef-messages-v1`, dependencies and code are unchanged.
+**Documentation version: 1.2 — updated 2 November 2026.** Offline reminder
+calculation added; existing event policy `wef-messages-v1` and dependencies retained.
+
+## Offline 60/30-minute reminder proof
+
+Owner approval on 2 November covers offline files, saved-observation tests,
+changing estimates and duplicate prevention. Baseline repository HEAD at start:
+`8c8a5ffe1b48f2be4c07cfe88066adc9ef75c982`. Only this directory's four files
+are edited. Other owners' existing changes are outside this assignment.
+
+`planClassReminders({observation, prior, now})` calculates pending check times
+and returns offline candidates, never send eligibility. It has no scheduler,
+source reader, Airtable writer or SMS integration. Both 60 and 30 minutes are
+enabled for this fixed offline proof; preference selection is a later adapter.
+
+The observation supplies `scope_key` (class/date plus audience or preference
+scope), `show_date` (ISO), `utc_offset_minutes` (explicit, date-specific),
+`observed_at` (ISO instant), `start_time` (24-hour HH:mm:ss clock duration),
+and `status` (source text). These are local input names, not new Airtable fields
+or an asserted producer contract. For the November 1 fixture, -300 is the
+America/New_York date conversion context; it was not captured alongside each
+archive by the show-clock endpoint. A future adapter must supply verified clock
+context. No host clock or implicit timezone is used.
+
+- First observation baselines any elapsed thresholds without catch-up.
+- Next check is estimate minus 60 minutes, then minus 30 minutes. A distant
+  class needs no intermediate individual countdown checks. Existing source
+  updates may replace the estimate before the pending check.
+- Estimate changes move only unconsumed checks. A due check reserves that
+  milestone once in returned `nextState`. Persist/reuse that state between calls.
+  Candidate IDs depend on scope/date/lead, not estimate revision or clock tick.
+- If both milestones cross together, return only the nearer 30-minute candidate
+  and consume both. A consumed 60 never prevents an unconsumed 30.
+- Underway/Completed cancels pending work and stays stopped. At/past the current
+  estimate, no stale reminder is returned. Old/future observations, changed data
+  at an identical observation time, backward clocks and mismatched prior scopes
+  withhold. State hashes detect alteration, not authenticate state.
+- Outside 08:00:00–15:00:00 pauses checks for review; retain the observation and
+  consumed milestones. No fallback to default_time. Recovery baselines elapsed
+  milestones; this deliberately avoids a catch-up caused by an unverified period.
+
+`fixtures/alert-policy.json.saved_class_observations` contains six minimal
+projections from saved decoded class 200030779, show 200000076, November 1.
+Each carries its archive path and SHA-256 of the decompressed source. Actual
+source fields: `decoded.class_related_data.date`, `.estimated_time`, `.status`;
+observation timestamps come from saved lane receipt archives. The scope/audience
+string and UTC offset are explicitly supplied offline context. Synthetic cases
+in tests separately exercise exact boundaries, later estimates and replay.
+
+| Saved estimate | Next 60-minute check | Next 30-minute check |
+| --- | --- | --- |
+| 13:00:00 | 12:00:00 | 12:30:00 |
+| 12:45:00 | 11:45:00 | 12:15:00 |
+| 12:20:00 | 11:20:00 | 11:50:00 |
+| 12:00:00 | 11:00:00 | 11:30:00 |
+
+All table times are show-local. The 23:59 saved estimate is reviewed separately.
+These prove countdown arithmetic and state behavior using saved estimates,
+not estimate accuracy, fresh source suitability, delivery or scheduled operation.
+Candidates still require the existing consent/provenance/expiry gates before any
+future delivery. This helper intentionally does not join into `evaluateAlert`;
+runtime integration remains prohibited. A future caller must serialize state
+reservations; concurrent writes and missing committed state are unverified.
+
+Offline acceptance command: `node --test wef-messages/alert-policy.test.js`.
+The initial tests showed the missing calculation and consumed-slot defect;
+after implementation all 38 tests pass, including the original 25. Root
+package.json defines no project test command. No dependency upgrades or package
+changes.
+
+November 2 verification: all six projections matched the decompressed archive
+SHA-256, exact source fields and matching saved receipt timestamps. Syntax and
+scoped whitespace checks passed. Independent reviewer /root/reminder_review
+reran all 38 tests and passed 32 separate in-memory assertions; no reviewer edits.
+
+**Reminder delta acceptance: FAIL.** Independent review found P2: the new helper
+uses shared time()/Date.parse validation, which normalizes impossible calendar
+timestamps. Reproduction observation: scope_key a, show_date 2026-03-02,
+utc_offset_minutes 0, observed_at 2026-02-30T07:00:00Z, start_time 13:00:00,
+status Not Started. At now 2026-03-02T07:00:00Z it returns baseline; reusing
+that state at 2026-03-02T12:00:00Z returns candidate. Expected: withhold.
+No code correction made after failed verification. Pending fresh owner
+APPROVED TO EDIT: strict calendar validation for the helper's instant inputs
+and prior timestamps in alert-policy.js, regression tests in alert-policy.test.js,
+then offline checks and independent review. Broader evaluateAlert behavior and
+its other baseline findings remain outside that correction.
+No Airtable writes, runtime integration, schedules or SMS occurred.
 
 ## Coordinator responsibilities
 
@@ -19,12 +104,13 @@ application owner own schedule endpoints. Messages does not take over those role
 
 ## Current acceptance and stop
 
-The first offline implementation exists but is **NOT ACCEPTED**. Writer and
+The broader first offline implementation remains **NOT ACCEPTED**. Writer and
 independent supplied-suite runs passed25/25; the independent reviewer ran10
 additional probes,5PASS/5FAIL, confirming four defects:
 
 - P1: nested confirmation/reference material can leak private data into snapshots.
-- P2: a consumed earlier reminder can suppress a fresh nearer reminder.
+- P2: a consumed earlier reminder can suppress a fresh nearer reminder — corrected
+  in the November 2 reminder delta, with a sequential regression test.
 - P2: missing timezone silently falls back to the host timezone.
 - P2: evaluation time changes material hashes for timing-change notices.
 
@@ -32,11 +118,11 @@ Evidence: C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-related-to-sms
 execution-log.json, review-receipt.json and review-verification.json in that same
 directory. Packet integrity PASS is not candidate acceptance. The report applies
 to the earlier frozen candidate; this documentation-only revision changes README
-bytes, not the reviewed module, tests or fixture.
+bytes. The November 2 delta changes the module, tests and fixture as described above.
 
-Next implementation action requires fresh owner **APPROVED TO EDIT** for those
-module/test corrections, followed by fresh offline acceptance and independent
-review. This README update is not repair approval. No Airtable writes, runtime
+The November 2 approval covers the reminder delta and its consumed-slot correction.
+The other three review findings remain outside that delta and unresolved; no
+whole-policy acceptance is claimed. No Airtable writes, runtime
 integration, task/schedule changes, deployment/publication or SMS are authorized.
 No collector or sender runs; preserve unrelated owners' changes and existing stops.
 
@@ -45,7 +131,8 @@ No collector or sender runs; preserve unrelated owners' changes and existing sto
 Approved scope: four new files only (alert-policy.js, alert-policy.test.js,
 fixtures/alert-policy.json, README.md). No runtime adapter, source reads, Airtable
 writes, sender, task, schedule, deployment or SMS. No package changes. All fixtures
-are synthetic. This directory did not exist at the approved baseline.
+were synthetic in the original step; saved projections are now also included.
+This directory did not exist at the original approved baseline.
 
 ## Interface
 

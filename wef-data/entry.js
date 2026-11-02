@@ -25,7 +25,10 @@ function due(runtime,linking=false,now=new Date()){
   if(!zero)return !linking;
   const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
   const day=zero[0].split('|').at(-1),interval=today===day?180:3600;
-  if(!linking)return today===day||days.some(([,r])=>now.getTime()/1000-Number(r.attempted)>=[3600,3600,7200,10800][r.priority]);
+  if(!linking){
+   const future=days.filter(([,r])=>r.priority>0).sort((a,b)=>a[1].priority-b[1].priority);
+   return today===day||now.getTime()/1000-Number(zero[1].attempted)>=3600||future.some(([,r],i)=>i===0&&(r['force-next']===true||now.getTime()/1000-Number(r.attempted)>=1800));
+  }
   if(!keys.length)return false;
   const previous=read(path.join(runtime,'linking','last-run.json'));
   if(previous.ok&&JSON.stringify(previous.counts?.['collection-run-keys'])===JSON.stringify(keys))return false;
@@ -70,7 +73,7 @@ async function scheduled(){
  if(attempt){
   const errors=report['item-errors']||[];
   for(const error of errors)logging.recordError(root,attempt,{category:stage,operation:linking?'Link':'Collect',target:error.key,message:error.error,'write-outcome':'Unknown'},stage);
-  logging.finish(root,attempt,{status:errors.length?'Partial':'Succeeded',stage,'show-key':report['show-key'],'run-key':report['run-key'],counts:report.counts});
+  logging.finish(root,attempt,{status:errors.length?'Partial':'Succeeded',stage,'show-key':report['show-key'],'run-key':report['run-key'],counts:report.counts,reason:errors.length?errors[0].error:undefined});
   const delivered=await logging.deliver(root,config);
   if(!delivered.ok)logging.recordError(root,attempt,{category:'Logging',message:delivered.error,'write-outcome':'Unknown'},'LogDelivery');
  }

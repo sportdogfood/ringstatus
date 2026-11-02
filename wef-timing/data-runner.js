@@ -3,7 +3,8 @@ const {api:makeApi,TIMING,SHOWS,DATA_TABLES:T,CLASS_TIMING,CLASS_ANSWERS,SYNC_GR
 const {hash}=require('./pace'),{verifyRows}=require('./runner'),{decode,encode}=require('./checkpoint-state');
 const source=require('./data-source'),core=require('./ring-workflow'),{prepare}=require('./class-worker'),{readLiveClasses}=require('./class-live-source'),{localDay}=require('./purge');
 const quoted=x=>JSON.stringify(x),orKeys=keys=>'OR('+keys.map(k=>'{answer-key}='+quoted(k)).join(',')+')';
-async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Date.now()+160000,runId=require('node:crypto').randomUUID(),readData=source.loadData,readPointer=source.pointer,readLive=readLiveClasses,prepareClassBatch=prepare}={}){
+const ringCadence=require('./ring-cadence');
+async function run({api,classApi,readLiveReceipt=ringCadence.readReceipt,clock=()=>new Date().toISOString(),deadline=Date.now()+160000,runId=require('node:crypto').randomUUID(),readData=source.loadData,readPointer=source.pointer,readLive=readLiveClasses,prepareClassBatch=prepare}={}){
  api=api||makeApi({token:process.env.WEF_TIMING_AIRTABLE_TOKEN,deadline,lane:'data_live'});classApi=classApi||makeApi({token:process.env.WEF_TIMING_AIRTABLE_TOKEN,deadline,lane:'class_live'});
  const started=clock(),day=localDay(started),checkpointKey='ring-pace-data-runner|'+day,began=Date.now(),report={run_id:runId,started,ok:false,source_lane:'data_live',destination:TIMING,errors:[],issues:[],counts:{evaluated:0,written:0,unchanged:0,purged:0,classes_evaluated:0,classes_written:0,classes_unchanged:0}};
  let state={version:1},loaded=false,blocked=false,stage='checkpoint_read';
@@ -21,10 +22,13 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
   const checkpoints=await api.list(TIMING,T.checkpoint,"{checkpoint-key}="+quoted(checkpointKey));if(checkpoints.length>1)throw Error('Duplicate shared checkpoint');
   if(checkpoints.length){state=decode(checkpoints[0].fields['state-json']);if(state.version!==1)throw Error('Unsupported shared checkpoint');if(state.pending_write||state.pending_purge||state.class_retention?.pending_purge||state.entry_failed||(checkpoints[0].fields['last-outcome']==='failed'&&!state.retry_safe)){blocked=true;throw Error('Uncertain prior intent requires owner review');}}
   loaded=true;stage='ring_source_read';const selected=source.selectShow(await api.list(SHOWS,'shows'),clock()),context=selected.context;
+  const ringDecision=ringCadence.check({previous:state.ring_cadence,now:clock(),customer:context['customer-id'],show:context['show-id'],read:readLiveReceipt});
+  report.ring_cadence=ringDecision;if(ringDecision.due)state.ring_cadence=ringDecision;
   if(day<context['start-date']||day>context['end-date'])throw source.defer('TODAY outside show dates');
   const filter=`AND({show-id}=${context['show-id']},{customer-id}=${context['customer-id']},{date}='${day}',{scope-status}='current')`;
   const rings=await api.list(TIMING,SYNC_RINGS,filter),groups=await api.list(TIMING,SYNC_GROUPS,filter);
   const stable=async()=>{const again=source.selectShow(await api.list(SHOWS,'shows'),clock());return source.sameAuthority(selected,again)&&localDay(clock())===day&&syncToken(rings)===syncToken(await api.list(TIMING,SYNC_RINGS,filter))&&syncToken(groups)===syncToken(await api.list(TIMING,SYNC_GROUPS,filter));};
+  if(ringDecision.due&&ringDecision.collect){
   const work=core.create();work.checkpoint=structuredClone(state.ring_workflow||work.checkpoint);
   work.checkpoint.rings=Object.fromEntries(Object.entries(work.checkpoint.rings).filter(([k])=>{const i=JSON.parse(k);return i[0]===context['customer-id']&&i[1]===context['show-id']&&i[2]===day;}));
   const currentRows=await api.list(TIMING,T.answers,`AND({answer-kind}='ring-current',{show-id}=${context['show-id']},DATETIME_FORMAT({date},'YYYY-MM-DD')='${day}')`),currentKeys=new Set();
@@ -43,6 +47,7 @@ async function run({api,classApi,clock=()=>new Date().toISOString(),deadline=Dat
   await publish(api,[...bundle.history,...bundle.pace,...currentWrites],TIMING,T.answers,work.checkpoint);report.counts.written=bundle.history.length+bundle.pace.length+currentWrites.length;
   state.ring_status='complete';state.evaluation_cutoff=day;state.ring_issues=work.skipped;state.retry_safe=true;await save('ring_complete');
   report.rings=[...work.current.values()].filter(r=>r.day===day).map(r=>({ring_id:r.ringId,name:r.ringName,status:r.status,group:r.groupId,total:r.total,gone:r.gone,pace:r.pace,pace_as_of:r.paceAsOf,observed_at:r.observedAt,reason:r.reason}));
+  }else{state.ring_status='skipped';report.ring_status='skipped';}
   // Preserve the existing Class stage exactly once; its Data dependency is downstream of Ring publication.
   stage='class_source_read';report.counts.class_stage_attempts=1;let pinned,data;
   try{pinned=readPointer(context);data=await readData(context,deadline);}catch(e){if(e.deferred)return await deferClass(e.message);throw e;}

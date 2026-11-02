@@ -1,11 +1,11 @@
 # RingStatus Profiles — ownership and operating guide
 
-Version: **1.0.0**  
+Version: **1.2.0**  
 Dated: **2 November 2026 — America/New_York**  
 Owner: **rs-profile-coordinator**  
 Chat: `01a12690-0e9d-71f0-bb85-000d02307e8d`
 
-This README describes Profile's responsibilities, existing implementation, specialist roles and connections. It is documentation, not authorization to run workflows, change code or records, deploy, publish, or activate agents. Current owner instructions remain controlling. Profile implementation remains stopped pending a specific authorized assignment.
+This README describes Profile's responsibilities, existing implementation, specialist roles and connections. It is documentation, not authorization to run workflows, change code or records, deploy, publish, or activate agents. Current owner instructions remain controlling. The owner authorized the existing Profile controls, required data additions and app-only deployment on 2 November 2026. Live acceptance is tracked in the evidence below; authorization alone does not establish completion.
 
 ## 1. What Profiles does
 
@@ -88,6 +88,7 @@ The existing base was renamed from Tenants to **profiles**. Its stable ID remain
 | tenant-memberships | `tblFf4aWQYA2RRsWo` | Existing User–Team relationship, status and roles. |
 | roles | `tblRqRbjmqmNfJtIP` | Existing role records used by membership permissions. |
 | teams | `tblaczX2otacXkA9w` | Newly created at owner request, currently with a Name field. Not connected to the deployed application. |
+| team-invitations | `tblOmDd6CDOBkf7Fh` | Explicit Owner invitation and recipient accept/decline records; separate from recognition invitations and consent. |
 | code-review | `tblggsFkWZ53LtkmJ` | Review date, files/language, source version, reviewer, findings, result and evidence. Creating it does not mean a review has run. |
 
 The new `teams` table has not replaced `tenants`. No records or links have been migrated. Moving the application to it requires an explicit, bounded mapping and compatibility assignment; do not create competing Team masters silently. The owner requested a Teams table in this base; no standalone Teams base has been created.
@@ -98,9 +99,9 @@ The base also contains preferences, shared directories, processing records and a
 
 ### Deprecation marker
 
-Owner policy: `___` marks a table for deprecation after 90 days. On 2 November 2026, the following 14 tables had that marker and a description recording **31 January 2027**:
+Owner policy: `___` marks a table for deprecation after 90 days. On 2 November 2026, the following 24 tables had that marker and a description recording **31 January 2027**:
 
-`___agents`, `___fails`, `___activity`, `___development`, `___workflow`, `___changes`, `___contacts`, `___locations`, `___exercisers`, `___grooms`, `___rs-input-riders`, `___profiles`, `___rs-input-horses`, `___entities`.
+`___agents`, `___fails`, `___activity`, `___development`, `___workflow`, `___changes`, `___contacts`, `___locations`, `___exercisers`, `___grooms`, `___rs-input-riders`, `___profiles`, `___rs-input-horses`, `___entities`, `___trainers`, `___rings`, `___horses`, `___locations-directory`, `___tenant-level`, `___tenant-locations`, `___tenant-trainers`, `___tenant-assignments`, `___favorites`, `___onboarding-stages`.
 
 Records and links are retained. No automatic deletion job exists or is authorized by the marker. Historical references must remain inspectable while dependencies and final disposition are reviewed.
 
@@ -108,9 +109,9 @@ Records and links are retained. No automatic deletion job exists or is authorize
 
 The agreed model distinguishes User levels **Independent / Preferred** from Team roles **Owner / Member**. These labels must not be mapped to existing unrelated access values without an approved decision. Descriptive tags such as owner are not membership permissions.
 
-The model calls for explicit invitations and acceptance, Owner management of Member active status, and at most one membership in V1. It does not include browsing, selecting or switching Teams. Personal hide/show affects that viewer's display only. Creating a Team while already a Member remains an unresolved transition; do not silently leave the old Team or create a second membership.
+The model calls for explicit invitations and acceptance, Owner management of Member active status, and at most one membership in V1. It does not include browsing, selecting or switching Teams. Personal hide/show affects that viewer's display only. A User with any existing Team membership cannot create another Team or accept another membership. Disabled membership still counts. A Preferred User without membership can create a Team and become its Owner; acceptance is explicit, never automatic.
 
-Those are model requirements, not a claim that every control is implemented. Current source supports existing User/Team reads, own-User saves and Owner changes to nonowner membership status. PIN is set-only and never returned. Multiple memberships are not resolved by picking the first.
+The approved implementation connects User levels, Team creation/invitations, photo uploads and actual modified-date sorting through existing records and saves. User level is assigned explicitly, not upgraded by the User. Live acceptance remains a separate check. PIN is set-only and never returned. Multiple memberships are not resolved by picking the first.
 
 ## 7. Three Profile specialist responsibilities
 
@@ -144,9 +145,9 @@ Keep credentials, PINs, device tokens and raw private chat histories out of docu
 
 Verified implementation checkout:
 
-`C:/Users/gombc/.codex/worktrees/recognize-isolated-20261101/ringstatus`
+`C:/Users/gombc/.codex/worktrees/profile-completion-20261102/ringstatus`
 
-The last inspected application release is `89abf609f816b6c9d10f05d301027c991a33280a`, deployed on 2 November 2026 at 12:11:26 UTC. Subsequent inspected local commit `53b8c87df6e9e76efc68b10dfcd74d6ea72a65af` adds documentation/ownership material, not application changes. This dated evidence is not continuous deployment monitoring.
+Current verified application release: `a3a07e80655865eafa40f6aea75e7ba24df1e760`, deployment `f4198ecf-9bf7-4c6a-bfce-8e7d52f10eec`, succeeded on 2 November 2026 at 18:51:53 UTC. It preserves the separate approved display release `69a8f89da`. This is dated release evidence, not continuous monitoring.
 
 Profile source, relative to that checkout:
 
@@ -163,21 +164,19 @@ Recognize widget/IAM/credential/refresh code, D1 claim/save helpers, `rs-tenant-
 
 ## 10. What has been proved and what remains
 
-Inspected 2 November evidence establishes existing secure-cookie recognition → Open profile → real preexisting test User → active linked Team and six-member roster, with correct identity after reload. Canonical User/Team/membership IDs were independently matched to Airtable by the releasing specialist. Unauthenticated Profile returned 401; app entry/assets returned 200. This chat inspected the saved evidence; it did not independently repeat that browser run.
+The existing core flow was tested through the live /profile controls: real User save/readback/reload, retained interrupted requests, sign-in/out/account isolation, roster and Owner enable/disable. The original test Owner was corrected to one membership under explicit owner instruction; temporary test values were restored. Evidence: `.git/ringstatus-control/recognize-model-correction-20261101/profile-e2e-live-results-20261102.json`.
 
-Prior scoped tests, local fixture browser checks, build and bounded source review are separate evidence. They do not prove production writes or every model control. No live Profile/Team data was edited in that release check.
+The completion candidate is `a3a07e80655865eafa40f6aea75e7ba24df1e760`. Independent feature tests22/22, the two reproduced review regressions, one-Team concurrency and shared-call compatibility passed. The current design's separate upstream display release was preserved, and the final build passed. Review evidence is in `.git/ringstatus-control/profile-completion-20261102/review-corrected/` and `review-final/`; code-review record `recPoGRbBzhiRmH8n` indexes it. Previous failed-review evidence remains in `review/`.
 
-Still unverified in that release: fresh credentials, live Profile saves and retries, live Owner membership writes, IP-only private-access confirmation and mobile acceptance. The broader shared IndexedDB/cache behavior is not complete merely because this implementation retains some drafts in localStorage.
+The owner explicitly authorized manual preparation of two disposable registered Test Users without memberships. This is test setup, not automated registration. Existing User memberships are preserved. Deployment and live control acceptance are recorded in `.git/ringstatus-control/profile-completion-20261102/live-acceptance.json`; the approved controls passed live browser/canonical readback/reload checks. Both disposable Users and their Team were deactivated, temporary values restored, and the original memberships/session preserved. Manual fixture preparation is separate from the tested application flow.
 
-Still unimplemented: Independent/Preferred backing, Team creation/invitation persistence, inline file uploads and real modified-date sorting. Older proposed fields/tables remain proposals. The newly added `teams` table alone does not implement those features.
+Alerts, Alarm, Checkin, external Opt-ins/Schedules and the preset Agent panel are separate unconnected services. This change does not build those engines, change consent, migrate Team tables or replace Recognize. Full offline page reopening and the broader IndexedDB/cache plan are not established by retained localStorage drafts.
 
-Evidence in the approved main checkout:
+### Five designated pages — 2 November 2026
 
-- `.git/ringstatus-control/recognize-model-correction-20261101/live-acceptance-20261102.json`
-- `.git/ringstatus-control/recognize-model-correction-20261101/deployed-http-20261102.json`
-- The same directory's `source-review.md`, `profile-final-tests.log` and `profile-final-build.log`.
+Actual Member and Owner Profile flows were subsequently tested from Home, Ring Status, About RingStatus, Recognize and Profile. Each reached the correct Profile; Member edits saved, read back, survived reload and were restored; Owner membership changes saved and were restored. Team permissions and one membership per User remained correct. Fresh phone/sign-out entry was checked. Test fixtures were deactivated and the original session/memberships preserved.
 
-Current intake/source references in the isolated checkout: `docs/coordination/rs-profile-coordinator-handoff-20261102.md`, `docs/recognize/README.md` and `docs/coordination/profile-real-records-20261101.md`. Current owner instructions supersede dated imperative statements in historical handoffs. Do not resurrect the resolved pre-release 404 blocker.
+Full all-page completion remains pending one confirmed startup issue: an early public Sign in click can be closed by the late unknown result of silent recognition. The smallest one-expression correction was independently tested in memory, but has not been approved, applied or deployed. This is separate from the successful normal flows. Evidence: `.git/ringstatus-control/profile-completion-20261102/all-pages-e2e-20261102.json`, `all-pages-browser-steps.json`, `all-pages-canonical-readbacks.json`, `all-pages-final-readback.json` and `all-pages-launcher-review/`.
 
 ## 11. Review records and working standard
 
@@ -189,6 +188,8 @@ Keep explanations short and human unless the owner requests detail, as for this 
 
 | Version | Date | Change |
 | --- | --- | --- |
+| 1.2.0 | 2026-11-02 | Five-page live flows and restored test data; confirmed startup launcher correction pending approval. |
+| 1.1.0 | 2026-11-02 | Settled one-Team rule, current table markers, approved controls and versioned review/live acceptance evidence. |
 | 1.0.0 | 2026-11-02 | Initial owner-requested detailed Profile guide; documents domain cut, specialist capabilities, tool boundaries, new tables, deprecation policy and evidence limits. |
 
 Future revisions should update this header and history, retain exact proof dates, and distinguish a documented decision from an implemented or verified change.

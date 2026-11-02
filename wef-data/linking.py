@@ -2,7 +2,7 @@
 import datetime,json,os,pathlib,sys,time
 ROOT=pathlib.Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT.parent/'wef-schedules/tests'))
-from wef_data_airtable import Airtable
+from wef_data_airtable import Airtable,error_text
 from wef_data_store import DATA_BASE,DataStore
 from record_mappings import trip_records
 
@@ -31,7 +31,7 @@ def run(schema_file):
         rows=[];keys=sorted(set(keys))
         for start in range(0,len(keys),20):rows.extend(read(table,formula=key_filter(table,keys[start:start+20])))
         return rows
-    def fail(target,error):errors.append({'key':target,'error':type(error).__name__+': '+str(error)})
+    def fail(target,error):errors.append({'key':target,'error':error_text(error)})
     try:
         shows=read('wef-shows.shows');owner=next(r for r in shows if r['fields'].get('is_default') is True)
         show=owner['fields']['show-key'];sid=str(owner['fields']['show_id'])

@@ -46,4 +46,4 @@ if(require.main===module){
   console.log(JSON.stringify(result));process.exitCode=result.ok?0:1;
  }).catch(error=>{console.log(JSON.stringify({ok:false,error:'Invalid scheduled Data source request:\n'+errorText(error)}));process.exitCode=1;});
 }
-module.exports={read,target};
+module.exports={read,target,errorText};

@@ -47,16 +47,28 @@ async function flush(root,config,request,{milliseconds=20000,operations=30}={}){
   const errors=files(root,'err-logs');for(const e of errors){if(!ids[e.attempt])throw Error('Missing local attempt for error');await mirror('err-logs','error-id',e.id,{'error-id':e.id,run:[ids[e.attempt]],'occurred-at':e.at,stage:e.stage,category:e.category,operation:e.operation,target:e.target,message:e.message,'write-outcome':e['write-outcome']});}
   const last=attempts.at(-1);if(last){const fields={'heartbeat-key':config.workflow,workflow:config.workflow,status:last.status,'last-wake':last.started,'last-attempt':last.started,'last-run':[ids[last.id]],message:last.reason||last.stage};const success=attempts.filter(a=>a.status==='Succeeded').sort((a,b)=>a.completed.localeCompare(b.completed)).at(-1);if(success)fields['last-success']=success.completed;const error=errors.sort((a,b)=>a.at.localeCompare(b.at)).at(-1);if(error)fields['last-error']=error.at;await mirror('heartbeat','heartbeat-key',config.workflow,fields);}
   return {ok:true,operations:calls};
- }catch(error){return {ok:false,error:safe(error.message),operations:calls};}
+ }catch(error){return {ok:false,error:safe(error.log_message||error.message),operations:calls};}
 }
-function transport(base,token){let last=0;return async(method,table,options)=>{
+function transport(base,token,details=false){let last=0;return async(method,table,options)=>{
  const wait=250-(Date.now()-last);if(wait>0)await new Promise(resolve=>setTimeout(resolve,wait));last=Date.now();
  if(!/^app[A-Za-z0-9]+$/.test(base)||!/^tbl[A-Za-z0-9]+$/.test(table))throw Error('Invalid logging target');
  const params=method==='GET'?'?'+new URLSearchParams({filterByFormula:'{'+options.primary+'}='+JSON.stringify(options.key),pageSize:'100'}):'';
  const body=method==='GET'?undefined:JSON.stringify({records:[{...(method==='PATCH'?{id:options.id}:{}),fields:options.fields}]});
+ try{
  const r=await fetch('https://api.airtable.com/v0/'+base+'/'+table+params,{method,headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body,signal:AbortSignal.timeout(5000)});
- if(!r.ok)throw Error('Logging Airtable '+method+' HTTP '+r.status);const data=await r.json();if(method==='GET'&&data.offset)throw Error('Ambiguous paginated logging identity');return method==='GET'?data.records:data.records[0];
+ if(!r.ok){
+  const error=Error('Logging Airtable '+method+' HTTP '+r.status);
+  if(details){
+   try{const text=await r.text();if(text)error.message+='\nAirtable message: '+text;}catch(cause){error.cause=cause;}
+  }
+  throw error;
+ }
+ const data=await r.json();if(method==='GET'&&data.offset)throw Error('Ambiguous paginated logging identity');return method==='GET'?data.records:data.records[0];
+ }catch(error){
+  if(details)error.log_message=require('./source-reader').errorText(error);
+  throw error;
+ }
 };}
-async function deliver(root,config){if(!process.env.AIRTABLE_TOKEN)return {ok:false,error:'Logging token unavailable'};return flush(root,config,transport(config.base,process.env.AIRTABLE_TOKEN));}
+async function deliver(root,config){if(!process.env.AIRTABLE_TOKEN)return {ok:false,error:'Logging token unavailable'};return flush(root,config,transport(config.base,process.env.AIRTABLE_TOKEN,['wef-data','wef-data-linking'].includes(config.workflow)));}
 function recoverInterrupted(root,current){for(const a of files(root,'run-logs')){if(a.id===current||a.status!=='Started')continue;const pids=[a['owner-pid'],a['child-pid']].filter(p=>Number.isInteger(p)&&p>0);if(!pids.length)continue;const alive=pids.some(p=>{try{process.kill(p,0);return true;}catch(e){return e.code!=='ESRCH';}});if(!alive)finish(root,a.id,{status:'Interrupted',stage:a.stage,error:{category:'Process',message:'Previous invocation ended without a terminal receipt','write-outcome':'Unknown'}});}}
 module.exports={begin,finish,readAttempt,flush,atomic,safe,deliver,recordError,recoverInterrupted};

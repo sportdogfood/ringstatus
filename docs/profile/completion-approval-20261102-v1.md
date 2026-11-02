@@ -1,6 +1,6 @@
 # Finish the existing Profile
 
-Version 1.1.0 — 2 November 2026. Proposed; not approved. Replaces the overcomplicated v1.0.0 proposal.
+Version 1.1.0 — 2 November 2026. Approved by the owner on 2 November 2026: APPROVED TO EDIT and deploy the existing app for those Profile controls and required Airtable additions. Replaces the overcomplicated v1.0.0 proposal.
 
 Already verified live: sign-in, Profile save/reload, failed-request recovery, Team roster and Owner enable/disable. The test Owner now has one Team membership.
 

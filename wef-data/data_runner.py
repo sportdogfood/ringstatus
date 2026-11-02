@@ -7,7 +7,7 @@ from data_contract import packed, digest, directory_page, DirectoryDrift, freeze
 
 SOURCE=pathlib.Path(__file__).resolve().parents[1]/'wef-schedules/tests'
 sys.path.insert(0,str(SOURCE))
-from wef_data_airtable import Airtable, canonical_fence, TransportDeferred
+from wef_data_airtable import Airtable, canonical_fence, TransportDeferred, error_text
 from wef_data_store import DataStore, DATA_BASE, equivalent
 from wef_data_handoff import verify_snapshot
 from wef_data_context import validate_source_show
@@ -1533,7 +1533,7 @@ def collect_day(schema_file, selection):
         nonlocal stage_started
         now=time.perf_counter();timings[stage]=round(now-stage_started,6);stage_started=now
     def error(target,exception):
-        errors.append({'key':target,'error':type(exception).__name__+': '+str(exception) if isinstance(exception,Exception) else str(exception)})
+        errors.append({'key':target,'error':error_text(exception) if isinstance(exception,Exception) else str(exception)})
     def report():
         if runkey:
             save('runs',[{'run-key':runkey,'mode':'Scheduled day-zero collection' if priority==0 else 'Scheduled day-'+str(selection[2])+' collection',
@@ -1669,8 +1669,9 @@ def collect_day(schema_file, selection):
     for table in tables[:3]:
         save(table,source_rows(graph[table]));timed('save-inventory-'+table)
 
-    from record_mappings import RESULT_FIELDS
+    from record_mappings import RESULT_FIELDS,trip_records
     classes={};entries={};trips={};results={};missing_trips=[]
+    entities={table:{} for table in ('horses','riders','trainers','owners')}
     def fetch(row):return source.fetch('/classes/'+str(row['class-id']),params)
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         requests={pool.submit(fetch,row):row for row in graph.get('classes',[])}
@@ -1690,6 +1691,12 @@ def collect_day(schema_file, selection):
                 for trip in payload['trips']:
                     try:
                         eid=int(trip['entry_id']);ek=str(context['show-id'])+'|'+str(eid)
+                        mapped=trip_records(trip,key,None,at)
+                        for table,entity_rows in entities.items():
+                            for entity in mapped[table]:
+                                entity_key=entity[store.primary[table]];prior=entity_rows.get(entity_key,{})
+                                supplied={field:value for field,value in entity.items() if value is not None and value!=''}
+                                entity_rows[entity_key]=({**prior,**supplied} if not prior or at>=prior['last-success'] else {**supplied,**prior})
                         entry={'entry-key':ek,'entry-id':eid,'last-success':at}
                         if trip.get('number') is not None:entry['entry-number']=str(trip['number'])
                         if ek not in entries or at>entries[ek]['last-success']:entries[ek]=entry
@@ -1721,7 +1728,9 @@ def collect_day(schema_file, selection):
     save('schedules',list(schedules.values())+absent_schedules);timed('save-schedules')
     absent_classes=missing_rows('classes',inventory['classes'],show+'|'+day+'|','Dropped') if inventory_complete else []
     save('classes',list(classes.values())+absent_classes);timed('save-class-details')
-    save('entries',entries.values());timed('save-entries')
+    save('entries',entries.values())
+    for table,entity_rows in entities.items():save(table,entity_rows.values())
+    timed('save-entries')
     save('trips',list(trips.values())+missing_trips);timed('save-trips')
     save('results',results.values());timed('save-results')
     return report()
@@ -1732,7 +1741,7 @@ def run(schema_file):
     started=time.perf_counter();errors=[];reports=[];show=None
     state_path=pathlib.Path(schema_file).parent/'runtime'/'day-cadence.json'
     def error(target,exception):
-        errors.append({'key':target,'error':type(exception).__name__+': '+str(exception)})
+        errors.append({'key':target,'error':error_text(exception)})
     try:
         client=Airtable()
         shows=client.records(DATA_BASE,SYNC_SHOWS,fields=list(SYNC_SHOW_FIELDS.values()))
@@ -1757,6 +1766,7 @@ def run(schema_file):
     except Exception as exception:
         error('Day cadence read',exception);state={}
     timings={'select-show-and-day':round(time.perf_counter()-started,6)}
+    future_due=None
     for priority,day in days:
         key=show+'|'+day;previous=state.get(key,{})
         attempted=time.time()
@@ -1768,6 +1778,11 @@ def run(schema_file):
                 from zoneinfo import ZoneInfo
                 today=datetime.datetime.fromtimestamp(attempted,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()
                 interval=0 if day==today else 3600
+            else:
+                # One half-hour cycle: day 1, then 2, then 3, completing each in order.
+                if future_due is None:future_due=previous.get('force-next') is True or attempted-float(previous.get('attempted',0))>=1800
+                if not future_due:continue
+                interval=0
             if attempted-float(previous.get('attempted',0))<interval:continue
         except (AttributeError,TypeError,ValueError) as exception:error('Day cadence '+day,exception)
         at=stamp();lane='fast-discovery' if key not in state else 'fast-collector'

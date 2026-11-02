@@ -146,9 +146,10 @@ function evaluateAlert(input){
     if(!selected.length)return finish('suppressed',['no_enabled_matching_choice']);
     // A consumed milestone is not revived by a different producer revision.
     const slot=c=>hash([scope,c.option]);
-    const allSlots=selected.filter(c=>!CHANGES.has(c.option)).map(slot);
-    if(!retry&&allSlots.some(key=>state.consumed_slots.includes(key)))return finish('suppressed',['milestone_already_consumed']);
-    let combined=selected.slice();
+    const unsent=selected.filter(c=>retry||CHANGES.has(c.option)||!state.consumed_slots.includes(slot(c)));
+    if(!unsent.length)return finish('suppressed',['milestone_already_consumed']);
+    const allSlots=unsent.filter(c=>!CHANGES.has(c.option)).map(slot);
+    let combined=unsent.slice();
     for(const family of ['class_starts_in','trip_starts_in']){
       const members=combined.filter(c=>c.option.startsWith(family));
       if(members.length>1){const nearer=Math.min(...members.map(c=>c.value));combined=combined.filter(c=>!c.option.startsWith(family)||c.value===nearer);}
@@ -172,4 +173,40 @@ function evaluateAlert(input){
     return finish('eligible',[retry?'definite_nonacceptance_retry':'validated_condition'],combined,notification,Boolean(retry));
   }catch{return blocked('invalid_input_or_state');}
 }
-module.exports={evaluateAlert};
+// Pure offline countdown proof, not a scheduler or permission to send. The caller
+// supplies a show-date-specific UTC offset and a scope including the audience.
+// Reserved candidates stay consumed even when a subsequent estimate moves later.
+function planClassReminders(input){
+  const blocked=reason=>({decision:'withheld',reason,candidates:[],next_check_at:null,nextState:null});
+  try{
+    if(!jsonData(input))return blocked('invalid_json_input');
+    const {observation:o,prior=null,now}=input,n=time(now);
+    if(!o||!text(o.scope_key)||!Number.isFinite(n)||!Number.isFinite(time(o.observed_at))||time(o.observed_at)>n||!Number.isInteger(o.utc_offset_minutes)||Math.abs(o.utc_offset_minutes)>840)return blocked('clock_context_invalid');
+    const midnight=time(o.show_date+'T00:00:00Z');
+    if(!Number.isFinite(midnight)||iso(midnight).slice(0,10)!==o.show_date||iso(n+o.utc_offset_minutes*60000).slice(0,10)!==o.show_date)return blocked('show_day_invalid');
+    const observationHash=hash({scope:o.scope_key,date:o.show_date,offset:o.utc_offset_minutes,at:o.observed_at,start:o.start_time??null,status:o.status??null});
+    if(prior){
+      const {head_hash,...body}=prior;
+      if(head_hash!==hash(body)||prior.version!==1||prior.scope_key!==o.scope_key||prior.show_date!==o.show_date||!Array.isArray(prior.consumed)||!prior.consumed.every(x=>x===60||x===30)||new Set(prior.consumed).size!==prior.consumed.length||!Number.isFinite(time(prior.evaluated_at))||n<time(prior.evaluated_at)||time(o.observed_at)<time(prior.observed_at)||(time(o.observed_at)===time(prior.observed_at)&&observationHash!==prior.observation_hash))return blocked('prior_or_observation_invalid');
+    }
+    const state={version:1,scope_key:o.scope_key,show_date:o.show_date,observed_at:o.observed_at,observation_hash:observationHash,evaluated_at:now,consumed:prior?[...prior.consumed]:[],paused:false,stopped:prior?.stopped===true};
+    const result=(decision,reason,candidates=[],next_check_at=null)=>({decision,reason,candidates,next_check_at,nextState:signedState(state)});
+    if(state.stopped||['Underway','Completed'].includes(o.status)){state.stopped=true;return result('stopped','class_no_longer_upcoming');}
+    if(o.status!=='Not Started'){state.paused=true;return result('review','class_status_unverified');}
+    if(typeof o.start_time!=='string'||!/^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/.test(o.start_time)){state.paused=true;return result('review','start_time_invalid');}
+    const [h,m,s]=o.start_time.split(':').map(Number),seconds=h*3600+m*60+s;
+    // Outside the owner's normal range is retained for review, not discarded or
+    // silently replaced with default_time. It can resume on a normal observation.
+    if(seconds<8*3600||seconds>15*3600){state.paused=true;return result('review','start_time_outside_normal_range');}
+    const target=midnight+seconds*1000-o.utc_offset_minutes*60000;
+    const remaining=[60,30].filter(lead=>!state.consumed.includes(lead));
+    const crossed=remaining.filter(lead=>n>=target-lead*60000);
+    state.consumed=[60,30].filter(lead=>state.consumed.includes(lead)||crossed.includes(lead));
+    if(n>=target)return result('expired','start_time_reached');
+    const baseline=!prior||prior.paused;
+    const candidates=!baseline&&crossed.length?[{id:hash([o.scope_key,o.show_date,'class-reminder',Math.min(...crossed)]),lead_minutes:Math.min(...crossed),target_at:iso(target),observed_at:o.observed_at}]:[];
+    const pending=[60,30].filter(lead=>!state.consumed.includes(lead)).map(lead=>target-lead*60000);
+    return result(baseline?'baseline':candidates.length?'candidate':'waiting',baseline?'no_catchup':candidates.length?'reminder_due':'not_due',candidates,pending.length?iso(Math.min(...pending)):null);
+  }catch{return blocked('invalid_input_or_state');}
+}
+module.exports={evaluateAlert,planClassReminders};

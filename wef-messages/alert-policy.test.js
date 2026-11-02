@@ -3,9 +3,64 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const {createHash}=require('node:crypto');
 const fixture=require('./fixtures/alert-policy.json');
-const {evaluateAlert}=require('./alert-policy');
+const {evaluateAlert,planClassReminders}=require('./alert-policy');
 const copy=x=>JSON.parse(JSON.stringify(x));
 function input(){return copy(fixture);}
+const saved=i=>copy(fixture.saved_class_observations[i].observation);
+function plan(observation=saved(0),now=observation.observed_at,prior=null){return planClassReminders({observation,now,prior});}
+
+test('saved 13:00 estimate waits until 12:00 local, not every three minutes',()=>{
+  const r=plan();assert.equal(r.decision,'baseline');assert.equal(r.next_check_at,'2026-11-01T17:00:00.000Z');assert.deepEqual(r.candidates,[]);
+  const tick=plan(saved(0),'2026-11-01T15:00:00Z',r.nextState);assert.equal(tick.next_check_at,'2026-11-01T17:00:00.000Z');assert.deepEqual(tick.candidates,[]);
+});
+test('saved estimate revisions replace pending check times',()=>{
+  let r=plan();r=plan(saved(1),undefined,r.nextState);assert.equal(r.next_check_at,'2026-11-01T16:45:00.000Z');
+  r=plan(saved(3),undefined,r.nextState);assert.equal(r.next_check_at,'2026-11-01T16:20:00.000Z');
+  r=plan(saved(3),'2026-11-01T16:20:00Z',r.nextState);assert.deepEqual(r.candidates.map(c=>c.lead_minutes),[60]);assert.equal(r.next_check_at,'2026-11-01T16:50:00.000Z');
+  r=plan(saved(4),undefined,r.nextState);assert.deepEqual(r.candidates.map(c=>c.lead_minutes),[30]);assert.equal(r.next_check_at,null);
+});
+test('saved unusual 23:59 pauses checks for review, never falls back to default',()=>{
+  const b=plan();const r=plan(saved(2),undefined,b.nextState);assert.equal(r.decision,'review');assert.equal(r.next_check_at,null);assert.deepEqual(r.candidates,[]);
+  const recovered=plan(saved(3),undefined,r.nextState);assert.equal(recovered.decision,'baseline');assert.equal(recovered.next_check_at,'2026-11-01T16:20:00.000Z');
+});
+test('equality reserves 60 then 30 once across JSON reload and clock replays',()=>{
+  let r=plan();r=plan(saved(0),'2026-11-01T17:00:00Z',r.nextState);assert.deepEqual(r.candidates.map(c=>c.lead_minutes),[60]);const id=r.candidates[0].id;
+  r=plan(saved(0),'2026-11-01T17:00:01Z',copy(r.nextState));assert.deepEqual(r.candidates,[]);
+  r=plan(saved(0),'2026-11-01T17:30:00Z',copy(r.nextState));assert.deepEqual(r.candidates.map(c=>c.lead_minutes),[30]);assert.notEqual(r.candidates[0].id,id);
+  assert.deepEqual(plan(saved(0),'2026-11-01T17:31:00Z',r.nextState).candidates,[]);
+});
+test('jump across both thresholds selects 30 and consumes both',()=>{
+  const b=plan();const r=plan(saved(4),undefined,b.nextState);assert.deepEqual(r.candidates.map(c=>c.lead_minutes),[30]);assert.deepEqual(r.nextState.consumed,[60,30]);
+  assert.deepEqual(plan(saved(4),'2026-11-01T16:49:00Z',r.nextState).candidates,[]);
+});
+test('later estimate moves unsent 30 but cannot revive reserved 60',()=>{
+  let r=plan(saved(3));r=plan(saved(3),'2026-11-01T16:20:00Z',r.nextState);
+  const later={...saved(1),observed_at:'2026-11-01T16:25:00Z'};r=plan(later,undefined,r.nextState);assert.equal(r.next_check_at,'2026-11-01T17:15:00.000Z');assert.deepEqual(r.candidates,[]);
+  r=plan(later,'2026-11-01T17:15:00Z',r.nextState);assert.deepEqual(r.candidates.map(c=>c.lead_minutes),[30]);
+});
+test('first observation inside a window baselines missed slots without catchup',()=>{
+  const r=plan(saved(4));assert.deepEqual(r.candidates,[]);assert.deepEqual(r.nextState.consumed,[60,30]);
+});
+test('saved completed class and underway class cancel future reminders permanently',()=>{
+  for(const status of ['Completed','Underway']){const b=plan();const r=plan({...saved(5),status},undefined,b.nextState);assert.equal(r.decision,'stopped');assert.equal(r.next_check_at,null);assert.deepEqual(r.candidates,[]);
+    const regression={...saved(0),observed_at:'2026-11-01T17:04:00Z'};assert.equal(plan(regression,undefined,r.nextState).decision,'stopped');}
+});
+test('past start expires remaining reminders without a stale candidate',()=>{const b=plan();const r=plan(saved(0),'2026-11-01T18:00:00Z',b.nextState);assert.equal(r.decision,'expired');assert.deepEqual(r.candidates,[]);assert.equal(r.next_check_at,null);});
+test('old observations, future observations, changed same-timestamp data and wrong scopes withhold',()=>{
+  const b=plan(saved(1));for(const [o,n] of [[saved(0),saved(1).observed_at],[saved(1),'2026-11-01T15:00:00Z'],[{...saved(1),start_time:'12:30:00'},saved(1).observed_at],[{...saved(1),scope_key:'other'},saved(1).observed_at]])assert.equal(plan(o,n,b.nextState).decision,'withheld');
+});
+test('explicit show clock context required; invalid dates and unknown status cannot schedule',()=>{
+  for(const change of [{utc_offset_minutes:undefined},{utc_offset_minutes:'-300'},{show_date:'2026-02-30'},{start_time:'24:00:00'},{status:'unknown'}]){const o={...saved(0),...change};assert.ok(['review','withheld'].includes(plan(o).decision));}
+  assert.equal(plan(saved(0),'2026-11-02T15:00:00Z').decision,'withheld');
+});
+test('planner does not mutate inputs and stable replay produces same candidate identity',()=>{
+  const b=plan();const args={observation:saved(0),now:'2026-11-01T17:00:00Z',prior:b.nextState};const before=JSON.stringify(args);
+  const a=planClassReminders(args),c=planClassReminders({...copy(args),now:'2026-11-01T17:00:01Z'});assert.equal(a.candidates[0].id,c.candidates[0].id);assert.equal(JSON.stringify(args),before);
+});
+test('consumed first condition does not suppress a fresh second condition in the policy',()=>{
+  const x=active();const first=evaluateAlert(x);x.prior=first.nextState;x.event.id='second-batch';x.event.conditions.push({...x.event.conditions[0],id:'new-second',option:'class_starts_in2',value:15,previous:31,current:14});x.event.conditions[0].current=14;
+  const r=evaluateAlert(x);assert.equal(r.decision,'eligible');assert.deepEqual(JSON.parse(r.snapshot['payload-json']).options,['class_starts_in2']);
+});
 function baseline(x=input()) {const b=copy(x);b.event.id='baseline-event';b.event.mode='initial';return evaluateAlert(b).nextState;}
 function active(change=()=>{}) {const x=input();x.prior=baseline(x);change(x);return x;}
 function canon(x){if(Array.isArray(x))return '['+x.map(canon).join(',')+']';if(x&&typeof x==='object')return '{'+Object.keys(x).sort().map(k=>JSON.stringify(k)+':'+canon(x[k])).join(',')+'}';return JSON.stringify(x);}

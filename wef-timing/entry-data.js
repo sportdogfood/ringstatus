@@ -8,7 +8,7 @@ function receipt(report){const file=path.join(runtime,'last-run.json'),text=JSON
   try{handle=fs.openSync(lock,'wx');fs.writeFileSync(handle,JSON.stringify({pid:process.pid,run_id:runId,started}));}
   catch(e){receipt({run_id:runId,started,ok:false,errors:['Existing runner lock: inspect before resume']});process.exitCode=1;return;}
   const hardLimit=setTimeout(()=>{receipt({run_id:runId,started,ok:false,errors:['165-second deadline; outcome may be unknown. Reconcile Timing before resume.']});process.exit(1);},165000);
-  try{const report=await require('./data-runner').run({deadline:Date.now()+160000,runId});receipt(report);process.exitCode=report.ok?0:1;}
+  try{const deadline=Date.now()+160000;const report=await require('./data-runner').run({deadline,runId});try{report.cleanup=await require('./ring-cleanup').cleanup({deadline});}catch(e){report.cleanup={result:'Error',error:e.message};}receipt(report);process.exitCode=report.ok?0:1;}
   catch(e){receipt({run_id:runId,started,ok:false,errors:[e.message]});process.exitCode=1;}
   finally{clearTimeout(hardLimit);fs.closeSync(handle);fs.unlinkSync(lock);}
 })();

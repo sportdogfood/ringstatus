@@ -5,6 +5,7 @@ Only reads are retried automatically; a failed write is never blindly replayed.
 """
 import json
 import os
+import re
 import time
 import urllib.error
 import urllib.parse
@@ -22,11 +23,49 @@ SHOW_FIELDS = {
     'authority-checked-at':'fldA1aMRgG0eywgPb',
 }
 
+def _safe_error(value, token=None):
+    text=str(value)
+    for secret in (token,os.environ.get('AIRTABLE_TOKEN'),os.environ.get('WEF_LIVE_AIRTABLE_TOKEN')):
+        if secret:text=text.replace(secret,'[redacted]')
+    text=re.sub(r'Bearer\s+[^\s]+','Bearer [redacted]',text,flags=re.I)
+    text=re.sub(r'([?&](?:token|key|authorization|cookie|access_token)=)[^\s&]+',r'\1[redacted]',text,flags=re.I)
+    return text[:2000]
+
+
+def _error_details(error, token=None, seen=None):
+    seen=set() if seen is None else seen
+    if id(error) in seen:return '[repeated cause]'
+    seen.add(id(error));parts=[type(error).__name__+': '+str(error)]
+    if isinstance(error,urllib.error.HTTPError):
+        try:
+            raw=error.read().decode('utf-8','replace')
+            if raw:
+                try:
+                    value=json.loads(raw)
+                    if isinstance(value,dict):value=value.get('error',value)
+                    if isinstance(value,dict):value='; '.join(str(value[k]) for k in ('type','message') if value.get(k)) or raw
+                except ValueError:value=raw
+                parts.append('Airtable message: '+str(value))
+        except Exception as read_error:
+            parts.append('Error response unavailable: '+type(read_error).__name__+': '+str(read_error))
+    for name in ('errno','winerror'):
+        if getattr(error,name,None) is not None:parts.append(name+': '+str(getattr(error,name)))
+    reason=getattr(error,'reason',None)
+    cause=reason if isinstance(reason,BaseException) else getattr(error,'__cause__',None)
+    if cause is not None:parts.append('Cause: '+_error_details(cause,token,seen))
+    return _safe_error('\n'.join(parts),token)
+
+
+def error_text(error):
+    return getattr(error,'log_message',None) or type(error).__name__+': '+str(error)
+
+
 class TransportDeferred(RuntimeError):
     """Retain the exact unit; reads retry boundedly, uncertain writes reconcile."""
-    def __init__(self,method,base,table,body=None,write_outcome='Unknown'):
+    def __init__(self,method,base,table,body=None,write_outcome='Unknown',details=None):
         super().__init__('Airtable transport deferred: '+method+' '+table)
         self.operation={'method':method,'base':base,'table':table,'body':body,'write-outcome':write_outcome}
+        if details:self.log_message=_safe_error(type(self).__name__+': '+str(self)+'\n'+details)
 
 
 class Airtable:
@@ -62,16 +101,18 @@ class Airtable:
                 return value
             except urllib.error.HTTPError as error:
                 if error.code in (429,500,502,503,504) and (method!='GET' or attempt+1==attempts):
-                    raise TransportDeferred(method,base,table,body,'NotSent' if error.code==429 else 'Unknown') from None
+                    raise TransportDeferred(method,base,table,body,'NotSent' if error.code==429 else 'Unknown',_error_details(error,self.token)) from None
                 if error.code not in (429,500,502,503,504) or attempt+1 == attempts:
-                    # Do not expose headers, request objects or response bodies.
-                    raise RuntimeError('Airtable HTTP '+str(error.code)) from None
+                    failure=RuntimeError('Airtable HTTP '+str(error.code))
+                    failure.log_message=_safe_error(type(failure).__name__+': '+str(failure)+'\n'+_error_details(error,self.token))
+                    raise failure from None
                 self.sleep(min(30, 2**attempt))
             except (urllib.error.URLError,TimeoutError,ConnectionError) as error:
                 reason=getattr(error,'reason',error)
                 if not isinstance(reason,(TimeoutError,ConnectionError,OSError)):
+                    error.log_message=_error_details(error,self.token)
                     raise
-                if method!='GET' or attempt+1==attempts:raise TransportDeferred(method,base,table,body) from None
+                if method!='GET' or attempt+1==attempts:raise TransportDeferred(method,base,table,body,details=_error_details(error,self.token)) from None
                 self.sleep(min(8,2**attempt))
         raise RuntimeError('Airtable request exhausted')
 

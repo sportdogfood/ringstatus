@@ -1,6 +1,49 @@
 # wef-ring-pace owner
 
-**README version: 1.0 | Updated: October 31, 2026 | Timezone: America/New_York**
+**README version: 1.4 | Updated: November 2, 2026 | Timezone: America/New_York**
+
+## Current cadence and cleanup delivery
+
+The agreed outcome includes **both cleanup and Ring cadence following Live**. Both implementations are now deployed. Actual new-show deletion and the current Live-off cadence behavior are verified through normal scheduled runs. I previously narrowed delivery to cleanup code while leaving cadence prepared; that delivery omission is now corrected within the verification scope below. A successful install or safely skipped run alone did not establish cleanup; the actual deletion evidence does.
+
+- **Cadence:** deployed November 2 at 3:27 p.m. Eastern. Ring checks the published overall Live status hourly while off, unavailable, on the wrong date or overnight; Live on for TODAY selects three-minute Ring calculations from 5 a.m. to 7 p.m. Eastern. The primary input is Live's actual `live-check-last-run.json`; source run/time/date stay original. The shared task still wakes every three minutes for the unchanged Class path; Ring skips its receipt read and calculation until due. NORMAL 3:28 selected hourly Live-off mode; NORMAL 3:31 retained the original source/check clocks and next check at 4:28 p.m., with zero Ring evaluation/publication. Daily checkpoint and original Live receipt were GET/read back. Current natural off-mode is verified; the full next hour and natural Live-on/TODAY branch were not observed. Their decision/progression cases passed targeted independent offline checks. Evidence: `C:/Users/gombc/Documents/Codex/staging/wef-ring-live-cadence-20261102/RESULT.md`, `normal-verification.json` and `reviewer-timing/`.
+- **Cleanup:** actual new-show deletion verified on November 2. The coordinator recovered the genuine Shows discovery event `62dd0e6c-3a67-4462-bef5-75a81c4c9036` with original discovery time `2026-11-02T06:04:20.972Z`, then published the approved request. NORMAL 2:55 and 2:58 p.m. Eastern runs deleted 100 and 38 eligible old Ring answers. Independent exact-ID GET readback confirms all **138** absent; counts fell **214 to 76**, all retained record field hashes match, and retained Class references were checked read-only. The action completed, request was consumed, and no pending work or cleanup stop remains. Airtable cleanup summary reads Success, 138 deleted, zero archived. No manual runs or source repairs. Evidence: `C:/Users/gombc/Documents/Codex/staging/wef-ring-cadence-cleanup-20261102/delete-only/coordinator-request-verification-20261102/actual-deletion-verification.json` and `cleanup-summary-readback.json`.
+- **Completed-group pace:** the current selector remains Underway/live only. Genuine November 1 saved snapshots supported measured intervals for all five rings observed that day; evidence is `C:/Users/gombc/Documents/Codex/staging/wef-ring-completed-calculations-20261101/results.json`. Those are saved prior-day calculations on November 2, not proof the deployed workflow publishes Completed pace or current-day results.
+
+Preserve the full owner scope and existing approvals. Cadence and new-show cleanup delivery above do not establish numerical pace or repair the separate Completed-selector gap. Do not invent an alert, eligible records, source-data cause or manual-run substitute. Documentation and complaint maintenance authorize no runtime edits, deployment, record repairs or new tests by themselves. Preserve Class code/execution, source clocks and current/future/synced data. Known complaint records below preserve their actual existing dispositions; this release does not automatically close them.
+
+## Known complaints - November 2
+
+All **14 existing complaints remain Open**. The remediation column records only the existing scoped correction state; it does not close a complaint or certify current service. The delivery, repeated-explanations and Completed-status records received the new November 2 evidence. Other records retain their prior history and state; no duplicate complaints were created.
+
+| Existing complaint | Remediation state |
+| --- | --- |
+| [Ring date queries deployed with incorrect Date-field comparisons](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/rec3nSWI0sEwb1wKZ) | Verified |
+| [Reported Class publishing without stating calculations were unavailable](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/rec9uL24WAmSiCieD) | Proposed |
+| [Proposed a fixed five-ring plan for a recurring workflow](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recAqsZuISar7qYgM) | Verified |
+| [Left the agreed Live-following cadence unfinished while delivering cleanup](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recC0Oi1veM19KZKT) | Proposed |
+| [Repeated explanations and apologies instead of advancing the authorized outcome](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recEr4MSulzxWPraT) | Proposed |
+| [Extracted source helpers as an unrequested refactor](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recH3JpN5P357W8bp) | Proposed |
+| [Test preparation omitted required source scope field](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recMKoq1jjXZf0A5n) | Verified |
+| [Added compressed checkpoint format without establishing scope approval](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recMl8YrhKdUygO3J) | Proposed |
+| [Used obsolete Class test expectations and later copied them again](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recN67nugmmySfAuw) | Proposed |
+| [Repeated preservation counts instead of addressing usable today-only pace](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recPPNDlhquM4GgJy) | Proposed |
+| [Offline transport and review missed Airtable Date semantics](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recZ2E6hVHwN08Pp5) | Verified |
+| [Continued involving class-calculator after Ring scope correction](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recnTpm1RygVfVl1A) | Implemented-unverified |
+| [Misattributed the two-run requirement to the owner](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/reco9BAv4010FLhWZ) | Proposed |
+| [Narrowed implemented status handling to Underway/live groups](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recyRABftnIufoidq) | Proposed |
+
+## Current cleanup release - November 2
+
+**Actual deletion verified at 2:59 p.m. Eastern:** the genuine coordinator request was consumed after 138 eligible old answers were deleted through the normal 2:55/2:58 scheduled runs. Exact-ID absence and retained-record hashes were read back; no manual workflow was run. This supersedes the earlier no-deletion-proof condition below.
+
+Ring's owner-approved **delete-only cleanup is deployed** after the existing shared workflow. The task remains every three minutes; Class code and execution route are unchanged. Only `timing-answers`, `run-logs`, `heartbeat` and `errs-log` are checked in the existing `cleanup` table. All synced Live tables, checkpoints, catalogs, reviews and other references are excluded. No cleanup archive is created or required; existing archives/catalogs remain untouched.
+
+A genuine `wef-timing-coordinator` new-show alert is recorded through the approved `runtime/data/cleanup-request.json` handoff. The runner selects eligible non-current-show records; it does not infer an alert from a changed show value. Independent log cleanup checks the existing 1,000/oldest-500 eligible rule after scheduled work. Minimum age, current/future records, active/unfinished operations, retained Ring/Class references and unresolved errors remain protected. Class is read-only for reference protection. Deletion responses and absence are verified; uncertain deletion stops cleanup while the shared calculation path continues. Current error rows have no established resolution source and remain protected.
+
+Normal **2:22 and 2:25 p.m. Eastern November 2** executions completed cleanup without errors, both correctly skipping deletion: all three log tables contained zero records and no coordinator request was pending. No cleanup stop or unfinished deletion remains. This proves deployed execution and repeat behavior, not a natural deletion event. Shared calculations separately deferred because TODAY is outside the selected show's dates. No manual runs or Class changes occurred. Evidence: `C:/Users/gombc/Documents/Codex/staging/wef-ring-cadence-cleanup-20261102/delete-only/RESULT.md` and `normal-scheduled-verification.json`; independent review/actual offline execution: `reviewer-reference-protections/` in that stage.
+
+The cleanup release did not itself deploy cadence; the later reviewed two-file cadence release above now does. Neither repairs the Completed-group selector. Older archive-required/undeployed-cleanup/cadence-preparation statements below are historical where they conflict with the current sections; the older two-base retention package remains stopped and was not deployed.
 
 ## Current responsibility
 

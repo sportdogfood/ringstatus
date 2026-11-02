@@ -40,5 +40,79 @@
     "provider_suppressed": false,
     "preference_revision": "synthetic-preference-1",
     "options": {"class_starts_in1": {"enabled": true, "value": 30}, "class_starts_in2": {"enabled": true, "value": 15}, "trip_starts_in1": {"enabled": true, "value": 30}, "trip_starts_in2": {"enabled": true, "value": 15}, "rider_oog10": {"enabled": true, "value": 10}, "class_start_early": {"enabled": true}, "class_start_late": {"enabled": true}, "class_started": {"enabled": true}, "rider_started": {"enabled": true}}
-  }
+  },
+  "saved_class_observations": [
+    {
+      "archive": "wef-live/runtime/history/class-200030779/46fc86e0557e721385e0d730e32466fc19ea630e9949853b74a74cdc779951c3.json.gz",
+      "sha256": "46fc86e0557e721385e0d730e32466fc19ea630e9949853b74a74cdc779951c3",
+      "observation": {
+        "scope_key": "15/200000076/2026-11-01/200030779/offline-audience",
+        "show_date": "2026-11-01",
+        "utc_offset_minutes": -300,
+        "observed_at": "2026-11-01T14:51:07.007Z",
+        "start_time": "13:00:00",
+        "status": "Not Started"
+      }
+    },
+    {
+      "archive": "wef-live/runtime/history/class-200030779/1fe44bc6283d3a41de2d4f836e668af214eb29c8d4508680b2e98e0be5280226.json.gz",
+      "sha256": "1fe44bc6283d3a41de2d4f836e668af214eb29c8d4508680b2e98e0be5280226",
+      "observation": {
+        "scope_key": "15/200000076/2026-11-01/200030779/offline-audience",
+        "show_date": "2026-11-01",
+        "utc_offset_minutes": -300,
+        "observed_at": "2026-11-01T15:33:05.924Z",
+        "start_time": "12:45:00",
+        "status": "Not Started"
+      }
+    },
+    {
+      "archive": "wef-live/runtime/history/class-200030779/88bd78e5b2f1e6e1189be4f985a387894a2fb551591edfdf247a6afe72918bac.json.gz",
+      "sha256": "88bd78e5b2f1e6e1189be4f985a387894a2fb551591edfdf247a6afe72918bac",
+      "observation": {
+        "scope_key": "15/200000076/2026-11-01/200030779/offline-audience",
+        "show_date": "2026-11-01",
+        "utc_offset_minutes": -300,
+        "observed_at": "2026-11-01T15:36:08.714Z",
+        "start_time": "23:59:00",
+        "status": "Not Started"
+      }
+    },
+    {
+      "archive": "wef-live/runtime/history/class-200030779/02266a596cf6f1780ba951ce4bc49c8c8c183817384942bd3bdad506c274f1dc.json.gz",
+      "sha256": "02266a596cf6f1780ba951ce4bc49c8c8c183817384942bd3bdad506c274f1dc",
+      "observation": {
+        "scope_key": "15/200000076/2026-11-01/200030779/offline-audience",
+        "show_date": "2026-11-01",
+        "utc_offset_minutes": -300,
+        "observed_at": "2026-11-01T16:09:06.568Z",
+        "start_time": "12:20:00",
+        "status": "Not Started"
+      }
+    },
+    {
+      "archive": "wef-live/runtime/history/class-200030779/68c5708c6198b43925adda75233519b9b790e01a277e93f16fa845d289551102.json.gz",
+      "sha256": "68c5708c6198b43925adda75233519b9b790e01a277e93f16fa845d289551102",
+      "observation": {
+        "scope_key": "15/200000076/2026-11-01/200030779/offline-audience",
+        "show_date": "2026-11-01",
+        "utc_offset_minutes": -300,
+        "observed_at": "2026-11-01T16:48:05.680Z",
+        "start_time": "12:00:00",
+        "status": "Not Started"
+      }
+    },
+    {
+      "archive": "wef-live/runtime/history/class-200030779/be82af8c39c070eb8bfc089d908e61b2e8ab4ae4e44684a6722fc07485c6c256.json.gz",
+      "sha256": "be82af8c39c070eb8bfc089d908e61b2e8ab4ae4e44684a6722fc07485c6c256",
+      "observation": {
+        "scope_key": "15/200000076/2026-11-01/200030779/offline-audience",
+        "show_date": "2026-11-01",
+        "utc_offset_minutes": -300,
+        "observed_at": "2026-11-01T17:03:06.090Z",
+        "start_time": "12:00:00",
+        "status": "Completed"
+      }
+    }
+  ]
 }

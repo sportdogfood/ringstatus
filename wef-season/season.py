@@ -72,6 +72,11 @@ def project(facts,entity):
     if entity=='rings':
         for key,row in facts['rings'].items():
             add(key,linked(row,'show','shows'),linked(row,'day','days'))
+            # Missing context withholds only that link; retain the ring facts.
+            # Omitted fields preserve any previously supported native links.
+            for field in ('shows','show-days'):
+                if not graph[entity][key][field]:
+                    del graph[entity][key][field]
     else:
         field={'horses':'horse','riders':'riders','trainers':'trainers'}[entity]
         for entry in facts['entries'].values():
