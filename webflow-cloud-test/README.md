@@ -1,5 +1,7 @@
 # RingStatus Cloud app
 
+Recognize-specific workflow, responsibilities and source map: [RingStatus Recognize README](../docs/recognize/README.md).
+
 ## Current live status — 2 November 2026
 
 **Existing recognized User -> Profile -> existing Team verified live.** Start at https://ringstatus.com/recognize, choose **Open profile**, then **Team**. Direct app entry: https://ringstatus.com/test/rs-profile/ . Current Recognize and Profile/Team designs are preserved.
