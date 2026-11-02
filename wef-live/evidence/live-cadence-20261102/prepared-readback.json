@@ -1,0 +1,12 @@
+{
+  "new_module_not_installed": true,
+  "task_changes": [
+    "Repetition.Duration PT14H -> PT24H",
+    "Repetition.StopAtDurationEnd true -> false"
+  ],
+  "normal_verification": "Not deployed; UNVERIFIED",
+  "checked_at": "2026-11-02T16:34:52.7741372Z",
+  "prepared_task_xml_valid": true,
+  "production_js_unchanged": true,
+  "installed_task_unchanged": true
+}

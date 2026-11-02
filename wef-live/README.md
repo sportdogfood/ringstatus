@@ -1,3 +1,46 @@
+# wef-live — cleanup release
+
+**Version: 2026.11.02.10**  
+**Updated: November 2, 2026, 11:36 a.m. Eastern.**
+
+## Live-status/date cadence — edited and tested, not deployed
+
+Owner-approved rules: live false -> hourly registered check; live true with today different from Shows priority-0 date -> hourly registered check plus errs-log warning; live true with today matching -> three-minute collection only05:00–19:00 America/New_York. Owner confirmed hourly checks continue overnight. True/matching outside the collection window also checks hourly without collecting. Unknown/unreadable status or canonical context is logged distinctly and skips detail collection until the next hourly check; it is never mislabeled false.
+
+Prepared candidate passed **71 offline checks**, including transitions, Eastern date/DST/window boundaries, startup jitter, logging and collection/cleanup regressions. Status is requested once per actual due check and the validated scope/status is shared by the existing three lanes. The existing task is prepared for a24h quiet three-minute dispatcher; before due time it makes no network call or Airtable stamp. Actual inactive checks/runs are hourly. No new task, table, schema or dependency is introduced.
+
+**Not live yet:** production JavaScript and installed task remain unchanged. Owner approved edit/test only. Prepared changes, exact baseline, task XML, author review and deployment/rollback notes: [live-cadence preparation](evidence/live-cadence-20261102/PREPARED.md). Deployment and normal scheduled proof are pending explicit approval. This cadence change does not implement the separately agreed cleanup trigger revision below or repair the two cleanup-reporting findings. Current cleanup behavior is preserved after due registered checks, including hourly skips.
+
+## Agreed cleanup triggers — not yet implemented
+
+- **New-show discovery:** archive and remove records not matching the new show ID in the checked owned tables.
+- **New-day change:** check only heartbeat, run-logs and errs-log. For each table with 1,000+ records, archive and delete its oldest 500 completed eligible records, protecting active/current invocations.
+- **Same show and day:** no cleanup. The three-minute interval remains the collection cadence, not a recurring cleanup action.
+
+**Implementation status: NOT IMPLEMENTED for these revised triggers.** The current deployed code still invokes cleanup after every three-minute collection cycle and checks the 1,000-record threshold each time. It checkpoints show identity only; the new-day trigger is not implemented. Earlier tests and normal-run acceptance below prove the earlier implementation, not this revised agreement. No code, task or Airtable change accompanies this README update. Next implementation requires owner approval for the trigger change and normal scheduled-run verification; no manual runs or record repairs.
+
+## Current deployed implementation and dated evidence
+
+New-show cleanup and log-only quick cleanup are deployed in the existing hidden three-minute task, after the three collection lanes finish. Stage 8 publication stays on hold. The previous blanket stage-9 hold is superseded only for the two cleanup actions below; the old 24-hour retention path is not re-enabled.
+
+- **New show:** read canonical default show ID directly from wef-shows. When it differs from cleanup's last handled show, archive and delete records not matching that new show in checked owned tables. First adoption reconciles existing old-show rows. A different day in the same show does not trigger this action.
+- **Quick cleanup:** only checked heartbeat, run-logs and errs-log. At 1,000+ records, archive and delete the oldest 500 completed eligible records by Airtable creation time. Active/current invocation logs are protected. This is separate from the new-show rule, which may remove more than 500 old-show logs.
+- **Control/latest state:** cleanup / tblZOqOQmpy0VgbUM. Records is the table count at action start; timestamps, result, old/new show IDs, archive/delete counts, archive file, error and run ID show the latest action.
+- **Permanent action history:** cleanup-logs / tblnMYLtIBvObY1xQ, one record per table action. Archive path and SHA-256 are recorded and verified before deletion. All new-show snapshots preserve original fields/native links before any deletion. Catalogs, references, code-reviews, meta and cleanup-logs are never deletion targets.
+- **Failure:** errs-log plus local cleanup-stop.json; collection continues, cleanup does not retry until owner decision. No observer or new scheduled task.
+
+**Normal-run verification:** November 2 at 9:27 and 9:33 a.m. Eastern. All three lanes completed with zero stage/logging errors. First cleanup run 10dccc0a-592d-48e1-8556-814cb651ab0d archived/deleted **989 records** in eight successful table actions for new show **200000077**. Repeat cleanup 414fb3e2-10bb-44d8-99d7-e8debdd61dae made **zero actions/deletions**, preserving the eight catalogs, archive hashes and retained current-show logs. Collection's existing priority-0 date remains November 5; this release does not change the date rule. Source returned no current live rows in these runs.
+
+Initial bulk cleanup took **207.402 seconds**, spanning the 9:30 tick; there was no 9:30 collection invocation. Repeat cleanup took **2.504 seconds**. Task definition is unchanged. **49 offline checks PASS**; review is author review, not independent. Natural 1,000/500 threshold behavior and a future newly occurring canonical show transition remain unverified operational branches. No manual run, record repair, source/provider call or forced show change was used.
+
+**Latest read-only confirmation — checked November 2 at 9:45 a.m. Eastern:** cleanup checks at **9:39, 9:42 and 9:45** all completed **Success**, with the same show and **zero repeat actions/deletions**. Exact cleanup run IDs respectively: `ea17b3db-3303-4ffe-9ccf-14308c2d30aa`, `e154aea1-e5f8-491a-a5fc-a3fc315fff89`, `7f03c723-3108-42ee-86f2-65f4f99eef84`. No cleanup error was reported. Airtable [cleanup-logs](https://airtable.com/appgzosUcVqA4vZdf/tblnMYLtIBvObY1xQ) still contains the original eight successful actions, totaling **989 archived and 989 deleted records**. All eight compressed archive files were reopened and their SHA-256 hashes reverified. The latest completed collection checked at 9:42 had all three lanes successful with no stage/logging errors. The **1,000/500 quick-cleanup rule is still not naturally exercised**; its proof remains offline only. No manual runs or changes were made during that confirmation.
+
+[Acceptance and exact six lane run IDs](evidence/cleanup-20261102/acceptance.json) · [Release](evidence/cleanup-20261102/release.md) · [Author review](evidence/cleanup-20261102/review.md).
+
+## Previous dated documentation
+
+The material below is preserved history; conflicting hold/retention/status claims are superseded by this release for its stated scope.
+
 # wef-live
 
 **README version: 2026.11.01.6**  

@@ -221,6 +221,11 @@ async function lane(name,{
 async function scheduled(options={}){
  const now=(options.clock||(()=>new Date().toISOString()))();if(!inWindow(now))return{skipped:'outside-window'};
  // Lanes start together; each owns its receipt and catches its own stage failures.
- return Promise.all(LANES.map(name=>lane(name,options)));
+ const reports=await Promise.all(LANES.map(name=>lane(name,options)));
+ // Cleanup is a separate post-collection action; publication remains on hold.
+ try{const result=await (options.cleanup||require('./cleanup').cleanup)({...options,protectedRuns:reports.map(r=>r.run_id)});
+  if(reports[0])reports[0].cleanup={run_id:result.run_id,result:result.result};
+ }catch(e){if(reports[0])reports[0].cleanup={result:'Error',error:e.message};}
+ return reports;
 }
 module.exports={LANES,lane,scheduled,inWindow};

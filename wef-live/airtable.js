@@ -201,6 +201,32 @@ function airtable({
     if(!t)throw Error('Missing reference schema');
     return t.fields.map(f=>f.name);
   }
-  return { list, upsert, call, retire, retireLogs, oldErrors, forRetention, fieldNames, publicationEnabled: true };
+  async function retireCleanup(table,rows,policy,receipt,onDeleted=()=>{}) {
+    const cleanup=require('./cleanup'),util=require('node:util'),fs=require('node:fs'),path=require('node:path');
+    if(!cleanup.TABLES.includes(table)||!Number.isSafeInteger(policy.show)||policy.show<=0||
+      !['new-show','quick-cleanup'].includes(policy.trigger)||
+      rows.some(r=>!cleanup.eligible(table,r,policy.trigger,policy.show)||policy.protectedRuns?.has(r.fields['run-id'])))throw Error('Forbidden cleanup scope');
+    if(policy.trigger==='quick-cleanup'&&rows.length!==500)throw Error('Quick cleanup requires exactly 500 records');
+    if(!receipt?.file||!path.resolve(receipt.file).startsWith(path.resolve(settings.RUNTIME,'history')+path.sep))throw Error('Cleanup archive outside history');
+    if(JSON.stringify(require('./log-retention').verified(receipt))!==JSON.stringify(rows))throw Error('Cleanup archive rows mismatch');
+    const afterDeleted=fields=>Object.fromEntries(Object.entries(fields).map(([k,v])=>[k,
+      Array.isArray(v)&&v.every(id=>typeof id==='string'&&/^rec[a-zA-Z0-9]+$/.test(id))?v.filter(id=>!policy.deletedIds.has(id)):v
+    ]).filter(([,v])=>!Array.isArray(v)||v.length));
+    for(let i=0;i<rows.length;i+=10){
+      // Check canonical identity and exact original values immediately before each delete batch.
+      if(await cleanup.canonical({list})!==policy.show)throw Error('Default show changed before cleanup deletion');
+      const batch=rows.slice(i,i+10),q=new URLSearchParams({filterByFormula:'OR('+batch.map(r=>`RECORD_ID()="${r.id}"`).join(',')+')'});
+      const current=(await call(settings.BASE_ID,table,'GET',undefined,'?'+q)).records;
+      if(current.length!==batch.length||batch.some(r=>{const c=current.find(c=>c.id===r.id);return !c||
+        !util.isDeepStrictEqual(afterDeleted(r.fields),afterDeleted(c.fields))||!cleanup.eligible(table,c,policy.trigger,policy.show);}))throw Error('Cleanup record changed before deletion');
+      await pause(250);const query=new URLSearchParams();for(const r of batch)query.append('records[]',r.id);
+      const response=await request(`https://api.airtable.com/v0/${settings.BASE_ID}/${encodeURIComponent(table)}?${query}`,{method:'DELETE',headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
+      if(!response.ok)throw Error('Cleanup deletion HTTP '+response.status);
+      const d=await response.json();if(d.records?.length!==batch.length||d.records.some(r=>!r.deleted)||JSON.stringify(d.records.map(r=>r.id).sort())!==JSON.stringify(batch.map(r=>r.id).sort()))throw Error('Uncertain cleanup deletion');
+      onDeleted(batch.map(r=>r.id));
+      if((await call(settings.BASE_ID,table,'GET',undefined,'?'+q)).records.length)throw Error('Cleanup deleted record still present');
+    }
+  }
+  return { list, upsert, call, retire, retireLogs, retireCleanup, oldErrors, forRetention, fieldNames, publicationEnabled: true };
 }
 module.exports = { airtable };

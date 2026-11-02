@@ -1,0 +1,278 @@
+{
+  "report": {
+    "ok": true,
+    "run_id": "04df3f83-0b0c-407b-8994-3bd1fd7b3095",
+    "started": "2026-11-02T14:09:03.647Z",
+    "rows": 1,
+    "errors": [],
+    "archives": [],
+    "telemetry_errors": [],
+    "discovery": {
+      "timezone": "America/New_York",
+      "show": "Skipped",
+      "show_day": "Retained"
+    },
+    "discovery_ok": true,
+    "show_id": 200000077,
+    "selected_date": "2026-11-05",
+    "source_selected_date": "2026-11-05",
+    "next_show_check": "2026-11-09T03:00:00.000Z",
+    "summary": "Show 200000077; selected 2026-11-05 (source); source date 2026-11-05, last checked 2026-11-02T06:04:12.307Z. New-show check Skipped; next 2026-11-09T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-11-05 Verified, 2026-11-06 Verified, 2026-11-07 Verified, 2026-11-08 Verified.",
+    "day_priority": {
+      "status": "Skipped",
+      "anchor": "2026-11-05"
+    },
+    "show_days": {
+      "ok": true,
+      "rows": 4,
+      "created": 0,
+      "days": [
+        {
+          "date": "2026-11-05",
+          "status": "Verified"
+        },
+        {
+          "date": "2026-11-06",
+          "status": "Verified"
+        },
+        {
+          "date": "2026-11-07",
+          "status": "Verified"
+        },
+        {
+          "date": "2026-11-08",
+          "status": "Verified"
+        }
+      ],
+      "errors": []
+    },
+    "error_records": [],
+    "observability": {
+      "sources": [],
+      "errors": [],
+      "ok": true,
+      "logging_errors": []
+    },
+    "completed": "2026-11-02T14:09:15.808Z"
+  },
+  "readback": {
+    "days": [
+      {
+        "id": "rec1mryBzjt5wl1TI",
+        "createdTime": "2026-11-02T06:04:20.000Z",
+        "fields": {
+          "date": "2026-11-07",
+          "show": [
+            "rec8GtJJ7eSjY3Nd3"
+          ],
+          "show-day-key": "15|200000077|2026-11-07",
+          "last_checked_status": "Active",
+          "last_checked": "2026-11-02T14:04:14.557Z",
+          "day-priority": 2,
+          "is_default (from show)": [
+            true
+          ]
+        }
+      },
+      {
+        "id": "recBhBiPunWxJMFfn",
+        "createdTime": "2026-11-02T06:04:20.000Z",
+        "fields": {
+          "date": "2026-11-05",
+          "show": [
+            "rec8GtJJ7eSjY3Nd3"
+          ],
+          "show-day-key": "15|200000077|2026-11-05",
+          "last_checked_status": "Active",
+          "last_checked": "2026-11-02T14:04:14.557Z",
+          "day-priority": 0,
+          "is_default (from show)": [
+            true
+          ]
+        }
+      },
+      {
+        "id": "recKhZaPGDneaOM5J",
+        "createdTime": "2026-11-02T06:04:20.000Z",
+        "fields": {
+          "date": "2026-11-08",
+          "show": [
+            "rec8GtJJ7eSjY3Nd3"
+          ],
+          "show-day-key": "15|200000077|2026-11-08",
+          "last_checked_status": "Active",
+          "last_checked": "2026-11-02T14:04:14.557Z",
+          "day-priority": 3,
+          "is_default (from show)": [
+            true
+          ]
+        }
+      },
+      {
+        "id": "recNKs86S27g79pl5",
+        "createdTime": "2026-10-29T14:05:13.000Z",
+        "fields": {
+          "___count-coverage": "competition-class-participation",
+          "___count-rules-version": "direct-proxy-counts-v1",
+          "___publication-status": "Unknown",
+          "___unique-entry-count": 172,
+          "date": "2026-10-30",
+          "show": [
+            "recOAxMcqu1f75CQk"
+          ],
+          "show-day-key": "15|200000076|2026-10-30",
+          "___accepted-summary": "{\"body\":{\"accepted-as-of\":\"2026-10-31T21:39:07.996Z\",\"completeness\":\"complete\",\"coverage\":\"competition-class-participation\",\"customer-id\":15,\"date\":\"2026-10-30\",\"day-key\":\"15|200000076|2026-10-30\",\"evidence\":{\"counted-class-count\":37,\"expected-class-count\":37,\"run-key\":\"dd872966-dfe0-4b41-bdf5-a345ad4f78f7\",\"source\":\"direct-proxy\",\"state-sha256\":\"090adf20e7d50ad77d93d518412fb128f7e24dc62ff55cf3f940e21d9555b490\"},\"format\":\"wef-day-count-summary-v1\",\"policy-version\":\"direct-proxy-counts-v1\",\"proven-trip-count\":209,\"reasons\":[\"Scheduled competition-class counts; schooling and classless coverage is unproved.\"],\"show-key\":\"15|200000076\",\"unique-entry-count\":172,\"verified-at\":\"2026-10-31T21:39:14.414Z\"},\"sha256\":\"da19384a6fe105a7cc6a30c6b6232f9e6817b62711861afd304ba5291a78e89c\"}",
+          "last_checked_status": "Not active",
+          "___latest-attempt-at": "2026-10-31T21:45:25.385Z",
+          "last_checked": "2026-11-02T14:04:14.557Z",
+          "day-priority": 999,
+          "___count-verified-at": "2026-10-31T21:39:14.414Z",
+          "___trip-count": 209,
+          "is_default (from show)": [
+            null
+          ],
+          "___latest-attempt-status": "Not active",
+          "___latest-attempt-reason": "Class 200030747: Show source GET /classes/200030747 failed after 1 attempts: request failed [23]; Class 200030561: Show source GET /classes/200030561 failed after 1 attempts: request failed [23]",
+          "___data-evidence-ref": "{\"counted-class-count\":37,\"expected-class-count\":37,\"run-key\":\"dd872966-dfe0-4b41-bdf5-a345ad4f78f7\",\"source\":\"direct-proxy\",\"state-sha256\":\"090adf20e7d50ad77d93d518412fb128f7e24dc62ff55cf3f940e21d9555b490\"}",
+          "___count-observed-at": "2026-10-31T21:39:07.996Z"
+        }
+      },
+      {
+        "id": "recV3qjf5oJAQW8SY",
+        "createdTime": "2026-10-29T14:05:22.000Z",
+        "fields": {
+          "___count-coverage": "competition-class-participation",
+          "___count-rules-version": "direct-proxy-counts-v1",
+          "___publication-status": "Unknown",
+          "___unique-entry-count": 165,
+          "date": "2026-10-31",
+          "show": [
+            "recOAxMcqu1f75CQk"
+          ],
+          "show-day-key": "15|200000076|2026-10-31",
+          "___accepted-summary": "{\"body\":{\"accepted-as-of\":\"2026-10-31T21:39:07.997Z\",\"completeness\":\"complete\",\"coverage\":\"competition-class-participation\",\"customer-id\":15,\"date\":\"2026-10-31\",\"day-key\":\"15|200000076|2026-10-31\",\"evidence\":{\"counted-class-count\":70,\"expected-class-count\":70,\"run-key\":\"dd872966-dfe0-4b41-bdf5-a345ad4f78f7\",\"source\":\"direct-proxy\",\"state-sha256\":\"090adf20e7d50ad77d93d518412fb128f7e24dc62ff55cf3f940e21d9555b490\"},\"format\":\"wef-day-count-summary-v1\",\"policy-version\":\"direct-proxy-counts-v1\",\"proven-trip-count\":284,\"reasons\":[\"Scheduled competition-class counts; schooling and classless coverage is unproved.\"],\"show-key\":\"15|200000076\",\"unique-entry-count\":165,\"verified-at\":\"2026-10-31T21:39:14.414Z\"},\"sha256\":\"89f673c4be219cd0f50e6600a07af70dd0fce5305ddb2f81696b7abfa9630074\"}",
+          "last_checked_status": "Not active",
+          "___latest-attempt-at": "2026-10-31T21:45:26.489Z",
+          "last_checked": "2026-11-02T14:04:14.557Z",
+          "day-priority": 999,
+          "___count-verified-at": "2026-10-31T21:39:14.414Z",
+          "___trip-count": 284,
+          "is_default (from show)": [
+            null
+          ],
+          "___latest-attempt-status": "Not active",
+          "___latest-attempt-reason": "Class 200030443: Show source GET /classes/200030443 failed after 1 attempts: request failed [23]; Class 200030684: Show source GET /classes/200030684 failed after 1 attempts: request failed [23]; Class 200030584: Show source GET /classes/200030584 failed after 1 attempts: request failed [23]; Class 200030770: Show source GET /classes/200030770 failed after 1 attempts: request failed [23]",
+          "___data-evidence-ref": "{\"counted-class-count\":70,\"expected-class-count\":70,\"run-key\":\"dd872966-dfe0-4b41-bdf5-a345ad4f78f7\",\"source\":\"direct-proxy\",\"state-sha256\":\"090adf20e7d50ad77d93d518412fb128f7e24dc62ff55cf3f940e21d9555b490\"}",
+          "___count-observed-at": "2026-10-31T21:39:07.997Z"
+        }
+      },
+      {
+        "id": "recWgNiGlwpQGA14e",
+        "createdTime": "2026-11-02T06:04:20.000Z",
+        "fields": {
+          "date": "2026-11-06",
+          "show": [
+            "rec8GtJJ7eSjY3Nd3"
+          ],
+          "show-day-key": "15|200000077|2026-11-06",
+          "last_checked_status": "Active",
+          "last_checked": "2026-11-02T14:04:14.557Z",
+          "day-priority": 1,
+          "is_default (from show)": [
+            true
+          ]
+        }
+      },
+      {
+        "id": "recohTvwKk7pDGnk1",
+        "createdTime": "2026-10-29T14:05:08.000Z",
+        "fields": {
+          "___count-coverage": "competition-class-participation",
+          "___count-rules-version": "direct-proxy-counts-v1",
+          "___publication-status": "Unknown",
+          "___unique-entry-count": 0,
+          "date": "2026-10-29",
+          "show": [
+            "recOAxMcqu1f75CQk"
+          ],
+          "show-day-key": "15|200000076|2026-10-29",
+          "___accepted-summary": "{\"body\":{\"accepted-as-of\":\"2026-10-31T21:39:07.993Z\",\"completeness\":\"complete\",\"coverage\":\"competition-class-participation\",\"customer-id\":15,\"date\":\"2026-10-29\",\"day-key\":\"15|200000076|2026-10-29\",\"evidence\":{\"counted-class-count\":0,\"expected-class-count\":0,\"run-key\":\"dd872966-dfe0-4b41-bdf5-a345ad4f78f7\",\"source\":\"direct-proxy\",\"state-sha256\":\"090adf20e7d50ad77d93d518412fb128f7e24dc62ff55cf3f940e21d9555b490\"},\"format\":\"wef-day-count-summary-v1\",\"policy-version\":\"direct-proxy-counts-v1\",\"proven-trip-count\":0,\"reasons\":[\"Scheduled competition-class counts; schooling and classless coverage is unproved.\"],\"show-key\":\"15|200000076\",\"unique-entry-count\":0,\"verified-at\":\"2026-10-31T21:39:14.414Z\"},\"sha256\":\"196a2300b1c1b7a45dd9c92b284d97a5f8e3fdccfb8565fd37a431b76cd4319a\"}",
+          "last_checked_status": "Not active",
+          "___latest-attempt-at": "2026-10-31T21:45:24.090Z",
+          "last_checked": "2026-11-02T14:04:14.557Z",
+          "day-priority": 999,
+          "___count-verified-at": "2026-10-31T21:39:14.414Z",
+          "___trip-count": 0,
+          "is_default (from show)": [
+            null
+          ],
+          "___latest-attempt-status": "Not active",
+          "___latest-attempt-reason": "Show source GET /schedule failed after 1 attempts: request failed [23]",
+          "___data-evidence-ref": "{\"counted-class-count\":0,\"expected-class-count\":0,\"run-key\":\"dd872966-dfe0-4b41-bdf5-a345ad4f78f7\",\"source\":\"direct-proxy\",\"state-sha256\":\"090adf20e7d50ad77d93d518412fb128f7e24dc62ff55cf3f940e21d9555b490\"}",
+          "___count-observed-at": "2026-10-31T21:39:07.993Z"
+        }
+      },
+      {
+        "id": "recs1RPpDh6bGuHkY",
+        "createdTime": "2026-10-29T14:05:27.000Z",
+        "fields": {
+          "___count-coverage": "competition-class-participation",
+          "___count-rules-version": "direct-proxy-counts-v1",
+          "___publication-status": "Unknown",
+          "___unique-entry-count": 133,
+          "date": "2026-11-01",
+          "show": [
+            "recOAxMcqu1f75CQk"
+          ],
+          "show-day-key": "15|200000076|2026-11-01",
+          "___accepted-summary": "{\"body\":{\"accepted-as-of\":\"2026-10-31T21:39:07.997Z\",\"completeness\":\"complete\",\"coverage\":\"competition-class-participation\",\"customer-id\":15,\"date\":\"2026-11-01\",\"day-key\":\"15|200000076|2026-11-01\",\"evidence\":{\"counted-class-count\":52,\"expected-class-count\":52,\"run-key\":\"dd872966-dfe0-4b41-bdf5-a345ad4f78f7\",\"source\":\"direct-proxy\",\"state-sha256\":\"090adf20e7d50ad77d93d518412fb128f7e24dc62ff55cf3f940e21d9555b490\"},\"format\":\"wef-day-count-summary-v1\",\"policy-version\":\"direct-proxy-counts-v1\",\"proven-trip-count\":201,\"reasons\":[\"Scheduled competition-class counts; schooling and classless coverage is unproved.\"],\"show-key\":\"15|200000076\",\"unique-entry-count\":133,\"verified-at\":\"2026-10-31T21:39:14.415Z\"},\"sha256\":\"c03da2b5c488f978f6bfd89eb23feb2ac1cfb0b5bd18637049f25bfdf0246ae0\"}",
+          "last_checked_status": "Not active",
+          "___latest-attempt-at": "2026-10-31T21:45:27.622Z",
+          "last_checked": "2026-11-02T14:04:14.557Z",
+          "day-priority": 999,
+          "___count-verified-at": "2026-10-31T21:39:14.415Z",
+          "___trip-count": 201,
+          "is_default (from show)": [
+            null
+          ],
+          "___latest-attempt-status": "Not active",
+          "___latest-attempt-reason": "Class 200030826: Show source GET /classes/200030826 failed after 1 attempts: request failed [23]; Class 200030852: Show source GET /classes/200030852 failed after 1 attempts: request failed [23]; Class 200030851: Show source GET /classes/200030851 failed after 1 attempts: request failed [23]",
+          "___data-evidence-ref": "{\"counted-class-count\":52,\"expected-class-count\":52,\"run-key\":\"dd872966-dfe0-4b41-bdf5-a345ad4f78f7\",\"source\":\"direct-proxy\",\"state-sha256\":\"090adf20e7d50ad77d93d518412fb128f7e24dc62ff55cf3f940e21d9555b490\"}",
+          "___count-observed-at": "2026-10-31T21:39:07.997Z"
+        }
+      }
+    ],
+    "heartbeat": [
+      {
+        "id": "recCpv3iPc1R8eAqX",
+        "createdTime": "2026-10-23T14:34:12.000Z",
+        "fields": {
+          "show-id": 200000077,
+          "summary": "Show 200000077; selected 2026-11-05 (source); source date 2026-11-05, last checked 2026-11-02T06:04:12.307Z. New-show check Skipped; next 2026-11-09T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-11-05 Verified, 2026-11-06 Verified, 2026-11-07 Verified, 2026-11-08 Verified.",
+          "heartbeat-key": "WEF-default",
+          "result": "Success",
+          "checked-at": "2026-11-02T14:09:15.808Z",
+          "selected-date": "2026-11-05"
+        }
+      }
+    ],
+    "logs": [
+      {
+        "id": "recl8oBb41nr82ROZ",
+        "createdTime": "2026-11-02T14:09:12.000Z",
+        "fields": {
+          "started": "2026-11-02T14:09:03.647Z",
+          "result": "Success",
+          "rows": 1,
+          "show-id": 200000077,
+          "run-id": "04df3f83-0b0c-407b-8994-3bd1fd7b3095",
+          "summary": "Show 200000077; selected 2026-11-05 (source); source date 2026-11-05, last checked 2026-11-02T06:04:12.307Z. New-show check Skipped; next 2026-11-09T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-11-05 Verified, 2026-11-06 Verified, 2026-11-07 Verified, 2026-11-08 Verified.",
+          "completed": "2026-11-02T14:09:15.808Z",
+          "archive-count": 0
+        }
+      }
+    ]
+  },
+  "verified_at": "2026-11-02T14:09:37.363268+00:00",
+  "checks": "PASS: status, priority, ISO timestamp, heartbeat/run-log, protected data and hashes"
+}

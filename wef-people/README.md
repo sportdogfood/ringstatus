@@ -1,6 +1,6 @@
 # wef-people
 
-Version 5 — November 1, 2026. Owner chat 01a19727-9a70-7283-a865-01dd38aacb9d; Records coordinator 01a169bc-e58a-7de0-94c6-5d3931fcf745.
+Version 6 — November 2, 2026. Owner chat 01a19727-9a70-7283-a865-01dd38aacb9d; Records coordinator 01a169bc-e58a-7de0-94c6-5d3931fcf745.
 
 Latest direct owner corrections: **disregard owners** and **leave horses unlinked**. Both are excluded from completeness criteria. No source decision remains pending. No external/Data relationship reads are authorized. The horses field stays empty; missing horse evidence is not reported as a workflow problem.
 
@@ -21,6 +21,14 @@ No w-owners exists; owners are now excluded by the owner. Read-only source inspe
 ## Join contract
 
 Read every available shared role row and all show/day keys. Role IDs remain distinct namespaces (`rider:<key>`, `trainer:<key>`); source code does not establish cross-role identity equivalence. Names never merge people. Duplicate or invalid role keys retain separate source-record identities and unresolved status. Preserve original source observation time. Resolve comma-separated membership keys exactly; duplicate/missing keys log issues and withhold only that link. Co-attendance never associates a horse. Horses remain unlinked by explicit owner decision; evidence alone does not authorize changing that scope. Existing valid links and records are retained; no deletion. Repeated unchanged inputs must not create or modify people records.
+
+## New-show notifications
+
+Owner instruction, November 2: treat a new-show alert from `wef-records-coordinator` as urgent because source data may soon be deleted. Explicitly acknowledge the show and planning day, promptly perform People's normally authorized checks, and preserve the available evidence under `evidence/`. Report what was applied, what is verified and the exact remaining gaps; receipt of an alert is not production adoption proof. A new show or planning day does not change calendar TODAY.
+
+The business join continues through the existing four-hour scheduled task. Urgency does not authorize a manual run, cadence change, record repair, new source input or bypass of an existing stop. If the next scheduled run cannot precede possible source deletion, report that timing gap promptly; do not claim the data was preserved without verified output. Owners remain excluded and horses unlinked. Skill/show/day notices do not require reviewing unchanged code or rerunning unchanged tests; applicable authorized changes and the existing five-day review cadence retain their review obligations.
+
+Latest received source context: show **200000077 — 2026 ESP November (#7129)**, planning day0 **2026-11-05**. Normal People adoption remains **UNVERIFIED** in the inspected evidence. The November 2 [guidance and review-status receipt](evidence/guidance-status-20261102.json) records the 0.2.9 skill hashes, complete changed Complaint Reporting guidance read, reused identical Context Compact read, and unchanged hashes for all nine sources in the November 1 author self-review. Independent review and periodic review execution remain unevidenced; configuration alone does not establish whether a review is overdue.
 
 ## Runtime, acceptance and stops
 

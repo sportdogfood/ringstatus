@@ -1,0 +1,74 @@
+[
+  {
+    "sha256": "9723483794a83d2d3bba87fe246d9967d81f3b2b40291dd66555714e71121c9e",
+    "file": "adapter.test.js"
+  },
+  {
+    "sha256": "da699647ae53a7545fb2aa523934c5efcc2a37b5986f97bd6f092038f99b335a",
+    "file": "baseline.json"
+  },
+  {
+    "sha256": "fdb00857e086d344b49d3406c523d985230f2dcae619c73ddc81b88032a794bc",
+    "file": "cadence.test.js"
+  },
+  {
+    "sha256": "2bfb0d307c9ac9103b8a0ef8f25cbffebde7066bad4091f49984da9e0a4227ea",
+    "file": "candidate-hashes.json"
+  },
+  {
+    "sha256": "e1c0470b4315e5332133daab601c821a455118b03bc7980dcfc6f8a374d7f941",
+    "file": "cleanup.test.js"
+  },
+  {
+    "sha256": "7602a191887d1b228e9fb30656fb069979fad82fdab847f9ddfc7d8d9f712e9b",
+    "file": "lanes.test.js"
+  },
+  {
+    "sha256": "b5d2773edc47c10926804d0d044f84dd9297d10285bda96f4dee1209381b6ad3",
+    "file": "offline-1.json"
+  },
+  {
+    "sha256": "9546976cd37fc1cb661cfc3270507d0107b358ea1d4e25a9c81e68a2cd9aa64d",
+    "file": "offline-2.json"
+  },
+  {
+    "sha256": "5d810435f3b5ee5602f87069369f0764a07b624fd601526bb91f81beb44867b9",
+    "file": "offline-final.json"
+  },
+  {
+    "sha256": "c5b55de56ffdaa6560c160ccf5325d45f99d4cdcea13170ed4f4141d92c7defd",
+    "file": "prepared-readback.json"
+  },
+  {
+    "sha256": "ba36623a92d69de15a092566b8fc98f7ab87ad711d0bac0f71b8cc8903eca818",
+    "file": "PREPARED.md"
+  },
+  {
+    "sha256": "ffff15a6008ad18c56cde5744aac60f6a994ec38d7c7eb9dee50aff1c1bc218e",
+    "file": "review-receipt.json"
+  },
+  {
+    "sha256": "09cc83860c2c9defb76fa11c8f85fb2260964403fa64a8653297bfe0a18e1b78",
+    "file": "review-verifier.json"
+  },
+  {
+    "sha256": "7bc44958bc45f035c745848b1000ee361a1331df4ed2d7b8d38ed9273d618af9",
+    "file": "review.md"
+  },
+  {
+    "sha256": "a33395e56f488b82a0f358899815f50557217c3936ab128c5b6fbc96551e0c91",
+    "file": "task-before.xml"
+  },
+  {
+    "sha256": "19ecd51ead876a9884994d0cbbd4adef1b8826661d131578fd944ddfd8439b4c",
+    "file": "task-prepared.xml"
+  },
+  {
+    "sha256": "a33395e56f488b82a0f358899815f50557217c3936ab128c5b6fbc96551e0c91",
+    "file": "task-still-installed.xml"
+  },
+  {
+    "sha256": "5cba9d16e6d84b4b619ece9993a6fe244714fa355badfa51bee87866fe608695",
+    "file": "TASK.md"
+  }
+]

@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "verified_at": "2026-11-02T14:09:52.385775+00:00",
+  "review": "Independent COMPLETE/PASS;19 targeted tests",
+  "normal_runs": [
+    {
+      "id": "e81691d9-09bb-4816-9879-021609e210a0",
+      "started": "2026-11-02T14:04:03.152Z",
+      "completed": "2026-11-02T14:04:18.365Z",
+      "ok": true,
+      "priority": {
+        "status": "Verified",
+        "anchor": "2026-11-05",
+        "updated": 8,
+        "verified": 8,
+        "active": 4,
+        "inactive": 4
+      }
+    },
+    {
+      "id": "04df3f83-0b0c-407b-8994-3bd1fd7b3095",
+      "started": "2026-11-02T14:09:03.647Z",
+      "completed": "2026-11-02T14:09:15.808Z",
+      "ok": true,
+      "priority": {
+        "status": "Skipped",
+        "anchor": "2026-11-05"
+      }
+    }
+  ],
+  "rows": 8,
+  "active": 4,
+  "inactive999": 4,
+  "timestamps_unchanged_on_repeat": true,
+  "historical_values_and_links_preserved_by_field_id": true,
+  "task_unchanged": true,
+  "manual_runs": 0,
+  "record_repairs": 0,
+  "protected_hashes": "PASS",
+  "comparison_note": "See verification-note.json: unrelated unique-entry-count rename reconciled by stable field ID; no runtime correction."
+}

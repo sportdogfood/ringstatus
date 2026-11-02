@@ -2,13 +2,23 @@
 
 Owner requested October 30, 2026 for Shows, Live and the local Season coordinator's distinct Data acquisition and Season retention duties.
 
+## Current ownership and confirmations — November 2, 2026
+
+The owner requires actual Code Review coverage and individual evidence-backed confirmations from all six current Records specialists: Shows, Live, `wef-data-fast-collector`, Season, Entries and People. Records verifies notifications, coverage and returned evidence. Each specialist owns its module's review obligations; Data is owned by the independent Data chat, not Season. Review findings do not authorize fixes or expand module scope.
+
+Season's November 2 Data review wake reported deleting `wef-data-monday-code-review` after ownership transferred, without performing or recording a review. The inspected local configurations include Shows Monday09:30, Live Monday10:00, Season Monday10:30 and People every five days at10:00 Eastern. No local Data or Entries review routine was found. The ACTIVE snapshot below is historical, not current proof of Data review coverage. Preserve Data's established Monday09:00 requirement and existing Data review record while reconciling its missing current owner/route; do not invent a replacement cadence. Entries retains review for applicable authorized changes; no periodic interval is supplied by this correction.
+
+Every specialist must confirm the actual reviewer, reviewed release/hashes, date, findings, report, remaining checks and current review owner/trigger/cadence. Inspect the underlying evidence and existing authorized base record/readback. A skill-read acknowledgment or configured timer is insufficient. Independent review requires an actual independent reviewer and evidence; writer self-review must be labeled accurately. Reuse unchanged valid review evidence after verifying the exact reviewed inputs. Do not repeat full suites or review exercises merely to acknowledge a notification.
+
+This documentation correction does not configure automations, execute reviews/tests/collectors, write base review records, change production tasks or clear stops. Record any later configuration and execution evidence separately.
+
 ## Procedure
 
 Use `C:/Users/gombc/.agents/skills/code-review/SKILL.md`. Review the actual authorized changes against the proven baseline, current deployed hashes, requirements, failure behavior and downstream contracts. Independent review is read-only; the writer's summary or a passing test count is not independent review. Reuse a completed independent review only when its exact reviewed runtime/test hashes and relevant contract are unchanged, recording the reuse verification separately.
 
 Review before deployment of authorized material changes and after observed behavior/verification failures. Preserve independently owner-approved recurring reviews. The owner's later October 30 request explicitly authorized periodic reviews: the verified four-review schedule below now applies, preserving Data's existing Monday 09:00 America/New_York timing. No other review timers, resident agents or collector triggers are introduced. Unchanged collector invocations do not require repeated code reviews.
 
-Keep each agent in its own module. The Season coordinator records Data and Season separately, with a local record in each of the four Season bases. Shared implementation review may be referenced by all four records; do not claim four independent reviews or four new scheduled tests when only one shared review occurred. Shows stays locked except explicit approved changes. Entries remains linking-only and is outside this new review-table assignment.
+Keep each agent in its own module. The independent Data owner records Data review evidence; Season records retention review evidence in each of its four bases. Shared Season implementation review may be referenced by all four records; do not claim four independent reviews or four new scheduled tests when only one shared review occurred. Shows stays locked except explicit approved changes. Entries remains linking-only and outside the original review-table creation assignment; its review obligation does not authorize adding tables or timers.
 
 ## Table and record contract
 
@@ -43,7 +53,7 @@ Separate PASS/FAIL/PARTIAL/BLOCKED gates for code review, offline checks, deploy
 
 The six missing tables were created for administrative review evidence only. Business table schemas, collector source, task/cadence, source services, business data and native links are outside this documentation change. Reviews are not stored as fake heartbeat/run-log collection successes.
 
-## Active periodic reviews - later owner authorization, October 30
+## Historical periodic review configuration — owner authorization, October 30
 
 All four are ACTIVE thread heartbeat configurations, targeting their existing owning chat, with a 20-minute read-only review bound. Host timezone is Eastern Time (US & Canada). Times below are America/New_York local time, including DST. First scheduled reviews are November 2, 2026; setup/readback is not execution proof. These depend on host/app availability. Existing Data automation identity, target, status and Monday 09:00 timing were preserved; only current skills/instruction guidance was appended to its prompt. The other three were created only after confirming no matching review existed.
 

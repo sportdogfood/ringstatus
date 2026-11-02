@@ -1,0 +1,7 @@
+{
+  "request": "heartbeat every hour if today does not include a day inside the show start and end date; heartbeat and run logs every5minutes inside",
+  "accepted": "NY calendar TODAY; hourly outside, five minutes inside inclusive; preserve discovery and19:00dayselection",
+  "approval": "approved to edit and test",
+  "compatibility_evidence": "authority-age.js showAuthorityReason rejects canonical validation older than30min. Rejected collector skip candidate would violate this. Correct preparation changes telemetry frequency only, preserves5minvalidation and all downstream checks.",
+  "deployment": "Not authorized by edit/test-only approval"
+}

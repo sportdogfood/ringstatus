@@ -1,0 +1,124 @@
+TAP version 13
+# Subtest: priority phase runs despite count stop, preserves selected anchor and skips midnight repeat
+ok 1 - priority phase runs despite count stop, preserves selected anchor and skips midnight repeat
+  ---
+  duration_ms: 65.9434
+  type: 'test'
+  ...
+# Subtest: discovery before19 labels every current date and marks old-show days inactive; repeat skips
+ok 2 - discovery before19 labels every current date and marks old-show days inactive; repeat skips
+  ---
+  duration_ms: 11.6392
+  type: 'test'
+  ...
+# Subtest: duplicate inventory fails before writes and durably stops only priority phase
+ok 3 - duplicate inventory fails before writes and durably stops only priority phase
+  ---
+  duration_ms: 8.3885
+  type: 'test'
+  ...
+# Subtest: ambiguous multi-show link is withheld before writes
+ok 4 - ambiguous multi-show link is withheld before writes
+  ---
+  duration_ms: 6.71
+  type: 'test'
+  ...
+# Subtest: normal wake initializes v1 state once; unchanged repeat preserves verification timestamp
+ok 5 - normal wake initializes v1 state once; unchanged repeat preserves verification timestamp
+  ---
+  duration_ms: 8.6926
+  type: 'test'
+  ...
+# Subtest: new-show rollover changes former day0 to inactive999 and stamps both shows
+ok 6 - new-show rollover changes former day0 to inactive999 and stamps both shows
+  ---
+  duration_ms: 13.8825
+  type: 'test'
+  ...
+# Subtest: failed status readback never stamps last_checked and retains existing stop behavior
+ok 7 - failed status readback never stamps last_checked and retains existing stop behavior
+  ---
+  duration_ms: 6.764
+  type: 'test'
+  ...
+# Subtest: lookup disagreement is withheld before writes
+ok 8 - lookup disagreement is withheld before writes
+  ---
+  duration_ms: 5.1934
+  type: 'test'
+  ...
+# Subtest: normal repeats manage dates without count requests, Data reads or historical count mutations
+ok 9 - normal repeats manage dates without count requests, Data reads or historical count mutations
+  ---
+  duration_ms: 72.2365
+  type: 'test'
+  ...
+# Subtest: missing canonical dates are created with existing keys and links, without count metadata
+ok 10 - missing canonical dates are created with existing keys and links, without count metadata
+  ---
+  duration_ms: 23.2757
+  type: 'test'
+  ...
+# Subtest: date publication refuses duplicate keys and wrong existing native links
+ok 11 - date publication refuses duplicate keys and wrong existing native links
+  ---
+  duration_ms: 1.7655
+  type: 'test'
+  ...
+# Subtest: normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+ok 12 - normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+  ---
+  duration_ms: 73.2825
+  type: 'test'
+  ...
+# Subtest: Sunday poll repeats after three hours until show changes then stops until next Sunday
+ok 13 - Sunday poll repeats after three hours until show changes then stops until next Sunday
+  ---
+  duration_ms: 77.7684
+  type: 'test'
+  ...
+# Subtest: failed source logs linked error, retains authority time and does not retry on five-minute wakes
+ok 14 - failed source logs linked error, retains authority time and does not retry on five-minute wakes
+  ---
+  duration_ms: 17.0715
+  type: 'test'
+  ...
+# Subtest: existing count stop stays byte-identical while calendar and heartbeat proceed
+ok 15 - existing count stop stays byte-identical while calendar and heartbeat proceed
+  ---
+  duration_ms: 13.423
+  type: 'test'
+  ...
+# Subtest: tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+ok 16 - tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+  ---
+  duration_ms: 12.3324
+  type: 'test'
+  ...
+# Subtest: archive failure prevents calendar mutation
+ok 17 - archive failure prevents calendar mutation
+  ---
+  duration_ms: 4.7959
+  type: 'test'
+  ...
+# Subtest: adapter still rejects cross-base writes and deletes
+ok 18 - adapter still rejects cross-base writes and deletes
+  ---
+  duration_ms: 8.5007
+  type: 'test'
+  ...
+# Subtest: consumer freshness expires without authority heartbeat even when source date is retained
+ok 19 - consumer freshness expires without authority heartbeat even when source date is retained
+  ---
+  duration_ms: 8.5224
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 367.9342

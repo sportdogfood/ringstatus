@@ -1,6 +1,6 @@
 # wef-records-coordinator
 
-Document version **1.1.0** — updated **November 1, 2026 (America/New_York)**. This is the coordinator document version, not a collector or plugin release. This document does not authorize changes to collectors, schemas, workflows or schedules. Later explicit owner decisions control over dated snapshots.
+Document version **1.3.0** — updated **November 2, 2026 (America/New_York)**. This is the coordinator document version, not a collector or plugin release. This document does not authorize changes to collectors, schemas, workflows or schedules. Later explicit owner decisions control over dated snapshots.
 
 ## Purpose
 
@@ -44,19 +44,24 @@ APPLIED: reconciled the latest documentation-only request against this agent's c
 
 Verification of this document means checking the actual before/after delta, all 13 complaint links and reminders, stated frequencies, date/version and preservation of existing ownership/stops. It is not a claim that the complaints are resolved, that product code was reviewed/tested, or that future behavior is guaranteed. Subsequent material edits increment this README's document version and update its date; plugin and collector versions remain separate.
 
-## Owners and boundaries
+## Current owned specialist chats
 
-| Owner / module | Owns | Boundary I must preserve |
+These are the six current local specialist chats coordinated by **wef-records-coordinator**, chat `01a169bc-e58a-7de0-94c6-5d3931fcf745`. This roster records ownership, not a claim that every workflow or review is passing.
+
+| Specialist chat | Local chat ID | Responsibility and boundary |
 | --- | --- | --- |
-| wef-shows | Canonical show identity/discovery, dates, selected day, day-priority and transition alerts to Records; necessary logs/heartbeat | Entry/trip counting and its timeout repair are cancelled. Preserve historical count fields/evidence without certifying them as current; no Data/replay or count-stop dependency in the current collector. Automatic chat transport remains uninstalled. |
-| Independent local `wef-data-fast-collector` / `01a19273-bdf8-71b2-8503-cc8079efc129` | Exclusive `wef-data` fast-collection responsibility; current activity is requirements intake only | Replaces the Season child `/root/wef_data_exclusive`. No archive, retention, cleanup or Season transfers. Registration does not authorize implementation, repair, stop clearing or collector resumption. |
-| wef-live | Validated current-day ring, group, class and trip observations; specifically approved destination overlays | Owns observation fields only. Does not own destination acquisition fields or native links; does not prepare enrichment for Entries or depend on Entries to collect. |
-| wef-entries | Link source-supported participation to schedules, horses, riders, trainers and other agreed identities | Linking only: no feed/CWF collection, Live enrichment, collector comparison or gate on another collector. Several trips may belong to one participation. |
-| Local wef-season-coordinator / `01a169c8-a4cc-7f52-b9f9-ef0a769aab58` | Only `wef-season-*`: retain, add, upsert, deduplicate and index source-backed historical identities and memberships | Data responsibility is assigned to the independent Data chat. Season retention is not an intermediary or prerequisite for current collection. No inferred identity merges or attendance. |
-| Dedicated local `wef-people` / `01a19727-9a70-7283-a865-01dd38aacb9d` | Derived people join in existing `wef-seaon-people` (`app6uHgUYCCKTVlJE`); its own `people`, `run-logs`, `err-logs`, `heartbeat`, `code-review` | Read shared inputs; preserve upstream sources, IDs and links. Join every 4 hours and review every 5 days are owner-requested cadences; configuration and natural-run operation are not verified by chat creation. No guessed identity or horse association. |
-| wef-schedules | Its existing independent collector and approved outputs | Still operating. Retirement/Data-only migration is preparation, not completed or authorized by this README. Do not cross-read Data or combine lanes by assumption. |
+| **wef-shows** | `01a16976-f0a6-72a1-a75f-75de7f19a815` | Canonical show discovery/identity, dates, selected day, day-priority and verified transition notices. Counting and its repair are cancelled; historical count fields do not certify current counts or zero entries. |
+| **wef-live** | `01a16902-240a-7280-8661-90b0d8d7325a` | Live ring/group/class/trip observations, specifically approved publication and its own approved cleanup. Does not acquire or enrich data for Entries, own Data collection or write arbitrary destination fields/links. Preserve its current publication and retention holds. |
+| **wef-data-fast-collector** | `01a19273-bdf8-71b2-8503-cc8079efc129` | Exclusive Data acquisition and its existing independent linking task. The separately approved cleanup lane remains pending reviewed deployment/activation: new-show alerts select old-show cleanup; same-show day0 changes select the 1,000/500 operational-log check. No periodic cleanup polling. Does not own Season retention or sibling workflows. |
+| **wef-season** | `01a169c8-a4cc-7f52-b9f9-ef0a769aab58` | Retain, add, upsert, deduplicate and index `wef-season-*` horses, riders, trainers and rings, preserving supported history/memberships. Does not own Data acquisition or the dedicated People join. |
+| **wef-entries** | `01a1691d-3bd7-7eb2-af17-b9ba39a7501e` | Link existing source-supported records to schedules, horses, riders, trainers and agreed identities. Linking-only: no CWF/feed collection, collector comparison, Live enrichment or reverse gate on collectors. |
+| **wef-people** | `01a19727-9a70-7283-a865-01dd38aacb9d` | Derived People join in existing `wef-seaon-people` base `app6uHgUYCCKTVlJE`, using shared inputs read-only. Owners are excluded and horses remain unlinked under the latest owner corrections. Owns its private join/log/review tables, not upstream sources. |
 
-Records coordinates these owners; it does not replace their ownership. The owner approves scope and material changes. The independent Data chat is now the registered Data responsibility destination; the Season coordinator owns only `wef-season-*`. This is an intake/documentation handoff, not verification of implementation, deployment or resumed production collection. The earlier Schedules-fork transfer remains reversed; this independent Data chat is a different owner-directed registration.
+**wef-schedules is a deprecated chat and excluded from current assignments and notification recipients.** Its historical chat ID is `01a14082-b22f-73b1-bba7-16781892a55d`. Deprecation of the chat does not itself authorize stopping its collector, changing tasks or deleting records.
+
+Records owns cross-specialist coordination: distribute applicable skill updates and verified show/day alerts, obtain each specialist's evidence-backed confirmation, maintain actual code-review coverage and track authorized scheduled acceptance. Each specialist stays in its lane; Records is not a production runner. Preserve the exact owner approvals, failed-path stops, records, IDs and links.
+
+The dated registration and release sections below preserve earlier evidence. They do not override this current roster or later direct owner corrections. In particular, old Data intake-only/combined Season ownership and old active-Schedules wording are historical.
 
 The retained Season families are riders, horses, trainers and rings. The October 30 People cancellation remains historical. On November 1 the owner explicitly requested a new dedicated local `wef-people` chat for a derived People join in the existing People base. This new scope belongs only to that chat; it does not restore People collection duties to Season, Data or Entries. Existing bases and historical evidence remain preserved.
 
@@ -122,13 +127,45 @@ Discovery remains Sunday 22:00 Eastern with three-hour retries until a new show;
 - Keep one clear ownership and dependency map. Record who produces each fact, who consumes it, permitted fields, keys, links, freshness, coverage and failure behavior.
 - Reconcile owner instructions and corrections before dispatching work. Preserve the proven implementation, explicit stops, approved fixes and data/link protections.
 - Coordinate authorized work with existing owner chats. Give exact scope, exclusions, acceptance criteria and evidence requirements; read the returned evidence and resolve contradictory claims. Sending an instruction is not proof it was accepted or implemented.
+- Notify every current owned specialist of new or updated applicable skills. Verify the installed version, changed files actually read or verified reuse of unchanged reads, and application to current work. Installation, dispatch and a generic READ acknowledgment are not completion.
+- Forward verified new-show and new-show-day information from Shows to every current consuming Records specialist, once per event and recipient, preserving source facts and evidence. Obtain each specialist's confirmation and inspect actual adoption within its lane. Receipt in this Records chat does not complete the downstream handoff.
 - Maintain the source-to-destination sharing review. Distinguish source tables, Data Library publications, destination imports and actual runtime readers. Do not declare proposed imports required dependencies.
 - Track new-show/default/day transitions and their factual alerts. Shows does not own entry/trip counting or zero-entry certification under its current scope. Consumers must not treat preserved historical count fields or an absent/stale count as a newly verified zero.
 - Track the existing business triggers, archive triggers and review heartbeats with their actual owner, target, cadence, last evidence, failures and next action. A configured heartbeat is not continuous supervision or proof a future run occurred.
 - Require archive readback/verification before approved retirement; protect historical identities, native links and existing consumers.
-- Coordinate actual code review for authorized changes and existing periodic reviews. Track actionable findings and verification gaps; a README or passing offline tests do not establish deployment or scheduled success.
+- Ensure every current owned specialist performs actual Code Review for applicable authorized changes and its owner-approved periodic reviews. Keep the review owner assigned through ownership transfers; moving Data out of Season must not leave Data without review coverage. Require independent review where the accepted change requires it, and never label the writer's self-review independent. Inspect actual reports, reviewed hashes, findings and verification gaps; a timer, README or passing tests do not establish review or scheduled success.
+- Obtain and inspect a separate confirmation from every specialist for skill adoption, show/day receipt and applicable review completion. Keep missing, failed and unverified confirmations visible until supported by evidence; never report all agents done while one is outstanding. Do not add full-test churn, new observers or arbitrary review intervals to obtain confirmations.
 - Verify the accepted outcome through the established deployment and scheduled paths, including repeat runs and downstream compatibility when required. Report PASS, FAIL, PARTIAL or BLOCKED for the exact scope verified.
 - Keep durable documentation and handoffs containing the objective, decisions, authorization, versions, evidence, protected changes, failures and exact next action. Keep owner updates brief and factual.
+
+### Required confirmations — owner correction, November 2, 2026
+
+Current owned specialists: **Shows, Live, Data (`wef-data-fast-collector`), Season, Entries and People**. The owner subsequently deprecated the Schedules chat: the earlier Schedules row and forwarding list are historical and must not revive that chat. Chat deprecation does not itself stop its collector. Shows originates show/day events; do not echo the same event back as a new discovery. Include Shows in skills, review and responsibility confirmations.
+
+| Subject | Required specialist confirmation | What Records verifies |
+| --- | --- | --- |
+| Skills | Version/files, actual read or unchanged-read reuse, how guidance applies to the current task, preserved scope/stops | Read evidence and task-specific application; loading is not future-compliance proof |
+| New show or day | Exact show/date received, expected behavior of its own existing job, any stop or missing input | Recipient response and existing normal-run evidence where adoption requires it; a successful send proves delivery only |
+| Code review | Reviewer, reviewed version/hashes, date, report, findings, remaining checks and actual owner/trigger/cadence | Actual report and underlying evidence; independent authorship when required; existing authorized base record/readback |
+
+Planning day0 is distinct from calendar TODAY. Missing/stale data is not a verified zero-entry day. Notifications do not clear stops or authorize manual runs, repairs, code/schema changes, deployments or business-task changes. Unchanged code does not need a new review or full tests on every notification or collector invocation. Review completion may include findings and does not mean the implementation passed.
+
+**Review ownership gap confirmed:** Season's November 2 `wef-data-monday-code-review` wake reported deleting that review after Data ownership moved, without performing or recording a review. The inspected local automation inventory includes Shows, Live, Season and People review routines; no Data or Entries review routine was found. This is a missing periodic route, not proof that Data or Entries never received a release review. Preserve Data's established Monday09:00 Eastern review requirement and existing Data review record while reconciling the route with its current owner. Entries retains change-triggered review obligations; no periodic interval is invented here. See the [review standard](../wef-code-review-standard.md).
+
+All six owners returned their own confirmations of these duties, show200000077/day0 November5 receipt, and applicable Operating Skills **0.2.9** reads/reuse. These confirmations do not mean every review or scheduled adoption is complete. Records inspected the following evidence and gaps; no tests were rerun for acknowledgment.
+
+| Owner | Confirmed review coverage and remaining gap, November 2 |
+| --- | --- |
+| Shows | Independent `day-state-20261102` review and saved normal-run verification inspected; Monday09:30 routine exists and owner reports today's review recorded. [Review report](../../../wef-shows/evidence/day-state-20261102/review-report.md). |
+| Live | Monday10:00 routine exists. Latest cleanup release review is explicitly author self-review, not independent; its local confirmation identifies exact hashes and missing release-specific Airtable entry. [Confirmation](../../../wef-live/evidence/cleanup-20261102/records-confirmation-20261102.md). |
+| Data | November1 independent membership release review exists; Records checked current `data_runner.py` matches reviewed SHA256 `ab243e946be911adb0ebff0a2da5b08bba2bd6fba7077bdb3def3c69b2cd19db`. The November2 catch-up periodic review is now COMPLETE with findings, with report/receipt/verifier and unchanged candidate hashes inspected by Records. Linking integration is FAIL with saved HTTP422; collector saving continues. The Monday09:00 route remains missing. [Catch-up review](<C:/Users/gombc/Documents/Codex/outputs/wef-data-states-20261101/periodic-review-20261102/REVIEW.md>). |
+| Season | Owner confirms Monday10:30 routine and November1 independent association release review. New-show adoption remains unverified; reported ring-membership stop remains protected. |
+| Entries | Independent linking-restoration review exists; owner identifies a later companion change with limited Entries-specific acceptance evidence. No approved periodic route was verified; change-triggered review remains required. |
+| People | Existing five-day review routine; latest implementation review is author self-review, with nine source hashes checked unchanged by Records. Independent review, executed periodic review and base review-record evidence remain unverified. [Confirmation](../../../wef-people/evidence/guidance-status-20261102.json). |
+
+This document does not create a timer, execute a review or certify collector adoption. Preserve missing-route and independent-review gaps until the corresponding actual evidence exists.
+
+The missed show handoff and misleading explanation remain an Open [EPIC FAIL complaint](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recicGqPdd8c7ih25). Six later successful sends prove delivery, not application or complaint closure.
 
 ## Downstream coordination
 

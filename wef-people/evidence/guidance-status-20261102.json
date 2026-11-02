@@ -1,0 +1,121 @@
+{
+  "recorded_at": "2026-11-02T14:53:49.992740+00:00",
+  "chat_id": "01a19727-9a70-7283-a865-01dd38aacb9d",
+  "assignment": "Records Nov2 skills/show/review accountability confirmation",
+  "show": {
+    "id": "200000077",
+    "name": "2026 ESP November (#7129)",
+    "planning_day0": "2026-11-05",
+    "received": true,
+    "normal_adoption": "UNVERIFIED",
+    "reason": "No inspected saved receipt establishes this specific show/day in derived People output. Notification is not production proof.",
+    "known_stop": "No known stop established by this check; no stop-clearing authorized."
+  },
+  "guidance": [
+    {
+      "path": "C:\\Users\\gombc\\.codex\\plugins\\cache\\created-by-me-remote\\ringstatus-operating-skills\\0.2.9\\skills\\context-compact\\SKILL.md",
+      "sha256": "6eb7cf75dea707955f7a744bf736051c2847da66c4436fe56df0d5f2c8a92e72",
+      "bytes": 12023,
+      "read_disposition": "reuse prior full read, matching SHA256 in 0.2.5 load-receipt",
+      "content": null
+    },
+    {
+      "path": "C:\\Users\\gombc\\.codex\\plugins\\cache\\created-by-me-remote\\ringstatus-operating-skills\\0.2.9\\skills\\complaint-reporting\\SKILL.md",
+      "sha256": "55fa96fdc0295ab58b3001005b706977d40c932073771a09c9ada5bd58cf1eca",
+      "bytes": 7094,
+      "read_disposition": "fully read in this guidance-only turn",
+      "content": "---\nname: complaint-reporting\ndescription: Record or update RingStatus agent complaints with evidence, outage timing and scoped token usage.\n---\n# Complaint Reporting\n\nReport actual impact first, maintain distinct complaint records, and verify every authorized write. Use for complaint reporting or maintenance requested by the owner or covered by existing explicit authority. A complaint, skill invocation or remedy grants no permission to repair, retry, roll back, deploy, alter schema, clear stops or message other chats. Reviewing a method is not authorization to write complaints. Continue independent authorized work while preserving the affected path's actual stops.\n\n## Impact and record identity\n\nLead with one short factual statement: working, partial or failed service; affected users/data; actual observation and its time. Distinguish service status from process status. A process marked Succeeded/Partial does not prove useful service; zero writes alone does not prove an outage when there were no eligible changes. Do not invent a cause, outage start, loss, cost or recovery guarantee.\n\nBefore creating, inspect the supplied record or search existing complaints for the same distinct failure, responsible chat, service and incident window. Follow pagination needed for that match. Update the existing complaint for further evidence, progress and restoration. A code defect, unauthorized scope expansion and communication failure are separate complaints when each actually occurred; do not manufacture categories or duplicate progress records.\n\nUse one canonical outage complaint per service interruption. Related complaints reference its existing URL/ID in `source`; do not copy its outage interval or overlapping usage totals into each record. A later distinct interruption may need a new outage record. Reporting does not authorize repair or extra tracking tables.\n\n## Evidence and correction state\n\nRecord the owner's requested behavior, actual departure, consequence, responsible chat ID/name, affected target and dated supporting evidence. Separate confirmed observation, owner report, suspected cause and unknown. Preserve original failures and authorizations. Use exact file/log/record references; a path or another agent's assertion is not proof you inspected its contents. Keep credentials and raw private transcripts out of Airtable. Unknown model, effort, measurements and excluded-agent usage stay blank or explicitly unmeasured.\n\nKeep the smallest correction in `solution`. Add implementation and verification with dates, retaining prior attempts without contradictory current-status claims. `support-doc-found` describes method evidence, not implementation.\n\n- **Proposed:** a correction is described, not established as implemented.\n- **Implemented-unverified:** implementation is evidenced; required acceptance remains incomplete/unavailable.\n- **Verified:** the defined correction's required acceptance evidence was inspected. State its exact scope. Tests, notices or writes cannot substitute for required normal scheduled behavior and useful readback.\n\nDo not advance state from documentation, a plan, timer or READ acknowledgment. A newly failed correction is not Verified; retain failed evidence and an honest current disposition. Verified service restoration does not certify every related defect/scope/communication complaint or automatically close any complaint. Use actual permitted status choices.\n\n## Outage and restoration\n\nFor incidents with a real outage, use the [measurement rules](references/measurements.md). Store absolute timestamps with offsets/UTC; display America/New_York with its applicable offset when ambiguity matters.\n\n- `outage-at`: first confirmed service failure, not deployment time or an inferred earlier start.\n- `restored-at`: time required normal operation and useful results were verified restored. Keep blank while pending/failed; deployment or a claimed fix is insufficient.\n- `downtime`: existing formula reports whole elapsed **minutes**, continuing while restoration is blank. Do not write a formula field or promise second-by-second NOW() updates.\n- `estimated-restoration-time`: estimated duration in **seconds**, recorded before restoration work with estimate time, scope and uncertainty in `source`. Do not backfill hindsight as a prior estimate. Retain dated forecast revisions.\n- `actual-restoration-time`: measured wall-clock **seconds** from documented restoration-work start to verified restoration, including preparation, review, deployment, scheduled waiting and verification. Keep blank if start or finish is unverified. Do not substitute collector runtime, total downtime or summed concurrent agent time.\n\nIf service is restored but duration is unknown, save verified `restored-at`, leave the unknown actual duration blank and explain the gap. At the next authorized restoration completion/update, return to the same outage complaint and read back measured results. Do not create a monitor, run an extra business workflow or promise an unattended future update merely to maintain it.\n\n## Token usage\n\nUse [measurement rules](references/measurements.md) to separate cached input from uncached input/output, avoid double-counting reasoning or cumulative snapshots, and handle resets/missing agents. Name the exact work window, counter boundaries, included/excluded agents, source and exclusions in `source`. Totals are scoped processed-token measurements, **not billing, dollars, whole-outage or account-wide usage** unless independently established. Missing reviewer usage is unmeasured, not zero. Do not poll account limits or change models to infer these counts.\n\n## Airtable write and readback\n\nFor Agents, consult the [schema reference](references/airtable-schema.md), then discover/inspect the current base, table, fields and select options through the available Airtable connector before dependent writes. This dated reference does not authorize creating missing fields. Preserve any explicitly supplied different destination.\n\nWrite only authorized changed fields using verified IDs, types/units and existing choices; preserve unrelated values/links. A failed or ambiguous write does not authorize blind retry: inspect saved state first to avoid duplicates, then perform only the missing authorized action. If access/schema/write capability is missing, retain the prepared record and exact blocked action; continue independent authorized work without claiming it was recorded.\n\nAfter each mutation, fetch the actual record by returned/verified ID. Compare intended values, identity, correction state/status, timestamps and numeric units. Compare select `.name`, not the response object, with the written string. Check derived downtime within actual formula rounding/recalculation limits separately from writable fields. Do not overwrite another owner's concurrent changes. A mutation response alone is not readback.\n\nReturn the actual impact/current disposition and direct complaint link with the verified change or specific gap. Never claim recorded, restored or closed without corresponding evidence.\n"
+    },
+    {
+      "path": "C:\\Users\\gombc\\.codex\\plugins\\cache\\created-by-me-remote\\ringstatus-operating-skills\\0.2.9\\skills\\complaint-reporting\\references\\measurements.md",
+      "sha256": "c97e31f28067f054fc1d545e358a2e0dac8103fb5096f3c5945b7e1e75aed25d",
+      "bytes": 5800,
+      "read_disposition": "fully read in this guidance-only turn",
+      "content": "# Complaint measurements\n\nUse when recording outage/restoration timing or token usage. Unknown is not zero. Arithmetic grants no access to private logs, billing, other chats or production workflows.\n\n## Time boundaries\n\nUse timezone-aware instants and subtract after conversion to UTC. Store UTC or ISO with offsets; display America/New_York's actual offset. The repeated 01:xx hour during daylight-saving fallback is ambiguous without an offset: retrieve the source rather than guess. Negative intervals are evidence errors, not values to clamp to zero.\n\n| Quantity | Start | End | Storage |\n| --- | --- | --- | --- |\n| Outage downtime | First confirmed service failure | Verified restoration, or formula time while pending | Existing formula; whole minutes |\n| Restoration duration | Evidenced restoration-work start | Verified restoration | Duration; seconds |\n| Token window | Exact earlier usage boundary | Exact later usage boundary | Scoped integer token deltas |\n\nRestoration duration includes preparation, review, deployment, ordinary scheduled waiting and verification inside that wall-clock interval; never add overlapping agent durations. Retain original instants/unrounded duration and field rounding in `source`. Keep the pre-work estimate and when it was made; revisions need dates. Unknown restoration-work start means unknown actual duration even when restoration is verified.\n\nThe inspected Agents formula is `IF(outage-at, DATETIME_DIFF(IF(restored-at, restored-at, NOW()), outage-at, 'minutes'))`, expressed with field IDs by Airtable. It reports whole minutes and follows normal NOW() recalculation. Do not write its result, replace it or promise a continuously refreshed stopwatch. Inspect other destinations' actual units/formulas.\n\nCount one canonical outage interval once. Related defect/scope/communication records reference it. Do not sum duplicated or overlapping token windows across complaints either. No dedicated outage-link field exists in the inspected schema: use the existing `source` text and record URL unless a different approved schema is verified.\n\n## Tokens and provenance\n\nFirst establish actual counter semantics: request usage, per-turn counters and cumulative session snapshots differ. Do not assume input excludes cache. Use documented source definitions and reconcile compatible counters. Use permitted aggregate metadata/narrow excerpts; do not load or publish an entire private transcript.\n\nFor a compatible window where total input `I` includes cached input `C`, and output `O` already includes reasoning:\n\n```\nuncached-input-output-tokens = (I - C) + O\ncached-input-tokens = C\ntotal-tokens-processed = I + O\ncheck: uncached-input-output-tokens + cached-input-tokens = total-tokens-processed\n```\n\nReasoning is a breakdown within output, never an additional term. Validate nonnegative integers and `0 <= C <= I`; inconsistent counters are a gap, not permission to clamp or fabricate. If cache is unknown, an independently measured total may still be saved, but leave the split unknown. Missing agents do not invalidate an honestly labelled measured subset; they prevent calling it a complete incident total.\n\nFor cumulative counters, use end minus start within the same session/agent and compatible counter generation. Never add every cumulative snapshot. If counters reset, move backward or change definitions, segment only when exact boundaries are evidenced; otherwise leave affected values unknown. Deduplicate repeated telemetry for the same request/turn. All three token columns must describe the same window and agents. Complaint-writing work after the measured end stays explicitly excluded unless remeasured.\n\n`source` records: exact window start/end with offsets; session/chat IDs or aggregate source; counter mode/boundaries/deltas; agents included and their windows; excluded/unmeasured agents; segmentation/rounding limits; whether follow-up/reporting falls outside the window. An inaccessible tool-history reference is unverified provenance; do not invent a saved log. These are processed-token counts, not verified billing or account-limit consumption.\n\n## Inspected example \u2014 November 1, 2026\n\nThe owner-supplied [outage complaint](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/rec2OrJVMnPWVxwVB) was read during creation. It records a root-agent window, excluding unmeasured reviewer usage:\n\n| Item | Recorded value |\n| --- | --- |\n| Window | 2026-11-01T13:14:23.608Z to 2026-11-01T13:21:32.680Z |\n| Input including cache | 6,204,581 |\n| Cached input | 6,186,496 |\n| Output including reasoning | 18,465 |\n| Reasoning already included | 7,929 |\n| Uncached input plus output | 36,550 |\n| Total input plus output | 6,223,046 |\n\nThe three saved columns reconcile to these values and recorded scope. This is not a fresh independent extraction of session usage, all-agent incident usage or billing proof.\n\nThe same record stores failure `2026-11-01T02:33:15.038Z`, restoration `2026-11-01T13:19:46.478Z`, and 646 whole downtime minutes. Separate work start `2026-11-01T13:15:13.623674Z` and the source's precise verification `13:19:46.478507Z` yield 272.854833 seconds, rounded to 273; estimate 600 seconds. Service-restoration remediation is Verified; complaint-status remains Open. These are the record's dated evidence/claims, not authority to operate or reverify its collector.\n\n## Official token references\n\n- [Counting tokens](https://developers.openai.com/api/docs/guides/token-counting): reported output can include generated tokens beyond visible answer text.\n- [Reasoning models](https://developers.openai.com/api/docs/guides/reasoning): reasoning is accounted within output usage.\n- [Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching): cached input is a detail within input/prompt usage.\n"
+    },
+    {
+      "path": "C:\\Users\\gombc\\.codex\\plugins\\cache\\created-by-me-remote\\ringstatus-operating-skills\\0.2.9\\skills\\complaint-reporting\\references\\airtable-schema.md",
+      "sha256": "41aa635afde6c77c0784d25974da85585ee3e69f1b0d679b125293aa7d2fdff6",
+      "bytes": 2699,
+      "read_disposition": "fully read in this guidance-only turn",
+      "content": "# Agents complaints schema\n\nSnapshot inspected November 1, 2026. Resolve live schema before writes; do not create/rename fields or change choices/formulas. Prefer the available Airtable connector. Discover `agents`, list tables, inspect `complaints` fields/options, then fetch/search records. Write select names as strings and record fields by verified IDs. Follow needed pagination for deduplication. A supplied record ID can be fetched directly after base/table verification.\n\nDestination: base `appZahVgD156cMAe3`; table `tblPRAjSK54F8VA8U`.\n\n| Field | ID | Type / rule |\n| --- | --- | --- |\n| Name (currently leading BOM) | fld26uoOiURXkOPy3 | Multiline text; use verified ID |\n| active-threads | fldGQMdzzo8FcKe7R | Responsible chat ID/name |\n| complaint | fldTfgHVQZfCSywak | Requested/actual/impact; evidence labels |\n| solution | fld4AAX7I7QwrV0zO | Smallest correction, dated action/proof |\n| source | fldVC5hFr52tiM2tq | Provenance, measurement windows, canonical outage URL |\n| support-doc-found | fldAfkUAPjTlm5dYA | Method found / Partial guidance / No direct solution found |\n| remediation-state | fldU2n8LYGo3yT6KZ | Proposed / Implemented-unverified / Verified |\n| complaint-status | flddNm5u3fSahRDZT | Only Open available at inspection; no automatic closure |\n| Model | fldehnv8411sz3HCA | Exact verified model or blank |\n| Effort | fld396CFaGp2D2Bmu | Exact verified effort or blank |\n| outage-at | fldRGp38NvRCCEm1S | Datetime; first confirmed failure |\n| restored-at | fldBLfr9gl02g4kJN | Datetime; verified normal scheduled restoration |\n| downtime | flduk0Ymg4160S4ix | Formula; whole minutes; not writable |\n| estimated-restoration-time | fldty5fAXIi3k0fyG | Duration h:mm:ss; write numeric seconds |\n| actual-restoration-time | fldzGXir8JiI3N1FD | Duration h:mm:ss; write numeric seconds |\n| uncached-input-output-tokens | fldIo5pGJNghhHw1x | Number; measured uncached input plus output |\n| cached-input-tokens | fldJm8zGPAXOHPX57 | Number; same measured scope |\n| total-tokens-processed | fldkMc2a6cEVgGSOh | Number; total input plus output, cache included |\n\nPreserve existing System/Task/Agent links and unrelated values. Use verified record IDs for any authorized link change, never guessed associations. No schema mutation is needed to apply this skill.\n\nBefore updating, retain current relevant values and inspect intervening changes. After each mutation, fetch the actual record ID and compare intended values/statuses. Compare choice names, duration seconds and timezone-aware instants. Unknowns stay blank. Formula downtime may change while open; check formula/as-of precision without writing it. Failed write/readback remains a reported gap, not recorded success.\n"
+    }
+  ],
+  "prior_context_receipt": ".git/ringstatus-control/complaint-skills-20261031/installed-adoption-20261101/records/recipients/wef-people/load-receipt.json",
+  "application": "Guidance/evidence confirmation only. Preserve owners excluded, horses unlinked, no new inputs, all failed-path stops; no complaints authorized or created. Preserve canonical Instruction Loader/Rebalance/Code Review; owner65 checkpoint preparation is not native compaction. Loading is not procedure execution.",
+  "latest_actual_review": {
+    "at": "2026-11-01T12:57:01.714633+00:00",
+    "reviewer": "01a19727-9a70-7283-a865-01dd38aacb9d (module author self-review)",
+    "kind": "initial implementation/release self-review, not independent or periodic",
+    "report": "wef-people/evidence/review.md",
+    "receipt": "wef-people/evidence/review-receipt.json",
+    "report_sha256": "c95488f15ee69e988680aeaf0d77f21e5ae1a87163815fadcfec486bedb12ad1",
+    "source_checks": [
+      {
+        "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\join.py",
+        "sha256": "65f782fcafb2034620c55a63c35af03aa2b278c7dac07174ee1b36a64fd0b521",
+        "current_sha256": "65f782fcafb2034620c55a63c35af03aa2b278c7dac07174ee1b36a64fd0b521"
+      },
+      {
+        "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\entry.js",
+        "sha256": "b376443d17bffedd2300ed4e8dd426bff3aa4d29e2a997a5dc90f057bd81b90c",
+        "current_sha256": "b376443d17bffedd2300ed4e8dd426bff3aa4d29e2a997a5dc90f057bd81b90c"
+      },
+      {
+        "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\logging.js",
+        "sha256": "8b23df41138badfff3cb93e6cd083eca541a6734076bf6aa925a21aaadde636c",
+        "current_sha256": "8b23df41138badfff3cb93e6cd083eca541a6734076bf6aa925a21aaadde636c"
+      },
+      {
+        "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\run.ps1",
+        "sha256": "6eb34fb1a602791080fed24a71368965b57aa7d343387db2f275b6af1fecbe51",
+        "current_sha256": "6eb34fb1a602791080fed24a71368965b57aa7d343387db2f275b6af1fecbe51"
+      },
+      {
+        "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\run-hidden.vbs",
+        "sha256": "bbd1986b8e166e40b20f5528048713bddd3a03850d4581fa85f0acd95ec945f0",
+        "current_sha256": "bbd1986b8e166e40b20f5528048713bddd3a03850d4581fa85f0acd95ec945f0"
+      },
+      {
+        "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\register-task.ps1",
+        "sha256": "cc120784426908327f3fe3f53b1ffb45c799b3ac8337c65daaceb1829ef2effe",
+        "current_sha256": "cc120784426908327f3fe3f53b1ffb45c799b3ac8337c65daaceb1829ef2effe"
+      },
+      {
+        "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\schema.json",
+        "sha256": "2cb220560e0c8aa14e16b46d0a53b18d8c13da44c48940c1833f0884e9a4dc2a",
+        "current_sha256": "2cb220560e0c8aa14e16b46d0a53b18d8c13da44c48940c1833f0884e9a4dc2a"
+      },
+      {
+        "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\test_join.py",
+        "sha256": "641ecdc64672eb30363eac44bfc0c167618b2c60c990e1a0f74818df7622828e",
+        "current_sha256": "641ecdc64672eb30363eac44bfc0c167618b2c60c990e1a0f74818df7622828e"
+      },
+      {
+        "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-people\\test_logging.js",
+        "sha256": "2d22f52a3fe34d649897a52025ed614190177fd188f1c6b80a5b21b3484645e9",
+        "current_sha256": "2d22f52a3fe34d649897a52025ed614190177fd188f1c6b80a5b21b3484645e9"
+      }
+    ],
+    "all_nine_match": true,
+    "findings": "No actionable defect reported in limited approved scope; known source coverage issues retained. Dated review receipt predates repeat acceptance.",
+    "later_acceptance": "wef-people/evidence/repeat-20261101-1200/audit.json establishes Nov1 repeat safety, not Nov2 new-show adoption.",
+    "base_review_record": "Not established by inspected local evidence; no base write/read performed.",
+    "gaps": [
+      "Independent review not evidenced",
+      "Executed periodic review not evidenced",
+      "Current overdue state not established from timer configuration alone"
+    ]
+  },
+  "review_ownership": {
+    "owner": "this People specialist chat",
+    "trigger": "applicable authorized changes and existing every-five-day review",
+    "automation_id": "wef-people-five-day-code-review",
+    "status": "ACTIVE",
+    "time": "10:00 America/New_York",
+    "evidence": "C:/Users/gombc/.codex/automations/wef-people-five-day-code-review/automation.toml; automation view also succeeded",
+    "cadence_changed": false
+  },
+  "future_acknowledgment": "Explicitly acknowledge future skill/show/day notices, state applied and verified scope, and name remaining gaps. No generic read/done claim.",
+  "boundaries": "No business execution, collector/source calls, tests, repairs, code/schema/business writes, task changes, deployments, new observers/chats/agents or messages to other chats."
+}

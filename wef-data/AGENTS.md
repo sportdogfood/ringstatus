@@ -50,3 +50,19 @@ Recheck frequency: at every startup/resumption; before each edit batch, delegati
 Use Rebalance/Instruction Loader for the applicable boundary, retaining the existing context-check procedure. Do not reread the whole chat or all skills at every check. No reminder automation, observer, timer, hook, new chat or business-workflow gate is created by this instruction. Live matching and the narrower class-payload proposal remain on hold. Do not resume them or historical backlog from these notes.
 
 The current Data task is `wef-data-collector`, repeating every three minutes. Earlier `Data1minute`/one-minute references in this module are historical, not a direction to change the current task. Read the latest release evidence below the README's failure record; loading these instructions does not reopen a completed correction or an older coordinator assignment.
+
+## End-to-end execution correction - November 2, 2026
+
+Owner-requested statement for Data chat 01a19273-bdf8-71b2-8503-cc8079efc129:
+
+I treated preparation, review and status reporting as stopping points. The instructions do not allow that.
+
+The exact changes to my behavior are:
+
+- After Rebalance, execute the next authorized action in the same turn.
+- After answering a status question or logging a complaint, resume the unfinished work.
+- A pending deployment decision blocks deployment only—not authorized editing, checks or review.
+- Finish the complete current scope before requesting the final necessary approval.
+- Stop only at verified completion or a demonstrated blocker requiring your decision.
+
+No additional instructions or systems are needed. I failed to apply the existing ones.

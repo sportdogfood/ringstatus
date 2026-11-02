@@ -1,0 +1,40 @@
+{
+  "deployed": true,
+  "at": "2026-11-02T14:02:33.634250+00:00",
+  "files": [
+    {
+      "path": "wef-shows/day-priority.js",
+      "before": "373d9487e4c3da212a4644833a9be2f97c376b1d4414ef52ceb08d2e58119fb0",
+      "sha256": "04d2d40bc081f476ebea00bcff7a71750b88867605dcca9b66633055a17a914d"
+    },
+    {
+      "path": "wef-shows/tests/day-priority.test.js",
+      "before": "8cbd8685f47d48b000e7c7f55ab533e47d7d6ba965d1f669efc781f99d6cce28",
+      "sha256": "b4ab661132cfeaa8c5826b01c7aad95c22108418184e8bf11ed0e40a36ee33f3"
+    },
+    {
+      "path": "wef-shows/tests/direct-integration.test.js",
+      "before": "95d6cab5c16ac300e2e1c77dc0cca4ffe64afdb3dad410c1aee244d5d007c8fb",
+      "sha256": "18991e219ff00ca52f86586c07b1efb9208abc64edca9f74e3206bc9a56813fa"
+    },
+    {
+      "path": "wef-shows/tests/shows.test.js",
+      "before": "a8f2c8e68d24c463338794bf6b8cacb8f7eec28a62afaae62c3e6e5cc4f56fa9",
+      "sha256": "bef795b841823aa6b2c062b49d3ff04471e6d833f17c695e4eda4d99beac7f59"
+    },
+    {
+      "path": "wef-shows/README.md",
+      "before": "10c9fc91e6937d40925f66fb6a8771c2fd7aaa023a44bec546080c0374fbd636",
+      "sha256": "7b75188c36507333aae1e85d1c29f6828c58d9c4d165dc5d365fa92de8c316ec"
+    },
+    {
+      "path": "wef-shows/scope.md",
+      "before": "ab80af3f29961807f533fa5d29bb80595516ced79a53a5ce20fc4f12f3dbbdda",
+      "sha256": "2c661a27541083174fc20f98a3d1042e767f70ca05709f977b3fcb941f14b24b"
+    }
+  ],
+  "manual_runs": 0,
+  "records_repaired": 0,
+  "task_changes": 0,
+  "stop_files_cleared": 0
+}

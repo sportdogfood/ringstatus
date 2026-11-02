@@ -1,0 +1,105 @@
+{
+  "id": "tbl14MaCCDw6dAywH",
+  "name": "show-days",
+  "primaryFieldId": "fldCIGv6kGhrIZh2K",
+  "fields": [
+    {
+      "id": "fldCIGv6kGhrIZh2K",
+      "name": "show-day-key",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fldASKXpAHgTv0sTM",
+      "name": "show",
+      "type": "multipleRecordLinks"
+    },
+    {
+      "id": "flde7aiMp0pAtYCBs",
+      "name": "is_default (from show)",
+      "type": "multipleLookupValues"
+    },
+    {
+      "id": "fldA41GJyjFTr5ZSA",
+      "name": "date",
+      "type": "date"
+    },
+    {
+      "id": "fldbK4VEp3aNOdJlB",
+      "name": "day-priority",
+      "type": "number",
+      "description": "Current default show's day offset from planning selected_date (0). All noncurrent show-days use 999 and Not active. Verified in the existing priority step on discovery/evening day selection; initial field population occurs on the next normal scheduled wake. Does not mean calendar TODAY or authorize downstream collection."
+    },
+    {
+      "id": "fldXVyc7NrEl6xWzx",
+      "name": "last_checked",
+      "type": "dateTime",
+      "description": "ISO time of successful normal-workflow verification of this show-day status and priority; not source freshness or count verification."
+    },
+    {
+      "id": "fldMtRYYUQwljw7fx",
+      "name": "last_checked_status",
+      "type": "singleSelect",
+      "description": "Active when the linked show is the current default; otherwise Not active. This does not mean calendar TODAY."
+    },
+    {
+      "id": "fld9jdMjDeWo2OQBi",
+      "name": "___unique-entry-count",
+      "type": "number"
+    },
+    {
+      "id": "fldc5ZobyFB5GJlRO",
+      "name": "___trip-count",
+      "type": "number"
+    },
+    {
+      "id": "fld27xwpuivsNAtQK",
+      "name": "___count-coverage",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fld5DPmWk34DYw9VK",
+      "name": "___count-rules-version",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fldzCqzzIBuU4vkX1",
+      "name": "___count-observed-at",
+      "type": "dateTime"
+    },
+    {
+      "id": "fldc23g2swz3yqmJl",
+      "name": "___count-verified-at",
+      "type": "dateTime"
+    },
+    {
+      "id": "fldQzLooeCHbSNTy4",
+      "name": "___latest-attempt-at",
+      "type": "dateTime"
+    },
+    {
+      "id": "fldpDnRwEGIWhYea9",
+      "name": "___data-evidence-ref",
+      "type": "multilineText"
+    },
+    {
+      "id": "fldDZK4qhbAGc19i6",
+      "name": "___accepted-summary",
+      "type": "multilineText"
+    },
+    {
+      "id": "fldiG46LOA7q4I4rm",
+      "name": "___latest-attempt-reason",
+      "type": "multilineText"
+    },
+    {
+      "id": "fld5oeX8XMVUCgNYe",
+      "name": "___publication-status",
+      "type": "singleSelect"
+    },
+    {
+      "id": "fldi1J37WeAtiQGxw",
+      "name": "___latest-attempt-status",
+      "type": "singleLineText"
+    }
+  ]
+}

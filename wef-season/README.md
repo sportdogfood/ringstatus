@@ -1,7 +1,7 @@
 # wef-season — retained entities and horse associations
 
-**README version: 1.1.1**  
-**Updated: November 1, 2026, 12:37 p.m. America/New_York (UTC−05:00)**
+**README version: 1.1.2**  
+**Updated: November 2, 2026, 10:32 a.m. America/New_York (UTC−05:00)**
 
 ## Scope and ownership
 
@@ -17,6 +17,14 @@ Data acquisition is independently owned by wef-data-fast-collector, chat01a19273
 | Rings | appxMk9wfbBHEvC5e | tblzQ33F0whmvcPjp |
 
 ## Workflow and cadence
+
+### New-show alerts from Records
+
+On a new-show alert from wef-records-coordinator, promptly acknowledge the canonical show/day context and check existing scheduled Season results. Treat the alert as notice that outgoing Data may soon be removed: prioritize retaining available trainers, riders, horses and rings through the existing hourly Season workflow. Add, upsert and deduplicate using existing keys and supported show/show-day links, preserving prior records, memberships, associations and ring nicknames. Do not wait for a completed-day sequence or introduce a new readiness gate.
+
+The alert does not itself run Season, change its hourly cadence, authorize a manual collector or bypass a failure stop. Report any affected base and unverified retention promptly; receipt of the alert is not proof that transfer finished. Season does not control Data deletion or certify that Data can safely delete records.
+
+Latest received context: **15|200000077 — 2026 ESP November (#7129), planning day 0 November 5, 2026**. Planning day 0 is not calendar TODAY. Adoption of this show remains unverified. At the November 2, 9:52 a.m. scheduled result, trainers, riders and horses succeeded; rings was skipped because its existing stop records **Season dated ring membership conflict**, first recorded November 2 at 1:52 a.m. Eastern. No stop was cleared. [Scheduled results](runtime/last-run.json) · [Ring stop](runtime/rings/stopped.json). These runtime files change; this paragraph records the inspected dated result.
 
 The existing Windows task **wef-season-collector runs every hour (PT1H)** through run.ps1 → entry.js → season.py. It reads current Data business records from appdl16HJ5ETm8N69 and uses the existing native upsert/readback code. It leaves unchanged records alone. Directory links establish show registration; single trip roles supply supported day memberships. Existing historical memberships remain additive.
 

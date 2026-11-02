@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "snapshot": "normal-2",
+  "at": "2026-11-02T14:33:26.579Z",
+  "cleanup_run_id": "414fb3e2-10bb-44d8-99d7-e8debdd61dae",
+  "new_show": false,
+  "show": 200000077,
+  "started": "2026-11-02T14:33:08.540Z",
+  "completed": "2026-11-02T14:33:11.044Z",
+  "actions": [],
+  "total_archived": 0,
+  "total_deleted": 0,
+  "lane_runs": [
+    {
+      "lane": "groups",
+      "run_id": "ee2b8f75-0456-4af8-a32d-39cba2099b52",
+      "started": "2026-11-02T14:33:04.018Z",
+      "completed": "2026-11-02T14:33:07.574Z",
+      "show": 200000077,
+      "date": "2026-11-05",
+      "issues": 0,
+      "stage_errors": 0
+    },
+    {
+      "lane": "rings",
+      "run_id": "f9424f9d-7574-4254-8963-699bf6da4298",
+      "started": "2026-11-02T14:33:04.020Z",
+      "completed": "2026-11-02T14:33:05.855Z",
+      "show": 200000077,
+      "date": "2026-11-05",
+      "issues": 0,
+      "stage_errors": 0
+    },
+    {
+      "lane": "classes",
+      "run_id": "37aa760d-bab6-4a94-9474-8ddf2b193ed7",
+      "started": "2026-11-02T14:33:04.021Z",
+      "completed": "2026-11-02T14:33:07.251Z",
+      "show": 200000077,
+      "date": "2026-11-05",
+      "issues": 0,
+      "stage_errors": 0
+    }
+  ],
+  "quick_cleanup_production_proof": "Unverified; threshold was not reached",
+  "limits": [
+    "No forced show/day/source changes",
+    "Native reciprocal links to deleted old records disappear; original values are archived",
+    "Author review, not independent review"
+  ]
+}

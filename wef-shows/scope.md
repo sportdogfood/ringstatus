@@ -1,5 +1,17 @@
 ## Current scope - owner-approved October 31, 2026
 
+## Show-day status and priority - November 2, 2026
+
+Owner-approved extension of the existing priority step: read `is_default (from show)`;
+current-show days are `Active` with their relative planning priority; older-show days
+are `Not active` with priority `999`. `last_checked` is an ISO verification time,
+written after status/priority readback, not a source observation or count timestamp.
+The existing normal task initializes these fields once, then retains the existing
+discovery/evening due-work checks. No new task, polling, counts, repairs or source calls.
+Historical fields prefixed `___` retain their values; no deletion is scheduled.
+Release evidence: [day-state-20261102](evidence/day-state-20261102/task.md).
+
+
 Shows manages canonical show identity, dates, selected day and day-priority.
 Entry/trip counting is cancelled, including the proposed timeout fix. The
 scheduled collector no longer invokes direct counts, Data or retained count

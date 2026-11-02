@@ -1,0 +1,7 @@
+{
+  "at": "2026-11-02T14:06:03.417530+00:00",
+  "first_normal_run": "e81691d9-09bb-4816-9879-021609e210a0",
+  "runner_result": "Success",
+  "evidence_comparison_correction": "Initial verifier compared REST field names and reported a mismatch. Independent concurrent rename unique-entry-count -> ___unique-entry-count was confirmed by unchanged fld9jdMjDeWo2OQBi and number type in schema-after.json. Verification script now compares stable field IDs. Historical values and protected hashes match; no runtime correction, task retry or record repair occurred.",
+  "repeat_verification": "Waiting for next normal scheduled run"
+}

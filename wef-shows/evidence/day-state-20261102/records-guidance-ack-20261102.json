@@ -1,0 +1,51 @@
+{
+  "acknowledged_at": "2026-11-02T14:52:53.655620+00:00",
+  "received_from_records": {
+    "show_id": 200000077,
+    "show_name": "2026 ESP November (#7129)",
+    "planning_day0": "2026-11-05",
+    "not_calendar_today": true
+  },
+  "adoption": "VERIFIED by existing normal receipts e81691d9-09bb-4816-9879-021609e210a0 and 04df3f83-0b0c-407b-8994-3bd1fd7b3095; verification.json",
+  "current_release_manifest_match": {
+    "wef-shows/day-priority.js": true,
+    "wef-shows/tests/day-priority.test.js": true,
+    "wef-shows/tests/direct-integration.test.js": true,
+    "wef-shows/tests/shows.test.js": true,
+    "wef-shows/README.md": true,
+    "wef-shows/scope.md": true
+  },
+  "skills": {
+    "version": "0.2.9",
+    "context_compact": "6eb7cf75dea707955f7a744bf736051c2847da66c4436fe56df0d5f2c8a92e72 verified unchanged; prior complete read reused",
+    "complaint_reporting": "55fa96fdc0295ab58b3001005b706977d40c932073771a09c9ada5bd58cf1eca completely read on this acknowledgment; no complaint write/repair authorization",
+    "application": "Current task is status/guidance only. Preserve actual evidence, readback and authority boundaries; no synthetic tests or complaint writes. Context preparation at owner65%, native compaction only; retain Instruction Loader/Code Review/Rebalancer."
+  },
+  "review": {
+    "independent_reviewer": "/root/shows_review",
+    "release": "day-state-20261102",
+    "receipt": "review-receipt.json",
+    "report": "review-report.md",
+    "runtime_sha256": "04d2d40bc081f476ebea00bcff7a71750b88867605dcca9b66633055a17a914d",
+    "result": "COMPLETE/PASS;19 tests already executed; no rerun",
+    "periodic_owner": "Shows owning chat",
+    "periodic_review": "Monday Nov2 executed by Shows with independent hash-reuse, not a second independent review",
+    "base_record": "appCaSmL819KK7UFJ/tblYDJfIh17xCCtIP/recZTORMGcgsAaezQ",
+    "trigger": "Authorized material changes before deploy and owner-approved Mondays09:30Eastern",
+    "next_review": "2026-11-09",
+    "configured_automation": {
+      "id": "wef-shows-monday-code-review",
+      "status": "ACTIVE",
+      "rrule": "FREQ=WEEKLY;BYDAY=MO;BYHOUR=9;BYMINUTE=30;BYSECOND=0",
+      "target_thread_id": "01a16976-f0a6-72a1-a75f-75de7f19a815"
+    }
+  },
+  "remaining_gaps": [
+    "Future different-show rollover of the Nov2 priority enhancement has offline coverage only; current adoption and same-show bootstrap/repeat verified.",
+    "Direct collector-to-chat event transport remains separate/unbuilt; configured Records polling notification is not direct-event transport.",
+    "Historical native TimeoutError23 classification defect remains preserved; cancelled count repair is not revived."
+  ],
+  "future_notifications": "Explicitly acknowledge each skill/new-show/new-show-day notice with received, applied, verified scope and exact gaps; no notice authorizes fixes/runs/stop clearing.",
+  "no_new_review_or_test_execution": true,
+  "no_business_changes": true
+}

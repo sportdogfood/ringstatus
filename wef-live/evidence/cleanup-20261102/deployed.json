@@ -1,0 +1,28 @@
+{
+  "manual_run": false,
+  "files": [
+    {
+      "name": "schema.js",
+      "sha256": "bec5e9bb92e5f8d2f7a156373f15585ef881ce265bd162e7bf95a9f478d43764",
+      "candidate_matches": true
+    },
+    {
+      "name": "airtable.js",
+      "sha256": "17ae2a56d569ddcf8159b1cbd131747a0df7242ee4472cc86f4cd65d330f2932",
+      "candidate_matches": true
+    },
+    {
+      "name": "cleanup.js",
+      "sha256": "292d8486c531982bdabafb19df491e2542f42967ba559964dd6ef42263f903a2",
+      "candidate_matches": true
+    },
+    {
+      "name": "lanes.js",
+      "sha256": "cd3ef54a6602e0bdcaff3b568e28b0828393f118a80ad9723f0aa7e109239a32",
+      "candidate_matches": true
+    }
+  ],
+  "task": "wef-live-collector",
+  "deployed_at": "2026-11-02T14:26:18.2063648Z",
+  "next_run": "2026-11-02T09:27:00.0000000-05:00"
+}

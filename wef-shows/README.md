@@ -1,8 +1,19 @@
 # wef-shows
 
-Version: **1.7**
+Version: **1.8**
 
-Updated: **October 31, 2026 (America/New_York)**
+Updated: **November 2, 2026 (America/New_York)**
+
+## Show-day status and priority - November 2, 2026
+
+Owner-approved extension of the existing priority step: read `is_default (from show)`;
+current-show days are `Active` with their relative planning priority; older-show days
+are `Not active` with priority `999`. `last_checked` is an ISO verification time,
+written after status/priority readback, not a source observation or count timestamp.
+The existing normal task initializes these fields once, then retains the existing
+discovery/evening due-work checks. No new task, polling, counts, repairs or source calls.
+Historical fields prefixed `___` retain their values; no deletion is scheduled.
+Release evidence: [day-state-20261102](evidence/day-state-20261102/task.md).
 
 ## Current scope - owner-approved October 31, 2026
 
@@ -36,7 +47,7 @@ Normal-run acceptance: October31 20:34 Eastern PASS (run 343cdab8-1245-46d9-9e47
 ## Historical release records - superseded
 
 The dated records below preserve earlier implementations and evidence. They do
-not authorize counting or reopen cancelled work. Version 1.7 above is current;
+not authorize counting or reopen cancelled work. Version 1.8 above is current;
 the established discovery and day-priority cadence remains unchanged.
 
 ## Direct proxy count ownership — approved October31, 2026

@@ -1,0 +1,27 @@
+[
+  {
+    "path": "wef-shows/entry.js",
+    "before": "2ecb076a6df89cba7d0e5b80937651a3152c551a5dbccec66b4ae0f3985d2f7b",
+    "sha256": "360cad753f41fb603f0a223ffd6a056960b4906076d5b368fff6d5cc333fae39"
+  },
+  {
+    "path": "wef-shows/run-cadence.js",
+    "before": null,
+    "sha256": "7bb30582f54bc71c4108802a7f9086d9ba4c0b968c81383e7410708b2665cac8"
+  },
+  {
+    "path": "wef-shows/tests/cadence.test.js",
+    "before": null,
+    "sha256": "3d1d146708861f9c2700f17d0c948767a6b13de10d9ced8d8f239748f0ef9c5f"
+  },
+  {
+    "path": "wef-shows/README.md",
+    "before": "7b75188c36507333aae1e85d1c29f6828c58d9c4d165dc5d365fa92de8c316ec",
+    "sha256": "bfba899276442cc957300578e416fd2c50e233db0485e840fa07be9b4964a2d9"
+  },
+  {
+    "path": "wef-shows/scope.md",
+    "before": "2c661a27541083174fc20f98a3d1042e767f70ca05709f977b3fcb941f14b24b",
+    "sha256": "8636ac54bc99d7ae549d7a2fc6604fd360c83ce7b222a4aec72aa9f8ec33e785"
+  }
+]

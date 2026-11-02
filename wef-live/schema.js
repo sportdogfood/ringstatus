@@ -9,6 +9,8 @@ const common = [
   "source-json",
 ];
 const tables = {
+  cleanup: ["Name","records","purpose","cleanup","started","completed","result","old-show-id","new-show-id","records-archived","records-deleted","archive-file","error","run-id"],
+  "cleanup-logs": ["cleanup-id","run-id","table","trigger","started","completed","result","old-show-id","new-show-id","records-archived","records-deleted","archive-file","archive-sha256","error"],
   "errs-log": ["error-key", "run-id", "occurred-at", "show-id", "date", "message", "err-class", "err-trip", "err-group"],
   "live-rings": ["ring-key", ...common, "ring-id", "ring-number", "ring-name"],
   "live-groups": [

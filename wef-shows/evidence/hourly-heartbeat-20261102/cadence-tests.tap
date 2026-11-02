@@ -1,0 +1,78 @@
+TAP version 13
+# Subtest: outside show dates: hourly elapsed cadence; selected future day0 does not enable five minutes
+ok 1 - outside show dates: hourly elapsed cadence; selected future day0 does not enable five minutes
+  ---
+  duration_ms: 5.4306
+  type: 'test'
+  ...
+# Subtest: after show ends hourly cadence also applies
+not ok 2 - after show ends hourly cadence also applies
+  ---
+  duration_ms: 1.8968
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\hourly-heartbeat-20261102\\wef-shows\\tests\\cadence.test.js:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-shows\staged\hourly-heartbeat-20261102\wef-shows\tests\cadence.test.js:11:225)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: inside range including first and last dates every scheduled five-minute wake runs
+ok 3 - inside range including first and last dates every scheduled five-minute wake runs
+  ---
+  duration_ms: 1.9069
+  type: 'test'
+  ...
+# Subtest: calendar TODAY uses Eastern midnight, not UTC or planning day0
+ok 4 - calendar TODAY uses Eastern midnight, not UTC or planning day0
+  ---
+  duration_ms: 1.4756
+  type: 'test'
+  ...
+# Subtest: Sunday22 and three-hour retries bypass an hourly skip when due
+ok 5 - Sunday22 and three-hour retries bypass an hourly skip when due
+  ---
+  duration_ms: 0.9677
+  type: 'test'
+  ...
+# Subtest: first 19:00 evening decision runs between hours; subsequent unchanged wakes skip
+ok 6 - first 19:00 evening decision runs between hours; subsequent unchanged wakes skip
+  ---
+  duration_ms: 0.8787
+  type: 'test'
+  ...
+# Subtest: DST fallback hourly interval uses elapsed time, without duplicate clock-hour assumptions
+ok 7 - DST fallback hourly interval uses elapsed time, without duplicate clock-hour assumptions
+  ---
+  duration_ms: 0.8463
+  type: 'test'
+  ...
+# Subtest: unknown, malformed, changed or failed cache falls through to existing collector validation
+ok 8 - unknown, malformed, changed or failed cache falls through to existing collector validation
+  ---
+  duration_ms: 5.4645
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 7
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 147.0443

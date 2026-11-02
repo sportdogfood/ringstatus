@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict'),path=require('node:path');
+const base=path.resolve(__dirname,'../../../');
+const {shouldRun}=require(path.join(base,'wef-shows/staged/hourly-heartbeat-20261102/wef-shows/run-cadence'));
+const policy=require(path.join(base,'wef-shows/discovery-policy'));
+const {showAuthorityReason}=require(path.join(base,'wef-shows/authority-age'));
+const at='2026-11-02T16:04:00Z',now='2026-11-02T16:35:00Z';
+const state={focus:{show_id:77,checked_at:'2026-11-02T06:04:00Z',fields:{show_id:77,start_date:'2026-11-05',end_date:'2026-11-08'}},last:{ok:true,show_id:77,selected_date:'2026-11-05',started:at,completed:'2026-11-02T16:04:10Z'},discovery:{version:1,cycle:policy.sunday(at),baseline:76,complete:true,next:policy.nextSunday(at),failed:false},priority:{version:2,date:'2026-11-02',anchor:'2026-11-05',evening:false}};
+const skipped=!shouldRun(now,state),reason=showAuthorityReason({authority_checked_at:at,last_checked:'2026-11-02T06:04:00Z'},now,{futureMs:60000,inclusive:true});
+assert.equal(skipped,true);assert.equal(reason,'stale_observation');
+console.log(JSON.stringify({gateSkips:skipped,downstreamReason:reason,elapsedMinutes:31}));

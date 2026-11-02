@@ -1,0 +1,116 @@
+{
+  "status": "PASS",
+  "snapshot": "normal-1",
+  "at": "2026-11-02T14:31:17.081Z",
+  "cleanup_run_id": "10dccc0a-592d-48e1-8556-814cb651ab0d",
+  "new_show": true,
+  "show": 200000077,
+  "started": "2026-11-02T14:27:11.302Z",
+  "completed": "2026-11-02T14:30:38.704Z",
+  "actions": [
+    {
+      "table": "live-entries",
+      "trigger": "new-show",
+      "archived": 192,
+      "deleted": 192,
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-entries\\754ea9e78df4ccd7cb9ee6c54b40f49fb1a91b4653e56e15cf2225a060eb0591.json.gz",
+      "sha256": "754ea9e78df4ccd7cb9ee6c54b40f49fb1a91b4653e56e15cf2225a060eb0591"
+    },
+    {
+      "table": "live-class-appearances",
+      "trigger": "new-show",
+      "archived": 43,
+      "deleted": 43,
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-class-appearances\\935744c3207cc96ffcf21292b4334f6fd08c1d28cd0e93bcda10f98fcd5677f6.json.gz",
+      "sha256": "935744c3207cc96ffcf21292b4334f6fd08c1d28cd0e93bcda10f98fcd5677f6"
+    },
+    {
+      "table": "live-classes",
+      "trigger": "new-show",
+      "archived": 43,
+      "deleted": 43,
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-classes\\c3ece027335be11733235f8912631478fd73b4fdb50d2dc7a33d64e98d1b120c.json.gz",
+      "sha256": "c3ece027335be11733235f8912631478fd73b4fdb50d2dc7a33d64e98d1b120c"
+    },
+    {
+      "table": "live-groups",
+      "trigger": "new-show",
+      "archived": 27,
+      "deleted": 27,
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-groups\\49c9b0adb1d487cf7489e91726649e6df88fd430cee3e92397db1d18eef4d623.json.gz",
+      "sha256": "49c9b0adb1d487cf7489e91726649e6df88fd430cee3e92397db1d18eef4d623"
+    },
+    {
+      "table": "live-rings",
+      "trigger": "new-show",
+      "archived": 5,
+      "deleted": 5,
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-rings\\8057cdaf9606d9d95f52557701292685a04a79252529bcec6c16e43f54584053.json.gz",
+      "sha256": "8057cdaf9606d9d95f52557701292685a04a79252529bcec6c16e43f54584053"
+    },
+    {
+      "table": "heartbeat",
+      "trigger": "new-show",
+      "archived": 378,
+      "deleted": 378,
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-heartbeat\\90d0571780974ac1e5c40d0cb5b3714597b12663fdbdd0d0220178eeee474540.json.gz",
+      "sha256": "90d0571780974ac1e5c40d0cb5b3714597b12663fdbdd0d0220178eeee474540"
+    },
+    {
+      "table": "run-logs",
+      "trigger": "new-show",
+      "archived": 111,
+      "deleted": 111,
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-run-logs\\f538a1a72184965449e7f01aabcd25050f7aabb0e3d31223628c7beb7eae8807.json.gz",
+      "sha256": "f538a1a72184965449e7f01aabcd25050f7aabb0e3d31223628c7beb7eae8807"
+    },
+    {
+      "table": "errs-log",
+      "trigger": "new-show",
+      "archived": 190,
+      "deleted": 190,
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-errs-log\\da5313ef5e6c011d748194472ad6b0b3670e353e22f8b8b15fab5e7200efcb82.json.gz",
+      "sha256": "da5313ef5e6c011d748194472ad6b0b3670e353e22f8b8b15fab5e7200efcb82"
+    }
+  ],
+  "total_archived": 989,
+  "total_deleted": 989,
+  "lane_runs": [
+    {
+      "lane": "groups",
+      "run_id": "7153cbca-3a72-493f-930b-e9482a96c452",
+      "started": "2026-11-02T14:27:03.716Z",
+      "completed": "2026-11-02T14:27:08.423Z",
+      "show": 200000077,
+      "date": "2026-11-05",
+      "issues": 0,
+      "stage_errors": 0
+    },
+    {
+      "lane": "rings",
+      "run_id": "f1b6bb08-c984-42c1-8b49-f2ace04783b8",
+      "started": "2026-11-02T14:27:03.718Z",
+      "completed": "2026-11-02T14:27:05.634Z",
+      "show": 200000077,
+      "date": "2026-11-05",
+      "issues": 0,
+      "stage_errors": 0
+    },
+    {
+      "lane": "classes",
+      "run_id": "2d836b70-5b8c-4b01-8afc-21dfd3538133",
+      "started": "2026-11-02T14:27:03.719Z",
+      "completed": "2026-11-02T14:27:10.343Z",
+      "show": 200000077,
+      "date": "2026-11-05",
+      "issues": 0,
+      "stage_errors": 0
+    }
+  ],
+  "quick_cleanup_production_proof": "Unverified; threshold was not reached",
+  "limits": [
+    "No forced show/day/source changes",
+    "Native reciprocal links to deleted old records disappear; original values are archived",
+    "Author review, not independent review"
+  ]
+}

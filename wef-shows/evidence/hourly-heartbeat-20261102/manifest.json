@@ -1,0 +1,27 @@
+[
+  {
+    "path": "wef-shows/collector.js",
+    "before": "65e93b249793c1960477e9da9c71790d6bbf572aa15ac5a474f7e4eff895939c",
+    "sha256": "2c255a392bd9c3b2cd5e5089a8901ee084da10514092f4fa531df549a0b69aa0"
+  },
+  {
+    "path": "wef-shows/discovery-policy.js",
+    "before": "c9baa13920e1e7396f525d9c087c7392a5c5a5a6117dbb2535a2cff8035b3b29",
+    "sha256": "65a324e47c069a660e6f16fd80b89523e40eabd5b73b498bbc44a7ff90d09fcf"
+  },
+  {
+    "path": "wef-shows/tests/cadence.test.js",
+    "before": null,
+    "sha256": "356100850c833a78567003e28d23f0d42fc0c64ad8bb112a1ddd1585547aacb7"
+  },
+  {
+    "path": "wef-shows/README.md",
+    "before": "7b75188c36507333aae1e85d1c29f6828c58d9c4d165dc5d365fa92de8c316ec",
+    "sha256": "02e18a47bef7ac93da124ea9214e310ea30fdd33e66572d0229a2d939672c2e1"
+  },
+  {
+    "path": "wef-shows/scope.md",
+    "before": "2c661a27541083174fc20f98a3d1042e767f70ca05709f977b3fcb941f14b24b",
+    "sha256": "aa8b0b9b435cff487e3be43b658ac51cbafb02629fd8a5dd03fb9bea43d44eb0"
+  }
+]

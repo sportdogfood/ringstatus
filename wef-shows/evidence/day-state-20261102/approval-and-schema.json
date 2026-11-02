@@ -1,0 +1,11 @@
+{
+  "human_requests": [
+    "now i am concerned now we want to add a last_checked ISO date time and last_checked_status that would mark Not active or Active and we want to treat day priority discuss potentially using 999 as the day priority in all records that are not the current",
+    "also notice i added is_default (from show) to the show-days",
+    "what is your simplest suggest to enhance our current scripts and workflow to achueve this",
+    "approved to edit"
+  ],
+  "accepted_proposal": "Extend existing day-priority step: lookup is_default (from show); current Active and relative priority; older Not active/999; after verification ISO last_checked. Existing workflow when new show or day0 changes, no new task/polling.",
+  "chat": "01a16976-f0a6-72a1-a75f-75de7f19a815",
+  "captured_at": "2026-11-02T14:01:08.688544+00:00"
+}
