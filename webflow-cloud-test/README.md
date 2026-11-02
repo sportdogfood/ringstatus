@@ -1,5 +1,17 @@
 # RingStatus Cloud app
 
+## Current live status — 2 November 2026
+
+**Existing recognized User -> Profile -> existing Team verified live.** Start at https://ringstatus.com/recognize, choose **Open profile**, then **Team**. Direct app entry: https://ringstatus.com/test/rs-profile/ . Current Recognize and Profile/Team designs are preserved.
+
+- Deployed commit `89abf609f816b6c9d10f05d301027c991a33280a`; existing Cloud `/test` environment deployment succeeded at 12:11:26 UTC on 2 November. Owner directed completion after the app-only deployment request. Codex did not publish the website.
+- Actual browser: secure-cookie recognition -> published `/profile` -> existing real test User -> active linked Team and six-member roster. Reload passed. User, Team and membership IDs independently matched Airtable reads. No Profile/Team records were edited.
+- Browser recognition, session and Profile responses were 200. App entry/assets return 200; unauthenticated Profile returns 401. The earlier missing-script/data blocker is resolved.
+- Fresh phone/PIN entry, live saves/retries, live Owner status writes, GeoIP private-access confirmation and mobile acceptance remain unverified for this release. User level, Team creation/invitations, inline uploads and modified-date sorting remain unimplemented; no schema additions applied.
+- Current private evidence: main checkout `.git/ringstatus-control/recognize-model-correction-20261101/live-acceptance-20261102.json` and `deployed-http-20261102.json`. Existing 16 scoped tests, source review and build remain prior preparation evidence.
+
+The 1 November section below is historical preparation status, superseded by the live status above. Its pending-deployment statements no longer describe current operation.
+
 ## Recognize -> Profile -> Team test status — 1 November 2026
 
 **Prepared locally; not deployed. No website publication authorized.**
