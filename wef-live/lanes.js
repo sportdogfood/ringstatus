@@ -4,17 +4,14 @@ const model=require('./model'),sources=require('./source'),settings=require('./s
 const {store}=require('./lane-store'),membership=require('./membership');
 const LANES=['groups','rings','classes'];
 const clean=r=>Object.fromEntries(Object.entries(r).filter(([k])=>!k.startsWith('_')&&k!=='scope-status'));
-function inWindow(now){
- const f=new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(now));
- return f>='05:00'&&f<='19:00';
-}
+const {inWindow}=require('./live-cadence');
 function read(file){try{return JSON.parse(fs.readFileSync(file,'utf8'));}catch(e){if(e.code==='ENOENT')return null;throw e;}}
 function write(file,value){const tmp=file+'.'+process.pid+'.tmp';fs.writeFileSync(tmp,JSON.stringify(value,null,2));fs.renameSync(tmp,file);}
 async function lane(name,{
  api=require('./airtable').airtable(),get=sources.get,getStatus=require('./activity').readStatus,
  clock=()=>new Date().toISOString(),runtime=settings.RUNTIME,
  archive=(kind,data,scope)=>require('./archive').archiveFile(path.join(runtime,'history'),kind,data,scope),
- alert,
+ alert, showContext,
 }={}){
  const r={lane:name,run_id:crypto.randomUUID(),started:clock(),ok:true,issues:[],stage_errors:[],logging_errors:[],changes:[],coverage:[],archives:[],timings:{collection_ms:0,save_ms:0},counts:{}};
  const issue=(message,ids={})=>r.issues.push({message,...ids});
@@ -67,6 +64,8 @@ async function lane(name,{
   await log('heartbeat','heartbeat-key',[{'heartbeat-key':r.run_id,'run-id':r.run_id,started:r.started,'checked-at':r.started,result:'Running',summary:name+' collection started'}]);
   // Day 0 is selected by Shows; no status/count/age gate controls collection.
   try{
+   if(showContext){r.scope={...showContext};r.day_priority=0;}
+   else{
    const shows=await api.list('shows',settings.SHOWS_BASE);
    const defaults=shows.filter(x=>Number(x.fields.customer_id)===15&&x.fields.is_default===true);
    if(defaults.length!==1)throw Error('Expected one default wef-shows record');
@@ -77,6 +76,7 @@ async function lane(name,{
    const date=model.day(matches[0].fields.date)||model.day(matches[0].fields['show-day-key'].split('|')[2]);
    if(!date||matches[0].fields['show-day-key']!==`15|${show}|${date}`)throw Error('Invalid canonical day-0 identity');
    r.scope={show,customer:15,date,authority:defaults[0].id,checked_at:f.last_checked,active:true};r.day_priority=0;
+   }
   }catch(e){issue('Shows context: '+e.message);return r;}
   try{r.live_status=require('./activity').statusValue(await getStatus({customer:15}));}
   catch(e){issue('Live-status check: '+e.message);}
@@ -219,9 +219,10 @@ async function lane(name,{
  return r;
 }
 async function scheduled(options={}){
- const now=(options.clock||(()=>new Date().toISOString()))();if(!inWindow(now))return{skipped:'outside-window'};
+ const policy=await require('./live-cadence').check(options);
+ if(!policy.due)return{skipped:'next-check-not-due',next_check_at:policy.next_check_at};
  // Lanes start together; each owns its receipt and catches its own stage failures.
- const reports=await Promise.all(LANES.map(name=>lane(name,options)));
+ const reports=policy.collect?await Promise.all(LANES.map(name=>lane(name,{...options,showContext:policy.scope,getStatus:async()=>policy.live_status}))):[policy];
  // Cleanup is a separate post-collection action; publication remains on hold.
  try{const result=await (options.cleanup||require('./cleanup').cleanup)({...options,protectedRuns:reports.map(r=>r.run_id)});
   if(reports[0])reports[0].cleanup={run_id:result.run_id,result:result.result};

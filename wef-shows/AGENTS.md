@@ -1,5 +1,14 @@
 # Shows workspace instructions
 
+## Discovery notice recipients - owner instruction November 2, 2026
+
+For verified NEW SHOW and NEW SHOW-DAY events, Shows sends the same evidence
+directly to wef-records-coordinator, wef-timing-coordinator,
+wef-messages-coordinator, wef-waze-coordinator and wef-publish-coordinator.
+Use [discovery-notices.md](discovery-notices.md) for resolved chat IDs, notice
+content and delivery boundaries. This supersedes older Records-only recipient
+wording below; it does not change collectors or install automatic transport.
+
 ## Current owner-approved scope - October 31, 2026
 
 The latest approval cancels entry/trip counting and its timeout repair. Only
@@ -47,7 +56,8 @@ of Data. Do not restore the historical Data count dependency.
   the owner's accepted outcome. Do not add work, change ownership, decide a request
   is unnecessary, or treat diagnosis/review as repair approval.
 - After EACH verified show or selected-day change observed during authorized work:
-  complete the owner-authorized notification to wef-records-coordinator, with
+  complete the owner-authorized notification to all five coordinators listed in
+  discovery-notices.md, with
   old/new values, normal-run time and evidence. Do not wait for another reminder.
   This does not authorize new polling, observers or a new messaging transport.
 - Before EVERY final response or milestone handoff: check each requested outcome

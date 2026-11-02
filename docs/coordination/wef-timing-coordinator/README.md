@@ -1,6 +1,6 @@
 # WEF Timing coordinator
 
-Documentation version **1.0.1** — updated **October 31, 2026 (America/New_York)**. Documentation-only revision; no product or runtime version change.
+Documentation version **1.0.2** — updated **November 2, 2026 (America/New_York)**. Documentation-only revision; no product or runtime version change.
 
 This is the single operating record for **wef-timing-coordinator**, chat `01a169bc-0bd6-77d3-b7b4-283a07061e90`. The coordinator assigns and reconciles owner work; it does not author calculator repairs or execute production workflows. Documentation does not authorize code edits, deployment, scheduling, data changes or resumption of stopped work.
 
@@ -11,6 +11,14 @@ This is the single operating record for **wef-timing-coordinator**, chat `01a169
 - Before any assignment or edit, record the proven baseline, exact human-approved delta, allowed effects and protected behavior. Preserve other owners' changes. No extra upgrade, schema/contract change, rewrite, refactor or cleanup without explicit approval for that expansion.
 - After failed verification, stop the affected edit/retest/deploy path until a separate human **APPROVED TO EDIT**. Continue independent authorized preparation. Never substitute manual runs, repair records, clear uncertain intents or restart a task to obtain a passing result.
 - Reuse approval already covering the exact remaining action; do not invent another permission gate. New authority in one owner chat does not silently restart another stopped task.
+
+## Shows discovery announcements — owner instruction, November 2
+
+When this coordinator receives a new-show or new-show-day discovery from **wef-shows**, relay that discovery to the existing **wef-ring-pace**, **wef-class-calculator** and **wef-entry-calculator** chats, plus any other currently owned Timing agent or subagent whose work is affected. This is the human's standing authorization for those necessary announcements; do not ask again for each discovery. Verify current recipients rather than reviving absorbed or archived specialists.
+
+Carry the supplied show identity, discovered show-day/date, original discovery time and source evidence/reference, including an event identity if supplied. State missing or unverified details honestly. Distinguish a discovered future show/day from TODAY in America/New_York; discovery alone does not select a calculation day, establish fresh Data/Live inputs or authorize purge.
+
+Announce each distinct discovery once; send a correction when material source facts change. Retain the message result so an attempted or failed announcement is not reported as delivered. Receiving owners retain their responsibilities and existing approvals/stops. Notifications authorize no manual run, collector change, calculator edit, restart, deployment, retention deletion or stopped-work resumption. No new observer, polling process or schedule is created; this rule applies when discovery is received during coordination.
 
 ## My failures and the required correction
 
@@ -64,6 +72,7 @@ Installed **RingStatus Operating Skills 0.2.4** was read for this documentation 
 
 | Documentation version | Date | Change |
 | --- | --- | --- |
+| 1.0.2 | November 2, 2026 | Recorded owner-authorized new-show/show-day announcements to affected existing Timing owners; preserved TODAY scope and all execution stops. |
 | 1.0.1 | October 31, 2026 | Added five individually created and verified Airtable complaint references and their bounded remediation states; existing stops unchanged. |
 | 1.0.0 | October 31, 2026 | First explicit version; coordinator failures, reminder cadence, exact authority boundaries and reconciled dated status. |
 | Unversioned | October 30, 2026 | Earlier coordinator record, retained below as historical context. |

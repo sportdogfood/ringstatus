@@ -35,7 +35,7 @@ def run(schema_file):
     try:
         shows=read('wef-shows.shows');owner=next(r for r in shows if r['fields'].get('is_default') is True)
         show=owner['fields']['show-key'];sid=str(owner['fields']['show_id'])
-        source_days=read('wef-shows.show-days')
+        source_days=read('wef-shows.show-days',{'show-day-key','date','day-priority'})
         days={r['fields']['date'][:10]:r for r in source_days if str(r['fields'].get('show-day-key','')).startswith(show+'|')
               and type(r['fields'].get('day-priority')) in (int,float) and r['fields']['day-priority'] in (0,1,2,3)}
         data={'wef-shows.shows':keyed('wef-shows.shows',shows),

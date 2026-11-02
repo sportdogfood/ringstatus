@@ -1,0 +1,182 @@
+{
+  "observed_at": "2026-11-02T18:00:17.731Z",
+  "check": {
+    "due": true,
+    "run_id": "0de37502-dff3-4d90-8d06-66c4e487c709",
+    "lane": "live-check",
+    "started": "2026-11-02T18:00:03.653Z",
+    "ok": true,
+    "issues": [],
+    "logging_errors": [],
+    "stage_errors": [],
+    "live_status": false,
+    "scope": {
+      "show": 200000077,
+      "customer": 15,
+      "date": "2026-11-05",
+      "authority": "rec8GtJJ7eSjY3Nd3",
+      "checked_at": "2026-11-02T06:04:12.307Z",
+      "active": true
+    },
+    "collect": false,
+    "minutes": 60,
+    "reason": "live-false",
+    "today": "2026-11-02",
+    "next_check_at": "2026-11-02T19:00:00.000Z",
+    "completed": "2026-11-02T18:00:05.119Z"
+  },
+  "cleanup": {
+    "run_id": "5e995a77-b5e8-41c3-9d81-6216b7344a8d",
+    "started": "2026-11-02T18:00:08.557Z",
+    "actions": [],
+    "result": "Skipped",
+    "show": 200000077,
+    "day": "2026-11-02",
+    "new_show": false,
+    "new_day": false,
+    "reason": "Same show and Eastern day",
+    "completed": "2026-11-02T18:00:10.722Z"
+  },
+  "heartbeat": [
+    {
+      "id": "recfsY0qPXTNgrwSa",
+      "createdTime": "2026-11-02T18:00:09.000Z",
+      "fields": {
+        "started": "2026-11-02T18:00:03.653Z",
+        "run-id": "0de37502-dff3-4d90-8d06-66c4e487c709",
+        "heartbeat-key": "0de37502-dff3-4d90-8d06-66c4e487c709",
+        "show-id": 200000077,
+        "result": "Skipped",
+        "date": "2026-11-05",
+        "summary": "{\"lane\":\"live-check\",\"live_status\":false,\"today\":\"2026-11-02\",\"priority_0_date\":\"2026-11-05\",\"reason\":\"live-false\",\"next_check_at\":\"2026-11-02T19:00:00.000Z\",\"collection\":\"Skipped\"}",
+        "checked-at": "2026-11-02T18:00:05.119Z",
+        "completed": "2026-11-02T18:00:05.119Z"
+      }
+    }
+  ],
+  "run_logs": [
+    {
+      "id": "recmWZdksKinpaS3F",
+      "createdTime": "2026-11-02T18:00:11.000Z",
+      "fields": {
+        "date": "2026-11-05",
+        "result": "Skipped",
+        "show-id": 200000077,
+        "completed": "2026-11-02T18:00:05.119Z",
+        "summary": "{\"lane\":\"live-check\",\"live_status\":false,\"today\":\"2026-11-02\",\"priority_0_date\":\"2026-11-05\",\"reason\":\"live-false\",\"next_check_at\":\"2026-11-02T19:00:00.000Z\",\"collection\":\"Skipped\"}",
+        "started": "2026-11-02T18:00:03.653Z",
+        "run-id": "0de37502-dff3-4d90-8d06-66c4e487c709"
+      }
+    }
+  ],
+  "errors": [],
+  "source": "Saved scheduled receipt + Airtable GET only",
+  "manual_run": false,
+  "installed_hashes": [
+    {
+      "file": "activity.js",
+      "match": true
+    },
+    {
+      "file": "airtable.js",
+      "match": true
+    },
+    {
+      "file": "archive.js",
+      "match": true
+    },
+    {
+      "file": "cleanup.js",
+      "match": true
+    },
+    {
+      "file": "collector.js",
+      "match": true
+    },
+    {
+      "file": "configure.js",
+      "match": true
+    },
+    {
+      "file": "entry.js",
+      "match": true
+    },
+    {
+      "file": "lane-store.js",
+      "match": true
+    },
+    {
+      "file": "lanes.js",
+      "match": true
+    },
+    {
+      "file": "live-cadence.js",
+      "match": true
+    },
+    {
+      "file": "log-retention.js",
+      "match": true
+    },
+    {
+      "file": "membership.js",
+      "match": true
+    },
+    {
+      "file": "model.js",
+      "match": true
+    },
+    {
+      "file": "participation.js",
+      "match": true
+    },
+    {
+      "file": "publication-api.js",
+      "match": true
+    },
+    {
+      "file": "publication-journal.js",
+      "match": true
+    },
+    {
+      "file": "publication.js",
+      "match": true
+    },
+    {
+      "file": "retirement.js",
+      "match": true
+    },
+    {
+      "file": "rollover.js",
+      "match": true
+    },
+    {
+      "file": "runtime-utils.js",
+      "match": true
+    },
+    {
+      "file": "schema.js",
+      "match": true
+    },
+    {
+      "file": "settings.js",
+      "match": true
+    },
+    {
+      "file": "source.js",
+      "match": true
+    },
+    {
+      "file": "verify.js",
+      "match": true
+    }
+  ],
+  "checks": {
+    "installed": true,
+    "no_stage_or_log_errors": true,
+    "heartbeat": true,
+    "run_log": true,
+    "no_cleanup_action": true,
+    "no_cleanup_stop": true
+  },
+  "result": "PASS"
+}

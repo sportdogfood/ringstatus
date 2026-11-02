@@ -1,6 +1,40 @@
 "use strict";
 const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:child_process');
 const {acquireLock,atomicReport}=require('../wef-schedules/collect');
+function read(file){return JSON.parse(fs.readFileSync(file,'utf8'));}
+function collectionKeys(runtime){
+ const state=read(path.join(runtime,'day-cadence.json'));
+ let scope,show;
+ try{const latest=read(path.join(runtime,'last-run.json'));scope=latest.counts?.['day-priorities'];show=latest['show-key'];}catch{}
+ if(scope&&!Object.values(scope).includes(0))scope=undefined;
+ let zero;
+ if(scope&&show){const day=Object.keys(scope).find(day=>scope[day]===0);if(day)zero=[show+'|'+day,state[show+'|'+day]||{attempted:0}];}
+ zero||=Object.entries(state).filter(([,r])=>r.priority===0).sort((a,b)=>b[1].attempted-a[1].attempted)[0];
+ if(!zero)return {keys:[],zero:null};
+ show=zero[0].split('|').slice(0,-1).join('|');
+ const days=scope?Object.entries(scope).filter(([,priority])=>[0,1,2,3].includes(priority)).map(([day,priority])=>
+  [show+'|'+day,{...(state[show+'|'+day]||{attempted:0}),priority}]):
+  Object.entries(state).filter(([k,r])=>k.startsWith(show+'|')&&k.split('|').at(-1)>=zero[0].split('|').at(-1)&&[0,1,2,3].includes(r.priority));
+ const keys=days.filter(([,r])=>r['run-key'])
+  .map(([k,r])=>[k,r['run-key']]).sort((a,b)=>a[0].localeCompare(b[0]));
+ return {keys,zero,days};
+}
+function due(runtime,linking=false,now=new Date()){
+ try{
+  const {keys,zero,days}=collectionKeys(runtime);
+  if(!zero)return !linking;
+  const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+  const day=zero[0].split('|').at(-1),interval=today===day?180:3600;
+  if(!linking)return today===day||days.some(([,r])=>now.getTime()/1000-Number(r.attempted)>=[3600,3600,7200,10800][r.priority]);
+  if(!keys.length)return false;
+  const previous=read(path.join(runtime,'linking','last-run.json'));
+  if(previous.ok&&JSON.stringify(previous.counts?.['collection-run-keys'])===JSON.stringify(keys))return false;
+  if(!previous.counts?.['collection-run-keys'])return true;
+  const attempt=String(previous['run-key']||'').replace(/^linking-/,'');
+  const started=read(path.join(runtime,'logging','wef-data-linking','run-logs',attempt+'.json')).started;
+  return today===day||now.getTime()-Date.parse(started)>=interval*1000;
+ }catch{return true;}
+}
 async function collect(runtime,linking=false){
  let release;
  try{
@@ -27,7 +61,11 @@ async function scheduled(){
   config=JSON.parse(fs.readFileSync(path.join(__dirname,'logging-schema.json'),'utf8')).workflows[workflow];
   const row=logging.readAttempt(root,attempt);row['child-pid']=process.pid;logging.atomic(path.join(root,'run-logs',attempt+'.json'),row);
  }
+ let inputs;
+ if(linking){try{inputs=collectionKeys(baseRuntime).keys;}catch{}}
  const report=await collect(runtime,linking);
+ if(linking&&attempt&&!report['run-key'])report['run-key']='linking-'+attempt;
+ if(linking&&inputs)report.counts={...report.counts,'collection-run-keys':inputs};
  await atomicReport(path.join(runtime,'last-run.json'),report);console.log(JSON.stringify(report));
  if(attempt){
   const errors=report['item-errors']||[];
@@ -37,5 +75,8 @@ async function scheduled(){
   if(!delivered.ok)logging.recordError(root,attempt,{category:'Logging',message:delivered.error,'write-outcome':'Unknown'},'LogDelivery');
  }
 }
-if(require.main===module)scheduled().catch(error=>console.error(error.message));
-module.exports={scheduled};
+if(require.main===module){
+ if(process.argv.includes('--due'))process.exitCode=due(path.join(__dirname,'runtime'),process.argv.includes('--linking'))?0:3;
+ else scheduled().catch(error=>console.error(error.message));
+}
+module.exports={scheduled,due,collectionKeys};

@@ -1,0 +1,29 @@
+{
+  "observed_at": "2026-11-02T18:00:50.001049+00:00",
+  "deployment": "PASS: installed24 JS hashes and semantic existing-task readback",
+  "offline": "PASS:81",
+  "review": "PASS: author review; not independent",
+  "first_normal_check": {
+    "result": "PASS",
+    "run_id": "0de37502-dff3-4d90-8d06-66c4e487c709",
+    "started": "2026-11-02T18:00:03.653Z",
+    "live_status": false,
+    "heartbeat_record": "recfsY0qPXTNgrwSa",
+    "run_log_record": "recmWZdksKinpaS3F",
+    "errors": 0,
+    "cleanup_run_id": "5e995a77-b5e8-41c3-9d81-6216b7344a8d",
+    "cleanup_result": "Skipped",
+    "cleanup_actions": 0
+  },
+  "second_hourly_check": {
+    "status": "UNVERIFIED: not yet due",
+    "due": "2026-11-02T19:00:00.000Z"
+  },
+  "natural_cleanup_branches": "UNVERIFIED: no new show or Eastern day occurred after deployment; offline proof is not natural deletion proof",
+  "populated_activity": "UNVERIFIED: source live=false",
+  "manual_runs": false,
+  "record_repairs": false,
+  "observers": false,
+  "existing_archives": "Preserved; new cleanup code does not write archives or deleted-record field backups",
+  "known_findings": "Two preexisting conditional cleanup-reporting P2 findings retained in review.md"
+}

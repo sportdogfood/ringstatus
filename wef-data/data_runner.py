@@ -1763,7 +1763,12 @@ def run(schema_file):
         # Day zero retains its proven every-wake behavior. Future days use
         # elapsed time since their last attempt, including incomplete attempts.
         try:
-            if priority!=0 and attempted-float(previous.get('attempted',0))<DAY_INTERVALS[priority]:continue
+            interval=DAY_INTERVALS[priority]
+            if priority==0:
+                from zoneinfo import ZoneInfo
+                today=datetime.datetime.fromtimestamp(attempted,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()
+                interval=0 if day==today else 3600
+            if attempted-float(previous.get('attempted',0))<interval:continue
         except (AttributeError,TypeError,ValueError) as exception:error('Day cadence '+day,exception)
         at=stamp();lane='fast-discovery' if key not in state else 'fast-collector'
         try:result=collect_day(schema_file,(context,day,priority))
@@ -1782,4 +1787,5 @@ def run(schema_file):
     return {'ok':not errors,'state':'Partial' if errors else 'Saved','show-key':show,
             'day':reports[0]['day'] if reports else None,'run-key':reports[0].get('run-key') if reports else None,
             'counts':{'saved':sum(r['counts'].get('saved',0) for r in reports),
+                      'day-priorities':{day:priority for priority,day in days},
                       'stage-seconds':timings,'days':reports,'total-seconds':round(time.perf_counter()-started,6)},'item-errors':errors}

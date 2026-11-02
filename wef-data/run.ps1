@@ -1,6 +1,11 @@
 param([switch]$Linking)
 $ErrorActionPreference = 'Stop'
 Set-Location -LiteralPath $PSScriptRoot
+$dueArgs = @((Join-Path $PSScriptRoot 'entry.js'), '--due')
+if ($Linking) { $dueArgs += '--linking' }
+& node @dueArgs
+if ($LASTEXITCODE -eq 3) { exit 0 }
+if ($LASTEXITCODE -ne 0) { throw 'Data due check failed' }
 $stateDir = Join-Path $PSScriptRoot 'runtime'
 New-Item -ItemType Directory -Path $stateDir -Force | Out-Null
 $workflow = if ($Linking) { 'wef-data-linking' } else { 'wef-data' }

@@ -2797,66 +2797,6 @@
           "type": "date"
         },
         {
-          "id": "flda8jgnQXtIJqcYV",
-          "name": "unique-entry-count",
-          "type": "number"
-        },
-        {
-          "id": "flddL0ygX9WYHp6r1",
-          "name": "trip-count",
-          "type": "number"
-        },
-        {
-          "id": "fldWOxArd2zMNWZby",
-          "name": "count-coverage",
-          "type": "singleLineText"
-        },
-        {
-          "id": "fldF87yI07KCpvOJN",
-          "name": "count-rules-version",
-          "type": "singleLineText"
-        },
-        {
-          "id": "fldbPjiyoWOChWW9O",
-          "name": "count-observed-at",
-          "type": "dateTime"
-        },
-        {
-          "id": "fldHcKSAMcooJJ0EH",
-          "name": "count-verified-at",
-          "type": "dateTime"
-        },
-        {
-          "id": "fldJ29zuhKebilopo",
-          "name": "latest-attempt-at",
-          "type": "dateTime"
-        },
-        {
-          "id": "fldYkfGTveb476cA1",
-          "name": "data-evidence-ref",
-          "type": "multilineText"
-        },
-        {
-          "id": "fldwOLH4TJ4WUQ7TO",
-          "name": "accepted-summary",
-          "type": "multilineText"
-        },
-        {
-          "id": "fldbdEolsBJnhX2HF",
-          "name": "latest-attempt-reason",
-          "type": "multilineText"
-        },
-        {
-          "id": "fldQsMsl128nnaIo4",
-          "name": "publication-status",
-          "type": "singleSelect"
-        },
-        {
-          "id": "fldAQMV6v9gfOx1zk",
-          "name": "latest-attempt-status",
-          "type": "singleLineText"
-        },
-        {
           "id": "fldP1IRkAD0E2HIND",
           "name": "day-priority",
           "type": "number"

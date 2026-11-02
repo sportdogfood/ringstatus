@@ -1,3 +1,23 @@
+# wef-data — November 2 release, version 2026.11.02.2
+
+Updated November 2, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+
+**Current cleanup is delete-only**, deployed at1:05:58p.m.Eastern. Independent review and seven focused offline checks passed. It deletes the selected eligible records and records actions/counts; it creates no new backup files or persisted copies of deleted record fields. Existing backups and historical logs remain preserved. No native fields/tables or task definitions changed for this correction. Only cleanup.js and cleanup-airtable.js changed; the source is Live's deployed delete-only implementation with existing Data mappings retained.
+
+Cleanup remains an independent lane with NO periodic task trigger. The existing Records automation wef-shows-changes-to-records starts wef-data-cleanup once for a verified new-show/day0-change alert. New show:19selected physical tables; selected old-show records deleted, and the six explicitly approved horses/riders/trainers/owners/lanes/slots tables cleared on new-show only. Day0 change within the same show:1000/500 rule applies ONLY to completed eligible logging rows in heartbeat/run-logs/err-logs. Active/current/latest invocation rows remain protected. Mutable Data heartbeat singletons remain protected. No business-table threshold, master/reference cleanup, observer, timer or manual collection is introduced. Duplicate runs inventory rows still refer to one physical table action.
+
+Before the delete-only switch, the first real Records-triggered run1793641167487 completed successfully from12:39:27 to1:03:38p.m.Eastern (1451.407seconds). Native cleanup-logs confirms19actions:17Success,2Skipped,6841records removed, noError. Its17existing backup hashes passed the established decompressed-content verification. This historical run proves the initial deletion, not a later delete-only execution. The next real authorized alert will use delete-only code; natural delete-only deletion and future new-day1000/500 remain unverified. No handled alert is replayed to manufacture proof.
+
+Existing exact current-row comparisons, current canonical identity checks, DELETE acknowledgements and absence readback are retained. Existing cleanup-only failure stop prevents an automatic retry and does not stop collection/linking. Known inherited reporting limitations remain: unexecuted action rows can stayRunning after another failure; interrupted cleanup may leave olderSuccessvisible. No unrelated repair is claimed.
+
+Collection/linking cadence code deployed12:37:03p.m.Eastern. Collector business work is every3minutes when Eastern TODAY equals canonical planningday0, otherwise priority0hourly; priorities1/2/3 retain hourly/2hour/3hour refresh and sequential0–3initialdiscovery. Existing collector/linker Windows timers remainPT3M. Local due checks exit before API/logging when not due; no one-minute task or newprogressfile. Linker operates independently on unprocessed saved collection inputs at the same3/60 cadence. Active narrow synced-day field correction remains unchanged. Records and Data only read canonical syncedShows inData; no upstreamShows writes.
+
+Normal12:37linker saved36updates and its input receipt; known source ring-ID49(number4,Denemethy) remains logged/unlinked without blocking other updates. Larger master mapping correctness is not established or repaired. Consecutive collector12:39/12:42 andlinker12:40/12:43 scheduled wakes exited0 with no new business reports. Actual future hourlydue execution remains unverified; no forcedrun or hour-longobserver is added. Existing results/scalar updates, membership states, saved data/keys/links outside approved cleanup and other collectors are unchanged.
+
+Delivery/review/native evidence: C:/Users/gombc/Documents/Codex/outputs/wef-data-cleanup-20261102, especially delete-only/INDEPENDENT-REVIEW.md, independent-review-receipt.json, independent-review-verifier.json, deployment.json; parentdelivery-completion.json, delivery-native-cleanup-final.json, delivery-task-readback.json and delivery-normal-wakes.json. Existing Records automation source C:/Users/gombc/.codex/automations/wef-shows-changes-to-records/automation.toml and .git/ringstatus-control/wef-records-shows-transition-alert-state.json carry the once-only launch. Owner approval: switch to delete-only cleanup; preserve existing backups. Dated earlier baseline below is historical and subordinate to this release.
+
+---
+
 # wef-data — current scheduled collector
 
 **README version:** `2026.11.01.5` (documentation revision).

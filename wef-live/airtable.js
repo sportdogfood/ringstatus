@@ -201,14 +201,12 @@ function airtable({
     if(!t)throw Error('Missing reference schema');
     return t.fields.map(f=>f.name);
   }
-  async function retireCleanup(table,rows,policy,receipt,onDeleted=()=>{}) {
-    const cleanup=require('./cleanup'),util=require('node:util'),fs=require('node:fs'),path=require('node:path');
+  async function retireCleanup(table,rows,policy,onDeleted=()=>{}) {
+    const cleanup=require('./cleanup'),util=require('node:util');
     if(!cleanup.TABLES.includes(table)||!Number.isSafeInteger(policy.show)||policy.show<=0||
       !['new-show','quick-cleanup'].includes(policy.trigger)||
       rows.some(r=>!cleanup.eligible(table,r,policy.trigger,policy.show)||policy.protectedRuns?.has(r.fields['run-id'])))throw Error('Forbidden cleanup scope');
     if(policy.trigger==='quick-cleanup'&&rows.length!==500)throw Error('Quick cleanup requires exactly 500 records');
-    if(!receipt?.file||!path.resolve(receipt.file).startsWith(path.resolve(settings.RUNTIME,'history')+path.sep))throw Error('Cleanup archive outside history');
-    if(JSON.stringify(require('./log-retention').verified(receipt))!==JSON.stringify(rows))throw Error('Cleanup archive rows mismatch');
     const afterDeleted=fields=>Object.fromEntries(Object.entries(fields).map(([k,v])=>[k,
       Array.isArray(v)&&v.every(id=>typeof id==='string'&&/^rec[a-zA-Z0-9]+$/.test(id))?v.filter(id=>!policy.deletedIds.has(id)):v
     ]).filter(([,v])=>!Array.isArray(v)||v.length));

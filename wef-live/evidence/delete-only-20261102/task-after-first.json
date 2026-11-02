@@ -1,0 +1,121 @@
+{
+  "CimClass": {
+    "CimSuperClassName": null,
+    "CimSuperClass": null,
+    "CimClassProperties": [
+      {
+        "Name": "LastRunTime",
+        "Value": null,
+        "CimType": 13,
+        "Flags": "Property, ReadOnly, NullValue",
+        "Qualifiers": "read = True",
+        "ReferenceClassName": null
+      },
+      {
+        "Name": "LastTaskResult",
+        "Value": null,
+        "CimType": 6,
+        "Flags": "Property, ReadOnly, NullValue",
+        "Qualifiers": "read = True",
+        "ReferenceClassName": null
+      },
+      {
+        "Name": "NextRunTime",
+        "Value": null,
+        "CimType": 13,
+        "Flags": "Property, ReadOnly, NullValue",
+        "Qualifiers": "read = True",
+        "ReferenceClassName": null
+      },
+      {
+        "Name": "NumberOfMissedRuns",
+        "Value": null,
+        "CimType": 6,
+        "Flags": "Property, ReadOnly, NullValue",
+        "Qualifiers": "read = True",
+        "ReferenceClassName": null
+      },
+      {
+        "Name": "TaskName",
+        "Value": null,
+        "CimType": 14,
+        "Flags": "Property, Key, NullValue",
+        "Qualifiers": "key = True",
+        "ReferenceClassName": null
+      },
+      {
+        "Name": "TaskPath",
+        "Value": null,
+        "CimType": 14,
+        "Flags": "Property, Key, NullValue",
+        "Qualifiers": "key = True",
+        "ReferenceClassName": null
+      }
+    ],
+    "CimClassQualifiers": [],
+    "CimClassMethods": [],
+    "CimSystemProperties": {
+      "Namespace": "Root/Microsoft/Windows/TaskScheduler",
+      "ServerName": "DESKTOP-BSKUK1V",
+      "ClassName": "MSFT_TaskDynamicInfo",
+      "Path": null
+    }
+  },
+  "CimInstanceProperties": [
+    {
+      "Name": "LastRunTime",
+      "Value": "2026-11-02T13:00:01-05:00",
+      "CimType": 13,
+      "Flags": "Property, ReadOnly, NotModified",
+      "IsValueModified": false
+    },
+    {
+      "Name": "LastTaskResult",
+      "Value": 0,
+      "CimType": 6,
+      "Flags": "Property, ReadOnly, NotModified",
+      "IsValueModified": false
+    },
+    {
+      "Name": "NextRunTime",
+      "Value": "2026-11-02T13:03:00-05:00",
+      "CimType": 13,
+      "Flags": "Property, ReadOnly, NotModified",
+      "IsValueModified": false
+    },
+    {
+      "Name": "NumberOfMissedRuns",
+      "Value": 0,
+      "CimType": 6,
+      "Flags": "Property, ReadOnly, NotModified",
+      "IsValueModified": false
+    },
+    {
+      "Name": "TaskName",
+      "Value": "wef-live-collector",
+      "CimType": 14,
+      "Flags": "Property, Key, NotModified",
+      "IsValueModified": false
+    },
+    {
+      "Name": "TaskPath",
+      "Value": null,
+      "CimType": 14,
+      "Flags": "Property, Key, NotModified, NullValue",
+      "IsValueModified": false
+    }
+  ],
+  "CimSystemProperties": {
+    "Namespace": "Root/Microsoft/Windows/TaskScheduler",
+    "ServerName": "DESKTOP-BSKUK1V",
+    "ClassName": "MSFT_TaskDynamicInfo",
+    "Path": null
+  },
+  "LastRunTime": "2026-11-02T13:00:01-05:00",
+  "LastTaskResult": 0,
+  "NextRunTime": "2026-11-02T13:03:00-05:00",
+  "NumberOfMissedRuns": 0,
+  "TaskName": "wef-live-collector",
+  "TaskPath": null,
+  "PSComputerName": null
+}
