@@ -10,10 +10,10 @@ Recognition does not require Team membership or WEF access. Inputs policy retain
 
 Cookie and D1 device expiry renew together. A supplied expired/retired cookie cannot fall through to GeoIP. Explicit sign-out retires the current cookie and suppresses GeoIP until explicit sign-in. The widget serializes recognition and credential/retirement requests through the same browser lock, retains uncertain operations, and fences stale display responses.
 
-## Current owner-corrected integration
+## Current ownership cut — 2 November 2026
 
 The owner rejected the legacy /rs-recognize target and confirmed the CURRENT /recognize and /profile models as the designs. Own unpublished /rs-recognize changes were restored exactly to their prior saved head/footer. Do not revive that target.
 
-Approved current scope is removal of embedded demo payloads on /, /ring-status, /about-ringstatus, /recognize and /profile, preserving the confirmed designs. Profile must use Recognize first, then exact real User/Team records. All publishing and deployment are prohibited by the current owner instruction. Four Recognize loaders and the Profile loader are saved only; no new live-five-page acceptance is claimed.
+The owner published the five-page demo cleanup and then directed completion of the prepared app-only release. Commit89abf609f was deployed on 2 November at12:11:26 UTC; Recognize cookie/handoff and downstream existing User/Team reads were verified. Codex did not publish the website. These are dated results, not new release authority.
 
-Current local Profile connection and required remaining real-record mappings are documented in profile-real-records-20261101.md. Existing unrelated page runtime, visitor code, shared site code and other application consumers remain protected. Backups and evidence: approved checkout .git/ringstatus-control/recognize-model-correction-20261101/.
+The owner now assigns this chat to **Recognize only**, ending at stable identity and server-validated trust. Profile loading/editing, User/Team data, membership/roles and consumer permissions belong to rs-profile-coordinator. See [the Profile handoff](rs-profile-coordinator-handoff-20261102.md). This is an ownership/documentation cut; no runtime refactor, schema change or deployment is authorized by it. Existing unrelated page runtime, visitor code, shared site code and other application consumers remain protected. Evidence: approved checkout .git/ringstatus-control/recognize-model-correction-20261101/.

@@ -2,6 +2,8 @@
 
 Recognize-specific workflow, responsibilities and source map: [RingStatus Recognize README](../docs/recognize/README.md).
 
+Profile is a separate domain: [Profile README](../docs/profile/README.md) and [rs-profile-coordinator handoff](../docs/coordination/rs-profile-coordinator-handoff-20261102.md). This shared application README does not give Recognize ownership of Profile.
+
 ## Current live status — 2 November 2026
 
 **Existing recognized User -> Profile -> existing Team verified live.** Start at https://ringstatus.com/recognize, choose **Open profile**, then **Team**. Direct app entry: https://ringstatus.com/test/rs-profile/ . Current Recognize and Profile/Team designs are preserved.

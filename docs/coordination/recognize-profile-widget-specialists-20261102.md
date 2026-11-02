@@ -1,30 +1,29 @@
-# Recognize and Profile widget specialists — 2 November 2026
+# Recognize-only widget specialists — 2 November 2026
 
-Accountable coordinator: rs-recognize, chat `01a1268e-253f-7fb1-bdc9-e6b6bd3e29a5`. Owner explicitly requested three specific subagents. These are subordinate specialists in this chat, not replacement chats or autonomous publishers. Initial assignments are read-only identification of source, responsibilities and acceptance. Any implementation needs an assigned approved delta; shared adapters and releases stay coordinated by the primary.
+Accountable coordinator: **rs-recognize-coordinator**, chat `01a1268e-253f-7fb1-bdc9-e6b6bd3e29a5`. Owner explicitly cut Profile ownership from this chat on 2 November. This current scope supersedes the earlier dual-widget assignments. These subordinate specialists now cover Recognize only; they are not Profile coordinators or autonomous publishers. Any implementation needs an approved bounded assignment.
 
 ## Exact widgets
 
 | Widget | Visible controls and entry | Served module | Source |
 | --- | --- | --- | --- |
 | Recognize | Current dark fingerprint launcher, one-input sign-in panel, Open profile. Used on `/`, `/ring-status`, `/about-ringstatus`, `/recognize`. Successful credential entry or Open profile opens `/profile`; silent recognition stays on the current public page. | `/test/rs-recognition/widget.js` | `webflow-cloud-test/src/assets/rs-recognition/widget.js`, `widget-view.js`, `widget.css`; route `src/pages/rs-recognition/widget.js.ts` |
-| Profile | Current Profile toolbar and dark Profile/Team panels on `/profile`; standalone app entry `/test/rs-profile/`. Uses embedded Recognize before loading private data. | `/test/rs-profile/client.js`; API `/test/rs-profile/data` | `src/assets/rs-profile/client.js`, `service.js`, `profile.css`, `recognize.css`; `src/lib/rs-profile.js`; routes under `src/pages/rs-profile/` |
 
-Legacy `/rs-recognize`, unrelated `lp-profile` and WEF serving implementations are outside these widget assignments.
+Profile's toolbar, panels, User/Team data routes and permissions are assigned through the [rs-profile-coordinator handoff](rs-profile-coordinator-handoff-20261102.md). Legacy `/rs-recognize`, unrelated `lp-profile` and WEF serving implementations are outside Recognize assignments.
 
 ## Actual dispatched specialists
 
 | Subagent | Responsibility | Owned inspection surface | Exclusions |
 | --- | --- | --- | --- |
-| `/root/widget_ui` | Both widgets' design, controls, interaction states and UI acceptance | Recognize `widget-view.js`, `widget.css`; Profile `client.js`, `profile.css`, `recognize.css` | No identity/permission changes, invented data, redesign or releases |
-| `/root/widget_data_staging` | Identity handoff, existing D1 index, canonical records, mapping and save/readback contracts | Profile `service.js`, `rs-profile.js`; relevant existing recognition adapter/IAM and existing User/Team links | No new staging store/schema, record repair, workflow runs or UI changes |
-| `/root/widget_astro_publish` | Astro routes, module packaging, page-loader integration and release acceptance | Recognize/Profile route wrappers, standalone entry, existing Cloud target/configuration | No independent push/deploy/website publish, dependency upgrades or unrelated routes |
+| `/root/widget_ui` | Recognize launcher, single-input panel and recognition states | Recognize `widget-view.js`, `widget.css` | No Profile UI, redesign, data changes or releases |
+| `/root/widget_data_staging` | Recognize identity/index, device/session/history and proposed maintenance | Existing recognition adapter/IAM/refresh/history boundary | No Profile User/Team ownership, new schema, record repair or workflow execution |
+| `/root/widget_astro_publish` | Recognize module/routes and coordinated packaging | Recognize route wrappers and agreed shared release boundary | No Profile route ownership, independent push/deploy/publish, upgrades or unrelated routes |
 
-The shared recognition adapter, native client and existing Tenant REST boundary require primary-coordinated changes. UI consumes the data contract; Astro packages approved assets without changing their semantics. Identity does not grant Team/WEF access; those checks stay outside Recognize. Data staging means the existing canonical-to-index/application boundary, not authorization for another database or copied demo model.
+The shared recognition adapter, native client, credential helpers, refresh integration, D1 claims helpers and shared Cloud app require agreement between affected owners before changes. Profile owns its User/Team permissions and existing Tenant REST consumer boundary; Recognize owns identity. Data staging here means the existing Recognize canonical-to-index boundary, not another database or copied demo model. Internal Recognize subagents are not transferred to Profile; its coordinator may request bounded specialist work separately.
 
 ## Baseline and acceptance
 
 Deployed source `89abf609f816b6c9d10f05d301027c991a33280a`; local documentation-only baseline `6c31bdf28fb68a21e96576acafcf542248d0f00f`. Existing Cloud app `d7d97751-20e1-4148-a5cf-ee58671c128a`, environment `110f06dd-c1ea-4839-98af-d829cbe77941`, mount `/test`. Branch `work/inputs-crm-20261006` auto-deploys on push. Website publication remains separate and was not performed by Codex.
 
-Existing-cookie Recognize -> real existing User/Profile -> active Team/six-member roster and reload passed live on 2 November. Exact User/Team/membership IDs matched independent Airtable reads. Prior 16 scoped tests/build/source review are separate preparation evidence. Fresh credential entry, live saves/retries, Owner writes, GeoIP confirmation and mobile acceptance were not verified in that release. User levels, Team creation/invitations, inline uploads and modified-date sorting remain unimplemented, without schema approval.
+Existing-cookie recognition and navigation to `/profile` passed live on 2 November. The full downstream User/Team read/reload evidence is retained in the Profile handoff; it is no longer an ongoing Recognize deliverable. Prior scoped tests/build/source review remain dated evidence. Fresh credentials, live IP-based behavior and mobile Recognize acceptance were not all reverified in that release.
 
 Evidence: main checkout `.git/ringstatus-control/recognize-model-correction-20261101/live-acceptance-20261102.json`; [current implementation record](profile-real-records-20261101.md). Agents owning chat row `reclrHKIRCyDsiKXd` records actual worker names, progress and next action. No new standing monitors or business workflows are introduced.

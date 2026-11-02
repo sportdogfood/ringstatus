@@ -8,7 +8,9 @@ Recognize identifies a returning visitor with minimal interruption, remembers th
 
 The expected experience is: arrive, check silently, continue if known; otherwise enter an existing registered phone number or PIN. Recognize identifies an existing person. An unknown number does not create a User, Team or membership.
 
-Recognize owns identity. Profile owns User information. Team owns membership and roles. WEF and Messages enforce their own applicable access and preference rules. These consumers must not turn an access denial into recognition failure or retire a recognized browser.
+**Owner: rs-recognize-coordinator. This domain stops at the identity handoff.** Recognize owns silent cookie/IP lookup, registered phone/PIN/recognition-invitation entry, recognition devices, sign-out, session continuity and recognition history. Its UI, data and Astro specialists work only on that scope.
+
+Profile screens, User editing, Teams, memberships, roles and consumer permissions belong to rs-profile-coordinator. WEF and Messages enforce their own policies. A downstream denial must not clear recognition or retire a device. The documentation/ownership cut does not change the deployed implementation.
 
 ## Visitor workflow
 
@@ -20,7 +22,7 @@ Recognize owns identity. Profile owns User information. Team owns membership and
 6. If needed, the visitor opens the single-input panel and enters a registered phone, explicit four-digit PIN or supported recognition invitation.
 7. A successful credential match establishes a browser recognition token/cookie and clears sign-out suppression.
 8. Silent recognition leaves the visitor on the current public page. Successful credential entry or clicking **Open profile** in the public widget navigates to `/profile`.
-9. Profile independently validates identity before loading the exact User and permitted Team information.
+9. Recognize hands identity to the destination. The destination owns everything after that handoff.
 
 ```mermaid
 flowchart TD
@@ -33,10 +35,8 @@ flowchart TD
     D -->|No or ambiguous| F
     F --> G[Registered phone, PIN or recognition invitation]
     G -->|Accepted| C
-    C --> H[Profile validates cookie and exact User]
-    E --> I[Phone or PIN confirmation before private Profile]
-    I --> H
-    H --> J[Own Profile and permitted existing Team]
+    C --> H[Identity handoff]
+    E --> H
 ```
 
 An unavailable service is a separate outcome from an unknown visitor. Neither outcome may be presented as successful recognition.
@@ -55,7 +55,7 @@ The current route uses the exact public IP observed by Cloudflare in `CF-Connect
 
 The existing index learns the association from credential-backed identity. The lookup uses a keyed hash of the exact address. Only one matching indexed person is accepted; a shared address associated with several people remains ambiguous. The implementation never selects the first person from multiple matches.
 
-An IP match is marked `identity_only`. It can identify a returning visitor, but cannot alone authorize private Profile or Inputs information. Profile asks for phone/PIN confirmation. Recognition does not require a cookie-versus-IP comparison.
+An IP match is marked `identity_only`. Consumers receive that trust distinction through server validation and decide whether confirmation is needed for their private data. Recognition does not require a cookie-versus-IP comparison or grant consumer permissions.
 
 A supplied invalid, expired or retired cookie cannot fall through to IP recognition. Explicit sign-out sets a suppression cookie using the same configured one-year lifetime; while it remains present, IP recognition is suppressed. Explicit sign-in clears that suppression.
 
@@ -86,9 +86,9 @@ Recognition and sign-out use D1 and do not make Airtable calls for the identity 
 
 ## Sign-out and account changes
 
-Sign-out clears visible private state and browser recognition context, retires the current server token, clears its recognition cookie and sets the secure sign-out suppression cookie. A reload must not immediately sign the visitor back in through the indexed IP.
+Sign-out clears Recognize's visible identity and browser recognition context, retires the current server token, clears its recognition cookie and sets the secure sign-out suppression cookie. A reload must not immediately sign the visitor back in through the indexed IP. Consumers must clear their own private screens when identity changes.
 
-The widget retains an uncertain sign-out operation and coordinates browser actions so retirement responses do not race a later sign-in. Profile clears its private display and rejects stale loads/saves when the recognized actor changes. Another application's permission denial must not trigger these sign-out effects.
+The widget retains an uncertain sign-out operation and coordinates browser actions so retirement responses do not race a later sign-in. Another application's permission denial must not trigger these sign-out effects.
 
 ## Authoritative records and the D1 index
 
@@ -96,18 +96,17 @@ The widget retains an uncertain sign-out operation and coordinates browser actio
 | --- | --- |
 | Recognize base `app9kOZdIaGyKk5uG`, People `tbly1PM5iFYqVzKSm` | Existing canonical identity, credentials and identity names. |
 | Existing D1 binding `RS_RECOGNITION_CONTROL_DB` | IAM person/key projections, device validation, claims and supporting retained operations. It is not a replacement canonical User/Team database. |
-| Profile/Tenants base `app7BXcw801n19QKF` | Canonical User, Team, memberships and roles consumed after recognition. |
 | Browser storage | Supporting visit/retry/display state; never authoritative permission. |
 
-Existing application saves queue the IAM refresh separately. Direct Airtable edits require the established refresh path; do not assume immediate index freshness or add a visitor-triggered Airtable fallback. Codex is not the runner and must not use manual refresh/repair commands as workflow proof.
+Existing application saves queue the IAM refresh separately. The existing shared refresh also consumes Profile-owned access inputs; changing those inputs requires coordination with that owner and does not transfer ownership to Recognize. Direct Airtable edits require the established refresh path; do not assume immediate index freshness or add a visitor-triggered Airtable fallback. Codex is not the runner and must not use manual refresh/repair commands as workflow proof.
 
-## Exact Profile handoff
+## Identity handoff contract — end of Recognize ownership
 
-The shared `recognitionAdapter.current()` returns a recognized `person_uid` or null. Profile first obtains that identity, then requests `/test/rs-profile/data` with the cookie and expected `X-RS-Actor-Scope`.
-
-The server revalidates the cookie, rejects identity-only private access and actor mismatches, and requires exactly one eligible canonical User where `recognition_person_uid` equals the recognized UID. User `tblyTBgrgdhT3Tcg7`, Team `tbled1saw01Thffs1`, memberships `tblFf4aWQYA2RRsWo` and roles `tblRqRbjmqmNfJtIP` remain in the existing Profile base.
-
-Own Profile does not require Team membership. Team data uses actual linked record IDs and the existing membership/Team eligibility checks. Multiple memberships are not resolved by guessing. Recognize does not create a Team, grant a role, change consent or decide WEF participation.
+- Browser: existing `recognitionAdapter.current()` returns `person_uid`, null, or an unavailable error. It does not return a new invented trust payload.
+- Server: the existing `remembered(request, env)` helper validates the cookie and supplies the principal plus `identity_only`. Consumers must validate server-side; a browser UID is not permission.
+- Navigation: the current public widget opens `/profile` after credential success or **Open profile**. Silent recognition stays on the current page.
+- After this point, rs-profile-coordinator owns Profile loading, User data, Teams, permissions and saves. Its interface may request credential changes through existing Recognize-owned helpers; that does not move credential ownership or authorize a new API.
+- Source ownership and pending acceptance for that consumer are in the [Profile coordinator handoff](../coordination/rs-profile-coordinator-handoff-20261102.md). No Profile backlog is owned by this README.
 
 ## Current widget and source map
 
@@ -120,12 +119,10 @@ Paths below are relative to `webflow-cloud-test/`.
 | Shared silent-check/history helpers | `src/assets/rs-recognition/native-client.js` |
 | Recognize module packaging | `src/pages/rs-recognition/widget.js.ts` -> `/test/rs-recognition/widget.js` |
 | D1 identity implementation | `src/lib/rs-recognition-iam.js` |
-| Separate Inputs eligibility policy | `src/lib/rs-inputs-iam-policy.js` |
 | IAM refresh/history integration | `src/lib/rs-recognition-iam-connections.js` |
 | Widget API | `/test/rs-inputs/native-recognition`, existing recognize/action/session operations |
-| Profile consumer | `src/assets/rs-profile/service.js`, `src/lib/rs-profile.js`; `/test/rs-profile/client.js`, `/test/rs-profile/data` |
 
-The current public widget is mounted on Home `/`, `/ring-status`, `/about-ringstatus` and `/recognize`. `/profile` loads the Profile widget, which embeds the same recognition adapter before loading private data. The standalone Profile app entry is `/test/rs-profile/`.
+The current public Recognize widget is mounted on Home `/`, `/ring-status`, `/about-ringstatus` and `/recognize`. Other applications can consume its existing adapter. Their presentation, data routes and private-data policies are owned downstream.
 
 Use the current dark fingerprint launcher and single-input panel. Legacy `/rs-recognize`, historical native controllers, older loader/test HTML and unrelated `lp-profile` code are not substitutes for this current entry. The fingerprint icon is a launcher, not biometric fingerprint authentication.
 
@@ -137,18 +134,18 @@ The configured GitHub branch `work/inputs-crm-20261006` automatically deploys th
 
 The owner published the five-page demo-code cleanup. The old browser-local demo model is absent from the five current published pages. Existing test records in the real databases were not deleted and must not be mistaken for embedded demo code.
 
-Live evidence from 2 November establishes: existing secure-cookie recognition -> Open profile -> published Profile -> existing real User -> active linked Team and six-member roster, plus reload. Returned User/Team/membership IDs independently matched Airtable records. Recognition/session/Profile responses were 200; unauthenticated Profile access returned 401. Codex deployed the app but did not publish the website or edit live Profile/Team records during that verification.
+Live evidence from 2 November establishes existing secure-cookie recognition, recognized **Open profile** navigation to the published destination and successful recognition/session responses. The downstream consumer's read/reload evidence is preserved in its own handoff. Codex deployed the app but did not publish the website or edit business records during that verification.
 
 That browser used an existing real **test User**. It does not prove that another visitor's sign-in matched their personal record. Check the actual displayed/returned User identity.
 
-Fresh phone/PIN entry, live Profile saves/retries, Owner writes, live IP-only private-data confirmation and mobile acceptance were not all reverified in this release. Earlier scoped tests, source review and fixture checks are separate evidence, not replacements for those live checks. Profile User levels, Team creation/invitations, inline uploads and real modified-date sorting remain unimplemented consumer capabilities; they do not enlarge Recognize's responsibility.
+Fresh phone/PIN entry, live IP-based recognition/confirmation behavior and mobile Recognize acceptance were not all reverified in this release. Earlier scoped tests, source review and fixture checks are separate evidence, not replacements for those live checks. Downstream consumer acceptance is owned by that consumer's coordinator.
 
 Private evidence is under the approved main checkout's `.git/ringstatus-control/recognize-model-correction-20261101/`: `live-acceptance-20261102.json`, `deployed-http-20261102.json`, `source-review.md` and test/build logs. The earlier `published-check-20261102.json` records the pre-deployment failure, now resolved. Private evidence/history is not copied into this README.
 
 ## Ownership and change discipline
 
-Coordinator: rs-recognize chat `01a1268e-253f-7fb1-bdc9-e6b6bd3e29a5`. Existing scoped subagents: `widget_ui` for presentation/interactions, `widget_data_staging` for identity/index/canonical mappings, `widget_astro_publish` for routes/packaging and coordinated release work. The primary retains shared-file and release coordination. These roles do not create automatic write or publish authority.
+Coordinator: **rs-recognize-coordinator**, chat `01a1268e-253f-7fb1-bdc9-e6b6bd3e29a5`. Existing scoped subagents: `widget_ui` for Recognize presentation/interactions, `widget_data_staging` for Recognize identity/index/history, `widget_astro_publish` for Recognize routes/packaging. They do not own Profile. The primary coordinates Recognize work and negotiates shared files/releases with the other owners. These roles do not create automatic write or publish authority.
 
 Preserve the proven recognizer, current designs, source consumers and owner changes. No replacement authentication system, extra provider, new schema, dependency upgrade or patch layering is implied by a request to finish an integration. Verify the exact approved delta and its affected downstream behavior.
 
-Related current sources: [widget specialist boundaries](../coordination/recognize-profile-widget-specialists-20261102.md), [Profile integration and current acceptance](../coordination/profile-real-records-20261101.md), and [Recognize isolation boundary](../coordination/recognize-isolation-20261101.md). The isolation document's identity/access boundary remains applicable; its saved-only/no-deployment snapshot predates the owner-directed 2 November app release described here. Current owner instructions and dated live evidence take precedence over historical handoff imperatives.
+Related current sources: [Recognize specialist boundaries](../coordination/recognize-profile-widget-specialists-20261102.md) and [Recognize isolation boundary](../coordination/recognize-isolation-20261101.md). Current owner instructions and dated live evidence take precedence over historical handoff imperatives.
