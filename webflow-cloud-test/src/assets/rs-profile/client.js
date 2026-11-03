@@ -77,7 +77,7 @@ function open(view){if(!p())return;if(destinations[view]){location.assign(destin
 
 const logo='<span class="profile-brand" aria-label="RingStatus Pro"><span class="rs-wordmark" aria-hidden="true"><span class="rs-wordmark-ring">RING</span><span class="rs-wordmark-status">STATUS</span></span><span class="profile-pro">PRO</span></span>';
 
-function top(title,back='home'){const m=member(),t=m&&state.teams.find(t=>t.id===m.teamId);return `${title==='home'?'':`<div class="back-row"><button class="back-link" data-go="${back}"><span aria-hidden="true">‹</span> ${back==='users'?'Team members':back==='locations'?'Locations':'Profile'}</button></div>`}<div class="brand-row">${logo}<button class="icon-button close-button" data-close aria-label="Close panel">${icon('close')}</button></div><div class="page-row"><h2 class="screen-title">${e(title==='home'?'Profile':title)}</h2></div>${t?`<div class="team-row" aria-label="Team membership"><strong>${e(t.name)}</strong><small>· Team ${e(m.role)}</small></div>`:''}`;}
+function top(title,back='home'){const m=member(),t=m&&state.teams.find(t=>t.id===m.teamId);return `${title==='home'?'':`<div class="back-row"><button class="back-link" data-go="${back}"><span aria-hidden="true">‹</span> ${back==='users'?'Team members':back==='locations'?'Locations':'Profile'}</button></div>`}<div class="brand-row">${logo}<button class="icon-button close-button" data-close aria-label="Close panel">${icon('close')}</button></div><template data-screen-heading><h2 class="screen-title">${e(title==='home'?'Profile':title)}</h2></template>${t?`<div class="team-row" aria-label="Team membership"><strong>${e(t.name)}</strong><small>· Team ${e(m.role)}</small></div>`:''}`;}
 
 
 function row(label,target,meta='',count){const icons={profile:'user',team:'users',users:'users',checkin:'check',optins:'sliders',schedules:'calendar'};return `<button class="nav-row" data-go="${target}">${icon(icons[target]||'user')}<span class="row-copy"><span class="row-title">${e(label)}</span>${meta?`<span class="row-meta">${e(meta)}</span>`:''}</span>${count!==undefined?`<span class="count">${count}</span>`:''}${icon('arrow','chevron')}</button>`;}
@@ -137,7 +137,22 @@ function other(){if(screen==='agent')return `${top('Agent')}<div class="section-
 
 
 
-function render(){$('#panel-content').innerHTML=`<div class="screen-inner">${(screen==='home'?home():screen==='profile'?profile():screen==='team'?team():screen==='users'?users():screen==='locations'?locations():screen==='location-form'?locationForm():other())+(error?`<p class="form-error" role="alert">${e(error)}</p>`:'')}</div>`;$('#panel').scrollTop=0;$('#panel').setAttribute('aria-label',screen==='home'?'RingStatus profile':screen==='users'?'Team members':screen);syncToolbar();}
+function arrangeStack(inner){
+ const nodes=[...inner.children],headers=[];let title=null;const content=[],footers=[];
+ for(const node of nodes){
+  if(node.matches('template[data-screen-heading]')){title=node.content.querySelector('.screen-title');continue;}
+  if(['back-row','brand-row','team-row','person-row'].some(c=>node.classList.contains(c)))headers.push(node);
+  else if(node.classList.contains('screen-footer')||node.classList.contains('composer')){node.dataset.stack='footer';footers.push(node);}
+  else content.push(node);
+ }
+ const order=['back-row','brand-row','team-row','person-row'];headers.sort((a,b)=>order.findIndex(c=>a.classList.contains(c))-order.findIndex(c=>b.classList.contains(c)));
+ const first=document.createElement('section');first.className='screen-section';first.dataset.section='1';if(title)first.append(title);
+ let section=first,second=null,labelCount=0;
+ for(const node of content){if(node.classList.contains('section-label')&&++labelCount===2){second=document.createElement('section');second.className='screen-section';second.dataset.section='2';section=second;}section.append(node);}
+ inner.replaceChildren(...headers,first,...(second?[second]:[]),...footers);
+}
+
+function render(){$('#panel-content').innerHTML=`<div class="screen-inner">${(screen==='home'?home():screen==='profile'?profile():screen==='team'?team():screen==='users'?users():screen==='locations'?locations():screen==='location-form'?locationForm():other())+(error?`<p class="form-error" role="alert">${e(error)}</p>`:'')}</div>`;arrangeStack($('#panel-content').firstElementChild);$('#panel').scrollTop=0;$('#panel').setAttribute('aria-label',screen==='home'?'RingStatus profile':screen==='users'?'Team members':screen);syncToolbar();}
 
 function updateLocationPhoto(){const target=$('#location-photo-preview');if(target)target.innerHTML=avatar({photo:locationPhoto});}
 function updatePhotoPreview(){const target=$('#photo-preview');if(target)target.innerHTML=avatar({...p(),photo:draftPhoto});}
