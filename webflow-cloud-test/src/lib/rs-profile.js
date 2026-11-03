@@ -35,28 +35,29 @@ async function context(request,env,fetchImpl){
  const expectedActor=request.headers.get('X-RS-Actor-Scope');if((request.method==='POST'||expectedActor)&&expectedActor!==identity.person_uid)fail('actor_changed',409);
  const call=createTenantRest(env,fetchImpl,{profile:true}),matches=await call(TABLE.people,{formula:`{recognition_person_uid} = '${quote(identity.person_uid)}'`});
  if(matches.length!==1)fail('profile_not_found',404);if(!active(matches[0]))fail('profile_inactive',403);
- const person=matches[0],recognition=await recognitionRows(env,fetchImpl,{uid:identity.person_uid});
+ const person=matches[0];
+ const [recognition,memberships,roles]=await Promise.all([recognitionRows(env,fetchImpl,{uid:identity.person_uid}),call(TABLE.memberships),call(TABLE.roles)]);
  if(!active(recognition))fail('profile_inactive',403);
- const memberships=await call(TABLE.memberships),roles=await call(TABLE.roles);
  return {env,callFetch:fetchImpl,identity,person,recognition,call,memberships,roles};
 }
 
-async function stateOf(c){
+async function stateOf(c,view='full'){
+ const roster=view==='full'||view==='roster'||view==='team',teamDetails=view==='full'||view==='team';
  const uid=c.identity.person_uid,own=c.person,identity=c.recognition.fields;
  const ownMemberships=c.memberships.filter(m=>m.fields.Person?.includes(own.id));
  const teamConflict=ownMemberships.length>1||ownMemberships.some(m=>m.fields.Person?.length!==1||m.fields.Tenant?.length!==1),teamIds=teamConflict?[]:ownMemberships.filter(m=>m.fields.Status==='Enabled').map(m=>m.fields.Tenant[0]);
  const teams=[];for(const id of teamIds){const row=await c.call(TABLE.barn,{id});if(row.fields.tenant_active===true)teams.push({id:row.id,name:row.fields.tenant_official_name||'',active:true});}
  const ownOwner=!teamConflict&&ownMemberships.length===1&&ownMemberships[0].fields.Status==='Enabled'&&teams.length===1&&c.roles.some(r=>r.fields.rec_name==='owner'&&ownMemberships[0].fields.Roles?.includes(r.id));
- const linked=c.memberships.filter(m=>m.fields.Person?.length===1&&m.fields.Tenant?.length===1&&teams.some(t=>t.id===m.fields.Tenant[0])&&(ownOwner||m.fields.Status==='Enabled'));
+ const linked=c.memberships.filter(m=>(roster||m.fields.Person?.includes(own.id))&&m.fields.Person?.length===1&&m.fields.Tenant?.length===1&&teams.some(t=>t.id===m.fields.Tenant[0])&&(ownOwner||m.fields.Status==='Enabled'));
  const memberships=linked.map(m=>({id:m.id,teamId:m.fields.Tenant[0],personRecordId:m.fields.Person[0],role:c.roles.some(r=>r.fields.rec_name==='owner'&&m.fields.Roles?.includes(r.id))?'Owner':'Member',active:m.fields.Status==='Enabled'&&teams.some(t=>t.id===m.fields.Tenant[0]&&t.active)}));
  const profiles=[{id:uid,recordId:own.id,first:identity.first_name||'',last:identity.last_name||'',name:own.fields.name||'',displayName:own.fields['display-name']||'',email:own.fields.email||'',phone:identity.primary_phone_e164||own.fields.phone_e164||'',photo:photoOf(own),tags:tags(own.fields.tags),level:own.fields.user_level||'',hasMembership:ownMemberships.length>0,hasPin:/^\d{4}$/.test(identity.member_pin||''),revision:own.fields.revision||0,created_at:own.createdTime||'',modified_at:own.fields.modified_at||''}];
- const candidates=ownOwner?(await c.call(TABLE.people)).filter(row=>active(row)&&row.fields.recognition_person_uid&&!c.memberships.some(m=>m.fields.Person?.includes(row.id))):[];
+ const candidates=teamDetails&&ownOwner?(await c.call(TABLE.people)).filter(row=>active(row)&&row.fields.recognition_person_uid&&!c.memberships.some(m=>m.fields.Person?.includes(row.id))):[];
  const peopleIds=new Set([...linked.map(m=>m.fields.Person[0]),...candidates.map(row=>row.id)]);
  for(const id of peopleIds){if(id===own.id)continue;const row=candidates.find(row=>row.id===id)||await c.call(TABLE.people,{id});if(!active(row))continue;const names=row.fields.recognition_person_uid?await recognitionRows(c.env,c.callFetch,{uid:row.fields.recognition_person_uid,allowMissing:true}):null;profiles.push({id:row.fields.recognition_person_uid||row.fields.entity_uid||row.id,recordId:row.id,first:names?.fields.first_name||'',last:names?.fields.last_name||'',name:row.fields.name||'',photo:photoOf(row),tags:tags(row.fields.tags),created_at:row.createdTime||'',modified_at:row.fields.modified_at||''});}
  for(const m of memberships){const row=await requireClaimDatabase(c.env).prepare('SELECT result_json FROM recognize_claims WHERE claim_key=?').bind('profile-membership-revision:'+m.id).first();m.revision=row?JSON.parse(row.result_json).revision:0;}
  for(const m of memberships)m.userId=profiles.find(p=>p.recordId===m.personRecordId)?.id;
  const invitations=[];
- for(const row of await c.call(INVITATIONS)){
+ for(const row of teamDetails?await c.call(INVITATIONS):[]){
   const f=row.fields;if(f.Team?.length!==1||f.Recipient?.length!==1||f['Invited by']?.length!==1)continue;
   const recipient=f.Recipient[0]===own.id;if(!recipient&&!(ownOwner&&teams.some(t=>t.id===f.Team[0])))continue;
   const team=await c.call(TABLE.barn,{id:f.Team[0]});if(!team.fields.tenant_active)continue;
@@ -65,7 +66,7 @@ async function stateOf(c){
   invitations.push({id:row.id,teamId:team.id,userId:recipient?uid:profiles.find(p=>p.recordId===f.Recipient[0])?.id,status:String(f.Status||'').toLowerCase(),revision:f.revision||0});
   if(recipient&&!teams.some(t=>t.id===team.id))teams.push({id:team.id,name:team.fields.tenant_official_name||'',active:true});
  }
- return {version:1,identity:{currentId:uid},profiles,teams,memberships:memberships.filter(m=>m.userId),invitations,hidden:[],locations:[],teamConflict};
+ return {version:1,identity:{currentId:uid},profiles,teams,memberships:memberships.filter(m=>m.userId),invitations,hidden:[],locations:[],teamConflict,loaded:{profile:true,roster,team:teamDetails}};
 }
 
 function profileFields(body,c){
@@ -162,7 +163,7 @@ export async function handleProfile(request,env,fetchImpl=fetch,executionContext
   if(!['GET','POST'].includes(request.method))fail('method_not_allowed',405);
   if(request.method==='POST'&&request.headers.get('Origin')!==new URL(request.url).origin)fail('origin_denied',403);
   const c=await context(request,env,fetchImpl);
-  if(request.method==='GET')return reply({ok:true,person_uid:c.identity.person_uid,state:await stateOf(c)});
+  if(request.method==='GET'){const view=new URL(request.url).searchParams.get('view')||'full';if(!['full','profile','roster','team'].includes(view))fail('invalid_profile_view');return reply({ok:true,person_uid:c.identity.person_uid,state:await stateOf(c,view)});}
   const body=await request.json();if(!/^[a-f0-9-]{36}$/i.test(body.requestId||''))fail('invalid_request_id');
   if(!['profile','member_status','team_create','invitation_create','invitation_response'].includes(body.operation))fail('profile_operation_not_connected',409);
   const inputHash=await payloadHash({actor:c.identity.person_uid,body}),eventId=await digest('profile|'+c.identity.person_uid+'|'+body.requestId),saved=await readTenantSave(env,eventId);

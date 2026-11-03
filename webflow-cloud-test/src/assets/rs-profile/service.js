@@ -51,14 +51,31 @@ function drain(key){
  }})();running.set(key,work);void work.finally(()=>{if(running.get(key)===work)running.delete(key);});return work;
 }
 function resume(){for(const entry of pending)if(!entry.needsPin&&!entry.error)void drain(operationKey(entry.body));}
-async function readProfile(uid,check,fingerprint){
- const startedSaveVersion=saveVersion,response=await fetch(endpoint,{credentials:'same-origin',cache:'no-store',headers:{'X-RS-Actor-Scope':uid},signal:AbortSignal.timeout(20000)});
+function mergeLoaded(next){
+ if(!confirmed||!next.loaded||next.loaded.team){confirmed=next;return;}
+ // A roster refresh replaces its records and invalidates related invitation choices.
+ if(next.loaded.roster){confirmed={...next,loaded:{...next.loaded,team:false}};return;}
+ const own=rows=>rows.filter(m=>m.userId===currentUid).map(m=>[m.id,m.teamId,m.active,m.role]);
+ if(JSON.stringify(own(confirmed.memberships))!==JSON.stringify(own(next.memberships))){confirmed=next;return;}
+ const byId=(old,rows)=>[...new Map([...old,...rows].map(row=>[row.id,row])).values()];
+ confirmed={...confirmed,...next,profiles:byId(confirmed.profiles,next.profiles),teams:byId(confirmed.teams||[],next.teams||[]),memberships:next.loaded.roster?next.memberships:[...confirmed.memberships.filter(m=>m.userId!==currentUid),...next.memberships],invitations:next.loaded.team?next.invitations:confirmed.invitations,loaded:{...confirmed.loaded,...Object.fromEntries(Object.entries(next.loaded).filter(([,value])=>value))}};
+}
+const scopedLoads=new Map();
+export function loadProfileView(view){
+ if(!['roster','team'].includes(view)||!currentUid||!confirmed)return Promise.reject(Error('Profile is required first.'));
+ if(scopedLoads.has(view))return scopedLoads.get(view);
+ const actor=currentUid,check=generation,fingerprint=currentFingerprint;
+ const work=readProfile(actor,check,fingerprint,view).catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));}notify(error);}throw error;});
+ scopedLoads.set(view,work);void work.finally(()=>{if(scopedLoads.get(view)===work)scopedLoads.delete(view);}).catch(()=>{});return work;
+}
+async function readProfile(uid,check,fingerprint,view='profile'){
+ const startedSaveVersion=saveVersion,response=await fetch(endpoint+'?view='+view,{credentials:'same-origin',cache:'no-store',headers:{'X-RS-Actor-Scope':uid},signal:AbortSignal.timeout(20000)});
  const data=await response.json();
  if(check!==generation||currentUid!==uid||recognitionAdapter.profileDeviceFingerprint?.()!==fingerprint)throw Error('Profile changed while loading.');
  if(!response.ok||!data.ok){const error=Error(data.error||'Profile could not be loaded.');error.status=response.status;throw error;}
  if(data.person_uid!==uid||data.state?.identity.currentId!==uid)throw Error('Profile identity did not match Recognize.');
  if(check!==generation||currentUid!==uid)throw Error('Profile changed while loading.');
- if(startedSaveVersion===saveVersion)confirmed=data.state;
+ if(startedSaveVersion!==saveVersion){if(view!=='profile')return readProfile(uid,check,fingerprint,view);}else mergeLoaded(data.state);
  remember(fingerprint);notify();resume();return profileState();
 }
 export function prepareProfile(uid){return loadProfile(uid);}
@@ -99,4 +116,4 @@ export function saveProfile(operation,values){
  })();retainPending();notify();
  void entry.ready.then(()=>{for(const item of pending)if(operationKey(item.body)===key&&!item.needsPin&&!item.blocked)item.error='';void drain(key);},error=>{if(actor!==currentUid||check!==generation){settle(entry,error);return;}entry.error=error.message;retainPending();settle(entry,error);notify(error);});return result;
 }
-export function clearProfile(){generation++;for(const entry of pending)settle(entry,Error('Profile changed during this save.'));currentUid=null;confirmed=null;pending=[];loading=null;refreshing=null;currentFingerprint=null;recognizing=null;running.clear();notify();}
+export function clearProfile(){generation++;for(const entry of pending)settle(entry,Error('Profile changed during this save.'));currentUid=null;confirmed=null;pending=[];loading=null;refreshing=null;currentFingerprint=null;recognizing=null;scopedLoads.clear();running.clear();notify();}
