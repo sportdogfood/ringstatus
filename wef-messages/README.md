@@ -1,6 +1,6 @@
 # WEF Messages: offline decision contract
 
-**Documentation version: 1.2 — updated 2 November 2026.** Offline reminder
+**Documentation version: 1.3 — updated 2 November 2026.** Offline reminder
 calculation added; existing event policy `wef-messages-v1` and dependencies retained.
 
 ## Offline 60/30-minute reminder proof
@@ -36,7 +36,8 @@ context. No host clock or implicit timezone is used.
 - Underway/Completed cancels pending work and stays stopped. At/past the current
   estimate, no stale reminder is returned. Old/future observations, changed data
   at an identical observation time, backward clocks and mismatched prior scopes
-  withhold. State hashes detect alteration, not authenticate state.
+  return a record error and skip that input. State hashes detect alteration,
+  not authenticate state.
 - Outside 08:00:00–15:00:00 pauses checks for review; retain the observation and
   consumed milestones. No fallback to default_time. Recovery baselines elapsed
   milestones; this deliberately avoids a catch-up caused by an unverified period.
@@ -75,18 +76,22 @@ SHA-256, exact source fields and matching saved receipt timestamps. Syntax and
 scoped whitespace checks passed. Independent reviewer /root/reminder_review
 reran all 38 tests and passed 32 separate in-memory assertions; no reviewer edits.
 
-**Reminder delta acceptance: FAIL.** Independent review found P2: the new helper
-uses shared time()/Date.parse validation, which normalizes impossible calendar
-timestamps. Reproduction observation: scope_key a, show_date 2026-03-02,
-utc_offset_minutes 0, observed_at 2026-02-30T07:00:00Z, start_time 13:00:00,
-status Not Started. At now 2026-03-02T07:00:00Z it returns baseline; reusing
-that state at 2026-03-02T12:00:00Z returns candidate. Expected: withhold.
-No code correction made after failed verification. Pending fresh owner
-APPROVED TO EDIT: strict calendar validation for the helper's instant inputs
-and prior timestamps in alert-policy.js, regression tests in alert-policy.test.js,
-then offline checks and independent review. Broader evaluateAlert behavior and
-its other baseline findings remain outside that correction.
-No Airtable writes, runtime integration, schedules or SMS occurred.
+The initial review found that Date.parse normalized impossible calendar dates.
+The owner clarified the handling: malformed records are errors to log, not a
+workflow stop or approval gate. The helper now returns `decision: skipped`,
+`errors: [{code}]`, no candidate and the unchanged supplied prior state. It does
+not throw or stop other calls; the next valid record continues normally. Invalid
+calendar dates in observed/evaluation/prior timestamps are no longer normalized
+into valid reminder times. Review-range records also return their error code.
+These are returned error entries for a future errs-log writer; this offline
+module does not write Airtable logs or add a batch runner.
+
+Current offline checks: 40/40 tests pass, including invalid February 30, retained
+prior state, a subsequent valid 60-minute candidate and malformed prior clocks.
+Syntax and scoped whitespace checks pass. Independent reviewer
+/root/reminder_review reran 40/40 tests successfully and confirmed the February
+30 record is skipped with an error, prior state is preserved, and the next
+valid call produces its due 60-minute candidate. No Airtable writes, runtime integration, schedules or SMS.
 
 ## Coordinator responsibilities
 

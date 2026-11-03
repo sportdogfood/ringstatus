@@ -177,20 +177,29 @@ function evaluateAlert(input){
 // supplies a show-date-specific UTC offset and a scope including the audience.
 // Reserved candidates stay consumed even when a subsequent estimate moves later.
 function planClassReminders(input){
-  const blocked=reason=>({decision:'withheld',reason,candidates:[],next_check_at:null,nextState:null});
+  let previous=null;
+  const skip=reason=>({decision:'skipped',reason,errors:[{code:reason}],candidates:[],next_check_at:null,nextState:previous?copy(previous):null});
+  // Date.parse normalizes February 30; check the supplied calendar date first.
+  const clock=x=>{
+    const parsed=time(x);
+    if(!Number.isFinite(parsed)||Number(x.slice(11,13))>23)return NaN;
+    const date=time(x.slice(0,10)+'T00:00:00Z');
+    return Number.isFinite(date)&&iso(date).slice(0,10)===x.slice(0,10)?parsed:NaN;
+  };
   try{
-    if(!jsonData(input))return blocked('invalid_json_input');
-    const {observation:o,prior=null,now}=input,n=time(now);
-    if(!o||!text(o.scope_key)||!Number.isFinite(n)||!Number.isFinite(time(o.observed_at))||time(o.observed_at)>n||!Number.isInteger(o.utc_offset_minutes)||Math.abs(o.utc_offset_minutes)>840)return blocked('clock_context_invalid');
+    if(!jsonData(input))return skip('invalid_json_input');
+    const {observation:o,prior=null,now}=input,n=clock(now);
+    previous=prior;
+    if(!o||!text(o.scope_key)||!Number.isFinite(n)||!Number.isFinite(clock(o.observed_at))||clock(o.observed_at)>n||!Number.isInteger(o.utc_offset_minutes)||Math.abs(o.utc_offset_minutes)>840)return skip('clock_context_invalid');
     const midnight=time(o.show_date+'T00:00:00Z');
-    if(!Number.isFinite(midnight)||iso(midnight).slice(0,10)!==o.show_date||iso(n+o.utc_offset_minutes*60000).slice(0,10)!==o.show_date)return blocked('show_day_invalid');
+    if(!Number.isFinite(midnight)||iso(midnight).slice(0,10)!==o.show_date||iso(n+o.utc_offset_minutes*60000).slice(0,10)!==o.show_date)return skip('show_day_invalid');
     const observationHash=hash({scope:o.scope_key,date:o.show_date,offset:o.utc_offset_minutes,at:o.observed_at,start:o.start_time??null,status:o.status??null});
     if(prior){
       const {head_hash,...body}=prior;
-      if(head_hash!==hash(body)||prior.version!==1||prior.scope_key!==o.scope_key||prior.show_date!==o.show_date||!Array.isArray(prior.consumed)||!prior.consumed.every(x=>x===60||x===30)||new Set(prior.consumed).size!==prior.consumed.length||!Number.isFinite(time(prior.evaluated_at))||n<time(prior.evaluated_at)||time(o.observed_at)<time(prior.observed_at)||(time(o.observed_at)===time(prior.observed_at)&&observationHash!==prior.observation_hash))return blocked('prior_or_observation_invalid');
+      if(!Number.isFinite(clock(prior.observed_at))||head_hash!==hash(body)||prior.version!==1||prior.scope_key!==o.scope_key||prior.show_date!==o.show_date||!Array.isArray(prior.consumed)||!prior.consumed.every(x=>x===60||x===30)||new Set(prior.consumed).size!==prior.consumed.length||!Number.isFinite(clock(prior.evaluated_at))||n<clock(prior.evaluated_at)||clock(o.observed_at)<clock(prior.observed_at)||(clock(o.observed_at)===clock(prior.observed_at)&&observationHash!==prior.observation_hash))return skip('prior_or_observation_invalid');
     }
     const state={version:1,scope_key:o.scope_key,show_date:o.show_date,observed_at:o.observed_at,observation_hash:observationHash,evaluated_at:now,consumed:prior?[...prior.consumed]:[],paused:false,stopped:prior?.stopped===true};
-    const result=(decision,reason,candidates=[],next_check_at=null)=>({decision,reason,candidates,next_check_at,nextState:signedState(state)});
+    const result=(decision,reason,candidates=[],next_check_at=null)=>({decision,reason,errors:decision==='review'?[{code:reason}]:[],candidates,next_check_at,nextState:signedState(state)});
     if(state.stopped||['Underway','Completed'].includes(o.status)){state.stopped=true;return result('stopped','class_no_longer_upcoming');}
     if(o.status!=='Not Started'){state.paused=true;return result('review','class_status_unverified');}
     if(typeof o.start_time!=='string'||!/^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/.test(o.start_time)){state.paused=true;return result('review','start_time_invalid');}
@@ -207,6 +216,6 @@ function planClassReminders(input){
     const candidates=!baseline&&crossed.length?[{id:hash([o.scope_key,o.show_date,'class-reminder',Math.min(...crossed)]),lead_minutes:Math.min(...crossed),target_at:iso(target),observed_at:o.observed_at}]:[];
     const pending=[60,30].filter(lead=>!state.consumed.includes(lead)).map(lead=>target-lead*60000);
     return result(baseline?'baseline':candidates.length?'candidate':'waiting',baseline?'no_catchup':candidates.length?'reminder_due':'not_due',candidates,pending.length?iso(Math.min(...pending)):null);
-  }catch{return blocked('invalid_input_or_state');}
+  }catch{return skip('invalid_input_or_state');}
 }
 module.exports={evaluateAlert,planClassReminders};

@@ -73,7 +73,7 @@ async function scheduled(){
  if(attempt){
   const errors=report['item-errors']||[];
   for(const error of errors)logging.recordError(root,attempt,{category:stage,operation:linking?'Link':'Collect',target:error.key,message:error.error,'write-outcome':'Unknown'},stage);
-  logging.finish(root,attempt,{status:errors.length?'Partial':'Succeeded',stage,'show-key':report['show-key'],'run-key':report['run-key'],counts:report.counts,reason:errors.length?errors[0].error:undefined});
+  logging.finish(root,attempt,{status:errors.some(error=>!error.nonblocking)?'Partial':'Succeeded',stage,'show-key':report['show-key'],'run-key':report['run-key'],counts:report.counts,reason:errors.length?errors[0].error:undefined});
   const delivered=await logging.deliver(root,config);
   if(!delivered.ok)logging.recordError(root,attempt,{category:'Logging',message:delivered.error,'write-outcome':'Unknown'},'LogDelivery');
  }

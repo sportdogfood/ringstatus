@@ -10,7 +10,7 @@ def epoch(value):
     return datetime.datetime.fromisoformat(str(value).replace('Z','+00:00')).timestamp()
 
 def run(schema_file):
-    started=time.perf_counter();errors=[];missing=set();changes={};linked={}
+    started=time.perf_counter();errors=[];missing={};changes={};linked={}
     schema=json.loads(pathlib.Path(schema_file).read_text(encoding='utf-8'))['tables'];api=Airtable()
     def read(table,names=None,formula=None):
         fields={f['name']:f['id'] for f in schema[table]['fields']}
@@ -46,7 +46,7 @@ def run(schema_file):
             prefixes=[show+'|'+day+'|' for day in days]
             formula='OR('+','.join('LEFT({'+primary(table)+'},'+str(len(p))+')='+json.dumps(p) for p in prefixes)+')'
             names={primary(table),'last-success'}|{f['name'] for f in schema[table]['fields'] if f['type']=='multipleRecordLinks'}
-            if table=='rings':names.add('ring-id')
+            if table=='rings':names|={'ring-id','ring-number','ring-name'}
             if table=='classes':names.add('status')
             if table in ('trips','schedules'):names|={'source-json','record-status'}
             data[table]=keyed(table,read(table,names,formula)) if prefixes else {}
@@ -107,7 +107,7 @@ def run(schema_file):
             for target,identity in targets:
                 values=data.get(target,{}).get(str(identity),[])
                 if len(values)!=1:
-                    if not optional:missing.add(target+' '+str(identity))
+                    if not optional:missing[target+' '+str(identity)]=('Optional run-log link unavailable or ambiguous: '+str(identity)+'. Existing links retained; linking continues.' if target=='run-logs' else 'No unique existing link target; existing links preserved')
                     return
                 if values[0]['id'] not in ids:ids.append(values[0]['id'])
             row=rows[0];pending=changes.setdefault(table,{}).setdefault(row['id'],{})
@@ -128,8 +128,12 @@ def run(schema_file):
                 if table=='rings':
                     f=rows[0]['fields'];prefix=str(owner['fields']['customer_id'])+'|'+str(owner['fields']['facility_id'])+'|'
                     matches=[r for r in master_rings if str(r['fields'].get('ring-key','')).startswith(prefix) and r['fields'].get('ring-id')==f.get('ring-id')]
-                    if len(matches)==1:edge('rings',key,'w-rings',[('w-rings',matches[0]['fields'][primary('w-rings')])])
-                    else:missing.add('w-rings '+prefix+str(f.get('ring-id')))
+                    message=f"Optional w-rings match unavailable or ambiguous: {f.get('ring-name')}, ring number {f.get('ring-number')}, ring ID {f.get('ring-id')}, show {show}, facility {owner['fields']['facility_id']}. Show-source mapping and existing links retained; linking continues."
+                    if len(matches)==1:
+                        identity=matches[0]['fields'][primary('w-rings')]
+                        edge('rings',key,'w-rings',[('w-rings',identity)])
+                        if 'w-rings '+str(identity) in missing:missing['w-rings '+str(identity)]=message
+                    else:missing['w-rings '+prefix+str(f.get('ring-id'))]=message
         for key,rows in data['schedules'].items():
             if len(rows)!=1:continue
             try:
@@ -172,7 +176,8 @@ def run(schema_file):
                     linked[table]=linked.get(table,0)+len(batch)
                 except Exception as error:fail(table,error)
     except Exception as error:fail('Linking',error)
-    for target in sorted(missing):errors.append({'key':target,'error':'No unique existing link target; existing links preserved'})
-    return {'ok':not errors,'state':'Partial' if errors else 'Linked','show-key':locals().get('show'),
+    for target in sorted(missing):errors.append({'key':target,'error':missing[target],**({'nonblocking':True} if target.startswith(('w-rings ','run-logs ')) else {})})
+    incomplete=any(not e.get('nonblocking') for e in errors)
+    return {'ok':not incomplete,'state':'Partial' if incomplete else 'Linked','show-key':locals().get('show'),
         'run-key':'linking-'+(os.environ.get('WEF_LOG_ATTEMPT_ID') or datetime.datetime.now(datetime.timezone.utc).isoformat()),
         'counts':{'saved':sum(linked.values()),'linked-by-table':linked,'unresolved':len(missing),'total-seconds':round(time.perf_counter()-started,6)},'item-errors':errors}

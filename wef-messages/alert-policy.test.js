@@ -46,12 +46,23 @@ test('saved completed class and underway class cancel future reminders permanent
     const regression={...saved(0),observed_at:'2026-11-01T17:04:00Z'};assert.equal(plan(regression,undefined,r.nextState).decision,'stopped');}
 });
 test('past start expires remaining reminders without a stale candidate',()=>{const b=plan();const r=plan(saved(0),'2026-11-01T18:00:00Z',b.nextState);assert.equal(r.decision,'expired');assert.deepEqual(r.candidates,[]);assert.equal(r.next_check_at,null);});
-test('old observations, future observations, changed same-timestamp data and wrong scopes withhold',()=>{
-  const b=plan(saved(1));for(const [o,n] of [[saved(0),saved(1).observed_at],[saved(1),'2026-11-01T15:00:00Z'],[{...saved(1),start_time:'12:30:00'},saved(1).observed_at],[{...saved(1),scope_key:'other'},saved(1).observed_at]])assert.equal(plan(o,n,b.nextState).decision,'withheld');
+test('old observations, future observations, changed same-timestamp data and wrong scopes are skipped',()=>{
+  const b=plan(saved(1));for(const [o,n] of [[saved(0),saved(1).observed_at],[saved(1),'2026-11-01T15:00:00Z'],[{...saved(1),start_time:'12:30:00'},saved(1).observed_at],[{...saved(1),scope_key:'other'},saved(1).observed_at]])assert.equal(plan(o,n,b.nextState).decision,'skipped');
 });
 test('explicit show clock context required; invalid dates and unknown status cannot schedule',()=>{
-  for(const change of [{utc_offset_minutes:undefined},{utc_offset_minutes:'-300'},{show_date:'2026-02-30'},{start_time:'24:00:00'},{status:'unknown'}]){const o={...saved(0),...change};assert.ok(['review','withheld'].includes(plan(o).decision));}
-  assert.equal(plan(saved(0),'2026-11-02T15:00:00Z').decision,'withheld');
+  for(const change of [{utc_offset_minutes:undefined},{utc_offset_minutes:'-300'},{show_date:'2026-02-30'},{start_time:'24:00:00'},{status:'unknown'}]){const o={...saved(0),...change};assert.ok(['review','skipped'].includes(plan(o).decision));}
+  assert.equal(plan(saved(0),'2026-11-02T15:00:00Z').decision,'skipped');
+});
+test('malformed calendar timestamp returns a record error and valid records continue',()=>{
+  const bad={...saved(0),show_date:'2026-03-02',utc_offset_minutes:0,observed_at:'2026-02-30T07:00:00Z'};
+  const r=plan(bad,'2026-03-02T07:00:00Z');assert.equal(r.decision,'skipped');assert.deepEqual(r.errors,[{code:'clock_context_invalid'}]);assert.deepEqual(r.candidates,[]);
+  const b=plan();const skipped=plan({...saved(0),observed_at:'2026-02-30T07:00:00Z'},'2026-11-01T16:00:00Z',b.nextState);
+  assert.deepEqual(skipped.nextState,b.nextState);assert.deepEqual(plan(saved(0),'2026-11-01T17:00:00Z',skipped.nextState).candidates.map(c=>c.lead_minutes),[60]);
+});
+test('invalid evaluation and prior calendar timestamps return errors without throwing',()=>{
+  assert.equal(plan(saved(0),'2026-02-30T17:00:00Z').decision,'skipped');
+  const b=plan();for(const field of ['observed_at','evaluated_at']){const prior=copy(b.nextState);prior[field]='2026-02-30T07:00:00Z';const r=plan(saved(0),'2026-11-01T16:00:00Z',seal(prior));assert.equal(r.decision,'skipped');assert.equal(r.errors[0].code,'prior_or_observation_invalid');}
+  assert.equal(planClassReminders(null).decision,'skipped');
 });
 test('planner does not mutate inputs and stable replay produces same candidate identity',()=>{
   const b=plan();const args={observation:saved(0),now:'2026-11-01T17:00:00Z',prior:b.nextState};const before=JSON.stringify(args);
