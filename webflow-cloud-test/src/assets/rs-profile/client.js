@@ -73,7 +73,7 @@ function syncToolbar(){for(const b of root.querySelectorAll('#widget [data-go]')
 
 function close(){panelOpen=false;$('#panel').hidden=true;syncToolbar();const trigger=lastTrigger?.isConnected?lastTrigger:$('#widget [data-go=home]');trigger?.focus();}
 
-function open(view){if(!p())return;if(destinations[view]){location.assign(destinations[view]);return;}const active=root.activeElement;if(active&&!$('#panel').contains(active))lastTrigger=active;screen=view;editField=null;error='';panelOpen=true;update();render();$('#panel').focus({preventScroll:true});}
+function open(view){if(!p())return;if(destinations[view]){const url=new URL(destinations[view]);if(view==='optins'){const m=member(),t=m&&state.teams.find(t=>t.id===m.teamId),u=p();url.hash=new URLSearchParams({profile:JSON.stringify({source:'live',team:t?.name||'No Team membership',teamRole:m?'Team '+m.role:'',name:name(u),role:u.level||'',tags:u.tags||[],photo:String(u.photo||'').toLowerCase().startsWith('https://')?u.photo:''})}).toString();}location.assign(url.href);return;}const active=root.activeElement;if(active&&!$('#panel').contains(active))lastTrigger=active;screen=view;editField=null;error='';panelOpen=true;update();render();$('#panel').focus({preventScroll:true});}
 
 const logo='<span class="profile-brand" aria-label="RingStatus Pro"><span class="rs-wordmark" aria-hidden="true"><span class="rs-wordmark-ring">RING</span><span class="rs-wordmark-status">STATUS</span></span><span class="profile-pro">PRO</span></span>';
 
