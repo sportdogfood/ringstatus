@@ -1,41 +1,102 @@
 import {recognitionAdapter} from '../rs-recognition/widget.js';
 import {safeStorage,browserStorage} from '../rs-recognition/native-client.js';
-
-const endpoint='/test/rs-profile/data';
-let currentUid=null,pending=null,generation=0;
-const storage=safeStorage(browserStorage('localStorage'));
-const pendingKey=uid=>'rs_profile_pending_v1:'+uid;
+const endpoint='/test/rs-profile/data',storage=safeStorage(browserStorage('localStorage'));
+const pendingKey=uid=>'rs_profile_pending_v1:'+uid,snapshotKey=uid=>'rs_profile_snapshot_v1:'+uid;
+let currentUid=null,confirmed=null,pending=[],generation=0,loading=null,saveVersion=0,currentFingerprint=null,refreshing=null,recognizing=null;
+const listeners=new Set(),running=new Map(),copy=value=>structuredClone(value);
+// These Profile errors are raised by profileFields before runTenantSave or writes.
+const noWriteProfileErrors=new Set(['invalid_profile','invalid_profile_field','name_required','invalid_email','invalid_photo','https_image_url_required','invalid_tags','invalid_phone','invalid_pin']);
+const recoveringOperations=new Set(['member_status','team_create','invitation_create','invitation_response']);
+const operationKey=b=>b.operation==='profile'?'profile':b.operation==='member_status'?'member:'+b.membershipId:'team';
+const fingerprintOf=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(value)))),b=>b.toString(16).padStart(2,'0')).join('');
 function viewPreferences(state){try{state.hidden=JSON.parse(storage.getItem('rs_profile_hidden_v1:'+currentUid)||'[]').filter(x=>Array.isArray(x)&&x[0]===currentUid);}catch{state.hidden=[];}return state;}
 export function saveViewPreferences(hidden){if(currentUid)storage.setItem('rs_profile_hidden_v1:'+currentUid,JSON.stringify(hidden.filter(x=>x[0]===currentUid)));}
-function retainPending(){if(!pending)return;const safe=structuredClone(pending);if(safe.body.fields?.pin){delete safe.body.fields.pin;safe.needsPin=true;}storage.setItem(pendingKey(pending.uid),JSON.stringify(safe));}
-export async function loadProfile(){
- const check=++generation;
- const uid=await recognitionAdapter.current();if(!uid){currentUid=null;return null;}
- const response=await fetch(endpoint,{credentials:'same-origin',cache:'no-store',headers:{'X-RS-Actor-Scope':uid},signal:AbortSignal.timeout(20000)});
- const data=await response.json();if(!response.ok||!data.ok)throw Error(data.error||'Profile could not be loaded.');
+function retainPending(){
+ if(!currentUid)return;if(!pending.length){storage.removeItem(pendingKey(currentUid));return;}
+ const saved=pending.map(({uid,fingerprint,body,sent,needsPin,error,blocked,noWrite,uncertain})=>{const safe={uid,fingerprint,body:copy(body),sent,needsPin,error,blocked,noWrite,uncertain};if(safe.body.fields?.pin){delete safe.body.fields.pin;safe.needsPin=true;}return safe;});
+ storage.setItem(pendingKey(currentUid),JSON.stringify(saved));
+}
+function remember(fingerprint=currentFingerprint){if(!confirmed||!currentUid||!fingerprint)return;const state=copy(confirmed);for(const person of state.profiles||[])delete person.pin;storage.setItem(snapshotKey(currentUid),JSON.stringify({uid:currentUid,deviceFingerprint:fingerprint,state}));}
+export function profileState(){
+ if(!confirmed)return null;const state=viewPreferences(copy(confirmed));
+ for(const entry of pending){if(entry.body.operation==='member_status'){const member=state.memberships.find(m=>m.id===entry.body.membershipId);if(member&&member.userId!==currentUid)member.active=entry.body.active;}if(entry.body.operation==='profile'){const own=state.profiles.find(p=>p.id===currentUid),fields={...entry.body.fields};delete fields.pin;if(own)Object.assign(own,fields);}}
+ state.pendingActions=pending.filter(p=>p.body.operation!=='profile').map(p=>({...copy(p.body),error:p.error||''}));state.pendingSave=!!pending.length;state.pendingNeedsPin=pending.some(p=>p.needsPin);state.pendingError=pending.find(p=>p.error)?.error||'';return state;
+}
+function notify(error){for(const listener of listeners)listener(profileState(),error);}
+export function subscribeProfile(listener){listeners.add(listener);return()=>listeners.delete(listener);}
+function restore(uid){
+ if(currentUid===uid)return;currentUid=uid;confirmed=null;pending=[];
+ try{const saved=JSON.parse(storage.getItem(pendingKey(uid))||'null');pending=(Array.isArray(saved)?saved:saved?[saved]:[]).filter(p=>p.uid===uid&&p.body?.requestId).map(p=>({...p,sent:p.sent!==false,uncertain:p.uncertain??(p.sent!==false&&!p.noWrite&&!p.blocked),error:recoveringOperations.has(p.body.operation)&&!p.blocked&&!p.needsPin?'':p.error}));}catch{}
+}
+function mergeConfirmed(next,entry){
+ if(!confirmed){confirmed=next;return;}
+ if(entry.body.operation==='profile'){const person=next.profiles.find(p=>p.id===currentUid);confirmed.profiles=confirmed.profiles.map(p=>p.id===currentUid?person||p:p);}
+ else if(entry.body.operation==='member_status'){const member=next.memberships.find(m=>m.id===entry.body.membershipId);confirmed.memberships=confirmed.memberships.map(m=>m.id===entry.body.membershipId?member||m:m);}
+ else{const own=confirmed.profiles.find(p=>p.id===currentUid);confirmed=next;if(own)confirmed.profiles=confirmed.profiles.map(p=>p.id===currentUid?own:p);}
+}
+function revisionFor(entry){if(entry.body.operation==='profile')return confirmed.profiles.find(p=>p.id===currentUid)?.revision;if(entry.body.operation==='member_status')return confirmed.memberships.find(m=>m.id===entry.body.membershipId)?.revision;return entry.body.expectedRevision;}
+function settle(entry,error){const waiters=entry.waiters||[];entry.waiters=[];for(const waiter of waiters)error?waiter.reject(error):waiter.resolve(profileState());}
+function drain(key){
+ if(running.has(key))return running.get(key);const actor=currentUid,check=generation;
+ const work=(async()=>{while(actor===currentUid&&check===generation){
+  const entry=pending.find(p=>operationKey(p.body)===key);if(!entry||entry.needsPin||entry.error||entry.blocked)return;
+  try{
+   if(entry.ready)await entry.ready;if(actor!==currentUid||check!==generation)throw Error('Profile changed before this save.');
+   if(!entry.sent){const revision=revisionFor(entry);if(revision!==undefined)entry.body.expectedRevision=revision;const original={...entry.body};delete original.requestId;entry.fingerprint=await fingerprintOf(original);if(actor!==currentUid||check!==generation)throw Error('Profile changed before this save.');entry.sent=true;retainPending();}
+   const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-RS-Actor-Scope':actor},body:JSON.stringify(entry.body),signal:AbortSignal.timeout(20000)});
+   const data=await response.json();if(!response.ok||!data.ok){const error=Error(data.error||'The save has not been confirmed.');error.status=response.status;throw error;}
+   if(actor!==currentUid||check!==generation||data.state?.identity.currentId!==actor)throw Error('Profile changed during this save.');
+   mergeConfirmed(data.state,entry);saveVersion++;pending=pending.filter(p=>p!==entry);retainPending();remember();settle(entry);notify();
+  }catch(error){if(actor!==currentUid||check!==generation){settle(entry,error);return;}entry.error=error.message;entry.blocked=error.status>=400&&error.status<500;entry.uncertain||=entry.sent&&(!Number.isInteger(error.status)||error.status>=500||error.status<400);entry.noWrite=!entry.uncertain&&entry.body.operation==='profile'&&error.status===400&&noWriteProfileErrors.has(error.message);retainPending();settle(entry,error);if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));}notify(error);return;}
+ }})();running.set(key,work);void work.finally(()=>{if(running.get(key)===work)running.delete(key);});return work;
+}
+function resume(){for(const entry of pending)if(!entry.needsPin&&!entry.error)void drain(operationKey(entry.body));}
+async function readProfile(uid,check,fingerprint){
+ const startedSaveVersion=saveVersion,response=await fetch(endpoint,{credentials:'same-origin',cache:'no-store',headers:{'X-RS-Actor-Scope':uid},signal:AbortSignal.timeout(20000)});
+ const data=await response.json();
+ if(check!==generation||currentUid!==uid||recognitionAdapter.profileDeviceFingerprint?.()!==fingerprint)throw Error('Profile changed while loading.');
+ if(!response.ok||!data.ok){const error=Error(data.error||'Profile could not be loaded.');error.status=response.status;throw error;}
  if(data.person_uid!==uid||data.state?.identity.currentId!==uid)throw Error('Profile identity did not match Recognize.');
- if(check!==generation)throw Error('Profile changed while loading.');
- if(currentUid!==uid)pending=null;currentUid=uid;
- try{pending=JSON.parse(storage.getItem(pendingKey(uid))||'null')||pending;}catch{}
- if(pending?.uid!==uid)pending=null;
- if(pending&&['member_status','team_create','invitation_create','invitation_response'].includes(pending.body.operation)){const {operation,requestId,...values}=pending.body;try{return await saveProfile(operation,values);}catch(error){data.state.pendingError=error.message;}}
- if(pending){data.state.pendingSave=true;data.state.pendingNeedsPin=!!pending.needsPin;const own=data.state.profiles.find(p=>p.id===uid);if(own&&pending.body.operation==='profile'){Object.assign(own,pending.body.fields);own.revision=pending.body.expectedRevision;}}
- return viewPreferences(data.state);
+ if(check!==generation||currentUid!==uid)throw Error('Profile changed while loading.');
+ if(startedSaveVersion===saveVersion)confirmed=data.state;
+ remember(fingerprint);notify();resume();return profileState();
 }
-export async function saveProfile(operation,values){
- if(!currentUid)throw Error('Recognize is required first.');
- const actor=currentUid,scopeGeneration=generation;
- const input={operation,...values};
- const fingerprintOf=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(value)))),b=>b.toString(16).padStart(2,'0')).join('');
- const fingerprint=await fingerprintOf(input);
- if(actor!==currentUid||scopeGeneration!==generation)throw Error('Profile changed before this save.');
- if(pending&&pending.fingerprint!==fingerprint)throw Error('Retry the pending save before starting another change.');
- if(pending?.needsPin&&input.fields?.pin){pending.body.fields.pin=input.fields.pin;pending.needsPin=false;}
- if(!pending)pending={uid:currentUid,fingerprint,body:{...input,requestId:crypto.randomUUID()}};
- retainPending();const operationPending=pending;
- const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-RS-Actor-Scope':actor},body:JSON.stringify(operationPending.body),signal:AbortSignal.timeout(20000)});
- const data=await response.json();if(!response.ok||!data.ok){if([400,403,404].includes(response.status)||response.status===409&&['actor_changed','record_changed','profile_operation_not_connected','team_membership_exists','invitation_pending'].includes(data.error)){storage.removeItem(pendingKey(actor));if(pending===operationPending)pending=null;}throw Error(data.error||'The save has not been confirmed.');}
- if(actor!==currentUid||data.state?.identity.currentId!==actor)throw Error('Profile changed during this save.');
- storage.removeItem(pendingKey(actor));if(pending===operationPending)pending=null;return viewPreferences(data.state);
+export function prepareProfile(uid){return loadProfile(uid);}
+export function loadProfile(resolvedUid){
+ if(resolvedUid!==undefined)return loadResolvedProfile(resolvedUid,recognitionAdapter.profileDeviceFingerprint?.());
+ const check=generation;
+ if(!recognizing){const work=Promise.resolve().then(()=>recognitionAdapter.current());recognizing=work;void work.finally(()=>{if(recognizing===work)recognizing=null;}).catch(()=>{});}
+ return recognizing.then(uid=>{if(check!==generation)throw Error('Profile changed while loading.');return loadResolvedProfile(uid,recognitionAdapter.profileDeviceFingerprint?.());});
 }
-export function clearProfile(){generation++;currentUid=null;pending=null;}
+function loadResolvedProfile(uid,fingerprint){
+ // Resolve the current server identity/device before reusing any private work.
+ if(currentUid&&(uid!==currentUid||fingerprint!==currentFingerprint))clearProfile();
+ if(!uid){clearProfile();return Promise.resolve(null);}
+ if(loading)return loading;
+ if(refreshing&&currentUid)return confirmed?Promise.resolve(profileState()):refreshing;
+ const check=generation;restore(uid);currentFingerprint=fingerprint;
+ if(!confirmed){try{const cached=JSON.parse(storage.getItem(snapshotKey(uid))||'null');if(fingerprint&&cached?.uid===uid&&cached.deviceFingerprint===fingerprint&&cached.state?.identity.currentId===uid)confirmed=cached.state;}catch{}}
+ const refresh=readProfile(uid,check,fingerprint);refreshing=refresh;void refresh.finally(()=>{if(refreshing===refresh)refreshing=null;}).catch(()=>{});
+ const work=confirmed?Promise.resolve(profileState()):refresh;
+ if(confirmed)void refresh.catch(error=>{if(check!==generation||currentUid!==uid||currentFingerprint!==fingerprint)return;if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(uid));}notify(error);});
+ loading=work;void work.finally(()=>{if(loading===work)loading=null;}).catch(()=>{});return work;
+}
+
+export function saveProfile(operation,values){
+ if(!currentUid||!confirmed)return Promise.reject(Error('Recognize is required first.'));
+ const actor=currentUid,check=generation,input={operation,...copy(values)},key=operationKey(input);
+ // Only an explicit correction can replace a proven no-write validation failure.
+ if(operation==='profile'){const rejected=pending.filter(p=>p.noWrite&&p.body.operation==='profile'&&JSON.stringify(p.body.fields)!==JSON.stringify(input.fields));if(rejected.length){input.fields=Object.assign({},...rejected.map(p=>p.body.fields),input.fields);pending=pending.filter(p=>!rejected.includes(p));}}
+ let entry=pending.find(p=>operationKey(p.body)===key&&JSON.stringify(p.body.fields||{})===JSON.stringify(input.fields||{})&&(p.body.operation==='profile'||Object.keys(input).every(k=>k==='expectedRevision'||JSON.stringify(p.body[k])===JSON.stringify(input[k]))));
+ if(!entry&&input.fields?.pin)entry=pending.find(p=>p.needsPin&&p.body.operation==='profile');
+ if(entry?.blocked)return Promise.reject(Error(entry.error));
+ if(!entry){entry={uid:actor,body:{...input,requestId:crypto.randomUUID()},sent:false,needsPin:false,error:'',waiters:[]};pending.push(entry);}
+ const result=new Promise((resolve,reject)=>{(entry.waiters||=[]).push({resolve,reject});});
+ entry.ready=(async()=>{
+  const fingerprint=await fingerprintOf(input);if(actor!==currentUid||check!==generation)throw Error('Profile changed before this save.');
+  if(entry.needsPin){const original={...entry.body,fields:{...entry.body.fields,pin:input.fields?.pin}};delete original.requestId;if(!input.fields?.pin||entry.fingerprint&&await fingerprintOf(original)!==entry.fingerprint)throw Error('Retry the pending save with the same PIN.');entry.body.fields.pin=input.fields.pin;entry.needsPin=false;}
+  entry.fingerprint||=fingerprint;entry.error='';retainPending();
+ })();retainPending();notify();
+ void entry.ready.then(()=>{for(const item of pending)if(operationKey(item.body)===key&&!item.needsPin&&!item.blocked)item.error='';void drain(key);},error=>{if(actor!==currentUid||check!==generation){settle(entry,error);return;}entry.error=error.message;retainPending();settle(entry,error);notify(error);});return result;
+}
+export function clearProfile(){generation++;for(const entry of pending)settle(entry,Error('Profile changed during this save.'));currentUid=null;confirmed=null;pending=[];loading=null;refreshing=null;currentFingerprint=null;recognizing=null;running.clear();notify();}

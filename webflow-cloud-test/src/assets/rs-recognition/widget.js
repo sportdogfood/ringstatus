@@ -26,6 +26,7 @@ function finishSignOut(){
 }
 async function action(body){return exclusive(async()=>{await drainSignOut();return sendAction(body);});}
 export const recognitionAdapter={
+ profileDeviceFingerprint(){return deviceFingerprint;},
  async current(){
   if(persistentStorage.getItem(pendingKey)){void finishSignOut().catch(()=>{});return null;}
   let result;await exclusive(async()=>{if(persistentStorage.getItem(pendingKey))return;await runSilentRecognition({endpoint,persistentStorage,sessionStorageImpl:visitStorage,redirectOnRecognized:false,onOutcome:value=>{result=value;}});});
@@ -54,7 +55,9 @@ export const recognitionAdapter={
 
 export function mountRecognitionWidget(root,{landing=false}={}){
  if(!root||root.__rsRecognitionWidget)return root?.__rsRecognitionWidget;
- const widget=mountRecognize(root,{adapter:recognitionAdapter,onRecognized:()=>location.assign('/profile'),onProfile:()=>location.assign('/profile')});
+ const prepare=uid=>{if(uid)void import('../rs-profile/service.js').then(({prepareProfile})=>prepareProfile(uid)).catch(()=>{});};
+ const adapter={...recognitionAdapter,async current(){const uid=await recognitionAdapter.current();prepare(uid);return uid;}};
+ const widget=mountRecognize(root,{adapter,onRecognized:uid=>{prepare(uid);location.assign('/profile');},onProfile:()=>location.assign('/profile')});
  root.__rsRecognitionWidget=widget;
  const refresh=()=>widget.refresh({showFormWhenUnrecognized:landing}).catch(()=>{root.setAttribute('data-rs-recognition-status','unavailable');});
  void flushIamHistory({endpoint,persistentStorage});void refresh();
