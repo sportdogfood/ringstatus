@@ -13,7 +13,7 @@ from horse_associations import sync as sync_horse_associations
 ENTITIES=('horses','riders','trainers','rings')
 # Only business facts needed for existing entity fields and show/day links.
 SOURCE_FIELDS={
-    'shows':('show-key','show-id','customer-id','facility-id','show-name','start-date','end-date','selected-date','last-success'),
+    'shows':('show-key','show-id','customer-id','facility-id','show-name','start-date','end-date','selected-date','last-success','is-default'),
     'days':('day-key','show','date','last-success'),
     'rings':('ring-key','show','day','ring-id','ring-number','ring-name','last-success'),
     'classes':('class-key','show','day'),
@@ -24,12 +24,24 @@ SOURCE_FIELDS={
     'trainers':('trainer-key','trainer-id','trainer-name','last-success'),
 }
 
-def sources(client):
+def sources(client,canonical=False):
     schema=json.loads((PARENT/'wef-data/schema.json').read_text(encoding='utf-8'))
     facts={};native={};definitions={}
     for table,names in SOURCE_FIELDS.items():
-        definition=schema['tables'][table]
-        fields=[f for f in definition['fields'] if f['name'] in names]
+        source={'shows':'wef-shows.shows','days':'wef-shows.show-days'}.get(table,table) if canonical else table
+        definition=schema['tables'][source]
+        fields=copy.deepcopy(definition['fields'])
+        if canonical:
+            for field in fields:
+                field['name']={'show-day-key':'day-key'}.get(field['name'],field['name'].replace('_','-'))
+            overrides={
+                'classes':{'show':'fldmQ3e7HnOa1tLSF','day':'fldJRAL0bwhFqtt6j'},
+                'entries':{'show':'fld5K8CbE6aj1sXJV'},
+            }.get(table,{})
+            for name,identity in overrides.items():
+                fields=[f for f in fields if f['name']!=name]
+                fields.append({'name':name,'id':identity,'type':'multipleRecordLinks'})
+        fields=[f for f in fields if f['name'] in names]
         definitions[table]=fields
         rows=client.records(schema['base'],definition['id'],fields=[f['id'] for f in fields])
         facts[table]={}
@@ -92,7 +104,18 @@ def project(facts,entity):
 
 def process(entity,config,client,facts):
     runtime=ROOT/'runtime'/entity
-    counters=SeasonStore(client,config,runtime).apply(project(facts,entity))
+    store=SeasonStore(client,config,runtime)
+    graph=project(facts,entity);unmatched=0
+    if config.get('synced-context'):
+        # Context is owned by Shows. Only entity links are authored here.
+        for table,field in [('shows','shows'),('show-days','show-days')]:
+            available=store.inventory(table)
+            for row in graph[entity].values():
+                supported=[key for key in row[field] if key in available]
+                unmatched+=len(row[field])-len(supported);row[field]=supported
+            graph[table]={}
+    counters=store.apply(graph)
+    if config.get('synced-context'):counters['memberships-unmatched']=unmatched
     if entity=='horses':counters.update(sync_horse_associations(client,config,facts,runtime))
     if config.get('ring-helpers'):
         source=[]
@@ -101,24 +124,36 @@ def process(entity,config,client,facts):
             if rings:source.append(({'shows':facts['shows'],'rings':rings},{'show-key':show}))
         helpers=sync_ring_helpers(client,config['ring-helpers'],source,runtime)
         counters.update({'ring-helper-'+name:value for name,value in helpers.items()})
-    return {'status':'Succeeded','stage':'Upsert','counts':counters}
+    result={'status':'Succeeded','stage':'Upsert','counts':counters}
+    selected=[key for key,row in facts['shows'].items() if row.get('is-default') is True]
+    if len(selected)==1:result['show-key']=selected[0]
+    return result
 
 def run():
     config=json.loads((ROOT/'schema.json').read_text(encoding='utf-8'))
     client=Airtable();results={}
-    try:facts=sources(client)
-    except TransportDeferred as error:
-        return {entity:{'status':'Deferred','stage':'SourceRead','error':{'category':'AirtableRead','message':str(error),'write-outcome':'NotApplicable'}} for entity in config['entities']}
+    canonical=any(v.get('synced-context') for v in config['entities'].values())
+    source_error=None
+    try:facts=sources(client,canonical=canonical)
+    except Exception as error:
+        if not canonical:
+            if not isinstance(error,TransportDeferred):raise
+            return {entity:{'status':'Deferred','stage':'SourceRead','error':{'category':'AirtableRead','message':str(error),'write-outcome':'NotApplicable'}} for entity in config['entities']}
+        source_error=error
     for entity,schema in config['entities'].items():
         runtime=ROOT/'runtime'/entity
         if (runtime/'stopped.json').exists():
             results[entity]={'status':'Skipped','stage':'StopGuard','reason':'Season entity stopped; owner approval required'}
             continue
-        try:results[entity]=process(entity,schema,client,facts)
+        try:
+            if schema.get('synced-context') and source_error is not None:raise source_error
+            # Preserve the separately owned Rings context path during this migration.
+            entity_facts=sources(client) if canonical and not schema.get('synced-context') else facts
+            results[entity]=process(entity,schema,client,entity_facts)
         except TransportDeferred as error:
-            results[entity]={'status':'Deferred','stage':'Persistence','error':{'category':'Transport','operation':error.operation['method'],'target':error.operation['table'],'message':str(error),'write-outcome':error.operation.get('write-outcome','Unknown')}}
+            results[entity]={'status':'Deferred','stage':'SourceRead' if error is source_error else 'Persistence','error':{'category':'Transport','operation':error.operation['method'],'target':error.operation['table'],'message':str(error),'write-outcome':error.operation.get('write-outcome','Unknown')}}
         except Exception as error:
-            result={'status':'Failed','stage':'Apply','error':{'category':'Validation','message':type(error).__name__+': '+str(error),'write-outcome':'Unknown'}}
+            result={'status':'Failed','stage':'SourceRead' if error is source_error else 'Apply','error':{'category':'Validation','message':type(error).__name__+': '+str(error),'write-outcome':'Unknown'}}
             atomic(runtime/'stopped.json',{'at':stamp(),**result});results[entity]=result
     return results
 

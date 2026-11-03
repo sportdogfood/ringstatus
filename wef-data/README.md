@@ -1,6 +1,10 @@
-# wef-data — November 3, README version 2026.11.03.4
+# wef-data — November 3, README version 2026.11.03.6
 
 Updated November 3, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+
+## Schedule links — November 3
+
+Owner-approved schedules-to-trips-and-entries change deployed12:45:55p.m.Eastern. Existing independent linker uses saved trip facts and exact customer/show/date/ring/class key to add native schedules.trips and schedules.entries links. Existing links are preserved; each trip keeps its horse/rider/trainer. Only seven linker lines and two schedules field bindings were added, with standard Airtable reciprocal fields. Independent review COMPLETE/PASS and focused offline matching/dedup/repeat/preservation checks passed. No collector, task, cadence, force marker or manual run changed. Normal scheduled/native verification PASSED: the existing1:19p.m.Eastern linking run (attempt ee40052d-5e40-43f7-9d0e-c5f11a6d092d) completed1:20:18p.m.,Succeeded/taskexit0,128schedule updates,30.561136seconds linker runtime. Native readback verifies128matching schedules,224trip links and224entry links,zero mismatches. All232trip horse/rider/trainer assignments and all512schedule/232trip/78entry nativeIDs/keys remained unchanged; six protected source files and all3taskdefinitions hashunchanged. Existing optional Denemethy master-link notice remains nonblocking. Native run-log recVpuEpyrzCvYrYO and code-review recuXYU0vtYKoW075 were GETverified. No source collection recovery/freshness claim is made by this linking verification. Release evidence C:/Users/gombc/Documents/Codex/outputs/wef-data-schedule-links-20261103 (review packet, deployment.json and predeployment native preservation/match evidence).
 
 ## Current cleanup rules — November 3
 

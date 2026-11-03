@@ -1,0 +1,315 @@
+{
+  "at": "2026-11-03T20:20:58.238Z",
+  "removed_tables": [
+    {
+      "name": "live-trip-results",
+      "id": "tblPIZYbHp8850uoA",
+      "records_before": 0,
+      "deletion": {
+        "tableId": "tblPIZYbHp8850uoA",
+        "actionId": "actxQ1Kwucx2pTxmP"
+      }
+    },
+    {
+      "name": "live-trip-messages",
+      "id": "tblUbF9tygLGChbM4",
+      "records_before": 0,
+      "deletion": {
+        "tableId": "tblUbF9tygLGChbM4",
+        "actionId": "actAWDEnagOYCBCTp"
+      }
+    },
+    {
+      "name": "live-trip-comments",
+      "id": "tblg29QWHi5GB8p4X",
+      "records_before": 0,
+      "deletion": {
+        "tableId": "tblg29QWHi5GB8p4X",
+        "actionId": "actdADBJOQFFdRId5"
+      }
+    }
+  ],
+  "configuration": {
+    "targets": [
+      {
+        "id": "recY1oCAFMITlGrpz",
+        "createdTime": "2026-11-03T19:55:31.000Z",
+        "cellValuesByFieldId": {
+          "fld7SbiMWUOGfwzwV": "live-trip-comments",
+          "fldSEAke9PVCcvYVx": "TRIP COMMENTS — Individual trip-linked comments; collector does not synthesize comments. Cleared on new show only.",
+          "fldu4Q86bHWdyVapu": true
+        }
+      },
+      {
+        "id": "recitwMRfhdVMwD8L",
+        "createdTime": "2026-11-03T19:55:31.000Z",
+        "cellValuesByFieldId": {
+          "fld7SbiMWUOGfwzwV": "live-trip-results",
+          "fldSEAke9PVCcvYVx": "ACTIVE — Individual trip result facts and source verification state, linked to the trip. Cleared on new show only.",
+          "fldu4Q86bHWdyVapu": true
+        }
+      },
+      {
+        "id": "reclhIdQJGgtqZO73",
+        "createdTime": "2026-11-03T19:55:31.000Z",
+        "cellValuesByFieldId": {
+          "fld7SbiMWUOGfwzwV": "live-trip-messages",
+          "fldSEAke9PVCcvYVx": "TRIP MESSAGES — Individual trip-linked messages; downstream owns authoring/delivery. Collector does not synthesize or send messages. Cleared on new show only.",
+          "fldu4Q86bHWdyVapu": true
+        }
+      }
+    ],
+    "deleted": {
+      "records": [
+        {
+          "id": "recY1oCAFMITlGrpz",
+          "deleted": true
+        },
+        {
+          "id": "recitwMRfhdVMwD8L",
+          "deleted": true
+        },
+        {
+          "id": "reclhIdQJGgtqZO73",
+          "deleted": true
+        }
+      ],
+      "actionId": "actXUU52GW1lfn7vX"
+    },
+    "readback": "PASS"
+  },
+  "trip": {
+    "id": "tblhUd5DucnpkEall",
+    "name": "live-trips",
+    "description": "Day-0 source class trips. Source identity per class/entry/UUID; legacy live-entries retained.",
+    "primaryFieldId": "fldXgqY8fJf85Zf1w",
+    "fields": [
+      {
+        "id": "fldXgqY8fJf85Zf1w",
+        "name": "trip-key",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldaZ0JmE5oeEn97x",
+        "name": "scope-status",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fld74V7m3NValPxhC",
+        "name": "show-id",
+        "type": "number"
+      },
+      {
+        "id": "fldaT7j3taB1Ceyjo",
+        "name": "customer-id",
+        "type": "number"
+      },
+      {
+        "id": "fld2amimVS58LMy2y",
+        "name": "date",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldMqyniM48CwpFoO",
+        "name": "last-seen",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldDOswn0E919EPta",
+        "name": "source-updated-at",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldKrAPHyYyeRwTl4",
+        "name": "source-json",
+        "type": "multilineText"
+      },
+      {
+        "id": "fldOsB2bb4F22UK7X",
+        "name": "trip-id",
+        "type": "number"
+      },
+      {
+        "id": "fldnYUet0IVkbVahk",
+        "name": "source-uuid",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldU1OJDkMdBhUEWF",
+        "name": "class-id",
+        "type": "number"
+      },
+      {
+        "id": "fldWlBiIwHRHLYMo1",
+        "name": "class-key",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldtEOScL81LxYsKo",
+        "name": "ring-id",
+        "type": "number"
+      },
+      {
+        "id": "fldx03MqPJCbEqJTJ",
+        "name": "entry-id",
+        "type": "number"
+      },
+      {
+        "id": "fld3HCmWGAiC1Ci9d",
+        "name": "entry-key",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldcx5N26CmIARGnO",
+        "name": "entry-number",
+        "type": "number"
+      },
+      {
+        "id": "fldf1dCOvLbxDmQub",
+        "name": "horse-id",
+        "type": "number"
+      },
+      {
+        "id": "fldUxZqwXvIYm0uiz",
+        "name": "horse-name",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldugkBHitvrrtLRX",
+        "name": "rider-id",
+        "type": "number"
+      },
+      {
+        "id": "fldSdLhUTEilpn3k1",
+        "name": "rider-name",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fld0UjT0rO3UpRZkn",
+        "name": "trainer-id",
+        "type": "number"
+      },
+      {
+        "id": "fldHqvjuE0VkdxXQX",
+        "name": "trainer-name",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldPZ3FPDYU0o8lBx",
+        "name": "owner-id",
+        "type": "number"
+      },
+      {
+        "id": "fldkhN6aBsEy7yVA6",
+        "name": "owner-name",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fld7H0HxbH09mEU9x",
+        "name": "order-of-go",
+        "type": "number"
+      },
+      {
+        "id": "fld0PxnZkNJwWdhXF",
+        "name": "actual-order",
+        "type": "number"
+      },
+      {
+        "id": "fld8L4YYpkQY7C6Ef",
+        "name": "scratch",
+        "type": "checkbox"
+      },
+      {
+        "id": "fldaLZhYoB3whVBpd",
+        "name": "gone",
+        "type": "number"
+      },
+      {
+        "id": "fldgIp8bmpG6Vqm7h",
+        "name": "gone-in",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldZBlYjFNZb3gF3H",
+        "name": "estimated-go-time",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldlu2oshAGkfoFk6",
+        "name": "record-status",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldP8frwSVdyC3tyN",
+        "name": "class",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldT3HPxZ7sOtyWrx",
+        "name": "ring",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldjrhSnU0B6WZWpm",
+        "name": "groups",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldivwrbsczTskuTw",
+        "name": "schedules",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldtYPJT5nvipU0jQ",
+        "name": "legacy-live-entry",
+        "type": "multipleRecordLinks"
+      },
+      {
+        "id": "fldlCY2NlNrZLyvND",
+        "name": "results",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldcc6zJlQTmSw7Co",
+        "name": "messages",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldiswLLxLfckBVO6",
+        "name": "comments",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fld1SmcFJ8UpKlBfS",
+        "name": "placing",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldzycl5tR7Ssa12T",
+        "name": "position",
+        "type": "number"
+      },
+      {
+        "id": "fldGyR5CZHhFHXxf6",
+        "name": "results-verified",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldVo1bSX6XplIcou",
+        "name": "class-status",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldO6HvWUc35hwRs3",
+        "name": "results-json",
+        "type": "multilineText"
+      }
+    ]
+  },
+  "notes": [
+    "All three removed tables were empty at immediate pre-deletion GET.",
+    "Code was deployed without references to obsolete tables before deletion.",
+    "Airtable converted former reciprocal results/messages/comments columns to empty plain text; there are no remaining links to deleted tables.",
+    "Only three obsolete cleanup configuration rows were removed, not business records."
+  ]
+}

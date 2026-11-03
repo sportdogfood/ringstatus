@@ -4,158 +4,26 @@
       "base": "appzZsd3UqMRR2CNc",
       "tables": {
         "shows": {
-          "id": "tblhwDJZDwrsFkpsL",
-          "name": "shows",
-          "description": "Season retained history; exact existing Data keys and local native links.",
-          "primaryFieldId": "fldWf2bUaAnZ3x9YB",
+          "id": "tblHGBO49YdcfDEU2",
+          "name": "w-shows",
+          "primaryFieldId": "fldJCeY95wo5Y7qXY",
           "fields": [
             {
-              "id": "fldWf2bUaAnZ3x9YB",
               "name": "show-key",
+              "id": "fldJCeY95wo5Y7qXY",
               "type": "singleLineText"
-            },
-            {
-              "id": "fldI0iUTUgiQdefH3",
-              "name": "show-id",
-              "type": "number",
-              "options": {
-                "precision": 0
-              }
-            },
-            {
-              "id": "fldsIzxlGWCc7Ls5P",
-              "name": "customer-id",
-              "type": "number",
-              "options": {
-                "precision": 0
-              }
-            },
-            {
-              "id": "fldo3jlwcxYq216L7",
-              "name": "facility-id",
-              "type": "number",
-              "options": {
-                "precision": 0
-              }
-            },
-            {
-              "id": "fldL6b8jtFfuy0aJp",
-              "name": "show-name",
-              "type": "singleLineText"
-            },
-            {
-              "id": "fldLWwvW1TeM99Fbr",
-              "name": "start-date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fldm1Y80xIoGg2esK",
-              "name": "end-date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fldrdYOahQaTO6PSx",
-              "name": "selected-date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fldCfAxb9A2OeGT9c",
-              "name": "last-success",
-              "type": "dateTime",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                },
-                "timeFormat": {
-                  "name": "24hour",
-                  "format": "HH:mm"
-                },
-                "timeZone": "utc"
-              }
-            }
-          ],
-          "views": [
-            {
-              "id": "viwwpPEYTPOKDbiMS",
-              "name": "Grid view",
-              "type": "grid"
             }
           ]
         },
         "show-days": {
-          "id": "tbl5L8plumfTMxGSq",
-          "name": "show-days",
-          "description": "Season retained history; exact existing Data keys and local native links.",
-          "primaryFieldId": "fldF13h3Wrx6vhWKx",
+          "id": "tblQhzmYNwc6ZWKBl",
+          "name": "w-days",
+          "primaryFieldId": "fldzGF0Ii4qLOOfvr",
           "fields": [
             {
-              "id": "fldF13h3Wrx6vhWKx",
               "name": "day-key",
+              "id": "fldzGF0Ii4qLOOfvr",
               "type": "singleLineText"
-            },
-            {
-              "id": "fldAzd8GOVIV3DyqF",
-              "name": "date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fldZ8M9Q2jppR3QlF",
-              "name": "last-success",
-              "type": "dateTime",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                },
-                "timeFormat": {
-                  "name": "24hour",
-                  "format": "HH:mm"
-                },
-                "timeZone": "utc"
-              }
-            },
-            {
-              "id": "fldIZEZakVenP4m5e",
-              "name": "show",
-              "type": "multipleRecordLinks",
-              "options": {
-                "linkedTableId": "tblhwDJZDwrsFkpsL",
-                "isReversed": false,
-                "prefersSingleRecordLink": false,
-                "inverseLinkFieldId": "fld2oIHxp10j2nyBn"
-              }
-            }
-          ],
-          "views": [
-            {
-              "id": "viws2cDgZ4Euc6FDF",
-              "name": "Grid view",
-              "type": "grid"
             }
           ]
         },
@@ -200,25 +68,21 @@
               }
             },
             {
-              "id": "fldEhd8QGHoSY8GiA",
+              "id": "fldAET9UZwO4v7sTo",
               "name": "shows",
               "type": "multipleRecordLinks",
               "options": {
-                "linkedTableId": "tblhwDJZDwrsFkpsL",
-                "isReversed": false,
-                "prefersSingleRecordLink": false,
-                "inverseLinkFieldId": "fldb2FklueTnU0rYU"
+                "linkedTableId": "tblHGBO49YdcfDEU2",
+                "prefersSingleRecordLink": false
               }
             },
             {
-              "id": "fldeJNPm4lpuwMr5T",
+              "id": "fldXiS3H3OJB0trAZ",
               "name": "show-days",
               "type": "multipleRecordLinks",
               "options": {
-                "linkedTableId": "tbl5L8plumfTMxGSq",
-                "isReversed": false,
-                "prefersSingleRecordLink": false,
-                "inverseLinkFieldId": "fld8rKVQrQ6lWg7Wk"
+                "linkedTableId": "tblQhzmYNwc6ZWKBl",
+                "prefersSingleRecordLink": false
               }
             }
           ],
@@ -234,164 +98,218 @@
       "heartbeat": {
         "id": "tbl0KH3p6Xzo956aA",
         "checkpoint-field": "fldLuEFC9KGS55fJl"
+      },
+      "synced-context": true,
+      "deprecated-context": {
+        "tables": {
+          "shows": {
+            "id": "tblhwDJZDwrsFkpsL",
+            "name": "shows",
+            "description": "Season retained history; exact existing Data keys and local native links.",
+            "primaryFieldId": "fldWf2bUaAnZ3x9YB",
+            "fields": [
+              {
+                "id": "fldWf2bUaAnZ3x9YB",
+                "name": "show-key",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fldI0iUTUgiQdefH3",
+                "name": "show-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldsIzxlGWCc7Ls5P",
+                "name": "customer-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldo3jlwcxYq216L7",
+                "name": "facility-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldL6b8jtFfuy0aJp",
+                "name": "show-name",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fldLWwvW1TeM99Fbr",
+                "name": "start-date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fldm1Y80xIoGg2esK",
+                "name": "end-date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fldrdYOahQaTO6PSx",
+                "name": "selected-date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fldCfAxb9A2OeGT9c",
+                "name": "last-success",
+                "type": "dateTime",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  },
+                  "timeFormat": {
+                    "name": "24hour",
+                    "format": "HH:mm"
+                  },
+                  "timeZone": "utc"
+                }
+              }
+            ],
+            "views": [
+              {
+                "id": "viwwpPEYTPOKDbiMS",
+                "name": "Grid view",
+                "type": "grid"
+              }
+            ]
+          },
+          "show-days": {
+            "id": "tbl5L8plumfTMxGSq",
+            "name": "show-days",
+            "description": "Season retained history; exact existing Data keys and local native links.",
+            "primaryFieldId": "fldF13h3Wrx6vhWKx",
+            "fields": [
+              {
+                "id": "fldF13h3Wrx6vhWKx",
+                "name": "day-key",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fldAzd8GOVIV3DyqF",
+                "name": "date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fldZ8M9Q2jppR3QlF",
+                "name": "last-success",
+                "type": "dateTime",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  },
+                  "timeFormat": {
+                    "name": "24hour",
+                    "format": "HH:mm"
+                  },
+                  "timeZone": "utc"
+                }
+              },
+              {
+                "id": "fldIZEZakVenP4m5e",
+                "name": "show",
+                "type": "multipleRecordLinks",
+                "options": {
+                  "linkedTableId": "tblhwDJZDwrsFkpsL",
+                  "isReversed": false,
+                  "prefersSingleRecordLink": false,
+                  "inverseLinkFieldId": "fld2oIHxp10j2nyBn"
+                }
+              }
+            ],
+            "views": [
+              {
+                "id": "viws2cDgZ4Euc6FDF",
+                "name": "Grid view",
+                "type": "grid"
+              }
+            ]
+          }
+        },
+        "entity-link-fields": [
+          {
+            "id": "fldEhd8QGHoSY8GiA",
+            "name": "shows",
+            "type": "multipleRecordLinks",
+            "options": {
+              "linkedTableId": "tblhwDJZDwrsFkpsL",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldb2FklueTnU0rYU"
+            }
+          },
+          {
+            "id": "fldeJNPm4lpuwMr5T",
+            "name": "show-days",
+            "type": "multipleRecordLinks",
+            "options": {
+              "linkedTableId": "tbl5L8plumfTMxGSq",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fld8rKVQrQ6lWg7Wk"
+            }
+          }
+        ],
+        "policy": "Read-only historical records and native links; no writes, deletes or renames"
       }
     },
     "riders": {
       "base": "appkWkm9rFLrkUvaD",
       "tables": {
         "shows": {
-          "id": "tblqMP5w5rZsLqBTS",
-          "name": "shows",
-          "description": "Season retained history; exact existing Data keys and local native links.",
-          "primaryFieldId": "fldu0dYQzabRFQuTV",
+          "id": "tbldQehTglI629dRL",
+          "name": "w-shows",
+          "primaryFieldId": "fldXhA2fR3iZwfhIR",
           "fields": [
             {
-              "id": "fldu0dYQzabRFQuTV",
               "name": "show-key",
+              "id": "fldXhA2fR3iZwfhIR",
               "type": "singleLineText"
-            },
-            {
-              "id": "fld6P2dwT7tjGWbNn",
-              "name": "show-id",
-              "type": "number",
-              "options": {
-                "precision": 0
-              }
-            },
-            {
-              "id": "fld2yUAmLqB3Hgofn",
-              "name": "customer-id",
-              "type": "number",
-              "options": {
-                "precision": 0
-              }
-            },
-            {
-              "id": "fldlYR43Q26O8sN3F",
-              "name": "facility-id",
-              "type": "number",
-              "options": {
-                "precision": 0
-              }
-            },
-            {
-              "id": "fldNPfUJGhHkBp69Y",
-              "name": "show-name",
-              "type": "singleLineText"
-            },
-            {
-              "id": "fldblOGIh3oTlJthH",
-              "name": "start-date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fld1OxVlluoaKdG7C",
-              "name": "end-date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fld3DxIYM2Gcmt8gv",
-              "name": "selected-date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fldk0gB0uxTFZyFX7",
-              "name": "last-success",
-              "type": "dateTime",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                },
-                "timeFormat": {
-                  "name": "24hour",
-                  "format": "HH:mm"
-                },
-                "timeZone": "utc"
-              }
-            }
-          ],
-          "views": [
-            {
-              "id": "viwRmxS73ixbSDeFS",
-              "name": "Grid view",
-              "type": "grid"
             }
           ]
         },
         "show-days": {
-          "id": "tbl4njCgUqYc2t7g0",
-          "name": "show-days",
-          "description": "Season retained history; exact existing Data keys and local native links.",
-          "primaryFieldId": "fldoJz03yFsmvjqQ3",
+          "id": "tbljpFJCwHgxeM4jO",
+          "name": "w-days",
+          "primaryFieldId": "fldzEdGRDvucT8ih6",
           "fields": [
             {
-              "id": "fldoJz03yFsmvjqQ3",
               "name": "day-key",
+              "id": "fldzEdGRDvucT8ih6",
               "type": "singleLineText"
-            },
-            {
-              "id": "fldgw3etOl4PLOYCD",
-              "name": "date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fld7LrtJZzQGYH0RH",
-              "name": "last-success",
-              "type": "dateTime",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                },
-                "timeFormat": {
-                  "name": "24hour",
-                  "format": "HH:mm"
-                },
-                "timeZone": "utc"
-              }
-            },
-            {
-              "id": "fldtpTsoT8YcYvGlN",
-              "name": "show",
-              "type": "multipleRecordLinks",
-              "options": {
-                "linkedTableId": "tblqMP5w5rZsLqBTS",
-                "isReversed": false,
-                "prefersSingleRecordLink": false,
-                "inverseLinkFieldId": "fldbX8Y8ynIQ3GbwS"
-              }
-            }
-          ],
-          "views": [
-            {
-              "id": "viwcDNbzKsg8EbvUI",
-              "name": "Grid view",
-              "type": "grid"
             }
           ]
         },
@@ -436,25 +354,21 @@
               }
             },
             {
-              "id": "fldAfgxA7tuhHZdkJ",
+              "id": "fldD7dWdjpspTA5Gl",
               "name": "shows",
               "type": "multipleRecordLinks",
               "options": {
-                "linkedTableId": "tblqMP5w5rZsLqBTS",
-                "isReversed": false,
-                "prefersSingleRecordLink": false,
-                "inverseLinkFieldId": "fldlRevmH6KJ5SuBs"
+                "linkedTableId": "tbldQehTglI629dRL",
+                "prefersSingleRecordLink": false
               }
             },
             {
-              "id": "fldfiI4KQslIkqCLk",
+              "id": "fldO2MHPrJ7IGEziz",
               "name": "show-days",
               "type": "multipleRecordLinks",
               "options": {
-                "linkedTableId": "tbl4njCgUqYc2t7g0",
-                "isReversed": false,
-                "prefersSingleRecordLink": false,
-                "inverseLinkFieldId": "fldE4fEaHBPdTXoiV"
+                "linkedTableId": "tbljpFJCwHgxeM4jO",
+                "prefersSingleRecordLink": false
               }
             }
           ],
@@ -470,164 +384,218 @@
       "heartbeat": {
         "id": "tblAt5xXFQ7csoVG6",
         "checkpoint-field": "fldnSWPquosIf9z0M"
+      },
+      "synced-context": true,
+      "deprecated-context": {
+        "tables": {
+          "shows": {
+            "id": "tblqMP5w5rZsLqBTS",
+            "name": "shows",
+            "description": "Season retained history; exact existing Data keys and local native links.",
+            "primaryFieldId": "fldu0dYQzabRFQuTV",
+            "fields": [
+              {
+                "id": "fldu0dYQzabRFQuTV",
+                "name": "show-key",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fld6P2dwT7tjGWbNn",
+                "name": "show-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fld2yUAmLqB3Hgofn",
+                "name": "customer-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldlYR43Q26O8sN3F",
+                "name": "facility-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldNPfUJGhHkBp69Y",
+                "name": "show-name",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fldblOGIh3oTlJthH",
+                "name": "start-date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fld1OxVlluoaKdG7C",
+                "name": "end-date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fld3DxIYM2Gcmt8gv",
+                "name": "selected-date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fldk0gB0uxTFZyFX7",
+                "name": "last-success",
+                "type": "dateTime",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  },
+                  "timeFormat": {
+                    "name": "24hour",
+                    "format": "HH:mm"
+                  },
+                  "timeZone": "utc"
+                }
+              }
+            ],
+            "views": [
+              {
+                "id": "viwRmxS73ixbSDeFS",
+                "name": "Grid view",
+                "type": "grid"
+              }
+            ]
+          },
+          "show-days": {
+            "id": "tbl4njCgUqYc2t7g0",
+            "name": "show-days",
+            "description": "Season retained history; exact existing Data keys and local native links.",
+            "primaryFieldId": "fldoJz03yFsmvjqQ3",
+            "fields": [
+              {
+                "id": "fldoJz03yFsmvjqQ3",
+                "name": "day-key",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fldgw3etOl4PLOYCD",
+                "name": "date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fld7LrtJZzQGYH0RH",
+                "name": "last-success",
+                "type": "dateTime",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  },
+                  "timeFormat": {
+                    "name": "24hour",
+                    "format": "HH:mm"
+                  },
+                  "timeZone": "utc"
+                }
+              },
+              {
+                "id": "fldtpTsoT8YcYvGlN",
+                "name": "show",
+                "type": "multipleRecordLinks",
+                "options": {
+                  "linkedTableId": "tblqMP5w5rZsLqBTS",
+                  "isReversed": false,
+                  "prefersSingleRecordLink": false,
+                  "inverseLinkFieldId": "fldbX8Y8ynIQ3GbwS"
+                }
+              }
+            ],
+            "views": [
+              {
+                "id": "viwcDNbzKsg8EbvUI",
+                "name": "Grid view",
+                "type": "grid"
+              }
+            ]
+          }
+        },
+        "entity-link-fields": [
+          {
+            "id": "fldAfgxA7tuhHZdkJ",
+            "name": "shows",
+            "type": "multipleRecordLinks",
+            "options": {
+              "linkedTableId": "tblqMP5w5rZsLqBTS",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldlRevmH6KJ5SuBs"
+            }
+          },
+          {
+            "id": "fldfiI4KQslIkqCLk",
+            "name": "show-days",
+            "type": "multipleRecordLinks",
+            "options": {
+              "linkedTableId": "tbl4njCgUqYc2t7g0",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldE4fEaHBPdTXoiV"
+            }
+          }
+        ],
+        "policy": "Read-only historical records and native links; no writes, deletes or renames"
       }
     },
     "horses": {
       "base": "appETrjio9Yj9Pv17",
       "tables": {
         "shows": {
-          "id": "tblI7qSWXr7Twtwa7",
-          "name": "shows",
-          "description": "Season retained history; exact existing Data keys and local native links.",
-          "primaryFieldId": "fld2F06jk6xIExDXO",
+          "id": "tblZnQDrZlUU2g5qq",
+          "name": "w-shows",
+          "primaryFieldId": "fld9fX4Dhp8KNNOBA",
           "fields": [
             {
-              "id": "fld2F06jk6xIExDXO",
               "name": "show-key",
+              "id": "fld9fX4Dhp8KNNOBA",
               "type": "singleLineText"
-            },
-            {
-              "id": "fld3oExcyqbRSg3q4",
-              "name": "show-id",
-              "type": "number",
-              "options": {
-                "precision": 0
-              }
-            },
-            {
-              "id": "fldsF1Zh2gZwpGGDP",
-              "name": "customer-id",
-              "type": "number",
-              "options": {
-                "precision": 0
-              }
-            },
-            {
-              "id": "fldu9Wb4JdY9vPUAn",
-              "name": "facility-id",
-              "type": "number",
-              "options": {
-                "precision": 0
-              }
-            },
-            {
-              "id": "fldTTiY2SZMgknlAx",
-              "name": "show-name",
-              "type": "singleLineText"
-            },
-            {
-              "id": "fldmLO3tQQbNPDVTv",
-              "name": "start-date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fldGrvtcqfGyb64QL",
-              "name": "end-date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fldJeXsi63V9sWzjA",
-              "name": "selected-date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fld5WCi0IWPuwxMvf",
-              "name": "last-success",
-              "type": "dateTime",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                },
-                "timeFormat": {
-                  "name": "24hour",
-                  "format": "HH:mm"
-                },
-                "timeZone": "utc"
-              }
-            }
-          ],
-          "views": [
-            {
-              "id": "viwANwcCb4czRoPOG",
-              "name": "Grid view",
-              "type": "grid"
             }
           ]
         },
         "show-days": {
-          "id": "tbl2qxWvX4unSHHch",
-          "name": "show-days",
-          "description": "Season retained history; exact existing Data keys and local native links.",
-          "primaryFieldId": "fld4vhjpJ2oogyZeI",
+          "id": "tbl8gDGNCB3QCZeDI",
+          "name": "w-days",
+          "primaryFieldId": "fldbfBniRBGvNDgyo",
           "fields": [
             {
-              "id": "fld4vhjpJ2oogyZeI",
               "name": "day-key",
+              "id": "fldbfBniRBGvNDgyo",
               "type": "singleLineText"
-            },
-            {
-              "id": "fldEGG4pbTOrhlOql",
-              "name": "date",
-              "type": "date",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                }
-              }
-            },
-            {
-              "id": "fldUKxBs5yt8tpllP",
-              "name": "last-success",
-              "type": "dateTime",
-              "options": {
-                "dateFormat": {
-                  "name": "iso",
-                  "format": "YYYY-MM-DD"
-                },
-                "timeFormat": {
-                  "name": "24hour",
-                  "format": "HH:mm"
-                },
-                "timeZone": "utc"
-              }
-            },
-            {
-              "id": "fld5mKkegUJghpjNK",
-              "name": "show",
-              "type": "multipleRecordLinks",
-              "options": {
-                "linkedTableId": "tblI7qSWXr7Twtwa7",
-                "isReversed": false,
-                "prefersSingleRecordLink": false,
-                "inverseLinkFieldId": "fldVJPrm98mbopBz5"
-              }
-            }
-          ],
-          "views": [
-            {
-              "id": "viwSpjOyVErmYrzks",
-              "name": "Grid view",
-              "type": "grid"
             }
           ]
         },
@@ -672,25 +640,21 @@
               }
             },
             {
-              "id": "fldEDWrBicJ1tLMGh",
+              "id": "fld3dnf7XNQ0KBpai",
               "name": "shows",
               "type": "multipleRecordLinks",
               "options": {
-                "linkedTableId": "tblI7qSWXr7Twtwa7",
-                "isReversed": false,
-                "prefersSingleRecordLink": false,
-                "inverseLinkFieldId": "fldyZ8sfHQ2pmHxWX"
+                "linkedTableId": "tblZnQDrZlUU2g5qq",
+                "prefersSingleRecordLink": false
               }
             },
             {
-              "id": "fldHrKSIJTNzYhuiq",
+              "id": "fldxBbt0JFfdDE4bd",
               "name": "show-days",
               "type": "multipleRecordLinks",
               "options": {
-                "linkedTableId": "tbl2qxWvX4unSHHch",
-                "isReversed": false,
-                "prefersSingleRecordLink": false,
-                "inverseLinkFieldId": "fldfHwjebrmF3s4g2"
+                "linkedTableId": "tbl8gDGNCB3QCZeDI",
+                "prefersSingleRecordLink": false
               }
             },
             {
@@ -758,6 +722,192 @@
             ]
           }
         }
+      },
+      "synced-context": true,
+      "deprecated-context": {
+        "tables": {
+          "shows": {
+            "id": "tblI7qSWXr7Twtwa7",
+            "name": "shows",
+            "description": "Season retained history; exact existing Data keys and local native links.",
+            "primaryFieldId": "fld2F06jk6xIExDXO",
+            "fields": [
+              {
+                "id": "fld2F06jk6xIExDXO",
+                "name": "show-key",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fld3oExcyqbRSg3q4",
+                "name": "show-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldsF1Zh2gZwpGGDP",
+                "name": "customer-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldu9Wb4JdY9vPUAn",
+                "name": "facility-id",
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              },
+              {
+                "id": "fldTTiY2SZMgknlAx",
+                "name": "show-name",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fldmLO3tQQbNPDVTv",
+                "name": "start-date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fldGrvtcqfGyb64QL",
+                "name": "end-date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fldJeXsi63V9sWzjA",
+                "name": "selected-date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fld5WCi0IWPuwxMvf",
+                "name": "last-success",
+                "type": "dateTime",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  },
+                  "timeFormat": {
+                    "name": "24hour",
+                    "format": "HH:mm"
+                  },
+                  "timeZone": "utc"
+                }
+              }
+            ],
+            "views": [
+              {
+                "id": "viwANwcCb4czRoPOG",
+                "name": "Grid view",
+                "type": "grid"
+              }
+            ]
+          },
+          "show-days": {
+            "id": "tbl2qxWvX4unSHHch",
+            "name": "show-days",
+            "description": "Season retained history; exact existing Data keys and local native links.",
+            "primaryFieldId": "fld4vhjpJ2oogyZeI",
+            "fields": [
+              {
+                "id": "fld4vhjpJ2oogyZeI",
+                "name": "day-key",
+                "type": "singleLineText"
+              },
+              {
+                "id": "fldEGG4pbTOrhlOql",
+                "name": "date",
+                "type": "date",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  }
+                }
+              },
+              {
+                "id": "fldUKxBs5yt8tpllP",
+                "name": "last-success",
+                "type": "dateTime",
+                "options": {
+                  "dateFormat": {
+                    "name": "iso",
+                    "format": "YYYY-MM-DD"
+                  },
+                  "timeFormat": {
+                    "name": "24hour",
+                    "format": "HH:mm"
+                  },
+                  "timeZone": "utc"
+                }
+              },
+              {
+                "id": "fld5mKkegUJghpjNK",
+                "name": "show",
+                "type": "multipleRecordLinks",
+                "options": {
+                  "linkedTableId": "tblI7qSWXr7Twtwa7",
+                  "isReversed": false,
+                  "prefersSingleRecordLink": false,
+                  "inverseLinkFieldId": "fldVJPrm98mbopBz5"
+                }
+              }
+            ],
+            "views": [
+              {
+                "id": "viwSpjOyVErmYrzks",
+                "name": "Grid view",
+                "type": "grid"
+              }
+            ]
+          }
+        },
+        "entity-link-fields": [
+          {
+            "id": "fldEDWrBicJ1tLMGh",
+            "name": "shows",
+            "type": "multipleRecordLinks",
+            "options": {
+              "linkedTableId": "tblI7qSWXr7Twtwa7",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldyZ8sfHQ2pmHxWX"
+            }
+          },
+          {
+            "id": "fldHrKSIJTNzYhuiq",
+            "name": "show-days",
+            "type": "multipleRecordLinks",
+            "options": {
+              "linkedTableId": "tbl2qxWvX4unSHHch",
+              "isReversed": false,
+              "prefersSingleRecordLink": false,
+              "inverseLinkFieldId": "fldfHwjebrmF3s4g2"
+            }
+          }
+        ],
+        "policy": "Read-only historical records and native links; no writes, deletes or renames"
       }
     },
     "rings": {

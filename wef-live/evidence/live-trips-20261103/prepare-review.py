@@ -1,0 +1,8 @@
+from pathlib import Path
+import json,hashlib,datetime
+r=Path(__file__).resolve().parent
+def e(p):return {'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
+skill=Path('C:/Users/gombc/.agents/skills/code-review/SKILL.md')
+packet=dict(reviewer='wef-live author',reviewed_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),skill_sha256=e(skill)['sha256'],objective='Approved day0class-source live-trips, own result/message/comment links and existing cleanup integration',target=str(r),integration_coverage='85offline checks, actual class-source/adapter/store/scheduler call chain and Airtable schema readback; natural populated proof separate',baseline=[e(p) for p in sorted((r/'baseline').glob('*.js'))]+[e(r/'task-frozen.xml')],candidate=[e(p) for p in sorted((r/'candidate').glob('*.js'))]+[e(p) for p in sorted(r.glob('*.test.js'))],report=e(r/'review.md'),logs=[e(r/'offline-final.json')],review_status='COMPLETE',candidate_status='PASS',required_checks=[dict(name='final offline collection/protection/cleanup suite',requirement='execute',status='executed',command_ids=['trips-final-offline']),dict(name='approved delta and actual native schema/call-chain contract',requirement='inspect',status='inspected',reason='Author inspected frozen call chain, source mapping reused from Data, checked schema/config GET-readbacks and existing task without provider calls or manual business execution',evidence=[e(r/'TASK.md'),e(r/'schema-readback.json'),e(r/'review.md')])])
+(r/'review-receipt.json').write_text(json.dumps(packet,indent=2),encoding='utf-8')
+print('Review packet saved')

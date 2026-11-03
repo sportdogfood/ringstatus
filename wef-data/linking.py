@@ -134,6 +134,11 @@ def run(schema_file):
                         edge('rings',key,'w-rings',[('w-rings',identity)])
                         if 'w-rings '+str(identity) in missing:missing['w-rings '+str(identity)]=message
                     else:missing['w-rings '+prefix+str(f.get('ring-id'))]=message
+        schedule_trips={};schedule_entries={}
+        for mapped in facts:
+            trip=mapped['trips'][0];class_key=trip['class']['$links'][0][1]
+            schedule_trips.setdefault(class_key,[]).append(('trips',trip['trip-key']))
+            schedule_entries.setdefault(class_key,[]).extend(trip['entry']['$links'])
         for key,rows in data['schedules'].items():
             if len(rows)!=1:continue
             try:
@@ -143,6 +148,8 @@ def run(schema_file):
                 if gid is not None:edge('schedules',key,'group',[('groups',ring+'|'+str(gid))])
                 if cid is not None and not raw.get('schedule_break'):
                     ck=ring+'|'+str(cid);edge('schedules',key,'class',[('classes',ck)])
+                    edge('schedules',key,'trips',schedule_trips.get(ck,[]))
+                    edge('schedules',key,'entries',schedule_entries.get(ck,[]))
                     if gid is not None:edge('classes',ck,'group',[('groups',ring+'|'+str(gid))])
                 owned=schedule_runs.get(key)
                 if owned:

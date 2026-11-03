@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-03T20:24:23.742234+00:00",
+  "correction": "Removed three empty unnecessary tables and their obsolete cleanup controls; no business records removed",
+  "current_model": "live-trips only; placing,position,results-verified,class-status,results-json directly on trip; existing trip identities/native links retained",
+  "schema": "GET-confirmed absent deleted tables and obsolete controls; new result fields verified; former reciprocal fields converted by Airtable to empty plain text,not linked",
+  "offline": "85PASS; author review,not independent",
+  "deployment": "25installed JS hashes match reviewed candidate;21other JS/task unchanged",
+  "scheduled": "15:21 and15:24Eastern normal dispatcher wakes exit0,correctly skipped notdue work; single live-trips cleanup control retained",
+  "population": "Still unverified under natural populated day0 source; current live=false, no manual run/forced event/backfill",
+  "manual_runs": false,
+  "record_repairs": false,
+  "new_schedule": false
+}

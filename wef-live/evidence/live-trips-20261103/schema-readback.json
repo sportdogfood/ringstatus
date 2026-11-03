@@ -1,0 +1,497 @@
+{
+  "at": "2026-11-03T19:55:39.925Z",
+  "base": "appgzosUcVqA4vZdf",
+  "tables": [
+    {
+      "id": "tblhUd5DucnpkEall",
+      "name": "live-trips",
+      "description": "Day-0 source class trips. Source identity per class/entry/UUID; legacy live-entries retained.",
+      "primaryFieldId": "fldXgqY8fJf85Zf1w",
+      "fields": [
+        {
+          "id": "fldXgqY8fJf85Zf1w",
+          "name": "trip-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldaZ0JmE5oeEn97x",
+          "name": "scope-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld74V7m3NValPxhC",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldaT7j3taB1Ceyjo",
+          "name": "customer-id",
+          "type": "number"
+        },
+        {
+          "id": "fld2amimVS58LMy2y",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldMqyniM48CwpFoO",
+          "name": "last-seen",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldDOswn0E919EPta",
+          "name": "source-updated-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldKrAPHyYyeRwTl4",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldOsB2bb4F22UK7X",
+          "name": "trip-id",
+          "type": "number"
+        },
+        {
+          "id": "fldnYUet0IVkbVahk",
+          "name": "source-uuid",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldU1OJDkMdBhUEWF",
+          "name": "class-id",
+          "type": "number"
+        },
+        {
+          "id": "fldWlBiIwHRHLYMo1",
+          "name": "class-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldtEOScL81LxYsKo",
+          "name": "ring-id",
+          "type": "number"
+        },
+        {
+          "id": "fldx03MqPJCbEqJTJ",
+          "name": "entry-id",
+          "type": "number"
+        },
+        {
+          "id": "fld3HCmWGAiC1Ci9d",
+          "name": "entry-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldcx5N26CmIARGnO",
+          "name": "entry-number",
+          "type": "number"
+        },
+        {
+          "id": "fldf1dCOvLbxDmQub",
+          "name": "horse-id",
+          "type": "number"
+        },
+        {
+          "id": "fldUxZqwXvIYm0uiz",
+          "name": "horse-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldugkBHitvrrtLRX",
+          "name": "rider-id",
+          "type": "number"
+        },
+        {
+          "id": "fldSdLhUTEilpn3k1",
+          "name": "rider-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld0UjT0rO3UpRZkn",
+          "name": "trainer-id",
+          "type": "number"
+        },
+        {
+          "id": "fldHqvjuE0VkdxXQX",
+          "name": "trainer-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldPZ3FPDYU0o8lBx",
+          "name": "owner-id",
+          "type": "number"
+        },
+        {
+          "id": "fldkhN6aBsEy7yVA6",
+          "name": "owner-name",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld7H0HxbH09mEU9x",
+          "name": "order-of-go",
+          "type": "number"
+        },
+        {
+          "id": "fld0PxnZkNJwWdhXF",
+          "name": "actual-order",
+          "type": "number"
+        },
+        {
+          "id": "fld8L4YYpkQY7C6Ef",
+          "name": "scratch",
+          "type": "checkbox"
+        },
+        {
+          "id": "fldaLZhYoB3whVBpd",
+          "name": "gone",
+          "type": "number"
+        },
+        {
+          "id": "fldgIp8bmpG6Vqm7h",
+          "name": "gone-in",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldZBlYjFNZb3gF3H",
+          "name": "estimated-go-time",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldlu2oshAGkfoFk6",
+          "name": "record-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldP8frwSVdyC3tyN",
+          "name": "class",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldT3HPxZ7sOtyWrx",
+          "name": "ring",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldjrhSnU0B6WZWpm",
+          "name": "groups",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldivwrbsczTskuTw",
+          "name": "schedules",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldtYPJT5nvipU0jQ",
+          "name": "legacy-live-entry",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldlCY2NlNrZLyvND",
+          "name": "results",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldcc6zJlQTmSw7Co",
+          "name": "messages",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldiswLLxLfckBVO6",
+          "name": "comments",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tblPIZYbHp8850uoA",
+      "name": "live-trip-results",
+      "description": "Trip-specific source result facts; verification status preserved. No claim of final results from placeholders.",
+      "primaryFieldId": "fld5FAJqv6gsVy8pZ",
+      "fields": [
+        {
+          "id": "fld5FAJqv6gsVy8pZ",
+          "name": "result-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldgTx8jowjR6CHmz",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldy1MZ9qow2FTCoE",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldVuia0C1ZvlkIDz",
+          "name": "last-seen",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldRAjBQd97Ti56Uk",
+          "name": "class-status",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld1rt3YGgYlTFgOm",
+          "name": "results-verified",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldcPBvUAV98ZCb3q",
+          "name": "placing",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld0SKz1NF0wKLVw8",
+          "name": "position",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldm5f88x6IDpkW0H",
+          "name": "score1",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldB0ICgdzTtQHx2F",
+          "name": "score2",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldNYcaaKgbLJGRSs",
+          "name": "score3",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldWYXX618MTdlWoW",
+          "name": "score4",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldpjkaGr7X4QBFNF",
+          "name": "score5",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldCVlNgjzK8YBEXG",
+          "name": "score6",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldDDJG9BPEZooVp9",
+          "name": "time-one",
+          "type": "singleLineText"
+        },
+        {
+          "id": "flde5nWYCMc88sg3q",
+          "name": "time-two",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldpWccfxoyAIazUN",
+          "name": "time-three",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldlLdCqDmD8GQiPV",
+          "name": "faults-one",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld1HNwex80Hrb5Dn",
+          "name": "faults-two",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldJsnigcuKh6vLOh",
+          "name": "faults-three",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldjq0wuJGg2AsUIv",
+          "name": "time-fault-one",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldRS93hTpArwjHy8",
+          "name": "time-fault-two",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldfJhGOtoWQ321ag",
+          "name": "time-fault-three",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldKI0Ve4QrC89QwU",
+          "name": "points-earned",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldKoLFdb7aN9VF8z",
+          "name": "prize-money",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldIqrRpnLErpd9UY",
+          "name": "gone-in",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldh0c1Fm7mJEUcJX",
+          "name": "scratch",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldVeyX6LHGXbZNM3",
+          "name": "source-json",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldp2H1tq68BdNTJO",
+          "name": "trip",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tblUbF9tygLGChbM4",
+      "name": "live-trip-messages",
+      "description": "Messages linked directly to an individual trip. Authoring/delivery belongs to downstream messaging.",
+      "primaryFieldId": "fldxLNTmD2WcfrTuc",
+      "fields": [
+        {
+          "id": "fldxLNTmD2WcfrTuc",
+          "name": "message-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldUHz3TwQeNFTruk",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "flddapmlpldNO4Cc8",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld5UxnoyOQvNUHG6",
+          "name": "body",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldGIWwFlcLIpPiIk",
+          "name": "author",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldosucUhacPpgtNu",
+          "name": "created-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldyxCYD1UB4p2IJ6",
+          "name": "trip",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tblg29QWHi5GB8p4X",
+      "name": "live-trip-comments",
+      "description": "Comments linked directly to an individual trip. Not synthesized by the collector.",
+      "primaryFieldId": "fldrBLNlTt3IwE8Do",
+      "fields": [
+        {
+          "id": "fldrBLNlTt3IwE8Do",
+          "name": "comment-key",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldPYceoXMy3leasw",
+          "name": "show-id",
+          "type": "number"
+        },
+        {
+          "id": "fldWiWgLevX98zlni",
+          "name": "date",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldH2ImnrN5g1vsUj",
+          "name": "body",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld52nQ0mmVzaxxLt",
+          "name": "author",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldr0xlDBZWbLrQfJ",
+          "name": "created-at",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldpWZ5D89vZjdz33",
+          "name": "trip",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    }
+  ],
+  "cleanup_config": {
+    "records": [
+      {
+        "id": "recMc87yF2nb33tNz",
+        "createdTime": "2026-11-03T19:55:31.000Z",
+        "cellValuesByFieldId": {
+          "fld7SbiMWUOGfwzwV": "live-trips",
+          "fldSEAke9PVCcvYVx": "ACTIVE — Day-0 trip records from the existing decoded classes source, with source identities, class/ring/entry references and trip-specific results/messages/comments. Cleared on new show only.",
+          "fldu4Q86bHWdyVapu": true
+        }
+      },
+      {
+        "id": "recitwMRfhdVMwD8L",
+        "createdTime": "2026-11-03T19:55:31.000Z",
+        "cellValuesByFieldId": {
+          "fld7SbiMWUOGfwzwV": "live-trip-results",
+          "fldSEAke9PVCcvYVx": "ACTIVE — Individual trip result facts and source verification state, linked to the trip. Cleared on new show only.",
+          "fldu4Q86bHWdyVapu": true
+        }
+      },
+      {
+        "id": "reclhIdQJGgtqZO73",
+        "createdTime": "2026-11-03T19:55:31.000Z",
+        "cellValuesByFieldId": {
+          "fld7SbiMWUOGfwzwV": "live-trip-messages",
+          "fldSEAke9PVCcvYVx": "TRIP MESSAGES — Individual trip-linked messages; downstream owns authoring/delivery. Collector does not synthesize or send messages. Cleared on new show only.",
+          "fldu4Q86bHWdyVapu": true
+        }
+      },
+      {
+        "id": "recY1oCAFMITlGrpz",
+        "createdTime": "2026-11-03T19:55:31.000Z",
+        "cellValuesByFieldId": {
+          "fld7SbiMWUOGfwzwV": "live-trip-comments",
+          "fldSEAke9PVCcvYVx": "TRIP COMMENTS — Individual trip-linked comments; collector does not synthesize comments. Cleared on new show only.",
+          "fldu4Q86bHWdyVapu": true
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 4
+    }
+  },
+  "notes": [
+    "All schemas and reciprocal targets GET-read back; no business records created manually.",
+    "Connector rejects prefersSingleRecordLink in table creation; links use supported default list display, collector writes one class/ring/legacy record per trip.",
+    "Connector table creation rejects createdTime; created-at uses existing single-line timestamp pattern.",
+    "No existing fields renamed; only new trip reciprocal fields renamed to results/messages/comments."
+  ]
+}

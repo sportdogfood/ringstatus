@@ -1,0 +1,274 @@
+{
+  "reviewer": "wef-live author",
+  "reviewed_at": "2026-11-03T20:22:03.465046+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Remove unnecessary child tables; keep source results directly on day0live-trips",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103",
+  "integration_coverage": "85 offline checks, exact scope/source diff and native field readback; physical schema removal/normal scheduled proof separately recorded",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\activity.js",
+      "sha256": "31a61dcbc9229bf1a6f34a838084391710cccf34413f39614eaaacf071ff0c42"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\airtable.js",
+      "sha256": "5f7529fa4fbb656421c583c24db7f04e46facd2e66ac0def752626dc6c102244"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\archive.js",
+      "sha256": "03326e694b7e7f06dccd6a73318d1a807aa4ef06cc4f3ea6e7510f2627c6f18c"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\cleanup.js",
+      "sha256": "ccc8018e0e36c8519629dc16e2a43b52c227014396c034678a856a53fa9dcd0c"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\collector.js",
+      "sha256": "8cd0247371f17a9c6552e104329fc00f9197612d0feee6ab74bd2bbd731915ae"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\configure.js",
+      "sha256": "c29b81c3e3e544e41ef457878201ac0af6cd0c92a6c37986548c52ef8450971a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\entry.js",
+      "sha256": "69757818b266db559ad796e39361dbf080c167b3d16a3ed66c4d1ae2a3e1fd0f"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\lane-store.js",
+      "sha256": "f1eadb030a51dcd8a837abb0e0fb01ac3e109cae017566cd48632b7d3914af93"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\lanes.js",
+      "sha256": "eb1b9289155d94654c23c7b7f08392cede5c8381e4b01a2e5bc0b0bb1a910410"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\live-cadence.js",
+      "sha256": "c8f7eea85d1c05fd8d3116acf8e65b9b5e6172f04a0b3cefa4485f08457c126a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\live-trips.js",
+      "sha256": "081c48641451bb64776540e3daea4c931b8cf5b3cc96560f3dda914318733add"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\log-retention.js",
+      "sha256": "7d351cb97b711acdfa3d90120e4287e55f252a1ff1972693980f08b5d325f897"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\membership.js",
+      "sha256": "e383eae0dc7dca29f1908e5a8e47fe0e296bd047794ae22077f1c645e428b6c6"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\model.js",
+      "sha256": "08bfdabb5637511e17a979e2a6c0319be37f68a9edce323262128ebbc78c0468"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\participation.js",
+      "sha256": "bb42027bea9eaa9557e53e63f39eeb9403760fb491dd77a971a3e6a01a0a69f8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\publication-api.js",
+      "sha256": "b25b6bd25760d7fabd53ef2077de3854a676c6e43b3a6221a59607eeba9f852f"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\publication-journal.js",
+      "sha256": "f97762d89fadba3f49c568e73b697d3ae4b2c1863cf210ad85bab391ea849809"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\publication.js",
+      "sha256": "91d083d7dbca2f474de56c9b560772b17aa892fe19b425d2796122c49c3cb96e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\retirement.js",
+      "sha256": "67190601204fd73ea450c3bff6573073c4aff13728cd19533521f285c12f15e8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\rollover.js",
+      "sha256": "5da578299c557e8dd541a6266640836feafa0243ee523631e521e30fe93e5180"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\runtime-utils.js",
+      "sha256": "d9cf17a572611705fa2854f9648382969bd8f10297d540a367446101a1a7344b"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\schema.js",
+      "sha256": "da10d6ba9f3dbc383b82568f3e90b7a1beade2e0e601e41fb1d07d7ce6d81593"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\settings.js",
+      "sha256": "c577cad3b11cb8db0970da2a2092c0f21cc8c26eafd028f2308ca7bc5bb7ae35"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\source.js",
+      "sha256": "1430300ace41917b0557c0f852731da344931b637ac4719a314e111717cb7b6e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\baseline\\verify.js",
+      "sha256": "c0483558419c9d9ea90bd2741981da85136e509e666a0467f1048e1ae97e7976"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\task-frozen.xml",
+      "sha256": "070bcdb7bfa415d977c42995921bdfeb7f8aab242c950525058bda3399accd27"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\activity.js",
+      "sha256": "31a61dcbc9229bf1a6f34a838084391710cccf34413f39614eaaacf071ff0c42"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\airtable.js",
+      "sha256": "5f7529fa4fbb656421c583c24db7f04e46facd2e66ac0def752626dc6c102244"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\archive.js",
+      "sha256": "03326e694b7e7f06dccd6a73318d1a807aa4ef06cc4f3ea6e7510f2627c6f18c"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\cleanup.js",
+      "sha256": "deee63d7ab4d7c3a4c8793b9ea22c12469dc1db96d6fa4679aed7c9a5c3ed995"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\collector.js",
+      "sha256": "8cd0247371f17a9c6552e104329fc00f9197612d0feee6ab74bd2bbd731915ae"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\configure.js",
+      "sha256": "c29b81c3e3e544e41ef457878201ac0af6cd0c92a6c37986548c52ef8450971a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\entry.js",
+      "sha256": "69757818b266db559ad796e39361dbf080c167b3d16a3ed66c4d1ae2a3e1fd0f"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\lane-store.js",
+      "sha256": "f1eadb030a51dcd8a837abb0e0fb01ac3e109cae017566cd48632b7d3914af93"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\lanes.js",
+      "sha256": "161fa557ca2886ee30e5aface625d94c5123c70a2c782c4d9df1a0fe8b096730"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\live-cadence.js",
+      "sha256": "c8f7eea85d1c05fd8d3116acf8e65b9b5e6172f04a0b3cefa4485f08457c126a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\live-trips.js",
+      "sha256": "95db7b48699955c6f0966a3ea1d10072644fbc53114b1f4f2dcddf0f447065ef"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\log-retention.js",
+      "sha256": "7d351cb97b711acdfa3d90120e4287e55f252a1ff1972693980f08b5d325f897"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\membership.js",
+      "sha256": "e383eae0dc7dca29f1908e5a8e47fe0e296bd047794ae22077f1c645e428b6c6"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\model.js",
+      "sha256": "08bfdabb5637511e17a979e2a6c0319be37f68a9edce323262128ebbc78c0468"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\participation.js",
+      "sha256": "bb42027bea9eaa9557e53e63f39eeb9403760fb491dd77a971a3e6a01a0a69f8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\publication-api.js",
+      "sha256": "b25b6bd25760d7fabd53ef2077de3854a676c6e43b3a6221a59607eeba9f852f"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\publication-journal.js",
+      "sha256": "f97762d89fadba3f49c568e73b697d3ae4b2c1863cf210ad85bab391ea849809"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\publication.js",
+      "sha256": "91d083d7dbca2f474de56c9b560772b17aa892fe19b425d2796122c49c3cb96e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\retirement.js",
+      "sha256": "67190601204fd73ea450c3bff6573073c4aff13728cd19533521f285c12f15e8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\rollover.js",
+      "sha256": "5da578299c557e8dd541a6266640836feafa0243ee523631e521e30fe93e5180"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\runtime-utils.js",
+      "sha256": "d9cf17a572611705fa2854f9648382969bd8f10297d540a367446101a1a7344b"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\schema.js",
+      "sha256": "093f3c33b9ca3ef973cfeb2f7c8c68caa2238331a44f55665cc5cd73d1a76c18"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\settings.js",
+      "sha256": "c577cad3b11cb8db0970da2a2092c0f21cc8c26eafd028f2308ca7bc5bb7ae35"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\source.js",
+      "sha256": "1430300ace41917b0557c0f852731da344931b637ac4719a314e111717cb7b6e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\candidate\\verify.js",
+      "sha256": "c0483558419c9d9ea90bd2741981da85136e509e666a0467f1048e1ae97e7976"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\adapter.test.js",
+      "sha256": "679ee85501b1df319bc5f23e2dfd1d751a7c1cb0de3735793545cf8bfff64220"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\cadence.test.js",
+      "sha256": "31d2e23f148a69873fe61a9988540f33ccc4eb34c1338097c7c6ee25b07755dc"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\lanes.test.js",
+      "sha256": "771b974a5120f202d51c928489acd86eb32ad1a8fe439621ae2b5d5002ba0fbb"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\revised.test.js",
+      "sha256": "d08a3ef3dd3d13a00f9f43c1c6972864b9a5fe78e5398918daf70aa432ca34e3"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\trips.test.js",
+      "sha256": "9ccce18a04c2290b34859f8c63f2982b44a176cf2d7bbf7763b346f539cc83a4"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\review.md",
+    "sha256": "45b31ccfd0fa356ddd42fdb05c8eff46db56a9a84794fffaf0ee8d854b3f6678"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\offline.json",
+      "sha256": "05cdb6c3707c88459de0be9dad700915b22aed06f813a6f56725415ab37d9037"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "single-table source/results/regression suite",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "simple-trips-offline"
+      ]
+    },
+    {
+      "name": "owner correction boundary and integration contract",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Read actual source/key/store/cleanup call chain and approved removal scope, preserving oldtrip/legacy links and no new dependencies",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\TASK.md",
+          "sha256": "61ffd32e10e566a3ffa20a0eb640b2776d0a1c9a03256de675ef143035f4f1ad"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\live-trips-simple-20261103\\review.md",
+          "sha256": "45b31ccfd0fa356ddd42fdb05c8eff46db56a9a84794fffaf0ee8d854b3f6678"
+        }
+      ]
+    }
+  ]
+}

@@ -165,11 +165,18 @@ async function lane(name,{
    let latest;try{latest=read(path.join(runtime,'lane-groups-state.json'));}catch(e){issue('Shared class references unreadable: '+e.message);return r;}
    if(latest?.shared?.scope?.show!==r.scope.show||latest.shared.scope.date!==r.scope.date||!Array.isArray(latest.shared.classes)){issue('No matching saved class references');return r;}
    const rings=scoped(await db.list('live-rings')),groups=scoped(await db.list('live-groups'));
-   const references=latest.shared.classes,results=[];let next=0,successfulPairs=0;
+   const references=latest.shared.classes,results=[],tripSources=[];let next=0,successfulPairs=0;
    await Promise.all(Array.from({length:Math.min(4,references.length)},async()=>{
     while(next<references.length){const c=references[next++];
      try{
       const pair=await Promise.allSettled([collect('class-'+c['class-id'],sources.endpoints.detail(r.scope,c['class-id'])),collect('identity-'+c['class-id'],sources.endpoints.decoded(r.scope,c['class-id']),true)]);
+      // Class trips are their own source records; UI detail absence does not suppress them.
+      if(pair[1].status==='fulfilled'){
+       const decoded=pair[1].value;
+       try{const mapped=require('./live-trips').project(decoded.data,pair[0].status==='fulfilled'?pair[0].value.data:null,r.scope,c,decoded.received,issue);
+        tripSources.push({c,...mapped,received:decoded.received,classSource:{class:decoded.data.class,class_related_data:decoded.data.class_related_data}});
+       }catch(e){issue(e.message,{class_id:c['class-id']});}
+      }
       const failed=pair.filter(x=>x.status==='rejected');if(failed.length){for(const f of failed)issue(f.reason.message,{class_id:c['class-id']});continue;}
       successfulPairs++;
       const [live,decoded]=pair.map(x=>x.value),payload=live.data,identity=decoded.data;
@@ -193,14 +200,30 @@ async function lane(name,{
     }
    }));
    const priorClasses=scoped(await db.list('live-classes'));
-   const rows=results.map(({c})=>{const ring=lookup(rings,'ring-key',c._ring),links=c._groups.map(k=>lookup(groups,'group-key',k)),prior=priorClasses.find(x=>x.fields['class-key']===c['class-key']);return{...clean(c),...(ring?{ring:[ring]}:{}),...(links.every(Boolean)?{groups:[...new Set([...(prior?.fields.groups||[]),...links])]}:{})};});
-   if(references.length&&!successfulPairs)throw Error('No class source collections succeeded');
-   await save('live-classes','class-key',rows,k=>results.find(x=>x.c['class-key']===k).received);
+   const classSources=[...results,...tripSources.filter(source=>!results.some(x=>x.c['class-key']===source.c['class-key'])).map(source=>({c:{...source.c,'last-seen':source.received,'source-json':JSON.stringify(source.classSource)},received:source.received}))];
+   const rows=classSources.map(({c})=>{const ring=lookup(rings,'ring-key',c._ring),links=c._groups.map(k=>lookup(groups,'group-key',k)),prior=priorClasses.find(x=>x.fields['class-key']===c['class-key']);return{...clean(c),...(ring?{ring:[ring]}:{}),...(links.every(Boolean)?{groups:[...new Set([...(prior?.fields.groups||[]),...links])]}:{})};});
+   if(references.length&&!successfulPairs&&!tripSources.length)throw Error('No class source collections succeeded');
+   await save('live-classes','class-key',rows,k=>classSources.find(x=>x.c['class-key']===k).received);
    const classes=await db.list('live-classes');
    const entries=[];for(const result of results){const id=lookup(classes,'class-key',result.c['class-key']);if(!id)continue;
     entries.push(...result.entries.map(e=>({...clean(e),class:[id]})));
    }
    await save('live-entries','live-entry-key',entries,k=>entries.find(e=>e['live-entry-key']===k)['last-seen']);
+   const legacy=await db.list('live-entries'),trips=[];
+   for(const source of tripSources){
+    const cls=classes.filter(x=>x.fields['class-key']===source.c['class-key']);
+    const ring=rings.filter(x=>x.fields['ring-key']===source.c._ring);
+    const groupIds=(source.c._groups||[]).flatMap(k=>groups.filter(x=>x.fields['group-key']===k).map(x=>x.id));
+    if(source.rows.length&&cls.length!==1)issue('Missing/ambiguous shared class link for trips',{class_id:source.c['class-id']});
+    if(source.rows.length&&ring.length!==1)issue('Missing/ambiguous shared ring link for trips',{class_id:source.c['class-id']});
+    for(const row of source.rows){
+     const oldKey=model.key(r.scope.show,r.scope.date,row['class-id'],row['trip-id']);
+     const old=source.rows.filter(x=>x['trip-id']===row['trip-id']).length===1?legacy.filter(x=>x.fields['live-entry-key']===oldKey&&Number(x.fields['entry-id'])===row['entry-id']):[];
+     trips.push({...row,...(cls.length===1?{class:[cls[0].id],...(cls[0].fields.schedules?.length?{schedules:cls[0].fields.schedules}:{})}:{}),...(ring.length===1?{ring:[ring[0].id]}:{}),...(groupIds.length?{groups:[...new Set(groupIds)]}:{}),...(old.length===1?{'legacy-live-entry':[old[0].id]}:{})});
+    }
+   }
+   await save('live-trips','trip-key',trips,k=>trips.find(x=>x['trip-key']===k)['last-seen']);
+
   }
  }catch(e){await stageFailure('collection/save',e);}
  finally{

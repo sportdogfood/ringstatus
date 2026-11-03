@@ -4,6 +4,59 @@ from data_contract import packed
 from season_store import SeasonStore
 
 FIELDS={'rider':'rider-associations','trainer':'trainer-associations'}
+LIBRARIES={
+    'rider':{'table':'tblVarKFns19Neoo8','key':'fldU0qvodyDV3jgcY','field':'fldpCLtnCRHMrZcxp'},
+    'trainer':{'table':'tblowMYNMQQeoJiqY','key':'fldEflWVfT1Nd7Ca0','field':'fldSnVmvciJqU2OhD'},
+}
+
+def native_ids(value):
+    return sorted({v['id'] if isinstance(v,dict) else v for v in value or []})
+
+def sync_library_links(client,config,store,inventory,rows,conflicts):
+    libraries={}
+    for role,definition in LIBRARIES.items():
+        index={}
+        for record in client.records(config['base'],definition['table'],fields=[definition['key']]):
+            key=record['fields'].get(definition['key'])
+            if isinstance(key,str) and key:index.setdefault(key,[]).append(record['id'])
+        libraries[role]=index
+    patches=[];wanted={};unmatched=0
+    def issue(horse,reason,values):
+        row=conflicts.setdefault(horse,{'source-key':horse,'source-type':'horses','horse-key':horse,'details':[]})
+        value={'reason':reason,'values':values}
+        if value not in row['details']:row['details'].append(value)
+    for horse,record in inventory.items():
+        changes={}
+        for role,field in FIELDS.items():
+            definition=LIBRARIES[role]
+            value=rows.get(horse,{}).get(field,record['fields'].get(store.fields['horses'][field]['id']))
+            try:
+                associations=json.loads(value or '{}')
+                if not isinstance(associations,dict) or any(not isinstance(v,dict) or any(not isinstance(v.get(n,[]),list) or any(not isinstance(k,str) for k in v.get(n,[])) for n in ('shows','show-days','sources')) for v in associations.values()):raise ValueError()
+            except (ValueError,TypeError):
+                issue(horse,'Unrecognized existing '+field,{'stored':value});continue
+            previous=native_ids(record['fields'].get(definition['field']))
+            supported=set(previous)
+            for person in associations:
+                matches=libraries[role].get(person,[])
+                if len(matches)==1:supported.add(matches[0])
+                else:
+                    unmatched+=1
+                    issue(horse,'Missing or ambiguous synced '+role+' key',{'person-key':person,'matches':sorted(matches)})
+            if sorted(supported)!=previous:changes[definition['field']]=sorted(supported)
+        if changes:
+            patches.append({'id':record['id'],'fields':changes})
+            wanted[horse]=(record['id'],changes)
+    table=config['tables']['horses']['id']
+    for first in range(0,len(patches),10):
+        client.request('PATCH',config['base'],table,body={'records':patches[first:first+10]})
+    if wanted:
+        actual=store.inventory('horses')
+        for horse,(identity,values) in wanted.items():
+            if actual.get(horse,{}).get('id')!=identity:raise ValueError('Horse library link record ID changed')
+            for field,expected in values.items():
+                if native_ids(actual[horse]['fields'].get(field))!=expected:raise ValueError('Horse library link readback mismatch')
+    return {'library-link-records-updated':len(patches),'library-link-records-unchanged':len(inventory)-len(patches),'library-link-unmatched':unmatched}
 
 def links(row,field,table):
     return [key for target,key in row.get(field,{}).get('$links',[]) if target==table]
@@ -84,6 +137,7 @@ def sync(client,config,facts,runtime):
     previous={key:{name:record['fields'].get(field['id']) for name,field in fields.items()} for key,record in inventory.items()}
     rows,conflicts=prepare(facts,previous)
     result=store.apply({'horses':rows})
+    library_result=sync_library_links(client,config,store,inventory,rows,conflicts)
     if conflicts:
         logger=SeasonStore(client,config['conflicts'],runtime/'conflicts')
         existing=logger.inventory('conflicts');cf=logger.fields['conflicts']
@@ -93,5 +147,5 @@ def sync(client,config,facts,runtime):
                 if issue not in details:details.append(issue)
             row['details']=packed(details);row['status']='Open'
         logger.apply({'conflicts':conflicts})
-    return {'association-'+name:value for name,value in result.items()}|{'association-conflicts':len(conflicts)}
+    return {'association-'+name:value for name,value in result.items()}|{'association-conflicts':len(conflicts)}|library_result
 

@@ -1,0 +1,106 @@
+{
+  "at": "2026-11-03T20:21:38.442Z",
+  "last": {
+    "due": true,
+    "run_id": "0a8c4fcd-235a-485f-814a-a41f144acd87",
+    "lane": "live-check",
+    "started": "2026-11-03T20:00:03.655Z",
+    "ok": true,
+    "issues": [],
+    "logging_errors": [],
+    "stage_errors": [],
+    "live_status": false,
+    "scope": {
+      "show": 200000077,
+      "customer": 15,
+      "date": "2026-11-05",
+      "authority": "rec8GtJJ7eSjY3Nd3",
+      "checked_at": "2026-11-02T06:04:12.307Z",
+      "active": true
+    },
+    "collect": false,
+    "minutes": 60,
+    "reason": "live-false",
+    "today": "2026-11-03",
+    "next_check_at": "2026-11-03T21:00:00.000Z",
+    "completed": "2026-11-03T20:00:04.799Z"
+  },
+  "cleanup": {
+    "run_id": "a308de60-a9b1-496e-b6f5-754bb0d006a4",
+    "started": "2026-11-03T20:12:03.617Z",
+    "actions": [
+      {
+        "id": "a308de60-a9b1-496e-b6f5-754bb0d006a4|quick-cleanup|heartbeat",
+        "table": "heartbeat",
+        "trigger": "quick-cleanup",
+        "before": 237,
+        "old_show": null,
+        "deleted": 0,
+        "started": "2026-11-03T20:12:12.243Z",
+        "result": "Skipped",
+        "completed": "2026-11-03T20:12:18.970Z",
+        "target_count": 0
+      },
+      {
+        "id": "a308de60-a9b1-496e-b6f5-754bb0d006a4|quick-cleanup|run-logs",
+        "table": "run-logs",
+        "trigger": "quick-cleanup",
+        "before": 504,
+        "old_show": null,
+        "deleted": 0,
+        "started": "2026-11-03T20:12:14.358Z",
+        "result": "Skipped",
+        "completed": "2026-11-03T20:12:20.595Z",
+        "target_count": 0
+      },
+      {
+        "id": "a308de60-a9b1-496e-b6f5-754bb0d006a4|quick-cleanup|errs-log",
+        "table": "errs-log",
+        "trigger": "quick-cleanup",
+        "before": 1,
+        "old_show": null,
+        "deleted": 0,
+        "started": "2026-11-03T20:12:16.362Z",
+        "result": "Skipped",
+        "completed": "2026-11-03T20:12:22.177Z",
+        "target_count": 0
+      }
+    ],
+    "result": "Success",
+    "day": "2026-11-03",
+    "new_day": false,
+    "quick_due": true,
+    "show": 200000077,
+    "new_show": false,
+    "completed": "2026-11-03T20:12:23.780Z"
+  },
+  "controls": [
+    {
+      "id": "recMc87yF2nb33tNz",
+      "createdTime": "2026-11-03T19:55:31.000Z",
+      "fields": {
+        "Name": "live-trips",
+        "purpose": "ACTIVE — Day-0 trip records from the existing decoded classes source, with source identities, class/ring/entry references and trip-specific results/messages/comments. Cleared on new show only.",
+        "cleanup": true
+      }
+    }
+  ],
+  "trips": [],
+  "taskLog": [
+    "START 2026-11-03T15:15:03.6505042-05:00",
+    "{\"skipped\":\"next-check-not-due\",\"next_check_at\":\"2026-11-03T21:00:00.000Z\",\"cleanup\":{\"run_id\":\"3dc822e1-0a06-459b-b032-1718f6244c1d\",\"result\":\"Skipped\"}}",
+    "END 2026-11-03T15:15:03.7900490-05:00 exit=0",
+    "START 2026-11-03T15:18:06.8231521-05:00",
+    "{\"skipped\":\"next-check-not-due\",\"next_check_at\":\"2026-11-03T21:00:00.000Z\",\"cleanup\":{\"run_id\":\"7861b302-cae6-4512-815f-2cdad8ec42ae\",\"result\":\"Skipped\"}}",
+    "END 2026-11-03T15:18:06.9842764-05:00 exit=0",
+    "START 2026-11-03T15:21:03.6281313-05:00",
+    "{\"skipped\":\"next-check-not-due\",\"next_check_at\":\"2026-11-03T21:00:00.000Z\",\"cleanup\":{\"run_id\":\"38edb1c5-bdb5-4ea5-916a-157c257d908d\",\"result\":\"Skipped\"}}",
+    "END 2026-11-03T15:21:03.7879430-05:00 exit=0"
+  ],
+  "checks": {
+    "hashes": true,
+    "no_stop": true,
+    "single_trip_control": true
+  },
+  "result": "PASS"
+}

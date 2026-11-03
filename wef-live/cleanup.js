@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const settings=require('./settings');
 const LOGS=['heartbeat','run-logs','errs-log'];
 // Fixed owned-table boundary: an accidentally checked reference/catalog never authorizes deletion.
-const TABLES=['live-entries','live-class-appearances','live-classes','live-groups','live-rings',...LOGS];
+const TABLES=['live-trips','live-entries','live-class-appearances','live-classes','live-groups','live-rings',...LOGS];
 const terminal=new Set(['Success','Partial','Failed','Skipped','Error']);
 const localDay=value=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value));
 function completed(table,row){

@@ -1,0 +1,138 @@
+{
+  "at": "2026-11-03T20:03:21.549Z",
+  "live_check": {
+    "due": true,
+    "run_id": "0a8c4fcd-235a-485f-814a-a41f144acd87",
+    "lane": "live-check",
+    "started": "2026-11-03T20:00:03.655Z",
+    "ok": true,
+    "issues": [],
+    "logging_errors": [],
+    "stage_errors": [],
+    "live_status": false,
+    "scope": {
+      "show": 200000077,
+      "customer": 15,
+      "date": "2026-11-05",
+      "authority": "rec8GtJJ7eSjY3Nd3",
+      "checked_at": "2026-11-02T06:04:12.307Z",
+      "active": true
+    },
+    "collect": false,
+    "minutes": 60,
+    "reason": "live-false",
+    "today": "2026-11-03",
+    "next_check_at": "2026-11-03T21:00:00.000Z",
+    "completed": "2026-11-03T20:00:04.799Z"
+  },
+  "cleanup": {
+    "run_id": "84143948-7575-4ef7-a1b6-b77ddaa807d6",
+    "started": "2026-11-03T20:00:06.372Z",
+    "actions": [],
+    "result": "Skipped",
+    "day": "2026-11-03",
+    "new_day": false,
+    "quick_due": false,
+    "show": 200000077,
+    "new_show": false,
+    "reason": "No show/day change; three-hour log check not due",
+    "completed": "2026-11-03T20:00:06.739Z"
+  },
+  "new_tables": {
+    "live-trips": [],
+    "live-trip-results": [],
+    "live-trip-messages": [],
+    "live-trip-comments": []
+  },
+  "cleanup_config": [
+    {
+      "id": "recMc87yF2nb33tNz",
+      "createdTime": "2026-11-03T19:55:31.000Z",
+      "fields": {
+        "Name": "live-trips",
+        "purpose": "ACTIVE — Day-0 trip records from the existing decoded classes source, with source identities, class/ring/entry references and trip-specific results/messages/comments. Cleared on new show only.",
+        "cleanup": true
+      }
+    },
+    {
+      "id": "recY1oCAFMITlGrpz",
+      "createdTime": "2026-11-03T19:55:31.000Z",
+      "fields": {
+        "Name": "live-trip-comments",
+        "purpose": "TRIP COMMENTS — Individual trip-linked comments; collector does not synthesize comments. Cleared on new show only.",
+        "cleanup": true
+      }
+    },
+    {
+      "id": "recitwMRfhdVMwD8L",
+      "createdTime": "2026-11-03T19:55:31.000Z",
+      "fields": {
+        "Name": "live-trip-results",
+        "purpose": "ACTIVE — Individual trip result facts and source verification state, linked to the trip. Cleared on new show only.",
+        "cleanup": true
+      }
+    },
+    {
+      "id": "reclhIdQJGgtqZO73",
+      "createdTime": "2026-11-03T19:55:31.000Z",
+      "fields": {
+        "Name": "live-trip-messages",
+        "purpose": "TRIP MESSAGES — Individual trip-linked messages; downstream owns authoring/delivery. Collector does not synthesize or send messages. Cleared on new show only.",
+        "cleanup": true
+      }
+    }
+  ],
+  "run_records": {
+    "heartbeat": [
+      {
+        "id": "recM9ZlYjZkrHLWtt",
+        "createdTime": "2026-11-03T20:00:10.000Z",
+        "fields": {
+          "started": "2026-11-03T20:00:03.655Z",
+          "run-id": "0a8c4fcd-235a-485f-814a-a41f144acd87",
+          "heartbeat-key": "0a8c4fcd-235a-485f-814a-a41f144acd87",
+          "show-id": 200000077,
+          "result": "Skipped",
+          "date": "2026-11-05",
+          "summary": "{\"lane\":\"live-check\",\"live_status\":false,\"today\":\"2026-11-03\",\"priority_0_date\":\"2026-11-05\",\"reason\":\"live-false\",\"next_check_at\":\"2026-11-03T21:00:00.000Z\",\"collection\":\"Skipped\"}",
+          "checked-at": "2026-11-03T20:00:04.799Z",
+          "completed": "2026-11-03T20:00:04.799Z"
+        }
+      }
+    ],
+    "run-logs": [
+      {
+        "id": "recdMLvivKcVdgDZi",
+        "createdTime": "2026-11-03T20:00:10.000Z",
+        "fields": {
+          "date": "2026-11-05",
+          "result": "Skipped",
+          "show-id": 200000077,
+          "completed": "2026-11-03T20:00:04.799Z",
+          "summary": "{\"lane\":\"live-check\",\"live_status\":false,\"today\":\"2026-11-03\",\"priority_0_date\":\"2026-11-05\",\"reason\":\"live-false\",\"next_check_at\":\"2026-11-03T21:00:00.000Z\",\"collection\":\"Skipped\"}",
+          "started": "2026-11-03T20:00:03.655Z",
+          "run-id": "0a8c4fcd-235a-485f-814a-a41f144acd87"
+        }
+      }
+    ],
+    "errs-log": []
+  },
+  "no_manual_run": true,
+  "installed_hashes_match": true,
+  "task_log": [
+    "END 2026-11-03T14:51:04.2515666-05:00 exit=0",
+    "START 2026-11-03T14:54:03.9939341-05:00",
+    "{\"skipped\":\"next-check-not-due\",\"next_check_at\":\"2026-11-03T20:00:00.000Z\",\"cleanup\":{\"run_id\":\"c909a213-895a-4a9c-a986-66ad9c682816\",\"result\":\"Skipped\"}}",
+    "END 2026-11-03T14:54:04.1709280-05:00 exit=0",
+    "START 2026-11-03T14:57:03.4564198-05:00",
+    "{\"skipped\":\"next-check-not-due\",\"next_check_at\":\"2026-11-03T20:00:00.000Z\",\"cleanup\":{\"run_id\":\"b196f0b0-45e0-482a-b6d8-76c9a32e768b\",\"result\":\"Skipped\"}}",
+    "END 2026-11-03T14:57:03.5838714-05:00 exit=0",
+    "START 2026-11-03T15:00:03.5494186-05:00",
+    "END 2026-11-03T15:00:06.7609741-05:00 exit=0",
+    "START 2026-11-03T15:03:04.2099015-05:00",
+    "{\"skipped\":\"next-check-not-due\",\"next_check_at\":\"2026-11-03T21:00:00.000Z\",\"cleanup\":{\"run_id\":\"d6aba306-b6a6-4a5d-aa48-11a92acc7010\",\"result\":\"Skipped\"}}",
+    "END 2026-11-03T15:03:04.3607245-05:00 exit=0"
+  ],
+  "no_cleanup_stop": true,
+  "result": "PASS"
+}

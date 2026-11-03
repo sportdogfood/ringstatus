@@ -1,0 +1,27 @@
+{
+  "at": "2026-11-03T20:03:23.583477+00:00",
+  "deployment": "PASS:25installed JS hashes match final review;21existing JS/task unchanged",
+  "schema": "PASS:4newtables,8trip-native links,reciprocal results/messages/comments and4checked cleanup controls GET-read back",
+  "offline": "85PASS; author review,not independent",
+  "scheduled": "PASS:November3 15:00actual status check and15:03quiet dispatcher completed exit0",
+  "actual_check_run_id": "0a8c4fcd-235a-485f-814a-a41f144acd87",
+  "heartbeat_record": "recM9ZlYjZkrHLWtt",
+  "run_log_record": "recdMLvivKcVdgDZi",
+  "source_outcome": {
+    "live_status": false,
+    "date": "2026-11-05",
+    "today": "2026-11-03",
+    "collect": false,
+    "next_check": "2026-11-03T21:00:00.000Z"
+  },
+  "cleanup": "CorrectlySkipped,notdue/no show-day change;0actions,deletions,archives,errors",
+  "population": "UNVERIFIED:source live=false; current canonical day0Nov5 differs from calendarNov3. Newtables empty; no forced run/backfill. Existing scheduler rules unchanged.",
+  "remaining": [
+    "Natural populated trip/result/class/legacy native-link acceptance",
+    "Natural populated4newtable new-show deletion proof",
+    "Messages/comments authoring/delivery is downstream scope,not this collector"
+  ],
+  "manual_runs": false,
+  "record_repairs": false,
+  "new_schedule_or_observer": false
+}

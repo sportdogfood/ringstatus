@@ -1,3 +1,11 @@
+## Owner correction — November3,2026: live-trips only
+
+Current build removes the three unnecessary empty live-trip-results/messages/comments tables. Results belong directly on live-trips; downstream messages/comments reference trip-key. No child-table reads/writes or cleanup targets remain; only live-trips is new-show-cleanup-owned. New result fields and removed schema/configuration verified in evidence/live-trips-simple-20261103/schema-readback.json. Current25JS baseline is deployed.json in that directory. Day0source/cadence,sourceidentity,legacy links,active/current logs and prior cleanup rules preserved. No manual business runs/repairs/new schedules/gates. General lock and unrelated holds remain. Older four-table descriptions below are superseded.
+
+## Current owner-approved trips addition — November3,2026
+
+Explicit human APPROVED TO EDIT covers the agreed day0 live-trips build, own results/messages/comments relationships, preserving existing live-entries and integrating the same new-show cleanup. Current approved delta/runtime evidence: evidence/live-trips-20261103/{TASK.md,deployed.json,review.md,schema-readback.json}. No new collection gates, endpoint/task/cadence, provider/manual test runs, record repairs or extra bases. Live projects decoded class trips independently of UI availability. Entity/show-entry source IDs remain direct facts; no new reverse Entries/Data/helper dependency. Four new tables are live-trips/live-trip-results/live-trip-messages/live-trip-comments. General lock/unrelated holds remain. Natural populated acceptance remains distinct from idle normal checks. Do not revive old cleanup/Entries/CWF assumptions from historical sections.
+
 **RELOCKED — November 3, 2026 · Version 2026.11.03.2.** The approved cleanup change is deployed and its edit exception is closed. Further code/workflow changes require explicit owner approval. Scheduled operations continue. Current rules, verification and limits: [README](README.md), [LOCK.md](LOCK.md); exact baseline: evidence/lock-20261103/baseline.json.
 
 ## Current owner-approved exception — November3,2026

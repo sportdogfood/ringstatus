@@ -1146,6 +1146,28 @@
           "name": "record-status",
           "type": "singleLineText",
           "options": {}
+        },
+        {
+          "id": "fldytLWWs4emLlPJU",
+          "name": "trips",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblt0GvQ39bHIu930",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "flduw5aPBrz7qOYBh"
+          }
+        },
+        {
+          "id": "fldpAA1ilROs2QswL",
+          "name": "entries",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblcKPbT4DPbFPu5b",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldqTZvwRmyaa03iN"
+          }
         }
       ]
     },

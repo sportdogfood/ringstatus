@@ -1,7 +1,7 @@
 # wef-season — retained entities and horse associations
 
-**README version: 1.1.4**  
-**Updated: November 2, 2026, 2:58 p.m. America/New_York (UTC−05:00)**
+**README version: 1.1.7**  
+**Updated: November 3, 2026, 5:04 p.m. America/New_York (UTC−05:00)**
 
 ## Scope and ownership
 
@@ -17,6 +17,25 @@ Data acquisition is independently owned by wef-data-fast-collector, chat01a19273
 | Rings | appxMk9wfbBHEvC5e | tblzQ33F0whmvcPjp |
 
 ## Workflow and cadence
+
+### Canonical show/day correction — November 3, 2026, 5:04 p.m. Eastern
+
+Deployed the reviewed Season-only reader/configuration correction for Horses, Riders and Trainers. Existing `w-shows` and `w-days` are now their canonical local link targets, resolved by unchanged show-key/show-day-key. Synced context rows are read only. Legacy shows/show-days tables and fields are deprecated writer targets, retained unchanged for historical links, including show-75 days absent from the current sync. Rings configuration and the horse library-link helper remain unchanged; a canonical-source failure in the three migrated bases does not prevent Rings from running.
+
+36 targeted checks and independent review passed. Deployed season.py SHA256: `8da713fe2239869edad3bdfc1a845f013ac640e90dff32783b63b48e6399f15e`; schema.json SHA256: `1b52e9cee74867311f367c7177f14f74ce58e87b1da8c651d7d7d8e3ee29716a`. No Data/shared-store, task/cadence, stop or native-schema change; no manual collector run or record deletion. Repository downstream search found no other code consumer of the deprecated context table IDs. Data's linker uses unchanged entity keys; optional synced display-field selection remains foreign configuration, not a code change made here.
+
+**Scheduled acceptance remains unverified.** The latest completed 4:51 p.m. attempt predates deployment. Next normal hourly attempt: November 3 at 5:51 p.m. Eastern. Required native proof: horse 200001614 COMPIOBBI, rider 1000002903 and trainer 39138 link to show 15|200000077 and supported November 6/7/8 days; all prior keys, native IDs, records, history and nicknames remain preserved; the next natural repeat introduces no duplicates. Earlier successful stored-link audits did not establish current-show membership coverage.
+
+[Deployment](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/canonical-context-fix-20261103/deployment.json>) · [Independent review](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/canonical-context-fix-20261103/source-isolation-review/independent-review.md>). [Canonical-context complaint](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recXrc3GKL2ZXWzey) remains Open / Implemented-unverified; no restoration claimed.
+
+### Horse links to synced rider/trainer libraries — November 3
+
+Existing horses.w-riders links to local synced w-riders by unchanged rider-key; horses.w-trainers links to local synced w-trainers by unchanged trainer-key. Both allow multiples. The hourly horse workflow now uses retained rider-associations/trainer-associations for every stored horse, including historical horses absent from current Data. It adds supported native links, preserves existing links, keys, records, nicknames and show/day history, and leaves unsupported links unset while logging deduplicated conflicts. Synced library profiles are read only.
+
+Only horse_associations.py changed (SHA256 87b6fbd90e20adb239fc7b8b7d3926fb8e6d4a257d72cc79f722149fd5d190b8); deployed November 3 at 1:09:45 p.m. Eastern. Independent source review and 32 offline checks passed. Current saved native baseline contains 1,019 horses; all 312 rider and 897 trainer associations resolve uniquely in the 664-rider/280-trainer synced libraries. No Data, schema, shared-store, task/cadence changes, manual runs or native business writes occurred during delivery. [Independent review](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/horse-library-links-20261103/independent-review.md>) · [Deployment](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/horse-library-links-20261103/deployment.json>).
+
+**Scheduled native-link acceptance PASS.** The November 3 normal 1:51 p.m. Eastern run populated links on 897 horses, with zero unmatched library keys. The 2:51 p.m. repeat left all 1,019 horse link records unchanged and logged zero new horse-workflow errors. Native readback at 3:40 p.m. verified all 897 trainer and 312 rider associations against the exact synced library keys/native IDs, with zero missing, unexpected or duplicate links. Comparison with the saved baseline preserved all 1,019 existing horse keys/native IDs, show/day memberships, stored rider/trainer keys, nicknames and prior native links. This verifies links to stored associations; no new source acquisition or independent certification of every historical assignment is claimed. No manual collector runs or Data changes. [Scheduled receipts and native acceptance](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/horse-library-links-20261103/final-verification.json>).
+
 
 ### Verified ring recovery — November 2, 2026
 
@@ -57,9 +76,9 @@ The new conflicts table tblZlDewVNlXmPRqS in the horse base uses source-key, sou
 
 ## Deployed files and verification
 
-- season.py SHA256: e1f931f7c71f7bf46d7f66fdd6c4a2a9447a29b988c05e9d3b17fe15aa0cde1f
-- horse_associations.py SHA256: 7732f106d7bb98139d297876a2a5e42eeacd3e24fca880e8a850c96f641c45c1
-- schema.json SHA256: b314638055c3dea3c02e80a652ef787ef3cead2862f76af6cd4c50df1f4b1944
+- season.py SHA256: 8da713fe2239869edad3bdfc1a845f013ac640e90dff32783b63b48e6399f15e
+- horse_associations.py SHA256: 87b6fbd90e20adb239fc7b8b7d3926fb8e6d4a257d72cc79f722149fd5d190b8
+- schema.json SHA256: 1b52e9cee74867311f367c7177f14f74ce58e87b1da8c651d7d7d8e3ee29716a
 
 Independent review and 21 targeted checks passed before deployment on November1 at08:37Eastern. This is separate from scheduled proof:
 

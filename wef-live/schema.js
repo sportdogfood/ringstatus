@@ -9,6 +9,7 @@ const common = [
   "source-json",
 ];
 const tables = {
+  "live-trips": ["trip-key",...common,"trip-id","source-uuid","class-id","class-key","ring-id","entry-id","entry-key","entry-number","horse-id","horse-name","rider-id","rider-name","trainer-id","trainer-name","owner-id","owner-name","order-of-go","actual-order","scratch","gone","gone-in","estimated-go-time","record-status","placing","position","results-verified","class-status","results-json"],
   cleanup: ["Name","records","purpose","cleanup","started","completed","result","old-show-id","new-show-id","records-archived","records-deleted","archive-file","error","run-id"],
   "cleanup-logs": ["cleanup-id","run-id","table","trigger","started","completed","result","old-show-id","new-show-id","records-archived","records-deleted","archive-file","archive-sha256","error"],
   "errs-log": ["error-key", "run-id", "occurred-at", "show-id", "date", "message", "err-class", "err-trip", "err-group"],
@@ -114,6 +115,7 @@ const tables = {
   ],
 };
 const numeric = new Set([
+  "owner-id",
   "err-class",
   "err-trip",
   "err-group",
@@ -151,6 +153,7 @@ const numeric = new Set([
 const flags = new Set(["is-live", "has-json", "detail-available", "scratch"]);
 const multiline = new Set([
   "source-json",
+  "results-json",
   "summary",
   "errors",
   "archives",
@@ -174,6 +177,7 @@ function field(name) {
   };
 }
 const links = {
+  "live-trips": {class:"live-classes",ring:"live-rings",groups:"live-groups",schedules:"wef-schedules.schedules","legacy-live-entry":"live-entries"},
   "live-class-appearances": {group:"live-groups",class:"live-classes"},
   "live-rings": {
     "current-group": "live-groups",
