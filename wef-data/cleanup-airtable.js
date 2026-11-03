@@ -1,6 +1,7 @@
 "use strict";
 // Local Airtable adapter. Live delete-only retirement; original values and exact deletions remain verified.
 const settings = require("./cleanup-settings");
+const tableId=table=>require('./schema.json').tables[table]?.id||table;
 const same=(a,b)=>JSON.stringify(a==null||a===''?null:a)===JSON.stringify(b==null||b===''?null:b)||((a==null||a==='')&&(b===false||Array.isArray(b)&&!b.length));
 function unique(rows,key){const seen=new Set();for(const r of rows){const k=r.fields[key];if(k==null||k===''||seen.has(k))throw Error('Missing or duplicate '+key);seen.add(k);}}
 function airtable({
@@ -22,7 +23,7 @@ function airtable({
       throw Error("Read-only source or forbidden mutation");
     await pause(250);
     const r = await request(
-      `https://api.airtable.com/v0/${base}/${encodeURIComponent(table)}${query}`,
+      `https://api.airtable.com/v0/${base}/${encodeURIComponent(tableId(table))}${query}`,
       {
         method,
         headers: {
@@ -122,7 +123,7 @@ function airtable({
   async function retireCleanup(table,rows,policy,onDeleted=()=>{}) {
     const cleanup=require('./cleanup'),util=require('node:util');
     if(!cleanup.TABLES.includes(table)||!Number.isSafeInteger(policy.show)||policy.show<=0||
-      !['new-show','quick-cleanup'].includes(policy.trigger)||
+      !['new-show','calendar-day','quick-cleanup'].includes(policy.trigger)||
       rows.some(r=>!cleanup.eligible(table,r,policy.trigger,policy.show,api.runShows)||api.protectedIds.has(r.id)))throw Error('Forbidden cleanup scope');
     if(policy.trigger==='quick-cleanup'&&rows.length!==500)throw Error('Quick cleanup requires exactly 500 records');
     const afterDeleted=fields=>Object.fromEntries(Object.entries(fields).filter(([k])=>!settings.COMPUTED[table]?.includes(k)).map(([k,v])=>[k,
@@ -136,7 +137,7 @@ function airtable({
       if(current.length!==batch.length||batch.some(r=>{const c=current.find(c=>c.id===r.id);return !c||
         !util.isDeepStrictEqual(afterDeleted(r.fields),afterDeleted(c.fields))||!cleanup.eligible(table,c,policy.trigger,policy.show,api.runShows);}))throw Error('Cleanup record changed before deletion');
       await pause(250);const query=new URLSearchParams();for(const r of batch)query.append('records[]',r.id);
-      const response=await request(`https://api.airtable.com/v0/${settings.BASE_ID}/${encodeURIComponent(table)}?${query}`,{method:'DELETE',headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
+      const response=await request(`https://api.airtable.com/v0/${settings.BASE_ID}/${encodeURIComponent(tableId(table))}?${query}`,{method:'DELETE',headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
       if(!response.ok)throw Error('Cleanup deletion HTTP '+response.status);
       const d=await response.json();if(d.records?.length!==batch.length||d.records.some(r=>!r.deleted)||JSON.stringify(d.records.map(r=>r.id).sort())!==JSON.stringify(batch.map(r=>r.id).sort()))throw Error('Uncertain cleanup deletion');
       onDeleted(batch.map(r=>r.id));
@@ -148,6 +149,9 @@ function airtable({
     const logs=await list('run-logs'),errors=await list('err-logs'),heartbeats=await list('heartbeat');
     const {showOf,protectedRows}=require('./cleanup-fields');
     api.protectedIds=protectedRows(logs,errors,heartbeats);
+    api.loggingSnapshotIds=new Set([...logs,...errors,...heartbeats].map(r=>r.id));
+    const knownRuns=new Set(logs.map(r=>r.id));
+    for(const r of errors)if((r.fields.run||[]).some(id=>!knownRuns.has(id)))api.protectedIds.add(r.id);
     for(const r of logs){const sid=showOf('run-logs',r);if(sid!==null){api.runShows[r.id]=sid;if(r.fields['run-key'])api.runShows[r.fields['run-key'].split('|')[0]]=sid;}}
     for(const r of errors){const sids=[...new Set((r.fields.run||[]).map(id=>api.runShows[id]).filter(Number.isSafeInteger))];if(sids.length===1)api.runShows[r.id]=sids[0];}
   };

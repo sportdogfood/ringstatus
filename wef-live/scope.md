@@ -1,3 +1,22 @@
+**RELOCKED — November 3, 2026 · Version 2026.11.03.2.** The approved cleanup change is deployed and its edit exception is closed. Further code/workflow changes require explicit owner approval. Scheduled operations continue. Current rules, verification and limits: [README](README.md), [LOCK.md](LOCK.md); exact baseline: evidence/lock-20261103/baseline.json.
+
+# Current approved cleanup revision
+
+**Version2026.11.03.1 · Updated2026-11-03T09:05:12-05:00.** Owner-approved cleanup exception to the November2lock is deployed. Installed24JS hashes read back; only cleanup.js, airtable.js/retireCleanup and lanes.js's local cleanup-due evaluation changed. Existing Windows task, source polling cadence, schemas and other collectors are unchanged. Baseline and review: [release](evidence/cleanup-revision-20261103/TASK.md), [readback](evidence/cleanup-revision-20261103/deployed.json), [review](evidence/cleanup-revision-20261103/review.md).75offline checks PASS; author review, not independent.
+
+- **New Eastern calendar day:** clear all completed eligible records from heartbeat/run-logs/errs-log at any count.
+- **Every3hours:** inspect those three tables; at1000+ total records delete oldest500eligible completed records. Full calendar/show clears restart the3hour interval.
+- **New show:** clear all records in checked owned live-entries/live-class-appearances/live-classes/live-groups/live-rings, regardless of show-id, and eligible completed records in the three logging tables.
+- **New planning show-day:** no separate cleanup action.
+- Protect incomplete/Running logs, current invocation and its diff children. Preserve checked-table controls, permanent cleanup-logs/action history, catalogs and references. **Delete only; no new cleanup archives or deleted-field backups.** Existing archives remain untouched.
+- Same registered task evaluates local cleanup due state on quiet three-minute wakes. It does no provider/Airtable work or cleanup receipt write until due. No separate task/schedule/observer. Records supplies alerts; existing errs-log and local failure/stop evidence remain.
+
+The general lock stays in force. Stage8publication and old24hretention remain disabled. Known two conditional cleanup-reporting P2s are unchanged. Normal scheduled proof and naturally occurring deletion branches are recorded separately; no manual runs, forced events or record repairs.
+
+**Normal scheduled verification:** November3 **9:06 and9:09a.m.Eastern** completed exit0. Due three-hour check logged three below-threshold Skips (heartbeat231/run-logs498/errs-log1), zero deletions/archives/errors; repeat wake skipped cleanup without changing its checkpoint or action IDs. [Acceptance](evidence/cleanup-revision-20261103/acceptance.json). Natural new-calendar/new-show full clears and actual500deletion remain unverified operational branches, covered offline.
+
+## Earlier dated documentation — historical where superseded above
+
 **LOCKED — November 2, 2026 · documentation version 2026.11.02.13.** Further code/workflow changes require explicit owner approval. Normal scheduled collection, logs and delete-only cleanup continue. This is a documented freeze; no file permissions or Airtable permissions changed. See [LOCK.md](LOCK.md) for the exact baseline and remaining verification gaps.
 
 # Current Live release — delete only

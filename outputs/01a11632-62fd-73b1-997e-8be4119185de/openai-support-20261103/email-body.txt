@@ -1,0 +1,27 @@
+Hello OpenAI Support,
+
+Please assign this case to a human support specialist and escalate it to the Codex team where appropriate.
+
+I use Codex on Windows for a small business. My complaint register now contains 209 records, compared with 184 in yesterday's review: 25 additional complaints recorded between the 2 and 3 November 2026 reviews.
+
+The attached spreadsheet contains the full complaint table, a separate table of the 25 new records, and a summary of recurring patterns. The most common categories are:
+
+- Scope drift, unapproved changes or departure from a proven implementation: 44 records.
+- Stopping before completing the authorized result: 25.
+- Unsupported completion or verification claims: 25.
+- Producer, consumer, schema and error-contract failures: 19.
+- Lost requirements and context continuity: 19.
+
+All 25 new records fall within categories already present in the earlier review. These recurring issues create rework, delays and a substantial supervision burden.
+
+I have already documented approval boundaries, review requirements, context checkpoints and completion checks in instructions and custom skills. Agents acknowledge these requirements, yet the same failures continue. Retrospective promises to follow them are not a remedy.
+
+Please provide a human response addressing:
+
+1. What supported controls and configuration changes can improve instruction adherence and prevent unapproved changes during actual work, including after compaction and handoffs?
+2. How should I obtain reliable verification and completion without repeatedly policing the agent or restating the same requirements?
+3. What specific examples or diagnostics does your team need to investigate, and which issues require engineering escalation?
+
+Please review the attached evidence and provide a case reference and concrete next steps, rather than another generic prompting checklist or automated reassurance.
+
+Thank you.

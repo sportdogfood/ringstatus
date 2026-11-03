@@ -1,0 +1,19 @@
+{
+  "draft": "C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/outputs/01a11632-62fd-73b1-997e-8be4119185de/openai-support-20261103/OpenAI-support-human-review-draft.eml",
+  "recipient": "support@openai.com",
+  "attachment": "C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/outputs/01a11632-62fd-73b1-997e-8be4119185de/openai-support-20261103/OpenAI-complaints-2026-11-03.xlsx",
+  "attachmentBytes": 69858,
+  "attachmentSHA256": "474f0390ebb3e043caf227e76d62e32002ee2cac028811b4cfe24e8808ab497f",
+  "mimeAttachmentMatchesWorkbook": true,
+  "workbookTableRanges": {
+    "NewComplaints": "A5:H30",
+    "AllComplaints": "A5:H214"
+  },
+  "summaryCounts": [
+    184,
+    25,
+    209
+  ],
+  "emailSent": false,
+  "supportAddressSource": "https://status.openai.com/incidents/01M5NAR5GZC5M7D0S7AQ6CGEEN"
+}

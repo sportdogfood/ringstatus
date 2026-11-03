@@ -1,3 +1,9 @@
+**RELOCKED — November 3, 2026 · Version 2026.11.03.2.** The approved cleanup change is deployed and its edit exception is closed. Further code/workflow changes require explicit owner approval. Scheduled operations continue. Current rules, verification and limits: [README](README.md), [LOCK.md](LOCK.md); exact baseline: evidence/lock-20261103/baseline.json.
+
+## Current owner-approved exception — November3,2026
+
+Owner explicitly approved revised cleanup/test/deploy/normal verification, overriding only the older locked cleanup rules. Runtime hashes and task readback: evidence/cleanup-revision-20261103/deployed.json. New calendar day clears eligible completed heartbeat/run-logs/errs-log; every3hours checks1000/500; new show clears all checked owned show rows and eligible completed logs, even matching new-show-ID rows. No separate planning-day action. Protect active/current/diff logs. Delete only. cleanup-logs/catalogs/references retained. Same existing task evaluates local due state on quiet wakes; no extra schedule or observer. Records supplies alerts. General lock/holds and manual-run/repair/failure boundaries remain. No other collector changes.
+
 **LOCKED — November 2, 2026 · documentation version 2026.11.02.13.** Further code/workflow changes require explicit owner approval. Normal scheduled collection, logs and delete-only cleanup continue. This is a documented freeze; no file permissions or Airtable permissions changed. See [LOCK.md](LOCK.md) for the exact baseline and remaining verification gaps.
 
 # wef-live workspace instructions

@@ -1,0 +1,23 @@
+{
+  "event": "NEW SHOW resend, not a new transition",
+  "recipient": "wef-records-coordinator",
+  "threadId": "01a169bc-e58a-7de0-94c6-5d3931fcf745",
+  "originalRecordedAt": "2026-11-02T06:10:50.386065Z",
+  "resendAt": "2026-11-03 13:15:23 UTC",
+  "oldShow": 200000076,
+  "newShow": 200000077,
+  "oldDay0": "2026-11-01",
+  "newDay0": "2026-11-05",
+  "sendToolSucceeded": true,
+  "acknowledgment": "CONFIRMED",
+  "followupDuty": "Added to discovery-notices.md v1.1 and module AGENTS.md; no new automation configured",
+  "receivedAt": "2026-11-03T13:15:48Z",
+  "ackEvidence": {
+    "threadId": "01a169bc-e58a-7de0-94c6-5d3931fcf745",
+    "turnId": "01a1a18c-0b8e-7220-b395-273ddc5c2636",
+    "messageId": "msg_0da9dce0b85f05ba016ae9de8afcc08195a4c75a05d4cb8b0f",
+    "text": "Shows resend acknowledged at 8:15:48 a.m. Eastern: show 200000077, planning day0 November 5.",
+    "source": "Actual Records commentary retrieved via wait_threads; successful send alone was not receipt proof."
+  },
+  "otherDirectCoordinatorAcknowledgments": "Not checked by this Records-only resend"
+}

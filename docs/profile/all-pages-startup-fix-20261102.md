@@ -1,6 +1,6 @@
 # Keep an opened Sign in form visible
 
-2 November 2026 — one correction awaiting approval.
+Historical proposal, 2 November 2026. **Superseded:** later owner releases already fixed startup interaction before the 3 November Profile correction. Do not apply this old expression or reopen the working recognizer. Retained below as historical evidence only.
 
 Normal Member and Owner Profile flows passed from all five designated pages. A separate startup ordering check found that a late unrecognized result can close a form the visitor has already opened.
 

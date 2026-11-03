@@ -220,13 +220,15 @@ async function lane(name,{
 }
 async function scheduled(options={}){
  const policy=await require('./live-cadence').check(options);
- if(!policy.due)return{skipped:'next-check-not-due',next_check_at:policy.next_check_at};
  // Lanes start together; each owns its receipt and catches its own stage failures.
- const reports=policy.collect?await Promise.all(LANES.map(name=>lane(name,{...options,showContext:policy.scope,getStatus:async()=>policy.live_status}))):[policy];
+ const reports=!policy.due?[]:policy.collect?await Promise.all(LANES.map(name=>lane(name,{...options,showContext:policy.scope,getStatus:async()=>policy.live_status}))):[policy];
  // Cleanup is a separate post-collection action; publication remains on hold.
- try{const result=await (options.cleanup||require('./cleanup').cleanup)({...options,protectedRuns:reports.map(r=>r.run_id)});
+ let cleanupResult;
+ try{const result=await (options.cleanup||require('./cleanup').cleanup)({...options,checkShow:policy.due,protectedRuns:reports.map(r=>r.run_id)});
+  cleanupResult={run_id:result.run_id,result:result.result};
   if(reports[0])reports[0].cleanup={run_id:result.run_id,result:result.result};
- }catch(e){if(reports[0])reports[0].cleanup={result:'Error',error:e.message};}
+ }catch(e){cleanupResult={result:'Error',error:e.message};if(reports[0])reports[0].cleanup=cleanupResult;}
+ if(!policy.due)return{skipped:'next-check-not-due',next_check_at:policy.next_check_at,cleanup:cleanupResult};
  return reports;
 }
 module.exports={LANES,lane,scheduled,inWindow};

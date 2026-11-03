@@ -1,7 +1,7 @@
 # RingStatus Profiles — ownership and operating guide
 
-Version: **1.2.0**  
-Dated: **2 November 2026 — America/New_York**  
+Version: **1.3.0**  
+Dated: **3 November 2026 — America/New_York**  
 Owner: **rs-profile-coordinator**  
 Chat: `01a12690-0e9d-71f0-bb85-000d02307e8d`
 
@@ -145,18 +145,18 @@ Keep credentials, PINs, device tokens and raw private chat histories out of docu
 
 Verified implementation checkout:
 
-`C:/Users/gombc/.codex/worktrees/profile-completion-20261102/ringstatus`
+`C:/Users/gombc/.codex/worktrees/profile-proactive-20261103/ringstatus`
 
-Current verified application release: `a3a07e80655865eafa40f6aea75e7ba24df1e760`, deployment `f4198ecf-9bf7-4c6a-bfce-8e7d52f10eec`, succeeded on 2 November 2026 at 18:51:53 UTC. It preserves the separate approved display release `69a8f89da`. This is dated release evidence, not continuous monitoring.
+Current verified application release: `7fda82691e4c41f8b7f44bc5dd4f183e3210991d`, deployment `aff9e411-570e-4e0a-9ddc-d8072fe8adbe`, succeeded on 3 November 2026 at 14:47:21 UTC. It preserves the existing design and sibling changes through baseline `0cfe8b0dd7e281a126d636f2696a0306a34c0bcf`. No website publication occurred. This is dated release evidence, not continuous monitoring.
 
 Profile source, relative to that checkout:
 
-- `webflow-cloud-test/src/assets/rs-profile/client.js`, `profile.css`, `recognize.css`: consumer presentation.
+- `webflow-cloud-test/src/assets/rs-profile/client.js`, `profile.css`, shared `rs-ui/screen.css` and recognition `widget.css`: consumer presentation.
 - `webflow-cloud-test/src/assets/rs-profile/service.js`: browser identity/data/pending-save adapter.
 - `webflow-cloud-test/src/lib/rs-profile.js`: canonical records, permissions and saves.
-- `webflow-cloud-test/src/pages/rs-profile/client.js.ts`, `data.js`, `index.astro`: assets, API and standalone entry.
+- `webflow-cloud-test/src/pages/rs-profile/client.js.ts`, `service.js.ts`, `data.js`, `index.astro`: assets, API and standalone entry.
 
-Public paths are `/profile`, `/test/rs-profile/client.js`, `/test/rs-profile/data` and standalone `/test/rs-profile/`.
+Public paths are `/profile`, `/test/rs-profile/client.js`, `/test/rs-profile/service.js`, `/test/rs-profile/data` and standalone `/test/rs-profile/`. The service script is shared by the existing public consumer and Profile; it is not another data backend.
 
 Existing Cloud app: `d7d97751-20e1-4148-a5cf-ee58671c128a`; environment: `110f06dd-c1ea-4839-98af-d829cbe77941`; mount: `/test`. The existing GitHub branch `work/inputs-crm-20261006` auto-deploys on push. A push is therefore a release action, not a harmless way to save this README.
 
@@ -166,7 +166,7 @@ Recognize widget/IAM/credential/refresh code, D1 claim/save helpers, `rs-tenant-
 
 The existing core flow was tested through the live /profile controls: real User save/readback/reload, retained interrupted requests, sign-in/out/account isolation, roster and Owner enable/disable. The original test Owner was corrected to one membership under explicit owner instruction; temporary test values were restored. Evidence: `.git/ringstatus-control/recognize-model-correction-20261101/profile-e2e-live-results-20261102.json`.
 
-The completion candidate is `a3a07e80655865eafa40f6aea75e7ba24df1e760`. Independent feature tests22/22, the two reproduced review regressions, one-Team concurrency and shared-call compatibility passed. The current design's separate upstream display release was preserved, and the final build passed. Review evidence is in `.git/ringstatus-control/profile-completion-20261102/review-corrected/` and `review-final/`; code-review record `recPoGRbBzhiRmH8n` indexes it. Previous failed-review evidence remains in `review/`.
+The earlier completion candidate was `a3a07e80655865eafa40f6aea75e7ba24df1e760`. Independent feature tests22/22, the two reproduced review regressions, one-Team concurrency and shared-call compatibility passed. Its separate upstream display release was preserved, and its build passed. Historical review evidence is in `.git/ringstatus-control/profile-completion-20261102/review-corrected/` and `review-final/`; code-review record `recPoGRbBzhiRmH8n` indexes it. Previous failed-review evidence remains in `review/`.
 
 The owner explicitly authorized manual preparation of two disposable registered Test Users without memberships. This is test setup, not automated registration. Existing User memberships are preserved. Deployment and live control acceptance are recorded in `.git/ringstatus-control/profile-completion-20261102/live-acceptance.json`; the approved controls passed live browser/canonical readback/reload checks. Both disposable Users and their Team were deactivated, temporary values restored, and the original memberships/session preserved. Manual fixture preparation is separate from the tested application flow.
 
@@ -176,7 +176,19 @@ Alerts, Alarm, Checkin, external Opt-ins/Schedules and the preset Agent panel ar
 
 Actual Member and Owner Profile flows were subsequently tested from Home, Ring Status, About RingStatus, Recognize and Profile. Each reached the correct Profile; Member edits saved, read back, survived reload and were restored; Owner membership changes saved and were restored. Team permissions and one membership per User remained correct. Fresh phone/sign-out entry was checked. Test fixtures were deactivated and the original session/memberships preserved.
 
-Full all-page completion remains pending one confirmed startup issue: an early public Sign in click can be closed by the late unknown result of silent recognition. The smallest one-expression correction was independently tested in memory, but has not been approved, applied or deployed. This is separate from the successful normal flows. Evidence: `.git/ringstatus-control/profile-completion-20261102/all-pages-e2e-20261102.json`, `all-pages-browser-steps.json`, `all-pages-canonical-readbacks.json`, `all-pages-final-readback.json` and `all-pages-launcher-review/`.
+Historical finding: the a3 release had a startup interaction issue. Later owner releases already corrected that interaction before the 3 November work; the old one-expression proposal is superseded and must not be applied. Original evidence remains in `.git/ringstatus-control/profile-completion-20261102/all-pages-e2e-20261102.json` and `all-pages-launcher-review/`.
+
+### Approved proactive UX — 3 November 2026
+
+The owner approved early permitted preparation, immediate prepared display, immediate local Save/end editing, quiet existing-endpoint persistence and error handling, preserving the design, recognizer and one-Team rule. Three independently reproduced review findings were separately approved and corrected before release. Source review14/14 delayed-response gates and6/6 service regressions passed; unchanged backend16/16 checks passed. The app build and served service hash match the deployed commit.
+
+Live controls passed: Team creation; invitation, decline, re-invitation and acceptance; exactly one membership per User; Member/Owner separation; immediate Profile field update/editor close and next edit while the POST was deliberately held; ordered tag/email canonical saves and reload; prepared Profile visible with GET deliberately held; Home, Ring Status, About, Recognize and Profile handoffs; mobile roster search; photo upload/readback/reload/removal; Owner member disable/enable; and lost successful member-save reply followed by normal reload replay of the identical request ID/body. The server remained authoritative; pending invitation acceptance granted no premature membership.
+
+Preparation uses existing actor-scoped device storage and the server-resolved device fingerprint, bound to a previously successful Profile response. A replaced identity/device cannot reuse old private memory or in-flight work. It adds no TTL, offline authorization, polling, background service or replacement recognizer. Pending same-record writes remain ordered; newer local edits and unrelated work remain usable. PIN remains excluded from persisted drafts and normal cached fields.
+
+The older disposable Users could not be reused for a second Team creation because their permanent one-Team claims correctly rejected it before a Team write. They were restored to their original inactive state and membership links. A fresh disposable pair with unique test phones completed the live flow under the existing manual test-setup approval; both are now inactive in Profiles and Recognize, their Test Team is inactive, temporary values/photo are empty, and each retains exactly one membership as test evidence. Original User revisions13/2 and memberships were unchanged; original User1 session and normal viewport were restored. No claims were deleted or production records repaired.
+
+Evidence: `.git/ringstatus-control/profile-proactive-20261103/` contains `live-steps.json`, `live-pages.json`, `live-readbacks.json`, `live-lost-reply.json`, `final-cleanup-readbacks.json`, `served-source.json`, `release-build.log` and independent `review-corrected/`. Code-review record `recWDCTu6SDzLVkOw` indexes the reviewed source. Live phone/PIN credential changes were not performed; existing credential helpers and PIN persistence were checked offline, and original phone/PIN sign-in remained working. Full offline private display and disconnected services remain outside this correction.
 
 ## 11. Review records and working standard
 
@@ -188,6 +200,7 @@ Keep explanations short and human unless the owner requests detail, as for this 
 
 | Version | Date | Change |
 | --- | --- | --- |
+| 1.3.0 | 2026-11-03 | Approved proactive Profile UX deployed; delayed-response, Team/invitation, canonical, mobile/photo and lost-reply live acceptance; fixtures and original session restored. |
 | 1.2.0 | 2026-11-02 | Five-page live flows and restored test data; confirmed startup launcher correction pending approval. |
 | 1.1.0 | 2026-11-02 | Settled one-Team rule, current table markers, approved controls and versioned review/live acceptance evidence. |
 | 1.0.0 | 2026-11-02 | Initial owner-requested detailed Profile guide; documents domain cut, specialist capabilities, tool boundaries, new tables, deprecation policy and evidence limits. |

@@ -1,0 +1,135 @@
+{
+  "at": "2026-11-03T14:09:27.219Z",
+  "cleanup": {
+    "run_id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f",
+    "started": "2026-11-03T14:06:12.479Z",
+    "actions": [
+      {
+        "id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f|quick-cleanup|heartbeat",
+        "table": "heartbeat",
+        "trigger": "quick-cleanup",
+        "before": 231,
+        "old_show": null,
+        "deleted": 0,
+        "started": "2026-11-03T14:06:19.472Z",
+        "result": "Skipped",
+        "completed": "2026-11-03T14:06:25.708Z",
+        "target_count": 0
+      },
+      {
+        "id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f|quick-cleanup|run-logs",
+        "table": "run-logs",
+        "trigger": "quick-cleanup",
+        "before": 498,
+        "old_show": null,
+        "deleted": 0,
+        "started": "2026-11-03T14:06:21.561Z",
+        "result": "Skipped",
+        "completed": "2026-11-03T14:06:27.377Z",
+        "target_count": 0
+      },
+      {
+        "id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f|quick-cleanup|errs-log",
+        "table": "errs-log",
+        "trigger": "quick-cleanup",
+        "before": 1,
+        "old_show": null,
+        "deleted": 0,
+        "started": "2026-11-03T14:06:23.562Z",
+        "result": "Skipped",
+        "completed": "2026-11-03T14:06:29.256Z",
+        "target_count": 0
+      }
+    ],
+    "result": "Success",
+    "day": "2026-11-03",
+    "new_day": false,
+    "quick_due": true,
+    "show": 200000077,
+    "new_show": false,
+    "completed": "2026-11-03T14:06:32.272Z"
+  },
+  "state": {
+    "show": 200000077,
+    "day": "2026-11-03",
+    "quick_checked_at": "2026-11-03T14:06:12.479Z",
+    "run_id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f",
+    "completed": "2026-11-03T14:06:32.271Z"
+  },
+  "records": {
+    "cleanup-logs": [
+      {
+        "id": "rec4Oq3F8O2HXvq49",
+        "createdTime": "2026-11-03T14:06:24.000Z",
+        "fields": {
+          "records-archived": 0,
+          "result": "Skipped",
+          "new-show-id": 200000077,
+          "started": "2026-11-03T14:06:19.472Z",
+          "completed": "2026-11-03T14:06:25.708Z",
+          "records-deleted": 0,
+          "run-id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f",
+          "trigger": "quick-cleanup",
+          "table": "heartbeat",
+          "cleanup-id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f|quick-cleanup|heartbeat"
+        }
+      },
+      {
+        "id": "recWff7GAJCTSDVoT",
+        "createdTime": "2026-11-03T14:06:28.000Z",
+        "fields": {
+          "records-archived": 0,
+          "result": "Skipped",
+          "new-show-id": 200000077,
+          "started": "2026-11-03T14:06:23.562Z",
+          "completed": "2026-11-03T14:06:29.256Z",
+          "records-deleted": 0,
+          "run-id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f",
+          "trigger": "quick-cleanup",
+          "table": "errs-log",
+          "cleanup-id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f|quick-cleanup|errs-log"
+        }
+      },
+      {
+        "id": "recl8Wo9lj4eqswCZ",
+        "createdTime": "2026-11-03T14:06:26.000Z",
+        "fields": {
+          "records-archived": 0,
+          "result": "Skipped",
+          "new-show-id": 200000077,
+          "started": "2026-11-03T14:06:21.561Z",
+          "completed": "2026-11-03T14:06:27.377Z",
+          "records-deleted": 0,
+          "run-id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f",
+          "trigger": "quick-cleanup",
+          "table": "run-logs",
+          "cleanup-id": "fd7c951f-df1a-476a-acea-3cf14c43ec2f|quick-cleanup|run-logs"
+        }
+      }
+    ],
+    "errs-log": []
+  },
+  "log": [
+    "END 2026-11-03T08:57:05.9271044-05:00 exit=0",
+    "START 2026-11-03T09:00:03.7583222-05:00",
+    "END 2026-11-03T09:00:10.7297563-05:00 exit=0",
+    "START 2026-11-03T09:03:08.5610638-05:00",
+    "{\"skipped\":\"next-check-not-due\",\"next_check_at\":\"2026-11-03T15:00:00.000Z\"}",
+    "END 2026-11-03T09:03:08.6777117-05:00 exit=0",
+    "START 2026-11-03T09:06:12.2674976-05:00",
+    "{\"skipped\":\"next-check-not-due\",\"next_check_at\":\"2026-11-03T15:00:00.000Z\",\"cleanup\":{\"run_id\":\"fd7c951f-df1a-476a-acea-3cf14c43ec2f\",\"result\":\"Success\"}}",
+    "END 2026-11-03T09:06:32.3014162-05:00 exit=0",
+    "START 2026-11-03T09:09:03.8693761-05:00",
+    "{\"skipped\":\"next-check-not-due\",\"next_check_at\":\"2026-11-03T15:00:00.000Z\",\"cleanup\":{\"run_id\":\"d1deb5e7-6daf-4e56-97f3-d9cb4b1821a1\",\"result\":\"Skipped\"}}",
+    "END 2026-11-03T09:09:04.0464924-05:00 exit=0"
+  ],
+  "checks": {
+    "installed_hashes_match": true,
+    "cleanup_completed": true,
+    "no_stop": true,
+    "readback_actions": true,
+    "no_new_archives": true,
+    "no_cleanup_errors": true
+  },
+  "result": "PASS"
+}

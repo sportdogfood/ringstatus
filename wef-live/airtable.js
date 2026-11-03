@@ -204,8 +204,8 @@ function airtable({
   async function retireCleanup(table,rows,policy,onDeleted=()=>{}) {
     const cleanup=require('./cleanup'),util=require('node:util');
     if(!cleanup.TABLES.includes(table)||!Number.isSafeInteger(policy.show)||policy.show<=0||
-      !['new-show','quick-cleanup'].includes(policy.trigger)||
-      rows.some(r=>!cleanup.eligible(table,r,policy.trigger,policy.show)||policy.protectedRuns?.has(r.fields['run-id'])))throw Error('Forbidden cleanup scope');
+      !['new-show','calendar-day','quick-cleanup'].includes(policy.trigger)||
+      rows.some(r=>!cleanup.eligible(table,r,policy.trigger,policy.show)||cleanup.protectedRun(r,policy.protectedRuns||new Set())))throw Error('Forbidden cleanup scope');
     if(policy.trigger==='quick-cleanup'&&rows.length!==500)throw Error('Quick cleanup requires exactly 500 records');
     const afterDeleted=fields=>Object.fromEntries(Object.entries(fields).map(([k,v])=>[k,
       Array.isArray(v)&&v.every(id=>typeof id==='string'&&/^rec[a-zA-Z0-9]+$/.test(id))?v.filter(id=>!policy.deletedIds.has(id)):v

@@ -1,0 +1,15 @@
+{
+  "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\outputs\\01a11632-62fd-73b1-997e-8be4119185de\\openai-support-20261103\\OpenAI-complaints-2026-11-03.xlsx",
+  "recordCount": 209,
+  "newCount": 25,
+  "commonPatterns": 12,
+  "totals": [
+    184,
+    25,
+    209
+  ],
+  "sourceSnapshot": "2026-11-03 with latest C030 owner example",
+  "sourceIdsDistinct": 209,
+  "renderedSheets": 3,
+  "formulaScan": "{\"kind\":\"notice\",\"message\":\"Cell search matched 0 entries.\"}"
+}

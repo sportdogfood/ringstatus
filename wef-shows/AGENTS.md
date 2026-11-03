@@ -27,6 +27,12 @@ Use [discovery-notices.md](discovery-notices.md) for resolved chat IDs, notice
 content and delivery boundaries. This supersedes older Records-only recipient
 wording below; it does not change collectors or install automatic transport.
 
+Owner instruction November 3: receipt follow-up is part of Shows' task. Confirm
+the actual acknowledgment from EACH of the five coordinators, retaining send and
+receipt times/evidence. Follow up on missing acknowledgment and report gaps.
+Sending alone is not completion; do not confuse recorded notification state with
+confirmed receipt. See discovery-notices.md. This adds no unattended monitor.
+
 ## Current owner-approved scope - October 31, 2026
 
 The latest approval cancels entry/trip counting and its timeout repair. Only

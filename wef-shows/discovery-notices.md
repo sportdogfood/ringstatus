@@ -1,7 +1,7 @@
 # Shows discovery notices
 
-Version: 1.0
-Updated: November 2, 2026 (America/New_York)
+Version: 1.1
+Updated: November 3, 2026 (America/New_York)
 
 Owner instruction: Shows sends verified NEW SHOW and NEW SHOW-DAY discoveries
 directly to all five coordinators below. This supersedes the former Records-only
@@ -23,6 +23,21 @@ name, successful normal-run ID and original completion timestamp, and verified
 canonical show/day record links. Distinguish planning day0 from calendar TODAY.
 State unknowns and delivery/receipt gaps explicitly. Record delivery per recipient;
 sending to Records alone does not complete Shows' five-recipient notice.
+
+## Receipt follow-up - owner instruction November 3, 2026
+
+For every event, record the original send time and each recipient's actual
+acknowledgment time/evidence. Read the recipient's response through the existing
+chat tools. A successful send or a notification-state timestamp alone is NOT
+confirmed receipt. Follow up with a coordinator whose acknowledgment is missing;
+report the exact missing acknowledgment to the owner. Do not mark notice work
+complete until all five receipts are confirmed or explicitly reported missing.
+Do not claim unattended follow-up is installed merely from this task instruction.
+
+An owner-requested resend retains the original event, original recorded send time,
+and the resend time. Label it RESEND; do not manufacture a new show/day event or
+repeat completed cleanup/collector work. Preserve existing recipient receipts.
+No new polling task, observer, transport or repeated business execution is added.
 
 Records' copy must retain this instruction:
 

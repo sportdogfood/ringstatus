@@ -1,3 +1,29 @@
+# wef-live — locked
+
+**Version 2026.11.03.2 · Updated 2026-11-03T10:04:48-05:00.** Revised cleanup is deployed and locked. Further code, schema, cadence, cleanup-policy or deployment changes require explicit owner approval. Normal scheduled operation continues.
+
+## Cleanup rules
+
+- **New calendar day (America/New_York):** clear completed eligible records from **heartbeat, run-logs and errs-log**, regardless of count.
+- **Every 3 hours:** check those three logging tables. At **1,000+ total records**, delete the **oldest 500 eligible completed records**. A full calendar-day or new-show clear restarts this interval.
+- **New show:** clear all records in the checked owned **live-rings, live-groups, live-classes, live-class-appearances and live-entries** tables, plus completed eligible logging records. Show records are cleared regardless of their show ID.
+- **New show-day:** no separate cleanup action.
+- Protect **active/Running logs, current invocation logs and their diff children**. Retain cleanup-logs as the permanent action history, along with catalogs and reference tables.
+- **Delete only:** no cleanup archives or deleted-field backups. Existing historical files remain untouched.
+- Cleanup uses the **existing wef-live-collector task**. Quiet wakes evaluate local due state; no separate schedule or observer. **wef-records-coordinator supplies alerts.** Existing errs-log/local error and stop behavior remain.
+
+## Verified release
+
+**75 offline checks passed.** Author review completed; this was not an independent review. All **24 installed runtime JS hashes** match the reviewed release; **21 JS files** and the Windows task definition remain unchanged.
+
+Normal scheduled runs on **November 3 at 9:06 and 9:09 a.m. Eastern** completed with exit 0. The 9:06 three-hour check found **231 heartbeat / 498 run-logs / 1 errs-log** records. All were below 1,000, so it recorded three Skipped actions in Airtable with **zero deletions, archives or errors**. The 9:09 run correctly skipped cleanup and preserved the checkpoint and action IDs.
+
+Natural new-calendar-day full clears, new-show full clears and actual 500-record deletion under these revised rules remain unverified operational branches; they have offline coverage. Two preexisting conditional cleanup-reporting P2 findings remain in the review. Stage 8 publication and old 24-hour retention remain disabled. Collection cadence, other collectors and existing links are unchanged by this documentation lock.
+
+[Acceptance](evidence/cleanup-revision-20261103/acceptance.json) · [Review](evidence/cleanup-revision-20261103/review.md) · [Deployment](evidence/cleanup-revision-20261103/deployed.json) · [Lock baseline](evidence/lock-20261103/baseline.json) · [LOCK.md](LOCK.md).
+
+## Earlier dated documentation — historical where superseded above
+
 **LOCKED — November 2, 2026 · documentation version 2026.11.02.13.** Further code/workflow changes require explicit owner approval. Normal scheduled collection, logs and delete-only cleanup continue. This is a documented freeze; no file permissions or Airtable permissions changed. See [LOCK.md](LOCK.md) for the exact baseline and remaining verification gaps.
 
 # Current Live release — delete only

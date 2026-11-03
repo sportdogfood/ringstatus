@@ -7,7 +7,7 @@ const TABLES=['results','trips','entries','schedules','classes','groups','rings'
 function eligible(table,row,trigger,show,runShows={}){
  const sid=showOf(table,row,runShows);
  return TABLES.includes(table)&&completed(table,row)&&
-  (trigger==='new-show'?(CLEAR_ON_NEW_SHOW.includes(table)||sid!==null&&sid!==show):trigger==='quick-cleanup'&&LOGS.includes(table));
+  (trigger==='new-show'||['calendar-day','quick-cleanup'].includes(trigger)&&LOGS.includes(table));
 }
 function quickRows(table,rows,total=rows.length){
  if(!LOGS.includes(table)||total<1000)return[];
@@ -22,8 +22,8 @@ async function canonical(api){
  return Number(rows[0].fields.show_id);
 }
 async function cleanup({api=require('./cleanup-airtable').airtable(),runtime=settings.RUNTIME,clock=()=>new Date().toISOString(),
- protectedRuns=[],alertShow,alertDay,trigger}={}){
- if(!Number.isSafeInteger(alertShow)||alertShow<=0||!/^\d{4}-\d{2}-\d{2}$/.test(alertDay)||!['new-show','day-change'].includes(trigger))throw Error('Verified show/day alert required');
+ protectedRuns=[],alertShow,alertDay,trigger,eventId,alertAt}={}){
+ if(!Number.isSafeInteger(alertShow)||alertShow<=0||!/^\d{4}-\d{2}-\d{2}$/.test(alertDay)||!['new-show','calendar-day','log-check'].includes(trigger)||typeof eventId!=='string'||!eventId||(!Number.isFinite(Date.parse(alertAt))||new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(alertAt))!==alertDay))throw Error('Verified Records cleanup alert required');
  fs.mkdirSync(runtime,{recursive:true});
  const stateFile=path.join(runtime,'cleanup-state.json'),stop=path.join(runtime,'cleanup-stop.json');
  const run={run_id:Date.now(),started:clock(),actions:[],result:'Success'};
@@ -33,7 +33,7 @@ async function cleanup({api=require('./cleanup-airtable').airtable(),runtime=set
  if(fs.existsSync(stop)){run.result='Blocked';run.error='Cleanup stopped after a prior incomplete/error action; collection continues';run.completed=clock();receipt();return run;}
  const fd=fs.openSync(stop,'wx');try{fs.writeFileSync(fd,JSON.stringify({run_id:run.run_id,started:run.started}));fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
  const protectedIds=new Set(protectedRuns),deletedIds=new Set();let activeAction;
- const protect=(t,r)=>api.protectedIds?.has(r.id)||protectedIds.has(r.fields['attempt-id']);
+ const protect=(t,r)=>api.protectedIds?.has(r.id)||protectedIds.has(r.fields['attempt-id'])||(LOGS.includes(t)&&api.loggingSnapshotIds&&!api.loggingSnapshotIds.has(r.id));
  async function publish(action){
   const fields={'cleanup-id':action.id,'run-id':run.run_id,table:action.table,trigger:action.trigger,started:action.started,result:action.result,
    'new-show-id':run.show,'records-archived':0,'records-deleted':action.deleted||0};
@@ -80,20 +80,33 @@ async function cleanup({api=require('./cleanup-airtable').airtable(),runtime=set
    const old=[...new Set(rows.map(r=>showOf(table,r,api.runShows)).filter(n=>Number.isSafeInteger(n)&&n>0&&n!==run.show))];
    return{id:run.run_id+'|'+trigger+'|'+table,table,trigger,rows,before,old_show:old.length===1?old[0]:trigger==='new-show'&&previous.show!==run.show?previous.show:null,deleted:0};
   };
-  if(trigger==='new-show'&&run.new_show){
-   const plans=[];
-   for(const t of selected){const rows=await api.list(t);plans.push(plan(t,'new-show',rows.filter(r=>eligible(t,r,'new-show',run.show,api.runShows)&&!protect(t,r)),rows.length));}
-   await execute(plans);
-  }
-  if(trigger==='day-change'&&(previous.show!==run.show||previous.day!==alertDay)){
-   const quick=[];
-   for(const t of LOGS.filter(t=>selected.includes(t))){const rows=await api.list(t);
-    const targets=quickRows(t,rows.filter(r=>!protect(t,r)),rows.length);
-    if(targets.length)quick.push(plan(t,'quick-cleanup',targets,rows.length));
+  let handled=false;
+  if(previous.event_id!==eventId&&(trigger==='new-show'||previous.show===run.show)){
+   if(trigger==='new-show'&&run.new_show){
+    handled=true;
+    const plans=[];
+    for(const t of selected){const rows=await api.list(t);plans.push(plan(t,'new-show',rows.filter(r=>eligible(t,r,'new-show',run.show,api.runShows)&&!protect(t,r)),rows.length));}
+    await execute(plans);
    }
-   await execute(quick);
+   if(trigger==='calendar-day'&&(!previous.calendar_day||alertDay>previous.calendar_day)){
+    handled=true;
+    const plans=[];
+    for(const t of LOGS.filter(t=>selected.includes(t))){const rows=await api.list(t);plans.push(plan(t,'calendar-day',rows.filter(r=>eligible(t,r,'calendar-day',run.show,api.runShows)&&!protect(t,r)),rows.length));}
+    await execute(plans);
+   }
+   if(trigger==='log-check'&&(!previous.last_log_check||Date.parse(alertAt)>Date.parse(previous.last_log_check))){
+    handled=true;
+    const quick=[];
+    for(const t of LOGS.filter(t=>selected.includes(t))){const rows=await api.list(t);
+     const targets=quickRows(t,rows.filter(r=>!protect(t,r)),rows.length);
+     if(targets.length)quick.push(plan(t,'quick-cleanup',targets,rows.length));
+    }
+    await execute(quick);
+   }
+   if(handled)write(stateFile,{...previous,show:run.show,event_id:eventId,
+    calendar_day:['new-show','calendar-day'].includes(trigger)?alertDay:previous.calendar_day,
+    last_log_check:!previous.last_log_check||Date.parse(alertAt)>Date.parse(previous.last_log_check)?alertAt:previous.last_log_check,run_id:run.run_id,completed:clock()});
   }
-  write(stateFile,{show:run.show,day:alertDay,run_id:run.run_id,completed:clock()});
   run.completed=clock();receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());fs.unlinkSync(stop);
  }catch(e){
   run.result='Error';run.error=e.message;run.completed=clock();
