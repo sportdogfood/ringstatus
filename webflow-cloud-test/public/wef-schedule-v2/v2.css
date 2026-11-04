@@ -1,0 +1,338 @@
+:root{--v2-columns:36px 30px minmax(0,1fr) 32px 32px 48px 48px}
+/* Isolated V2; shared Pro fonts, shell and interaction rules are unchanged. */
+.v2-class{display:grid;grid-template-columns:var(--v2-columns);align-items:center;gap:6px;padding:10px;min-height:42px;width:100%;background:none;text-align:left;font-size:12px!important}
+/* One zebra band owns both the rollups and their class below. */
+.rings-panel>.this-class-wrapper{background:var(--mode-surface,#191919)}
+.rings-panel>.this-class-wrapper:nth-child(even){background:var(--mode-stripe,#252525)}
+.rings-panel>.this-class-wrapper:hover{background:var(--rs-active)}
+.these-rollups.is-empty{padding:0}
+.v2-class>*{min-width:0;white-space:nowrap}
+.v2-start,.v2-name{color:var(--mode-ink,#fff)}
+.v2-name{overflow:hidden;text-overflow:ellipsis;font-size:13px;font-weight:600}
+.v2-no{display:flex;align-items:center;gap:4px}
+[data-seq=OVF]{color:var(--mode-purple,#bcb0f4)}[data-seq="US/F"]{color:var(--mode-blue,#2bb3ff)}
+.v2-seq,.v2-type{font-size:11px}
+.v2-class-state,.v2-till{justify-self:end}
+.v2-status{display:inline-flex;align-items:center;white-space:nowrap}
+.v2-status .rings-badge{font-size:11px;min-height:25px}
+.rings-badge[data-status=now]{color:var(--mode-teal,#00d8bb);background:var(--mode-teal-bg,#06332d);border-color:var(--mode-teal-border,#007e70)}
+.rings-badge[data-status=done]{color:var(--mode-muted,#ccc);background:var(--mode-stripe,#292929);border-color:var(--mode-border,#555)}
+.v2-thead{min-height:0;padding-top:7px;padding-bottom:3px;font-size:9px!important;color:var(--mode-muted,#aaa)}
+.v2-thead>:nth-last-child(-n+2){text-align:right}
+.v2-ring-signals{display:flex;align-items:center;gap:9px}
+.v2-walk{color:var(--mode-blue,#2bb3ff);background:var(--mode-blue-bg,#0c2638);border-color:var(--mode-blue-border,#145477)}
+.v2-offset[data-offset=early]{color:var(--mode-red,#ff747c)}
+.v2-offset[data-offset=unknown],.v2-offset[data-offset=on-time]{color:var(--rings-muted)}
+.v2-offset{color:var(--mode-amber,#e5b44d);background:transparent;border:0}
+.rings-ring-head{min-height:44px}
+.v2-metric{display:inline-flex;align-items:baseline;gap:4px;min-width:0;font-size:12px;white-space:nowrap}
+.v2-metric .rings-token-label{font-size:9px}
+
+
+
+
+
+
+
+
+.v2-entry{border-top:1px solid var(--rings-border);padding:0}.v2-entry>.v2-detail-row{margin:0 10px}
+.v2-detail-row{display:grid;grid-template-columns:minmax(0,1fr) 6ch 9ch 10ch;align-items:center;gap:7px;min-height:30px;font-size:12px}
+.v2-detail-row>*{min-width:0;white-space:nowrap}
+.v2-detail-row>:last-child{justify-self:end}
+.v2-identity{display:flex;align-items:center;gap:6px;min-width:0}
+.v2-identity .rings-icon{width:17px;height:17px;flex:0 0 17px}
+.v2-identity>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v2-entry-link{padding:0;background:none;min-width:0;text-align:left}
+.v2-entry-link .v2-identity{font-size:13px;font-weight:600;color:var(--mode-teal,#00d8bb)}
+.v2-trip-row>.v2-entry-link,.v2-trainer-row>.v2-identity,.v2-result-row>.v2-identity{grid-column:1/3}
+.v2-groom-row>.v2-identity{grid-column:1/3;justify-self:stretch}
+.v2-back{background:none;padding:10px;color:var(--mode-blue,#2bb3ff)!important;font-size:12px!important;text-align:left}
+.rings-surface-head{padding:10px 12px}
+.rings-surface-head h2{font-size:13px;font-weight:500;color:var(--mode-muted,#aaa)}
+.rings-surface-context{display:none}
+.rings-detail-panel{border:0;border-radius:0}
+.rings-surface-content{padding:0 12px 12px}
+@media(max-width:472px){
+
+
+
+
+
+
+
+.v2-detail-row{grid-template-columns:minmax(0,1fr) 5ch 8ch 9ch;gap:5px}
+.v2-metric{gap:3px}.v2-metric .rings-token-label{font-size:8px}
+}
+
+.v2-ring-signals .rings-badge,.v2-status .rings-badge{height:25px;min-height:25px;line-height:15px;padding:4px 5px}
+.v2-walk .rings-icon{width:13px;height:13px}
+.v2-entry-summary{display:grid;grid-template-columns:5ch 3ch minmax(0,1fr) 4ch 5ch 7ch;align-items:center;gap:7px;padding:9px 10px;border-top:1px solid var(--rings-border);font-size:12px;white-space:nowrap;min-height:36px}
+.v2-entry-summary>*{min-width:0}
+.v2-entry-summary>.rings-icon{width:15px;height:15px;color:var(--mode-teal,#00d8bb)}
+.v2-entry-go{color:var(--mode-ink,#fff)}
+.v2-entry-name-link{padding:0;background:none;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px!important;color:var(--mode-teal,#00d8bb)!important}
+.v2-order[data-kind=oog]{color:var(--mode-purple,#bcb0f4)}
+.v2-order[data-kind=roog]{color:var(--mode-blue,#2bb3ff)}
+.v2-order[data-kind=gone]{color:var(--mode-muted,#aaa);font-size:10px}
+.v2-entry-countdown{justify-self:end}
+.v2-entry-countdown[data-kind=go]{color:var(--mode-blue,#2bb3ff)}
+.v2-entry-countdown[data-kind=ends]{color:var(--mode-amber,#e5b44d)}
+.v2-firsts{padding:0;background:none;color:var(--mode-teal,#00d8bb)!important;display:flex;align-items:center;justify-content:center}
+.v2-oog10{font-size:11px;text-align:center}
+@media(max-width:472px){.v2-entry-summary{gap:5px;padding:9px 8px;font-size:11px}.v2-entry-name-link{font-size:12px!important}}
+
+/* Name icons travel with names; countdown values are minutes. */
+.rings-ring-head{justify-content:flex-start;gap:10px;flex-wrap:nowrap}
+.rings-ring-head h3{min-width:78px;white-space:nowrap;flex:0 0 auto}
+.v2-ring-signals{gap:10px;flex:1;min-width:0}.v2-walk{margin-left:auto}
+.v2-name .v2-identity{font-size:inherit}
+.v2-name .rings-icon,.v2-entry-name-link .rings-icon{width:14px;height:14px;flex-basis:14px}
+.v2-entry-name-link .v2-identity{gap:4px}
+
+
+
+
+@media(max-width:472px){
+
+
+
+
+
+}
+
+/* All drawer lists share the class table's seven tracks, including empty slot four. */
+.rings-detail-panel{--v2-columns:36px 30px minmax(0,1fr) 32px 40px 48px 48px}
+.v2-entry-summary,.v2-group-line,.v2-list-head{display:grid;grid-template-columns:var(--v2-columns);gap:6px;align-items:center;padding:9px 10px;white-space:nowrap;font-size:12px}
+.v2-list-head{padding-top:8px;padding-bottom:3px;font-size:9px;color:var(--mode-muted,#aaa);border-top:1px solid var(--rings-border)}
+.v2-entry-summary>* ,.v2-group-line>* ,.v2-list-head>*{min-width:0}
+.v2-entry-summary>span:nth-child(n+5),.v2-group-line>:nth-child(n+5),.v2-list-head>:nth-child(n+5){justify-self:end;text-align:right}
+.v2-group-name{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.v2-group-line{color:var(--mode-muted,#aaa)}
+.v2-group-line>:nth-child(n+5){color:var(--mode-ink,#fff)}
+.v2-entry-summary .v2-firsts{justify-self:end}
+@media(max-width:472px){
+.rings-detail-panel{--v2-columns:34px 23px minmax(0,1fr) 12px 25px 39px 43px}
+.v2-entry-summary,.v2-group-line,.v2-list-head{padding-left:8px;padding-right:8px;gap:4px}
+.v2-entry-summary,.v2-group-line{font-size:11px}
+.v2-list-head{font-size:8px}
+}
+
+.v2-person-line{display:grid;grid-template-columns:var(--v2-columns);gap:6px;align-items:center;padding:8px 10px;font-size:12px;white-space:nowrap}
+.v2-person-line>*{min-width:0}
+.v2-person-line>:nth-child(n+5){justify-self:end}
+#rings-surface-title{display:flex;align-items:center;gap:16px;min-width:0;white-space:nowrap}
+.v2-title-trainer{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;color:var(--mode-purple,#bcb0f4);font-size:12px;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:472px){.v2-person-line{gap:4px;padding:8px;font-size:11px}}
+
+.v2-collapse>summary{cursor:pointer;list-style:none}
+.v2-collapse>summary::-webkit-details-marker{display:none}
+.v2-collapse-sign{font-size:15px;line-height:16px;color:var(--mode-blue,#2bb3ff);text-align:center}
+.v2-collapse-sign::before{content:"+"}
+.v2-collapse[open]>summary .v2-collapse-sign::before{content:"−"}
+.v2-collapse>summary:focus-visible{outline:1px solid var(--mode-blue,#2bb3ff);outline-offset:-2px}
+
+.v2-mobile-meta{display:none}
+.rings-badge[data-status=upc]{color:var(--mode-purple,#bcb0f4);background:var(--mode-purple-bg,#282237);border-color:var(--mode-purple-border,#66528a)}
+@media(max-width:478.98px){
+.rings-entry-rollups{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+.rings-entry-rollup{flex:0 0 auto;white-space:nowrap}
+.v2-class{grid-template-columns:40px 26px minmax(0,1fr) 43px;grid-template-areas:"start no name state" ". . meta .";row-gap:3px;column-gap:6px;padding:9px 8px}
+.v2-start{grid-area:start}.v2-no{grid-area:no}.v2-name{grid-area:name}.v2-class-state{grid-area:state}
+.v2-class>.v2-seq,.v2-class>.v2-type,.v2-class>.v2-till,.v2-thead{display:none}
+.v2-mobile-meta{display:grid;grid-template-columns:max-content max-content max-content;align-items:center;justify-content:start;gap:12px;grid-area:meta;min-width:0;overflow:hidden;white-space:nowrap;font-size:10px;color:var(--mode-muted,#aaa)}
+.v2-mobile-meta>span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.v2-mobile-meta>.v2-mobile-countdown{flex-shrink:0;text-align:right}
+.v2-mobile-countdown strong{font-weight:500;color:var(--mode-ink,#fff)}
+.v2-class .v2-name{font-size:12px}
+.v2-class .v2-status .rings-badge{font-size:10px}
+}
+
+.v2-title-trainer .rings-icon{width:16px;height:16px;flex-shrink:0}
+
+/* Product navigation belongs inside the schedule, independent of preview controls. */
+.rings-profile-nav{flex-shrink:0;display:flex;align-items:center;min-height:36px;padding-top:4px}
+.rings-profile-nav a{display:inline-flex;align-items:center;min-height:32px;color:var(--mode-muted,#bdbdbd);font-size:13px;text-decoration:none;padding:0 4px}
+.rings-profile-nav a:hover{color:var(--mode-ink,#fff)}
+
+.rings-surface-head{justify-content:flex-start;gap:8px}
+.rings-surface-head>div:first-child{flex:1;min-width:0}
+#rings-surface-title{display:block;overflow:hidden;text-overflow:ellipsis}
+#rings-surface-trainer{gap:3px;flex:0 1 auto}
+#rings-surface-trainer .rings-icon{margin:0;padding:0;width:14px;height:14px;flex:0 0 14px}
+#rings-surface-trainer>span:last-child{overflow:hidden;text-overflow:ellipsis}
+
+/* Shared name origin: time | no / toggle | icon + name. */
+.v2-collapse-sign{justify-self:end}
+.v2-group-name .rings-icon,.v2-person-line .rings-icon{width:14px;height:14px;flex:0 0 14px}
+@media(max-width:478.98px){
+ .rings-detail-panel{--v2-columns:40px 26px minmax(0,1fr) 12px 25px 39px 43px}
+ .v2-entry-summary,.v2-group-line,.v2-list-head,.v2-person-line{column-gap:6px;padding-left:8px;padding-right:8px}
+ .v2-entry-name-link .v2-identity{gap:6px}
+}
+
+.v2-name{display:flex;align-items:center;gap:8px}.v2-name>.v2-identity{min-width:0;flex:1}
+.v2-comment-count{display:inline-flex;align-items:center;gap:3px;color:var(--mode-blue,#2bb3ff);font-size:10px;white-space:nowrap;flex-shrink:0}
+.v2-comment-count .rings-icon{width:13px;height:13px;flex:0 0 13px}
+.v2-comments-body{padding:8px 10px;font-size:12px}.v2-comment-note{color:var(--mode-muted,#999);font-size:10px;margin:0 0 8px}
+.v2-comments-body button{background:none;color:var(--mode-blue,#2bb3ff);padding:4px 0;font-size:11px}
+.v2-comment{padding:10px 0;border-bottom:1px solid var(--rings-border)}
+.v2-comment .v2-comment{margin-left:14px;border-bottom:0;padding-bottom:0}
+.v2-comment-author{font-size:11px;color:var(--mode-muted,#aaa)}.v2-comment p{margin:4px 0;white-space:normal;overflow-wrap:anywhere;color:var(--mode-ink,#fff)}
+.v2-comment-form{margin-top:10px}.v2-comment-form label{display:block;margin-bottom:5px}
+.v2-comment-form textarea{box-sizing:border-box;width:100%;background:var(--mode-stripe,#222);color:var(--mode-ink,#fff);border:1px solid var(--mode-border,#555);border-radius:5px;padding:8px;font:inherit;resize:vertical}
+.v2-comment-form>div{display:flex;gap:16px}.v2-comment-form[hidden]{display:none}
+@media(max-width:478.98px){.v2-desktop-comments{display:none}.v2-mobile-meta{grid-template-columns:repeat(4,max-content);gap:8px}}
+
+/* Entry metadata shares the name origin; primary status stays on row one. */
+.v2-entry-summary>.v2-entry-go{grid-column:1;grid-row:1}
+.v2-entry-summary>:nth-child(2){grid-column:2;grid-row:1}
+.v2-entry-summary>.v2-entry-name-link{grid-column:3/6;grid-row:1}
+.v2-entry-summary>.v2-entry-state{grid-column:6/8;grid-row:1;display:flex;align-items:center;justify-content:flex-end;gap:5px}
+.v2-entry-summary>.v2-entry-meta{grid-column:3/-1;grid-row:2;justify-self:stretch;text-align:left;display:flex;align-items:center;justify-content:flex-start;gap:16px;white-space:nowrap;font-size:10px;min-width:0;padding-top:0;padding-bottom:0}
+.v2-entry-meta>.v2-order{display:inline-flex;align-items:baseline;gap:4px}.v2-entry-meta>.v2-entry-countdown:empty{display:none}
+.v2-entry-meta strong{font-weight:500;color:var(--mode-ink,#fff)}
+.v2-entry-head>:nth-child(3){grid-column:3/6}
+.v2-entry-head>:nth-child(4){grid-column:6/8;justify-self:end}
+.v2-entry-state .rings-badge{font-size:10px}
+
+.rings-app .v2-detail-toggle{display:inline-grid;grid-template-columns:17px auto;align-items:center;justify-content:start;width:auto;height:22px;padding:0;background:none;color:var(--mode-blue,#2bb3ff);font-size:12px;line-height:1.4;flex:0 0 20px;vertical-align:middle;justify-self:start;text-align:center;grid-column:3/-1;grid-row:auto;align-self:center;margin:0;gap:6px;white-space:nowrap}
+.v2-detail-toggle:focus-visible{outline:1px solid var(--mode-blue,#2bb3ff);outline-offset:1px}
+
+@media(max-width:478.98px){.rings-detail-panel .v2-mobile-meta{grid-column:3/-1}}
+
+/* Block visibility controls occupy the same column as individual accordion signs. */
+.v2-collapse-sign{width:12px;justify-self:end;text-align:center}
+.v2-detail-toggle::after{content:"Show more";font-size:11px;font-weight:400}
+.v2-detail-toggle[aria-expanded=true]::after{content:"Show less"}
+.v2-collapse[hidden]{display:none!important}
+
+/* Day is a flat view of the same records and opens the existing class drawer. */
+.v2-page-nav{display:flex;flex-shrink:0;gap:7px;padding:8px 0;overflow-x:auto;border-top:1px solid var(--rings-border)}
+.v2-day-tools{align-items:center;gap:10px}.v2-day-tools h1{font-size:16px;margin:0 auto 0 0;font-weight:600}
+.v2-day-filters{display:flex;gap:4px}.v2-day-sort{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--mode-muted,#aaa)}
+.v2-day-sort select{background:var(--rs-surface);color:var(--mode-ink,#fff);border:1px solid var(--mode-border,#4b4b4b);border-radius:8px;padding:6px;font:inherit}
+.v2-day-row,.v2-day-head{display:grid;grid-template-columns:52px 46px 38px minmax(0,1fr) 53px;column-gap:6px;align-items:center;padding:9px 10px;width:100%;text-align:left}
+.v2-day-head{font-size:9px;color:var(--mode-muted,#aaa);padding-top:8px;padding-bottom:4px}.v2-day-head>:last-child{justify-self:end}
+.v2-day-row{background:var(--mode-surface,#191919);row-gap:4px;font-size:12px!important}.v2-day-row:nth-child(odd){background:var(--mode-stripe,#252525)}.v2-day-row:hover{background:var(--rs-active)}
+.v2-day-row>*{min-width:0;white-space:nowrap}.v2-day-time,.v2-day-name{color:var(--mode-ink,#fff)}
+.v2-day-name{overflow:hidden;font-weight:600;font-size:13px}.v2-day-name .rings-icon{width:14px;height:14px;flex:0 0 14px}
+.v2-day-status{justify-self:end}.v2-day-meta{grid-column:4/-1;display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:10px;color:var(--mode-muted,#aaa)}
+.v2-hot{font-size:9px;color:var(--mode-amber,#ffac52);font-weight:600}
+@media(max-width:478.98px){.v2-day-row,.v2-day-head{grid-template-columns:40px 42px 26px minmax(0,1fr) 43px;padding-left:8px;padding-right:8px;column-gap:5px}.v2-day-name{font-size:12px}.v2-day-status .rings-badge{font-size:10px}.v2-day-tools{gap:6px}.v2-day-meta{gap:6px}}
+
+.v2-sort-head{display:inline-flex;align-items:center;gap:2px;padding:0;min-height:24px;background:none;text-align:left;font-size:9px!important;color:var(--mode-muted,#aaa)!important;white-space:nowrap}
+.v2-sort-head[data-active=true]{color:var(--mode-blue,#2bb3ff)!important}.v2-sort-head span{font-size:11px}
+
+.v2-day-entries{justify-self:end;color:var(--mode-ink,#fff);font-variant-numeric:tabular-nums}
+.v2-day-status-text[data-status=now]{color:var(--mode-teal,#00d8bb)}.v2-day-status-text[data-status=next]{color:var(--mode-blue,#2bb3ff)}.v2-day-status-text[data-status=upc]{color:var(--mode-purple,#bcb0f4)}.v2-day-status-text[data-status=done]{color:var(--mode-muted,#ccc)}
+
+.v2-entry-meta .v2-firsts .rings-icon{width:13px;height:13px}.v2-entry-meta .v2-firsts{flex:0 0 auto}.v2-entry-meta .v2-oog10{font-size:10px}
+
+/* Detail views retain class headings at mobile widths; main schedule unchanged. */
+@media(max-width:478.98px){
+ .rings-detail-panel>.v2-thead{display:grid;grid-template-areas:"start no name state";grid-template-rows:auto;row-gap:0;padding-top:7px;padding-bottom:3px}
+ .rings-detail-panel>.v2-thead>:nth-child(1){grid-area:start}
+ .rings-detail-panel>.v2-thead>:nth-child(2){grid-area:no}
+ .rings-detail-panel>.v2-thead>:nth-child(3){grid-area:name}
+ .rings-detail-panel>.v2-thead>:nth-child(6){grid-area:state;justify-self:end}
+ .rings-detail-panel>.v2-thead>:nth-child(4),.rings-detail-panel>.v2-thead>:nth-child(5),.rings-detail-panel>.v2-thead>:nth-child(7){display:none}
+}
+
+/* Desktop name and comments stay on the primary row. */
+@media(min-width:479px){
+ .v2-name>.v2-identity{flex:0 1 auto}
+ .v2-desktop-comments{flex:0 0 auto}
+}
+
+/* Exact supplied logo settings; scale the whole mark, never individual values. */
+.rings-brand .rs-wordmark{display:inline-flex;align-items:baseline;isolation:isolate;white-space:nowrap;zoom:.65}
+.rings-brand .rs-wordmark-ring{position:relative;font-family:Outfit,sans-serif;font-weight:600;font-size:2.3rem;line-height:.85;letter-spacing:-.11em;margin-right:-4px;z-index:12;color:var(--mode-ink,#fff)}
+.rings-brand .rs-wordmark-status{position:relative;font-family:Outfit,sans-serif;font-weight:700;font-size:2.45rem;line-height:.85;letter-spacing:-.11em;z-index:10;color:#7d706a}
+@media(min-width:479px){.rings-brand .rs-wordmark{zoom:.8}}
+
+/* Compact scrolling logo row at both preview widths. */
+.rings-scroll > .rings-header{height:36px}
+
+@media(max-width:600px){.rings-app{background:var(--rings-bg)}.rings-shell{max-width:none;width:100%;height:100dvh;margin:0;border:0;border-radius:0;box-shadow:none}}
+
+/* Today controls use the compact navigation button dimensions. */
+.rings-actions.v2-day-tools{padding:5px 0;gap:7px}
+body[data-view=day] .rings-schedule{padding-top:6px}
+
+/* Schedule day selection in the existing brand row. */
+.v2-schedule-day{margin-left:auto;min-width:0;width:128px;max-width:42%;flex-shrink:1;height:30px;padding:3px 8px;border:1px solid var(--mode-border,#4b4b4b);border-radius:8px;background:var(--rs-surface);color:var(--rings-text);font:inherit;font-size:12px;color-scheme:var(--mode-scheme,dark);cursor:pointer}
+.v2-schedule-day:focus-visible{outline:2px solid var(--rings-blue);outline-offset:2px}
+.rings-actions>.v2-schedule-day{flex-shrink:0;margin-left:0}
+@media(max-width:478.98px){.rings-header:has(.v2-schedule-day){gap:8px}.v2-schedule-day{width:105px;font-size:12px}}
+
+/* Source schedule notes keep the existing row tracks without class actions. */
+.v2-schedule-block .v2-name{grid-column:3/-1;color:var(--rings-muted)}
+.v2-day-ring{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v2-entry-summary>span:nth-child(2){font-size:10px;letter-spacing:-.3px}
+@media (any-hover:hover) and (any-pointer:fine){
+ .drag-scroll.can-grab,.drag-scroll.can-grab button,.drag-scroll.can-grab a{cursor:grab;user-select:none;-webkit-user-select:none}
+ .drag-scroll.is-grabbing,.drag-scroll.is-grabbing *{cursor:grabbing!important}
+}
+
+.v2-day-meta>span{flex-shrink:0}.v2-day-meta>.v2-day-group{flex:1 1 auto;min-width:0;overflow:hidden}.v2-day-group .v2-identity{font-size:inherit;font-weight:400}.v2-day-group .rings-icon{width:12px;height:12px;flex:0 0 12px}
+
+.rings-entry-line{display:flex;align-items:flex-start;gap:7px;min-width:0}
+.rings-entry-line .rings-entry-rollups{flex:1;min-width:0;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+.rings-entry-line .rings-entry-rollup{flex-shrink:0}
+.rings-entry-line.is-expanded .rings-entry-rollups{flex-wrap:wrap}
+.v2-entry-tools{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.v2-entry-tools button{display:flex;align-items:center;justify-content:center;box-sizing:border-box;flex:0 0 32px;width:32px;height:32px;min-height:32px;padding:6px;border:1px solid var(--mode-border,#4b4b4b);border-radius:8px;background:var(--rs-surface);color:var(--mode-muted,#aaa);font-size:20px;line-height:1}
+.v2-entry-search{box-sizing:border-box;width:120px;min-width:0;height:32px;border:1px solid var(--mode-border,#4b4b4b);border-radius:8px;background:var(--rs-surface);color:var(--mode-ink,#fff);padding:6px 8px;font:inherit}
+.v2-entry-empty{font-size:12px;color:var(--mode-muted,#aaa);align-self:center}
+.rings-entry-line [hidden]{display:none!important}
+@media(max-width:478.98px){
+ .rings-entry-line:has(.v2-entry-search:not([hidden])){flex-wrap:wrap}
+ .v2-entry-tools:has(.v2-entry-search:not([hidden])){flex:1 1 100%;min-width:0}
+ .v2-entry-tools .v2-entry-search:not([hidden]){flex:1 1 0;width:0}
+ .rings-entry-line:has(.v2-entry-search:not([hidden])) .rings-entry-rollups{flex-basis:100%}
+}
+
+.v2-entry-tools button .rings-icon{width:18px;height:18px;flex:0 0 18px;margin:0}
+
+/* Shared detail spacing and alignment at desktop and phone sizes. */
+.rings-detail-panel :is(.v2-mobile-meta,.v2-entry-meta){min-height:18px}
+.rings-detail-panel :is(.v2-name,.v2-entry-name-link){min-height:25px;display:flex;align-items:center}
+.rings-detail-panel .v2-class:not(.v2-thead),.rings-detail-panel .v2-entry-summary{padding-block:4px;row-gap:2px;grid-template-rows:minmax(25px,auto)}
+.rings-detail-panel{--v2-columns:44px 30px minmax(0,1fr) 32px 40px 48px 48px}
+.v2-status .rings-badge{min-width:4ch;justify-content:center}
+@media(max-width:478.98px){
+ .rings-detail-panel{--v2-columns:44px 30px minmax(0,1fr) 12px 25px 39px 43px}
+ .rings-detail-panel>.v2-class{grid-template-columns:44px 30px minmax(0,1fr) 43px}
+}
+
+/* Shared disclosure: Today at every width; main schedule on mobile. */
+.v2-class,.v2-day-row{position:relative}
+.rings-app .v2-class-open{position:absolute;inset:0;width:100%;height:100%;padding:0;background:transparent;cursor:pointer}
+.rings-app .v2-meta-toggle{display:none;position:relative;z-index:1;align-items:center;justify-content:center;flex:0 0 17px;width:17px;height:22px;padding:0;background:none;color:var(--mode-blue,#2bb3ff);font-size:16px;line-height:1}
+.v2-day-name>.v2-identity>.rings-icon{display:none}
+.rings-app .v2-day-row .v2-meta-toggle{display:inline-flex}
+.v2-day-row:not(.is-meta-open)>.v2-day-meta{display:none}
+@media(max-width:478.98px){
+ .v2-name>.v2-identity>.rings-icon{display:none}
+ .rings-app .v2-meta-toggle{display:inline-flex}
+ .v2-class:not(.is-meta-open)>.v2-mobile-meta{display:none}
+}
+/* Owner-approved light-background mark; dark logo stays unchanged. */
+:root[data-theme=light] .rings-brand .rs-wordmark-ring{font-size:calc(2.3rem + 2pt)}
+
+/* Compact detail entries: metadata stays inline on desktop. */
+.rings-app .v2-entry-meta-toggle{display:none}
+@media(min-width:479px){
+ .v2-entry-summary>.v2-entry-name-link{grid-column:3/5}
+ .v2-entry-summary>.v2-entry-meta{grid-column:5/-1;grid-row:1;justify-self:end;padding:0}
+ .v2-entry-summary:has(>.v2-entry-state:not(:empty))>.v2-entry-name-link{grid-column:3}
+ .v2-entry-summary>.v2-entry-state:not(:empty){grid-column:4;grid-row:1}
+}
+@media(max-width:478.98px){
+ .rings-app .v2-entry-meta-toggle{display:inline-flex;align-items:center;justify-content:center;grid-column:3;grid-row:1;justify-self:start;width:17px;height:22px;padding:0;background:var(--rs-surface);color:var(--mode-blue,#2bb3ff);font-size:16px;line-height:1;z-index:1}
+ .v2-entry-summary:not(.is-meta-open)>.v2-entry-meta{display:none}
+}
+
+/* Always-visible group subline shared by class and entry details. */
+.v2-group-subline{grid-column:3/-1;grid-row:auto;min-width:0;min-height:22px;display:flex;align-items:center;margin-top:0;color:var(--mode-muted,#aaa);font-size:11px;white-space:nowrap;overflow:hidden}
+.v2-group-subline>.v2-identity{max-width:100%}

@@ -1,3 +1,12 @@
+## Proxy ownership - November 4, 2026
+
+`wef-decoder` owns the shared decoded proxy, its health monitoring and
+credential-update notices. Route proxy health, decoding and credential matters to
+that owner: local Codex chat `01a1a753-dce7-7951-a147-1b096e1538ba`.
+Existing endpoint: https://wef-schedules-decoded.gombcg.workers.dev.
+This records responsibility; it does not establish that unattended monitoring is
+active. Shows remains locked; no collector, endpoint, parameter or cadence changes.
+
 ## Daily weekday notice - approved November 3, 2026
 
 One native Codex automation, `wef-shows-daily-weekday-notice`, is ACTIVE daily at

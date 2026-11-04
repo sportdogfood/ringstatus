@@ -1,8 +1,17 @@
 # wef-shows
 
-Version: **1.8.2**
+Version: **1.8.3**
 
-Updated: **November 3, 2026 (America/New_York)**
+Updated: **November 4, 2026 (America/New_York)**
+
+## Proxy ownership - November 4, 2026
+
+`wef-decoder` owns the shared decoded proxy, its health monitoring and
+credential-update notices. Route proxy health, decoding and credential matters to
+that owner: local Codex chat `01a1a753-dce7-7951-a147-1b096e1538ba`.
+Existing endpoint: https://wef-schedules-decoded.gombcg.workers.dev.
+This records responsibility; it does not establish that unattended monitoring is
+active. Shows remains locked; no collector, endpoint, parameter or cadence changes.
 
 ## Daily weekday notice - approved November 3, 2026
 
@@ -83,7 +92,7 @@ Normal-run acceptance: October31 20:34 Eastern PASS (run 343cdab8-1245-46d9-9e47
 ## Historical release records - superseded
 
 The dated records below preserve earlier implementations and evidence. They do
-not authorize counting or reopen cancelled work. Version 1.8.2 above is current;
+not authorize counting or reopen cancelled work. Version 1.8.3 above is current;
 the established discovery and day-priority cadence remains unchanged.
 
 ## Direct proxy count ownership — approved October31, 2026

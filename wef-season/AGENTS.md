@@ -31,3 +31,8 @@ The owner's **65% context threshold** controls over the skill's generic70% prepa
 
 
 Owner cancellation — October30: People management and w-people are CANCELLED/out of scope. Preserve existing People base/data and historical evidence; no collection, writer, membership/schema work, reviews, sharing or replacement task. Four separate Season transfers and independently approved Data corrections are unchanged. Business observers are removed; do not recreate or replace them. Review jobs/context bookkeeping remain separate.
+
+
+## Controlling owner lock — November 4, 2026
+
+Season scope and deployed implementation are LOCKED per wef-season/LOCK.md. This coordinator owns Season only; the current business cadence is hourly. Normal hourly operation and previously approved read-only scheduled verification continue. Further product code/schema/task/scope changes require explicit owner approval. Preserve all keys, records and history; no Data or sibling changes, entry-based horse assignments, new gates/adapters or cleanup. This owner scope lock is not a collector stop and creates no runtime mechanism. Older Data ownership and five-minute statements above are superseded.

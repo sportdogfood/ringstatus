@@ -1,7 +1,21 @@
 # wef-season — retained entities and horse associations
 
-**README version: 1.1.7**  
-**Updated: November 3, 2026, 5:04 p.m. America/New_York (UTC−05:00)**
+## Owner lock — November 4, 2026
+
+**LOCKED:** Season only adds/upserts/deduplicates four entities, maintains supported trip-based person/show/day links while preserving keys/history, and runs/reports through the existing hourly task. Further implementation changes require explicit owner approval. Normal hourly operation and already-approved read-only verification continue. [Locked scope and deployed hashes](<C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-season/LOCK.md>).
+
+The trip-only release is deployed and reviewed; the next normal hourly acceptance remains pending at 3:51 p.m. Eastern November 4. This lock adds no runtime gate or stop.
+
+
+## Trip-only assignments — November 4, 2026
+
+At 3:16 p.m. Eastern the reviewed one-line removal was deployed: horse associations now observe trips only. Entry-parent assignments no longer generate new associations or those entry-context warnings. Existing entity upserts, supported show/day links, person-library links, saved keys/history and genuine trip conflicts remain. Historical conflict rows are retained; no cleanup or automatic closure was added. No Data, schema, task or cadence change.37 targeted checks independently passed. Helper SHA256:22ee075396ed2ce90a1af696150be5314ca1beffb22267fd7ad78f256699678f.
+
+Hourly acceptance remains pending the next normal3:51p.m.Eastern run; deployment is not scheduled verification. Evidence: outputs/trip-only-associations-20261103/deployment.json and review-final/. This current update supersedes older statements that entry-based assignment checks remain deployed.
+
+
+**README version: 1.1.9**  
+**Updated: November 4, 2026, America/New_York**
 
 ## Scope and ownership
 
@@ -77,7 +91,7 @@ The new conflicts table tblZlDewVNlXmPRqS in the horse base uses source-key, sou
 ## Deployed files and verification
 
 - season.py SHA256: 8da713fe2239869edad3bdfc1a845f013ac640e90dff32783b63b48e6399f15e
-- horse_associations.py SHA256: 87b6fbd90e20adb239fc7b8b7d3926fb8e6d4a257d72cc79f722149fd5d190b8
+- horse_associations.py SHA256: 22ee075396ed2ce90a1af696150be5314ca1beffb22267fd7ad78f256699678f
 - schema.json SHA256: 1b52e9cee74867311f367c7177f14f74ce58e87b1da8c651d7d7d8e3ee29716a
 
 Independent review and 21 targeted checks passed before deployment on November1 at08:37Eastern. This is separate from scheduled proof:

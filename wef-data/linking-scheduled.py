@@ -1,7 +1,7 @@
 """Entry point used by the existing scheduled task."""
 import json,pathlib
 from linking import run
-from retirement import worker_lock
+from runner_lock import worker_lock
 ROOT=pathlib.Path(__file__).resolve().parent
 
 def main():

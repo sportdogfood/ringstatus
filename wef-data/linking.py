@@ -1,7 +1,6 @@
 """Independently scheduled native linking from saved Data records only."""
 import datetime,json,os,pathlib,sys,time
 ROOT=pathlib.Path(__file__).resolve().parent
-sys.path.insert(0,str(ROOT.parent/'wef-schedules/tests'))
 from wef_data_airtable import Airtable,error_text
 from wef_data_store import DATA_BASE,DataStore
 from record_mappings import trip_records

@@ -1,6 +1,38 @@
 "use strict";
 const fs=require('node:fs'),path=require('node:path'),{spawn}=require('node:child_process');
-const {acquireLock,atomicReport}=require('../wef-schedules/collect');
+async function atomicReport(filename, report) {
+
+  fs.mkdirSync(path.dirname(filename),{recursive:true});
+
+  const tmp=filename+"."+process.pid+".tmp";
+
+  try {
+
+    fs.writeFileSync(tmp,JSON.stringify(report,null,2));
+
+    // Windows can briefly hold the destination open. Retry replacement only;
+
+    // never delete the last complete receipt or repeat business writes.
+
+    for(let attempt=0;;attempt++) {
+
+      try { fs.renameSync(tmp,filename);break; }
+
+      catch(error) {
+
+        if(!["EPERM","EACCES","EBUSY"].includes(error.code)||attempt===4) throw error;
+
+        await new Promise(resolve=>setTimeout(resolve,25*(attempt+1)));
+
+      }
+
+    }
+
+  }
+
+  finally { if(fs.existsSync(tmp)) fs.unlinkSync(tmp); }
+
+}
 function read(file){return JSON.parse(fs.readFileSync(file,'utf8'));}
 function collectionKeys(runtime){
  const state=read(path.join(runtime,'day-cadence.json'));
@@ -39,9 +71,7 @@ function due(runtime,linking=false,now=new Date()){
  }catch{return true;}
 }
 async function collect(runtime,linking=false){
- let release;
  try{
-  release=acquireLock(path.join(runtime,'collector.lock'));
   const result=await new Promise((resolve,reject)=>{
    const child=spawn(path.join(__dirname,'.venv','Scripts','python.exe'),['-B',path.join(__dirname,linking?'linking-scheduled.py':'scheduled.py')],
     {cwd:__dirname,env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},windowsHide:true,stdio:['ignore','pipe','pipe']});
@@ -52,7 +82,6 @@ async function collect(runtime,linking=false){
   if(result.code!==0){report.ok=false;report.state='Partial';report['item-errors']=[...(report['item-errors']||[]),{key:'Collector',error:result.error||'Collector process failed'}];}
   return report;
  }catch(error){return {ok:false,state:'Partial',counts:{saved:0},'item-errors':[{key:'Collector',error:error.message}]};}
- finally{if(release)release();}
 }
 async function scheduled(){
  const linking=(process.argv||[]).includes('--linking'),workflow=linking?'wef-data-linking':'wef-data',stage=linking?'Linking':'Collection';

@@ -113,7 +113,6 @@ def prepare(facts,previous):
             for name,values in [('shows',shows),('show-days',days),('sources',[key])]:
                 association[name]=sorted(set(association.get(name,[]))|set(values))
             index.setdefault((key,role),set()).add((horse,person))
-    for key,row in facts['entries'].items():observe('entries',key,row,links(row,'show','shows'),[])
     for key,row in facts['trips'].items():
         classes=links(row,'class','classes')
         if len(classes)!=1 or classes[0] not in facts['classes']:

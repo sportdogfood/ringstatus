@@ -1,0 +1,30 @@
+{
+  "source": "Schedule V2; October30 seed; prepared two-lane client",
+  "feedActive": false,
+  "files": {
+    "schedule.html": "9b2c68b296cca49e2f363ac24f988a2faec0c9bf220ebc1d36a77259fe12d639",
+    "day.html": "6665625a2958a87e304451795f713084b126808dc2349c100d896abb8e967b30",
+    "app.js": "f3ef3420e91e8f2196cd055a27e23ef5fc7b1c7f71d5154e84997009629924cc",
+    "comments.js": "91802dcd97bbcaaad30f505ede8b8476f973224bc3d6b60689722dbe78bfbbce",
+    "components.js": "435eafa44eebc2d1093c6cf960db004a6a0d7162a162ff45696f3ade037f0d47",
+    "data.js": "e7875b519f6801de341d6e9fc75cd6983fee90c585d39216993b1276e089fb36",
+    "data-diff.js": "64942891329968ea21d46930b9c0904129d200c579b7f359b10fe0fa3cb8b790",
+    "day.js": "c873cd1cc74c43d584db000f1cee3b69833f232ac55d194851d3414d20ece26e",
+    "device-data.js": "021af198013dd849968a01b6932fb8ed1a251b860be540c1389586e16c5f8cb7",
+    "device-location.js": "1111afe45107d67caf3d4d700e61d8aaebee53d9ce04ef265b8783d6f1fb4b7a",
+    "drag-scroll.js": "04e16c4801949e623aa807603dc064ec346a8935bc36fdeab926a0e672bb593d",
+    "favicon.svg": "92e0b2e6fc3a2aa76aef8d89091faf9837af04e2c84bff0360c2f41aae217e1d",
+    "fonts.css": "c093c00c6ff248f3df5d4666a5c97f2d55b5b6cbe0d9121bf9b7c058aa21156f",
+    "package-store.js": "9967f8cd784c4957cdc3cf1c5547d0c9cd34485682d60034a3eb291010562dfb",
+    "rings.css": "dc96decba5743edd2e7edab7de4a819e8e42594eaf6bdef72f272bd9cc20e249",
+    "schedule-data.js": "815f6a4e9c0ecc646d76720ec046142fa0d13403784ef26b9b528d1f27be311e",
+    "theme-mode.js": "75e72607c90c40e6739e92d6eed6348b51a5384b28b821f0de4985754b057ce3",
+    "theme.css": "d52d1c53ba666933203811f30508b9a4400895819b3ac8e167951dc9587218c4",
+    "v2.css": "1540c29a44dcf925f82e85905a137bddeec5a7cbe00923b2866724d0ef371731",
+    "assets/outfit-300.ttf": "643f64e9bfc140a9352ebf1b33958d5d5e0548ddc1bf7dc439e8da3df482473a",
+    "assets/outfit-400.ttf": "6a8c9be856a6b9e09c66615634904616152c9de5e44db343a3ced240479c586a",
+    "assets/outfit-500.ttf": "9a9f465776e653cd6175661d844555e08684d432518f1d2c621bcb3006598f9c",
+    "assets/outfit-600.ttf": "8900df5726b5a6f23e723594f11d5ea27e695bd85c884f18d88ed080544fe205",
+    "assets/outfit-700.ttf": "49dcdf653a004a2575b3de649f5e4c549d774fecddf317812330edd0ad70685a"
+  }
+}

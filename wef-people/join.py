@@ -5,7 +5,7 @@ import sys
 from collections import defaultdict
 
 ROOT = pathlib.Path(__file__).resolve().parent
-sys.path.insert(0, str(ROOT.parent / 'wef-schedules/tests'))
+sys.path.insert(0, str(ROOT.parent / 'wef-data'))
 from wef_data_airtable import Airtable
 
 BASE = 'app6uHgUYCCKTVlJE'

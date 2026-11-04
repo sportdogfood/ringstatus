@@ -39,7 +39,7 @@ for at,now,expected in json.loads(sys.argv[2]):
   out.append(True)
  except ValueError: out.append(False)
 print(json.dumps(out))`;
- const result=execFileSync(python,['-B','-c',script,path.join(root,'wef-schedules/tests'),JSON.stringify(cases)],{encoding:'utf8',windowsHide:true});
+ const result=execFileSync(python,['-B','-c',script,path.join(root,'wef-data'),JSON.stringify(cases)],{encoding:'utf8',windowsHide:true});
  assert.deepEqual(JSON.parse(result),cases.map(c=>c[2]));
 });
 
@@ -87,5 +87,5 @@ try: api.canonical_context(datetime.datetime.fromisoformat('2026-10-31T00:35:00+
 except ValueError: pass
 else: raise AssertionError('stale validation accepted')
 print('PASS Data production mapping and thirty-minute validation clock')`;
- assert.match(execFileSync(python,['-B','-c',script,path.join(root,'wef-schedules/tests')],{encoding:'utf8',windowsHide:true}),/PASS/);
+ assert.match(execFileSync(python,['-B','-c',script,path.join(root,'wef-data')],{encoding:'utf8',windowsHide:true}),/PASS/);
 });

@@ -2,6 +2,8 @@
 No production collector imports, Airtable writes, configuration or task changes.
 """
 import argparse, concurrent.futures, datetime, hashlib, json, pathlib, statistics, subprocess, time, urllib.parse
+import sys
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[2]/'wef-data'))
 from wef_data_context import load_context, validate_source_show
 from wef_data_airtable import Airtable, canonical_fence
 

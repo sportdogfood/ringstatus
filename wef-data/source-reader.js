@@ -1,6 +1,6 @@
 "use strict";
-// Same configured transport used by wef-shows. Invoked only by scheduled Data.
-const {fetchTextWithConfiguredTransport}=require('../wef-schedules/lib/sgl_fetch_adapter');
+// Existing Node source transport. Invoked only by scheduled Data.
+const fetchTextWithConfiguredTransport=(url,nodeFetchText)=>nodeFetchText(url);
 const crypto=require('node:crypto');
 const {safe}=require('./attempt-log');
 function errorText(error,seen=new Set()){

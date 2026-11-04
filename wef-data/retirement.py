@@ -1,3 +1,4 @@
+from runner_lock import worker_lock, WorkerBusy
 """Owner-approved, archive-gated retirement. Invoked only by the scheduled Data runner."""
 import contextlib,gzip,json,os,pathlib,subprocess
 from data_contract import packed,digest
@@ -7,7 +8,6 @@ from wef_data_store import equivalent
 ENTITIES={'horses','riders','trainers','owners'}
 APPROVAL='APPROVED TO EDIT AND REMOVE ARCHIVED ROWS'
 
-class WorkerBusy(RuntimeError):pass
 
 class RetentionWait(RuntimeError):
     """Positively identified retention readiness wait, before any deletion."""
@@ -19,24 +19,6 @@ def mutation_pending(runtime):
             return True
     return False
 
-@contextlib.contextmanager
-def worker_lock(runtime):
-    path=pathlib.Path(runtime)/'python-runner.lock';path.parent.mkdir(parents=True,exist_ok=True)
-    with path.open('a+b') as stream:
-        if path.stat().st_size==0:stream.write(b'0');stream.flush()
-        stream.seek(0)
-        if os.name=='nt':
-            import msvcrt
-            acquire=lambda:msvcrt.locking(stream.fileno(),msvcrt.LK_NBLCK,1)
-            release=lambda:msvcrt.locking(stream.fileno(),msvcrt.LK_UNLCK,1)
-        else:
-            import fcntl
-            acquire=lambda:fcntl.flock(stream.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
-            release=lambda:fcntl.flock(stream.fileno(),fcntl.LOCK_UN)
-        try:acquire()
-        except OSError:raise WorkerBusy('Existing Python Data worker still owns the runner lock') from None
-        try:yield
-        finally:stream.seek(0);release()
 
 def save(path,value):
     from data_runner import atomic
