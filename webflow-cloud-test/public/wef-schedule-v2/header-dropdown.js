@@ -35,12 +35,14 @@ export function headerDropdowns(host){
   active={select,button};menu.replaceChildren();menu.setAttribute('aria-label',select.getAttribute('aria-label'));
   Array.from(select.options).forEach((option,index)=>{
    const item=document.createElement('button');item.type='button';item.className='v2-filter-option';item.setAttribute('role','option');item.setAttribute('aria-selected',String(option.selected));
-   item.textContent=/^\d{4}-\d{2}-\d{2}$/.test(option.value)?new Intl.DateTimeFormat('en-US',{weekday:'long',month:'short',day:'numeric',timeZone:'UTC'}).format(new Date(option.value+'T12:00:00Z')):option.textContent;item.title=item.textContent;item.disabled=option.disabled||select.options.length===1;item.addEventListener('click',()=>choose(index));menu.append(item);
+   item.textContent=/^\d{4}-\d{2}-\d{2}$/.test(option.value)?(option.textContent==='Today'?'Today - ':'')+new Intl.DateTimeFormat('en-US',{weekday:'long',month:'short',day:'numeric',timeZone:'UTC'}).format(new Date(option.value+'T12:00:00Z')):option.textContent;item.title=item.textContent;item.disabled=option.disabled||select.options.length===1;item.addEventListener('click',()=>choose(index));menu.append(item);
   });
   menu.showPopover();button.setAttribute('aria-expanded','true');
   const rect=button.getBoundingClientRect(),width=menu.getBoundingClientRect().width;
-  menu.style.left=Math.max(8,Math.min(innerWidth-width-8,rect.right-width))+'px';menu.style.top=(rect.bottom+8)+'px';
-  menu.style.maxHeight=Math.max(44,Math.min(320,innerHeight-rect.bottom-16))+'px';
+  const above=button.dataset.placement==='top';
+  menu.style.maxHeight=Math.max(44,Math.min(320,above?rect.top-16:innerHeight-rect.bottom-16))+'px';
+  menu.style.left=Math.max(8,Math.min(innerWidth-width-8,rect.right-width))+'px';
+  menu.style.top=(above?Math.max(8,rect.top-menu.getBoundingClientRect().height-8):rect.bottom+8)+'px';
   (menu.querySelector('[aria-selected=true]:not(:disabled)')||menu.querySelector('button:not(:disabled)')||menu).focus();
  }
  menu.tabIndex=-1;
@@ -52,8 +54,8 @@ export function headerDropdowns(host){
   }else if(event.key==='Escape'){event.preventDefault();close();active?.button.focus();}
  });
  addEventListener('resize',close);
- return (select,svg)=>{
-  const button=document.createElement('button');button.type='button';button.className='v2-header-filter';button.innerHTML=svg;
+ return (select,svg,{className='v2-header-filter',placement='bottom'}={})=>{
+  const button=document.createElement('button');button.type='button';button.className=className;button.dataset.placement=placement;button.innerHTML=svg;
   const trainer=select.getAttribute('aria-label')==='Trainer';trainerDialog.id='v2-trainer-dialog';button.setAttribute('aria-label',select.getAttribute('aria-label'));button.setAttribute('aria-haspopup',trainer?'dialog':'listbox');button.setAttribute('aria-controls',trainer?trainerDialog.id:menu.id);button.setAttribute('aria-expanded','false');
   select.hidden=true;select.tabIndex=-1;host.append(button,select);
   button.addEventListener('click',()=>open(select,button));
