@@ -211,14 +211,14 @@
 .v2-day-tools{align-items:center;gap:10px}.v2-day-tools h1{font-size:16px;margin:0 auto 0 0;font-weight:600}
 .v2-day-filters{display:flex;gap:4px}.v2-day-sort{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--mode-muted,#aaa)}
 .v2-day-sort select{background:var(--rs-surface);color:var(--mode-ink,#fff);border:1px solid var(--mode-border,#4b4b4b);border-radius:8px;padding:6px;font:inherit}
-.v2-day-row,.v2-day-head{display:grid;grid-template-columns:52px 46px 38px minmax(0,1fr) 53px;column-gap:6px;align-items:center;padding:9px 10px;width:100%;text-align:left}
+.v2-day-row,.v2-day-head{display:grid;grid-template-columns:52px 46px 38px minmax(0,1fr) 50px 53px;column-gap:6px;align-items:center;padding:9px 10px;width:100%;text-align:left}
 .v2-day-head{font-size:9px;color:var(--mode-muted,#aaa);padding-top:8px;padding-bottom:4px}.v2-day-head>:last-child{justify-self:end}
 .v2-day-row{background:var(--mode-surface,#191919);row-gap:4px;font-size:12px!important}.v2-day-row:nth-child(odd){background:var(--mode-stripe,#252525)}.v2-day-row:hover{background:var(--rs-active)}
 .v2-day-row>*{min-width:0;white-space:nowrap}.v2-day-time,.v2-day-name{color:var(--mode-ink,#fff)}
-.v2-day-name{overflow:hidden;font-weight:600;font-size:13px}.v2-day-name .rings-icon{width:14px;height:14px;flex:0 0 14px}
+.v2-day-name{overflow:hidden;text-overflow:ellipsis;font-weight:600;font-size:13px}.v2-day-name .rings-icon{width:14px;height:14px;flex:0 0 14px}
 .v2-day-status{justify-self:end}.v2-day-meta{grid-column:4/-1;display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:10px;color:var(--mode-muted,#aaa)}
 .v2-hot{font-size:9px;color:var(--mode-amber,#ffac52);font-weight:600}
-@media(max-width:478.98px){.v2-day-row,.v2-day-head{grid-template-columns:40px 42px 26px minmax(0,1fr) 43px;padding-left:8px;padding-right:8px;column-gap:5px}.v2-day-name{font-size:12px}.v2-day-status .rings-badge{font-size:10px}.v2-day-tools{gap:6px}.v2-day-meta{gap:6px}}
+@media(max-width:478.98px){.v2-day-row,.v2-day-head{grid-template-columns:40px 42px 26px minmax(0,1fr) 42px 40px;padding-left:8px;padding-right:8px;column-gap:5px}.v2-day-name{font-size:12px}.v2-day-status .rings-badge{font-size:10px}.v2-day-tools{gap:6px}.v2-day-meta{gap:6px}}
 
 .v2-sort-head{display:inline-flex;align-items:center;gap:2px;padding:0;min-height:24px;background:none;text-align:left;font-size:9px!important;color:var(--mode-muted,#aaa)!important;white-space:nowrap}
 .v2-sort-head[data-active=true]{color:var(--mode-blue,#2bb3ff)!important}.v2-sort-head span{font-size:11px}
@@ -253,6 +253,14 @@
 /* Compact scrolling logo row at both preview widths. */
 .rings-scroll > .rings-header{height:36px}
 
+/* Scale the shared desktop canvas; keep its viewport bounds and mobile unchanged. */
+@media(min-width:601px){
+ .rings-app{--v2-desktop-scale:1.5}
+ .rings-shell,.rings-surface{zoom:var(--v2-desktop-scale)}
+ .rings-shell{max-width:calc(820px / var(--v2-desktop-scale));height:calc((100dvh - 64px) / var(--v2-desktop-scale));margin:calc(32px / var(--v2-desktop-scale)) auto}
+ .rings-surface{width:min(760px,calc((100vw - 32px) / var(--v2-desktop-scale)));max-height:calc((100dvh - 40px) / var(--v2-desktop-scale));margin-bottom:calc(20px / var(--v2-desktop-scale))}
+ .rings-surface[data-mode=class]{width:min(580px,calc((100vw - 40px) / var(--v2-desktop-scale)));max-height:calc((100dvh - 40px) / var(--v2-desktop-scale));top:calc(20px / var(--v2-desktop-scale));right:calc(20px / var(--v2-desktop-scale));margin:0}
+}
 @media(max-width:600px){.rings-app{background:var(--rings-bg)}.rings-shell{max-width:none;width:100%;height:100dvh;margin:0;border:0;border-radius:0;box-shadow:none}}
 
 /* Today controls use the compact navigation button dimensions. */
@@ -262,9 +270,8 @@ body[data-view=day] .rings-schedule{padding-top:6px}
 /* Schedule day selection in the existing brand row. */
 /* Shared icon dropdowns in the logo row, identical at every viewport. */
 .v2-header-filters{display:flex;align-items:center;gap:8px;margin-left:auto;flex:0 0 auto}
-.v2-header-filter{position:relative;display:flex;align-items:center;justify-content:center;width:30px;height:30px;flex:0 0 30px;border:1px solid var(--mode-border,#4b4b4b);border-radius:8px;background:var(--rs-surface);color:var(--rings-muted);cursor:pointer}
+.rings-app .v2-header-filter{position:relative;display:flex;align-items:center;justify-content:center;width:30px;height:30px;flex:0 0 30px;border:1px solid var(--mode-border,#4b4b4b);border-radius:8px;background:var(--rs-surface);color:var(--rings-muted);cursor:pointer}
 .v2-header-filter>.rings-icon{width:18px;height:18px;pointer-events:none}
-.v2-header-filter>.v2-schedule-day{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;opacity:0;cursor:pointer;font:inherit;font-size:16px;color-scheme:var(--mode-scheme,dark)}
 .v2-header-filter:focus-within{outline:2px solid var(--rings-blue);outline-offset:2px}
 .v2-header-filter[data-active="true"]{color:var(--rings-blue);border-color:var(--rings-blue)}
 @media(max-width:478.98px){.rings-header:has(.v2-header-filters){gap:8px}}
@@ -341,3 +348,22 @@ body[data-view=day] .rings-schedule{padding-top:6px}
 /* Always-visible group subline shared by class and entry details. */
 .v2-group-subline{grid-column:3/-1;grid-row:auto;min-width:0;min-height:22px;display:flex;align-items:center;margin-top:0;color:var(--mode-muted,#aaa);font-size:11px;white-space:nowrap;overflow:hidden}
 .v2-group-subline>.v2-identity{max-width:100%}
+
+/* One shared, theme-aware date/trainer menu. */
+.v2-filter-menu{position:fixed;inset:auto;margin:0;padding:4px;width:min(360px,calc(100vw - 24px));max-height:320px;overflow:auto;border:1px solid var(--mode-control-border,var(--rings-border));border-radius:16px;background:var(--mode-surface,#292929);color:var(--rings-text);box-shadow:0 8px 24px #0005;font-size:calc(14px * var(--v2-desktop-scale,1))}
+.v2-filter-option{display:block;width:100%;min-height:44px;padding:8px 12px;text-align:left;background:transparent;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v2-filter-option[aria-selected=true]{background:var(--rs-active);color:var(--mode-blue)}
+.v2-filter-option:hover,.v2-filter-option:focus-visible{background:var(--rs-active);outline:2px solid var(--mode-blue);outline-offset:-2px}
+.v2-filter-option:disabled{color:var(--rings-muted);cursor:default}
+
+.v2-trainer-search{width:100%;height:40px;flex-shrink:0;font-size:14px}
+.v2-trainer-options{max-height:45dvh;overflow:auto;min-height:0;border:1px solid var(--rings-border);border-radius:10px}
+.v2-trainer-dialog .v2-filter-option{font-size:14px}
+.v2-filter-option:nth-child(even){background:var(--mode-stripe)}
+.v2-filter-option[aria-selected=true],.v2-filter-option:hover,.v2-filter-option:focus-visible{background:var(--rs-active)}
+
+/* Compact trainer picker uses the shared modal and control styles. */
+.v2-trainer-dialog{width:min(400px,calc((100vw - 24px) / var(--v2-desktop-scale,1)))}
+.v2-trainer-empty{margin:0}
+
+.v2-day-row.v2-schedule-block>.v2-day-name{grid-column:4/-1}
