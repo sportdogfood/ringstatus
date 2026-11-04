@@ -20,3 +20,8 @@
 /* Shared light-mode zebra rows in class and entry detail lists. */
 :root[data-theme=light] .rings-detail-panel>section>:nth-child(odd of .v2-entry-summary,.v2-collapse){background:var(--mode-stripe)}
 :root[data-theme=light] .rings-detail-panel .v2-entry-summary:nth-child(odd of .v2-entry-summary) .v2-entry-meta-toggle{background-color:var(--mode-stripe)}
+
+/* Shared zebra for light-mode comment lists, including reply lists. */
+:root[data-theme=light] .v2-comment{background:var(--mode-surface)}
+:root[data-theme=light] .v2-comment:nth-child(even of .v2-comment){background:var(--mode-stripe)}
+

@@ -363,7 +363,7 @@ body[data-view=day] .rings-schedule{padding-top:6px}
 .v2-filter-option[aria-selected=true],.v2-filter-option:hover,.v2-filter-option:focus-visible{background:var(--rs-active)}
 
 /* Compact trainer picker uses the shared modal and control styles. */
-.v2-trainer-dialog{width:calc(min(480px,100vw - 24px) / var(--v2-desktop-scale,1))}
+.v2-trainer-dialog{width:calc(min(480px,100vw - 24px) / var(--v2-desktop-scale,1));inset:0;margin:auto;animation:none}
 .v2-trainer-empty{margin:0}
 
 .v2-day-row.v2-schedule-block>.v2-day-name{grid-column:4/-1}
