@@ -38,9 +38,10 @@ export const recognitionAdapter={
   await finishSignOut();
   const digits=String(value).replace(/[\s()+.-]/g,'');
   const kind=/^\d{4}$/.test(digits)?'pin':/^\d{7}$/.test(digits)?'invite':'phone';
-  if(!pendingCredential||pendingCredential.value!==digits)pendingCredential={action:'credential',kind,value:digits,request_id:crypto.randomUUID(),session_uid:session()};
-  const data=await action(pendingCredential);pendingCredential=null;
+  if(!pendingCredential||pendingCredential.value!==digits)pendingCredential={action:'credential',kind,value:digits,request_id:crypto.randomUUID(),session_uid:crypto.randomUUID()};
+  const credentialSession=pendingCredential.session_uid,data=await action(pendingCredential);pendingCredential=null;
   if(!data.verified)return null;
+  visitStorage.setItem(sessionKey,credentialSession);
   persistentStorage.setItem(tokenKey,data.device_token);
   return recognitionAdapter.current();
  },

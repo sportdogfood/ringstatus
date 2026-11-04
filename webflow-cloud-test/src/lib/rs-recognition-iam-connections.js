@@ -25,7 +25,7 @@ export async function exportIamHistory({env,request,eventUid,fetchImpl=fetch}){
  const db=requireClaimDatabase(env),key=await accessHash(JSON.stringify(['iam-audit',[eventUid]]));
  const row=await db.prepare("SELECT result_json FROM recognize_claims WHERE claim_key=? AND state='complete'").bind(key).first();
  if(!row)throw Error('history_pending');const entry=JSON.parse(row.result_json);
- if(entry.exported)return {exported:true,duplicate:true};
+ if(entry.exported)return {exported:true,duplicate:true,...(entry.summary_status==='session_identity_conflict'?{renew_session_uid:entry.session_uid}:{})};
  if(!entry.session_uid)throw Error('history_session_missing');
  const lockKey='iam-history-lock:'+await accessHash(entry.device_token||eventUid),lock=JSON.stringify({owner:crypto.randomUUID(),expiresAt:Date.now()+60000});
  await db.prepare("DELETE FROM recognize_claims WHERE claim_key=? AND json_extract(result_json,'$.expiresAt')<=?").bind(lockKey,Date.now()).run();
@@ -39,8 +39,14 @@ export async function exportIamHistory({env,request,eventUid,fetchImpl=fetch}){
  if(entry.person_record_id&&entry.device_token)device=await syncIamHistoryDevice({env,fetchImpl,deviceToken:entry.device_token,personRecordId:entry.person_record_id,retired:state?.retired===1});
  const payload={session_event_uid:entry.event_uid,session_uid:entry.session_uid,idempotency_key:'iam:'+entry.event_uid,event_type:entry.event_type,event_at:entry.at,event_result:entry.person_record_id?'matched':'not_matched',recognition_status:entry.person_record_id?'confirmed':'rejected',matched_by:entry.matched_by||'device_token',person_record_id:entry.person_record_id,device_record_id:device?.id,page_path:entry.page_path,detail:{source:'cloudflare_iam'}};
  await recordRecognitionSession({env,fetchImpl,geoFetchImpl:fetchImpl,request,payload});
- if(device)try{await recordRecognitionSummary({env,fetchImpl,sessionUid:entry.session_uid,tokenFingerprint:tokenHash,personRecordId:entry.person_record_id,deviceRecordId:device.id,recognized:entry.event_type!=='device_retired',retired:entry.event_type==='device_retired',now:()=>Date.parse(entry.at)});}catch(error){if(error.code!=='session_closed')throw error;}
- await db.prepare("UPDATE recognize_claims SET result_json=? WHERE claim_key=? AND result_json=?").bind(JSON.stringify({...entry,exported:true}),key,row.result_json).run();
- return {exported:true};
+ let summaryStatus='confirmed';
+ if(device)try{await recordRecognitionSummary({env,fetchImpl,sessionUid:entry.session_uid,tokenFingerprint:tokenHash,personRecordId:entry.person_record_id,deviceRecordId:device.id,recognized:entry.event_type!=='device_retired',retired:entry.event_type==='device_retired',now:()=>Date.parse(entry.at)});}catch(error){
+  // The immutable event above is confirmed. Never rebind another account's
+  // summary or let an old tab session prevent later history from exporting.
+  if(!['session_closed','session_identity_conflict'].includes(error.code))throw error;
+  summaryStatus=error.code;
+ }
+ await db.prepare("UPDATE recognize_claims SET result_json=? WHERE claim_key=? AND result_json=?").bind(JSON.stringify({...entry,exported:true,summary_status:summaryStatus}),key,row.result_json).run();
+ return {exported:true,summary_status:summaryStatus,...(summaryStatus==='session_identity_conflict'?{renew_session_uid:entry.session_uid}:{})};
  }finally{await db.prepare('DELETE FROM recognize_claims WHERE claim_key=? AND result_json=?').bind(lockKey,lock).run();}
 }

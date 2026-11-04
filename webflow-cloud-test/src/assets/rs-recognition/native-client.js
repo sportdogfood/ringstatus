@@ -6,12 +6,16 @@ const signOutKey = 'rs_recognition_pending_signout_v1';
 const confirmationGenerations = new WeakMap();
 const safeStores = new WeakMap();
 const historyKey='rs_recognition_pending_history_v1',historyFlushes=new WeakMap();
+export function renewHistorySession(result,sessionStorageImpl=browserStorage('sessionStorage'),uuid=()=>crypto.randomUUID()){
+ const store=safeStorage(sessionStorageImpl),key='rs_native_recognition_session_v1';
+ if(result?.exported&&result.renew_session_uid&&store.getItem(key)===result.renew_session_uid)store.setItem(key,uuid());
+}
 export function flushIamHistory({endpoint,fetchImpl=fetch,persistentStorage=browserStorage('localStorage'),eventUid}){
  const storage=safeStorage(persistentStorage);
  let queued;try{queued=JSON.parse(storage.getItem(historyKey)||'[]');}catch{queued=[];}
  if(eventUid&&/^[a-f0-9-]{36}$/i.test(eventUid)&&!queued.includes(eventUid)){queued.push(eventUid);storage.setItem(historyKey,JSON.stringify(queued));}
  if(historyFlushes.has(storage))return historyFlushes.get(storage);
- const work=(async()=>{for(let processed=0;processed<20;processed++){try{const id=JSON.parse(storage.getItem(historyKey)||'[]')[0];if(!id)break;const target=new URL(endpoint);target.searchParams.set('operation','session');const response=await fetchImpl(target,{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({history_event_uid:id})});const data=await response.json();if(!response.ok||!data.exported)break;const current=JSON.parse(storage.getItem(historyKey)||'[]').filter(x=>x!==id);storage.setItem(historyKey,JSON.stringify(current));}catch{break;}}})();
+ const work=(async()=>{for(let processed=0;processed<20;processed++){try{const id=JSON.parse(storage.getItem(historyKey)||'[]')[0];if(!id)break;const target=new URL(endpoint);target.searchParams.set('operation','session');const response=await fetchImpl(target,{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({history_event_uid:id})});const data=await response.json();if(!response.ok||!data.exported)break;renewHistorySession(data);const current=JSON.parse(storage.getItem(historyKey)||'[]').filter(x=>x!==id);storage.setItem(historyKey,JSON.stringify(current));}catch{break;}}})();
  historyFlushes.set(storage,work);void work.finally(()=>historyFlushes.delete(storage));return work;
 }
 export function safeStorage(storage) {
