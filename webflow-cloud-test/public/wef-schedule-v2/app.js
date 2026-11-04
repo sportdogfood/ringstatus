@@ -20,9 +20,17 @@ const dateLabel=date=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeri
 const daySelect=document.querySelector('.v2-schedule-day');
 const trainerSelect=document.createElement('select');
 trainerSelect.className='v2-schedule-day';trainerSelect.setAttribute('aria-label','Trainer');
-// Reuse the existing horizontal action strip and shared dropdown design.
-ringActions.prepend(trainerSelect);
-trainerSelect.hidden=!document.body.hasAttribute('data-trainer-filter');
+// Both header dropdowns share the same icon control and native selection behavior.
+const headerFilters=document.createElement('div');
+headerFilters.className='v2-header-filters';
+daySelect.before(headerFilters);
+function headerFilter(select,svg){
+ const control=document.createElement('label');control.className='v2-header-filter';
+ control.innerHTML=svg;control.append(select);headerFilters.append(control);return control;
+}
+const dayControl=headerFilter(daySelect,'<svg class="rings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18M8 15h3v3H8z"/></svg>');
+const trainerControl=headerFilter(trainerSelect,icon('trainer'));
+trainerControl.hidden=!document.body.hasAttribute('data-trainer-filter');
 trainerSelect.addEventListener('change',()=>{state.trainer=trainerSelect.value;state.horses.clear();if(surface.open)surface.close();syncDay();renderSchedule();});
 daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');
 daySelect.value=state.day;
@@ -36,6 +44,9 @@ function syncDay(){
  daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');daySelect.value=state.day;
  trainerSelect.innerHTML='<option value="">All trainers</option>'+options.map(([id,name])=>`<option value="${escape(id)}">${escape(name)}</option>`).join('');trainerSelect.value=state.trainer;
  const dateText=dateLabel(state.day);
+ dayControl.title=daySelect.title='Schedule day: '+dateText;
+ trainerControl.title=trainerSelect.title='Trainer: '+trainerSelect.selectedOptions[0].textContent;
+ trainerControl.dataset.active=String(Boolean(state.trainer));
  schedule.setAttribute('aria-label','Schedule for '+dateText);
  if(isDay)document.querySelector('.v2-day-tools h1').textContent=state.day===new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())?'Today':dateText;
  const footer=document.querySelector('.rings-shell-footer');
@@ -44,7 +55,7 @@ function syncDay(){
  const rows=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
  if(!isDay)ringActions.innerHTML=rings.map(r=>`<button class="rings-pill" type="button" data-ring="${r}" aria-pressed="false">${icon('ring')}${escape(ringDetails[r].name)}</button>`).join('');
- ringActions.prepend(trainerSelect);
+
  const horses=new Map(rows.flatMap(r=>r.entries.map(e=>[e.horseId,e.name])));
  horseActions.innerHTML=[...horses].map(([id,name])=>`<button class="rings-pill" type="button" data-horse="${escape(id)}" aria-pressed="false">${icon('horse')}${escape(name)}</button>`).join('');
 }
@@ -225,7 +236,7 @@ function applyDeviceData(data){
  document.querySelector('.rings-shell-footer').textContent='Updated '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:metadata.timezone}).format(new Date(metadata.refreshedAt||metadata.capturedAt));
 }
 if(endpoint){
- trainerSelect.hidden=false;
+ trainerControl.hidden=false;
  const dataEndpoint=new URL(endpoint,location.href).href;
  const device=createDeviceData({showId:metadata.showId,endpoint:dataEndpoint,seed:{records,days,ringDetails,metadata},onData:applyDeviceData,onError:()=>{document.querySelector('.rings-shell-footer').textContent='Refresh unavailable - showing last loaded data';},onChecked:(data,lane)=>{document.querySelector('.rings-shell-footer').textContent=(lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date());}});
  // Only the same Astro application's approximate GeoIP ping; no GPS or persistence.
