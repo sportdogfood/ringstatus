@@ -53,7 +53,7 @@ export async function loadSchedule({showId,token,lane='full',fetchImpl=fetch,now
    const offsets=new Set();
    do{
     await pause(Math.max(0,225-(Date.now()-previous))); previous=Date.now();
-    const response=await fetchImpl(url,{headers:{Authorization:`Bearer ${token}`},redirect:'error',cache:'no-store',signal:AbortSignal.timeout(15000)});
+    const response=await fetchImpl(url,{headers:{Authorization:`Bearer ${token}`},redirect:'manual',cache:'no-store',signal:AbortSignal.timeout(15000)});
     if(!response.ok)throw Error('airtable_unavailable');
     const body=await response.json();
     if(!Array.isArray(body.records))throw Error('invalid_airtable_response');
@@ -110,7 +110,7 @@ async function readQuery(kind,formula,fields,token,fetchImpl=fetch,pause=ms=>new
  const rows=[],offsets=new Set();
  do{
   await pause(225);
-  const response=await fetchImpl(url,{headers:{Authorization:`Bearer ${token}`},redirect:'error',cache:'no-store',signal:AbortSignal.timeout(15000)});
+  const response=await fetchImpl(url,{headers:{Authorization:`Bearer ${token}`},redirect:'manual',cache:'no-store',signal:AbortSignal.timeout(15000)});
   if(!response.ok)throw Error('airtable_unavailable');
   const body=await response.json();if(!Array.isArray(body.records))throw Error('invalid_airtable_response');
   rows.push(...body.records.map(r=>({...r.fields,id:r.id})));

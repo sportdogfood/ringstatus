@@ -34,7 +34,8 @@ test('Airtable reader follows linked records, pagination and allowlisted fields'
  const kinds=['shows','days','rings','schedules','groups','classes','trips','entries','horses','riders','trainers','ringHelpers'];
  const tables=['tblGc03icHzudV1v2','tblpRrsNXQdr3KrC9','tblhKkfYXppW3TbTq','tbl6KKlYuMIPHEJWe','tblQObOvktufkyq54','tbl0IFf067w4wUBj5','tblt0GvQ39bHIu930','tblcKPbT4DPbFPu5b','tblkGRRMJxnH55hi8','tblGEzjOJzpn3vxX5','tbl9ROAViHtbKqpRd','tblx3RAYeM52N3zaD'];
  let calls=0,pages=0;
- const fetchImpl=async url=>{
+ const fetchImpl=async (url,options)=>{
+  assert.equal(options.redirect,'manual');
 
   calls++;const kind=kinds[tables.indexOf(url.pathname.split('/').at(-1))];assert.ok(kind);
   const ids=[...url.searchParams.get('filterByFormula').matchAll(/rec[A-Za-z0-9]{14}/g)].map(m=>m[0]);
