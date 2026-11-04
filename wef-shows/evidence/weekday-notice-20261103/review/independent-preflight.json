@@ -1,0 +1,85 @@
+{
+  "checked_at": "2026-11-04T01:06:48.515Z",
+  "runtime": "v22.22.2",
+  "scope": "Offline configuration/calendar preflight only; no send, automation run, business execution or native scheduler proof.",
+  "checks": [
+    {
+      "name": "Daily19:00 local recurrence",
+      "result": "PASS"
+    },
+    {
+      "name": "Existing Shows chat heartbeat",
+      "result": "PASS"
+    },
+    {
+      "name": "Exact five verified recipient identities",
+      "result": "PASS"
+    },
+    {
+      "name": "Monday to Tuesday",
+      "result": "PASS"
+    },
+    {
+      "name": "Tuesday to Wednesday",
+      "result": "PASS"
+    },
+    {
+      "name": "Wednesday to Thursday",
+      "result": "PASS"
+    },
+    {
+      "name": "Thursday to Friday",
+      "result": "PASS"
+    },
+    {
+      "name": "Friday to Saturday",
+      "result": "PASS"
+    },
+    {
+      "name": "Saturday to Sunday",
+      "result": "PASS"
+    },
+    {
+      "name": "Sunday to Monday",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern scheduled trigger uses local date",
+      "result": "PASS"
+    },
+    {
+      "name": "19:00 handles summer and winter offsets",
+      "result": "PASS"
+    },
+    {
+      "name": "First event is future Nov4; no backfill/manual proof",
+      "result": "PASS"
+    },
+    {
+      "name": "Actual acknowledgments and safe uncertain-send handling required",
+      "result": "PASS"
+    },
+    {
+      "name": "UTF8 deployed prompt exactly matches reviewed text",
+      "result": "PASS"
+    },
+    {
+      "name": "Durable send and daily followup intents before sends",
+      "result": "PASS"
+    },
+    {
+      "name": "Cleanup reminder grants no execution",
+      "result": "PASS"
+    },
+    {
+      "name": "Show day0/priorities protected",
+      "result": "PASS"
+    },
+    {
+      "name": "All locked collector/runtime hashes unchanged",
+      "result": "PASS"
+    }
+  ],
+  "count": 19,
+  "normal_execution": "UNVERIFIED; next normal occurrence Nov4 19:00Eastern"
+}

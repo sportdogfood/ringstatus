@@ -1,0 +1,24 @@
+Owner-approved daily 7 p.m. America/New_York WEEKDAY CHANGE and CLEANUP REMINDER. This is a separate evening weekday handoff, including days with no show-day. It must not change canonical show day0, selected_date, show-day priorities or any collector behavior.
+
+Run only from this normal scheduled heartbeat. First eligible event date is November 4, 2026; do not backfill November 3 or manufacture tonight's missed19:00 event. Use its current_time_iso as the trigger clock and America/New_York calendar conversion (including DST). The event date is the Eastern date of that scheduled trigger. Announce that weekday/date → the following calendar weekday/date, for example Tuesday November3 → Wednesday November4. The next day is a calendar-day addition, not a fixed24-hour timezone calculation. Do not call tomorrow TODAY. If the supplied trigger is before19:00Eastern or absent/invalid, do not invent/send an event; report the exact missing timing evidence. Never manually run this automation or collectors to obtain proof.
+
+Use ONLY these five existing local Codex chats, once per weekday event:
+wef-records-coordinator: threadId=01a169bc-e58a-7de0-94c6-5d3931fcf745, hostId=local
+wef-publish-coordinator: threadId=01a198be-eed5-7cf1-b6b6-d218f766d86d, hostId=local
+wef-messages-coordinator: threadId=01a169cc-d938-76f0-9ae4-bbccf7266599, hostId=local
+wef-timing-coordinator: threadId=01a169bc-0bd6-77d3-b7b4-283a07061e90, hostId=local
+wef-waze-coordinator: threadId=01a169d0-8192-7851-b414-7aed7a065cea, hostId=local
+
+Use the existing Codex send_message_to_thread tool. User explicitly authorized these messages and receipt follow-up. No new chat/service/observer or alternative transport. Event ID: weekday-shift|America/New_York|YYYY-MM-DD|19:00 (YYYY-MM-DD is the trigger's Eastern date). Keep receipt history and deduplication ONLY in C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/.git/ringstatus-control/wef-shows-weekday-notice-state.json. For each event preserve trigger, old/new weekday and date, per-recipient actual send time, tool result/message identifiers, acknowledgment time/evidence and honest pending/failed states. Missing file initializes empty state, not a sent/received event. Write/read back the actual state safely; preserve earlier receipts. Do not overwrite runtime/checkpoint/stop files.
+
+Send this brief notice to each:
+"WEEKDAY CHANGE / CLEANUP REMINDER — [event ID]
+7 p.m. Eastern evening handoff: [old weekday/date] → [next weekday/date].
+Cleanup reminder: review any cleanup due under your existing approved policy. This reminder does not authorize or trigger cleanup, collection, repairs or retries. Show day0 and priorities are unchanged by this notice.
+Please acknowledge this exact event ID with your actual receipt time here. No forwarding or business action is requested."
+
+Sending alone is NOT receipt. Inspect each target's actual response with read_thread/wait_threads; use bounded waits, each no longer than45seconds. Match acknowledgments to this exact event ID; never use an older response, a successful send return, silence or downstream adoption as receipt. Preserve all5 receipt outcomes. If a send outcome is uncertain, inspect the target before retrying; never blindly duplicate. On subsequent normal daily wakes, first reconcile missing earlier acknowledgments. A still-missing acknowledgment can receive one clearly labeled receipt follow-up per daily wake using the same old event ID; it is not a new weekday change or cleanup trigger. Do not resend already acknowledged notices. No extra polling/follow-up schedule.
+
+For the FIRST real scheduled occurrence, retain proof of its scheduled trigger, actual sends and each of five acknowledgments in the state file; report completion only when all five are confirmed. If receipts or access are missing, state exactly which and preserve pending work for the next approved normal wake. Tests/configuration are not scheduled execution proof. Do not manufacture an event tonight or run a manual test send.
+
+Protected scope: NO Airtable/schema/business-data writes, provider/proxy/source calls, collector/workflow/manual runs, cleanup/task starts, stop clearing, code/dependency/runtime/cadence edits, show discovery changes, selected-day/day-priority changes, count work or automatic forwarding to other agents. Keep Shows locked except this explicitly approved weekday notice/receipt workflow. Existing Shows collector, Monday review, hourly-heartbeat hold and other automations stay unchanged. The only runtime write permitted by this notice is its own private receipt-state JSON.

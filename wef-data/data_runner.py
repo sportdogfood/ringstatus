@@ -24,19 +24,23 @@ COUNT_REFRESH_SECONDS=180
 DAY_INTERVALS={0:180,1:3600,2:7200,3:10800}
 SAVED_DAY_STATUS='Saved day; native readback verified'
 PARTIAL_DAY_STATUS='Partial day; successful work saved'
-SYNC_SHOWS='tblAcQWswWfsc1MpS'
-SYNC_DAYS='tbl2iAfdZagycQkBp'
-SYNC_SHOW_FIELDS={'show-key':'fldCO3vwvXPyxoggQ','show-id':'fldCTMiEcYla3atq4',
-    'customer-id':'fldiyoV0EDvVyO6Fm','show-name':'fldlF56IRGRWx5C9U',
-    'start-date':'fldHYURW9fpSEnznp','end-date':'fldtg2CFR9i1sOqQ4',
-    'selected-date':'fld2ySdEbZVq8mrAg','default':'fldKjhA93Uy0narwR','last-checked':'fldr0j1f2hI09OkrD'}
+SHOW_CONTEXT_FIELDS={'show-key':'show-key','show-id':'show_id',
+    'customer-id':'customer_id','show-name':'show_name',
+    'start-date':'start_date','end-date':'end_date',
+    'selected-date':'selected_date','default':'is_default','last-checked':'last_checked'}
+
+def synced_source(table,schema_file=None):
+    schema=json.loads(pathlib.Path(schema_file or pathlib.Path(__file__).with_name('schema.json')).read_text(encoding='utf-8'))['tables'][table]
+    return schema['id'],{field['name']:field['id'] for field in schema['fields']}
 
 def read_synced_context(client):
     from wef_data_context import validate_context
-    rows=client.records(DATA_BASE,SYNC_SHOWS,fields=list(SYNC_SHOW_FIELDS.values()))
-    context={'authority-base':'appCaSmL819KK7UFJ','read-base':DATA_BASE,'read-table':SYNC_SHOWS,
+    show_table,show_fields=synced_source('w-shows')
+    fields={name:show_fields[field] for name,field in SHOW_CONTEXT_FIELDS.items()}
+    rows=client.records(DATA_BASE,show_table,fields=list(fields.values()))
+    context={'authority-base':'appCaSmL819KK7UFJ','read-base':DATA_BASE,'read-table':show_table,
         'records':[{name:row['fields'].get(field,False if name=='default' else None)
-                    for name,field in SYNC_SHOW_FIELDS.items()} for row in rows]}
+                    for name,field in fields.items()} for row in rows]}
     try:
         # The sync contains source time, not the separate authority heartbeat.
         # Reuse the proven reader for freshness; retain synced collection facts.
@@ -55,16 +59,17 @@ def read_synced_context(client):
 def read_canonical_days(client,context):
     """Read Shows' existing native day labels; never invent missing priorities."""
     show=context['show-key'];base=DATA_BASE
-    owners=client.records(base,SYNC_SHOWS,fields=['fldCO3vwvXPyxoggQ'],formula='{show-key}='+json.dumps(show))
-    if len(owners)!=1 or owners[0]['fields'].get('fldCO3vwvXPyxoggQ')!=show:raise ValueError('Invalid canonical show owner')
-    names={'show-day-key':'fld4RBSJRXKCbVU1A','show':'fldu4VmXs9yz4mTEa','date':'fldOeAP4c7F1lxIEd','day-priority':'fldP1IRkAD0E2HIND'}
-    rows=client.records(base,SYNC_DAYS,fields=list(names.values()))
+    show_table,show_fields=synced_source('w-shows');day_table,day_fields=synced_source('w-days')
+    owners=client.records(base,show_table,fields=[show_fields['show-key']],formula='{show-key}='+json.dumps(show))
+    if len(owners)!=1 or owners[0]['fields'].get(show_fields['show-key'])!=show:raise ValueError('Invalid canonical show owner')
+    names={name:day_fields[name] for name in ('show-day-key','show','date','day-priority')}
+    rows=client.records(base,day_table,fields=list(names.values()))
     priorities={};seen=set();anchor=datetime.date.fromisoformat(context['selected-date'][:10])
     for row in rows:
-        f={name:row['fields'].get(identity) for name,identity in names.items()};key=f.get('show-day-key') or '';links=f.get('show') or []
-        if owners[0]['id'] not in links and not key.startswith(show+'|'):continue
+        f={name:row['fields'].get(identity) for name,identity in names.items()};key=f.get('show-day-key') or '';links=f.get('show') or ''
+        if links!=show and not key.startswith(show+'|'):continue
         day=f.get('date','')[:10];date=datetime.date.fromisoformat(day)
-        if key!=show+'|'+day or links!=[owners[0]['id']] or day in seen or not context['start-date'][:10]<=day<=context['end-date'][:10]:raise ValueError('Invalid canonical show-day identity/link')
+        if key!=show+'|'+day or links!=show or day in seen or not context['start-date'][:10]<=day<=context['end-date'][:10]:raise ValueError('Invalid canonical show-day identity/link')
         seen.add(day);expected=(date-anchor).days
         if not -3<=expected<=3:continue
         value=f.get('day-priority')
@@ -1744,17 +1749,24 @@ def run(schema_file):
         errors.append({'key':target,'error':error_text(exception)})
     try:
         client=Airtable()
-        shows=client.records(DATA_BASE,SYNC_SHOWS,fields=list(SYNC_SHOW_FIELDS.values()))
-        owner=next(row for row in shows if row['fields'].get(SYNC_SHOW_FIELDS['default']) is True)
-        context={name:owner['fields'].get(field) for name,field in SYNC_SHOW_FIELDS.items()}
+        show_table,show_fields=synced_source('w-shows',schema_file)
+        day_table,day_fields=synced_source('w-days',schema_file)
+        context_fields={name:show_fields[field] for name,field in SHOW_CONTEXT_FIELDS.items()}
+        shows=client.records(DATA_BASE,show_table,fields=list(context_fields.values()))
+        defaults=[row for row in shows if row['fields'].get(show_fields['is_default']) is True]
+        if len(defaults)!=1:raise ValueError('Expected one default show')
+        owner=defaults[0];context={name:owner['fields'].get(field) for name,field in context_fields.items()}
         show=context['show-key']
-        rows=client.records(DATA_BASE,SYNC_DAYS,fields=['fld4RBSJRXKCbVU1A','fldu4VmXs9yz4mTEa','fldOeAP4c7F1lxIEd','fldP1IRkAD0E2HIND'])
-        days=[]
+        rows=client.records(DATA_BASE,day_table,fields=[day_fields[name] for name in ('show-day-key','show','date','day-priority')])
+        days=[];seen_days=set()
         for row in rows:
-            fields=row['fields'];priority=fields.get('fldP1IRkAD0E2HIND')
-            if owner['id'] not in fields.get('fldu4VmXs9yz4mTEa',[]):continue
+            fields=row['fields'];priority=fields.get(day_fields['day-priority'])
+            if fields.get(day_fields['show'])!=show:continue
             if type(priority) not in (int,float) or priority not in DAY_INTERVALS:continue
-            try:days.append((int(priority),datetime.date.fromisoformat(fields['fldOeAP4c7F1lxIEd'][:10]).isoformat()))
+            try:
+                day=datetime.date.fromisoformat(fields[day_fields['date']][:10]).isoformat()
+                if fields.get(day_fields['show-day-key'])!=show+'|'+day or day in seen_days:raise ValueError('Invalid show-day key/date')
+                days.append((int(priority),day));seen_days.add(day)
             except Exception as exception:error('Show-day '+str(row.get('id')),exception)
         days.sort()
         if not days:raise ValueError('No synced days with priority 0-3')

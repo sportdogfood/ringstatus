@@ -1,6 +1,14 @@
-# wef-data — November 3, README version 2026.11.03.6
+# wef-data — November 4, README version 2026.11.04.1
 
 Updated November 3, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+
+## Current w-source recovery release — November4
+
+Ownerapproved replacement source isw-shows/w-days; oldwef-shows.*and___shows/___days aredeprecated,notfallbacks. Data source/nativefield bindings resolvefromexisting schema.json;w-days.showisTEXTshow-key,joinedwithdate/key/priority. Collectorcadence/dayorder/businesskeys/sourceclocksunchanged. Linkerreads3mastercatalogprimarykeys only, omitting obsoleteunusedshows/show-days fields;9approvedtables nowhave18w-referencefields,andnormalindependentlinkingmaintainsthemwhilepreservingoldnativefields/links. Newreferencesareexcludedfromcleanupdeletion;Recordspointerfivefields/handledstate/stopsunchanged.
+
+Independentreview COMPLETE/PASS andpacketverifierPASS. Gatewaydiagnosticversiona43d5a67-10e4-46ea-bc4d-0e1f39b11416 deployed08:43:15Eastern,actualmanagementsource/settingsreadbackPASS,secretbindingsunchanged. Data7reviewedfiles deployed08:43:22Eastern. Existingendpoint/auth/securityscope/cache/status/decode preserved;errorresponsemessageandgatewaystage/status/caughtcause nowretainedinexistinglogs. No manualrun/force/task/cadence/stopclear/Livecodechange. Native code-review entry is change-triggered, notfakecollectionproof. Records ownsits preparedproducerpromptactivationandwillconfirmreadbackseparately.
+
+Normal collector diagnostic acceptance PASSED at08:45Eastern: existing scheduled days1–3 run stillsaved0/HTTP502, but actual gateway logs nowidentify upstreamStatus200/decode/Error:Upstream token refresh required. Sourcecollection restoration FAILED andrequires a separateauthorizedfresh-authhandoff; no postfailurecode/authchange/retryperformed. Independentlinkernativeacceptance remainsPENDING. See currentrelease SOURCE-AUTH-HANDOFF.md; diagnosticsare notrestoration. Original422wasdeletedunusedw-horses.shows, distinctfromw-sourcemigration. Currentreleaseproof andcontract C:/Users/gombc/Documents/Codex/outputs/wef-data-recovery-release-20261104/{INDEPENDENT-REVIEW.md,independent-review-receipt.json,independent-review-verifier.json,deployment.json,RECORDS-HANDOFF.md}. Thissectionsupersedesolderactivecanonicalsource descriptionsbelow;datedhistoricalproofremainsasdated.
 
 ## Schedule links — November 3
 

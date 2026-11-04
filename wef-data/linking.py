@@ -27,21 +27,19 @@ def run(schema_file):
         return output
     def key_filter(table,keys):
         return 'OR('+','.join('{'+primary(table)+'}='+json.dumps(str(k)) for k in keys)+')'
-    def read_keys(table,keys):
+    def read_keys(table,keys,names=None):
         rows=[];keys=sorted(set(keys))
-        for start in range(0,len(keys),20):rows.extend(read(table,formula=key_filter(table,keys[start:start+20])))
+        for start in range(0,len(keys),20):rows.extend(read(table,names,formula=key_filter(table,keys[start:start+20])))
         return rows
     def fail(target,error):errors.append({'key':target,'error':error_text(error)})
     try:
-        shows=read('wef-shows.shows');owner=next(r for r in shows if r['fields'].get('is_default') is True)
+        shows=read('w-shows');owner=next(r for r in shows if r['fields'].get('is_default') is True)
         show=owner['fields']['show-key'];sid=str(owner['fields']['show_id'])
-        source_days=read('wef-shows.show-days',{'show-day-key','date','day-priority'})
-        days={r['fields']['date'][:10]:r for r in source_days if str(r['fields'].get('show-day-key','')).startswith(show+'|')
+        source_days=read('w-days',{'show-day-key','show','date','day-priority'})
+        days={r['fields']['date'][:10]:r for r in source_days if r['fields'].get('show')==show and r['fields'].get('show-day-key')==show+'|'+str(r['fields'].get('date',''))[:10]
               and type(r['fields'].get('day-priority')) in (int,float) and r['fields']['day-priority'] in (0,1,2,3)}
-        data={'wef-shows.shows':keyed('wef-shows.shows',shows),
-              'wef-shows.show-days':keyed('wef-shows.show-days',source_days)}
-        for table in ('shows','days'):
-            data[table]=keyed(table,read(table,formula='LEFT({'+primary(table)+'},'+str(len(show))+')='+json.dumps(show)))
+        data={'w-shows':keyed('w-shows',shows),
+              'w-days':keyed('w-days',source_days)}
         for table in ('rings','groups','classes','schedules','trips','results'):
             prefixes=[show+'|'+day+'|' for day in days]
             formula='OR('+','.join('LEFT({'+primary(table)+'},'+str(len(p))+')='+json.dumps(p) for p in prefixes)+')'
@@ -73,7 +71,7 @@ def run(schema_file):
                         data[table][key]=[{'id':identity,'fields':{primary(table):key}}]
                 except Exception as error:fail(table+' link target keys',error)
         for table,target in [('horses','w-horses'),('riders','w-riders'),('trainers','w-trainers')]:
-            data[target]=keyed(target,read_keys(target,entity_keys[table]))
+            data[target]=keyed(target,read_keys(target,entity_keys[table],{primary(target)}))
         master_rings=read('w-rings');data['w-rings']=keyed('w-rings',master_rings)
         day_run_keys={}
         try:
@@ -115,10 +113,8 @@ def run(schema_file):
             desired=ids if replace else list(dict.fromkeys([*current,*ids]))
             if set(current)!=set(desired):pending[definition['id']]=desired
         def parents(table,key,day,ring=None):
-            edge(table,key,'show',[('shows',show)],optional=True)
-            edge(table,key,'day',[('days',show+'|'+day)],optional=True)
-            edge(table,key,'wef-shows.shows',[('wef-shows.shows',show)])
-            edge(table,key,'wef-shows.show-days',[('wef-shows.show-days',show+'|'+day)])
+            edge(table,key,'w-shows',[('w-shows',show)])
+            edge(table,key,'w-days',[('w-days',show+'|'+day)])
             if ring:edge(table,key,'ring',[('rings',ring)])
         for table in ('rings','classes','groups'):
             for key,rows in data[table].items():
@@ -155,15 +151,19 @@ def run(schema_file):
                 if owned:
                     rk=owned['fields']['run-key'];edge('schedules',key,'runs',[('runs',rk)],replace=True)
                     edge('schedules',key,'run-logs',[('run-logs',rk.split('|')[0])],replace=True)
-                    edge('runs',rk,'shows',[('shows',show)],optional=True)
-                    edge('runs',rk,'days',[('days',show+'|'+day)],optional=True)
+                    edge('runs',rk,'w-shows',[('w-shows',show)])
+                    edge('runs',rk,'w-days',[('w-days',show+'|'+day)])
             except Exception as error:fail('schedules '+key,error)
         for mapped in facts:
             for table in ('entries','trips','results'):
                 for row in mapped[table]:
                     key=row[primary(table)]
                     for field,value in row.items():
-                        if isinstance(value,dict) and '$links' in value:edge(table,key,field,value['$links'],optional=field=='show')
+                        if field!='show' and isinstance(value,dict) and '$links' in value:edge(table,key,field,value['$links'])
+        for mapped in facts:
+            day=mapped['trips'][0]['class']['$links'][0][1].split('|')[2]
+            for table in ('entries','riders','trainers','owners','results'):
+                for row in mapped[table]:parents(table,row[primary(table)],day)
         for table,target in [('horses','w-horses'),('riders','w-riders'),('trainers','w-trainers')]:
             for key in entity_keys[table]:edge(table,key,target,[(target,key)])
         for table in ('rings','classes','trips','results'):

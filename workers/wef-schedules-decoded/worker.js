@@ -44,6 +44,16 @@ async function decodeSglPayload(body, authorization, salt, keepBlobs = false) {
 const reply = (data, status=200, extra={}) => new Response(JSON.stringify(data), {
   status, headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store",...extra}
 });
+function diagnostic(error,env,seen=new Set()) {
+  if(error&&typeof error==='object'){
+    if(seen.has(error))return '[circular cause]';seen.add(error);
+    const message=(error.name||'Error')+': '+(error.message||String(error));
+    return diagnostic(message,env)+(error.cause!==undefined?' Cause: '+diagnostic(error.cause,env,seen):'');
+  }
+  let text=String(error);
+  for(const secret of [env.SGL_TOKEN,env.SGL_COOKIE])if(secret)text=text.split(secret).join('[redacted]');
+  return text.replace(/Bearer\s+[^\s"'<>]+/gi,'Bearer [redacted]').slice(0,2000);
+}
 export default {
   async fetch(request, env) {
     const url=new URL(request.url), pathname=url.pathname.replace(/\/+$/, "") || "/";
@@ -76,13 +86,17 @@ export default {
       Origin:"https://www.wellingtoninternational.com",Referer:"https://www.wellingtoninternational.com/"
     };
     if(env.SGL_COOKIE) headers.Cookie=env.SGL_COOKIE;
+    let upstreamStatus=null,stage='fetch';
     try {
       const response=await fetch(upstream.toString(),{method:"GET",headers,redirect:"manual",signal:AbortSignal.timeout(25000),cf:{cacheTtl:0,cacheEverything:false}});
-      if(response.status>=300&&response.status<400) return reply({message:"Source redirect blocked",statusCode:502},502);
-      if(!response.ok) return reply({message:"Source request failed",statusCode:response.status},response.status);
+      upstreamStatus=response.status;
+      if(response.status>=300&&response.status<400){console.error(JSON.stringify({message:"Source redirect blocked",upstreamStatus}));return reply({message:"Source redirect blocked",statusCode:502},502);}
+      if(!response.ok){console.error(JSON.stringify({message:"Source request failed",upstreamStatus}));return reply({message:"Source request failed",statusCode:response.status},response.status);}
+      stage="decode";
       const body=await decodeSglPayload(await response.text(),authorization,env.SGL_BUNDLE_SALT||SGL_BUNDLE_SALT,pathname==="/schedule");
       return new Response(body,{headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","X-RS-Decoded":"1"}});
-    } catch {
+    } catch (error) {
+      console.error(JSON.stringify({message:"Source fetch or protected response decoding failed",stage,upstreamStatus,error:diagnostic(error,env)}));
       return reply({message:"Source fetch or protected response decoding failed",statusCode:502},502);
     }
   }

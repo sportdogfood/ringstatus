@@ -17,7 +17,7 @@ function quickRows(table,rows,total=rows.length){
 }
 function write(file,value){const tmp=file+'.'+process.pid+'.tmp';fs.writeFileSync(tmp,JSON.stringify(value,null,2));fs.renameSync(tmp,file);}
 async function canonical(api){
- const rows=(await api.list('wef-shows.shows')).filter(r=>r.fields.is_default===true&&Number(r.fields.customer_id)===15);
+ const rows=(await api.list('w-shows')).filter(r=>r.fields.is_default===true&&Number(r.fields.customer_id)===15);
  if(rows.length!==1||!Number.isSafeInteger(Number(rows[0].fields.show_id))||Number(rows[0].fields.show_id)<=0)throw Error('Cleanup requires one canonical default show');
  return Number(rows[0].fields.show_id);
 }

@@ -1,0 +1,90 @@
+{
+  "target": "Frozen prepared-config/prompt/task/preflight artifacts, five supplied local coordinators; no collector code",
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review\\review-command-log.json",
+      "sha256": "f7a0d6983b6ae3156c5b4faec359b0289d0d5fed93d447b023baa42a1fdf26fc"
+    }
+  ],
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "reviewer": "/root/shows_review",
+  "required_checks": [
+    {
+      "command_ids": [
+        "independent-preflight"
+      ],
+      "name": "Independent offline preflight",
+      "requirement": "execute",
+      "status": "executed"
+    },
+    {
+      "reason": "Exact supplied owner approval in task.json permits native notice/receipt testing activation and normal proof only; no changes to locked collector/day0/priorities. Frozen prompt explicitly enforces those exclusions.",
+      "name": "Approved notification boundary",
+      "requirement": "inspect",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\task.json",
+          "sha256": "8d2629c65531c1c7cd2a7d42a251e87c26abb0503cc1384fd37ba10619740a01"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\prompt.txt",
+          "sha256": "7591c87d281d23a92b6c12cb4297c2f4b4ede1f7dbaa51160d494d13e180f58d"
+        }
+      ],
+      "status": "inspected"
+    },
+    {
+      "reason": "Inspected native heartbeat fields and prompt/receipt recovery requirements; initial encoding/intent defects resolved. Prompt checks do not prove native delivery or actual acknowledgments.",
+      "name": "Configuration and recurring delivery semantics",
+      "requirement": "inspect",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review\\review-hash-manifest.json",
+          "sha256": "1170af38309c8d6315dd856d118c192d4ed247ac97add23cea2813320f773f5a"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\prepared-config.json",
+          "sha256": "31d8bf5210742e85fc7f031a04adebd2de42e670a7599a00d95ad6c999159de8"
+        }
+      ],
+      "status": "inspected"
+    }
+  ],
+  "reviewed_at": "2026-11-04T01:07:09.2338808Z",
+  "review_status": "COMPLETE",
+  "integration_coverage": "19:00Eastern native recurrence, calendar/first-date boundaries, recipient scope, durable intent and uncertain-send reconciliation instructions, actual-ack requirement, protected hashes. Activation/sends/acks remain unverified.",
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\prepared-config.json",
+      "sha256": "31d8bf5210742e85fc7f031a04adebd2de42e670a7599a00d95ad6c999159de8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\prompt.txt",
+      "sha256": "7591c87d281d23a92b6c12cb4297c2f4b4ede1f7dbaa51160d494d13e180f58d"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\task.json",
+      "sha256": "8d2629c65531c1c7cd2a7d42a251e87c26abb0503cc1384fd37ba10619740a01"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\preflight.cjs",
+      "sha256": "e18db7eb7ef911ee440ca4e1f7be6ceb8e3d642db6bafdde2be74e7ed9c59e24"
+    }
+  ],
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review\\initial-config.json",
+      "sha256": "50d97f70b7fd64537c9046b7e4a2b153399b652c5aab92eb38132474895dc8fd"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review\\initial-prompt.txt",
+      "sha256": "3999779cb720ded2252eceba32a229473f4d3f648e844fb72fa951a8b52fa490"
+    }
+  ],
+  "candidate_status": "PASS",
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review\\review-report.md",
+    "sha256": "4164f23c9eb374868c5f1d930fdca67be2fc76019c4a60151ab0e99721cff43c"
+  },
+  "objective": "Independent read-only native daily weekday notice preparation review before approved activation"
+}

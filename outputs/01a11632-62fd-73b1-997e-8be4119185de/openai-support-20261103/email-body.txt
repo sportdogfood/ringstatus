@@ -1,8 +1,13 @@
 Hello OpenAI Support,
 
-Please assign this case to a human support specialist and escalate it to the Codex team where appropriate.
+I am requesting a refund of my subscription charges because of the ongoing Codex failures documented below. Please assign this case to a human support specialist and escalate it to the Codex team.
 
-I use Codex on Windows for a small business. My complaint register now contains 209 records, compared with 184 in yesterday's review: 25 additional complaints recorded between the 2 and 3 November 2026 reviews.
+Account email: gombc@outlook.com
+Subscription plan: ChatGPT Pro 200
+Account name/handle: sportdog (@sportdog)
+OpenAI account ID: 2f6c7a91-0631-427d-bb9b-7a6d45548a51
+
+I use Codex on Windows for a small business. My 3 November 2026 review contained 209 complaint records, compared with 184 in the 2 November review: 25 additional complaints recorded between those reviews.
 
 The attached spreadsheet contains the full complaint table, a separate table of the 25 new records, and a summary of recurring patterns. The most common categories are:
 
@@ -14,14 +19,18 @@ The attached spreadsheet contains the full complaint table, a separate table of 
 
 All 25 new records fall within categories already present in the earlier review. These recurring issues create rework, delays and a substantial supervision burden.
 
+I am outraged by what I have had to deal with while paying for Pro 200. I have repeatedly had to catch mistakes, challenge unsupported completion claims, restate instructions and supervise corrections. The time and effort spent managing these failures are unacceptable. I should not have to keep discovering the same problems after agents claim to have understood or corrected them.
+
 I have already documented approval boundaries, review requirements, context checkpoints and completion checks in instructions and custom skills. Agents acknowledge these requirements, yet the same failures continue. Retrospective promises to follow them are not a remedy.
 
 Please provide a human response addressing:
 
-1. What supported controls and configuration changes can improve instruction adherence and prevent unapproved changes during actual work, including after compaction and handoffs?
-2. How should I obtain reliable verification and completion without repeatedly policing the agent or restating the same requirements?
-3. What specific examples or diagnostics does your team need to investigate, and which issues require engineering escalation?
+1. My refund request: confirm the amount to be refunded and the expected processing date, or provide a specific explanation of your decision.
+2. What supported controls and configuration changes can improve instruction adherence and prevent unapproved changes during actual work, including after compaction and handoffs?
+3. How should I obtain reliable verification and completion without repeatedly policing the agent or restating the same requirements?
+4. What specific examples or diagnostics does your team need to investigate, and which issues require engineering escalation?
 
-Please review the attached evidence and provide a case reference and concrete next steps, rather than another generic prompting checklist or automated reassurance.
+Please review the attached evidence and respond explicitly to both the refund request and the ongoing reliability concern. I want a human response, a case reference and concrete next steps. Another generic prompting checklist or automated reassurance will not address this complaint.
 
 Thank you.
+sportdog

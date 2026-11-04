@@ -9,8 +9,9 @@ folder=Path(__file__).resolve().parent
 attachment=folder/'OpenAI-complaints-2026-11-03.xlsx'
 body=(folder/'email-body.txt').read_text(encoding='utf-8')
 message=EmailMessage(policy=policy.SMTP)
+message['From']='gombc@outlook.com'
 message['To']='support@openai.com'
-message['Subject']='Human review requested: recurring Codex failures, 209 complaints and 25 newly recorded'
+message['Subject']='Refund request and human escalation: ongoing Codex failures (209 complaints)'
 message['X-Unsent']='1'
 message.set_content(body)
 message.add_attachment(attachment.read_bytes(),maintype='application',subtype='vnd.openxmlformats-officedocument.spreadsheetml.sheet',filename=attachment.name)
@@ -20,6 +21,9 @@ parts=list(saved.iter_attachments());assert len(parts)==1
 assert parts[0].get_payload(decode=True)==attachment.read_bytes()
 assert saved.get_body(preferencelist=('plain',)).get_content().replace('\r\n','\n').strip()==body.strip()
 assert saved['To']=='support@openai.com'
+assert saved['From']=='gombc@outlook.com'
+for required in ['gombc@outlook.com','ChatGPT Pro 200','sportdog (@sportdog)','2f6c7a91-0631-427d-bb9b-7a6d45548a51']:
+ assert required in saved.get_body(preferencelist=('plain',)).get_content(),required
 ns={'s':'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
 with zipfile.ZipFile(attachment) as z:
  tables=[ET.fromstring(z.read(n)) for n in z.namelist() if n.startswith('xl/tables/') and n.endswith('.xml')]

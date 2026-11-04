@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-04T01:07:46.565280+00:00",
+  "automation_id": "wef-shows-daily-weekday-notice",
+  "config_path": "C:\\Users\\gombc\\.codex\\automations\\wef-shows-daily-weekday-notice\\automation.toml",
+  "readback": "PASS: exact reviewed UTF8 prompt, recurrence, status, kind and target match",
+  "config_sha256": "ed88ed4c38634250d4b87d55292f2463bf484faaaf40c3802a505e6c32151645",
+  "schedule": "Daily19:00 America/New_York via verified Eastern host timezone",
+  "target": "01a16976-f0a6-72a1-a75f-75de7f19a815",
+  "first_expected_normal_run": "2026-11-04T19:00:00-05:00",
+  "review": "COMPLETE/PASS,19independentofflinechecks",
+  "locked_collector_runtime_unchanged": true,
+  "manual_runs": 0,
+  "manual_messages": 0,
+  "source_calls": 0,
+  "actual_delivery": "UNVERIFIED until first normal scheduled occurrence",
+  "five_recipient_acknowledgments": "PENDING first normal occurrence",
+  "next_action": "Normal daily heartbeat must send weekday-change/cleanup reminder and inspect actual acknowledgments from all5. Store event/receipt proof in its private state file; report exact missing receipts without claiming completion."
+}

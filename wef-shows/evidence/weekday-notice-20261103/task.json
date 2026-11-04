@@ -1,0 +1,36 @@
+{
+  "ownerApproval": "APPROVED TO EDIT. Add the daily 7 p.m. Eastern weekday-change notice and cleanup reminder to all five coordinators. Keep show day0 and priorities unchanged. Confirm receipt, test, deploy and verify normal runs. No manual runs.",
+  "currentEasternDate": "2026-11-03",
+  "currentEasternTime": "after20:00; today's19:00 has passed",
+  "firstExpectedNormalOccurrence": "2026-11-04T19:00:00-05:00",
+  "route": "One native Codex heartbeat in existing Shows chat; existing send_message_to_thread route to five verified local coordinator chats",
+  "baseline": "21 locked Shows runtime hashes verified unchanged; old wef-shows-changes-to-records no longer present; no matching weekday automation found",
+  "scope": "New daily weekday message and receipt follow-up only. No collector or canonical show-data changes; reminder does not execute cleanup.",
+  "recipients": [
+    {
+      "name": "wef-records-coordinator",
+      "threadId": "01a169bc-e58a-7de0-94c6-5d3931fcf745",
+      "hostId": "local"
+    },
+    {
+      "name": "wef-publish-coordinator",
+      "threadId": "01a198be-eed5-7cf1-b6b6-d218f766d86d",
+      "hostId": "local"
+    },
+    {
+      "name": "wef-messages-coordinator",
+      "threadId": "01a169cc-d938-76f0-9ae4-bbccf7266599",
+      "hostId": "local"
+    },
+    {
+      "name": "wef-timing-coordinator",
+      "threadId": "01a169bc-0bd6-77d3-b7b4-283a07061e90",
+      "hostId": "local"
+    },
+    {
+      "name": "wef-waze-coordinator",
+      "threadId": "01a169d0-8192-7851-b414-7aed7a065cea",
+      "hostId": "local"
+    }
+  ]
+}

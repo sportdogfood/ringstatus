@@ -1,0 +1,44 @@
+{
+  "dependencies": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review\\run-preflight.cjs",
+      "sha256": "47eb19fcce34878c579f9b7e08b30279180287099e95bac16d74a91e2051e5da"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review\\independent-preflight.json",
+      "sha256": "8a088ac363ca7e51c2adb941ca0c99e9b76cd4af82a49a93d12dc101323924bc"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\locked-20261102\\lock.json",
+      "sha256": "f4ee583a3a545273a7d37865818fa2c9d9f723efeb51c7235e2c928a6fc80580"
+    }
+  ],
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review\\initial-config.json",
+      "sha256": "50d97f70b7fd64537c9046b7e4a2b153399b652c5aab92eb38132474895dc8fd"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review\\initial-prompt.txt",
+      "sha256": "3999779cb720ded2252eceba32a229473f4d3f648e844fb72fa951a8b52fa490"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\prepared-config.json",
+      "sha256": "31d8bf5210742e85fc7f031a04adebd2de42e670a7599a00d95ad6c999159de8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\prompt.txt",
+      "sha256": "7591c87d281d23a92b6c12cb4297c2f4b4ede1f7dbaa51160d494d13e180f58d"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\task.json",
+      "sha256": "8d2629c65531c1c7cd2a7d42a251e87c26abb0503cc1384fd37ba10619740a01"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\preflight.cjs",
+      "sha256": "e18db7eb7ef911ee440ca4e1f7be6ceb8e3d642db6bafdde2be74e7ed9c59e24"
+    }
+  ]
+}

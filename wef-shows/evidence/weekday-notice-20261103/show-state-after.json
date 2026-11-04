@@ -1,0 +1,139 @@
+{
+  "checks": {
+    "defaultUnchanged": true,
+    "prioritiesAndLinksUnchanged": true
+  },
+  "shows": [
+    {
+      "id": "rec8GtJJ7eSjY3Nd3",
+      "createdTime": "2026-11-02T06:04:16.000Z",
+      "cellValuesByFieldId": {
+        "fldhc0ngVDJ45neim": "2026-11-05",
+        "fldqdLdrX8LLTdHJg": true,
+        "fldzwGGWrAFMwh7mJ": 200000077
+      }
+    }
+  ],
+  "days": [
+    {
+      "id": "rec1mryBzjt5wl1TI",
+      "createdTime": "2026-11-02T06:04:20.000Z",
+      "cellValuesByFieldId": {
+        "fldA41GJyjFTr5ZSA": "2026-11-07",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "rec8GtJJ7eSjY3Nd3",
+            "name": "15|200000077"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000077|2026-11-07",
+        "fldbK4VEp3aNOdJlB": 2
+      }
+    },
+    {
+      "id": "recBhBiPunWxJMFfn",
+      "createdTime": "2026-11-02T06:04:20.000Z",
+      "cellValuesByFieldId": {
+        "fldA41GJyjFTr5ZSA": "2026-11-05",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "rec8GtJJ7eSjY3Nd3",
+            "name": "15|200000077"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000077|2026-11-05",
+        "fldbK4VEp3aNOdJlB": 0
+      }
+    },
+    {
+      "id": "recKhZaPGDneaOM5J",
+      "createdTime": "2026-11-02T06:04:20.000Z",
+      "cellValuesByFieldId": {
+        "fldA41GJyjFTr5ZSA": "2026-11-08",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "rec8GtJJ7eSjY3Nd3",
+            "name": "15|200000077"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000077|2026-11-08",
+        "fldbK4VEp3aNOdJlB": 3
+      }
+    },
+    {
+      "id": "recNKs86S27g79pl5",
+      "createdTime": "2026-10-29T14:05:13.000Z",
+      "cellValuesByFieldId": {
+        "fldA41GJyjFTr5ZSA": "2026-10-30",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "recOAxMcqu1f75CQk",
+            "name": "15|200000076"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-30",
+        "fldbK4VEp3aNOdJlB": 999
+      }
+    },
+    {
+      "id": "recV3qjf5oJAQW8SY",
+      "createdTime": "2026-10-29T14:05:22.000Z",
+      "cellValuesByFieldId": {
+        "fldA41GJyjFTr5ZSA": "2026-10-31",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "recOAxMcqu1f75CQk",
+            "name": "15|200000076"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-31",
+        "fldbK4VEp3aNOdJlB": 999
+      }
+    },
+    {
+      "id": "recWgNiGlwpQGA14e",
+      "createdTime": "2026-11-02T06:04:20.000Z",
+      "cellValuesByFieldId": {
+        "fldA41GJyjFTr5ZSA": "2026-11-06",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "rec8GtJJ7eSjY3Nd3",
+            "name": "15|200000077"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000077|2026-11-06",
+        "fldbK4VEp3aNOdJlB": 1
+      }
+    },
+    {
+      "id": "recohTvwKk7pDGnk1",
+      "createdTime": "2026-10-29T14:05:08.000Z",
+      "cellValuesByFieldId": {
+        "fldA41GJyjFTr5ZSA": "2026-10-29",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "recOAxMcqu1f75CQk",
+            "name": "15|200000076"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000076|2026-10-29",
+        "fldbK4VEp3aNOdJlB": 999
+      }
+    },
+    {
+      "id": "recs1RPpDh6bGuHkY",
+      "createdTime": "2026-10-29T14:05:27.000Z",
+      "cellValuesByFieldId": {
+        "fldA41GJyjFTr5ZSA": "2026-11-01",
+        "fldASKXpAHgTv0sTM": [
+          {
+            "id": "recOAxMcqu1f75CQk",
+            "name": "15|200000076"
+          }
+        ],
+        "fldCIGv6kGhrIZh2K": "15|200000076|2026-11-01",
+        "fldbK4VEp3aNOdJlB": 999
+      }
+    }
+  ]
+}

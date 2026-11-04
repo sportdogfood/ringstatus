@@ -11,7 +11,7 @@ function airtable({
 } = {}) {
   const writable = new Set(['cleanup','cleanup-logs','err-logs']),
     unresolved = new Set();
-  const readable=new Map([[settings.BASE_ID,new Set([...writable,...require('./cleanup').TABLES,'wef-shows.shows'])]]);
+  const readable=new Map([[settings.BASE_ID,new Set([...writable,...require('./cleanup').TABLES,'w-shows'])]]);
   async function call(base, table, method = "GET", body, query = "", limit = {}) {
     if (!readable.get(base)?.has(table)) throw Error("Unapproved read target");
     if (

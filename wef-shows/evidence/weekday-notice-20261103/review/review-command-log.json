@@ -1,0 +1,16 @@
+{
+  "commands": [
+    {
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "stdout": "{\"checks_passed\":19,\"scope\":\"Offline configuration/calendar preflight only; no send, automation run, business execution or native scheduler proof.\",\"first_normal\":\"2026-11-04T19:00:00-05:00\"}\n",
+      "started_at": "2026-11-04T01:06:48.3582215+00:00",
+      "id": "independent-preflight",
+      "runtime": "Node v22.22.2",
+      "stderr": "",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-notice-20261103\\review/run-preflight.cjs\"",
+      "ended_at": "2026-11-04T01:06:48.6119208+00:00",
+      "exit_code": 0
+    }
+  ],
+  "reviewer": "/root/shows_review"
+}

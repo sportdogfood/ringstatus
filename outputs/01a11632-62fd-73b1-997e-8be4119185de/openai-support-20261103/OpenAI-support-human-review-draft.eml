@@ -1,22 +1,29 @@
+From: gombc@outlook.com
 To: support@openai.com
-Subject: Human review requested: recurring Codex failures, 209 complaints and
- 25 newly recorded
+Subject:
+ Refund request and human escalation: ongoing Codex failures (209 complaints)
 X-Unsent: 1
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4570723203723764978=="
+Content-Type: multipart/mixed; boundary="===============5169947785964450496=="
 
---===============4570723203723764978==
+--===============5169947785964450496==
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hello OpenAI Support,
 
-Please assign this case to a human support specialist and escalate it to the =
-Codex team where appropriate.
+I am requesting a refund of my subscription charges because of the ongoing Co=
+dex failures documented below. Please assign this case to a human support spe=
+cialist and escalate it to the Codex team.
 
-I use Codex on Windows for a small business. My complaint register now contai=
-ns 209 records, compared with 184 in yesterday's review: 25 additional compla=
-ints recorded between the 2 and 3 November 2026 reviews.
+Account email: gombc@outlook.com
+Subscription plan: ChatGPT Pro 200
+Account name/handle: sportdog (@sportdog)
+OpenAI account ID: 2f6c7a91-0631-427d-bb9b-7a6d45548a51
+
+I use Codex on Windows for a small business. My 3 November 2026 review contai=
+ned 209 complaint records, compared with 184 in the 2 November review: 25 add=
+itional complaints recorded between those reviews.
 
 The attached spreadsheet contains the full complaint table, a separate table =
 of the 25 new records, and a summary of recurring patterns. The most common c=
@@ -33,6 +40,12 @@ All 25 new records fall within categories already present in the earlier revi=
 ew. These recurring issues create rework, delays and a substantial supervisio=
 n burden.
 
+I am outraged by what I have had to deal with while paying for Pro 200. I hav=
+e repeatedly had to catch mistakes, challenge unsupported completion claims, =
+restate instructions and supervise corrections. The time and effort spent man=
+aging these failures are unacceptable. I should not have to keep discovering =
+the same problems after agents claim to have understood or corrected them.
+
 I have already documented approval boundaries, review requirements, context c=
 heckpoints and completion checks in instructions and custom skills. Agents ac=
 knowledge these requirements, yet the same failures continue. Retrospective p=
@@ -40,21 +53,25 @@ romises to follow them are not a remedy.
 
 Please provide a human response addressing:
 
-1. What supported controls and configuration changes can improve instruction =
+1. My refund request: confirm the amount to be refunded and the expected proc=
+essing date, or provide a specific explanation of your decision.
+2. What supported controls and configuration changes can improve instruction =
 adherence and prevent unapproved changes during actual work, including after =
 compaction and handoffs?
-2. How should I obtain reliable verification and completion without repeatedl=
+3. How should I obtain reliable verification and completion without repeatedl=
 y policing the agent or restating the same requirements?
-3. What specific examples or diagnostics does your team need to investigate, =
+4. What specific examples or diagnostics does your team need to investigate, =
 and which issues require engineering escalation?
 
-Please review the attached evidence and provide a case reference and concrete=
- next steps, rather than another generic prompting checklist or automated rea=
-ssurance.
+Please review the attached evidence and respond explicitly to both the refund=
+ request and the ongoing reliability concern. I want a human response, a case=
+ reference and concrete next steps. Another generic prompting checklist or au=
+tomated reassurance will not address this complaint.
 
 Thank you.
+sportdog
 
---===============4570723203723764978==
+--===============5169947785964450496==
 Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="OpenAI-complaints-2026-11-03.xlsx"
@@ -1287,4 +1304,4 @@ AAAAJAEAACMAAAAAAAAAAAAAAKSBuwoBAHhsL3dvcmtzaGVldHMvX3JlbHMvc2hlZXQzLnhtbC5y
 ZWxzUEsBAhQDFAAAAAgAuFJjXT5mcS0wAQAAZwUAABMAAAAAAAAAAAAAAKSBtgsBAFtDb250ZW50
 X1R5cGVzXS54bWxQSwUGAAAAAA4ADgC1AwAAFw0BAAAA
 
---===============4570723203723764978==--
+--===============5169947785964450496==--

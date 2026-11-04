@@ -217,6 +217,28 @@
           "type": "multilineText",
           "description": "Data-owned durable run progress and immutable completed revision manifest. Existing business keys remain unchanged.",
           "options": {}
+        },
+        {
+          "id": "fldLPwQGmswURSTZz",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldr3PTTMDV8nBU1J"
+          }
+        },
+        {
+          "id": "fldTJBxVXpxWzMpiJ",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld6hg5TbVdWL6lQW"
+          }
         }
       ]
     },
@@ -688,6 +710,28 @@
           "id": "flduEavtWY4w8R0oS",
           "name": "w-rings",
           "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fld5omFUAUTtqIvEo",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldcGasaE4rDMxOQP"
+          }
+        },
+        {
+          "id": "fldPQgtr79VacLQl6",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldc2UklxjCELPnZM"
+          }
         }
       ]
     },
@@ -993,6 +1037,28 @@
           "name": "record-status",
           "type": "singleLineText",
           "options": {}
+        },
+        {
+          "id": "fldat9EOrayPcEa6a",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldjz1OWaofyTCVs9"
+          }
+        },
+        {
+          "id": "fldZS50FLKWhB8HG8",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldwVpHe9SvFypNkx"
+          }
         }
       ]
     },
@@ -1167,6 +1233,28 @@
             "isReversed": false,
             "prefersSingleRecordLink": false,
             "inverseLinkFieldId": "fldqTZvwRmyaa03iN"
+          }
+        },
+        {
+          "id": "fld8gx8OwrzY9oeo6",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldlAZVw2wKBsDtbd"
+          }
+        },
+        {
+          "id": "fld76A1SFklnVudkD",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldEaEEFOeZEyhcDB"
           }
         }
       ]
@@ -1356,6 +1444,28 @@
             "prefersSingleRecordLink": false,
             "inverseLinkFieldId": "fldpkUf94mE6cxXpQ"
           }
+        },
+        {
+          "id": "fldqidbHVCU9T0a1N",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldyDmLzehatw6hbF"
+          }
+        },
+        {
+          "id": "fldPNs7XNhxKfS2sJ",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldxnjaZu46fVAB2t"
+          }
         }
       ]
     },
@@ -1425,6 +1535,28 @@
           "id": "fld6UUkCihoeHL70H",
           "name": "w-riders",
           "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldUnAdAadFqvNEBW",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "flddzBqVdHCeZN2Mb"
+          }
+        },
+        {
+          "id": "fldb7aYWKL39JHLFb",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldQHWhbWxypUVMEV"
+          }
         }
       ]
     },
@@ -1494,6 +1626,28 @@
           "id": "fld5x6xLGhwRUMELc",
           "name": "w-trainers",
           "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldevgdyOQV774rEJ",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldSxTXlesfpeGSgd"
+          }
+        },
+        {
+          "id": "fld4kBJUx1Z6YSfs6",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldmGMd4Aoni7BDZs"
+          }
         }
       ]
     },
@@ -1561,6 +1715,28 @@
             "isReversed": false,
             "prefersSingleRecordLink": false,
             "inverseLinkFieldId": "fldu6Up1fO128IGCk"
+          }
+        },
+        {
+          "id": "fldymPQlwt6qWng0l",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldVrzaOf9w70iwa6"
+          }
+        },
+        {
+          "id": "fldWfYalVJLFDsV8K",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldKiQ5wMVB9oMKNE"
           }
         }
       ]
@@ -2708,6 +2884,28 @@
             "prefersSingleRecordLink": false,
             "inverseLinkFieldId": "fldLv2AUgpt17By1Q"
           }
+        },
+        {
+          "id": "fld6jrZec1REJcg8G",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld3k8cBAQoMupEI0"
+          }
+        },
+        {
+          "id": "fldFm7RPTPD2dvmXx",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldFU6zO6qiVIohI0"
+          }
         }
       ]
     },
@@ -3103,6 +3301,146 @@
           "id": "fldfqpNJ2BAvWdglC",
           "name": "schedules",
           "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    "w-shows": {
+      "id": "tblGc03icHzudV1v2",
+      "name": "w-shows",
+      "primaryFieldId": "fldbB6tZgkcR3Eaia",
+      "fields": [
+        {
+          "id": "fldbB6tZgkcR3Eaia",
+          "name": "show-key",
+          "type": "singleLineText",
+          "options": {}
+        },
+        {
+          "id": "fld3HHtWV71deVDKX",
+          "name": "show_id",
+          "type": "number",
+          "options": {}
+        },
+        {
+          "id": "fldSOs5Y4LwVO0Bgh",
+          "name": "customer_id",
+          "type": "number",
+          "options": {}
+        },
+        {
+          "id": "flde4WZ5DsxValdgN",
+          "name": "facility_id",
+          "type": "number",
+          "options": {}
+        },
+        {
+          "id": "fld8Zo07gx3X7K57L",
+          "name": "show_name",
+          "type": "singleLineText",
+          "options": {}
+        },
+        {
+          "id": "fld22kKvmUN9JQsON",
+          "name": "start_date",
+          "type": "date",
+          "options": {}
+        },
+        {
+          "id": "fldPD77YsSgL1aGjB",
+          "name": "end_date",
+          "type": "date",
+          "options": {}
+        },
+        {
+          "id": "fldkRt7yFF3lMSssY",
+          "name": "selected_date",
+          "type": "date",
+          "options": {}
+        },
+        {
+          "id": "fldkJDyYlOpmOJFXi",
+          "name": "available_dates",
+          "type": "multilineText",
+          "options": {}
+        },
+        {
+          "id": "fldSFKyLFhaebzwE3",
+          "name": "is_default",
+          "type": "checkbox",
+          "options": {}
+        },
+        {
+          "id": "fldnJAbyRUBll2QmB",
+          "name": "last_checked",
+          "type": "dateTime",
+          "options": {}
+        },
+        {
+          "id": "fldcG6ZL8Ot5jYHCU",
+          "name": "default-payload-file",
+          "type": "singleLineText",
+          "options": {}
+        },
+        {
+          "id": "fldwG7K4Ky1PLLMdj",
+          "name": "default-payload-sha256",
+          "type": "singleLineText",
+          "options": {}
+        },
+        {
+          "id": "fld8CTr4OKZqM9DOh",
+          "name": "show-days",
+          "type": "singleLineText",
+          "options": {}
+        }
+      ]
+    },
+    "w-days": {
+      "id": "tblpRrsNXQdr3KrC9",
+      "name": "w-days",
+      "primaryFieldId": "fld5zoal95s7iDnRd",
+      "fields": [
+        {
+          "id": "fld5zoal95s7iDnRd",
+          "name": "show-day-key",
+          "type": "singleLineText",
+          "options": {}
+        },
+        {
+          "id": "fldVSmOAJBBPeHAL1",
+          "name": "show",
+          "type": "singleLineText",
+          "options": {}
+        },
+        {
+          "id": "fld51ny7jBLfuo1Oi",
+          "name": "is_default (from show)",
+          "type": "singleLineText",
+          "options": {}
+        },
+        {
+          "id": "fldYIy1hTW3aLXOeo",
+          "name": "date",
+          "type": "date",
+          "options": {}
+        },
+        {
+          "id": "fldFyIIUliqgcl2AT",
+          "name": "day-priority",
+          "type": "number",
+          "options": {}
+        },
+        {
+          "id": "fld1HYpiuIyZjfugO",
+          "name": "last_checked",
+          "type": "dateTime",
+          "options": {}
+        },
+        {
+          "id": "fldN4FyJTJPgGYrKY",
+          "name": "last_checked_status",
+          "type": "singleSelect",
+          "options": {}
         }
       ]
     }

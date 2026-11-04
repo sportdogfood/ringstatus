@@ -1,8 +1,26 @@
 # wef-shows
 
-Version: **1.8.1**
+Version: **1.8.2**
 
-Updated: **November 2, 2026 (America/New_York)**
+Updated: **November 3, 2026 (America/New_York)**
+
+## Daily weekday notice - approved November 3, 2026
+
+One native Codex automation, `wef-shows-daily-weekday-notice`, is ACTIVE daily at
+19:00 America/New_York in the existing Shows chat. It sends the evening weekday/date
+handoff and cleanup reminder to Records, Timing, Messages, Waze and Publish, even
+when there is no show-day. This notice does not change show day0/priorities or
+execute cleanup. The locked collector and all existing tasks remain unchanged.
+
+Actual acknowledgments from all five are required, with durable send intent,
+deduplication and receipt follow-up in the same daily workflow. The only runtime
+write is `.git/ringstatus-control/wef-shows-weekday-notice-state.json`.
+First eligible normal run: November 4, 2026 at19:00Eastern; no November3backfill.
+Configuration readback and independent19offlinechecks PASS. Actual scheduled sends
+and five receipts remain PENDING that first normal run; no manual runs/sends made.
+See [deployment and remaining proof](evidence/weekday-notice-20261103/deployment.json).
+This narrow owner approval does not deploy the held hourly heartbeat change or
+install automatic NEW SHOW/NEW SHOW-DAY discovery delivery.
 
 ## LOCKED - owner decision November 2, 2026
 
@@ -65,7 +83,7 @@ Normal-run acceptance: October31 20:34 Eastern PASS (run 343cdab8-1245-46d9-9e47
 ## Historical release records - superseded
 
 The dated records below preserve earlier implementations and evidence. They do
-not authorize counting or reopen cancelled work. Version 1.8.1 above is current;
+not authorize counting or reopen cancelled work. Version 1.8.2 above is current;
 the established discovery and day-priority cadence remains unchanged.
 
 ## Direct proxy count ownership — approved October31, 2026

@@ -36,7 +36,13 @@ async function read(route,params,{transport=fetchTextWithConfiguredTransport,tim
  finish();
  const body=Buffer.isBuffer(result.body)?result.body:null,capture={};
  if(body){metric.bytes=body.length;metric.sha256=crypto.createHash('sha256').update(body).digest('hex');capture.body=body.toString('base64');}
- if(response.status!==200)return {ok:false,error:'Source HTTP '+response.status,...capture,metric};
+ if(response.status!==200){
+  const text=result.text||(body?body.toString('utf8'):'');
+  let detail=text;
+  try{const value=JSON.parse(text);detail=value?.message||value?.error?.message||value?.error||text;}catch{}
+  detail=safe(typeof detail==='string'?detail:JSON.stringify(detail)).slice(0,2000);
+  return {ok:false,error:'Source HTTP '+response.status+(detail?'\n'+detail:''),...capture,metric};
+ }
  if(response.headers?.get('x-rs-decoded')!=='1')return {ok:false,error:'Source decoding not confirmed',...capture,metric};
  if(!body)return {ok:false,error:'Original source bytes unavailable',metric};
  return {ok:true,body:body.toString('base64'),metric};
