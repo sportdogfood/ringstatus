@@ -17,7 +17,7 @@ http.createServer(async(req,res)=>{const url=new URL(req.url,'http://localhost')
   const html=await readFile(path.join(base,'../docs/profile/v3-evidence/live-profile-source.html'),'utf8');
   return send(html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace('</body>','<script type="module" src="/test/rs-profile-v3/embed.js"></script></body>'),'text/html');
  }
- if(url.pathname==='/test/rs-recognition/widget.js')return send(`let fingerprint=null;async function identity(body){const response=await fetch('/__fixture/identity',body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{});const data=await response.json();fingerprint=data.uid?'fixture-device-'+data.uid:null;return data.uid;}export const recognitionAdapter={current:()=>identity(),profileDeviceFingerprint:()=>fingerprint,recognize:value=>identity({value}),signOut:()=>identity({signout:true})};`,'text/javascript');
+ if(url.pathname==='/test/rs-recognition/widget.js'){const view=(await readFile(path.join(base,'src/assets/rs-recognition/widget-view.js'),'utf8')).replace("import widgetCss from './widget.css?raw';",'const widgetCss='+JSON.stringify(await readFile(path.join(base,'src/assets/rs-recognition/widget.css'),'utf8'))+';').replace("import screenCss from '../rs-ui/screen.css?raw';",'const screenCss='+JSON.stringify(await readFile(path.join(base,'src/assets/rs-ui/screen.css'),'utf8'))+';');return send(view+`let fixtureFingerprint=null;async function identity(body){const response=await fetch('/__fixture/identity',body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{});const data=await response.json();fixtureFingerprint=data.uid?'fixture-device-'+data.uid:null;return data.uid;}export const recognitionAdapter={current:()=>identity(),profileDeviceFingerprint:()=>fixtureFingerprint,recognize:value=>identity({value}),signOut:()=>identity({signout:true})};`,'text/javascript');}
  if(url.pathname==='/test/rs-profile/service.js')return send(await readFile(path.join(base,'src/assets/rs-profile/service.js')),'text/javascript');
  if(url.pathname==='/test/rs-recognition/native-client.js')return send(await readFile(path.join(base,'src/assets/rs-recognition/native-client.js')),'text/javascript');
  if(url.pathname==='/test/rs-profile/data'){
@@ -40,3 +40,4 @@ http.createServer(async(req,res)=>{const url=new URL(req.url,'http://localhost')
  return send(await readFile(file),mime[path.extname(file)]||'application/octet-stream');
  }catch(error){send({error:error.message},'application/json',500);}
 }).listen(Number(process.env.PROFILE_V3_PREVIEW_PORT||8796),'127.0.0.1',()=>console.log('Synthetic v3 preview ready (localhost only).'));
+
