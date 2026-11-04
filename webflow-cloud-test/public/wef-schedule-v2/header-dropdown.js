@@ -29,7 +29,7 @@ export function headerDropdowns(host){
  }
  function open(select,button){
   if(select.getAttribute('aria-label')==='Trainer'){
-   close();trainerActive={select,button};search.value='';renderTrainers();trainerDialog.showModal();button.setAttribute('aria-expanded','true');search.focus();return;
+   close();trainerActive={select,button};search.value='';trainerDialog.querySelector('h2').textContent='Trainers - '+select.dataset.dayLabel;search.hidden=select.options.length===1;renderTrainers();trainerList.hidden=select.options.length===1;if(search.hidden){empty.hidden=false;empty.textContent='No trainer-linked entries for '+select.dataset.dayLabel+'.';}else empty.textContent='No matching trainers';trainerDialog.showModal();button.setAttribute('aria-expanded','true');if(!search.hidden)search.focus();return;
   }
   if(menu.matches(':popover-open')){const same=active?.button===button;close();if(same)return;}
   active={select,button};menu.replaceChildren();menu.setAttribute('aria-label',select.getAttribute('aria-label'));

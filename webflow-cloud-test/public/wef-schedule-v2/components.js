@@ -74,6 +74,7 @@ export function dayLine(r){
  '<span class="v2-day-time">'+escape(r.time)+'</span><span class="v2-day-ring" title="'+escape(ringDetails[r.ring].name)+'">'+escape(ringDetails[r.ring].name)+'</span>'+
  '<span class="v2-day-no" data-seq="'+escape(r.sequence)+'">'+escape(r.id)+'</span>'+
  '<span class="v2-day-name">'+classIdentity(r)+'</span>'+
+ '<span class="v2-day-status">'+status(r.status)+'</span>'+
  '<span class="v2-day-entries" aria-label="'+count+' entries">'+count+(r.trips!=null?'/'+escape(r.trips):'')+'</span>'+
  '<span class="v2-day-meta"><span>'+escape(r.sequence)+'</span><span>'+escape(typeLabel(r.type))+'</span><span class="v2-day-status-text" data-status="'+escape(r.status)+'">'+escape(statusLabel(r.status))+'</span><span>'+escape(minutesText(countdown(r)))+'</span>'+commentToken(r)+'</span></div>';
 }

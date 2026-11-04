@@ -9,7 +9,7 @@ import {ringPanel,detailPanel,icon,commentsList,dayLine} from './components.js?v
 const isDay=document.body.dataset.view==='day';
 const requestedDay=new URLSearchParams(location.search).get('date');
 const initialDay=days.some(d=>d.date===requestedDay)?requestedDay:days.some(d=>d.date===metadata.defaultDate)?metadata.defaultDate:days[0]?.date;
-const state={trainer:new URLSearchParams(location.search).get('trainer')||'',day:initialDay,ring:null,horses:new Set(),selection:null,includeDone:false,focus:false,daySort:'time',dayDirection:'asc'};
+const state={trainer:new URLSearchParams(location.search).get('trainer')||'',day:initialDay,ring:null,horses:new Set(),selection:null,dayStatus:"",daySort:'time',dayDirection:'asc'};
 const schedule=document.querySelector('#rings-schedule');
 const surface=document.querySelector('#rings-surface');
 const scroller=document.querySelector('.rings-scroll');
@@ -43,6 +43,7 @@ function syncDay(){
  daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');daySelect.value=state.day;
  trainerSelect.innerHTML='<option value="">'+(options.length?'All trainers':'No trainers for '+escape(dateLabel(state.day)))+'</option>'+options.map(([id,name])=>`<option value="${escape(id)}">${escape(name)}</option>`).join('');trainerSelect.value=state.trainer;
  const dateText=dateLabel(state.day);
+ trainerSelect.dataset.dayLabel=dateText;
  dayControl.title=daySelect.title='Schedule day: '+dateText;
  trainerControl.title=trainerSelect.title='Trainer: '+trainerSelect.selectedOptions[0].textContent;
  trainerControl.dataset.active=String(Boolean(state.trainer));
@@ -68,8 +69,8 @@ function renderSchedule(){
  entryLaneCleanup.forEach(cleanup=>cleanup());entryLaneCleanup=[];
  const dayRecords=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
  if(isDay){
-  const rows=dayRows(dayRecords,{includeDone:state.includeDone,focus:state.focus,sort:state.daySort,direction:state.dayDirection});
-  schedule.innerHTML='<section class="rings-panel v2-day-list" aria-label="Classes in day order"><div class="v2-day-head">'+daySortHead('time','TIME')+daySortHead('ring','RING')+'<span>NO</span><span>CLASS</span><span>ENTRIES</span></div>'+rows.map(dayLine).join('')+(rows.length?'':'<p class="rings-detail-note">No classes match this view.</p>')+'</section>';
+  const rows=dayRows(dayRecords,{status:state.dayStatus,sort:state.daySort,direction:state.dayDirection});
+  schedule.innerHTML='<section class="rings-panel v2-day-list" aria-label="Classes in day order"><div class="v2-day-head">'+daySortHead('time','TIME')+daySortHead('ring','RING')+'<span>NO</span><span>CLASS</span><span>STATUS</span><span>ENTRIES</span></div>'+rows.map(dayLine).join('')+(rows.length?'':'<p class="rings-detail-note">No classes match this view.</p>')+'</section>';
   schedule.style.paddingBottom='0px';return;
  }
  const visible=state.horses.size?dayRecords.map(row=>({...row,entries:row.entries.filter(e=>state.horses.has(e.horseId))})).filter(row=>row.entries.length):dayRecords;
@@ -184,13 +185,11 @@ function daySortHead(key,label){
  return '<button type="button" class="v2-sort-head" data-day-sort="'+key+'" data-active="'+active+'" aria-label="'+label+': '+(direction||'not sorted')+'. Sort '+(direction==='asc'?'descending':'ascending')+'">'+label+'<span aria-hidden="true">'+(direction==='asc'?'↑':direction==='desc'?'↓':'↕')+'</span></button>';
 }
 if(isDay){
- document.querySelector('[data-day-focus]').addEventListener('click',event=>{state.focus=!state.focus;event.currentTarget.setAttribute('aria-pressed',String(state.focus));renderSchedule();});
- document.querySelector('[data-day-done]').addEventListener('click',event=>{
-  state.includeDone=!state.includeDone;
-  event.currentTarget.setAttribute('aria-pressed',String(state.includeDone));
-  event.currentTarget.title=state.includeDone?'Done included; click to hide done':'Done hidden; click to include done';
+ document.querySelectorAll('[data-day-status]').forEach(button=>button.addEventListener('click',()=>{
+  state.dayStatus=state.dayStatus===button.dataset.dayStatus?'':button.dataset.dayStatus;
+  document.querySelectorAll('[data-day-status]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.dayStatus===state.dayStatus)));
   renderSchedule();
- });
+ }));
  schedule.addEventListener('click',event=>{
   const button=event.target.closest('[data-day-sort]');if(!button)return;
   const key=button.dataset.daySort;
