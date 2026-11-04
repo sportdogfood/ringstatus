@@ -64,6 +64,7 @@ function mergeLoaded(next){
  confirmed={...confirmed,...next,profiles:byId(confirmed.profiles,next.profiles),teams:byId(confirmed.teams||[],next.teams||[]),memberships:next.loaded.roster?next.memberships:[...confirmed.memberships.filter(m=>m.userId!==currentUid),...next.memberships],invitations:next.loaded.team?next.invitations:confirmed.invitations,loaded:{...confirmed.loaded,...Object.fromEntries(Object.entries(next.loaded).filter(([,value])=>value))}};
 }
 const scopedLoads=new Map();
+let horsesRequested=false;
 const viewEtags=new Map();
 let periodicRefresh=null;
 export function refreshProfile(){
@@ -72,12 +73,13 @@ export function refreshProfile(){
  const actor=currentUid,check=generation;
  // Team contains the roster and own profile; otherwise refresh the largest prepared view.
  const view=confirmed.loaded?.team?'team':confirmed.loaded?.roster?'roster':'profile';
- const refreshHorses=!!confirmed.loaded?.horses;
+ const refreshHorses=horsesRequested||!!confirmed.loaded?.horses;
  const work=(async()=>{await (scopedLoads.get(view)||readProfile(actor,check,currentFingerprint,view));if(refreshHorses&&actor===currentUid&&check===generation&&confirmed)return loadProfileView('horses');return profileState();})().catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));viewEtags.clear();}notify(error);}throw error;});
  periodicRefresh=work;void work.finally(()=>{if(periodicRefresh===work)periodicRefresh=null;}).catch(()=>{});return work;
 }
 export function loadProfileView(view){
  if(!['roster','team','horses'].includes(view)||!currentUid||!confirmed)return Promise.reject(Error('Profile is required first.'));
+ if(view==='horses')horsesRequested=true;
  if(scopedLoads.has(view))return scopedLoads.get(view);
  const actor=currentUid,check=generation,fingerprint=currentFingerprint;
  const work=readProfile(actor,check,fingerprint,view).catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));}notify(error);}throw error;});
@@ -92,7 +94,13 @@ async function readProfile(uid,check,fingerprint,view='profile'){
  if(data.person_uid!==uid||data.state?.identity.currentId!==uid)throw Error('Profile identity did not match Recognize.');
  if(check!==generation||currentUid!==uid)throw Error('Profile changed while loading.');
  const before=JSON.stringify(confirmed);
- if(startedSaveVersion!==saveVersion){viewEtags.delete(view);if(view!=='profile')return readProfile(uid,check,fingerprint,view);}else{mergeLoaded(data.state);const etag=response.headers.get('ETag');if(etag)viewEtags.set(view,etag);}
+ if(startedSaveVersion!==saveVersion){viewEtags.delete(view);if(view!=='profile')return readProfile(uid,check,fingerprint,view);}else{
+  if(view==='horses'){
+   // A package response cannot replace newer Profile or Team records.
+   const own=state=>JSON.stringify((state?.memberships||[]).filter(m=>m.userId===uid).map(m=>[m.id,m.teamId,m.active,m.role]));
+   if(own(confirmed)!==own(data.state)||confirmed?.teamConflict!==data.state.teamConflict){viewEtags.delete(view);return profileState();}
+   confirmed={...confirmed,horses:data.state.horses,horseTeamId:data.state.horseTeamId,loaded:{...confirmed.loaded,horses:true}};
+  }else mergeLoaded(data.state);const etag=response.headers.get('ETag');if(etag)viewEtags.set(view,etag);}
  if(before!==JSON.stringify(confirmed)){remember(fingerprint);notify();}resume();return profileState();
 }
 export function prepareProfile(uid){return loadProfile(uid);}
@@ -133,4 +141,4 @@ export function saveProfile(operation,values){
  })();retainPending();notify();
  void entry.ready.then(()=>{for(const item of pending)if(operationKey(item.body)===key&&!item.needsPin&&!item.blocked)item.error='';void drain(key);},error=>{if(actor!==currentUid||check!==generation){settle(entry,error);return;}entry.error=error.message;retainPending();settle(entry,error);notify(error);});return result;
 }
-export function clearProfile(){generation++;for(const entry of pending)settle(entry,Error('Profile changed during this save.'));currentUid=null;confirmed=null;pending=[];loading=null;refreshing=null;currentFingerprint=null;recognizing=null;periodicRefresh=null;viewEtags.clear();scopedLoads.clear();running.clear();notify();}
+export function clearProfile(){generation++;for(const entry of pending)settle(entry,Error('Profile changed during this save.'));currentUid=null;confirmed=null;pending=[];loading=null;refreshing=null;currentFingerprint=null;recognizing=null;periodicRefresh=null;horsesRequested=false;viewEtags.clear();scopedLoads.clear();running.clear();notify();}

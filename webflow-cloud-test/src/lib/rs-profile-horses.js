@@ -16,9 +16,9 @@ export async function loadProfileHorses(c){
  const url=new URL(`https://api.airtable.com/v0/${BASE}/${HORSES_TABLE}`);
  url.searchParams.set('filterByFormula',`FIND('${trainer}',{w-trainers})`);
  for(const field of fields)url.searchParams.append('fields[]',field);
- const horses=[],seen=new Set();
+ const horses=[],seen=new Set(),callFetch=c.callFetch;
  do{
-  const response=await c.callFetch(url,{headers:{Authorization:`Bearer ${c.env.AIRTABLE_TOKEN}`},redirect:'manual',signal:AbortSignal.timeout(15000)});
+  const response=await callFetch(url,{headers:{Authorization:`Bearer ${c.env.AIRTABLE_TOKEN}`},redirect:'manual',signal:AbortSignal.timeout(15000)});
   if(!response.ok)throw new InputError('horse_storage_unavailable',503);
   const body=await response.json();
   if(!Array.isArray(body.records))throw new InputError('horse_storage_unavailable',502);

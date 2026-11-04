@@ -1,0 +1,296 @@
+TAP version 13
+# (node:43924) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./test-support/cloudflare-workers-loader.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: horse reader invokes native Workers fetch without a receiver
+ok 1 - horse reader invokes native Workers fetch without a receiver
+  ---
+  duration_ms: 242.2256
+  type: 'test'
+  ...
+# (node:53208) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./test-support/cloudflare-workers-loader.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: refresh waits eight minutes, never overlaps, survives failure and stops on page exit
+ok 2 - refresh waits eight minutes, never overlaps, survives failure and stops on page exit
+  ---
+  duration_ms: 1.4555
+  type: 'test'
+  ...
+# Subtest: signed-out pages do not refresh private data
+ok 3 - signed-out pages do not refresh private data
+  ---
+  duration_ms: 0.396
+  type: 'test'
+  ...
+# (node:43284) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./test-support/cloudflare-workers-loader.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: refresh retains pending work, avoids unchanged notifications and stops after logout
+ok 4 - refresh retains pending work, avoids unchanged notifications and stops after logout
+  ---
+  duration_ms: 119.688
+  type: 'test'
+  ...
+# Subtest: PIN reload retry preserves request ID, excludes plaintext PIN and survives a wrong re-entry
+ok 5 - PIN reload retry preserves request ID, excludes plaintext PIN and survives a wrong re-entry
+  ---
+  duration_ms: 34.0115
+  type: 'test'
+  ...
+# Subtest: pending membership action resumes the exact operation after reload
+ok 6 - pending membership action resumes the exact operation after reload
+  ---
+  duration_ms: 66.4633
+  type: 'test'
+  ...
+# Subtest: logout fences a delayed Profile load and a save awaiting its fingerprint
+ok 7 - logout fences a delayed Profile load and a save awaiting its fingerprint
+  ---
+  duration_ms: 45.5084
+  type: 'test'
+  ...
+# Subtest: pending team_create preserves the same request across reload
+ok 8 - pending team_create preserves the same request across reload
+  ---
+  duration_ms: 23.3536
+  type: 'test'
+  ...
+# Subtest: pending invitation_create preserves the same request across reload
+ok 9 - pending invitation_create preserves the same request across reload
+  ---
+  duration_ms: 44.56
+  type: 'test'
+  ...
+# Subtest: pending invitation_response preserves the same request across reload
+ok 10 - pending invitation_response preserves the same request across reload
+  ---
+  duration_ms: 29.1804
+  type: 'test'
+  ...
+# Subtest: scoped loading preserves prepared roster and pending own edit
+ok 11 - scoped loading preserves prepared roster and pending own edit
+  ---
+  duration_ms: 24.3462
+  type: 'test'
+  ...
+# Subtest: authoritative Team and roster refresh remove retired people and invitation candidates
+ok 12 - authoritative Team and roster refresh remove retired people and invitation candidates
+  ---
+  duration_ms: 14.8206
+  type: 'test'
+  ...
+# Subtest: scope started before a save confirmation refreshes instead of remaining not loaded
+ok 13 - scope started before a save confirmation refreshes instead of remaining not loaded
+  ---
+  duration_ms: 20.481
+  type: 'test'
+  ...
+# Subtest: lazy Opt-ins finishes for the current actor after an account switch
+ok 14 - lazy Opt-ins finishes for the current actor after an account switch
+  ---
+  duration_ms: 7.8282
+  type: 'test'
+  ...
+# Subtest: horse package survives Team refresh, refreshes separately, and clears with Team access
+ok 15 - horse package survives Team refresh, refreshes separately, and clears with Team access
+  ---
+  duration_ms: 18.8858
+  type: 'test'
+  ...
+# Subtest: late horse package cannot restore removed Team access or overwrite newer profile
+ok 16 - late horse package cannot restore removed Team access or overwrite newer profile
+  ---
+  duration_ms: 10.6354
+  type: 'test'
+  ...
+# Subtest: periodic refresh retries a requested horse package after initial failure
+ok 17 - periodic refresh retries a requested horse package after initial failure
+  ---
+  duration_ms: 9.2362
+  type: 'test'
+  ...
+# (node:12360) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./test-support/cloudflare-workers-loader.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: presentation requires a resolved identity and excludes PIN and arbitrary backend data
+ok 18 - presentation requires a resolved identity and excludes PIN and arbitrary backend data
+  ---
+  duration_ms: 1.6845
+  type: 'test'
+  ...
+# Subtest: active members see only their roster, including non-owner riders; hidden and inactive records excluded
+ok 19 - active members see only their roster, including non-owner riders; hidden and inactive records excluded
+  ---
+  duration_ms: 1.3146
+  type: 'test'
+  ...
+# Subtest: Team conflicts never grant owner privileges
+ok 20 - Team conflicts never grant owner privileges
+  ---
+  duration_ms: 0.4929
+  type: 'test'
+  ...
+# Subtest: editor emits only existing own-profile fields and excludes blank PIN, role and membership status
+ok 21 - editor emits only existing own-profile fields and excludes blank PIN, role and membership status
+  ---
+  duration_ms: 41.5488
+  type: 'test'
+  ...
+# Subtest: prepared roster retains source search and sort behavior
+ok 22 - prepared roster retains source search and sort behavior
+  ---
+  duration_ms: 19.935
+  type: 'test'
+  ...
+# Subtest: existing records with blank names can still save contact details
+ok 23 - existing records with blank names can still save contact details
+  ---
+  duration_ms: 0.2286
+  type: 'test'
+  ...
+# Subtest: sign-out clears display before awaiting remote cookie retirement and fences delayed load
+ok 24 - sign-out clears display before awaiting remote cookie retirement and fences delayed load
+  ---
+  duration_ms: 0.6876
+  type: 'test'
+  ...
+# Subtest: connection delegates saves unchanged to proven service; no parallel persistence
+ok 25 - connection delegates saves unchanged to proven service; no parallel persistence
+  ---
+  duration_ms: 0.2539
+  type: 'test'
+  ...
+# (node:51568) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./test-support/cloudflare-workers-loader.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:51568) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# Subtest: Profile validates Recognize before accessing records; independent User does not require a Team
+ok 26 - Profile validates Recognize before accessing records; independent User does not require a Team
+  ---
+  duration_ms: 550.0757
+  type: 'test'
+  ...
+# Subtest: real Team links use record IDs; roster omits another User private email and phone
+ok 27 - real Team links use record IDs; roster omits another User private email and phone
+  ---
+  duration_ms: 1165.4675
+  type: 'test'
+  ...
+# Subtest: own User saves real canonical/recognition fields, retains roles, and same request replays without rewriting
+ok 28 - own User saves real canonical/recognition fields, retains roles, and same request replays without rewriting
+  ---
+  duration_ms: 2115.3086
+  type: 'test'
+  ...
+# Subtest: GeoIP identity does not authorize private Profile data
+ok 29 - GeoIP identity does not authorize private Profile data
+  ---
+  duration_ms: 5.2511
+  type: 'test'
+  ...
+# Subtest: owner changes membership status only; revision supports repeated toggles; owner cannot be disabled
+ok 30 - owner changes membership status only; revision supports repeated toggles; owner cannot be disabled
+  ---
+  duration_ms: 7546.6218
+  type: 'test'
+  ...
+# Subtest: account switch rejects the displayed actor before records are read or written
+ok 31 - account switch rejects the displayed actor before records are read or written
+  ---
+  duration_ms: 9.5781
+  type: 'test'
+  ...
+# Subtest: disabled membership and inactive Team do not expose Team or roster data
+ok 32 - disabled membership and inactive Team do not expose Team or roster data
+  ---
+  duration_ms: 1194.7135
+  type: 'test'
+  ...
+# Subtest: omitted name fields read back as empty rather than causing a permanent save failure
+ok 33 - omitted name fields read back as empty rather than causing a permanent save failure
+  ---
+  duration_ms: 1408.7138
+  type: 'test'
+  ...
+# Subtest: uncertain canonical write is read back on same-request retry without a duplicate write
+ok 34 - uncertain canonical write is read back on same-request retry without a duplicate write
+  ---
+  duration_ms: 1616.9651
+  type: 'test'
+  ...
+# Subtest: level is explicit/read-only; Preferred creation persists one Owner membership and replays once
+ok 35 - level is explicit/read-only; Preferred creation persists one Owner membership and replays once
+  ---
+  duration_ms: 4883.8656
+  type: 'test'
+  ...
+# Subtest: Owner invites existing User; recipient accepts explicitly; repeated response creates no duplicate
+ok 36 - Owner invites existing User; recipient accepts explicitly; repeated response creates no duplicate
+  ---
+  duration_ms: 8615.7905
+  type: 'test'
+  ...
+# Subtest: decline preserves no membership and permits a new invitation; inactive Team cannot accept
+ok 37 - decline preserves no membership and permits a new invitation; inactive Team cannot accept
+  ---
+  duration_ms: 8870.3952
+  type: 'test'
+  ...
+# Subtest: concurrent creation and invitation acceptance cannot create two memberships
+ok 38 - concurrent creation and invitation acceptance cannot create two memberships
+  ---
+  duration_ms: 2875.5347
+  type: 'test'
+  ...
+# Subtest: uploaded photo is validated, read back, replayed once, retained on unrelated edits and removed
+ok 39 - uploaded photo is validated, read back, replayed once, retained on unrelated edits and removed
+  ---
+  duration_ms: 5422.1004
+  type: 'test'
+  ...
+# Subtest: saving the displayed uploaded-photo URL preserves durable attachment backing
+ok 40 - saving the displayed uploaded-photo URL preserves durable attachment backing
+  ---
+  duration_ms: 3266.3737
+  type: 'test'
+  ...
+# Subtest: lost Team-create reply recovers the same Team by operation ID and finishes one Owner membership
+ok 41 - lost Team-create reply recovers the same Team by operation ID and finishes one Owner membership
+  ---
+  duration_ms: 3799.4562
+  type: 'test'
+  ...
+# Subtest: conditional refresh sends only changed packages and still checks identity
+ok 42 - conditional refresh sends only changed packages and still checks identity
+  ---
+  duration_ms: 5602.1587
+  type: 'test'
+  ...
+# Subtest: initial Profile scope omits roster enrichment, candidates and invitations
+ok 43 - initial Profile scope omits roster enrichment, candidates and invitations
+  ---
+  duration_ms: 584.4803
+  type: 'test'
+  ...
+# Subtest: roster and Team scopes defer only their corresponding existing records
+ok 44 - roster and Team scopes defer only their corresponding existing records
+  ---
+  duration_ms: 1894.9844
+  type: 'test'
+  ...
+# Subtest: horse package uses authenticated Team trainer scope and rejects unrelated trainer tokens
+ok 45 - horse package uses authenticated Team trainer scope and rejects unrelated trainer tokens
+  ---
+  duration_ms: 1196.9105
+  type: 'test'
+  ...
+1..45
+# tests 45
+# suites 0
+# pass 45
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 63347.6412

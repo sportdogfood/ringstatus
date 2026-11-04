@@ -1,0 +1,22 @@
+
+> webflow-cloud-test@0.0.1 build
+> astro build
+
+(node:7680) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+17:21:29 [types] Generated 2.20s
+17:21:29 [build] output: "server"
+17:21:29 [build] mode: "server"
+17:21:29 [build] directory: C:\Users\gombc\.codex\worktrees\profile-desktop-sizing-20261104\webflow-cloud-test\dist\
+17:21:29 [build] adapter: @astrojs/cloudflare
+17:21:29 [build] Collecting build info...
+17:21:29 [build] ✓ Completed in 2.26s.
+17:21:29 [build] Building server entrypoints...
+17:21:32 [vite] ✓ built in 2.82s
+17:21:34 [WARN] [router] getStaticPaths() ignored in dynamic page /src/pages/[slug].astro. Add `export const prerender = true;` to prerender the page as static HTML during the build process.
+17:21:37 [vite] ✓ built in 4.61s
+17:21:40 [vite] ✓ built in 3.06s
+17:21:40 [build] Rearranging server assets...
+17:21:40 [build] ✓ Completed in 10.68s.
+17:21:40 [build] Server built in 12.99s
+17:21:40 [build] Complete!

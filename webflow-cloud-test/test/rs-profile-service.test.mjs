@@ -79,3 +79,19 @@ test('horse package survives Team refresh, refreshes separately, and clears with
  c.clearProfile();assert.equal(c.profileState(),null);
  }finally{globalThis.fetch=oldFetch;globalThis.localStorage=oldStorage;}
 });
+
+test('late horse package cannot restore removed Team access or overwrite newer profile', {concurrency:false},async()=>{
+ const oldFetch=globalThis.fetch,oldStorage=globalThis.localStorage;let release,enabled=true;
+ try{const c=await client(storage(),async url=>{const view=new URL(url,'https://fixture').searchParams.get('view');const next={...state(),teams:[],invitations:[],memberships:enabled?[{id:'m',userId:'person_a',teamId:'t',active:true}]:[],loaded:{profile:true}};
+ if(view==='horses'){Object.assign(next,{horses:[{id:'h',tenant_id:'t'}],horseTeamId:'t',loaded:{profile:true,horses:true}});await new Promise(r=>release=r);}
+ if(view==='team'){next.loaded.team=true;next.profiles[0].first='New';}return Response.json({ok:true,person_uid:'person_a',state:next});});
+ await c.loadProfile();let late=c.loadProfileView('horses');await c.loadProfileView('team');release();await late;assert.equal(c.profileState().profiles[0].first,'New');assert.equal(c.profileState().horses.length,1);
+ late=c.loadProfileView('horses');enabled=false;await c.loadProfileView('team');release();await late;assert.deepEqual(c.profileState().memberships,[]);assert.equal(c.profileState().horses,undefined);c.clearProfile();
+ }finally{globalThis.fetch=oldFetch;globalThis.localStorage=oldStorage;}
+});
+test('periodic refresh retries a requested horse package after initial failure', {concurrency:false},async()=>{
+ const oldFetch=globalThis.fetch,oldStorage=globalThis.localStorage;let fail=true;const calls=[];
+ try{const c=await client(storage(),async url=>{const view=new URL(url,'https://fixture').searchParams.get('view');calls.push(view);if(view==='horses'&&fail)return Response.json({ok:false,error:'unavailable'},{status:503});const next={...state(),teams:[],invitations:[],loaded:{profile:true,team:view==='team'}};if(view==='horses')Object.assign(next,{horses:[],horseTeamId:null,loaded:{profile:true,horses:true}});return Response.json({ok:true,person_uid:'person_a',state:next});});
+ await c.loadProfile();await c.loadProfileView('team');await assert.rejects(c.loadProfileView('horses'));fail=false;await c.refreshProfile();assert.deepEqual(calls.slice(-2),['team','horses']);assert.equal(c.profileState().loaded.horses,true);c.clearProfile();const before=calls.length;await c.refreshProfile();assert.equal(calls.length,before);
+ }finally{globalThis.fetch=oldFetch;globalThis.localStorage=oldStorage;}
+});
