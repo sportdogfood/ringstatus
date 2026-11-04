@@ -50,15 +50,24 @@ body{padding:0;display:block;background:var(--preview-bg)}.preview-stage{width:1
 
 .action-row>[data-action="nav-group"][aria-pressed="true"]{background:var(--rs-active)}
 
-/* Approved Schedule V2 desktop sizing; compact previews and phones retain their rules. */
+/* Desktop follows measured Recognize sizing; compact previews and phones retain their rules. */
 @media(min-width:601px){
- :root:not([data-size="compact"]) .v3-panel{width:820px;height:min(var(--shell-min-height),var(--shell-available-height));min-height:0;border-radius:24px;font-size:16px;line-height:1.4}
- :root:not([data-size="compact"]) .launcher-widget{width:820px}
- :root:not([data-size="compact"]) :is(.action-row>[data-action="nav-group"],.tab-row>.ui-button){display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:6px 12px;border-radius:10px;font-size:16px;line-height:1.4}
+ :root:not([data-size="compact"]) .v3-panel,:host(:not([data-size="compact"])) .v3-panel{width:420px;height:auto;min-height:0;border-radius:24px;font-size:16px;line-height:1.4}
+ :root:not([data-size="compact"]) .launcher-widget,:host(:not([data-size="compact"])) .launcher-widget{width:420px;gap:2px}
+ :root:not([data-size="compact"]) :is(.action-row>[data-action="nav-group"],.tab-row>.ui-button),:host(:not([data-size="compact"])) :is(.action-row>[data-action="nav-group"],.tab-row>.ui-button){display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:6px 12px;border-radius:10px;font-size:16px;line-height:1.4}
 }
 body:has(#app[hidden]),body:has(#app[hidden]) .preview-stage{background:transparent}
 body:has(#app[hidden]) .preview-links{visibility:hidden}
 
 body[data-recognized="false"],body[data-recognized="false"] .preview-stage{background:transparent}
 body[data-recognized="false"] .preview-stage{display:none}
-@media(min-width:601px){:root:not([data-size="compact"]) :is(.detail-value,.result-copy strong,.search-control,.section-head){font-size:16px}:root:not([data-size="compact"]) :is(.detail-label,.result-copy small,.footer-row .ui-button){font-size:14px}}
+@media(min-width:601px){:root:not([data-size="compact"]) :is(.detail-value,.result-copy strong,.search-control,.section-head),:host(:not([data-size="compact"])) :is(.detail-value,.result-copy strong,.search-control,.section-head){font-size:16px}:root:not([data-size="compact"]) :is(.detail-label,.result-copy small,.footer-row .ui-button),:host(:not([data-size="compact"])) :is(.detail-label,.result-copy small,.footer-row .ui-button){font-size:14px}}
+
+:root .v3-panel[data-height="content"],:host .v3-panel[data-height="content"]{height:auto;min-height:0}.v3-panel[data-placement="floating"]{position:fixed;right:16px;bottom:98px;max-width:calc(100% - 32px);max-height:calc(100dvh - 114px);z-index:20}.footer-row>.primary:only-child{width:100%}
+@media(max-width:600px){.v3-panel[data-placement="floating"]{right:0;max-width:100%;width:100%;border-radius:0;border-inline:0}}
+
+.form-grid input,.form-grid select,.form-grid textarea{width:100%;min-width:0}.form-grid>.field{width:100%}.form-grid>.field:only-of-type{grid-column:1/-1}
+@media(min-width:601px){.form-grid input,.form-grid select,.form-grid textarea{font-size:16px}.form-grid .field{font-size:14px}}
+html:has(body[data-recognized="false"]),html:has(#app[hidden]){color-scheme:light;background:transparent}
+
+@media(min-width:601px){.launcher-widget .icon-button{width:36px;height:40px;flex:0 0 36px}}

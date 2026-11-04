@@ -292,7 +292,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');
 });
 document.addEventListener('submit',e=>{const form=e.target,fd=new FormData(form);if(form.id==='invite-form'&&owner()){queueSave('invitation_create',{userId:String(fd.get('userId'))});closeDialog();}if(form.id==='team-form'){queueSave('team_create',{name:String(fd.get('name')||'').trim()});closeDialog();}});
 connection=createConnection(service,recognitionAdapter,acceptConnected);
-recognizeWidget=mountRecognize(recognizeRoot,{adapter:{current:async()=>state.currentUserId,recognize:async value=>(await connection.login(value))?.identity?.currentId||null,signOut:()=>connection.signOut()},onRecognized:()=>{render();void prepareTeam();}});
+recognizeWidget=mountRecognize(recognizeRoot,{
+ css:'@import url("/test/rs-profile-v3/primitives.css");@import url("/test/rs-profile-v3/styles.css");',
+ markup:`<form id="signin" class="v3-panel" data-height="content" data-placement="floating" aria-label="Sign in" hidden><header class="stack stack-top"><div class="back-row" data-stack="back" aria-hidden="true"></div>${brand().replace('data-action="close"','id="close" type="button"').replace('Close Profile','Close sign in')}</header><div class="stack-scroll"><div class="stack stack-body"><section class="section" data-stack="section"><div class="form-grid"><label class="field" for="credential">Phone, PIN, or Invite<input id="credential" name="credential" placeholder="Phone, PIN, or Invite" autocomplete="off" inputmode="numeric" required></label><p class="form-error" id="error" role="alert"></p></div></section></div></div><footer class="footer-row" data-stack="footer"><button class="ui-button primary" data-variant="primary" type="submit">Sign in</button></footer></form><button id="launcher" type="button" aria-controls="signin" aria-expanded="false"></button>`,
+ adapter:{current:async()=>state.currentUserId,recognize:async value=>(await connection.login(value))?.identity?.currentId||null,signOut:()=>connection.signOut()},onRecognized:()=>{render();void prepareTeam();}});
 let stopRefresh=null;
 function beginRefresh(){if(!stopRefresh&&!libraryPage)stopRefresh=startProfileRefresh({refresh:()=>service.refreshProfile(),ready:()=>state.recognized});}
 void connection.start().then(()=>prepareTeam()).catch(()=>{}).finally(beginRefresh);
