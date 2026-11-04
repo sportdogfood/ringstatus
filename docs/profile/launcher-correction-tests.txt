@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: presentation requires a resolved identity and excludes PIN and arbitrary backend data
+ok 1 - presentation requires a resolved identity and excludes PIN and arbitrary backend data
+  ---
+  duration_ms: 1.4693
+  type: 'test'
+  ...
+# Subtest: active members see only their roster, including non-owner riders; hidden and inactive records excluded
+ok 2 - active members see only their roster, including non-owner riders; hidden and inactive records excluded
+  ---
+  duration_ms: 1.5599
+  type: 'test'
+  ...
+# Subtest: Team conflicts never grant owner privileges
+ok 3 - Team conflicts never grant owner privileges
+  ---
+  duration_ms: 0.2258
+  type: 'test'
+  ...
+# Subtest: editor emits only existing own-profile fields and excludes blank PIN, role and membership status
+ok 4 - editor emits only existing own-profile fields and excludes blank PIN, role and membership status
+  ---
+  duration_ms: 34.9472
+  type: 'test'
+  ...
+# Subtest: prepared roster retains source search and sort behavior
+ok 5 - prepared roster retains source search and sort behavior
+  ---
+  duration_ms: 16.2359
+  type: 'test'
+  ...
+# Subtest: existing records with blank names can still save contact details
+ok 6 - existing records with blank names can still save contact details
+  ---
+  duration_ms: 0.3484
+  type: 'test'
+  ...
+# Subtest: sign-out clears display before awaiting remote cookie retirement and fences delayed load
+ok 7 - sign-out clears display before awaiting remote cookie retirement and fences delayed load
+  ---
+  duration_ms: 0.8735
+  type: 'test'
+  ...
+# Subtest: connection delegates saves unchanged to proven service; no parallel persistence
+ok 8 - connection delegates saves unchanged to proven service; no parallel persistence
+  ---
+  duration_ms: 0.3678
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 202.7368
