@@ -1,6 +1,7 @@
 import {smsAlerts as optinAlerts} from './optins/catalog.js';
 import {key as optinKey,legacyKey as optinLegacyKey,fresh as freshOptins,decode as decodeOptins,validate as validateOptins} from './optins/model.js';
 import {TAGS,queryUsers} from './model.js';
+import {startProfileRefresh} from './refresh.js';
 import * as service from '/test/rs-profile/service.js';
 import {recognitionAdapter} from '/test/rs-recognition/widget.js';
 import {EMPTY,presentation,roster,membership,isOwner,canRead,profileFields,createConnection} from './connection.js';
@@ -288,6 +289,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');
 });
 document.addEventListener('submit',e=>{const form=e.target,fd=new FormData(form);if(form.id==='invite-form'&&owner()){queueSave('invitation_create',{userId:String(fd.get('userId'))});closeDialog();}if(form.id==='team-form'){queueSave('team_create',{name:String(fd.get('name')||'').trim()});closeDialog();}});
 connection=createConnection(service,recognitionAdapter,acceptConnected);
-void connection.start().then(()=>prepareTeam()).catch(()=>{});
+let stopRefresh=null;
+function beginRefresh(){if(!stopRefresh&&!libraryPage)stopRefresh=startProfileRefresh({refresh:()=>service.refreshProfile(),ready:()=>state.recognized});}
+void connection.start().then(()=>prepareTeam()).catch(()=>{}).finally(beginRefresh);
+addEventListener('pagehide',()=>{stopRefresh?.();stopRefresh=null;});
+addEventListener('pageshow',event=>{if(event.persisted)beginRefresh();});
 addEventListener('online',()=>{void connection.start().then(()=>prepareTeam()).catch(()=>{});});
 addEventListener('storage',e=>{if(['rs_recognition_pending_signout_v1','rs_recognition_device_token_v1'].includes(e.key)){service.clearProfile();void connection.start().then(()=>prepareTeam()).catch(()=>{});}});

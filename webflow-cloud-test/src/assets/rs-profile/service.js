@@ -46,7 +46,7 @@ function drain(key){
    const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-RS-Actor-Scope':actor},body:JSON.stringify(entry.body),signal:AbortSignal.timeout(20000)});
    const data=await response.json();if(!response.ok||!data.ok){const error=Error(data.error||'The save has not been confirmed.');error.status=response.status;throw error;}
    if(actor!==currentUid||check!==generation||data.state?.identity.currentId!==actor)throw Error('Profile changed during this save.');
-   mergeConfirmed(data.state,entry);saveVersion++;pending=pending.filter(p=>p!==entry);retainPending();remember();settle(entry);notify();
+   mergeConfirmed(data.state,entry);saveVersion++;viewEtags.clear();pending=pending.filter(p=>p!==entry);retainPending();remember();settle(entry);notify();
   }catch(error){if(actor!==currentUid||check!==generation){settle(entry,error);return;}entry.error=error.message;entry.blocked=error.status>=400&&error.status<500;entry.uncertain||=entry.sent&&(!Number.isInteger(error.status)||error.status>=500||error.status<400);entry.noWrite=!entry.uncertain&&entry.body.operation==='profile'&&error.status===400&&noWriteProfileErrors.has(error.message);retainPending();settle(entry,error);if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));}notify(error);return;}
  }})();running.set(key,work);void work.finally(()=>{if(running.get(key)===work)running.delete(key);});return work;
 }
@@ -61,6 +61,17 @@ function mergeLoaded(next){
  confirmed={...confirmed,...next,profiles:byId(confirmed.profiles,next.profiles),teams:byId(confirmed.teams||[],next.teams||[]),memberships:next.loaded.roster?next.memberships:[...confirmed.memberships.filter(m=>m.userId!==currentUid),...next.memberships],invitations:next.loaded.team?next.invitations:confirmed.invitations,loaded:{...confirmed.loaded,...Object.fromEntries(Object.entries(next.loaded).filter(([,value])=>value))}};
 }
 const scopedLoads=new Map();
+const viewEtags=new Map();
+let periodicRefresh=null;
+export function refreshProfile(){
+ if(periodicRefresh)return periodicRefresh;
+ if(!currentUid||!confirmed)return Promise.resolve(null);
+ const actor=currentUid,check=generation;
+ // Team contains the roster and own profile; otherwise refresh the largest prepared view.
+ const view=confirmed.loaded?.team?'team':confirmed.loaded?.roster?'roster':'profile';
+ const work=(scopedLoads.get(view)||readProfile(actor,check,currentFingerprint,view)).catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));viewEtags.clear();}notify(error);}throw error;});
+ periodicRefresh=work;void work.finally(()=>{if(periodicRefresh===work)periodicRefresh=null;}).catch(()=>{});return work;
+}
 export function loadProfileView(view){
  if(!['roster','team'].includes(view)||!currentUid||!confirmed)return Promise.reject(Error('Profile is required first.'));
  if(scopedLoads.has(view))return scopedLoads.get(view);
@@ -69,14 +80,16 @@ export function loadProfileView(view){
  scopedLoads.set(view,work);void work.finally(()=>{if(scopedLoads.get(view)===work)scopedLoads.delete(view);}).catch(()=>{});return work;
 }
 async function readProfile(uid,check,fingerprint,view='profile'){
- const startedSaveVersion=saveVersion,response=await fetch(endpoint+'?view='+view,{credentials:'same-origin',cache:'no-store',headers:{'X-RS-Actor-Scope':uid},signal:AbortSignal.timeout(20000)});
- const data=await response.json();
+ const startedSaveVersion=saveVersion,response=await fetch(endpoint+'?view='+view,{credentials:'same-origin',cache:'no-store',headers:{'X-RS-Actor-Scope':uid,...(viewEtags.has(view)?{'If-None-Match':viewEtags.get(view)}:{})},signal:AbortSignal.timeout(20000)});
  if(check!==generation||currentUid!==uid||recognitionAdapter.profileDeviceFingerprint?.()!==fingerprint)throw Error('Profile changed while loading.');
+ if(response.status===304){resume();return profileState();}
+ const data=await response.json();
  if(!response.ok||!data.ok){const error=Error(data.error||'Profile could not be loaded.');error.status=response.status;throw error;}
  if(data.person_uid!==uid||data.state?.identity.currentId!==uid)throw Error('Profile identity did not match Recognize.');
  if(check!==generation||currentUid!==uid)throw Error('Profile changed while loading.');
- if(startedSaveVersion!==saveVersion){if(view!=='profile')return readProfile(uid,check,fingerprint,view);}else mergeLoaded(data.state);
- remember(fingerprint);notify();resume();return profileState();
+ const before=JSON.stringify(confirmed);
+ if(startedSaveVersion!==saveVersion){viewEtags.delete(view);if(view!=='profile')return readProfile(uid,check,fingerprint,view);}else{mergeLoaded(data.state);const etag=response.headers.get('ETag');if(etag)viewEtags.set(view,etag);}
+ if(before!==JSON.stringify(confirmed)){remember(fingerprint);notify();}resume();return profileState();
 }
 export function prepareProfile(uid){return loadProfile(uid);}
 export function loadProfile(resolvedUid){
@@ -116,4 +129,4 @@ export function saveProfile(operation,values){
  })();retainPending();notify();
  void entry.ready.then(()=>{for(const item of pending)if(operationKey(item.body)===key&&!item.needsPin&&!item.blocked)item.error='';void drain(key);},error=>{if(actor!==currentUid||check!==generation){settle(entry,error);return;}entry.error=error.message;retainPending();settle(entry,error);notify(error);});return result;
 }
-export function clearProfile(){generation++;for(const entry of pending)settle(entry,Error('Profile changed during this save.'));currentUid=null;confirmed=null;pending=[];loading=null;refreshing=null;currentFingerprint=null;recognizing=null;scopedLoads.clear();running.clear();notify();}
+export function clearProfile(){generation++;for(const entry of pending)settle(entry,Error('Profile changed during this save.'));currentUid=null;confirmed=null;pending=[];loading=null;refreshing=null;currentFingerprint=null;recognizing=null;periodicRefresh=null;viewEtags.clear();scopedLoads.clear();running.clear();notify();}

@@ -26,7 +26,7 @@ export async function handleNativeRecognition(request, env, fetchImpl = fetch, e
       try{const body=await request.json();const result=await exportIamHistory({env,request,eventUid:body?.history_event_uid,fetchImpl});
         if(executionContext?.waitUntil)executionContext.waitUntil(drainIamRefresh({env,fetchImpl}).catch(()=>{}));
         return respond({ok:true,...result});
-      }catch{return respond({ok:false,error:'history_export_pending'},503);}
+      }catch(error){const reason=/^[a-z_]{1,80}$/.test(error.code||error.message||'')?(error.code||error.message):'history_export_failed';console.error('[rs-recognition] history export pending: '+reason);return respond({ok:false,error:'history_export_pending',reason},503);}
     }
     return handleIamRecognition(request,env,executionContext);
   }

@@ -5,6 +5,14 @@ const storage=()=>{const values=new Map();return {getItem:k=>values.get(k)||null
 const state=()=>({identity:{currentId:'person_a'},profiles:[{id:'person_a',first:'First',last:'User',revision:0}],memberships:[]});
 const pendingKey='rs_profile_pending_v1:person_a';
 async function settled(store){for(let i=0;i<1000&&store.getItem(pendingKey);i++)await new Promise(resolve=>setImmediate(resolve));assert.equal(store.getItem(pendingKey),null);}
+test('refresh retains pending work, avoids unchanged notifications and stops after logout',{concurrency:false},async()=>{
+ const oldFetch=globalThis.fetch,oldStorage=globalThis.localStorage,store=storage();let calls=0,notifications=0,changed=false;
+ try{const c=await client(store,async(url,options)=>{calls++;if(options?.method==='POST')throw Error('offline');if(options.headers['If-None-Match']==='"v1"'&&!changed)return new Response(null,{status:304});const next=state();next.profiles[0].first=changed?'Remote':'First';return Response.json({ok:true,person_uid:'person_a',state:next},{headers:{ETag:changed?'"v2"':'"v1"'}});});
+ await c.loadProfile();c.subscribeProfile(()=>notifications++);await c.refreshProfile();assert.equal(notifications,0);
+ await assert.rejects(c.saveProfile('profile',{fields:{first:'Pending'},expectedRevision:0}),/offline/);const retained=store.getItem(pendingKey);changed=true;await c.refreshProfile();assert.equal(c.profileState().profiles[0].first,'Pending');assert.equal(store.getItem(pendingKey),retained);
+ c.clearProfile();const before=calls;await c.refreshProfile();assert.equal(calls,before);
+ }finally{globalThis.fetch=oldFetch;globalThis.localStorage=oldStorage;}
+});
 const ok=()=>Response.json({ok:true,person_uid:'person_a',state:state()});
 async function client(store,fetchImpl){
  globalThis.localStorage=store;globalThis.fetch=fetchImpl;

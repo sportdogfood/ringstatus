@@ -163,7 +163,7 @@ export async function handleProfile(request,env,fetchImpl=fetch,executionContext
   if(!['GET','POST'].includes(request.method))fail('method_not_allowed',405);
   if(request.method==='POST'&&request.headers.get('Origin')!==new URL(request.url).origin)fail('origin_denied',403);
   const c=await context(request,env,fetchImpl);
-  if(request.method==='GET'){const view=new URL(request.url).searchParams.get('view')||'full';if(!['full','profile','roster','team'].includes(view))fail('invalid_profile_view');return reply({ok:true,person_uid:c.identity.person_uid,state:await stateOf(c,view)});}
+  if(request.method==='GET'){const view=new URL(request.url).searchParams.get('view')||'full';if(!['full','profile','roster','team'].includes(view))fail('invalid_profile_view');const body={ok:true,person_uid:c.identity.person_uid,state:await stateOf(c,view)},etag='"'+await payloadHash(body)+'"';if(request.headers.get('If-None-Match')===etag)return new Response(null,{status:304,headers:{ETag:etag,'Cache-Control':'private, no-store'}});return Response.json(body,{headers:{ETag:etag,'Cache-Control':'private, no-store'}});}
   const body=await request.json();if(!/^[a-f0-9-]{36}$/i.test(body.requestId||''))fail('invalid_request_id');
   if(!['profile','member_status','team_create','invitation_create','invitation_response'].includes(body.operation))fail('profile_operation_not_connected',409);
   const inputHash=await payloadHash({actor:c.identity.person_uid,body}),eventId=await digest('profile|'+c.identity.person_uid+'|'+body.requestId),saved=await readTenantSave(env,eventId);
