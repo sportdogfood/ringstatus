@@ -52,6 +52,9 @@ function drain(key){
 }
 function resume(){for(const entry of pending)if(!entry.needsPin&&!entry.error)void drain(operationKey(entry.body));}
 function mergeLoaded(next){
+ const sameHorseTeam=confirmed?.horseTeamId&&next.memberships?.some(m=>m.userId===currentUid&&m.active&&m.teamId===confirmed.horseTeamId)&&!next.teamConflict;
+ if(sameHorseTeam&&!next.loaded?.horses)next={...next,horses:confirmed.horses,horseTeamId:confirmed.horseTeamId,loaded:{...next.loaded,horses:confirmed.loaded?.horses}};
+ else if(confirmed?.loaded?.horses&&!sameHorseTeam){delete confirmed.horses;delete confirmed.horseTeamId;delete confirmed.loaded.horses;viewEtags.delete('horses');}
  if(!confirmed||!next.loaded||next.loaded.team){confirmed=next;return;}
  // A roster refresh replaces its records and invalidates related invitation choices.
  if(next.loaded.roster){confirmed={...next,loaded:{...next.loaded,team:false}};return;}
@@ -69,11 +72,12 @@ export function refreshProfile(){
  const actor=currentUid,check=generation;
  // Team contains the roster and own profile; otherwise refresh the largest prepared view.
  const view=confirmed.loaded?.team?'team':confirmed.loaded?.roster?'roster':'profile';
- const work=(scopedLoads.get(view)||readProfile(actor,check,currentFingerprint,view)).catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));viewEtags.clear();}notify(error);}throw error;});
+ const refreshHorses=!!confirmed.loaded?.horses;
+ const work=(async()=>{await (scopedLoads.get(view)||readProfile(actor,check,currentFingerprint,view));if(refreshHorses&&actor===currentUid&&check===generation&&confirmed)return loadProfileView('horses');return profileState();})().catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));viewEtags.clear();}notify(error);}throw error;});
  periodicRefresh=work;void work.finally(()=>{if(periodicRefresh===work)periodicRefresh=null;}).catch(()=>{});return work;
 }
 export function loadProfileView(view){
- if(!['roster','team'].includes(view)||!currentUid||!confirmed)return Promise.reject(Error('Profile is required first.'));
+ if(!['roster','team','horses'].includes(view)||!currentUid||!confirmed)return Promise.reject(Error('Profile is required first.'));
  if(scopedLoads.has(view))return scopedLoads.get(view);
  const actor=currentUid,check=generation,fingerprint=currentFingerprint;
  const work=readProfile(actor,check,fingerprint,view).catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));}notify(error);}throw error;});
