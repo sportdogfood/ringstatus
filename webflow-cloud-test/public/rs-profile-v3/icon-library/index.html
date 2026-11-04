@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#191919"><title>RingStatus · Profile v3 · Icon library</title>
+  <link rel="stylesheet" href="../fonts.css"><link rel="stylesheet" href="../primitives.css"><link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="preview-stage" id="preview-stage">
+  <main id="app" class="v3-panel" aria-label="Profile v3"></main>
+  <nav id="widget" class="launcher-widget" aria-label="RingStatus shortcuts"></nav>
+  </div>
+  <nav class="preview-links" id="preview-links" aria-label="Preview references"></nav>
+  <dialog id="dialog" class="ui-dialog" aria-labelledby="dialog-title">
+    <header class="dialog-head"><h2 id="dialog-title"></h2><button class="icon-button" data-action="dialog-close" aria-label="Close dialog"></button></header>
+    <div id="dialog-body"></div>
+  </dialog>
+  <div id="notice" class="notice-toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="../app.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{
+  "prototypeCommit": "a44f8aa7a613a8a7d5e699ddd3c0b24cbe93f82f",
+  "deploymentBranchBaseline": "c1a58836a1f477a542f3e9f34c65fe0c50f3b2fc",
+  "lockedAssets": {
+    "styles.css": {
+      "sha256": "b7277a98dbb3782dd738b793ee831884e77bd23b3c912a0ba101a1fb1451fb1c",
+      "identical": true
+    },
+    "primitives.css": {
+      "sha256": "601047315e1c0aaa16db6187fe1b116f4a059ef61cb37c2c38eaa64eea14bd06",
+      "identical": true
+    },
+    "fonts.css": {
+      "sha256": "c093c00c6ff248f3df5d4666a5c97f2d55b5b6cbe0d9121bf9b7c058aa21156f",
+      "identical": true
+    },
+    "icons.js": {
+      "sha256": "e768701ff826afe445437f93680200c7375f0fb90f7b2a2c1c2033837a3994f3",
+      "identical": true
+    },
+    "assets/lucide-LICENSE": {
+      "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+      "identical": true
+    },
+    "assets/mic.svg": {
+      "sha256": "9b940cd735d1ffa270ba670c4e677d9a09400f3fa81d6b3f405b12a3b67a59a8",
+      "identical": true
+    },
+    "assets/outfit-300.ttf": {
+      "sha256": "643f64e9bfc140a9352ebf1b33958d5d5e0548ddc1bf7dc439e8da3df482473a",
+      "identical": true
+    },
+    "assets/outfit-400.ttf": {
+      "sha256": "6a8c9be856a6b9e09c66615634904616152c9de5e44db343a3ced240479c586a",
+      "identical": true
+    },
+    "assets/outfit-500.ttf": {
+      "sha256": "9a9f465776e653cd6175661d844555e08684d432518f1d2c621bcb3006598f9c",
+      "identical": true
+    },
+    "assets/outfit-600.ttf": {
+      "sha256": "8900df5726b5a6f23e723594f11d5ea27e695bd85c884f18d88ed080544fe205",
+      "identical": true
+    },
+    "assets/outfit-700.ttf": {
+      "sha256": "49dcdf653a004a2575b3de649f5e4c549d774fecddf317812330edd0ad70685a",
+      "identical": true
+    }
+  },
+  "existingProfileTests": {
+    "passed": 28,
+    "failed": 0
+  },
+  "v3AdapterTests": {
+    "passed": 8,
+    "failed": 0
+  },
+  "liveSwitch": false,
+  "productionWrites": false,
+  "verification": "Local synthetic UI and offline tests only; not live Airtable persistence proof."
+}

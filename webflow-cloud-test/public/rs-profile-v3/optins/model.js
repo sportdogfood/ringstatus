@@ -1,0 +1,6 @@
+import {smsAlerts} from './catalog.js';
+export const legacyKey='ringstatus-sms-alert-optins-v1';
+export const key='ringstatus-sms-alert-optins-v2';
+export const fresh=()=>({version:2,enabled:false,timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone,variables:Object.fromEntries(smsAlerts.map(a=>[a.key,{enabled:false,value:a.defaultValue||''}]))});
+export function decode(raw){const d=JSON.parse(raw);if(![1,2].includes(d?.version)||typeof d.enabled!=='boolean'||typeof d.timeZone!=='string'||!smsAlerts.every(a=>typeof d.variables?.[a.key]?.enabled==='boolean'&&typeof d.variables[a.key].value==='string'))throw Error('Invalid preferences');for(const a of smsAlerts)if(a.defaultValue&&!d.variables[a.key].value)d.variables[a.key].value=a.defaultValue;return {version:2,enabled:d.enabled,timeZone:d.timeZone,variables:d.variables};}
+export function validate(d){if(!d.enabled)return '';if(!smsAlerts.some(a=>d.variables[a.key].enabled))return 'Choose at least one alert, or turn SMS alerts off.';for(const a of smsAlerts){const p=d.variables[a.key];if(!p.enabled)continue;if(a.presets&&!a.presets.map(String).includes(p.value))return `${a.label}: choose ${a.presets.join(', ')} ${a.input==='entries'?'rides':'minutes'}.`;if(a.input==='time'&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(p.value))return `${a.label}: choose a time.`;}return '';}
