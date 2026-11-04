@@ -1,3 +1,4 @@
+import {headerDropdowns} from './header-dropdown.js';
 import {dayRows} from './day.js?v=source-order-1';
 import {enableDragScroll} from './drag-scroll.js?v=entry-lane-1';
 import {addComment} from './comments.js?v=tokens-policy-1';
@@ -24,10 +25,7 @@ trainerSelect.className='v2-schedule-day';trainerSelect.setAttribute('aria-label
 const headerFilters=document.createElement('div');
 headerFilters.className='v2-header-filters';
 daySelect.before(headerFilters);
-function headerFilter(select,svg){
- const control=document.createElement('label');control.className='v2-header-filter';
- control.innerHTML=svg;control.append(select);headerFilters.append(control);return control;
-}
+const headerFilter=headerDropdowns(headerFilters);
 const dayControl=headerFilter(daySelect,'<svg class="rings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18M8 15h3v3H8z"/></svg>');
 const trainerControl=headerFilter(trainerSelect,icon('trainer'));
 trainerControl.hidden=!document.body.hasAttribute('data-trainer-filter');
@@ -43,7 +41,7 @@ function syncDay(){
  const url=new URL(location.href);url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');history.replaceState(null,'',url);
  document.querySelectorAll('a[href*="schedule.html"],a[href*="day.html"]').forEach(a=>{const target=new URL(a.getAttribute('href'),location.href);target.searchParams.set('date',state.day);if(state.trainer)target.searchParams.set('trainer',state.trainer);else target.searchParams.delete('trainer');a.href=target.href;});
  daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');daySelect.value=state.day;
- trainerSelect.innerHTML='<option value="">All trainers</option>'+options.map(([id,name])=>`<option value="${escape(id)}">${escape(name)}</option>`).join('');trainerSelect.value=state.trainer;
+ trainerSelect.innerHTML='<option value="">'+(options.length?'All trainers':'No trainers for '+escape(dateLabel(state.day)))+'</option>'+options.map(([id,name])=>`<option value="${escape(id)}">${escape(name)}</option>`).join('');trainerSelect.value=state.trainer;
  const dateText=dateLabel(state.day);
  dayControl.title=daySelect.title='Schedule day: '+dateText;
  trainerControl.title=trainerSelect.title='Trainer: '+trainerSelect.selectedOptions[0].textContent;
