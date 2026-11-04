@@ -1,7 +1,7 @@
 import {dayRows} from './day.js?v=source-order-1';
 import {enableDragScroll} from './drag-scroll.js?v=entry-lane-1';
 import {addComment} from './comments.js?v=tokens-policy-1';
-import {records,days,ringDetails,metadata,replaceData} from './schedule-data.js';
+import {records,days,ringDetails,metadata,replaceData,scopeReady} from './schedule-data.js';
 import {createDeviceData,trainerOptions,filterTrainer} from './device-data.js';
 import {pingLocation} from './device-location.js';
 import {ringPanel,detailPanel,icon,commentsList,dayLine} from './components.js?v=group-subline-1';
@@ -37,6 +37,7 @@ daySelect.value=state.day;
 let returnFocus=null;
 let rings=[];
 function syncDay(){
+ if(!state.day)return;
  const options=trainerOptions(records,state.day);
  if(state.trainer&&!options.some(([id])=>id===state.trainer))state.trainer='';
  const url=new URL(location.href);url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');history.replaceState(null,'',url);
@@ -50,7 +51,7 @@ function syncDay(){
  schedule.setAttribute('aria-label','Schedule for '+dateText);
  if(isDay)document.querySelector('.v2-day-tools h1').textContent=state.day===new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())?'Today':dateText;
  const footer=document.querySelector('.rings-shell-footer');
- footer.textContent='Airtable snapshot · '+new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:metadata.timezone,timeZoneName:'short'}).format(new Date(metadata.capturedAt))+' - not live';
+ footer.textContent=(metadata.source==='wef-data'?'Airtable refreshed':'Airtable snapshot')+' · '+new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:metadata.timezone,timeZoneName:'short'}).format(new Date(metadata.capturedAt))+(metadata.source==='wef-data'?'':' - not live');
  footer.title=metadata.show+' · '+metadata.capturedAt;
  const rows=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
@@ -223,7 +224,7 @@ document.addEventListener('click',event=>{
  toggle.setAttribute('aria-expanded',String(expanded));
  toggle.setAttribute('aria-label',toggle.getAttribute('aria-label').replace(expanded?'Show':'Hide',expanded?'Hide':'Show'));
 });
-// The October 30 seed remains the preview baseline until an Astro endpoint is supplied.
+// Same-origin Astro refresh; device packages are separate from Profile storage.
 const endpoint=document.body.dataset.scheduleEndpoint;
 let pendingData=null;
 function applyDeviceData(data){
@@ -235,10 +236,11 @@ function applyDeviceData(data){
  syncDay();renderSchedule();scroller.scrollTop=top;
  document.querySelector('.rings-shell-footer').textContent='Updated '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:metadata.timezone}).format(new Date(metadata.refreshedAt||metadata.capturedAt));
 }
-if(endpoint){
+if(endpoint)scopeReady.then(scope=>{
+ if(!scope?.showId)return;
  trainerControl.hidden=false;
  const dataEndpoint=new URL(endpoint,location.href).href;
- const device=createDeviceData({showId:metadata.showId,endpoint:dataEndpoint,seed:{records,days,ringDetails,metadata},onData:applyDeviceData,onError:()=>{document.querySelector('.rings-shell-footer').textContent='Refresh unavailable - showing last loaded data';},onChecked:(data,lane)=>{document.querySelector('.rings-shell-footer').textContent=(lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date());}});
+ const device=createDeviceData({showId:scope.showId,endpoint:dataEndpoint,seed:metadata.showId===scope.showId&&records.length?{records,days,ringDetails,metadata}:null,onData:applyDeviceData,onError:()=>{document.querySelector('.rings-shell-footer').textContent='Refresh unavailable - showing last loaded data';},onChecked:(data,lane)=>{document.querySelector('.rings-shell-footer').textContent=(lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date());}});
  // Only the same Astro application's approximate GeoIP ping; no GPS or persistence.
  void pingLocation(new URL('geo',dataEndpoint).href);
  let stop=device.start();
@@ -247,4 +249,4 @@ if(endpoint){
  document.addEventListener('focusout',()=>{if(pendingData&&!surface.open){const next=pendingData;pendingData=null;applyDeviceData(next);}});
  surface.addEventListener('close',()=>{if(pendingData){const next=pendingData;pendingData=null;applyDeviceData(next);}});
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)void device.refresh();});
-}
+});
