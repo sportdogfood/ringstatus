@@ -54,7 +54,7 @@ function syncDay(){
  if(state.trainer&&!options.some(([id])=>id===state.trainer))state.trainer='';
  const url=new URL(location.href);url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');history.replaceState(null,'',url);
  document.querySelectorAll('a[href*="schedule.html"],a[href*="day.html"]').forEach(a=>{const target=new URL(a.getAttribute('href'),location.href);target.searchParams.set('date',state.day);if(state.trainer)target.searchParams.set('trainer',state.trainer);else target.searchParams.delete('trainer');a.href=target.href;});
- const dates=[...new Set([todayDate(),...days.map(d=>d.date)])].sort();
+ const dates=[...new Set([todayDate(),state.day,...days.map(d=>d.date)])].sort();
  daySelect.innerHTML=dates.map(date=>`<option value="${escape(date)}">${date===todayDate()?'Today':escape(dateLabel(date))}</option>`).join('');daySelect.value=state.day;
  navDateSelect.innerHTML=daySelect.innerHTML;navDateSelect.value=state.day;
  navDateControl.querySelector('span').textContent=state.day===todayDate()?'Today':dateLabel(state.day);
@@ -245,7 +245,7 @@ function applyDeviceData(data){
  if(surface.open||document.activeElement?.matches('input,textarea')){pendingData=data;return;}
  pendingData=null;
  const top=scroller.scrollTop;replaceData(data);
- if(state.day!==todayDate()&&!days.some(d=>d.date===state.day))state.day=todayDate();
+ if(!state.day)state.day=todayDate();
  if(!state.day)return;
  syncDay();renderSchedule();scroller.scrollTop=top;
  document.querySelector('.rings-shell-footer').textContent='Updated '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:metadata.timezone}).format(new Date(metadata.refreshedAt||metadata.capturedAt));
