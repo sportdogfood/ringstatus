@@ -182,6 +182,13 @@ ringActions.addEventListener('click',event=>{
 horseActions.addEventListener('click',event=>{const b=event.target.closest('[data-horse]');if(!b)return;const name=b.dataset.horse;if(state.horses.has(name))state.horses.delete(name);else state.horses.add(name);renderSchedule();});
 scroller.addEventListener('scroll',()=>{if(isDay)return;if(scroller.scrollTop>8)horseActions.hidden=false;else if(!state.horses.size)horseActions.hidden=true;},{passive:true});
 configureView();syncDay();renderSchedule();
+let readinessPending=false;
+function markScheduleReady(){
+ if(readinessPending)return;readinessPending=true;
+ const fonts=document.fonts?Promise.all([400,500,600,700].map(weight=>document.fonts.load(`${weight} 15px Outfit`))):Promise.resolve();
+ fonts.catch(()=>{}).then(()=>{document.documentElement.dataset.scheduleReady='true';document.dispatchEvent(new Event('rs-schedule-ready'));});
+}
+if(records.length)markScheduleReady();
 surface.addEventListener('click',event=>{
  const area=event.target.closest('.v2-comments');if(!area)return;
  const form=area.querySelector('form');
@@ -274,14 +281,14 @@ function applyDeviceData(data){
  const top=scroller.scrollTop;replaceData(data);
  if(!state.day)state.day=todayDate();
  if(!state.day)return;
- syncDay();renderSchedule();scroller.scrollTop=top;
+ syncDay();renderSchedule();scroller.scrollTop=top;markScheduleReady();
  document.querySelector('.rings-shell-footer').textContent='Updated '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:metadata.timezone}).format(new Date(metadata.refreshedAt||metadata.capturedAt));
 }
 if(endpoint)scopeReady.then(scope=>{
- if(!scope?.showId)return;
+ if(!scope?.showId){markScheduleReady();return;}
  trainerControl.hidden=false;
  const dataEndpoint=new URL(endpoint,location.href).href;
- const device=createDeviceData({showId:scope.showId,endpoint:dataEndpoint,seed:metadata.showId===scope.showId&&records.length?{records,days,ringDetails,metadata}:null,onData:applyDeviceData,onError:()=>{document.querySelector('.rings-shell-footer').textContent='Refresh unavailable - showing last loaded data';},onChecked:(data,lane)=>{document.querySelector('.rings-shell-footer').textContent=(lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date());}});
+ const device=createDeviceData({showId:scope.showId,endpoint:dataEndpoint,seed:metadata.showId===scope.showId&&records.length?{records,days,ringDetails,metadata}:null,onData:applyDeviceData,onError:()=>{document.querySelector('.rings-shell-footer').textContent='Refresh unavailable - showing last loaded data';markScheduleReady();},onChecked:(data,lane)=>{document.querySelector('.rings-shell-footer').textContent=(lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date());}});
  // Only the same Astro application's approximate GeoIP ping; no GPS or persistence.
  void pingLocation(new URL('geo',dataEndpoint).href);
  let stop=device.start();

@@ -51,8 +51,13 @@ function openSchedule(trigger){
   if(frame!==scheduleFrame||!state.recognized)return;
   const doc=frame.contentDocument;if(!doc)return;
   doc.addEventListener('click',event=>{if(event.target.closest('.rings-profile-nav a,.back-row a.back-link')){event.preventDefault();event.stopImmediatePropagation();closeSchedule();}},true);
-  scheduleReady=true;scheduleTrigger?.removeAttribute('aria-busy');
-  if(scheduleRequested){frame.hidden=false;frame.focus();}
+  const reveal=()=>{
+   if(frame!==scheduleFrame||!state.recognized)return;
+   scheduleReady=true;scheduleTrigger?.removeAttribute('aria-busy');
+   if(scheduleRequested){frame.hidden=false;frame.focus();}
+  };
+  if(doc.documentElement.dataset.scheduleReady==='true')reveal();
+  else doc.addEventListener('rs-schedule-ready',reveal,{once:true});
  });
  frame.src=scheduleHref;document.body.append(frame);
 }
