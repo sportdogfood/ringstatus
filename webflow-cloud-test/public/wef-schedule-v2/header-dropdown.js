@@ -42,10 +42,10 @@ export function headerDropdowns(host){
  function positionMenu(){
   if(!active)return;
   const {button}=active,rect=button.getBoundingClientRect(),width=menu.getBoundingClientRect().width;
-  const above=button.dataset.placement==='top';
-  menu.style.maxHeight=Math.max(44,Math.min(320,above?rect.top-16:innerHeight-rect.bottom-16))+'px';
-  menu.style.left=Math.max(8,Math.min(innerWidth-width-8,rect.right-width))+'px';
-  menu.style.top=(above?Math.max(8,rect.top-menu.getBoundingClientRect().height-8):rect.bottom+8)+'px';
+  const above=button.dataset.placement==='top',scale=menu.getBoundingClientRect().width/menu.offsetWidth||1;
+  menu.style.maxHeight=Math.max(44,Math.min(320,(above?rect.top-16:innerHeight-rect.bottom-16)/scale))+'px';
+  menu.style.left=Math.max(8,Math.min(innerWidth-width-8,rect.right-width))/scale+'px';
+  menu.style.top=(above?Math.max(8,rect.top-menu.getBoundingClientRect().height-8):rect.bottom+8)/scale+'px';
   (menu.querySelector('[aria-selected=true]:not(:disabled)')||menu.querySelector('button:not(:disabled)')||menu).focus();
  }
  menu.tabIndex=-1;

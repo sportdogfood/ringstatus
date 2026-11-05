@@ -20,3 +20,11 @@
 /* Intrinsic item width preserves the existing horizontal overflow lanes. */
 .rings-actions>.ui-button,.v2-page-nav>.ui-button,.rings-horse-actions>.ui-button{flex:0 0 auto}
 @media(min-width:601px){.rings-app{--v2-columns:52px 30px minmax(0,1fr) 32px 32px 48px 48px}.v2-entry-summary{grid-template-columns:52px 40px minmax(0,1fr) 4ch 5ch 7ch}}
+
+/* Keep the approved rendered shell footprint while using the shared V3 scale. */
+@media(min-width:601px){
+ :root .v3-panel[data-width="schedule"]{width:calc(820px / var(--rs-presentation-scale));max-width:calc((100vw - 32px) / var(--rs-presentation-scale));height:calc((100dvh - 32px) / var(--rs-presentation-scale));max-height:calc((100dvh - 32px) / var(--rs-presentation-scale));margin:calc(16px / var(--rs-presentation-scale)) calc(16px / var(--rs-presentation-scale)) calc(16px / var(--rs-presentation-scale)) auto}
+ .rings-surface{width:min(calc(760px / var(--rs-presentation-scale)),calc((100vw - 32px) / var(--rs-presentation-scale)));max-height:calc(90dvh / var(--rs-presentation-scale));margin-bottom:calc(20px / var(--rs-presentation-scale))}
+ .rings-surface[data-mode="class"]{width:min(calc(580px / var(--rs-presentation-scale)),calc((100vw - 40px) / var(--rs-presentation-scale)));max-height:calc((100dvh - 40px) / var(--rs-presentation-scale));top:calc(20px / var(--rs-presentation-scale));right:calc(20px / var(--rs-presentation-scale))}
+ .v2-filter-menu{max-width:calc((100vw - 24px) / var(--rs-presentation-scale))}
+}

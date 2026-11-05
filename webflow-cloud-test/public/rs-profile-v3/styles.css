@@ -76,10 +76,12 @@ body[data-website="true"],body[data-website="true"] .preview-stage{background:tr
 :root[data-theme]:has(body[data-website="true"]){background:transparent;color-scheme:light}
 
 /* Shared desktop presentation scale. Phone and compact sizing stay unchanged. */
+:root,:host{--rs-presentation-scale:1}
 @media(min-width:601px){
- :root:not([data-size="compact"]){--shell-available-height:calc((100dvh - 150px)/1.5)}
+ :root:not([data-size="compact"]),:host(:not([data-size="compact"])){--rs-presentation-scale:1.5}
+ :root:not([data-size="compact"]){--shell-available-height:calc((100dvh - 150px)/var(--rs-presentation-scale))}
  :root:not([data-size="compact"]) .preview-stage{grid-template-rows:minmax(0,1fr) 84px;padding:24px;gap:18px}
- :root:not([data-size="compact"]) body:not(.rings-app) :is(.v3-panel:not([data-width="schedule"]),.launcher-widget,.ui-dialog),:host(:not([data-size="compact"])) :is(.v3-panel,#launcher){zoom:1.5;max-width:calc((100vw - 32px)/1.5)}
+ :root:not([data-size="compact"]) :is(.v3-panel,.launcher-widget,.ui-dialog,body>.rings-surface,body>.v2-filter-menu),:host(:not([data-size="compact"])) :is(.v3-panel,#launcher){zoom:var(--rs-presentation-scale);max-width:calc((100vw - 32px)/var(--rs-presentation-scale))}
  :host(:not([data-size="compact"])) .v3-panel{right:16px;bottom:98px;max-height:calc((100dvh - 171px)/1.5)}
 }
 /* Optional striped list treatment shared by consuming screens. */
