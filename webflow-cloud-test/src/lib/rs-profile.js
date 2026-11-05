@@ -1,3 +1,4 @@
+import {profileGeoip} from './rs-profile-geoip.js';
 import {loadProfileHorses} from './rs-profile-horses.js';
 import {remembered} from './rs-recognition-iam.js';
 import {createTenantRest,TABLE} from './rs-tenant-barn.js';
@@ -163,6 +164,11 @@ export async function handleProfile(request,env,fetchImpl=fetch,executionContext
  try{
   if(!['GET','POST'].includes(request.method))fail('method_not_allowed',405);
   if(request.method==='POST'&&request.headers.get('Origin')!==new URL(request.url).origin)fail('origin_denied',403);
+  if(request.method==='GET'&&new URL(request.url).searchParams.get('view')==='geoip'){
+   const identity=await remembered(request,env);if(!identity||identity.identity_only)fail('authentication_required',401);
+   if(request.headers.get('X-RS-Actor-Scope')!==identity.person_uid)fail('actor_changed',409);
+   return reply({ok:true,person_uid:identity.person_uid,geoip:await profileGeoip(request,fetchImpl)});
+  }
   const c=await context(request,env,fetchImpl);
   if(request.method==='GET'){const view=new URL(request.url).searchParams.get('view')||'full';if(!['full','profile','roster','team','horses'].includes(view))fail('invalid_profile_view');const body={ok:true,person_uid:c.identity.person_uid,state:{...await stateOf(c,view),...(view==='horses'?{...await loadProfileHorses(c),loaded:{profile:true,horses:true}}:{})}},etag='"'+await payloadHash(body)+'"';if(request.headers.get('If-None-Match')===etag)return new Response(null,{status:304,headers:{ETag:etag,'Cache-Control':'private, no-store'}});return Response.json(body,{headers:{ETag:etag,'Cache-Control':'private, no-store'}});}
   const body=await request.json();if(!/^[a-f0-9-]{36}$/i.test(body.requestId||''))fail('invalid_request_id');

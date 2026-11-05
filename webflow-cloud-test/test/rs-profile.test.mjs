@@ -150,3 +150,14 @@ test('horse package uses authenticated Team trainer scope and rejects unrelated 
  f.records[base+'/'+table.memberships][0].fields.Status='Disabled';const before=f.reads.filter(t=>t==='tblROAbIzrkNMRGVd').length;r=await handleProfile(request(),f.env,f.fetchImpl);assert.deepEqual((await r.json()).state.horses,[]);assert.equal(f.reads.filter(t=>t==='tblROAbIzrkNMRGVd').length,before);
  }finally{f.db.close();}
 });
+
+
+test('GeoIP ping requires recognized actor and performs no Airtable reads or writes',async()=>{
+ const f=await fixture();try{
+  let lookups=0;const fetchGeo=async()=>{lookups++;return Response.json({latitude:'26.6',longitude:'-80.2'});};
+  const request=(cookie,actor='user_owner')=>new Request(origin+'/test/rs-profile/data?view=geoip',{headers:{Cookie:cookie,'X-RS-Actor-Scope':actor,'X-Forwarded-For':'203.0.113.1'}});
+  assert.equal((await handleProfile(request(''),f.env,fetchGeo)).status,401);assert.equal(lookups,0);
+  assert.equal((await handleProfile(request(f.cookie,'another'),f.env,fetchGeo)).status,409);assert.equal(lookups,0);
+  const response=await handleProfile(request(f.cookie),f.env,fetchGeo),value=await response.json();assert.equal(response.status,200);assert.equal(value.person_uid,'user_owner');assert.equal(value.geoip.latitude,26.6);assert.equal(lookups,1);assert.equal(f.reads.length,0);assert.equal(f.writes.length,0);assert.equal(response.headers.get('cache-control'),'no-store');
+ }finally{f.db.close();}
+});

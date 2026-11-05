@@ -17,8 +17,20 @@ function retainPending(){
  storage.setItem(pendingKey(currentUid),JSON.stringify(saved));
 }
 function remember(fingerprint=currentFingerprint){if(!confirmed||!currentUid||!fingerprint)return;const state=copy(confirmed);for(const person of state.profiles||[])delete person.pin;storage.setItem(snapshotKey(currentUid),JSON.stringify({uid:currentUid,deviceFingerprint:fingerprint,state}));const deviceToken=storage.getItem('rs_recognition_device_token_v1');if(deviceToken)storage.setItem('rs_recognition_identity_v1',JSON.stringify({personUid:currentUid,deviceToken,expiresAt:Number(storage.getItem('rs_recognition_device_expires_v1'))||Date.now()+365*86400000}));}
+const geoipPinged=new Set(),geoipKey=uid=>'rs_profile_geoip_v1:'+uid;
+async function pingGeoip(uid,check,fingerprint){
+ const key=uid+':'+fingerprint;if(!fingerprint||geoipPinged.has(key))return;geoipPinged.add(key);
+ try{
+  const response=await fetch(endpoint+'?view=geoip',{credentials:'same-origin',signal:AbortSignal.timeout(2500),headers:{'X-RS-Actor-Scope':uid}});
+  if(!response.ok)return;const data=await response.json();
+  if(uid!==currentUid||check!==generation||fingerprint!==currentFingerprint||!confirmed||storage.getItem('rs_recognition_pending_signout_v1')||data.person_uid!==uid)return;
+  const geo=data.geoip;if(!geo||!Number.isFinite(geo.latitude)||!Number.isFinite(geo.longitude)||Math.abs(geo.latitude)>90||Math.abs(geo.longitude)>180||!['cloudflare','geoip'].includes(geo.source)||!Number.isFinite(Date.parse(geo.observedAt)))return;
+  storage.setItem(geoipKey(uid),JSON.stringify({uid,deviceFingerprint:fingerprint,geoip:{latitude:geo.latitude,longitude:geo.longitude,source:geo.source,observedAt:geo.observedAt}}));
+ }catch{/* Optional metadata never delays or interrupts Profile. */}
+}
 export function profileState(){
  if(!confirmed)return null;const state=viewPreferences(copy(confirmed));
+ try{const saved=JSON.parse(storage.getItem(geoipKey(currentUid))||'null');if(saved?.uid===currentUid&&saved.deviceFingerprint===currentFingerprint)state.geoip=saved.geoip;}catch{}
  for(const entry of pending){if(entry.body.operation==='member_status'){const member=state.memberships.find(m=>m.id===entry.body.membershipId);if(member&&member.userId!==currentUid)member.active=entry.body.active;}if(entry.body.operation==='profile'){const own=state.profiles.find(p=>p.id===currentUid),fields={...entry.body.fields};delete fields.pin;if(own)Object.assign(own,fields);}}
  state.pendingActions=pending.filter(p=>p.body.operation!=='profile').map(p=>({...copy(p.body),error:p.error||''}));state.pendingSave=!!pending.length;state.pendingNeedsPin=pending.some(p=>p.needsPin);state.pendingError=pending.find(p=>p.error)?.error||'';return state;
 }
@@ -145,7 +157,7 @@ function loadResolvedProfile(uid,fingerprint){
  if(refreshing&&currentUid)return confirmed?Promise.resolve(profileState()):refreshing;
  const check=generation;restore(uid);currentFingerprint=fingerprint;
  if(!confirmed){try{const cached=JSON.parse(storage.getItem(snapshotKey(uid))||'null');if(fingerprint&&cached?.uid===uid&&cached.deviceFingerprint===fingerprint&&cached.state?.identity.currentId===uid)confirmed=cached.state;}catch{}}
- const refresh=readProfile(uid,check,fingerprint);refreshing=refresh;void refresh.finally(()=>{if(refreshing===refresh)refreshing=null;}).catch(()=>{});
+ const refresh=readProfile(uid,check,fingerprint);void refresh.then(()=>pingGeoip(uid,check,fingerprint)).catch(()=>{});refreshing=refresh;void refresh.finally(()=>{if(refreshing===refresh)refreshing=null;}).catch(()=>{});
  const work=confirmed?Promise.resolve(profileState()):refresh;
  if(confirmed)void refresh.catch(error=>{if(check!==generation||currentUid!==uid||currentFingerprint!==fingerprint)return;if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(uid));}notify(error);});
  loading=work;void work.finally(()=>{if(loading===work)loading=null;}).catch(()=>{});return work;
