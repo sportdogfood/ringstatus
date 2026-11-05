@@ -98,7 +98,6 @@ function renderSchedule(){
  if(state.ring!==null&&!visible.some(r=>String(r.ring)===state.ring))state.ring=null;
  ringActions.querySelectorAll('[data-ring]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.ring===state.ring));b.disabled=false;});
  horseActions.querySelectorAll('[data-horse]').forEach(b=>b.setAttribute('aria-pressed',String(state.horses.has(b.dataset.horse))));
- requestAnimationFrame(sizeAnchorSpace);
 }
 function selectRecord(rowKey,entryKey,trigger){
  const row=filterTrainer(records,state.trainer).find(row=>row.key===rowKey);
@@ -153,8 +152,6 @@ ringActions.addEventListener('click',event=>{
 horseActions.addEventListener('click',event=>{const b=event.target.closest('[data-horse]');if(!b)return;const name=b.dataset.horse;if(state.horses.has(name))state.horses.delete(name);else state.horses.add(name);renderSchedule();});
 scroller.addEventListener('scroll',()=>{if(isDay)return;if(scroller.scrollTop>8)horseActions.hidden=false;else if(!state.horses.size)horseActions.hidden=true;},{passive:true});
 syncDay();renderSchedule();
-function sizeAnchorSpace(){if(isDay)return;const last=schedule.lastElementChild;schedule.style.paddingBottom=last?`${Math.max(0,scroller.clientHeight-ringActions.offsetHeight-last.offsetHeight)}px`:'0px';}
-new ResizeObserver(sizeAnchorSpace).observe(scroller);
 surface.addEventListener('click',event=>{
  const area=event.target.closest('.v2-comments');if(!area)return;
  const form=area.querySelector('form');
