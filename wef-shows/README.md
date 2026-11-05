@@ -1,8 +1,24 @@
 # wef-shows
 
-Version: **1.8.3**
+Version: **1.8.4**
 
 Updated: **November 4, 2026 (America/New_York)**
+
+## Weekday notice tolerance - approved November 4, 2026
+
+The existing Codex daily scheduler is the trigger;19:00Eastern remains its target.
+The normal weekday notice accepts a trigger from18:40Eastern (up to20minutes early)
+through the remainder of that local date. It does not require an exact19:00match.
+This applies every day, not only to the initial failed wake. One event per Eastern
+trigger-date retains all five recipients, durable send intent, duplicate protection,
+actual acknowledgment checks and cleanup-reminder-only restrictions.
+The notice announces the next weekday/date; it does not change show day0/priorities.
+
+The November4 18:57:03 wake was rejected by the former strict rule; that evidence
+is preserved. The revised normal route is ACTIVE and read back against review;
+22independentofflinechecks PASS. Normal delivery and all five acknowledgments are
+PENDING the next native occurrence (November5,19:00Eastern target). No manual replay.
+See [tolerance deployment](evidence/weekday-tolerance-20261104/deployment.json).
 
 ## Proxy ownership - November 4, 2026
 
@@ -92,7 +108,7 @@ Normal-run acceptance: October31 20:34 Eastern PASS (run 343cdab8-1245-46d9-9e47
 ## Historical release records - superseded
 
 The dated records below preserve earlier implementations and evidence. They do
-not authorize counting or reopen cancelled work. Version 1.8.3 above is current;
+not authorize counting or reopen cancelled work. Version 1.8.4 above is current;
 the established discovery and day-priority cadence remains unchanged.
 
 ## Direct proxy count ownership — approved October31, 2026

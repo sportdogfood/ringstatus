@@ -1,0 +1,16 @@
+{
+  "commands": [
+    {
+      "stdout": "{\"passed\":22,\"source_failure_trigger_now_eligible\":true,\"manual_runs\":0}\n",
+      "exit_code": 0,
+      "id": "preflight",
+      "runtime": "v22.22.2",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "stderr": "",
+      "started_at": "2026-11-05T01:26:38.0783260Z",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\review\\run-preflight.cjs\"",
+      "ended_at": "2026-11-05T01:26:38.2506202Z"
+    }
+  ],
+  "reviewer": "/root/shows_review"
+}

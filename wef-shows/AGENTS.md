@@ -1,5 +1,21 @@
 # Shows workspace instructions
 
+## Weekday notice tolerance - approved November 4, 2026
+
+The existing Codex daily scheduler is the trigger;19:00Eastern remains its target.
+The normal weekday notice accepts a trigger from18:40Eastern (up to20minutes early)
+through the remainder of that local date. It does not require an exact19:00match.
+This applies every day, not only to the initial failed wake. One event per Eastern
+trigger-date retains all five recipients, durable send intent, duplicate protection,
+actual acknowledgment checks and cleanup-reminder-only restrictions.
+The notice announces the next weekday/date; it does not change show day0/priorities.
+
+The November4 18:57:03 wake was rejected by the former strict rule; that evidence
+is preserved. The revised normal route is ACTIVE and read back against review;
+22independentofflinechecks PASS. Normal delivery and all five acknowledgments are
+PENDING the next native occurrence (November5,19:00Eastern target). No manual replay.
+See [tolerance deployment](evidence/weekday-tolerance-20261104/deployment.json).
+
 ## Daily weekday notice - approved November 3, 2026
 
 One native Codex automation, `wef-shows-daily-weekday-notice`, is ACTIVE daily at

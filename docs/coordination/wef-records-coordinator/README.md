@@ -1,6 +1,6 @@
 # wef-records-coordinator
 
-Document version **1.13.0** — updated **November 4, 2026 (America/New_York)**. This is the coordinator document version, not a collector or plugin release. This document does not authorize changes to collectors, schemas, workflows or schedules. Later explicit owner decisions control over dated snapshots.
+Document version **1.14.0** — updated **November 5, 2026 (America/New_York)**. This is the coordinator document version, not a collector or plugin release. This document does not authorize changes to collectors, schemas, workflows or schedules. Later explicit owner decisions control over dated snapshots.
 
 ## Purpose
 
@@ -56,7 +56,7 @@ Verification of this document means checking the actual before/after delta, all 
 
 ## Current owned specialist chats
 
-These are the six current local specialist chats coordinated by **wef-records-coordinator**, chat `01a169bc-e58a-7de0-94c6-5d3931fcf745`. This roster records ownership, not a claim that every workflow or review is passing.
+These are the seven current local specialist chats coordinated by **wef-records-coordinator**, chat `01a169bc-e58a-7de0-94c6-5d3931fcf745`. This roster records ownership, not a claim that every workflow or review is passing.
 
 | Specialist chat | Local chat ID | Responsibility and boundary |
 | --- | --- | --- |
@@ -66,6 +66,9 @@ These are the six current local specialist chats coordinated by **wef-records-co
 | **wef-season** | `01a169c8-a4cc-7f52-b9f9-ef0a769aab58` | Retain, add, upsert, deduplicate and index `wef-season-*` horses, riders, trainers and rings, preserving supported history/memberships. Does not own Data acquisition or the dedicated People join. |
 | **wef-entries** | `01a1691d-3bd7-7eb2-af17-b9ba39a7501e` | Link existing source-supported records to schedules, horses, riders, trainers and agreed identities. Linking-only: no CWF/feed collection, collector comparison, Live enrichment or reverse gate on collectors. |
 | **wef-people** | `01a19727-9a70-7283-a865-01dd38aacb9d` | Derived People join in existing `wef-seaon-people` base `app6uHgUYCCKTVlJE`, using shared inputs read-only. Owners are excluded and horses remain unlinked under the latest owner corrections. Owns its private join/log/review tables, not upstream sources. |
+| **wef-decoder** | `01a1a753-dce7-7951-a147-1b096e1538ba` | Owns the shared `wef-schedules-decoded` proxy, health monitoring and credential updates. Proxy consumers retain their existing collector responsibilities. |
+
+Shared proxy ownership: route proxy health and credential matters to **wef-decoder**. The endpoint remains `https://wef-schedules-decoded.gombcg.workers.dev`. This ownership assignment does not establish that unattended health monitoring is active or authorize collector, endpoint, parameter, cadence or task changes.
 
 **wef-schedules is a deprecated chat and excluded from current assignments and notification recipients.** Its historical chat ID is `01a14082-b22f-73b1-bba7-16781892a55d`. Deprecation of the chat does not itself authorize stopping its collector, changing tasks or deleting records.
 

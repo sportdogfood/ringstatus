@@ -1,0 +1,61 @@
+{
+  "assets": [
+    {
+      "contentType": "text/css",
+      "id": "602755eb647d2ae1",
+      "kind": "stylesheet",
+      "name": "fonts.css",
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp/browser-use/assets/80e81a9d-46cc-40ea-8f5b-c0efccc95be3/602755eb647d2ae1.css",
+      "url": "https://ringstatus-profile-v3.sportdog.chatgpt.site/fonts.css"
+    },
+    {
+      "contentType": "text/css",
+      "id": "848e8a5592014336",
+      "kind": "stylesheet",
+      "name": "styles.css",
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp/browser-use/assets/80e81a9d-46cc-40ea-8f5b-c0efccc95be3/848e8a5592014336.css",
+      "url": "https://ringstatus-profile-v3.sportdog.chatgpt.site/styles.css"
+    },
+    {
+      "contentType": "text/css",
+      "id": "9b9ca3ecd56c47e1",
+      "kind": "stylesheet",
+      "name": "primitives.css",
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp/browser-use/assets/80e81a9d-46cc-40ea-8f5b-c0efccc95be3/9b9ca3ecd56c47e1.css",
+      "url": "https://ringstatus-profile-v3.sportdog.chatgpt.site/primitives.css"
+    },
+    {
+      "contentType": "application/octet-stream",
+      "id": "439f3ee049597fec",
+      "kind": "font",
+      "name": "outfit-400.ttf",
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp/browser-use/assets/80e81a9d-46cc-40ea-8f5b-c0efccc95be3/439f3ee049597fec.ttf",
+      "url": "https://ringstatus-profile-v3.sportdog.chatgpt.site/assets/outfit-400.ttf"
+    },
+    {
+      "contentType": "application/octet-stream",
+      "id": "4b24a300cd5b8c68",
+      "kind": "font",
+      "name": "outfit-500.ttf",
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp/browser-use/assets/80e81a9d-46cc-40ea-8f5b-c0efccc95be3/4b24a300cd5b8c68.ttf",
+      "url": "https://ringstatus-profile-v3.sportdog.chatgpt.site/assets/outfit-500.ttf"
+    },
+    {
+      "contentType": "application/octet-stream",
+      "id": "cf79bb9b04dadda6",
+      "kind": "font",
+      "name": "outfit-600.ttf",
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp/browser-use/assets/80e81a9d-46cc-40ea-8f5b-c0efccc95be3/cf79bb9b04dadda6.ttf",
+      "url": "https://ringstatus-profile-v3.sportdog.chatgpt.site/assets/outfit-600.ttf"
+    },
+    {
+      "contentType": "application/octet-stream",
+      "id": "68e2fe55cc936afd",
+      "kind": "font",
+      "name": "outfit-700.ttf",
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp/browser-use/assets/80e81a9d-46cc-40ea-8f5b-c0efccc95be3/68e2fe55cc936afd.ttf",
+      "url": "https://ringstatus-profile-v3.sportdog.chatgpt.site/assets/outfit-700.ttf"
+    }
+  ],
+  "failures": []
+}

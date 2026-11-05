@@ -1,0 +1,96 @@
+{
+  "at": "2026-11-05T01:24:38.492Z",
+  "scope": "Offline configuration/calendar preflight; no native run, send or collector proof.",
+  "checks": [
+    {
+      "name": "Preserve existing id",
+      "result": "PASS"
+    },
+    {
+      "name": "Preserve existing name",
+      "result": "PASS"
+    },
+    {
+      "name": "Preserve existing kind",
+      "result": "PASS"
+    },
+    {
+      "name": "Preserve existing status",
+      "result": "PASS"
+    },
+    {
+      "name": "Preserve existing rrule",
+      "result": "PASS"
+    },
+    {
+      "name": "Same existing Shows chat",
+      "result": "PASS"
+    },
+    {
+      "name": "Daily7p.m.target unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Prompt exactly matches reviewed UTF8 text",
+      "result": "PASS"
+    },
+    {
+      "name": "Recurring20minute tolerance stated",
+      "result": "PASS"
+    },
+    {
+      "name": "All recipient/dedup/receipt/protection instructions byte-identical",
+      "result": "PASS"
+    },
+    {
+      "name": "Original strict19gate removed",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern window 2026-11-04T23:39:59Z",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern window 2026-11-04T23:40:00Z",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern window 2026-11-04T23:57:03.026Z",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern window 2026-11-05T00:00:00Z",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern window 2026-11-05T01:23:00Z",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern window 2026-11-05T04:59:59Z",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern window 2026-11-05T05:00:00Z",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern window 2026-10-28T22:40:00Z",
+      "result": "PASS"
+    },
+    {
+      "name": "Eastern window 2027-03-15T22:40:00Z",
+      "result": "PASS"
+    },
+    {
+      "name": "All21 locked collector/runtime hashes unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Original failed normal trigger retained",
+      "result": "PASS"
+    }
+  ],
+  "count": 22,
+  "normal_receipts": "PENDING actual normal scheduled wake"
+}

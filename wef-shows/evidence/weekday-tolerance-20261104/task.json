@@ -1,0 +1,8 @@
+{
+  "owner_approval": "APPROVED TO EDIT. Allow the7p.m.notice from6:55onward, onceperday; later clarification in SAME request: trigger can be as soon as20mins early. Keepduplicateprotection,confirmallfivereceipts,testdeployverifynormalruns.No manualruns.",
+  "approved_delta": "Latest20min clarification controls:6:40p.m.onward each eligible normal dailytrigger. Keep7p.m.schedule, sameautomationID/chat/recipients/ackstate+intents. No collector/showday0/prioritychanges.",
+  "baseline": "Current active native config before-config.json; Nov4firstnormaltrigger18:57:03 rejected understrict19gate; statefailurepreserved.",
+  "next_expected_normal": "2026-11-05T19:00:00-05:00 target; maywakeup to20minsearly anddeliver once",
+  "normal_verification": "Pending actual nativewake; do not manually replay Nov4 or sendtestnotices",
+  "source_of_trigger": "Native Codex daily scheduler; before18:40 gate is tolerance guard, not another trigger. Cause of earlier schedulingdispatch remains unverified."
+}

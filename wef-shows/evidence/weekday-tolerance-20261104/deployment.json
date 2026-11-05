@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-05T01:28:16.650638+00:00",
+  "automation_id": "wef-shows-daily-weekday-notice",
+  "same_native_schedule": "Daily19:00 Eastern",
+  "eligible_window": "18:40throughendoftriggerEasterndate, recurringdaily",
+  "readback": "PASS:exactreviewedpromptandpreservedID/name/kind/status/rrule/target",
+  "review": "COMPLETE/PASS;22independentofflinechecks",
+  "native_config_sha256": "b419847f0ee226d006801344455014632f076976b1351d1ecb53edda5672ba09",
+  "all21locked_runtime_files_unchanged": true,
+  "old_rejected_trigger_preserved": true,
+  "manual_runs": 0,
+  "manual_notice_sends": 0,
+  "new_automations": 0,
+  "normal_delivery_receipts": "PENDING next eligible normal scheduled wake; not verified from tests/update",
+  "next_expected_target": "2026-11-05T19:00:00-05:00; maywakeupto20minutesearly",
+  "next_action": "Normal automation sendsonceperday andconfirmsall5actualresponses;retainstateandevidence;do notmanuallyreplayNov4."
+}

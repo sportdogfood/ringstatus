@@ -1,0 +1,78 @@
+{
+  "baseline": [
+    {
+      "sha256": "ed4a8f5b750d994e70acb163143a1e0af220dd4dade0cf3dc5c6632c9b74a700",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\before-config.json"
+    }
+  ],
+  "reviewed_at": "2026-11-05T01:27:03.0545508Z",
+  "required_checks": [
+    {
+      "requirement": "execute",
+      "name": "Offline independent preflight",
+      "command_ids": [
+        "preflight"
+      ],
+      "status": "executed"
+    },
+    {
+      "requirement": "inspect",
+      "evidence": [
+        {
+          "sha256": "6d96f5904568f93d1b0b0c26df5297c36d3bbf6929799b77f40d0ab99d86302c",
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\task.json"
+        },
+        {
+          "sha256": "ed4a8f5b750d994e70acb163143a1e0af220dd4dade0cf3dc5c6632c9b74a700",
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\before-config.json"
+        },
+        {
+          "sha256": "d755d2c1b7cc6229bdb79583e18de1296a3365b9d6e5d3b6fe377b81b63969cb",
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\prepared-config.json"
+        },
+        {
+          "sha256": "dd43834adfd3743cf77456b1b81a55a86f913c33fc4dcbf7a5b6f5a331696642",
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\manifest.json"
+        }
+      ],
+      "name": "Approved boundary and actual configuration diff",
+      "reason": "Inspected supplied owner authorization and actual baseline/candidate; unchanged protected receipt instructions and no runtime changes. Native delivery remains unverified.",
+      "status": "inspected"
+    }
+  ],
+  "candidate_status": "PASS",
+  "report": {
+    "sha256": "e234a843c5adce48545c4447e35f7a2e86f79ea3c645bc8ae4f48ed9296121e6",
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\review\\review-report.md"
+  },
+  "objective": "Independent review of approved daily 20-minute early-trigger tolerance",
+  "integration_coverage": "Native trigger clock, Eastern eligibility, unchanged event identity/intents/ack safeguards and protected runtime hashes; actual update and normal deliveries unverified",
+  "review_status": "COMPLETE",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "reviewer": "/root/shows_review",
+  "target": "Frozen native notice configuration only",
+  "candidate": [
+    {
+      "sha256": "d755d2c1b7cc6229bdb79583e18de1296a3365b9d6e5d3b6fe377b81b63969cb",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\prepared-config.json"
+    },
+    {
+      "sha256": "4c12975c805258195c7d57c95302b39e933ba6294214540c5ac5a558321bff0b",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\prompt.txt"
+    },
+    {
+      "sha256": "6d96f5904568f93d1b0b0c26df5297c36d3bbf6929799b77f40d0ab99d86302c",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\task.json"
+    },
+    {
+      "sha256": "1f0c77905cc9386ca68823498ea4f9485f4e0ad9700e06d22a22a8d688fef5cd",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\preflight.cjs"
+    }
+  ],
+  "logs": [
+    {
+      "sha256": "4e8f8cb3a4bad883a26cd20d55a1d1474ee5909409fd527174dc556e25c39916",
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\weekday-tolerance-20261104\\review\\review-command-log.json"
+    }
+  ]
+}
