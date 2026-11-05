@@ -6,6 +6,6 @@ export function v3Brand(controls=''){return `<div class="brand-row" data-stack="
 export function v3Back(content){return `<div class="back-row" data-stack="back">${content}</div>`;}
 export function v3Footer(content){return `<footer class="footer-row" data-stack="footer">${content}</footer>`;}
 export function v3Shell(top,body,footer,bottom=''){return `<header class="stack stack-top">${top}</header><div class="stack-scroll"><div class="stack stack-body">${body}</div></div>${bottom}${footer}`;}
-export function v3Control(element,{icon=false}={}){element.classList.add(icon?'icon-button':'ui-button');element.querySelectorAll('svg').forEach(svg=>svg.classList.add('icon'));return element;}
+export function v3Control(element,{icon=false}={}){element.classList.add(icon?'icon-button':'ui-button');if(!icon)element.dataset.v3Control='action';element.querySelectorAll('svg').forEach(svg=>svg.classList.add('icon'));return element;}
 
 export function v3Search(label,id,icon,placeholder='Search…'){return `<label class="search-control">${icon}<input type="search" id="${id}" aria-label="${escapeAttribute(label)}" placeholder="${escapeAttribute(placeholder)}" autocomplete="off"></label>`;}

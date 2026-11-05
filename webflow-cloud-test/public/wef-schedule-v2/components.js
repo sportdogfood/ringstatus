@@ -20,8 +20,8 @@ const detailToggle=kind=>'<button type="button" class="v2-detail-toggle" data-de
 const metadataToggle=r=>'<button type="button" class="v2-meta-toggle" aria-expanded="false" aria-label="Show metadata for class '+escape(r.id)+'">+</button>';
 const classIdentity=r=>'<span class="v2-identity">'+icon('list')+metadataToggle(r)+'<span title="'+escape(r.name)+'">'+escape(r.name.toUpperCase())+'</span></span>';
 const classOpen=r=>'<button class="v2-class-open" type="button" data-row-key="'+escape(r.key)+'" aria-haspopup="dialog" aria-label="View class '+escape(r.id)+' '+escape(r.name)+'"></button>';
-export function classLine(r,interactive=true){if(r.kind!=='class')return '<div class="v2-class v2-schedule-block"><span class="v2-start">'+escape(r.time)+'</span><span></span><span class="v2-name" title="'+escape(r.name)+'">'+escape(r.name)+'</span></div>';const tag='div';return '<div class="v2-class">'+(interactive?classOpen(r):'')+
-'<span class="v2-start" title="Class start">'+escape(r.time)+'</span><span class="v2-no" data-seq="'+escape(r.sequence)+'">'+escape(r.id)+'</span><span class="v2-name" title="'+escape(r.name)+'">'+classIdentity(r)+'<span class="v2-desktop-comments">'+commentToken(r)+'</span></span><span class="v2-seq" data-seq="'+escape(r.sequence)+'">'+escape(r.sequence)+'</span><span class="v2-type">'+escape(typeLabel(r.type))+'</span><span class="v2-class-state">'+status(r.status)+'</span><span class="v2-till" aria-label="'+'Minutes: '+(countdown(r)??'unavailable')+'">'+metric('IN',countdown(r)??'—')+'</span><span class="v2-mobile-meta"><span>'+escape(r.sequence)+'</span><span>'+escape(typeLabel(r.type))+'</span>'+('<span class="v2-mobile-countdown">IN <strong>'+escape(countdown(r)??'—')+'</strong></span>')+commentToken(r)+'</span>'+(!interactive&&r.group?'<span class="v2-group-subline">'+identity('group',r.group)+'</span>':'')+'</'+tag+'>';}
+export function classLine(r,interactive=true){if(r.kind!=='class')return '<div class="v2-class v2-schedule-block"><span class="v2-start detail-value">'+escape(r.time)+'</span><span></span><span class="v2-name detail-value" title="'+escape(r.name)+'">'+escape(r.name)+'</span></div>';const tag='div';return '<div class="v2-class">'+(interactive?classOpen(r):'')+
+'<span class="v2-start detail-value" title="Class start">'+escape(r.time)+'</span><span class="v2-no detail-value" data-seq="'+escape(r.sequence)+'">'+escape(r.id)+'</span><span class="v2-name detail-value" title="'+escape(r.name)+'">'+classIdentity(r)+'<span class="v2-desktop-comments">'+commentToken(r)+'</span></span><span class="v2-seq" data-seq="'+escape(r.sequence)+'">'+escape(r.sequence)+'</span><span class="v2-type">'+escape(typeLabel(r.type))+'</span><span class="v2-class-state">'+status(r.status)+'</span><span class="v2-till" aria-label="'+'Minutes: '+(countdown(r)??'unavailable')+'">'+metric('IN',countdown(r)??'—')+'</span><span class="v2-mobile-meta"><span>'+escape(r.sequence)+'</span><span>'+escape(typeLabel(r.type))+'</span>'+('<span class="v2-mobile-countdown">IN <strong>'+escape(countdown(r)??'—')+'</strong></span>')+commentToken(r)+'</span>'+(!interactive&&r.group?'<span class="v2-group-subline">'+identity('group',r.group)+'</span>':'')+'</'+tag+'>';}
 function ringHead(ring){
  const d=ringDetails[ring],hasOffset=Number.isFinite(d.offset),hasWalk=Number.isFinite(d.walk)&&d.walk>=0;
  const offsetKind=hasOffset?(d.offset>0?'late':d.offset<0?'early':'on-time'):'unknown';
@@ -42,8 +42,8 @@ export function compactEntry(r,e,expandable=false){
  const mins=gone?r.ends:e.tillGo;
  const orderKind=e.runningOrder!=null?'roog':'oog';
  return '<div class="v2-entry-summary" data-expandable="'+expandable+'" aria-label="'+escape(e.name)+' entry">'+
- '<span class="v2-entry-go">'+escape(e.go||'')+'</span>'+
- '<span>'+escape(e.entryNo)+'</span>'+
+ '<span class="v2-entry-go detail-value">'+escape(e.go||'')+'</span>'+
+ '<span class="detail-value">'+escape(e.entryNo)+'</span>'+
  '<button class="v2-entry-name-link" type="button" data-row-key="'+escape(r.key)+'" data-entry-key="'+escape(e.key)+'" title="'+escape(e.name)+'">'+identity('horse',e.name.toUpperCase())+'</button>'+
  '<span class="v2-entry-state">'+status(e.status)+'</span>'+
  '<button type="button" class="v2-entry-meta-toggle" aria-expanded="false" aria-label="Show metadata for '+escape(e.name)+'">+</button><span class="v2-entry-meta">'+(e.runningOrder!=null||e.order!=null?'<span class="v2-order" data-kind="'+orderKind+'">'+orderKind.toUpperCase()+' <strong>'+escape(e.runningOrder??e.order)+'</strong></span>':'')+
@@ -68,12 +68,12 @@ export function detailPanel(r,e=null){return '<div class="rings-detail-panel">'+
 (!e?commentsList(r):'')+
 (e?'<button class="v2-back" type="button" data-row-key="'+escape(r.key)+'">View class '+escape(r.id)+' · '+r.entries.length+' trips ›</button>':'')+'</div>';}
 export function dayLine(r){
- if(r.kind!=='class')return '<div class="v2-day-row v2-schedule-block"><span class="v2-day-time">'+escape(r.time)+'</span><span class="v2-day-ring" title="'+escape(ringDetails[r.ring].name)+'">'+escape(ringDetails[r.ring].name)+'</span><span></span><span class="v2-day-name" title="'+escape(r.name)+'">'+escape(r.name)+'</span><span></span></div>';
+ if(r.kind!=='class')return '<div class="v2-day-row v2-schedule-block"><span class="v2-day-time detail-value">'+escape(r.time)+'</span><span class="v2-day-ring" title="'+escape(ringDetails[r.ring].name)+'">'+escape(ringDetails[r.ring].name)+'</span><span></span><span class="v2-day-name detail-value" title="'+escape(r.name)+'">'+escape(r.name)+'</span><span></span></div>';
  const count=new Set(r.entries.map(e=>e.entryId)).size;
  return '<div class="v2-day-row">'+classOpen(r)+
- '<span class="v2-day-time">'+escape(r.time)+'</span><span class="v2-day-ring" title="'+escape(ringDetails[r.ring].name)+'">'+escape(ringDetails[r.ring].name)+'</span>'+
- '<span class="v2-day-no" data-seq="'+escape(r.sequence)+'">'+escape(r.id)+'</span>'+
- '<span class="v2-day-name">'+classIdentity(r)+'</span>'+
+ '<span class="v2-day-time detail-value">'+escape(r.time)+'</span><span class="v2-day-ring" title="'+escape(ringDetails[r.ring].name)+'">'+escape(ringDetails[r.ring].name)+'</span>'+
+ '<span class="v2-day-no detail-value" data-seq="'+escape(r.sequence)+'">'+escape(r.id)+'</span>'+
+ '<span class="v2-day-name detail-value">'+classIdentity(r)+'</span>'+
  '<span class="v2-day-status">'+status(r.status)+'</span>'+
  '<span class="v2-day-entries" aria-label="'+count+' entries">'+count+(r.trips!=null?'/'+escape(r.trips):'')+'</span>'+
  '<span class="v2-day-meta"><span>'+escape(r.sequence)+'</span><span>'+escape(typeLabel(r.type))+'</span><span class="v2-day-status-text" data-status="'+escape(r.status)+'">'+escape(statusLabel(r.status))+'</span><span>'+escape(minutesText(countdown(r)))+'</span>'+commentToken(r)+'</span></div>';

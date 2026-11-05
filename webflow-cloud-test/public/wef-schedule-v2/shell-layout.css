@@ -5,7 +5,7 @@
 .rings-header .action-icons{margin-left:auto}
 .v2-page-nav,.rings-horse-actions{margin-inline:18px;overflow-x:auto;flex-shrink:0}
 .v2-page-nav{display:flex;gap:8px;padding-block:8px}
-.rings-pill{flex-shrink:0}
+.rings-pill{flex:0 0 auto}
 .rings-shell-footer{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:600px){:root .v3-panel[data-width="schedule"]{width:100%;max-width:100%;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;box-shadow:none}.v2-page-nav,.rings-horse-actions{margin-inline:16px}}
 
@@ -13,3 +13,6 @@
 
 /* Popover placement; appearance and item sizing come from V3 ui-menu. */
 .v2-filter-menu{position:fixed;inset:auto;margin:0;width:320px;max-width:calc(100vw - 24px);overflow:auto}
+
+/* Preserve the existing compact row typography; desktop primary cells use V3 detail-value. */
+@media(max-width:600px){.rings-app :is(.v2-class,.v2-entry-summary,.v2-day-row) .detail-value{font-size:inherit;line-height:inherit}}

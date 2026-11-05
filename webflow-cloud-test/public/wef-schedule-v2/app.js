@@ -73,10 +73,10 @@ function syncDay(){
  footer.title=metadata.show+' · '+metadata.capturedAt;
  const rows=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
- if(!isDay)ringActions.innerHTML=rings.map(r=>v3Button('ring-anchor',icon('ring')+escape(ringDetails[r].name),{extra:`data-ring="${r}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill"')).join('');
+ if(!isDay)ringActions.innerHTML=rings.map(r=>v3Button('ring-anchor',icon('ring')+escape(ringDetails[r].name),{extra:`data-ring="${r}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join('');
 
  const horses=new Map(rows.flatMap(r=>r.entries.map(e=>[e.horseId,e.name])));
- horseActions.innerHTML=[...horses].map(([id,name])=>v3Button('horse-filter',icon('horse')+escape(name),{extra:`data-horse="${escape(id)}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill"')).join('');
+ horseActions.innerHTML=[...horses].map(([id,name])=>v3Button('horse-filter',icon('horse')+escape(name),{extra:`data-horse="${escape(id)}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join('');
 }
 daySelect.addEventListener('change',()=>{
  state.day=daySelect.value;state.ring=null;state.horses.clear();horseActions.hidden=true;
