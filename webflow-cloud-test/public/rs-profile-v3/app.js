@@ -12,6 +12,27 @@ const libraryPage=location.pathname.includes('/icon-library')||componentPage;
 
 const $=s=>document.querySelector(s),escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const launcherRoot=$('#widget'), mobileLauncher=matchMedia('(max-width:600px)');
+// Keep touch/trackpad scrolling native; allow mouse dragging of destinations.
+let launcherDrag=null,launcherDragged=false;
+launcherRoot.addEventListener('pointerdown',event=>{
+ launcherDragged=false;
+ const strip=event.target.closest('.launcher-scroll');
+ if(event.pointerType!=='mouse'||event.button!==0||!strip||strip.scrollWidth<=strip.clientWidth)return;
+ launcherDrag={strip,id:event.pointerId,x:event.clientX,left:strip.scrollLeft};
+});
+launcherRoot.addEventListener('pointermove',event=>{
+ const drag=launcherDrag;if(!drag||event.pointerId!==drag.id)return;
+ const delta=event.clientX-drag.x;if(!launcherDragged&&Math.abs(delta)<5)return;
+ launcherDragged=true;launcherRoot.setPointerCapture(event.pointerId);event.preventDefault();
+ const scale=drag.strip.getBoundingClientRect().width/drag.strip.offsetWidth;
+ drag.strip.scrollLeft=drag.left-delta/(scale||1);
+});
+function endLauncherDrag(event){if(launcherDrag?.id!==event.pointerId)return;launcherDrag=null;if(launcherRoot.hasPointerCapture(event.pointerId))launcherRoot.releasePointerCapture(event.pointerId);}
+launcherRoot.addEventListener('pointerup',endLauncherDrag);
+launcherRoot.addEventListener('pointercancel',endLauncherDrag);
+launcherRoot.addEventListener('lostpointercapture',()=>{launcherDrag=null;});
+launcherRoot.addEventListener('dragstart',event=>{if(event.target.closest('.launcher-scroll'))event.preventDefault();});
+launcherRoot.addEventListener('click',event=>{if(launcherDragged){event.preventDefault();event.stopImmediatePropagation();launcherDragged=false;}},true);
 function placeLauncher(){const panel=$('#app'),footer=panel.querySelector(':scope > .footer-row'),embedded=mobileLauncher.matches&&!panel.hidden&&!!footer;const parent=embedded?panel:$('#preview-stage');if(launcherRoot.parentElement!==parent){if(embedded)parent.insertBefore(launcherRoot,footer);else parent.append(launcherRoot);}document.body.dataset.launcherEmbedded=String(embedded);}
 mobileLauncher.addEventListener('change',placeLauncher);
 const previewParams=new URLSearchParams(location.search);
