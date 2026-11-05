@@ -1,5 +1,5 @@
 /* Schedule slots only. Shell, typography, controls, back/brand/footer are rs-profile-v3 components. */
-.rings-app{display:block;padding:0;font-family:Outfit,Arial,sans-serif}
+.rings-app{display:flow-root;padding:0;font-family:Outfit,Arial,sans-serif}
 :root .v3-panel[data-width="schedule"]{width:820px;max-width:calc(100% - 32px);height:calc(100dvh - 32px);max-height:calc(100dvh - 32px);margin:16px 16px 16px auto;overflow:hidden}
 :root .v3-panel[data-width="schedule"] .stack-scroll{overflow-x:hidden}
 .rings-header .action-icons{margin-left:auto}
@@ -16,3 +16,7 @@
 
 /* Preserve the existing compact row typography; desktop primary cells use V3 detail-value. */
 @media(max-width:600px){.rings-app :is(.v2-class,.v2-entry-summary,.v2-day-row) .detail-value{font-size:inherit;line-height:inherit}}
+
+/* Intrinsic item width preserves the existing horizontal overflow lanes. */
+.rings-actions>.ui-button,.v2-page-nav>.ui-button,.rings-horse-actions>.ui-button{flex:0 0 auto}
+@media(min-width:601px){.rings-app{--v2-columns:52px 30px minmax(0,1fr) 32px 32px 48px 48px}.v2-entry-summary{grid-template-columns:52px 40px minmax(0,1fr) 4ch 5ch 7ch}}
