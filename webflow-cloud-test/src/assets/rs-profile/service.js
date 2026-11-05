@@ -16,7 +16,7 @@ function retainPending(){
  const saved=pending.map(({uid,fingerprint,body,sent,needsPin,error,blocked,noWrite,uncertain})=>{const safe={uid,fingerprint,body:copy(body),sent,needsPin,error,blocked,noWrite,uncertain};if(safe.body.fields?.pin){delete safe.body.fields.pin;safe.needsPin=true;}return safe;});
  storage.setItem(pendingKey(currentUid),JSON.stringify(saved));
 }
-function remember(fingerprint=currentFingerprint){if(!confirmed||!currentUid||!fingerprint)return;const state=copy(confirmed);for(const person of state.profiles||[])delete person.pin;storage.setItem(snapshotKey(currentUid),JSON.stringify({uid:currentUid,deviceFingerprint:fingerprint,state}));}
+function remember(fingerprint=currentFingerprint){if(!confirmed||!currentUid||!fingerprint)return;const state=copy(confirmed);for(const person of state.profiles||[])delete person.pin;storage.setItem(snapshotKey(currentUid),JSON.stringify({uid:currentUid,deviceFingerprint:fingerprint,state}));const deviceToken=storage.getItem('rs_recognition_device_token_v1');if(deviceToken)storage.setItem('rs_recognition_identity_v1',JSON.stringify({personUid:currentUid,deviceToken,expiresAt:Number(storage.getItem('rs_recognition_device_expires_v1'))||Date.now()+365*86400000}));}
 export function profileState(){
  if(!confirmed)return null;const state=viewPreferences(copy(confirmed));
  for(const entry of pending){if(entry.body.operation==='member_status'){const member=state.memberships.find(m=>m.id===entry.body.membershipId);if(member&&member.userId!==currentUid)member.active=entry.body.active;}if(entry.body.operation==='profile'){const own=state.profiles.find(p=>p.id===currentUid),fields={...entry.body.fields};delete fields.pin;if(own)Object.assign(own,fields);}}
@@ -106,6 +106,13 @@ async function readProfile(uid,check,fingerprint,view='profile'){
 export function prepareProfile(uid){return loadProfile(uid);}
 export function loadProfile(resolvedUid){
  if(resolvedUid!==undefined)return loadResolvedProfile(resolvedUid,recognitionAdapter.profileDeviceFingerprint?.());
+ if(!confirmed&&!storage.getItem('rs_recognition_pending_signout_v1')){try{
+  const identity=JSON.parse(storage.getItem('rs_recognition_identity_v1')||'null'),token=storage.getItem('rs_recognition_device_token_v1');
+  if(identity?.personUid&&token&&identity.deviceToken===token&&identity.expiresAt>Date.now()){
+   const cached=JSON.parse(storage.getItem(snapshotKey(identity.personUid))||'null');
+   if(cached?.uid===identity.personUid&&cached.deviceFingerprint&&cached.state?.identity?.currentId===identity.personUid){restore(identity.personUid);currentFingerprint=cached.deviceFingerprint;confirmed=cached.state;notify();}
+  }
+ }catch{}}
  const check=generation;
  if(!recognizing){const work=Promise.resolve().then(()=>recognitionAdapter.current());recognizing=work;void work.finally(()=>{if(recognizing===work)recognizing=null;}).catch(()=>{});}
  return recognizing.then(uid=>{if(check!==generation)throw Error('Profile changed while loading.');return loadResolvedProfile(uid,recognitionAdapter.profileDeviceFingerprint?.());});
