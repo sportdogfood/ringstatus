@@ -49,7 +49,7 @@ trainerSelect.addEventListener('change',()=>{state.trainer=trainerSelect.value;s
 daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');
 daySelect.value=state.day;
 let returnFocus=null;
-let rings=[];
+let rings=[],ringAnchorSignature='';
 function syncDay(){
  if(!state.day)return;
  const options=trainerOptions(records,state.day);
@@ -73,7 +73,6 @@ function syncDay(){
  footer.title=metadata.show+' · '+metadata.capturedAt;
  const rows=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
- if(!isDay)ringActions.innerHTML=rings.map(r=>v3Button('ring-anchor',icon('ring')+escape(ringDetails[r].name),{extra:`data-ring="${r}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join('');
 
  const horses=new Map(rows.flatMap(r=>r.entries.map(e=>[e.horseId,e.name])));
  horseActions.innerHTML=[...horses].map(([id,name])=>v3Button('horse-filter',icon('horse')+escape(name),{extra:`data-horse="${escape(id)}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join('');
@@ -93,6 +92,13 @@ function renderSchedule(){
   schedule.style.paddingBottom='0px';return;
  }
  const visible=state.horses.size?dayRecords.map(row=>({...row,entries:row.entries.filter(e=>state.horses.has(e.horseId))})).filter(row=>row.entries.length):dayRecords;
+ const relevantRings=rings.filter(r=>visible.some(row=>row.ring===r));
+ const signature=JSON.stringify(relevantRings.map(r=>[r,ringDetails[r].name]));
+ if(signature!==ringAnchorSignature){
+  const left=ringActions.scrollLeft;
+  ringActions.innerHTML=relevantRings.map(r=>v3Button('ring-anchor',icon('ring')+escape(ringDetails[r].name),{extra:`data-ring="${r}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join('');
+  ringActions.scrollLeft=left;ringAnchorSignature=signature;
+ }
  schedule.innerHTML=rings.filter(r=>(!state.horses.size&&!state.trainer)||visible.some(row=>row.ring===r)).map(r=>`<div id="ring-${r}" class="rings-anchor">${ringPanel(r,visible.filter(row=>row.ring===r))}</div>`).join('')||'<p class="rings-detail-note" role="status">No schedule rows match this view.</p>';
  entryLaneCleanup=[...schedule.querySelectorAll('.rings-entry-rollups')].map(enableDragScroll);
  if(state.ring!==null&&!visible.some(r=>String(r.ring)===state.ring))state.ring=null;
@@ -147,7 +153,7 @@ ringActions.addEventListener('click',event=>{
   scroller.scrollTo({top:0,behavior:'instant'});return;
  }
  const target=document.getElementById(`ring-${state.ring}`);
- if(target){const y=scroller.scrollTop+target.getBoundingClientRect().top-scroller.getBoundingClientRect().top-ringActions.getBoundingClientRect().height;scroller.scrollTo({top:Math.max(0,y),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
+ if(target){const scale=scroller.getBoundingClientRect().height/scroller.offsetHeight||1;const y=scroller.scrollTop+(target.getBoundingClientRect().top-scroller.getBoundingClientRect().top-ringActions.getBoundingClientRect().height)/scale;scroller.scrollTo({top:Math.max(0,y),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
 });
 horseActions.addEventListener('click',event=>{const b=event.target.closest('[data-horse]');if(!b)return;const name=b.dataset.horse;if(state.horses.has(name))state.horses.delete(name);else state.horses.add(name);renderSchedule();});
 scroller.addEventListener('scroll',()=>{if(isDay)return;if(scroller.scrollTop>8)horseActions.hidden=false;else if(!state.horses.size)horseActions.hidden=true;},{passive:true});
