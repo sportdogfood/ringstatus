@@ -84,7 +84,7 @@ function syncDay(){
  daySelect.innerHTML=dates.map(date=>`<option value="${escape(date)}">${date===todayDate()?'Today':escape(dateLabel(date))}</option>`).join('');daySelect.value=state.day;
  navDateSelect.innerHTML=daySelect.innerHTML;navDateSelect.value=state.day;
  navDateControl.querySelector('span').textContent=state.day===todayDate()?'Today':dateLabel(state.day);
- trainerSelect.innerHTML='<option value="">'+(options.length?'All trainers':'No trainers for '+escape(dateLabel(state.day)))+'</option>'+options.map(([id,name])=>`<option value="${escape(id)}">${escape(name)}</option>`).join('');trainerSelect.value=state.trainer;
+ trainerSelect.innerHTML='<option value="">'+(options.length?'Select trainer':'No trainers for '+escape(dateLabel(state.day)))+'</option>'+options.map(([id,name])=>`<option value="${escape(id)}">${escape(name)}</option>`).join('');trainerSelect.value=state.trainer;
  const dateText=dateLabel(state.day);
  trainerSelect.dataset.dayLabel=dateText;
  dayControl.title=daySelect.title='Schedule day: '+dateText;
