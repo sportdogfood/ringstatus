@@ -8,10 +8,10 @@
 .v2-theme-toggle:focus-visible{outline:2px solid var(--rs-focus);outline-offset:2px}
 
 /* Shared Light mode control colors; geometry and Dark mode are unchanged. */
-:root[data-theme=light] .rings-app :is(.rings-icon-button,.v2-theme-toggle,.v2-entry-tools button,.v2-entry-search,.v2-schedule-day,.v2-day-sort select,.v2-comment-form textarea){border-color:var(--mode-control-border)!important}
+:root[data-theme=light] .rings-app :is(.v2-entry-tools button,.v2-entry-search,.v2-schedule-day,.v2-day-sort select,.v2-comment-form textarea){border-color:var(--mode-control-border)!important}
 
-:root[data-theme=light] .rings-app :is(.rings-icon-button,.v2-theme-toggle,.v2-entry-tools button){background:var(--mode-control-fill)}
-:root[data-theme=light] .rings-app :is(.rings-icon-button,.v2-theme-toggle,.v2-entry-tools button):hover{background:var(--rs-active)}
+:root[data-theme=light] .rings-app :is(.v2-entry-tools button){background:var(--mode-control-fill)}
+:root[data-theme=light] .rings-app :is(.v2-entry-tools button):hover{background:var(--rs-active)}
 :root[data-theme=light] .rings-app .rings-entry-rollup{background:var(--mode-teal-bg)}
 :root[data-theme=light] .rings-app .rings-entry-rollup:is(:hover,[aria-current=true]){background:var(--mode-teal);color:#fff!important}
 :root[data-theme=light] .rings-app .rings-entry-rollup:is(:hover,[aria-current=true]) :is(.rings-order,.rings-entry-arrow){color:inherit}
