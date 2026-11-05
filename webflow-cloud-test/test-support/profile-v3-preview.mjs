@@ -13,6 +13,8 @@ const mime={'.js':'text/javascript','.css':'text/css','.html':'text/html','.ttf'
 http.createServer(async(req,res)=>{const url=new URL(req.url,'http://localhost');const send=(value,type='application/json',status=200)=>{res.writeHead(status,{'Content-Type':type,'Cache-Control':'no-store'});res.end(typeof value==='string'||Buffer.isBuffer(value)?value:JSON.stringify(value));};try{
  if(url.pathname==='/__fixture/identity'){if(req.method==='POST'){let raw='';for await(const c of req)raw+=c;const b=JSON.parse(raw);actor=b.signout?null:b.value==='1111'?'owner':b.value==='2222'?'member':b.value==='3333'?'candidate':null;}return send({uid:actor});}
  if(url.pathname==='/__fixture/evidence')return send({actor,requests});
+ if(url.pathname==='/website')return send('<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><h1>Website content</h1><button id="website-button" onclick="this.textContent=\'Website remains usable\'">Website action</button><script type="module" src="/test/rs-profile-v3/embed.js"></script></body></html>','text/html');
+ if(url.pathname==='/test/wef-schedule-v2/schedule.html')return send('<!doctype html><html><body><nav class="rings-profile-nav"><a href="/profile" target="_top">Profile</a></nav><h1>Schedule</h1></body></html>','text/html');
  if(url.pathname==='/profile'){
   const html=await readFile(path.join(base,'../docs/profile/v3-evidence/live-profile-source.html'),'utf8');
   return send(html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace('</body>','<script type="module" src="/test/rs-profile-v3/embed.js"></script></body>'),'text/html');

@@ -52,16 +52,16 @@ body{padding:0;display:block;background:var(--preview-bg)}.preview-stage{width:1
 
 /* Desktop follows measured Recognize sizing; compact previews and phones retain their rules. */
 @media(min-width:601px){
- :root:not([data-size="compact"]) .v3-panel,:host(:not([data-size="compact"])) .v3-panel{width:420px;height:auto;min-height:0;border-radius:24px;font-size:16px;line-height:1.4}
- :root:not([data-size="compact"]) .launcher-widget,:host(:not([data-size="compact"])) .launcher-widget{width:420px;gap:2px}
- :root:not([data-size="compact"]) :is(.action-row>[data-action="nav-group"],.tab-row>.ui-button),:host(:not([data-size="compact"])) :is(.action-row>[data-action="nav-group"],.tab-row>.ui-button){display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:6px 12px;border-radius:10px;font-size:16px;line-height:1.4}
+ :root:not([data-size="compact"]) .v3-panel,:host(:not([data-size="compact"])) .v3-panel{width:440px;height:auto;min-height:0;border-radius:22px;font-size:16px;line-height:normal}
+ :root:not([data-size="compact"]) .launcher-widget,:host(:not([data-size="compact"])) .launcher-widget{width:440px;gap:2px}
+ :root:not([data-size="compact"]) :is(.action-row>[data-action="nav-group"],.tab-row>.ui-button),:host(:not([data-size="compact"])) :is(.action-row>[data-action="nav-group"],.tab-row>.ui-button){display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:7px 8px;border-radius:8px;font-size:13px;line-height:20px}
 }
 body:has(#app[hidden]),body:has(#app[hidden]) .preview-stage{background:transparent}
 body:has(#app[hidden]) .preview-links{visibility:hidden}
 
 body[data-recognized="false"],body[data-recognized="false"] .preview-stage{background:transparent}
 body[data-recognized="false"] .preview-stage{display:none}
-@media(min-width:601px){:root:not([data-size="compact"]) :is(.detail-value,.result-copy strong,.search-control,.section-head),:host(:not([data-size="compact"])) :is(.detail-value,.result-copy strong,.search-control,.section-head){font-size:16px}:root:not([data-size="compact"]) :is(.detail-label,.result-copy small,.footer-row .ui-button),:host(:not([data-size="compact"])) :is(.detail-label,.result-copy small,.footer-row .ui-button){font-size:14px}}
+
 
 :root .v3-panel[data-height="content"],:host .v3-panel[data-height="content"]{height:auto;min-height:0}.v3-panel[data-placement="floating"]{position:fixed;right:16px;bottom:98px;max-width:calc(100% - 32px);max-height:calc(100dvh - 114px);z-index:20}.footer-row>.primary:only-child{width:100%}
 @media(max-width:600px){.v3-panel[data-placement="floating"]{right:0;max-width:100%;width:100%;border-radius:0;border-inline:0}}
@@ -71,3 +71,14 @@ body[data-recognized="false"] .preview-stage{display:none}
 html:has(body[data-recognized="false"]),html:has(#app[hidden]){color-scheme:light;background:transparent}
 
 @media(min-width:601px){.launcher-widget .icon-button{width:36px;height:40px;flex:0 0 36px}}
+
+body[data-website="true"],body[data-website="true"] .preview-stage{background:transparent}body[data-website="true"] .preview-links{display:none}
+:root[data-theme]:has(body[data-website="true"]){background:transparent;color-scheme:light}
+
+/* Shared desktop presentation scale. Phone and compact sizing stay unchanged. */
+@media(min-width:601px){
+ :root:not([data-size="compact"]){--shell-available-height:calc((100dvh - 150px)/1.5)}
+ :root:not([data-size="compact"]) .preview-stage{grid-template-rows:minmax(0,1fr) 84px;padding:24px;gap:18px}
+ :root:not([data-size="compact"]) :is(.v3-panel,.launcher-widget,.ui-dialog),:host(:not([data-size="compact"])) :is(.v3-panel,#launcher){zoom:1.5;max-width:calc((100vw - 32px)/1.5)}
+ :host(:not([data-size="compact"])) .v3-panel{right:16px;bottom:98px;max-height:calc((100dvh - 171px)/1.5)}
+}
