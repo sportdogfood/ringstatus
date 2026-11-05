@@ -37,16 +37,27 @@ function placeLauncher(){const panel=$('#app'),footer=panel.querySelector(':scop
 mobileLauncher.addEventListener('change',placeLauncher);
 const previewParams=new URLSearchParams(location.search);
 const website=previewParams.get('website')==='1';document.body.dataset.website=String(website);
-const scheduleHref='/test/wef-schedule-v2/schedule.html';
-let scheduleFrame=null,scheduleReady=false,scheduleRequested=false,scheduleTrigger=null;
-function closeSchedule(){scheduleRequested=false;if(scheduleFrame)scheduleFrame.hidden=true;scheduleTrigger?.removeAttribute('aria-busy');if(scheduleTrigger?.isConnected)scheduleTrigger.focus();}
+const scheduleHref='/test/wef-schedule-v2/schedule';
+let scheduleFrame=null,scheduleReady=false,scheduleRequested=false,scheduleTrigger=null,scheduleBox=null,scheduleBoundsObserver=null;
+function syncScheduleBounds(){
+ if(!scheduleFrame||scheduleFrame.hidden)return;
+ const shell=scheduleFrame.contentDocument?.querySelector('.rings-shell');if(!shell)return;
+ const r=shell.getBoundingClientRect();if(!r.width||!r.height)return;
+ if(innerWidth<=600){scheduleBox=null;scheduleFrame.style.clipPath='none';return;}
+ const top=Math.max(0,r.top-4),left=Math.max(0,r.left-4),right=Math.min(innerWidth,r.right+4),bottom=Math.min(innerHeight,r.bottom+4);
+ scheduleBox={top,left,right,bottom,width:right-left,height:bottom-top};
+ const radius=parseFloat(getComputedStyle(shell).borderRadius)*(r.width/shell.offsetWidth)+4;
+ scheduleFrame.style.clipPath=`inset(${top}px ${innerWidth-right}px ${innerHeight-bottom}px ${left}px round ${radius}px)`;
+}
+addEventListener('resize',syncScheduleBounds);
+function closeSchedule(){scheduleRequested=false;if(scheduleFrame)scheduleFrame.hidden=true;scheduleTrigger?.removeAttribute('aria-busy');if(scheduleTrigger?.isConnected)scheduleTrigger.focus({preventScroll:true});}
 function openSchedule(trigger){
  if(!state.recognized)return;
  scheduleTrigger=trigger;scheduleRequested=true;
- if(scheduleFrame){if(scheduleReady){scheduleFrame.hidden=false;scheduleFrame.focus();}return;}
+ if(scheduleFrame){if(scheduleReady){scheduleFrame.hidden=false;syncScheduleBounds();scheduleFrame.focus();}return;}
  trigger.setAttribute('aria-busy','true');
  const frame=document.createElement('iframe');scheduleFrame=frame;frame.id='profile-schedule-view';frame.title='RingStatus Schedule';frame.hidden=true;
- frame.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;border:0;z-index:110;background:var(--rs-surface)';
+ frame.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;border:0;z-index:110;background:transparent';
  frame.addEventListener('load',()=>{
   if(frame!==scheduleFrame||!state.recognized)return;
   const doc=frame.contentDocument;if(!doc)return;
@@ -54,7 +65,9 @@ function openSchedule(trigger){
   const reveal=()=>{
    if(frame!==scheduleFrame||!state.recognized)return;
    scheduleReady=true;scheduleTrigger?.removeAttribute('aria-busy');
-   if(scheduleRequested){frame.hidden=false;frame.focus();}
+   if(scheduleRequested){frame.hidden=false;syncScheduleBounds();frame.focus();}
+   const shell=doc.querySelector('.rings-shell');
+   if(shell){scheduleBoundsObserver?.disconnect();scheduleBoundsObserver=new ResizeObserver(syncScheduleBounds);scheduleBoundsObserver.observe(shell);}
   };
   if(doc.documentElement.dataset.scheduleReady==='true')reveal();
   else doc.addEventListener('rs-schedule-ready',reveal,{once:true});
@@ -328,7 +341,7 @@ async function loginConnected(fd,form){const generation=accountGeneration,submit
 async function signOutConnected(login){closeDialog();const work=connection.signOut();view='home';render();try{await work;}catch{notice('Sign-out pending; private data has been cleared.');}}
 function acceptConnected(next,error){
  const previous=state.currentUserId,following=next?.identity?.currentId||null;
- if(previous!==following){scheduleFrame?.remove();scheduleFrame=null;scheduleReady=false;scheduleRequested=false;scheduleTrigger=null;}
+ if(previous!==following){scheduleBoundsObserver?.disconnect();scheduleBoundsObserver=null;scheduleBox=null;scheduleFrame?.remove();scheduleFrame=null;scheduleReady=false;scheduleRequested=false;scheduleTrigger=null;}
  if(previous!==following){accountGeneration++;scopeErrors={};clearTimeout(noticeTimer);$('#notice').hidden=true;closeDialog();selectedId=following;query='';draftPhoto='';ui={...defaults,collapsed:{},activity:[]};if(following){try{ui={...ui,...JSON.parse(localStorage.getItem(UI_KEY+following)||'{}'),activity:[],agentMessages:[],horses:JSON.parse(localStorage.getItem('rs_profile_v3_horses:'+following)||'[]')};}catch{}}optinData=freshOptins();optinDirty=false;optinGroup=null;optinFeedback='';if(following){try{const raw=localStorage.getItem(optinKey+':'+following);if(raw)optinData=decodeOptins(raw);}catch{}}}
  if(previous!==following&&following){applyNavigationParams();if(!website)$('#app').hidden=false;}
  canonical=next;state=presentation(next);loading=false;connectionError=error?.message||'';if(!canRead(next,selectedId))selectedId=state.currentUserId;
@@ -366,7 +379,7 @@ if(website){
   boundsPending=false;
   const roots=[$('#app'),$('#widget'),$('#dialog'),$('#notice'),scheduleFrame];
   if(!recognizeRoot.hidden)roots.push(...recognizeRoot.shadowRoot.querySelectorAll('#signin,#launcher'));
-  const boxes=roots.filter(el=>el&&!el.hidden&&(el.tagName!=='DIALOG'||el.open)).map(el=>el.getBoundingClientRect()).filter(r=>r.width&&r.height);
+  const boxes=roots.filter(el=>el&&!el.hidden&&(el.tagName!=='DIALOG'||el.open)).map(el=>el===scheduleFrame&&scheduleBox?scheduleBox:el.getBoundingClientRect()).filter(r=>r.width&&r.height);
   const top=boxes.length?Math.max(0,Math.min(...boxes.map(r=>r.top))-4):innerHeight;
   const left=boxes.length?Math.max(0,Math.min(...boxes.map(r=>r.left))-4):innerWidth;
   const right=boxes.length?Math.max(0,innerWidth-Math.max(...boxes.map(r=>r.right))-4):0;

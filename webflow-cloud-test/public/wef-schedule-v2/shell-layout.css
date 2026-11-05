@@ -28,3 +28,25 @@
  .rings-surface[data-mode="class"]{width:min(calc(580px / var(--rs-presentation-scale)),calc((100vw - 40px) / var(--rs-presentation-scale)));max-height:calc((100dvh - 40px) / var(--rs-presentation-scale));top:calc(20px / var(--rs-presentation-scale));right:calc(20px / var(--rs-presentation-scale))}
  .v2-filter-menu{max-width:calc((100vw - 24px) / var(--rs-presentation-scale))}
 }
+
+.v2-dropup-caret{display:inline-flex;flex:0 0 auto}
+.v2-dropup-caret .icon{width:14px;height:14px;transform:rotate(180deg)}
+/* Keep V2 positions and motion, with the desktop shell as their containing plane. */
+@media(min-width:601px){
+ .rings-shell{--surface-inset:20px}
+ .rings-dialog-shade:not(:has(+dialog[open])){display:none}
+ .rings-dialog-shade{position:absolute;inset:0;z-index:20;border-radius:inherit;background:#0007}
+ :root .rings-shell>dialog[data-shell-local]{position:absolute;zoom:1;z-index:21;max-width:calc(100% - var(--surface-inset) - var(--surface-inset));max-height:calc(100% - var(--surface-inset) - var(--surface-inset))}
+ :root .rings-shell>.rings-surface[data-shell-local]{width:760px;inset:auto 0 var(--surface-inset);margin:0 auto}
+ :root .rings-shell>.rings-surface[data-shell-local][data-mode="class"]{width:580px;inset:var(--surface-inset) var(--surface-inset) auto auto;margin:0}
+ :root .rings-shell>.v2-trainer-dialog[data-shell-local]{width:240px;inset:var(--surface-inset) var(--surface-inset) auto auto;margin:0}
+}
+
+:root:has(.rings-app[data-embedded="true"]),.rings-app[data-embedded="true"]{background:transparent}
+
+.v2-trainer-handle{display:none}
+@media(max-width:600px){
+ .v2-trainer-handle{display:block}
+ .v2-trainer-dialog{inset:auto 12px 12px;margin:0 auto}
+ .v2-trainer-dialog[open]{animation:rings-reveal .2s ease-out}
+}

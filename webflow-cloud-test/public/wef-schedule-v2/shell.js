@@ -1,5 +1,6 @@
 import {v3Back,v3Brand,v3Shell,v3Footer,v3Control} from '../rs-profile-v3/components.js';
 const shell=document.querySelector('.rings-shell');
+if(window.frameElement?.id==='profile-schedule-view')document.body.dataset.embedded='true';
 const back=document.querySelector('.rings-profile-nav a');back.className='back-link';
 const oldHeader=document.querySelector('.rings-header');
 const controls=Array.from(oldHeader.children).filter(node=>!node.classList.contains('rings-brand')) ;

@@ -1,4 +1,5 @@
 import './shell.js';
+import {openShellDialog} from './shell-dialog.js';
 import {v3Button,v3Control} from '../rs-profile-v3/components.js';
 import {headerDropdowns} from './header-dropdown.js';
 import {dayRows} from './day.js?v=source-order-1';
@@ -44,7 +45,7 @@ navDateSelect.addEventListener('change',()=>{
  if(isDay){daySelect.value=navDateSelect.value;daySelect.dispatchEvent(new Event('change',{bubbles:true}));}
  else{state.day=navDateSelect.value;switchView(true);}
 });
-trainerControl.hidden=!document.body.hasAttribute('data-trainer-filter');
+trainerControl.hidden=true;
 trainerSelect.addEventListener('change',()=>{state.trainer=trainerSelect.value;state.horses.clear();if(surface.open)surface.close();syncDay();renderSchedule();});
 daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');
 daySelect.value=state.day;
@@ -77,6 +78,7 @@ pageNav.addEventListener('click',event=>{
 function syncDay(){
  if(!state.day)return;
  const options=trainerOptions(records,state.day);
+ trainerControl.hidden=!document.body.hasAttribute('data-trainer-filter')||options.length===0;
  if(state.trainer&&!options.some(([id])=>id===state.trainer))state.trainer='';
  const url=new URL(location.href);url.searchParams.set('view',isDay?'day':'schedule');url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');history.replaceState(null,'',url);
  document.querySelectorAll('a[href*="schedule.html"],a[href*="day.html"]').forEach(a=>{const target=new URL(a.getAttribute('href'),location.href);target.searchParams.set('date',state.day);if(state.trainer)target.searchParams.set('trainer',state.trainer);else target.searchParams.delete('trainer');a.href=target.href;});
@@ -143,7 +145,7 @@ function selectRecord(rowKey,entryKey,trigger){
  document.querySelector('#rings-surface-content').innerHTML=detailPanel(row,entry);
  surface.querySelectorAll('[data-detail-toggle]').forEach(button=>detailTargets(button).forEach(block=>{block.hidden=true;}));
  syncDetailToggles();
- if(!surface.open)surface.showModal();
+ if(!surface.open)openShellDialog(surface);
  document.querySelector('#rings-surface-title').focus({preventScroll:true});
  if(trigger?.dataset.focusResults==='true'){
   const result=document.querySelector('#v2-entry-results');
@@ -186,7 +188,7 @@ let readinessPending=false;
 function markScheduleReady(){
  if(readinessPending)return;readinessPending=true;
  const fonts=document.fonts?Promise.all([400,500,600,700].map(weight=>document.fonts.load(`${weight} 15px Outfit`))):Promise.resolve();
- fonts.catch(()=>{}).then(()=>{document.documentElement.dataset.scheduleReady='true';document.dispatchEvent(new Event('rs-schedule-ready'));});
+ fonts.catch(()=>{}).then(()=>{document.documentElement.dataset.scheduleReady='true';document.documentElement.removeAttribute('data-schedule-loading');document.dispatchEvent(new Event('rs-schedule-ready'));});
 }
 if(records.length)markScheduleReady();
 surface.addEventListener('click',event=>{
@@ -286,7 +288,6 @@ function applyDeviceData(data){
 }
 if(endpoint)scopeReady.then(scope=>{
  if(!scope?.showId){markScheduleReady();return;}
- trainerControl.hidden=false;
  const dataEndpoint=new URL(endpoint,location.href).href;
  const device=createDeviceData({showId:scope.showId,endpoint:dataEndpoint,seed:metadata.showId===scope.showId&&records.length?{records,days,ringDetails,metadata}:null,onData:applyDeviceData,onError:()=>{document.querySelector('.rings-shell-footer').textContent='Refresh unavailable - showing last loaded data';markScheduleReady();},onChecked:(data,lane)=>{document.querySelector('.rings-shell-footer').textContent=(lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date());}});
  // Only the same Astro application's approximate GeoIP ping; no GPS or persistence.

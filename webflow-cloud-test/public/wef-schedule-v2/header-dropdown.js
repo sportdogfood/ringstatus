@@ -1,3 +1,4 @@
+import {openShellDialog} from './shell-dialog.js';
 import {icon as v3Icon} from '../rs-profile-v3/icons.js';
 import {v3Control,v3Search} from '../rs-profile-v3/components.js';
 // Date menu and searchable trainer modal retain the existing select/change state.
@@ -5,7 +6,7 @@ export function headerDropdowns(host){
  const menu=document.createElement('div');
  menu.className='ui-menu v2-filter-menu';menu.id='v2-filter-menu';menu.setAttribute('popover','auto');menu.setAttribute('role','listbox');document.body.append(menu);
  const trainerDialog=document.createElement('dialog');trainerDialog.className='ui-dialog v2-trainer-dialog';trainerDialog.dataset.width='short-list';trainerDialog.setAttribute('aria-labelledby','v2-trainer-title');
- trainerDialog.innerHTML=`<header class="dialog-head"><h2 id="v2-trainer-title">Trainers</h2><button type="button" class="ui-button" data-variant="quiet" data-clear-trainer hidden>Clear</button><button type="button" class="icon-button" aria-label="Close trainers">${v3Icon('close')}</button></header>${v3Search('Search trainers','trainer-search',v3Icon('search'),'Search trainers')}<div class="search-dialog-results results v2-trainer-options" data-layout="list" data-striped role="listbox" aria-label="Trainers"></div><p class="empty-result v2-trainer-empty" role="status" hidden>No matching trainers</p>`;
+ trainerDialog.innerHTML=`<div class="rings-handle v2-trainer-handle" aria-hidden="true"></div><header class="dialog-head"><h2 id="v2-trainer-title">Trainers</h2><button type="button" class="ui-button" data-variant="quiet" data-clear-trainer hidden>Clear</button><button type="button" class="icon-button" aria-label="Close trainers">${v3Icon('close')}</button></header>${v3Search('Search trainers','trainer-search',v3Icon('search'),'Search trainers')}<div class="search-dialog-results results v2-trainer-options" data-layout="list" data-striped role="listbox" aria-label="Trainers"></div><p class="empty-result v2-trainer-empty" role="status" hidden>No matching trainers</p>`;
  document.body.append(trainerDialog);
  const search=trainerDialog.querySelector('input'),trainerList=trainerDialog.querySelector('[role=listbox]'),empty=trainerDialog.querySelector('[role=status]');
  let trainerActive=null;
@@ -21,17 +22,18 @@ export function headerDropdowns(host){
  search.addEventListener('input',renderTrainers);
  trainerDialog.querySelector('[data-clear-trainer]').addEventListener('click',()=>{trainerActive.select.selectedIndex=0;trainerActive.select.dispatchEvent(new Event('change',{bubbles:true}));trainerDialog.close();});
  trainerDialog.querySelector('[aria-label="Close trainers"]').addEventListener('click',()=>trainerDialog.close());
- trainerDialog.addEventListener('close',()=>{trainerActive?.button.setAttribute('aria-expanded','false');trainerActive?.button.focus();});
+ trainerDialog.addEventListener('close',()=>{trainerActive?.button.setAttribute('aria-expanded','false');trainerActive?.button.focus({preventScroll:true});});
  let active=null;
  function close(){menu.hidePopover();active?.button.setAttribute('aria-expanded','false');}
  function choose(index){
   if(!active)return;
   const {select,button}=active;
-  select.selectedIndex=index;select.dispatchEvent(new Event('change',{bubbles:true}));close();button.focus();
+  select.selectedIndex=index;select.dispatchEvent(new Event('change',{bubbles:true}));close();button.focus({preventScroll:true});
  }
  function open(select,button){
   if(select.getAttribute('aria-label')==='Trainer'){
-   close();trainerActive={select,button};search.value='';trainerDialog.querySelector('h2').textContent='Trainers';trainerDialog.title='Trainers for '+select.dataset.dayLabel;search.closest('.search-control').hidden=select.options.length===1;search.hidden=select.options.length===1;renderTrainers();trainerList.hidden=select.options.length===1;if(search.hidden){empty.hidden=false;empty.textContent='No trainer-linked entries for '+select.dataset.dayLabel+'.';}else empty.textContent='No matching trainers';trainerDialog.showModal();button.setAttribute('aria-expanded','true');if(!search.hidden)search.focus();return;
+   if(select.options.length<=1||button.hidden)return;
+   close();trainerActive={select,button};search.value='';trainerDialog.querySelector('h2').textContent='Trainers';trainerDialog.title='Trainers for '+select.dataset.dayLabel;search.closest('.search-control').hidden=false;search.hidden=false;renderTrainers();trainerList.hidden=false;empty.textContent='No matching trainers';openShellDialog(trainerDialog);button.setAttribute('aria-expanded','true');if(!search.hidden)search.focus();return;
   }
   active={select,button};menu.replaceChildren();menu.setAttribute('aria-label',select.getAttribute('aria-label'));
   Array.from(select.options).forEach((option,index)=>{
@@ -42,10 +44,11 @@ export function headerDropdowns(host){
  function positionMenu(){
   if(!active)return;
   const {button}=active,rect=button.getBoundingClientRect(),width=menu.getBoundingClientRect().width;
+  const bounds=document.querySelector('.rings-shell').getBoundingClientRect();
   const above=button.dataset.placement==='top',scale=menu.getBoundingClientRect().width/menu.offsetWidth||1;
-  menu.style.maxHeight=Math.max(44,Math.min(320,(above?rect.top-16:innerHeight-rect.bottom-16)/scale))+'px';
-  menu.style.left=Math.max(8,Math.min(innerWidth-width-8,rect.right-width))/scale+'px';
-  menu.style.top=(above?Math.max(8,rect.top-menu.getBoundingClientRect().height-8):rect.bottom+8)/scale+'px';
+  menu.style.maxHeight=Math.max(44,Math.min(320,(above?rect.top-bounds.top-8:bounds.bottom-rect.bottom-8)/scale))+'px';
+  menu.style.left=Math.max(bounds.left+8,Math.min(bounds.right-width-8,rect.right-width))/scale+'px';
+  menu.style.top=(above?Math.max(bounds.top+8,rect.top-menu.getBoundingClientRect().height-8):rect.bottom+8)/scale+'px';
   (menu.querySelector('[aria-selected=true]:not(:disabled)')||menu.querySelector('button:not(:disabled)')||menu).focus();
  }
  menu.tabIndex=-1;
@@ -58,7 +61,7 @@ export function headerDropdowns(host){
  });
  addEventListener('resize',close);
  return (select,svg,{className='v2-header-filter',placement='bottom'}={})=>{
-  const button=document.createElement('button');button.type='button';button.className=className;button.dataset.placement=placement;button.innerHTML=svg;v3Control(button,{icon:className==='v2-header-filter'});
+  const button=document.createElement('button');button.type='button';button.className=className;button.dataset.placement=placement;button.innerHTML=svg;if(placement==='top')button.insertAdjacentHTML('beforeend','<span class="v2-dropup-caret" aria-hidden="true">'+v3Icon('chevron')+'</span>');v3Control(button,{icon:className==='v2-header-filter'});
   const trainer=select.getAttribute('aria-label')==='Trainer';trainerDialog.id='v2-trainer-dialog';button.setAttribute('aria-label',select.getAttribute('aria-label'));button.setAttribute('aria-haspopup',trainer?'dialog':'listbox');button.setAttribute('aria-controls',trainer?trainerDialog.id:menu.id);button.setAttribute('aria-expanded','false');
   select.hidden=true;select.tabIndex=-1;host.append(button,select);
   if(!trainer)button.setAttribute('popovertarget',menu.id);
