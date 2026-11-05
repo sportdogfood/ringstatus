@@ -14,7 +14,7 @@ if(!document.getElementById('rs-profile-v3-frame')){
    const doc=frame.contentDocument;
    if(doc?.location.pathname.startsWith('/test/wef-schedule-v2/')){
     frame.style.clipPath='inset(0)';
-    const back=doc.querySelector('.rings-profile-nav a');
+    const back=doc.querySelector('.rings-profile-nav a,.back-row a.back-link');
     if(back){back.href='/test/rs-profile-v3/?website=1';back.target='_self';}
    }
   });

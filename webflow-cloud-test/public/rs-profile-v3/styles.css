@@ -79,7 +79,7 @@ body[data-website="true"],body[data-website="true"] .preview-stage{background:tr
 @media(min-width:601px){
  :root:not([data-size="compact"]){--shell-available-height:calc((100dvh - 150px)/1.5)}
  :root:not([data-size="compact"]) .preview-stage{grid-template-rows:minmax(0,1fr) 84px;padding:24px;gap:18px}
- :root:not([data-size="compact"]) :is(.v3-panel,.launcher-widget,.ui-dialog),:host(:not([data-size="compact"])) :is(.v3-panel,#launcher){zoom:1.5;max-width:calc((100vw - 32px)/1.5)}
+ :root:not([data-size="compact"]) :is(.v3-panel:not([data-width="schedule"]),.launcher-widget,.ui-dialog),:host(:not([data-size="compact"])) :is(.v3-panel,#launcher){zoom:1.5;max-width:calc((100vw - 32px)/1.5)}
  :host(:not([data-size="compact"])) .v3-panel{right:16px;bottom:98px;max-height:calc((100dvh - 171px)/1.5)}
 }
 /* Optional striped list treatment shared by consuming screens. */
