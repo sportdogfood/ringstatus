@@ -279,12 +279,12 @@ function acceptConnected(next,error){
  render();void recognizeWidget?.refresh().catch(()=>{});if(error&&state.recognized)notice((canonical?.pendingSave?'Pending: ':'Unable to load: ')+error.message);
 }
 function scopeMessage(scope,label){return `<p class="feedback" role="status">${escape(scopeErrors[scope]||'Loading '+label+'…')}</p>${scopeErrors[scope]?button('retry-scope','Retry',{extra:`data-value="${scope}"`}):''}`;}
-async function requestScope(scope){if(!state.recognized)return;const generation=accountGeneration;delete scopeErrors[scope];try{await connection.load(scope);}catch(error){if(generation===accountGeneration){scopeErrors[scope]=error.message;render();}}}
+async function requestScope(scope,priority=false){if(!state.recognized)return;const generation=accountGeneration;delete scopeErrors[scope];try{await connection.load(scope,{priority,background:!priority});}catch(error){if(generation===accountGeneration){scopeErrors[scope]=error.message;render();}}}
 async function prepareTeam(){if(!state.recognized)return;const generation=accountGeneration,prioritizeHorses=['horses','horse'].includes(view);if(prioritizeHorses)await requestScope('horses');await requestScope('roster');if(generation===accountGeneration&&state.recognized)await requestScope('team');if(generation===accountGeneration&&state.recognized&&!prioritizeHorses)await requestScope('horses');}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b||!state.recognized)return;const {action,id,value}=b.dataset;
- if(action==='retry-scope'){void requestScope(value);return;}
- if(action==='launch'&&value==='horses'&&!canonical?.loaded?.horses)void requestScope('horses');
- if((action==='tab'&&value==='team')||(action==='launch'&&['team','riders'].includes(value))||(action==='nav-group'&&value==='team')){if(canonical.loaded?.roster===false)void requestScope('roster');if(canonical.loaded?.team===false)void requestScope('team');}
+ if(action==='retry-scope'){void requestScope(value,true);return;}
+ if(action==='launch'&&value==='horses'&&!canonical?.loaded?.horses)void requestScope('horses',true);
+ if((action==='tab'&&value==='team')||(action==='launch'&&['team','riders'].includes(value))||(action==='nav-group'&&value==='team')){if(canonical.loaded?.roster===false)void requestScope('roster',true);if(canonical.loaded?.team===false)void requestScope('team',true);}
  if(action==='hide-member'){connection.hide(id,value==='hide');return;}
  if(action==='member-status'&&owner()){const m=canonical.memberships.find(m=>m.id===id);if(m&&m.role==='Member'&&m.teamId===membership(canonical)?.teamId)queueSave('member_status',{membershipId:m.id,active:!m.active,expectedRevision:m.revision});return;}
  if(action==='accept-invite'||action==='decline-invite'){const i=canonical.invitations.find(i=>i.id===id&&i.userId===state.currentUserId&&i.status==='pending');if(i)queueSave('invitation_response',{invitationId:id,accept:action==='accept-invite',expectedRevision:i.revision});return;}
