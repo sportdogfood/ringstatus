@@ -8,7 +8,7 @@ import {records,days,ringDetails,metadata,replaceData,scopeReady} from './schedu
 import {createDeviceData,trainerOptions,filterTrainer} from './device-data.js';
 import {pingLocation} from './device-location.js';
 import {ringPanel,detailPanel,icon,commentsList,dayLine} from './components.js?v=group-subline-1';
-const isDay=document.body.dataset.view==='day';
+let isDay=new URLSearchParams(location.search).has('view')?new URLSearchParams(location.search).get('view')==='day':document.body.dataset.view==='day';
 const requestedDay=new URLSearchParams(location.search).get('date');
 const todayDate=()=>new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const initialDay=days.some(d=>d.date===requestedDay)||requestedDay===todayDate()?requestedDay:todayDate();
@@ -18,7 +18,7 @@ const surface=document.querySelector('#rings-surface');
 const scroller=document.querySelector('.rings-scroll');
 const ringActions=document.querySelector('.rings-actions');
 const horseActions=document.querySelector('.rings-horse-actions');
-document.querySelectorAll('.rings-actions:not(.v2-day-tools),.rings-horse-actions,.v2-page-nav').forEach(enableDragScroll);
+document.querySelectorAll('.rings-actions,.rings-horse-actions,.v2-page-nav').forEach(enableDragScroll);
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const dateLabel=date=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'));
 const daySelect=document.querySelector('.v2-schedule-day');
@@ -42,7 +42,7 @@ for(const [label,glyph] of [['Horses','horse'],['Results','list'],['Messages','c
 }
 navDateSelect.addEventListener('change',()=>{
  if(isDay){daySelect.value=navDateSelect.value;daySelect.dispatchEvent(new Event('change',{bubbles:true}));}
- else{const target=new URL('day.html',location.href);target.searchParams.set('date',navDateSelect.value);if(state.trainer)target.searchParams.set('trainer',state.trainer);location.href=target.href;}
+ else{state.day=navDateSelect.value;switchView(true);}
 });
 trainerControl.hidden=!document.body.hasAttribute('data-trainer-filter');
 trainerSelect.addEventListener('change',()=>{state.trainer=trainerSelect.value;state.horses.clear();if(surface.open)surface.close();syncDay();renderSchedule();});
@@ -50,11 +50,35 @@ daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(date
 daySelect.value=state.day;
 let returnFocus=null;
 let rings=[],ringAnchorSignature='';
+const viewScroll={schedule:0,day:0};
+function configureView(){
+ document.body.dataset.view=isDay?'day':'schedule';
+ ringActions.classList.toggle('v2-day-tools',isDay);
+ ringActions.setAttribute('aria-label',isDay?'Day status':'Jump to ring');
+ ringActions.innerHTML=isDay?'<h1>Today</h1>'+[['done','DONE'],['upc','UPCM'],['live','LIVE']].map(([value,label])=>v3Button('day-status',label,{extra:`data-day-status="${value}" aria-pressed="${state.dayStatus===value}"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join(''):'';
+ ringAnchorSignature='';
+ const scheduleLink=pageNav.querySelector('a');
+ if(isDay){navDateControl.setAttribute('aria-current','page');scheduleLink.removeAttribute('aria-current');}
+ else{scheduleLink.setAttribute('aria-current','page');navDateControl.removeAttribute('aria-current');}
+ horseActions.hidden=isDay||!state.horses.size;
+}
+function switchView(day){
+ viewScroll[isDay?'day':'schedule']=scroller.scrollTop;
+ if(surface.open)surface.close();
+ isDay=day;configureView();syncDay();renderSchedule();
+ scroller.scrollTo({top:viewScroll[isDay?'day':'schedule'],behavior:'instant'});
+}
+pageNav.addEventListener('click',event=>{
+ const link=event.target.closest('a');
+ if(!link||event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+ event.preventDefault();if(isDay)switchView(false);
+});
+
 function syncDay(){
  if(!state.day)return;
  const options=trainerOptions(records,state.day);
  if(state.trainer&&!options.some(([id])=>id===state.trainer))state.trainer='';
- const url=new URL(location.href);url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');history.replaceState(null,'',url);
+ const url=new URL(location.href);url.searchParams.set('view',isDay?'day':'schedule');url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');history.replaceState(null,'',url);
  document.querySelectorAll('a[href*="schedule.html"],a[href*="day.html"]').forEach(a=>{const target=new URL(a.getAttribute('href'),location.href);target.searchParams.set('date',state.day);if(state.trainer)target.searchParams.set('trainer',state.trainer);else target.searchParams.delete('trainer');a.href=target.href;});
  const dates=[...new Set([todayDate(),state.day,...days.map(d=>d.date)])].sort();
  daySelect.innerHTML=dates.map(date=>`<option value="${escape(date)}">${date===todayDate()?'Today':escape(dateLabel(date))}</option>`).join('');daySelect.value=state.day;
@@ -157,7 +181,7 @@ ringActions.addEventListener('click',event=>{
 });
 horseActions.addEventListener('click',event=>{const b=event.target.closest('[data-horse]');if(!b)return;const name=b.dataset.horse;if(state.horses.has(name))state.horses.delete(name);else state.horses.add(name);renderSchedule();});
 scroller.addEventListener('scroll',()=>{if(isDay)return;if(scroller.scrollTop>8)horseActions.hidden=false;else if(!state.horses.size)horseActions.hidden=true;},{passive:true});
-syncDay();renderSchedule();
+configureView();syncDay();renderSchedule();
 surface.addEventListener('click',event=>{
  const area=event.target.closest('.v2-comments');if(!area)return;
  const form=area.querySelector('form');
@@ -206,20 +230,18 @@ function daySortHead(key,label){
  const direction=active?state.dayDirection:null;
  return '<button type="button" class="v2-sort-head" data-day-sort="'+key+'" data-active="'+active+'" aria-label="'+label+': '+(direction||'not sorted')+'. Sort '+(direction==='asc'?'descending':'ascending')+'">'+label+'<span aria-hidden="true">'+(direction==='asc'?'↑':direction==='desc'?'↓':'↕')+'</span></button>';
 }
-if(isDay){
- document.querySelectorAll('[data-day-status]').forEach(button=>button.addEventListener('click',()=>{
-  state.dayStatus=state.dayStatus===button.dataset.dayStatus?'':button.dataset.dayStatus;
-  document.querySelectorAll('[data-day-status]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.dayStatus===state.dayStatus)));
-  renderSchedule();
- }));
- schedule.addEventListener('click',event=>{
-  const button=event.target.closest('[data-day-sort]');if(!button)return;
-  const key=button.dataset.daySort;
-  state.dayDirection=state.daySort===key&&state.dayDirection==='asc'?'desc':'asc';
-  state.daySort=key;renderSchedule();
-  schedule.querySelector('[data-day-sort="'+key+'"]').focus();
- });
-}
+ringActions.addEventListener('click',event=>{
+ const button=event.target.closest('[data-day-status]');if(!isDay||!button)return;
+ state.dayStatus=state.dayStatus===button.dataset.dayStatus?'':button.dataset.dayStatus;
+ ringActions.querySelectorAll('[data-day-status]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.dayStatus===state.dayStatus)));
+ renderSchedule();
+});
+schedule.addEventListener('click',event=>{
+ const button=event.target.closest('[data-day-sort]');if(!isDay||!button)return;
+ const key=button.dataset.daySort;
+ state.dayDirection=state.daySort===key&&state.dayDirection==='asc'?'desc':'asc';
+ state.daySort=key;renderSchedule();schedule.querySelector('[data-day-sort="'+key+'"]').focus();
+});
 schedule.addEventListener('click',event=>{
  const lane=event.target.closest('.rings-entry-line');if(!lane)return;
  const expand=event.target.closest('.v2-entry-expand');

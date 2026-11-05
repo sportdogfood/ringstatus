@@ -11,11 +11,11 @@
 
 /* Schedule actions: ring anchors above, horse filters below. */
 .rings-scroll{overflow-y:auto;overflow-x:hidden;min-height:0;flex:1;scrollbar-width:thin;scrollbar-color:#666 transparent;overscroll-behavior:contain;position:relative}
-.rings-actions{position:sticky;top:0;z-index:2;background:var(--rings-bg);margin:0;padding:14px 0;display:flex;flex-wrap:nowrap;overflow-x:auto;gap:7px;scrollbar-width:none;border-bottom:1px solid var(--mode-border,#464646)}
+.rings-actions{position:sticky;top:0;z-index:2;background:var(--rings-bg);margin:0;padding:6px 0;display:flex;flex-wrap:nowrap;overflow-x:auto;gap:7px;scrollbar-width:none;border-bottom:1px solid var(--mode-border,#464646)}
 .rings-actions::-webkit-scrollbar,.rings-horse-actions::-webkit-scrollbar{display:none}
-.rings-schedule{padding-top:12px}.rings-anchor{min-width:0}
+.rings-schedule{padding-top:0}.rings-anchor{min-width:0}
 .rings-horse-actions{flex-shrink:0;display:flex;overflow-x:auto;gap:7px;padding:12px 0 max(12px,env(safe-area-inset-bottom));background:var(--rings-bg);border-top:1px solid var(--mode-border,#464646);scrollbar-width:none}
-@media(max-width:600px){.rings-actions{padding:12px 0}.rings-horse-actions{padding-top:10px}}.rings-badge[data-status=live]{color:var(--mode-teal,#00d8bb);background:var(--mode-teal-bg,#06332d);border-color:var(--mode-teal-border,#007e70)}
+@media(max-width:600px){.rings-actions{padding:6px 0}.rings-horse-actions{padding-top:10px}}.rings-badge[data-status=live]{color:var(--mode-teal,#00d8bb);background:var(--mode-teal-bg,#06332d);border-color:var(--mode-teal-border,#007e70)}
 
 .rings-icon{width:17px;height:17px;flex-shrink:0;display:inline-block;vertical-align:middle}.rings-ring-head h3,.rings-surface-context{display:flex;align-items:center;gap:7px}.rings-ring-head h3 .rings-icon{color:var(--mode-blue,#2bb3ff)}.rings-surface-context .rings-icon{color:var(--mode-purple,#bcb0f4)}.rings-surface-context .rings-icon:not(:first-child){margin-left:7px}.rings-entry-name{overflow:hidden;text-overflow:ellipsis}.rings-entry-rollup .rings-icon{width:16px;height:16px}
 
