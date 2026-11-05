@@ -16,7 +16,7 @@ function retainPending(){
  const saved=pending.map(({uid,fingerprint,body,sent,needsPin,error,blocked,noWrite,uncertain})=>{const safe={uid,fingerprint,body:copy(body),sent,needsPin,error,blocked,noWrite,uncertain};if(safe.body.fields?.pin){delete safe.body.fields.pin;safe.needsPin=true;}return safe;});
  storage.setItem(pendingKey(currentUid),JSON.stringify(saved));
 }
-function remember(fingerprint=currentFingerprint){if(!confirmed||!currentUid||!fingerprint)return;const state=copy(confirmed);for(const person of state.profiles||[])delete person.pin;storage.setItem(snapshotKey(currentUid),JSON.stringify({uid:currentUid,deviceFingerprint:fingerprint,state}));}
+function remember(fingerprint=currentFingerprint){if(!confirmed||!currentUid||!fingerprint)return;const state=copy(confirmed);for(const person of state.profiles||[])delete person.pin;storage.setItem(snapshotKey(currentUid),JSON.stringify({uid:currentUid,deviceFingerprint:fingerprint,state}));const deviceToken=storage.getItem('rs_recognition_device_token_v1');if(deviceToken)storage.setItem('rs_recognition_identity_v1',JSON.stringify({personUid:currentUid,deviceToken,expiresAt:Number(storage.getItem('rs_recognition_device_expires_v1'))||Date.now()+365*86400000}));}
 export function profileState(){
  if(!confirmed)return null;const state=viewPreferences(copy(confirmed));
  for(const entry of pending){if(entry.body.operation==='member_status'){const member=state.memberships.find(m=>m.id===entry.body.membershipId);if(member&&member.userId!==currentUid)member.active=entry.body.active;}if(entry.body.operation==='profile'){const own=state.profiles.find(p=>p.id===currentUid),fields={...entry.body.fields};delete fields.pin;if(own)Object.assign(own,fields);}}
@@ -63,6 +63,22 @@ function mergeLoaded(next){
  const byId=(old,rows)=>[...new Map([...old,...rows].map(row=>[row.id,row])).values()];
  confirmed={...confirmed,...next,profiles:byId(confirmed.profiles,next.profiles),teams:byId(confirmed.teams||[],next.teams||[]),memberships:next.loaded.roster?next.memberships:[...confirmed.memberships.filter(m=>m.userId!==currentUid),...next.memberships],invitations:next.loaded.team?next.invitations:confirmed.invitations,loaded:{...confirmed.loaded,...Object.fromEntries(Object.entries(next.loaded).filter(([,value])=>value))}};
 }
+const packageQueue=[];let activePackage=null;
+function prioritizePackage(view){
+ const job=activePackage?.view===view?activePackage:packageQueue.find(job=>job.view===view);
+ if(job)job.priority=true;
+ if(activePackage&&!activePackage.priority&&activePackage.view!==view){activePackage.paused=true;activePackage.controller.abort();}
+}
+async function pumpPackages(){
+ if(activePackage||!packageQueue.length)return;
+ const index=packageQueue.findIndex(job=>job.priority),job=packageQueue.splice(index<0?0:index,1)[0];activePackage=job;job.paused=false;job.controller=new AbortController();
+ try{job.resolve(await fetchProfile(...job.args,job.controller.signal));}
+ catch(error){if(job.paused&&job.generation===generation)packageQueue.unshift(job);else job.reject(error);}
+ finally{if(activePackage===job)activePackage=null;void pumpPackages();}
+}
+function readProfile(uid,check,fingerprint,view='profile'){
+ return new Promise((resolve,reject)=>{packageQueue.push({view,args:[uid,check,fingerprint,view],generation:check,priority:false,resolve,reject});void pumpPackages();});
+}
 const scopedLoads=new Map();
 let horsesRequested=false;
 const viewEtags=new Map();
@@ -74,27 +90,31 @@ export function refreshProfile(){
  // Team contains the roster and own profile; otherwise refresh the largest prepared view.
  const view=confirmed.loaded?.team?'team':confirmed.loaded?.roster?'roster':'profile';
  const refreshHorses=horsesRequested||!!confirmed.loaded?.horses;
- const work=(async()=>{await (scopedLoads.get(view)||readProfile(actor,check,currentFingerprint,view));if(refreshHorses&&actor===currentUid&&check===generation&&confirmed)return loadProfileView('horses');return profileState();})().catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));viewEtags.clear();}notify(error);}throw error;});
+ const work=(async()=>{await (scopedLoads.get(view)||readProfile(actor,check,currentFingerprint,view));if(refreshHorses&&actor===currentUid&&check===generation&&confirmed)return loadProfileView('horses',{background:true});return profileState();})().catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));viewEtags.clear();}notify(error);}throw error;});
  periodicRefresh=work;void work.finally(()=>{if(periodicRefresh===work)periodicRefresh=null;}).catch(()=>{});return work;
 }
-export function loadProfileView(view){
+export function loadProfileView(view,{priority=false,background=false}={}){
  if(!['roster','team','horses'].includes(view)||!currentUid||!confirmed)return Promise.reject(Error('Profile is required first.'));
+ if(priority)prioritizePackage(view);
  if(view==='horses')horsesRequested=true;
  if(scopedLoads.has(view))return scopedLoads.get(view);
  const actor=currentUid,check=generation,fingerprint=currentFingerprint;
- const work=readProfile(actor,check,fingerprint,view).catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));}notify(error);}throw error;});
+ const work=(priority||background?readProfile:fetchProfile)(actor,check,fingerprint,view).catch(error=>{if(actor===currentUid&&check===generation){if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(actor));}notify(error);}throw error;});
+ if(priority)prioritizePackage(view);
  scopedLoads.set(view,work);void work.finally(()=>{if(scopedLoads.get(view)===work)scopedLoads.delete(view);}).catch(()=>{});return work;
 }
-async function readProfile(uid,check,fingerprint,view='profile'){
- const startedSaveVersion=saveVersion,response=await fetch(endpoint+'?view='+view,{credentials:'same-origin',cache:'no-store',headers:{'X-RS-Actor-Scope':uid,...(viewEtags.has(view)?{'If-None-Match':viewEtags.get(view)}:{})},signal:AbortSignal.timeout(20000)});
+async function fetchProfile(uid,check,fingerprint,view='profile',signal){
+ const startedSaveVersion=saveVersion,response=await fetch(endpoint+'?view='+view,{credentials:'same-origin',cache:'no-store',headers:{'X-RS-Actor-Scope':uid,...(viewEtags.has(view)?{'If-None-Match':viewEtags.get(view)}:{})},signal:signal?AbortSignal.any([signal,AbortSignal.timeout(20000)]):AbortSignal.timeout(20000)});
+ if(signal?.aborted){if(check!==generation)throw Error('Profile changed while loading.');throw signal.reason;}
  if(check!==generation||currentUid!==uid||recognitionAdapter.profileDeviceFingerprint?.()!==fingerprint)throw Error('Profile changed while loading.');
  if(response.status===304){resume();return profileState();}
  const data=await response.json();
+ if(signal?.aborted){if(check!==generation)throw Error('Profile changed while loading.');throw signal.reason;}
  if(!response.ok||!data.ok){const error=Error(data.error||'Profile could not be loaded.');error.status=response.status;throw error;}
  if(data.person_uid!==uid||data.state?.identity.currentId!==uid)throw Error('Profile identity did not match Recognize.');
  if(check!==generation||currentUid!==uid)throw Error('Profile changed while loading.');
  const before=JSON.stringify(confirmed);
- if(startedSaveVersion!==saveVersion){viewEtags.delete(view);if(view!=='profile')return readProfile(uid,check,fingerprint,view);}else{
+ if(startedSaveVersion!==saveVersion){viewEtags.delete(view);if(view!=='profile')return fetchProfile(uid,check,fingerprint,view,signal);}else{
   if(view==='horses'){
    // A package response cannot replace newer Profile or Team records.
    const own=state=>JSON.stringify((state?.memberships||[]).filter(m=>m.userId===uid).map(m=>[m.id,m.teamId,m.active,m.role]));
@@ -106,6 +126,13 @@ async function readProfile(uid,check,fingerprint,view='profile'){
 export function prepareProfile(uid){return loadProfile(uid);}
 export function loadProfile(resolvedUid){
  if(resolvedUid!==undefined)return loadResolvedProfile(resolvedUid,recognitionAdapter.profileDeviceFingerprint?.());
+ if(!confirmed&&!storage.getItem('rs_recognition_pending_signout_v1')){try{
+  const identity=JSON.parse(storage.getItem('rs_recognition_identity_v1')||'null'),token=storage.getItem('rs_recognition_device_token_v1');
+  if(identity?.personUid&&token&&identity.deviceToken===token&&identity.expiresAt>Date.now()){
+   const cached=JSON.parse(storage.getItem(snapshotKey(identity.personUid))||'null');
+   if(cached?.uid===identity.personUid&&cached.deviceFingerprint&&cached.state?.identity?.currentId===identity.personUid){restore(identity.personUid);currentFingerprint=cached.deviceFingerprint;confirmed=cached.state;notify();}
+  }
+ }catch{}}
  const check=generation;
  if(!recognizing){const work=Promise.resolve().then(()=>recognitionAdapter.current());recognizing=work;void work.finally(()=>{if(recognizing===work)recognizing=null;}).catch(()=>{});}
  return recognizing.then(uid=>{if(check!==generation)throw Error('Profile changed while loading.');return loadResolvedProfile(uid,recognitionAdapter.profileDeviceFingerprint?.());});
@@ -141,4 +168,4 @@ export function saveProfile(operation,values){
  })();retainPending();notify();
  void entry.ready.then(()=>{for(const item of pending)if(operationKey(item.body)===key&&!item.needsPin&&!item.blocked)item.error='';void drain(key);},error=>{if(actor!==currentUid||check!==generation){settle(entry,error);return;}entry.error=error.message;retainPending();settle(entry,error);notify(error);});return result;
 }
-export function clearProfile(){generation++;for(const entry of pending)settle(entry,Error('Profile changed during this save.'));currentUid=null;confirmed=null;pending=[];loading=null;refreshing=null;currentFingerprint=null;recognizing=null;periodicRefresh=null;horsesRequested=false;viewEtags.clear();scopedLoads.clear();running.clear();notify();}
+export function clearProfile(){generation++;if(activePackage){activePackage.paused=false;activePackage.controller.abort();}for(const job of packageQueue.splice(0))job.reject(Error('Profile changed while loading.'));for(const entry of pending)settle(entry,Error('Profile changed during this save.'));currentUid=null;confirmed=null;pending=[];loading=null;refreshing=null;currentFingerprint=null;recognizing=null;periodicRefresh=null;horsesRequested=false;viewEtags.clear();scopedLoads.clear();running.clear();notify();}

@@ -29,7 +29,7 @@ export function createConnection(service,recognize,onState){
   async start(){if(identityWork)return identityWork;const generation=epoch;const work=service.loadProfile().then(next=>{if(generation===epoch)accept(next);return next;}).catch(error=>{if(generation===epoch)accept(service.profileState(),error);throw error;});identityWork=work;try{return await work;}finally{if(identityWork===work)identityWork=null;}},
   async login(value){const generation=epoch,uid=await recognize.recognize(value);if(generation!==epoch)return null;if(!uid)throw Error('That phone or PIN was not recognized.');const next=await service.loadProfile(uid);if(generation===epoch)accept(next);return next;},
   async signOut(){epoch++;identityWork=null;service.clearProfile();accept(null);await recognize.signOut();},
-  load(view){return service.loadProfileView(view);},
+  load(view,options){return service.loadProfileView(view,options);},
   save(operation,values){return service.saveProfile(operation,values);},
   hide(id,hide){const own=membership(data);if(!own?.active||id===data.identity.currentId)return;const key=[data.identity.currentId,own.teamId,id],hidden=(data.hidden||[]).filter(x=>JSON.stringify(x)!==JSON.stringify(key));if(hide)hidden.push(key);service.saveViewPreferences(hidden);accept(service.profileState());}
  };
