@@ -82,3 +82,8 @@ body[data-website="true"],body[data-website="true"] .preview-stage{background:tr
  :root:not([data-size="compact"]) :is(.v3-panel,.launcher-widget,.ui-dialog),:host(:not([data-size="compact"])) :is(.v3-panel,#launcher){zoom:1.5;max-width:calc((100vw - 32px)/1.5)}
  :host(:not([data-size="compact"])) .v3-panel{right:16px;bottom:98px;max-height:calc((100dvh - 171px)/1.5)}
 }
+/* Optional striped list treatment shared by consuming screens. */
+:root[data-theme="light"] .results[data-striped]>.result-row:nth-child(even){background:var(--ui-hover)}
+.results[data-striped]>.result-row[aria-selected="true"]{background:var(--rs-active)}
+
+.ui-menu[role="listbox"] button[aria-selected="true"]{background:var(--rs-active)}

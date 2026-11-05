@@ -1,9 +1,11 @@
+import {icon as v3Icon} from '../rs-profile-v3/icons.js';
+import {v3Control,v3Search} from '../rs-profile-v3/components.js';
 // Date menu and searchable trainer modal retain the existing select/change state.
 export function headerDropdowns(host){
  const menu=document.createElement('div');
- menu.className='v2-filter-menu';menu.id='v2-filter-menu';menu.setAttribute('popover','auto');menu.setAttribute('role','listbox');document.body.append(menu);
- const trainerDialog=document.createElement('dialog');trainerDialog.className='rings-surface v2-trainer-dialog';trainerDialog.setAttribute('aria-labelledby','v2-trainer-title');
- trainerDialog.innerHTML='<header class="rings-surface-head"><div><h2 id="v2-trainer-title">Trainers</h2></div><button type="button" class="rings-icon-button" aria-label="Close trainers"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header><div class="rings-surface-content"><input class="v2-entry-search v2-trainer-search" type="search" aria-label="Search trainers" placeholder="Search trainers" autocomplete="off"><div class="v2-trainer-options" role="listbox" aria-label="Trainers"></div><p class="rings-detail-note v2-trainer-empty" role="status" hidden>No matching trainers</p></div>';
+ menu.className='ui-menu v2-filter-menu';menu.id='v2-filter-menu';menu.setAttribute('popover','auto');menu.setAttribute('role','listbox');document.body.append(menu);
+ const trainerDialog=document.createElement('dialog');trainerDialog.className='ui-dialog v2-trainer-dialog';trainerDialog.setAttribute('aria-labelledby','v2-trainer-title');
+ trainerDialog.innerHTML=`<header class="dialog-head"><h2 id="v2-trainer-title">Trainers</h2><button type="button" class="icon-button" aria-label="Close trainers">${v3Icon('close')}</button></header>${v3Search('Search trainers','trainer-search',v3Icon('search'),'Search trainers')}<div class="search-dialog-results results v2-trainer-options" data-layout="list" data-striped role="listbox" aria-label="Trainers"></div><p class="empty-result v2-trainer-empty" role="status" hidden>No matching trainers</p>`;
  document.body.append(trainerDialog);
  const search=trainerDialog.querySelector('input'),trainerList=trainerDialog.querySelector('[role=listbox]'),empty=trainerDialog.querySelector('[role=status]');
  let trainerActive=null;
@@ -12,7 +14,7 @@ export function headerDropdowns(host){
   Array.from(trainerActive.select.options).forEach((option,index)=>{
    if(query&&index!==0&&!option.textContent.toLocaleLowerCase().includes(query))return;
    if(query&&index===0)return;
-   const item=document.createElement('button');item.type='button';item.className='v2-filter-option';item.setAttribute('role','option');item.setAttribute('aria-selected',String(option.selected));item.textContent=option.textContent;item.title=option.textContent;
+   const item=document.createElement('button');item.type='button';item.className='result-row';item.setAttribute('role','option');item.setAttribute('aria-selected',String(option.selected));const copy=document.createElement('span');copy.className='result-copy';const name=document.createElement('strong');name.textContent=option.textContent;copy.append(name);item.append(copy);item.title=option.textContent;
    item.disabled=option.disabled||trainerActive.select.options.length===1;
    item.addEventListener('click',()=>{trainerActive.select.selectedIndex=index;trainerActive.select.dispatchEvent(new Event('change',{bubbles:true}));trainerDialog.close();});trainerList.append(item);count++;
   });empty.hidden=count>0;
@@ -29,7 +31,7 @@ export function headerDropdowns(host){
  }
  function open(select,button){
   if(select.getAttribute('aria-label')==='Trainer'){
-   close();trainerActive={select,button};search.value='';trainerDialog.querySelector('h2').textContent='Trainers - '+select.dataset.dayLabel;search.hidden=select.options.length===1;renderTrainers();trainerList.hidden=select.options.length===1;if(search.hidden){empty.hidden=false;empty.textContent='No trainer-linked entries for '+select.dataset.dayLabel+'.';}else empty.textContent='No matching trainers';trainerDialog.showModal();button.setAttribute('aria-expanded','true');if(!search.hidden)search.focus();return;
+   close();trainerActive={select,button};search.value='';trainerDialog.querySelector('h2').textContent='Trainers - '+select.dataset.dayLabel;search.closest('.search-control').hidden=select.options.length===1;search.hidden=select.options.length===1;renderTrainers();trainerList.hidden=select.options.length===1;if(search.hidden){empty.hidden=false;empty.textContent='No trainer-linked entries for '+select.dataset.dayLabel+'.';}else empty.textContent='No matching trainers';trainerDialog.showModal();button.setAttribute('aria-expanded','true');if(!search.hidden)search.focus();return;
   }
   active={select,button};menu.replaceChildren();menu.setAttribute('aria-label',select.getAttribute('aria-label'));
   Array.from(select.options).forEach((option,index)=>{
@@ -56,7 +58,7 @@ export function headerDropdowns(host){
  });
  addEventListener('resize',close);
  return (select,svg,{className='v2-header-filter',placement='bottom'}={})=>{
-  const button=document.createElement('button');button.type='button';button.className=className;button.dataset.placement=placement;button.innerHTML=svg;
+  const button=document.createElement('button');button.type='button';button.className=className;button.dataset.placement=placement;button.innerHTML=svg;v3Control(button,{icon:className==='v2-header-filter'});
   const trainer=select.getAttribute('aria-label')==='Trainer';trainerDialog.id='v2-trainer-dialog';button.setAttribute('aria-label',select.getAttribute('aria-label'));button.setAttribute('aria-haspopup',trainer?'dialog':'listbox');button.setAttribute('aria-controls',trainer?trainerDialog.id:menu.id);button.setAttribute('aria-expanded','false');
   select.hidden=true;select.tabIndex=-1;host.append(button,select);
   if(!trainer)button.setAttribute('popovertarget',menu.id);

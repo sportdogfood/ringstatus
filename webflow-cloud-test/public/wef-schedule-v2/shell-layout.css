@@ -1,0 +1,15 @@
+/* Schedule slots only. Shell, typography, controls, back/brand/footer are rs-profile-v3 components. */
+.rings-app{display:block;padding:0;font-family:Outfit,Arial,sans-serif}
+:root .v3-panel[data-width="schedule"]{width:820px;max-width:calc(100% - 32px);height:calc(100dvh - 32px);max-height:calc(100dvh - 32px);margin:16px 16px 16px auto;overflow:hidden}
+:root .v3-panel[data-width="schedule"] .stack-scroll{overflow-x:hidden}
+.rings-header .action-icons{margin-left:auto}
+.v2-page-nav,.rings-horse-actions{margin-inline:18px;overflow-x:auto;flex-shrink:0}
+.v2-page-nav{display:flex;gap:8px;padding-block:8px}
+.rings-pill{flex-shrink:0}
+.rings-shell-footer{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:600px){:root .v3-panel[data-width="schedule"]{width:100%;max-width:100%;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;box-shadow:none}.v2-page-nav,.rings-horse-actions{margin-inline:16px}}
+
+:where(.rings-app) :where(button:not(.ui-button):not(.icon-button)){border:0;font:inherit;color:inherit;cursor:pointer}
+
+/* Popover placement; appearance and item sizing come from V3 ui-menu. */
+.v2-filter-menu{position:fixed;inset:auto;margin:0;width:320px;max-width:calc(100vw - 24px);overflow:auto}

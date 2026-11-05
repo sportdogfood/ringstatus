@@ -1,3 +1,5 @@
+import './shell.js';
+import {v3Button,v3Control} from '../rs-profile-v3/components.js';
 import {headerDropdowns} from './header-dropdown.js';
 import {dayRows} from './day.js?v=source-order-1';
 import {enableDragScroll} from './drag-scroll.js?v=entry-lane-1';
@@ -32,11 +34,11 @@ const trainerControl=headerFilter(trainerSelect,icon('trainer'));
 const pageNav=document.querySelector('.v2-page-nav');
 const todayLink=pageNav.querySelector('a[href="day.html"]');
 const navDateSelect=document.createElement('select');navDateSelect.setAttribute('aria-label','Select date');
-const navDateControl=headerFilter(navDateSelect,todayLink.innerHTML,{className:'rings-pill',placement:'top'});
+const navDateControl=headerFilter(navDateSelect,todayLink.innerHTML,{className:'rings-pill ui-button',placement:'top'});
 todayLink.replaceWith(navDateControl);pageNav.append(navDateSelect);
 if(isDay)navDateControl.setAttribute('aria-current','page');
 for(const [label,glyph] of [['Horses','horse'],['Results','list'],['Messages','comment']]){
- const button=document.createElement('button');button.type='button';button.className='rings-pill';button.innerHTML=icon(glyph)+'<span>'+label+'</span>';pageNav.append(button);
+ const button=document.createElement('button');button.type='button';button.innerHTML=icon(glyph)+'<span>'+label+'</span>';button.classList.add('rings-pill');v3Control(button);pageNav.append(button);
 }
 navDateSelect.addEventListener('change',()=>{
  if(isDay){daySelect.value=navDateSelect.value;daySelect.dispatchEvent(new Event('change',{bubbles:true}));}
@@ -71,10 +73,10 @@ function syncDay(){
  footer.title=metadata.show+' · '+metadata.capturedAt;
  const rows=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
- if(!isDay)ringActions.innerHTML=rings.map(r=>`<button class="rings-pill" type="button" data-ring="${r}" aria-pressed="false">${icon('ring')}${escape(ringDetails[r].name)}</button>`).join('');
+ if(!isDay)ringActions.innerHTML=rings.map(r=>v3Button('ring-anchor',icon('ring')+escape(ringDetails[r].name),{extra:`data-ring="${r}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill"')).join('');
 
  const horses=new Map(rows.flatMap(r=>r.entries.map(e=>[e.horseId,e.name])));
- horseActions.innerHTML=[...horses].map(([id,name])=>`<button class="rings-pill" type="button" data-horse="${escape(id)}" aria-pressed="false">${icon('horse')}${escape(name)}</button>`).join('');
+ horseActions.innerHTML=[...horses].map(([id,name])=>v3Button('horse-filter',icon('horse')+escape(name),{extra:`data-horse="${escape(id)}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill"')).join('');
 }
 daySelect.addEventListener('change',()=>{
  state.day=daySelect.value;state.ring=null;state.horses.clear();horseActions.hidden=true;
