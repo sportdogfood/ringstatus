@@ -150,9 +150,6 @@
 .v2-title-trainer .rings-icon{width:16px;height:16px;flex-shrink:0}
 
 /* Product navigation belongs inside the schedule, independent of preview controls. */
-.rings-profile-nav{flex-shrink:0;display:flex;align-items:center;min-height:36px;padding-top:4px}
-.rings-profile-nav a{display:inline-flex;align-items:center;min-height:32px;color:var(--mode-muted,#bdbdbd);font-size:13px;text-decoration:none;padding:0 4px}
-.rings-profile-nav a:hover{color:var(--mode-ink,#fff)}
 
 .rings-surface-head{justify-content:flex-start;gap:8px}
 .rings-surface-head>div:first-child{flex:1;min-width:0}
@@ -251,15 +248,11 @@
 @media(min-width:479px){.rings-brand .rs-wordmark{zoom:.8}}
 
 /* Compact scrolling logo row at both preview widths. */
-.rings-scroll > .rings-header{height:36px}
 
-/* Scale the shared desktop canvas; keep its viewport bounds and mobile unchanged. */
+
+/* Desktop text uses native pixels, as in Profile V3. */
 @media(min-width:601px){
- .rings-app{--v2-desktop-scale:1.5;--v2-value-text:15px;--v2-label-text:12px}
- .rings-shell,.rings-surface{zoom:var(--v2-desktop-scale)}
- .rings-shell{max-width:calc(820px / var(--v2-desktop-scale));height:calc((100dvh - 64px) / var(--v2-desktop-scale));margin:calc(32px / var(--v2-desktop-scale)) auto}
- .rings-surface{width:min(760px,calc((100vw - 32px) / var(--v2-desktop-scale)));max-height:calc((100dvh - 40px) / var(--v2-desktop-scale));margin-bottom:calc(20px / var(--v2-desktop-scale))}
- .rings-surface[data-mode=class]{width:min(580px,calc((100vw - 40px) / var(--v2-desktop-scale)));max-height:calc((100dvh - 40px) / var(--v2-desktop-scale));top:calc(20px / var(--v2-desktop-scale));right:calc(20px / var(--v2-desktop-scale));margin:0}
+ .rings-app{--v2-value-text:15px;--v2-label-text:12px}
 }
 @media(max-width:600px){.rings-app{background:var(--rings-bg)}.rings-shell{max-width:none;width:100%;height:100dvh;margin:0;border:0;border-radius:0;box-shadow:none}}
 
@@ -330,7 +323,6 @@ body[data-view=day] .rings-schedule{padding-top:6px}
  .v2-class:not(.is-meta-open)>.v2-mobile-meta{display:none}
 }
 /* Owner-approved light-background mark; dark logo stays unchanged. */
-:root[data-theme=light] .rings-brand .rs-wordmark-ring{font-size:calc(2.3rem + 2pt)}
 
 /* Compact detail entries: metadata stays inline on desktop. */
 .rings-app .v2-entry-meta-toggle{display:none}
