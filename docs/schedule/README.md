@@ -13,3 +13,7 @@ Read and apply that section before planning, editing, testing or releasing a Sch
 This documentation adoption does not merge Profile and Schedule engines or change Schedule's existing behavior, package lanes, refresh intervals, save paths, layout or navigation. The contract grants no code-edit, production-data, deployment or publication authority by itself.
 
 Adopted 5 November 2026. This task changes documentation only.
+
+## Approval staging — documented, not implemented
+
+See the [5 November staging proposal](staging-proposal-20261105.md) for the inspected Astro setup, same-source approval workflow, path compatibility findings and unresolved isolation/write-policy decisions. Implementation is deferred; no staging resources or runtime changes are authorized by this documentation.

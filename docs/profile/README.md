@@ -161,6 +161,22 @@ Owner-approved 5 November 2026. This is the shared enhancement contract for **we
 
 Both owners must reference this section rather than maintain divergent copies. These rules govern enhancements; they do not merge Profile and Schedule loaders or change their existing ownership.
 
+## Approval staging proposal — documented, not implemented
+
+Inspected 5 November 2026. The owner requested documentation only; this proposal does not authorize creating an environment, changing code, configuring connections or deploying.
+
+The shared detailed plan is the [Profile V3 and Schedule approval staging proposal](../schedule/staging-proposal-20261105.md). Both owners use that document for the inspected setup, compatibility findings, unresolved decisions and later acceptance.
+
+- The existing Webflow Cloud Astro project has one environment: `110f06dd-c1ea-4839-98af-d829cbe77941`, mounted at `/test`, tracking `work/inputs-crm-20261006`. This is the live deployment route. Existing `/profile` and `/wef` standalone surfaces are not independently deployed approval environments.
+- Webflow Cloud supports a separate branch-based environment in the same project with its own unique mount path. Proposed approval staging would use the same Astro source and approved components, not a separate ChatGPT Sites implementation. No staging branch, environment or URL has been selected or created for this proposal.
+- Compatibility preparation is required: Profile currently hard-codes `/test/` in scripts, styles, Recognize imports, data requests, embedding and navigation. A new mount alone would still load parts of live. The smallest proposed correction is environment-aware base paths while preserving existing live `/test` behavior. Schedule's inspected path and browser-storage findings are recorded in the shared detailed proposal; implementation remains unauthorized. This finding is not authorization to rewrite either application.
+- Configure recognition bindings and connection settings deliberately. A separate URL does not automatically isolate Airtable writes, cookies or browser-held data. The staging data/write policy remains to be settled before provisioning; no isolated test data or safe write destination is claimed.
+- Intended workflow: implement only the requested enhancement on staging, verify desktop/mobile and the affected dataset/journey, obtain approval for the exact tested source revision, deploy that same source revision through the existing live route, and verify live. No translation, additional features or intervening untested edits.
+- Webflow builds each environment separately. This preserves the approved source revision, not an identical prebuilt artifact or an unconditional guarantee of identical runtime behavior. Hosting, recognition, embedding and navigation still require live verification.
+- Inspection made no code, environment, connection or live changes. Implementation requires separate authorization under the enhancement rules above.
+
+Platform references: [Webflow Cloud environments](https://developers.webflow.com/webflow-cloud/environments) and [deployments](https://developers.webflow.com/webflow-cloud/deployments).
+
 ## Deployment and rollback
 
 Established source: branch `work/inputs-crm-20261006`, existing Webflow Cloud `/test` deployment. Do not initialize another app or deploy mixed unfinished changes. Preserve other owners' Schedule changes and local evidence.
