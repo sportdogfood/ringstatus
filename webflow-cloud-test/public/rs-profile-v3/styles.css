@@ -71,3 +71,9 @@ body[data-recognized="false"] .preview-stage{display:none}
 html:has(body[data-recognized="false"]),html:has(#app[hidden]){color-scheme:light;background:transparent}
 
 @media(min-width:601px){.launcher-widget .icon-button{width:36px;height:40px;flex:0 0 36px}}
+
+/* Optional striped list treatment shared by consuming screens. */
+:root[data-theme="light"] .results[data-striped]>.result-row:nth-child(even){background:var(--ui-hover)}
+.results[data-striped]>.result-row[aria-selected="true"]{background:var(--rs-active)}
+
+.ui-menu[role="listbox"] button[aria-selected="true"]{background:var(--rs-active)}

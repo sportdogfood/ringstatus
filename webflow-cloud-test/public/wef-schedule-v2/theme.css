@@ -2,10 +2,6 @@
 
 /* Dark mode is the existing palette; light mode changes colors only. */
 :root[data-theme=light]{color-scheme:light;--mode-scheme:light;--rs-surface:#fff;--rs-active:#d2d9e0;--rs-border:#cbd2d8;--rs-text:#20262d;--rs-muted:#374151;--rs-focus:#005ea8;--mode-ink:#20262d;--mode-muted:#374151;--mode-surface:#fff;--mode-stripe:#e2e7ec;--mode-border:#cbd2d8;--mode-blue:#005ea8;--mode-blue-bg:#cde3f5;--mode-blue-border:#005ea8;--mode-teal:#00695c;--mode-teal-bg:#cce9e1;--mode-teal-border:#00695c;--mode-purple:#5b3fa3;--mode-purple-bg:#ddd2ee;--mode-purple-border:#5b3fa3;--mode-amber:#8a4b08;--mode-red:#b42332;--mode-olive:#666b12;--mode-olive-bg:#e5e9b8;--mode-overlay:#00000006;--mode-control-fill:#e2e7ec;--mode-control-border:#7a8695;--mode-selected-bg:#20262d;--mode-selected-ink:#fff}
-.rings-app .v2-theme-toggle{display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;padding:5px;border:1px solid var(--rs-border);border-radius:8px;background:var(--rs-surface);color:var(--rs-muted);cursor:pointer}
-.v2-theme-toggle svg{width:18px;height:18px;flex:none}
-.v2-theme-toggle:hover{background:var(--rs-active)}
-.v2-theme-toggle:focus-visible{outline:2px solid var(--rs-focus);outline-offset:2px}
 
 /* Shared Light mode control colors; geometry and Dark mode are unchanged. */
 :root[data-theme=light] .rings-app :is(.v2-entry-tools button,.v2-entry-search,.v2-schedule-day,.v2-day-sort select,.v2-comment-form textarea){border-color:var(--mode-control-border)!important}
