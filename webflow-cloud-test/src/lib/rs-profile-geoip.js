@@ -12,7 +12,7 @@ export async function profileGeoip(request,fetchImpl=fetch){
  const ip=[request.headers.get('CF-Connecting-IP'),(request.headers.get('X-Forwarded-For')||'').split(',')[0]].map(v=>(v||'').trim()).find(v=>isIP(v));
  if(!ip)return null;
  try{
-  const response=await fetchImpl(`https://get.geojs.io/v1/ip/geo/${encodeURIComponent(ip)}.json`,{redirect:'error',signal:AbortSignal.timeout(1500)});
+  const response=await fetchImpl(`https://get.geojs.io/v1/ip/geo/${encodeURIComponent(ip)}.json`,{signal:AbortSignal.timeout(1500)});
   if(!response.ok)return null;
   const value=await response.json();return coordinates(value.latitude,value.longitude,'geoip',observedAt);
  }catch{return null;}

@@ -8,7 +8,7 @@ test('request coordinates avoid lookup; GeoJS fallback validates ranges, omits I
  Object.defineProperty(request,'cf',{value:{latitude:'0',longitude:'-80.5'}});
  const supplied=await profileGeoip(request,()=>{throw Error('unnecessary lookup');});assert.equal(supplied.latitude,0);assert.equal(supplied.source,'cloudflare');
  const fallback=new Request(request.url,{headers:request.headers});let calls=0;
- const result=await profileGeoip(fallback,async(url,options)=>{calls++;assert.ok(url.startsWith('https://get.geojs.io/'));assert.ok(options.signal);return Response.json({latitude:'26.65',longitude:'-80.29',ip:'203.0.113.1'});});
+ const result=await profileGeoip(fallback,async(url,options)=>{calls++;assert.ok(url.startsWith('https://get.geojs.io/'));assert.ok(options.signal);assert.notEqual(options.redirect,'error','Cloudflare Workers rejects error redirect mode');return Response.json({latitude:'26.65',longitude:'-80.29',ip:'203.0.113.1'});});
  assert.equal(calls,1);assert.equal(result.longitude,-80.29);assert.ok(Number.isFinite(Date.parse(result.observedAt)));assert.equal(result.ip,undefined);
  assert.equal(await profileGeoip(fallback,async()=>Response.json({latitude:300,longitude:0})),null);
  assert.equal(await profileGeoip(fallback,async()=>{throw Error('timeout');}),null);

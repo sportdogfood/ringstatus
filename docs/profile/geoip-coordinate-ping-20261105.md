@@ -6,6 +6,6 @@ Implementation: existing GET /test/rs-profile/data?view=geoip, protected by the 
 
 Checks:49 targeted tests passed (27 server/GeoIP/loading and22 service/V3); build passed. A deliberately unresolved GeoIP promise did not hold Profile. Provider failure/invalid coordinates, duplicate starts, stale account responses, unauthenticated actor and actor mismatch were exercised. Existing saved/pending/priority/refresh tests passed. The pre-existing modified service test file was not included in the release.
 
-Live verification: pending deployment. This is not yet a live acceptance claim.
+Initial live verification caught a runtime compatibility failure: the new lookup specified redirect:error, which Cloudflare Workers rejects before sending a request. The existing regional implementation does not use that option. Removed that added option; the regression test now rejects it. Source: https://developers.cloudflare.com/workers/runtime-apis/request/ . Live coordinate acceptance remains pending the corrected deployment.
 
 Rollback: revert only the GeoIP correction commit; preserve subsequent owner changes. No schema migration or Airtable record repair is required.
