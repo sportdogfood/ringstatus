@@ -8,7 +8,8 @@ import {pingLocation} from './device-location.js';
 import {ringPanel,detailPanel,icon,commentsList,dayLine} from './components.js?v=group-subline-1';
 const isDay=document.body.dataset.view==='day';
 const requestedDay=new URLSearchParams(location.search).get('date');
-const initialDay=days.some(d=>d.date===requestedDay)?requestedDay:days.some(d=>d.date===metadata.defaultDate)?metadata.defaultDate:days[0]?.date;
+const todayDate=()=>new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const initialDay=days.some(d=>d.date===requestedDay)||requestedDay===todayDate()?requestedDay:todayDate();
 const state={trainer:new URLSearchParams(location.search).get('trainer')||'',day:initialDay,ring:null,horses:new Set(),selection:null,dayStatus:"",daySort:'time',dayDirection:'asc'};
 const schedule=document.querySelector('#rings-schedule');
 const surface=document.querySelector('#rings-surface');
@@ -28,6 +29,19 @@ daySelect.before(headerFilters);
 const headerFilter=headerDropdowns(headerFilters);
 const dayControl=headerFilter(daySelect,'<svg class="rings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18M8 15h3v3H8z"/></svg>');
 const trainerControl=headerFilter(trainerSelect,icon('trainer'));
+const pageNav=document.querySelector('.v2-page-nav');
+const todayLink=pageNav.querySelector('a[href="day.html"]');
+const navDateSelect=document.createElement('select');navDateSelect.setAttribute('aria-label','Select date');
+const navDateControl=headerFilter(navDateSelect,todayLink.innerHTML,{className:'rings-pill',placement:'top'});
+todayLink.replaceWith(navDateControl);pageNav.append(navDateSelect);
+if(isDay)navDateControl.setAttribute('aria-current','page');
+for(const [label,glyph] of [['Horses','horse'],['Results','list'],['Messages','comment']]){
+ const button=document.createElement('button');button.type='button';button.className='rings-pill';button.innerHTML=icon(glyph)+'<span>'+label+'</span>';pageNav.append(button);
+}
+navDateSelect.addEventListener('change',()=>{
+ if(isDay){daySelect.value=navDateSelect.value;daySelect.dispatchEvent(new Event('change',{bubbles:true}));}
+ else{const target=new URL('day.html',location.href);target.searchParams.set('date',navDateSelect.value);if(state.trainer)target.searchParams.set('trainer',state.trainer);location.href=target.href;}
+});
 trainerControl.hidden=!document.body.hasAttribute('data-trainer-filter');
 trainerSelect.addEventListener('change',()=>{state.trainer=trainerSelect.value;state.horses.clear();if(surface.open)surface.close();syncDay();renderSchedule();});
 daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');
@@ -40,7 +54,10 @@ function syncDay(){
  if(state.trainer&&!options.some(([id])=>id===state.trainer))state.trainer='';
  const url=new URL(location.href);url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');history.replaceState(null,'',url);
  document.querySelectorAll('a[href*="schedule.html"],a[href*="day.html"]').forEach(a=>{const target=new URL(a.getAttribute('href'),location.href);target.searchParams.set('date',state.day);if(state.trainer)target.searchParams.set('trainer',state.trainer);else target.searchParams.delete('trainer');a.href=target.href;});
- daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');daySelect.value=state.day;
+ const dates=[...new Set([todayDate(),state.day,...days.map(d=>d.date)])].sort();
+ daySelect.innerHTML=dates.map(date=>`<option value="${escape(date)}">${date===todayDate()?'Today':escape(dateLabel(date))}</option>`).join('');daySelect.value=state.day;
+ navDateSelect.innerHTML=daySelect.innerHTML;navDateSelect.value=state.day;
+ navDateControl.querySelector('span').textContent=state.day===todayDate()?'Today':dateLabel(state.day);
  trainerSelect.innerHTML='<option value="">'+(options.length?'All trainers':'No trainers for '+escape(dateLabel(state.day)))+'</option>'+options.map(([id,name])=>`<option value="${escape(id)}">${escape(name)}</option>`).join('');trainerSelect.value=state.trainer;
  const dateText=dateLabel(state.day);
  trainerSelect.dataset.dayLabel=dateText;
@@ -228,7 +245,7 @@ function applyDeviceData(data){
  if(surface.open||document.activeElement?.matches('input,textarea')){pendingData=data;return;}
  pendingData=null;
  const top=scroller.scrollTop;replaceData(data);
- if(!days.some(d=>d.date===state.day))state.day=metadata.defaultDate||days[0]?.date;
+ if(!state.day)state.day=todayDate();
  if(!state.day)return;
  syncDay();renderSchedule();scroller.scrollTop=top;
  document.querySelector('.rings-shell-footer').textContent='Updated '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:metadata.timezone}).format(new Date(metadata.refreshedAt||metadata.capturedAt));
