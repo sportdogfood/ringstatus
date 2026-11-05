@@ -54,15 +54,10 @@ export const recognitionAdapter={
  }
 };
 
-export function mountRecognitionWidget(root,{landing=false}={}){
+export function mountRecognitionWidget(root){
  if(!root||root.__rsRecognitionWidget)return root?.__rsRecognitionWidget;
- const prepare=uid=>{if(uid)void import('../rs-profile/service.js').then(({prepareProfile})=>prepareProfile(uid)).catch(()=>{});};
- const adapter={...recognitionAdapter,async current(){const uid=await recognitionAdapter.current();prepare(uid);return uid;}};
- const widget=mountRecognize(root,{adapter,onRecognized:uid=>{prepare(uid);location.assign('/profile');},onProfile:()=>location.assign('/profile')});
- root.__rsRecognitionWidget=widget;
- const refresh=()=>widget.refresh({showFormWhenUnrecognized:landing}).catch(()=>{root.setAttribute('data-rs-recognition-status','unavailable');});
- void flushIamHistory({endpoint,persistentStorage});void refresh();
- addEventListener('online',()=>{void finishSignOut().then(refresh).catch(()=>{});void flushIamHistory({endpoint,persistentStorage});});
- addEventListener('storage',event=>{if([pendingKey,tokenKey].includes(event.key))void refresh();});
- return widget;
+ root.hidden=true;
+ const work=import('/test/rs-profile-v3/embed.js');root.__rsRecognitionWidget=work;
+ void work.catch(()=>{root.setAttribute('data-rs-recognition-status','unavailable');});
+ return work;
 }
