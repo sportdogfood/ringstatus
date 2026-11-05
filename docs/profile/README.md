@@ -1,6 +1,6 @@
 # RingStatus Profile
 
-Updated 5 November 2026. Current Profile V3 release: `309ac5f8`; coordinated Schedule return correction: `61b1f899`; launcher correction: `2f893c8a`.
+Updated 5 November 2026. Current Profile V3 GeoIP release: `82d22139` (initial ping `24d1ce17`); navigation release `309ac5f8`; coordinated Schedule return correction: `61b1f899`; launcher correction: `2f893c8a`.
 
 ## Scope and current implementation
 
@@ -130,7 +130,8 @@ The [four-page live check](full-cycle-live-20261105.md) proves its recorded reco
 | Profile active state, mobile launcher placement and overflow | Corrected in `2f893c8a` | [Launcher checks](launcher-contract-20261105.md); live DOM checks passed, but live screenshot capture timed out. |
 | Obsolete external Profile return link | Verified corrected | Schedule `61b1f899`, Profile `309ac5f8`; [coordinated live checks](coordinated-links-20261105.md). |
 | A final horse read repeats after the priority-loaded horse package | Observed; not corrected in these releases | [Priority request trace](full-cycle-live-20261105.md). No claim that redundant reads have been eliminated. |
-| Profile GeoIP coordinate ping | Implemented; see separate acceptance evidence | [GeoIP ping evidence](geoip-coordinate-ping-20261105.md). Device metadata only; no Airtable coordinate writes or precise-location UI. |
+| Profile GeoIP coordinate ping | Deployed and live verified in `82d22139` | [GeoIP ping evidence](geoip-coordinate-ping-20261105.md). Device metadata only; no Airtable coordinate writes or precise-location UI. |
+| GeoIP lookup used unsupported Workers redirect:error mode | Corrected and live verified in `82d22139` | Removed the new unsupported option to match existing GeoIP fetch behavior; compatibility regression added. See [ping evidence](geoip-coordinate-ping-20261105.md). |
 | Live screenshot capture timeout | Tooling limitation; not a diagnosed product defect | Launcher/navigation were checked through real controls and DOM/URL state. No captured live image proof claimed. |
 
 Schedule Back currently reloads Profile from device data rather than preserving its mounted document. Scroll-up reveal and Expand/Restore are unimplemented proposals. These are recorded limitations/proposals, not verified product failures.
@@ -147,4 +148,4 @@ Historical 2 November evidence and ownership handoff remain at [the coordinator 
 
 Established source: branch `work/inputs-crm-20261006`, existing Webflow Cloud `/test` deployment. Do not initialize another app or deploy mixed unfinished changes. Preserve other owners' Schedule changes and local evidence.
 
-Rollback only the specific correction commit: `309ac5f8` for Profile Schedule links, `2f893c8a` for launcher behavior, or Schedule-owned `61b1f899` for its static Back link. Preserve subsequent changes and apply the existing approval boundaries. This README grants no additional edit, publication, data-repair or workflow authority.
+GeoIP rollback covers `82d22139` and `24d1ce17`; no schema migration or Airtable repair is needed. Rollback only the specific correction commit: `309ac5f8` for Profile Schedule links, `2f893c8a` for launcher behavior, or Schedule-owned `61b1f899` for its static Back link. Preserve subsequent changes and apply the existing approval boundaries. This README grants no additional edit, publication, data-repair or workflow authority.
