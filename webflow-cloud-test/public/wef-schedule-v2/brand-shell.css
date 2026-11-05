@@ -16,6 +16,6 @@
 .rings-profile-nav a{display:inline-flex;align-items:center;gap:5px;min-height:28px;padding:0;background:none;border:0;color:var(--rs-muted);font:400 13px/normal Outfit,Arial,sans-serif;text-decoration:none}
 .rings-profile-nav a:hover{color:var(--rs-text)}
 :root[data-theme=light] :is(.rings-profile-nav a,.rings-shell-footer){color:#626262}
-.rings-scroll>.rings-header{display:flex;align-items:center;justify-content:space-between;height:34px;min-height:34px;gap:8px;margin:0;border:0}
-.rings-shell-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;min-height:56px;padding:10px 18px 12px;margin-inline:-18px;border-top:1px solid var(--rs-border);color:var(--rs-muted);font:400 12px/normal Outfit,Arial,sans-serif}
+.rings-scroll>.rings-header{display:flex;align-items:center;justify-content:space-between;height:auto;min-height:34px;gap:8px;margin:0;padding:0 0 4px;border:0;font:400 16px/normal Outfit,Arial,sans-serif}
+.rings-shell-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0;min-height:calc(var(--control-height) + 23px);padding:10px 18px 12px;margin-inline:-18px;border-top:1px solid var(--rs-border);color:var(--rs-muted);font:400 12px/normal Outfit,Arial,sans-serif}
 @media(max-width:600px){.rings-shell-footer{margin-inline:-12px;padding-inline:18px}}
