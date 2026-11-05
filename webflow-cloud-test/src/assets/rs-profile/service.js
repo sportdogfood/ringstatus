@@ -156,7 +156,9 @@ function loadResolvedProfile(uid,fingerprint){
  if(loading)return loading;
  if(refreshing&&currentUid)return confirmed?Promise.resolve(profileState()):refreshing;
  const check=generation;restore(uid);currentFingerprint=fingerprint;
- if(!confirmed){try{const cached=JSON.parse(storage.getItem(snapshotKey(uid))||'null');if(fingerprint&&cached?.uid===uid&&cached.deviceFingerprint===fingerprint&&cached.state?.identity.currentId===uid)confirmed=cached.state;}catch{}}
+ // Recognize has confirmed this person on the new device session. The working
+ // copy belongs to the person, not the retired sign-in token.
+ if(!confirmed&&!storage.getItem('rs_recognition_pending_signout_v1')){try{const cached=JSON.parse(storage.getItem(snapshotKey(uid))||'null');if(fingerprint&&cached?.uid===uid&&cached.state?.identity?.currentId===uid){confirmed=cached.state;remember(fingerprint);notify();}}catch{}}
  const refresh=readProfile(uid,check,fingerprint);void refresh.then(()=>pingGeoip(uid,check,fingerprint)).catch(()=>{});refreshing=refresh;void refresh.finally(()=>{if(refreshing===refresh)refreshing=null;}).catch(()=>{});
  const work=confirmed?Promise.resolve(profileState()):refresh;
  if(confirmed)void refresh.catch(error=>{if(check!==generation||currentUid!==uid||currentFingerprint!==fingerprint)return;if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(uid));}notify(error);});
