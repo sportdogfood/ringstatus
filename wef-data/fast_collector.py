@@ -75,6 +75,25 @@ class Source:
         return safe(payload),metric
 
 
+def schedule_payload(source, params):
+    try:
+        return source.fetch('/schedule',params)
+    except SourceFailure as exc:
+        http=exc.diagnostic.get('http')
+        if not (http in (500,502,503,504) or (http is None and (exc.diagnostic.get('timeout') or 'TIMEOUT' in str(exc).upper()))):
+            raise
+        first=str(exc)
+    time.sleep(1)
+    try:
+        return source.fetch('/schedule',params)
+    except SourceFailure as exc:
+        raise SourceFailure(f'Schedule retry failed: {exc}; first attempt: {first}',exc.diagnostic) from exc
+
+
+def blocking_errors(errors):
+    return any(not item.get('nonblocking') for item in errors)
+
+
 def collect_day(schema_file, selection):
     """Existing fresh single-day collection; no class work is queued or resumed."""
     errors=[];saved=set();show=None;day=None;runkey=None;run_started=stamp()
@@ -87,10 +106,10 @@ def collect_day(schema_file, selection):
     def report():
         if runkey:
             save('runs',[{'run-key':runkey,'mode':'Scheduled day-zero collection' if priority==0 else 'Scheduled day-'+str(selection[2])+' collection',
-                'started':run_started,'completed':stamp(),'status':'Partial' if errors else 'Succeeded',
+                'started':run_started,'completed':stamp(),'status':'Partial' if blocking_errors(errors) else 'Succeeded',
                 'records':len(saved),'errors':len(errors),'elapsed-seconds':round(time.perf_counter()-started,6)}])
             timed('save-run-summary')
-        return {'ok':not errors,'state':'Partial' if errors else 'Saved',
+        return {'ok':not blocking_errors(errors),'state':'Partial' if blocking_errors(errors) else 'Saved',
                 'show-key':show,'day':day,'run-key':runkey,'counts':{'saved':len(saved),
                 'stage-seconds':dict(timings),'total-seconds':round(time.perf_counter()-started,6)},'item-errors':errors}
     try:
@@ -124,15 +143,36 @@ def collect_day(schema_file, selection):
                     records.append({'id':mapping[table][key],'fields':store.fields_for(table,row,mapping)});keys.append(key)
                 except Exception as exception:error(table+' '+key,exception)
             if not records:continue
-            try:
-                response=client.request('PATCH',DATA_BASE,store.schema[table]['id'],body={'records':records})
+            def patch_records(items, item_keys):
+                response=client.request('PATCH',DATA_BASE,store.schema[table]['id'],body={'records':items})
                 acknowledged={row['id'] for row in response['records']}
-                for key,record in zip(keys,records):
+                for key,record in zip(item_keys,items):
                     if record['id'] in acknowledged:
                         written.add(key)
                         if table!='runs':saved.add((table,key))
                     else:error(table+' '+key,'Write response did not acknowledge this record')
-            except Exception as exception:error(table,exception)
+            try:
+                patch_records(records,keys)
+            except Exception as exc:
+                if table!='classes' or 'Airtable HTTP 422' not in error_text(exc):
+                    error(table,exc)
+                    continue
+                for key,record in zip(keys,records):
+                    try:
+                        patch_records([record],[key])
+                    except Exception as rejected:
+                        message=error_text(rejected)
+                        field=store.fields[table]['source-json']['id']
+                        if ('Airtable HTTP 422' not in message or 'Field "source-json" cannot accept' not in message
+                                or field not in record['fields']):
+                            error(table+' '+key,rejected)
+                            continue
+                        remaining={k:v for k,v in record['fields'].items() if k!=field}
+                        try:
+                            patch_records([{'id':record['id'],'fields':remaining}],[key])
+                        except Exception as fallback:
+                            error(table+' '+key,fallback)
+                        errors.append({'key':table+' '+key+' source-json','error':message,'nonblocking':True})
         return written
 
     def missing_rows(table,present,prefix,terminal,absent='Absent'):
@@ -166,7 +206,7 @@ def collect_day(schema_file, selection):
     timed('save-run-start')
     params={'show_id':context['show-id'],'customer_id':context['customer-id']}
     try:
-        payload,metric=source.fetch('/schedule',{**params,'date':day})
+        payload,metric=schedule_payload(source,{**params,'date':day})
     except Exception as exception:
         error('Day inventory collection',exception);return report()
     timed('fetch-rings-groups-classes')
@@ -277,13 +317,15 @@ def collect_day(schema_file, selection):
     absent_schedules=missing_rows('schedules',schedules,show+'|'+day+'|','Dropped') if inventory_complete else []
     save('schedules',list(schedules.values())+absent_schedules);timed('save-schedules')
     absent_classes=missing_rows('classes',inventory['classes'],show+'|'+day+'|','Dropped') if inventory_complete else []
-    save('classes',list(classes.values())+absent_classes);timed('save-class-details')
+    updated_classes=save('classes',list(classes.values())+absent_classes);timed('save-class-details')
     save('entries',entries.values())
     for table,entity_rows in entities.items():save(table,entity_rows.values())
     timed('save-entries')
     save('trips',list(trips.values())+missing_trips);timed('save-trips')
     save('results',results.values());timed('save-results')
-    return report()
+    result=report()
+    result['confirmed-classes']=sorted(updated_classes.intersection(classes))
+    return result
 
 
 def run(schema_file):
@@ -352,11 +394,12 @@ def run(schema_file):
         for item in result.get('item-errors',[]):errors.append({**item,'day':day,'priority':priority})
         reports.append({'day':day,'priority':priority,'lane':lane,'started':at,'completed':state[key]['completed'],
                         'state':result['state'],'run-key':result.get('run-key'),'counts':result['counts'],
+                        'confirmed-classes':result.get('confirmed-classes',[]),
                         'errors':len(result.get('item-errors',[]))})
     for report in reports:
         for stage,elapsed in report['counts'].get('stage-seconds',{}).items():
             timings[stage]=round(timings.get(stage,0)+elapsed,6)
-    return {'ok':not errors,'state':'Partial' if errors else 'Saved','show-key':show,
+    return {'ok':not blocking_errors(errors),'state':'Partial' if blocking_errors(errors) else 'Saved','show-key':show,
             'day':reports[0]['day'] if reports else None,'run-key':reports[0].get('run-key') if reports else None,
             'counts':{'saved':sum(r['counts'].get('saved',0) for r in reports),
                       'day-priorities':{day:priority for priority,day in days},

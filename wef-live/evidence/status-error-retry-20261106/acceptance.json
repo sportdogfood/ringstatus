@@ -1,0 +1,160 @@
+{
+  "verified_at": "2026-11-06T14:12:40.841725+00:00",
+  "code": "PASS: activity.js/source.js exact owner User-Agent on four paths; live-cadence.js failed status3minutes,confirmedfalse60; only these3files changed across both approvals",
+  "offline": "12PASS including7header/proxy/URL/retry and5cadence/checkpoint/recovery checks; author review,not independent",
+  "normal_source_verification": "PASS:09:03status/groups/widget recovery and09:06/09:09class detail source snapshots; no manual source or collector calls",
+  "normal_runs": {
+    "09:06": [
+      {
+        "lane": "groups",
+        "run_id": "8f5a0879-8268-49ec-b5b3-517f2952c97d",
+        "started": "2026-11-06T14:06:04.799Z",
+        "completed": "2026-11-06T14:06:12.326Z",
+        "ok": true,
+        "counts": {
+          "live-groups": 26,
+          "live-class-appearances": 44
+        }
+      },
+      {
+        "lane": "rings",
+        "run_id": "8942ddd9-f4fa-4ac9-b29d-a85735af448e",
+        "started": "2026-11-06T14:06:04.808Z",
+        "completed": "2026-11-06T14:06:07.268Z",
+        "ok": true,
+        "counts": {
+          "live-rings": 6
+        }
+      },
+      {
+        "lane": "classes",
+        "run_id": "1d7e14fd-6ad4-403e-b546-7bff9101394d",
+        "started": "2026-11-06T14:06:04.809Z",
+        "completed": "2026-11-06T14:07:51.666Z",
+        "ok": true,
+        "counts": {
+          "live-classes": 39,
+          "live-entries": 402,
+          "live-trips": 402
+        }
+      }
+    ],
+    "09:09": [
+      {
+        "lane": "groups",
+        "run_id": "35011221-2f2a-4295-86dc-c997ff4a90c3",
+        "started": "2026-11-06T14:09:05.821Z",
+        "completed": "2026-11-06T14:09:13.505Z",
+        "ok": true,
+        "counts": {
+          "live-groups": 26,
+          "live-class-appearances": 44
+        }
+      },
+      {
+        "lane": "rings",
+        "run_id": "8cf56a15-cb39-4ea5-b793-c74436419af7",
+        "started": "2026-11-06T14:09:05.824Z",
+        "completed": "2026-11-06T14:09:08.417Z",
+        "ok": true,
+        "counts": {
+          "live-rings": 6
+        }
+      },
+      {
+        "lane": "classes",
+        "run_id": "87241489-a4e1-44d8-9792-da52d3f7d23c",
+        "started": "2026-11-06T14:09:05.825Z",
+        "completed": "2026-11-06T14:09:17.514Z",
+        "ok": true,
+        "counts": {
+          "live-classes": 39,
+          "live-entries": 402,
+          "live-trips": 402
+        }
+      }
+    ]
+  },
+  "live_counts": {
+    "rings": 6,
+    "groups": 26,
+    "class_appearances": 44,
+    "classes": 39,
+    "live_trips": 402
+  },
+  "trip_readback": {
+    "classes": 39,
+    "trips": 402,
+    "unique_trip_keys": 402,
+    "correct_class_links": 402,
+    "result_json_present": 402
+  },
+  "source_coverage": {
+    "class_payloads": 39,
+    "ui_rows": 409,
+    "decoded_trips": 402
+  },
+  "remaining_record_warnings": {
+    "classes": [
+      {
+        "message": "No decoded identity for trip 200400967",
+        "class_id": 200030984,
+        "trip_id": 200400967
+      },
+      {
+        "message": "No decoded identity for trip 200400439",
+        "class_id": 200030984,
+        "trip_id": 200400439
+      },
+      {
+        "message": "No decoded identity for trip 200400968",
+        "class_id": 200030985,
+        "trip_id": 200400968
+      },
+      {
+        "message": "No decoded identity for trip 200399515",
+        "class_id": 200030985,
+        "trip_id": 200399515
+      },
+      {
+        "message": "No decoded identity for trip 200400440",
+        "class_id": 200030985,
+        "trip_id": 200400440
+      },
+      {
+        "message": "No decoded identity for trip 200400717",
+        "class_id": 200030985,
+        "trip_id": 200400717
+      },
+      {
+        "message": "No decoded identity for trip 200400754",
+        "class_id": 200030985,
+        "trip_id": 200400754
+      }
+    ],
+    "rings": [
+      {
+        "message": "Invalid widget completed for ring 3"
+      },
+      {
+        "message": "Invalid widget completed for ring 7"
+      }
+    ]
+  },
+  "limits": [
+    "Successful normal source parsing proves accepted2xx usable responses; numeric status200 was not separately instrumented",
+    "Results retain source values/verification state; source placeholders are not final results",
+    "No natural failed status was forced after repair;3minute failure/false-hourly behavior covered offline"
+  ],
+  "preserved": [
+    "URLs/queryparameters",
+    "other request headers",
+    "Cloudflare proxy/default headers",
+    "shared reader/other collectors",
+    "Windows task/cadence definition",
+    "schemas/cleanup/logging behavior/checkpoints except normal runner writes"
+  ],
+  "manual_runs": false,
+  "record_repairs": false,
+  "new_observers": false
+}

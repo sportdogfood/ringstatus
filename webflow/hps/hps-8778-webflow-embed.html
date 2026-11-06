@@ -4,10 +4,155 @@
     tenantId: "8778",
     apiUrl: "https://ringstatus.webflow.io/test/hps/horses",
     refreshIntervalMinutes: 5,
-    stallCardUrl: "https://ringstatus.com/hps-stall-card",
+    stallCardUrl: "https://ringstatus.com/wf-cloud/hps-stall-card",
     pdfWorkerUrl: "https://ringstatus-pdf.gombcg.workers.dev/"
   };
 </script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@dd78cb7dfb2a78d639066e722f9b13e3f3872e36/webflow/packing-worksheet/styles.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@dd78cb7dfb2a78d639066e722f9b13e3f3872e36/webflow/hps/hps.css">
-<script src="https://cdn.jsdelivr.net/gh/sportdogfood/ringstatus@dd78cb7dfb2a78d639066e722f9b13e3f3872e36/webflow/hps/hps.js"></script>
+<script src="https://cdn.prod.website-files.com/6982268b7543ac3c80151266/6aed4a877b314c812e4b07a2_hps-print-now-only.js"></script>
+
+<style>
+/* HPS presentation: desktop design starts at 992px; mobile and tablet rules are preserved. */
+@media screen and (min-width: 768px) {
+  #hps-app {
+    --hps-type-small: clamp(12px, 0.9vw, 14px);
+    --hps-type-control: clamp(13px, 1vw, 15px);
+    --hps-type-body: clamp(16px, 1.25vw, 18px);
+    --hps-type-title: clamp(28px, 2.2vw, 32px);
+  }
+  #hps-app .th-hps-list-meta,
+  #hps-app .lp-field-label,
+  #hps-app .th-print-status,
+  #hps-app .lp-profile-footer {
+    font-size: var(--hps-type-small) !important;
+  }
+  #hps-app .th-hps-toggle-count,
+  #hps-app .th-hps-toggle-label,
+  #hps-app .th-hps-control,
+  #hps-app .th-group-label,
+  #hps-app .lp-edit-pill,
+  #hps-app .th-state-pill,
+  #hps-app .packing-row-meta {
+    font-size: var(--hps-type-control) !important;
+  }
+  #hps-app .th-horse-row .lp-row-title,
+  #hps-app .th-search,
+  #hps-app .lp-edit-input,
+  #hps-app .lp-field-value,
+  #hps-app .th-note-input,
+  #hps-app .th-feed-table,
+  #hps-app .th-feed-shell-head,
+  #hps-app .th-feed-shell-line {
+    font-size: var(--hps-type-body) !important;
+  }
+  #hps-app .lp-profile-tab {
+    font-size: 12px !important;
+  }
+  #hps-app .lp-profile-title {
+    font-size: var(--hps-type-title) !important;
+  }
+}
+@media screen and (min-width: 992px) {
+  #hps-app {
+    --hps-type-small: 16px;
+    --hps-type-control: 18px;
+    --hps-type-body: 18px;
+    --hps-type-title: 48px;
+  }
+  #hps-app .th-hps-module { width: 480px; }
+  #hps-app .lp-modal { padding: 24px 0; align-items: start; }
+  #hps-app .lp-modal-card {
+    width: min(720px, calc(100vw - 48px));
+    min-height: 0;
+    max-height: calc(100dvh - 48px);
+    margin-right: 24px;
+    padding: 32px 0;
+  }
+  #hps-app [data-modal-content] { min-height: 0; }
+  #hps-app .lp-profile-shell {
+    min-height: 0;
+    max-height: calc(100dvh - 112px);
+    padding: 0 32px;
+    row-gap: 24px;
+  }
+  #hps-app .lp-profile-head { padding: 0 48px 8px 0; }
+  #hps-app .lp-profile-title { margin: 0; line-height: 1.1; letter-spacing: -0.03em; }
+  #hps-app .lp-modal-close { top: 16px; right: 16px; width: 48px; height: 48px; font-size: 24px; }
+  #hps-app .lp-profile-tabs { gap: 12px; overflow: visible; padding: 0 0 28px; }
+  #hps-app .lp-profile-tab {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 52px;
+    padding: 12px 14px;
+    font-size: 18px !important;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  #hps-app .lp-profile-panel { border: 0; border-radius: 0; overflow-y: auto; }
+  #hps-app .lp-profile-panel .lp-field-row.th-detail-edit {
+    height: auto;
+    min-height: 76px;
+    max-height: none;
+    padding: 12px 0;
+    gap: 8px;
+  }
+  #hps-app .lp-profile-panel .lp-field-label { order: 0; padding: 0; line-height: 1.25; letter-spacing: 0; }
+  #hps-app .lp-profile-panel .lp-field-value { order: 1; line-height: 1.35; }
+  #hps-app .lp-edit-input { min-height: 44px; }
+  #hps-app .lp-profile-panel .lp-edit-pill { min-height: 44px; padding: 10px 14px; line-height: 1.2; letter-spacing: -0.02em; }
+  #hps-app .lp-profile-panel .packing-inline-choices { flex-wrap: wrap; gap: 10px; }
+  #hps-app [data-profile-panel="print"] .lp-field-row.th-detail-edit {
+    padding: 12px 0 16px;
+    gap: 28px;
+    background: transparent;
+  }
+  #hps-app [data-profile-panel="print"] .lp-field-label {
+    font-size: 28px !important;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.02em;
+  }
+  #hps-app [data-profile-panel="print"] .packing-inline-choices {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 22px;
+    overflow: visible;
+  }
+  #hps-app [data-stall-card-print] {
+    width: min(344px, 100%);
+    min-height: 64px !important;
+    justify-content: center;
+    background: #46332b;
+    border-color: #46332b;
+    color: #fff;
+    font-size: 24px !important;
+  }
+  #hps-app [data-profile-panel="print"] .lp-edit-choice { display: inline-flex; gap: 16px; min-height: 44px; }
+  #hps-app [data-profile-panel="print"] .lp-edit-choice input {
+    position: static;
+    appearance: auto;
+    opacity: 1;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    clip: auto;
+    clip-path: none;
+    accent-color: #46332b;
+  }
+  #hps-app [data-profile-panel="print"] .lp-edit-choice .lp-edit-pill {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--lp-ink);
+    box-shadow: none;
+    font-size: 22px !important;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  #hps-app [data-profile-panel="print"] .lp-edit-choice input:focus-visible { outline: 2px solid #46332b; outline-offset: 4px; }
+  #hps-app .th-print-status { font-size: 16px !important; }
+  #hps-app .lp-profile-footer { padding: 24px 0 0; background: #fff; font-size: 22px !important; line-height: 1.3; }
+}
+
+</style>

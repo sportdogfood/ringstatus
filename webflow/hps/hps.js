@@ -580,9 +580,6 @@
     const profileTabButton = event.target.closest("[data-profile-tab]");
     if (profileTabButton) {
       switchProfileTab(profileTabButton.dataset.profileTab);
-      if (profileTabButton.dataset.profileTab === "print" && state.activeRecordId) {
-        openStallCardPdf(state.activeRecordId, profileTabButton);
-      }
       return;
     }
 

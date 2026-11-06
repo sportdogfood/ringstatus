@@ -11,7 +11,7 @@ function statusValue(payload) {
 async function readStatus(scope, request = globalThis.fetch) {
   const url = `https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus?customer_id=${scope.customer}&datetimestamp=${Date.now()}`;
   const response = await request(url, {
-    headers: { Accept: 'application/json', 'Cache-Control': 'no-cache' },
+    headers: { Accept: 'application/json', 'Cache-Control': 'no-cache', 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1' },
     signal: AbortSignal.timeout(30000),
   });
   if (!response.ok) throw Error(`Live status HTTP ${response.status}`);

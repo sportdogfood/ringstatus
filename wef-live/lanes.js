@@ -155,8 +155,9 @@ async function lane(name,{
      const row={...model.common(r.scope,received,raw),'ring-key':model.key(r.scope.show,r.scope.date,rid),'ring-id':rid,'ring-number':model.integer(number,'ring number'),'ring-name':raw.name||all[0]?.ring||''};
      delete row['scope-status'];
      for(const [src,dest]of [['livenow','current-group'],['upcoming','next-group'],['completed','completed-groups']]){
-      if(!Array.isArray(raw[src])){if(raw[src]!==undefined)issue('Invalid widget '+src+' for ring '+number);continue;}
-      const matches=raw[src].filter(g=>model.day(g.day)===r.scope.date),links=matches.map(g=>lookup(groups,'group-key',model.key(r.scope.show,r.scope.date,g.class_group_id)));
+      const list=src==='completed'&&raw[src]===null?[]:raw[src];
+      if(!Array.isArray(list)){if(list!==undefined)issue('Invalid widget '+src+' for ring '+number);continue;}
+      const matches=list.filter(g=>model.day(g.day)===r.scope.date),links=matches.map(g=>lookup(groups,'group-key',model.key(r.scope.show,r.scope.date,g.class_group_id)));
       if(links.every(Boolean))row[dest]=links;
      }rows.push(row);
     }catch(e){issue(e.message);}
@@ -191,7 +192,7 @@ async function lane(name,{
        for(const field of ['horse-id','rider-id','trainer-id'])if(observed[field]===null)delete observed[field];
        if(!observed['trainer-name'])delete observed['trainer-name'];
        entries.push(observed);
-      }catch(e){issue(e.message,{class_id:c['class-id'],trip_id:e.trip_id});}}
+      }catch(e){if(e.code!=='LIVE_IDENTITY_SNAPSHOT_MISMATCH')issue(e.message,{class_id:c['class-id'],trip_id:e.trip_id});}}
       for(const [field,source]of [['gone','gone_trips'],['jo-gone','jo_gone_trips'],['r2-gone','r2_gone_trips']])if(typeof payload[source]!=='string')delete empty.fields[field];
       if(payload.curr===undefined||payload.curr===null)delete empty.fields['current-trip-id'];
       empty.fields['source-json']=JSON.stringify(Object.fromEntries(Object.entries(payload).filter(([k])=>k!=='rows')));
@@ -222,7 +223,18 @@ async function lane(name,{
      trips.push({...row,...(cls.length===1?{class:[cls[0].id],...(cls[0].fields.schedules?.length?{schedules:cls[0].fields.schedules}:{})}:{}),...(ring.length===1?{ring:[ring[0].id]}:{}),...(groupIds.length?{groups:[...new Set(groupIds)]}:{}),...(old.length===1?{'legacy-live-entry':[old[0].id]}:{})});
     }
    }
-   await save('live-trips','trip-key',trips,k=>trips.find(x=>x['trip-key']===k)['last-seen']);
+   // Only a successfully read, complete class inventory advances missing trips.
+   // Status-only patches retain every source field and native link on absent rows.
+   const priorTrips=scoped(await db.list('live-trips')),tripRows=[...trips],tripTimes=new Map(trips.map(x=>[x['trip-key'],x['last-seen']]));
+   for(const source of tripSources){
+    const cid=source.c['class-id'],prior=priorTrips.filter(x=>Number(x.fields['class-id'])===cid);
+    const current=trips.filter(x=>x['class-id']===cid),present=new Set(current.map(x=>x['trip-key']));
+    if(source.complete)for(const {fields:row} of prior)if(!present.has(row['trip-key'])){
+     tripRows.push({'trip-key':row['trip-key'],'record-status':membership.nextStatus(row['record-status'],false)});
+     tripTimes.set(row['trip-key'],source.received);
+    }
+   }
+   await save('live-trips','trip-key',tripRows,k=>tripTimes.get(k));
 
   }
  }catch(e){await stageFailure('collection/save',e);}

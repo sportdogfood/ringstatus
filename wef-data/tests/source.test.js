@@ -37,17 +37,24 @@ test('reports explicit timeout for scheduled recovery without retrying',async()=
 });
 test('uses existing transport with bounded decoded source and preserves response bytes',async()=>{
  let calls=0;
- const value=await read('/entries',{customer_id:15,show_id:200000076,page:1,sort_on:'number',sort_type:'asc',search_text:''},{transport:async(url,fallback,options)=>{calls++;assert.equal(new URL(url).hostname,'wef-schedules-decoded.gombcg.workers.dev');assert.equal(options.env.SGL_FETCH_TRANSPORT,'node');return {response:{status:200,headers:new Headers({'x-rs-decoded':'1'})},body:Buffer.from('{"horse":"HÖRSE"}')};}});
+ const value=await read('/entries',{customer_id:15,show_id:200000076,page:1,sort_on:'number',sort_type:'asc',search_text:''},{transport:async(url,fallback,options)=>{calls++;assert.equal(new URL(url).hostname,'sglapi.wellingtoninternational.com');assert.equal(options.env.SGL_FETCH_TRANSPORT,'node');return {response:{status:200,headers:new Headers({'x-rs-decoded':'1'})},body:Buffer.from('{"horse":"HÖRSE"}')};}});
  assert.equal(calls,1);assert.equal(value.ok,true);assert.equal(Buffer.from(value.body,'base64').toString(),'{"horse":"HÖRSE"}');
 });
-test('original HTTP byte receipt includes UTF-8 BOM without text decoding loss',async()=>{
- const body=Buffer.concat([Buffer.from([0xef,0xbb,0xbf]),Buffer.from('{"value":1}')]);
- const prior=global.fetch;global.fetch=async()=>new Response(body,{headers:{'x-rs-decoded':'1'}});
+test('local decoder fetches Wellington once and hashes the decoded bytes passed to Data',async()=>{
+ const oldFetch=global.fetch,oldToken=process.env.SGL_TOKEN,oldCookie=process.env.SGL_COOKIE;
+ const payload={rings:[{ring_name:'H�RSE'}]},expected=Buffer.from(JSON.stringify(payload));
+ let calls=0;
+ process.env.SGL_TOKEN='fixture';process.env.SGL_COOKIE='sgl=fixture';
+ global.fetch=async(url,options)=>{
+  calls++;assert.equal(new URL(url).hostname,'sglapi.wellingtoninternational.com');
+  assert.equal(options.headers.Authorization,'Bearer fixture');assert.equal(options.headers.Cookie,'sgl=fixture');
+  return new Response(JSON.stringify(payload));
+ };
  try{
-  const result=await read('/classes/123',{customer_id:15,show_id:76},{transport:async(url,fallback)=>fallback(url)});
-  assert.equal(result.ok,true);assert.deepEqual(Buffer.from(result.body,'base64'),body);
-  assert.equal(result.metric.bytes,body.length);assert.equal(result.metric.sha256,require('node:crypto').createHash('sha256').update(body).digest('hex'));
- }finally{global.fetch=prior;}
+  const result=await read('/schedule',{date:'2026-11-06',customer_id:15,show_id:76});
+  assert.equal(calls,1);assert.equal(result.ok,true);assert.deepEqual(Buffer.from(result.body,'base64'),expected);
+  assert.equal(result.metric.bytes,expected.length);assert.equal(result.metric.sha256,require('node:crypto').createHash('sha256').update(expected).digest('hex'));
+ }finally{global.fetch=oldFetch;for(const [k,v] of Object.entries({SGL_TOKEN:oldToken,SGL_COOKIE:oldCookie})){if(v===undefined)delete process.env[k];else process.env[k]=v;}}
 });
 test('non-200 produces safe diagnostics and never retries or returns response content',async()=>{
  let calls=0;const value=await read('/schedule',{date:'2026-10-29',show_id:200000076,customer_id:15},{transport:async()=>{calls++;return {response:{status:403,headers:new Headers({'content-type':'text/html','cf-ray':'example-ray','set-cookie':'private-cookie'})},text:'private source token'};}});

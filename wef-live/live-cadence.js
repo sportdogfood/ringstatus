@@ -19,7 +19,7 @@ async function context(api){
 function decision(status,scope,now){
  const today=model.localDay(now);
  if(status===false)return{collect:false,minutes:60,reason:'live-false',today};
- if(status!==true)return{collect:false,minutes:60,reason:'live-status-unavailable',today};
+ if(status!==true)return{collect:false,minutes:3,reason:'live-status-unavailable',today};
  if(!scope)return{collect:false,minutes:60,reason:'show-context-unavailable',today};
  if(scope.date!==today)return{collect:false,minutes:60,reason:'priority-date-mismatch',today};
  if(!inWindow(now))return{collect:false,minutes:60,reason:'outside-collection-window',today};
@@ -31,6 +31,8 @@ async function check({api=require('./airtable').airtable(),getStatus=activity.re
  const stateFile=path.join(runtime,'live-cadence-state.json');let previous,issues=[];
  try{previous=JSON.parse(fs.readFileSync(stateFile,'utf8'));}catch(e){if(e.code!=='ENOENT')issues.push({message:'Live cadence state: '+e.message});}
  const last=Date.parse(previous?.checked_at);let due=Date.parse(previous?.next_check_at);
+ // Failed status checks use the existing three-minute task, including older hourly checkpoints.
+ if(previous?.reason==='live-status-unavailable')due=Math.floor(last/60000)*60000+3*60000;
  // Known eligible activity can start at05:00; after19:00 wait an hour, not another three minutes.
  const entersWindow=previous?.reason==='outside-collection-window'&&previous.live_status===true&&previous.date===model.localDay(now)&&inWindow(now);
  if(previous?.reason==='live-today'&&!inWindow(now))due=Math.floor(last/60000)*60000+3600000;

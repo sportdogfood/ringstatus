@@ -1,0 +1,9 @@
+# Live header and failed-status retry release — November6,2026
+
+Exact owner User-Agent applied to getLiveClassStatus,ListAjax,LiveScoreWidget,getLiveClassData only. Failed status rechecks3minutes; confirmedfalse remains hourly. Existing unavailable hourly checkpoint interpreted by normal runner using original checked_at+3minutes; no manual checkpoint change. Three modified module files across approvals:activity.js,source.js,live-cadence.js. All URLs/query/otherheaders,proxy/shared reader,othercollectors,task/schema/cleanup unchanged.
+
+12offline checks and author review PASS,not independent review. Header deployment08:51 and retry correction09:02 installed/read back. Normal09:03status returnedtrue,groups/widget populated. Normal09:06and09:09 completed without stage/logging failure; actualtaskexit0.39normal class payload pairs saved and hashes validated.26groups/44appearances/6rings/39classes/402live-trips. All402trip keys unique,402correct native class links and402nonemptyresultJSON fields GET-verified. Initial missing-reference warnings cleared in repeatgroupslane.
+
+Seven source UI-trip identities missing from decoded class data remain logged for classes200030984/200030985; two widgetcompletedformat warnings remain for rings3/7. UI source409rows vs decoded402trip rows; no forced matches or repairs. These warnings did not stop valid collection and were not changed in this header/retry scope. Source result placeholders are not final results. Normal parsing proves usable accepted2xx responses; exact numeric HTTP200not separately instrumented. No manual source/collector runs,newobservers or otherchanges.
+
+Exact per-lane IDs,times,sourcehashpaths,Airtable logs,readback and limits: acceptance.json,normal-0903.json,normal-0906.json,normal-0909.json. Current25JS manifest is deployed.json; earlier header-only packet remains in ../user-agent-20261106 as dated evidence.

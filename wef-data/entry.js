@@ -98,6 +98,11 @@ async function scheduled(){
  const report=await collect(runtime,linking);
  if(linking&&attempt&&!report['run-key'])report['run-key']='linking-'+attempt;
  if(linking&&inputs)report.counts={...report.counts,'collection-run-keys':inputs};
+ if(!linking && attempt){
+  try{require('./collection-alerts').check(runtime,report,attempt,logging);}
+  catch(error){logging.recordError(root,attempt,{category:'Notification',message:error.message},'Alert');}
+ }
+ for(const day of report.counts?.days || []) delete day['confirmed-classes'];
  await atomicReport(path.join(runtime,'last-run.json'),report);console.log(JSON.stringify(report));
  if(attempt){
   const errors=report['item-errors']||[];

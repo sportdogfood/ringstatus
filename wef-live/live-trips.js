@@ -7,7 +7,7 @@ function project(decoded,live,s,c,at,onIssue=()=>{}){
  const cid=c['class-id'];
  if(Number(decoded?.class?.show_id)!==s.show||Number(decoded?.class?.class_id)!==cid||model.day(decoded.class_related_data?.date)!==s.date||!Array.isArray(decoded.trips))throw Error('Class trip source scope mismatch');
  const liveRows=Number(live?.ID)===cid&&Array.isArray(live.rows)&&Number(live.recs)===live.rows.length?live.rows:[];
- const rows=[];
+ const rows=[];let complete=true;
  for(const raw of decoded.trips){try{
   const eid=model.integer(raw.entry_id,'trip entry ID'),tid=model.number(raw.trip_id),uuid=raw.entryxclasses_uuid==null?'':String(raw.entryxclasses_uuid);
   if(!uuid&&!(Number.isSafeInteger(tid)&&tid>0))throw Error('Trip source UUID and trip ID missing');
@@ -37,7 +37,7 @@ function project(decoded,live,s,c,at,onIssue=()=>{}){
   for(const name of ['placing','results-verified','class-status'])if(supplied(result[name]))row[name]=result[name];
   if(model.number(result.position)!==null)row.position=model.number(result.position);
   rows.push(row);
- }catch(e){onIssue(e.message,{class_id:cid,trip_id:model.number(raw?.trip_id)});}}
- return{rows};
+ }catch(e){complete=false;onIssue(e.message,{class_id:cid,trip_id:model.number(raw?.trip_id)});}}
+ return{rows,complete};
 }
 module.exports={project,RESULTS};

@@ -1,0 +1,28 @@
+{
+  "due": true,
+  "run_id": "9bb1be40-eaee-458c-9af1-a946e136e14a",
+  "lane": "live-check",
+  "started": "2026-11-06T14:48:14.266Z",
+  "ok": true,
+  "issues": [
+    {
+      "message": "Live-status check: Unreadable live status: expected explicit boolean"
+    }
+  ],
+  "logging_errors": [],
+  "stage_errors": [],
+  "scope": {
+    "show": 200000077,
+    "customer": 15,
+    "date": "2026-11-06",
+    "authority": "rec8GtJJ7eSjY3Nd3",
+    "checked_at": "2026-11-02T06:04:12.307Z",
+    "active": true
+  },
+  "collect": false,
+  "minutes": 3,
+  "reason": "live-status-unavailable",
+  "today": "2026-11-06",
+  "next_check_at": "2026-11-06T14:51:00.000Z",
+  "completed": "2026-11-06T14:48:15.922Z"
+}

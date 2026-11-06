@@ -1,0 +1,16 @@
+{
+  "reviewer": "wef-live author",
+  "commands": [
+    {
+      "runtime": "v22.22.2",
+      "stdout": "TAP version 13\n# {\"event\":\"source_retry\",\"path\":\"/iphone.php/esp/webservice/LiveScoreWidget\",\"status\":503,\"attempt\":2}\n# Subtest: status request adds only exact owner User-Agent and preserves its URL/query and timeout\nok 1 - status request adds only exact owner User-Agent and preserves its URL/query and timeout\n  ---\n  duration_ms: 2.0775\n  type: 'test'\n  ...\n# Subtest: ListAjax request preserves exact URL/query/other headers and adds only User-Agent\nok 2 - ListAjax request preserves exact URL/query/other headers and adds only User-Agent\n  ---\n  duration_ms: 2.3269\n  type: 'test'\n  ...\n# Subtest: LiveScoreWidget request preserves exact URL/query/other headers and adds only User-Agent\nok 3 - LiveScoreWidget request preserves exact URL/query/other headers and adds only User-Agent\n  ---\n  duration_ms: 0.7616\n  type: 'test'\n  ...\n# Subtest: getLiveClassData request preserves exact URL/query/other headers and adds only User-Agent\nok 4 - getLiveClassData request preserves exact URL/query/other headers and adds only User-Agent\n  ---\n  duration_ms: 0.2319\n  type: 'test'\n  ...\n# Subtest: decoded Cloudflare request retains original headers,URL and decode confirmation check\nok 5 - decoded Cloudflare request retains original headers,URL and decode confirmation check\n  ---\n  duration_ms: 0.4147\n  type: 'test'\n  ...\n# Subtest: other Wellington paths do not receive the added header\nok 6 - other Wellington paths do not receive the added header\n  ---\n  duration_ms: 0.2098\n  type: 'test'\n  ...\n# Subtest: direct-feed retry retains existing one-retry behavior and identical new headers\nok 7 - direct-feed retry retains existing one-retry behavior and identical new headers\n  ---\n  duration_ms: 514.6266\n  type: 'test'\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 621.353",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "ended_at": "2026-11-06T13:51:08.6829449Z",
+      "exit_code": 0,
+      "started_at": "2026-11-06T13:51:07.8589542Z",
+      "command": "node --test wef-live/evidence/user-agent-20261106/headers.test.cjs",
+      "id": "headers-offline",
+      "stderr": ""
+    }
+  ]
+}

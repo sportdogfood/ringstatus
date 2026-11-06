@@ -80,7 +80,7 @@ export default {
     upstream.search=url.search;
     const authorization="Bearer "+env.SGL_TOKEN;
     const headers={
-      Accept:"application/json, text/plain, */*","User-Agent":"Mozilla/5.0",
+      Accept:"application/json, text/plain, */*","User-Agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
       "Cache-Control":"no-cache",Pragma:"no-cache",Expires:"0",
       Authorization:authorization,"sgl-request-origin":"SGL-API",
       Origin:"https://www.wellingtoninternational.com",Referer:"https://www.wellingtoninternational.com/"

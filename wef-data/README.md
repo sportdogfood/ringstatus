@@ -1,6 +1,14 @@
-# wef-data â€” November 4, README version 2026.11.04.3
+# wef-data — November 5, README version 2026.11.05.1
 
-Updated November 4, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+Updated November 5, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+
+## November 5 — collection failure went unreported
+
+I reported the morning success and failed to report the repeated collection errors that followed. The owner had to tell me collection was failing.
+
+Between 8:42 a.m. and 8:39 p.m. Eastern, 211 scheduled runs logged `KeyError: 'rings'`. Those runs attempted to collect 274 individual show days across four dates, counting repeated attempts. They saved zero business records. The number of distinct records that missed updates is unknown because the responses omitted the schedule inventory. [Complaint and count evidence](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/reclScPWI5LXhW1F1).
+
+**Collector status at 9:54 p.m. Eastern:** The scheduled task continues to run, but collection is still failing. The latest day-0 attempt at 9:06 p.m. was incomplete. The latest collection finished at 9:45 p.m. for November 7 and 8. Both schedule responses lacked `rings`, and the run saved zero business records. These later attempts fall outside the 211-run count. Sources: `runtime/last-run.json` and `runtime/day-cadence.json`.
 
 ## Owner approval lock — November 4, 2026
 

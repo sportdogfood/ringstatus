@@ -1,0 +1,1141 @@
+{
+  "observed_at": "2026-11-06T14:05:45.379Z",
+  "status": {
+    "due": true,
+    "run_id": "ac7d51f8-e411-4de9-b0af-36b1af459bff",
+    "lane": "live-check",
+    "started": "2026-11-06T14:03:06.265Z",
+    "ok": true,
+    "issues": [],
+    "logging_errors": [],
+    "stage_errors": [],
+    "live_status": true,
+    "scope": {
+      "show": 200000077,
+      "customer": 15,
+      "date": "2026-11-06",
+      "authority": "rec8GtJJ7eSjY3Nd3",
+      "checked_at": "2026-11-02T06:04:12.307Z",
+      "active": true
+    },
+    "collect": true,
+    "minutes": 3,
+    "reason": "live-today",
+    "today": "2026-11-06",
+    "next_check_at": "2026-11-06T14:06:00.000Z",
+    "completed": "2026-11-06T14:03:07.414Z"
+  },
+  "lanes": [
+    {
+      "lane": "groups",
+      "run_id": "171b121f-7107-45a6-ac8a-2869a9179bb9",
+      "started": "2026-11-06T14:03:07.423Z",
+      "ok": true,
+      "issues": [
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|51"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|51"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|51"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|51"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|9"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|37"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|37"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|37"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|37"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|52"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|52"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|52"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|52"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|52"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|52"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|52"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|49"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|49"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|49"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|49"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|49"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|49"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|49"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|56"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|56"
+        },
+        {
+          "message": "Missing/ambiguous shared ring-key: 200000077|2026-11-06|56"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031203"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031218"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031249"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031209"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031256"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031266"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030969"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030970"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031110"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030984"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030985"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031110"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030989"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030990"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031110"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031004"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031005"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031110"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031175"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031178"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031181"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031185"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031237"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031188"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031240"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031233"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031228"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031220"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031191"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031243"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031194"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031200"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031197"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031246"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031214"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031099"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030864"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030865"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030909"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200030910"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031099"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031099"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031009"
+        },
+        {
+          "message": "Missing/ambiguous shared class-key: 200000077|2026-11-06|200031010"
+        }
+      ],
+      "stage_errors": [],
+      "logging_errors": [],
+      "timings": {
+        "collection_ms": 771.2433000000001,
+        "save_ms": 11205.7703,
+        "collection_started": "2026-11-06T14:03:12.271Z",
+        "collection_completed": "2026-11-06T14:03:13.042Z",
+        "requests": [
+          {
+            "label": "groups",
+            "started": "2026-11-06T14:03:12.271Z",
+            "completed": "2026-11-06T14:03:13.042Z"
+          }
+        ],
+        "save_started": "2026-11-06T14:03:14.969Z",
+        "saves": [
+          {
+            "table": "live-groups",
+            "started": "2026-11-06T14:03:14.969Z",
+            "completed": "2026-11-06T14:03:18.626Z",
+            "rows": 26,
+            "changed": 26,
+            "source_to_save": [
+              {
+                "key": "200000077|2026-11-06|200028446",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5584
+              },
+              {
+                "key": "200000077|2026-11-06|200028447",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5584
+              },
+              {
+                "key": "200000077|2026-11-06|200028449",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028450",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028522",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028472",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028473",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028474",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028477",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028456",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028455",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028453",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028454",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028458",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028461",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028457",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028464",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028465",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028466",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028467",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028468",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028469",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028470",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028494",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028504",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              },
+              {
+                "key": "200000077|2026-11-06|200028508",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 5585
+              }
+            ]
+          },
+          {
+            "table": "live-class-appearances",
+            "started": "2026-11-06T14:03:19.667Z",
+            "completed": "2026-11-06T14:03:27.215Z",
+            "rows": 44,
+            "changed": 44,
+            "source_to_save": [
+              {
+                "key": "200000077|2026-11-06|200028446|200031203",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028447|200031218",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028447|200031249",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028449|200031209",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028450|200031256",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028522|200031266",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028472|200030969",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028472|200030970",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028472|200031110",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028473|200030984",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028473|200030985",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028473|200031110",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028474|200030989",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028474|200030990",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028474|200031110",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028477|200031004",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028477|200031005",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028477|200031110",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028456|200031175",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028456|200031178",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028455|200031181",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028453|200031185",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028454|200031237",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028458|200031188",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028458|200031240",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028461|200031233",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028461|200031228",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028457|200031220",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028464|200031191",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028465|200031243",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028466|200031194",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028467|200031200",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028468|200031197",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028469|200031246",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028470|200031214",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028494|200031099",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028494|200030864",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028494|200030865",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028504|200030909",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028504|200030910",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028504|200031099",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028508|200031099",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028508|200031009",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              },
+              {
+                "key": "200000077|2026-11-06|200028508|200031010",
+                "source_response_at": "2026-11-06T14:03:13.042Z",
+                "elapsed_ms": 14173
+              }
+            ]
+          }
+        ],
+        "save_completed": "2026-11-06T14:03:27.215Z",
+        "total_ms": 19792
+      },
+      "counts": {
+        "live-groups": 26,
+        "live-class-appearances": 44
+      },
+      "scope": {
+        "show": 200000077,
+        "customer": 15,
+        "date": "2026-11-06",
+        "authority": "rec8GtJJ7eSjY3Nd3",
+        "checked_at": "2026-11-02T06:04:12.307Z",
+        "active": true
+      },
+      "day_priority": 0,
+      "live_status": true,
+      "membership": {
+        "complete": true,
+        "groups": 26,
+        "class_appearances": 44,
+        "unique_classes": 39
+      },
+      "completed": "2026-11-06T14:03:27.215Z",
+      "changed_records": 70,
+      "coverage_count": 70,
+      "archives": [
+        {
+          "at": "2026-11-06T14:03:13.074Z",
+          "kind": "source-groups",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\62c4ecee999e9b8df64f813ff6ed0a634618f89f31b2e8da48c27eab89f04a8d.json.gz",
+          "records": 1,
+          "sha256": "62c4ecee999e9b8df64f813ff6ed0a634618f89f31b2e8da48c27eab89f04a8d",
+          "shows": [
+            200000077
+          ],
+          "dates": [
+            "2026-11-06"
+          ],
+          "source_shape": {
+            "shows": [
+              {
+                "show_id": "200000077",
+                "groups": 26
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lane": "rings",
+      "run_id": "3802183f-95ed-43b0-8b14-c390468c21a1",
+      "started": "2026-11-06T14:03:07.432Z",
+      "ok": true,
+      "issues": [
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028446"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028447"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028449"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028450"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028522"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028473"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028474"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028477"
+        },
+        {
+          "message": "Invalid widget completed for ring 3"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028455"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028453"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028454"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028458"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028461"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028457"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028456"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028466"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028467"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028468"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028469"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028470"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028464"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028465"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028504"
+        },
+        {
+          "message": "Missing/ambiguous shared group-key: 200000077|2026-11-06|200028508"
+        },
+        {
+          "message": "Invalid widget completed for ring 7"
+        }
+      ],
+      "stage_errors": [],
+      "logging_errors": [],
+      "timings": {
+        "collection_ms": 193.78420000000006,
+        "save_ms": 1481.908800000001,
+        "collection_started": "2026-11-06T14:03:12.317Z",
+        "collection_completed": "2026-11-06T14:03:12.511Z",
+        "requests": [
+          {
+            "label": "rings",
+            "started": "2026-11-06T14:03:12.317Z",
+            "completed": "2026-11-06T14:03:12.511Z"
+          }
+        ],
+        "save_started": "2026-11-06T14:03:13.526Z",
+        "saves": [
+          {
+            "table": "live-rings",
+            "started": "2026-11-06T14:03:13.526Z",
+            "completed": "2026-11-06T14:03:15.008Z",
+            "rows": 6,
+            "changed": 6,
+            "source_to_save": [
+              {
+                "key": "200000077|2026-11-06|51",
+                "source_response_at": "2026-11-06T14:03:12.511Z",
+                "elapsed_ms": 2497
+              },
+              {
+                "key": "200000077|2026-11-06|9",
+                "source_response_at": "2026-11-06T14:03:12.511Z",
+                "elapsed_ms": 2497
+              },
+              {
+                "key": "200000077|2026-11-06|37",
+                "source_response_at": "2026-11-06T14:03:12.511Z",
+                "elapsed_ms": 2497
+              },
+              {
+                "key": "200000077|2026-11-06|52",
+                "source_response_at": "2026-11-06T14:03:12.511Z",
+                "elapsed_ms": 2497
+              },
+              {
+                "key": "200000077|2026-11-06|49",
+                "source_response_at": "2026-11-06T14:03:12.511Z",
+                "elapsed_ms": 2497
+              },
+              {
+                "key": "200000077|2026-11-06|56",
+                "source_response_at": "2026-11-06T14:03:12.511Z",
+                "elapsed_ms": 2497
+              }
+            ]
+          }
+        ],
+        "save_completed": "2026-11-06T14:03:15.008Z",
+        "total_ms": 7576
+      },
+      "counts": {
+        "live-rings": 6
+      },
+      "scope": {
+        "show": 200000077,
+        "customer": 15,
+        "date": "2026-11-06",
+        "authority": "rec8GtJJ7eSjY3Nd3",
+        "checked_at": "2026-11-02T06:04:12.307Z",
+        "active": true
+      },
+      "day_priority": 0,
+      "live_status": true,
+      "completed": "2026-11-06T14:03:15.008Z",
+      "changed_records": 6,
+      "coverage_count": 6,
+      "archives": [
+        {
+          "at": "2026-11-06T14:03:12.526Z",
+          "kind": "source-widget",
+          "outcome": "Created",
+          "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\9eaed7863dfb6d953b327d05410aef8481bf7d901c9ece214d9c6bf6037c3598.json.gz",
+          "records": 1,
+          "sha256": "9eaed7863dfb6d953b327d05410aef8481bf7d901c9ece214d9c6bf6037c3598",
+          "shows": [
+            200000077
+          ],
+          "dates": [
+            "2026-11-06"
+          ],
+          "source_shape": {
+            "shows": [
+              {
+                "show_id": "200000077",
+                "rings": 6
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "lane": "classes",
+      "run_id": "228a1991-b5bb-4000-b473-f5c8a9998deb",
+      "started": "2026-11-06T14:03:07.433Z",
+      "ok": true,
+      "issues": [
+        {
+          "message": "No matching saved class references"
+        }
+      ],
+      "stage_errors": [],
+      "logging_errors": [],
+      "timings": {
+        "collection_ms": 0,
+        "save_ms": 0,
+        "total_ms": 4892
+      },
+      "counts": {},
+      "scope": {
+        "show": 200000077,
+        "customer": 15,
+        "date": "2026-11-06",
+        "authority": "rec8GtJJ7eSjY3Nd3",
+        "checked_at": "2026-11-02T06:04:12.307Z",
+        "active": true
+      },
+      "day_priority": 0,
+      "live_status": true,
+      "completed": "2026-11-06T14:03:12.325Z",
+      "changed_records": 0,
+      "coverage_count": 0,
+      "archives": []
+    }
+  ],
+  "tables": {
+    "live-groups": [
+      {
+        "id": "rec0H0d5ZejWWVbyh",
+        "createdTime": "2026-11-06T14:03:22.000Z",
+        "fields": {
+          "group-sequence": 3,
+          "source-json": "{\"class_group_id\":\"200028449\",\"group_name\":\"1.35m Open Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"3\",\"estimated_start_time\":\"12:20:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"1\",\"classes\":[\"200031209\"],\"classNumbers\":[\"733\"],\"classNames\":[\"1.35m Open Jumper II2d\"],\"class_numbers\":\"733\",\"status\":\"Upcoming\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":\"0\",\"total\":\"31\",\"jo_gone\":\"0\",\"jo_total\":\"0\",\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":\"0\",\"r2_total\":\"0\",\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":\"1793841431\",\"last_updated_class\":\"200031209\",\"recent_updated_classes\":[\"200031209\"],\"ring_id\":\"51\",\"ring\":\"International Ring\",\"class_numbers_list\":\"733\",\"grid\":\"#Upcoming\",\"trips\":\"31\",\"time\":\"12:20 PM\"}",
+          "record-status": "Active",
+          "class-group-id": 200028449,
+          "source-updated-at": "1793841431",
+          "date": "2026-11-06",
+          "estimated-start-time": "12:20:00",
+          "group-name": "1.35m Open Jumper II2d",
+          "status": "Upcoming",
+          "show-id": 200000077,
+          "has-json": true,
+          "last-seen": "2026-11-06T14:03:13.042Z",
+          "jo-gone": 0,
+          "r2-gone": 0,
+          "jo-total": 0,
+          "group-key": "200000077|2026-11-06|200028449",
+          "gone": 0,
+          "customer-id": 15,
+          "r2-total": 0,
+          "live-class-appearances": [
+            "recdRN8FTOAmnr77v"
+          ],
+          "total": 31
+        }
+      },
+      {
+        "id": "rec2OAp7uqknY344O",
+        "createdTime": "2026-11-06T14:03:23.000Z",
+        "fields": {
+          "group-sequence": 2,
+          "source-json": "{\"class_group_id\":\"200028465\",\"group_name\":\"1.10m Young Jumper Table II\",\"day\":\"2026-11-06\",\"group_sequence\":\"2\",\"estimated_start_time\":\"08:40:00\",\"jumper_table\":\"USEF Table II\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031243\"],\"classNumbers\":[\"830\"],\"classNames\":[\"1.10m Young Jumper Table II\"],\"class_numbers\":\"830\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":\"7\",\"total\":\"7\",\"jo_gone\":\"0\",\"jo_total\":\"4\",\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":\"0\",\"r2_total\":\"0\",\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":\"1793991770\",\"last_updated_class\":\"200031243\",\"recent_updated_classes\":[\"200031243\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"class_numbers_list\":\"830\",\"grid\":\"#Completed\",\"trips\":\"7\"}",
+          "record-status": "Active",
+          "class-group-id": 200028465,
+          "source-updated-at": "1793991770",
+          "date": "2026-11-06",
+          "estimated-start-time": "08:40:00",
+          "group-name": "1.10m Young Jumper Table II",
+          "status": "Completed",
+          "show-id": 200000077,
+          "has-json": true,
+          "last-seen": "2026-11-06T14:03:13.042Z",
+          "jo-gone": 0,
+          "r2-gone": 0,
+          "jo-total": 4,
+          "group-key": "200000077|2026-11-06|200028465",
+          "gone": 7,
+          "customer-id": 15,
+          "r2-total": 0,
+          "live-class-appearances": [
+            "rec5CM9nCihFqqVrK"
+          ],
+          "total": 7
+        }
+      }
+    ],
+    "live-rings": [
+      {
+        "id": "rec8SzUPh7F3t5ROZ",
+        "createdTime": "2026-11-06T14:03:20.000Z",
+        "fields": {
+          "customer-id": 15,
+          "show-id": 200000077,
+          "source-json": "{\"name\":\"Denemethy\",\"upcoming\":[{\"class_group_id\":\"200028466\",\"group_name\":\"1.15m Open Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"3\",\"estimated_start_time\":\"09:20:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031194\"],\"classNumbers\":[\"744\"],\"classNames\":[\"1.15m Open Jumper II2d\"],\"class_numbers\":\"744\",\"status\":\"Upcoming\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":0,\"total\":12,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1791502287,\"last_updated_class\":\"200031194\",\"recent_updated_classes\":[\"200031194\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031194&class_group_id=200028466\",\"time\":\"9:20 AM\"},{\"class_group_id\":\"200028467\",\"group_name\":\"1.25m Open Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"4\",\"estimated_start_time\":\"10:20:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031200\"],\"classNumbers\":[\"710\"],\"classNames\":[\"1.25m Open Jumper II2d\"],\"class_numbers\":\"710\",\"status\":\"Upcoming\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":0,\"total\":8,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1791434904,\"last_updated_class\":\"200031200\",\"recent_updated_classes\":[\"200031200\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031200&class_group_id=200028467\",\"time\":\"10:20 AM\"},{\"class_group_id\":\"200028468\",\"group_name\":\"1.20m Open Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"5\",\"estimated_start_time\":\"10:50:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031197\"],\"classNumbers\":[\"787\"],\"classNames\":[\"1.20m Open Jumper II2d\"],\"class_numbers\":\"787\",\"status\":\"Upcoming\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":0,\"total\":17,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793858589,\"last_updated_class\":\"200031197\",\"recent_updated_classes\":[\"200031197\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031197&class_group_id=200028468\",\"time\":\"10:50 AM\"},{\"class_group_id\":\"200028469\",\"group_name\":\"1.20m Young Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"6\",\"estimated_start_time\":\"11:45:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031246\"],\"classNumbers\":[\"835\"],\"classNames\":[\"1.20m Young Jumper II2d\"],\"class_numbers\":\"835\",\"status\":\"Upcoming\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":0,\"total\":11,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793136550,\"last_updated_class\":\"200031246\",\"recent_updated_classes\":[\"200031246\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031246&class_group_id=200028469\",\"time\":\"11:45 AM\"},{\"class_group_id\":\"200028470\",\"group_name\":\"1.20m Junior/Amateur Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"7\",\"estimated_start_time\":\"12:18:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031214\"],\"classNumbers\":[\"720\"],\"classNames\":[\"1.20m Junior/Amateur Jumper II2d\"],\"class_numbers\":\"720\",\"status\":\"Upcoming\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":0,\"total\":14,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1791502172,\"last_updated_class\":\"200031214\",\"recent_updated_classes\":[\"200031214\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031214&class_group_id=200028470\",\"time\":\"12:18 PM\"}],\"livenow\":[],\"completed\":[{\"class_group_id\":\"200028464\",\"group_name\":\"1.10m Open Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"1\",\"estimated_start_time\":\"08:00:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031191\"],\"classNumbers\":[\"715\"],\"classNames\":[\"1.10m Open Jumper II2d\"],\"class_numbers\":\"715\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":13,\"total\":13,\"jo_gone\":13,\"jo_total\":13,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793990053,\"last_updated_class\":\"200031191\",\"recent_updated_classes\":[\"200031191\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031191&class_group_id=200028464\",\"trips\":13},{\"class_group_id\":\"200028465\",\"group_name\":\"1.10m Young Jumper Table II\",\"day\":\"2026-11-06\",\"group_sequence\":\"2\",\"estimated_start_time\":\"08:40:00\",\"jumper_table\":\"USEF Table II\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031243\"],\"classNumbers\":[\"830\"],\"classNames\":[\"1.10m Young Jumper Table II\"],\"class_numbers\":\"830\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":7,\"total\":7,\"jo_gone\":0,\"jo_total\":4,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793991770,\"last_updated_class\":\"200031243\",\"recent_updated_classes\":[\"200031243\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031243&class_group_id=200028465\",\"trips\":7}]}",
+          "ring-number": 5,
+          "ring-key": "200000077|2026-11-06|49",
+          "ring-id": 49,
+          "ring-name": "Denemethy",
+          "date": "2026-11-06",
+          "last-seen": "2026-11-06T14:03:12.511Z"
+        }
+      },
+      {
+        "id": "recKNHojEAMrc33hK",
+        "createdTime": "2026-11-06T14:03:20.000Z",
+        "fields": {
+          "customer-id": 15,
+          "show-id": 200000077,
+          "source-json": "{\"name\":\"Ring 8\",\"upcoming\":[{\"class_group_id\":\"200028508\",\"group_name\":\"USHJA Hunter 3'\",\"day\":\"2026-11-06\",\"group_sequence\":\"5\",\"estimated_start_time\":\"09:24:03\",\"jumper_table\":\"\",\"hunter_type\":\"No Score W/Jog\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"10\",\"ring_number\":\"7\",\"classes\":[\"200031099\",\"200031009\",\"200031010\"],\"classNumbers\":[\"207\",\"222\",\"223\"],\"classNames\":[\"Add Back Hunter\",\"USHJA Hunter 3'\",\"USHJA Hunter 3'\"],\"class_numbers\":\"207, 222, 223\",\"status\":\"Upcoming\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":0,\"total\":18,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793744958,\"last_updated_class\":\"200031009\",\"recent_updated_classes\":[\"200031009\",\"200031010\",\"200031099\"],\"ring_id\":\"56\",\"ring\":\"Ring 8\",\"link\":\"/liveclass/detail?cid=200031099&class_group_id=200028508\",\"time\":\"9:24 AM\"}],\"completed\":null,\"livenow\":[{\"class_group_id\":\"200028504\",\"group_name\":\"3'3\\\"/3' Green Hunter \",\"day\":\"2026-11-06\",\"group_sequence\":\"3\",\"estimated_start_time\":\"08:15:01\",\"jumper_table\":\"\",\"hunter_type\":\"Score W/ Jog\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"10\",\"ring_number\":\"7\",\"classes\":[\"200030909\",\"200030910\",\"200031099\"],\"classNumbers\":[\"202\",\"203\",\"207\"],\"classNames\":[\"3'3\\\"/3' Green Hunter \",\"3'3\\\"/3' Green Hunter \",\"Add Back Hunter\"],\"class_numbers\":\"202, 203, 207\",\"status\":\"Underway\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":13,\"total\":18,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":true,\"has_JSON\":true,\"curr_updated_at\":1793991542,\"last_updated_class\":\"200030909\",\"recent_updated_classes\":[\"200030909\",\"200031099\",\"200030910\"],\"ring_id\":\"56\",\"ring\":\"Ring 8\",\"link\":\"/liveclass/detail?cid=200030909&class_group_id=200028504\",\"trips\":\"13/18\"}]}",
+          "ring-number": 7,
+          "ring-key": "200000077|2026-11-06|56",
+          "ring-id": 56,
+          "ring-name": "Ring 8",
+          "date": "2026-11-06",
+          "last-seen": "2026-11-06T14:03:12.511Z"
+        }
+      }
+    ],
+    "live-classes": [],
+    "live-trips": []
+  },
+  "normal_run_logs": [
+    {
+      "id": "recHXPuxOUqGLfhhE",
+      "createdTime": "2026-11-06T14:03:19.000Z",
+      "fields": {
+        "date": "2026-11-06",
+        "result": "Partial",
+        "entry-count": 0,
+        "group-count": 0,
+        "ring-count": 0,
+        "class-count": 0,
+        "show-id": 200000077,
+        "completed": "2026-11-06T14:03:12.325Z",
+        "summary": "{\"lane\":\"classes\",\"day_priority\":0,\"live_status\":true,\"timings\":{\"collection_ms\":0,\"save_ms\":0,\"total_ms\":4892},\"counts\":{},\"changed_records\":0,\"issues\":1,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-classes-228a1991-b5bb-4000-b473-f5c8a9998deb.json\"}",
+        "started": "2026-11-06T14:03:07.433Z",
+        "run-id": "228a1991-b5bb-4000-b473-f5c8a9998deb"
+      }
+    },
+    {
+      "id": "recXpep8dqS1srYMV",
+      "createdTime": "2026-11-06T14:03:34.000Z",
+      "fields": {
+        "date": "2026-11-06",
+        "result": "Partial",
+        "entry-count": 0,
+        "group-count": 26,
+        "ring-count": 0,
+        "class-count": 44,
+        "show-id": 200000077,
+        "completed": "2026-11-06T14:03:27.215Z",
+        "summary": "{\"lane\":\"groups\",\"day_priority\":0,\"live_status\":true,\"membership\":{\"complete\":true,\"groups\":26,\"class_appearances\":44,\"unique_classes\":39},\"timings\":{\"collection_ms\":771.2433000000001,\"save_ms\":11205.7703,\"collection_started\":\"2026-11-06T14:03:12.271Z\",\"collection_completed\":\"2026-11-06T14:03:13.042Z\",\"save_started\":\"2026-11-06T14:03:14.969Z\",\"save_completed\":\"2026-11-06T14:03:27.215Z\",\"total_ms\":19792},\"counts\":{\"live-groups\":26,\"live-class-appearances\":44},\"changed_records\":70,\"issues\":70,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-groups-171b121f-7107-45a6-ac8a-2869a9179bb9.json\"}",
+        "started": "2026-11-06T14:03:07.423Z",
+        "run-id": "171b121f-7107-45a6-ac8a-2869a9179bb9"
+      }
+    },
+    {
+      "id": "recjPk85KBHc6Hccd",
+      "createdTime": "2026-11-06T14:03:22.000Z",
+      "fields": {
+        "date": "2026-11-06",
+        "result": "Partial",
+        "entry-count": 0,
+        "group-count": 0,
+        "ring-count": 6,
+        "class-count": 0,
+        "show-id": 200000077,
+        "completed": "2026-11-06T14:03:15.008Z",
+        "summary": "{\"lane\":\"rings\",\"day_priority\":0,\"live_status\":true,\"timings\":{\"collection_ms\":193.78420000000006,\"save_ms\":1481.908800000001,\"collection_started\":\"2026-11-06T14:03:12.317Z\",\"collection_completed\":\"2026-11-06T14:03:12.511Z\",\"save_started\":\"2026-11-06T14:03:13.526Z\",\"save_completed\":\"2026-11-06T14:03:15.008Z\",\"total_ms\":7576},\"counts\":{\"live-rings\":6},\"changed_records\":6,\"issues\":26,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-rings-3802183f-95ed-43b0-8b14-c390468c21a1.json\"}",
+        "started": "2026-11-06T14:03:07.432Z",
+        "run-id": "3802183f-95ed-43b0-8b14-c390468c21a1"
+      }
+    }
+  ],
+  "normal_heartbeats": [
+    {
+      "id": "rec1vJhIgp6LePEZc",
+      "createdTime": "2026-11-06T14:03:14.000Z",
+      "fields": {
+        "started": "2026-11-06T14:03:07.433Z",
+        "run-id": "228a1991-b5bb-4000-b473-f5c8a9998deb",
+        "heartbeat-key": "228a1991-b5bb-4000-b473-f5c8a9998deb",
+        "result": "Partial",
+        "summary": "{\"lane\":\"classes\",\"day_priority\":0,\"live_status\":true,\"timings\":{\"collection_ms\":0,\"save_ms\":0,\"total_ms\":4892},\"counts\":{},\"changed_records\":0,\"issues\":1,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-classes-228a1991-b5bb-4000-b473-f5c8a9998deb.json\"}",
+        "checked-at": "2026-11-06T14:03:12.325Z",
+        "completed": "2026-11-06T14:03:12.325Z"
+      }
+    },
+    {
+      "id": "recNGL85pdaA3bOl8",
+      "createdTime": "2026-11-06T14:03:14.000Z",
+      "fields": {
+        "started": "2026-11-06T14:03:07.423Z",
+        "run-id": "171b121f-7107-45a6-ac8a-2869a9179bb9",
+        "heartbeat-key": "171b121f-7107-45a6-ac8a-2869a9179bb9",
+        "result": "Partial",
+        "summary": "{\"lane\":\"groups\",\"day_priority\":0,\"live_status\":true,\"membership\":{\"complete\":true,\"groups\":26,\"class_appearances\":44,\"unique_classes\":39},\"timings\":{\"collection_ms\":771.2433000000001,\"save_ms\":11205.7703,\"collection_started\":\"2026-11-06T14:03:12.271Z\",\"collection_completed\":\"2026-11-06T14:03:13.042Z\",\"save_started\":\"2026-11-06T14:03:14.969Z\",\"save_completed\":\"2026-11-06T14:03:27.215Z\",\"total_ms\":19792},\"counts\":{\"live-groups\":26,\"live-class-appearances\":44},\"changed_records\":70,\"issues\":70,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-groups-171b121f-7107-45a6-ac8a-2869a9179bb9.json\"}",
+        "checked-at": "2026-11-06T14:03:27.215Z",
+        "completed": "2026-11-06T14:03:27.215Z"
+      }
+    },
+    {
+      "id": "recYGztV99P7kfj8s",
+      "createdTime": "2026-11-06T14:03:14.000Z",
+      "fields": {
+        "started": "2026-11-06T14:03:07.432Z",
+        "run-id": "3802183f-95ed-43b0-8b14-c390468c21a1",
+        "heartbeat-key": "3802183f-95ed-43b0-8b14-c390468c21a1",
+        "result": "Partial",
+        "summary": "{\"lane\":\"rings\",\"day_priority\":0,\"live_status\":true,\"timings\":{\"collection_ms\":193.78420000000006,\"save_ms\":1481.908800000001,\"collection_started\":\"2026-11-06T14:03:12.317Z\",\"collection_completed\":\"2026-11-06T14:03:12.511Z\",\"save_started\":\"2026-11-06T14:03:13.526Z\",\"save_completed\":\"2026-11-06T14:03:15.008Z\",\"total_ms\":7576},\"counts\":{\"live-rings\":6},\"changed_records\":6,\"issues\":26,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-rings-3802183f-95ed-43b0-8b14-c390468c21a1.json\"}",
+        "checked-at": "2026-11-06T14:03:15.008Z",
+        "completed": "2026-11-06T14:03:15.008Z"
+      }
+    }
+  ],
+  "cleanup": {
+    "run_id": "29d07b91-af5c-45f3-b8b6-a9931c58d54b",
+    "started": "2026-11-06T14:03:39.817Z",
+    "actions": [
+      {
+        "id": "29d07b91-af5c-45f3-b8b6-a9931c58d54b|quick-cleanup|heartbeat",
+        "table": "heartbeat",
+        "trigger": "quick-cleanup",
+        "before": 12,
+        "old_show": null,
+        "deleted": 0,
+        "started": "2026-11-06T14:03:42.624Z",
+        "result": "Skipped",
+        "completed": "2026-11-06T14:03:49.909Z",
+        "target_count": 0
+      },
+      {
+        "id": "29d07b91-af5c-45f3-b8b6-a9931c58d54b|quick-cleanup|run-logs",
+        "table": "run-logs",
+        "trigger": "quick-cleanup",
+        "before": 88,
+        "old_show": null,
+        "deleted": 0,
+        "started": "2026-11-06T14:03:44.824Z",
+        "result": "Skipped",
+        "completed": "2026-11-06T14:03:51.819Z",
+        "target_count": 0
+      },
+      {
+        "id": "29d07b91-af5c-45f3-b8b6-a9931c58d54b|quick-cleanup|errs-log",
+        "table": "errs-log",
+        "trigger": "quick-cleanup",
+        "before": 106,
+        "old_show": null,
+        "deleted": 0,
+        "started": "2026-11-06T14:03:47.461Z",
+        "result": "Skipped",
+        "completed": "2026-11-06T14:03:53.657Z",
+        "target_count": 0
+      }
+    ],
+    "result": "Success",
+    "day": "2026-11-06",
+    "new_day": false,
+    "quick_due": true,
+    "show": 200000077,
+    "new_show": false,
+    "completed": "2026-11-06T14:03:55.290Z"
+  },
+  "installed_match": true
+}

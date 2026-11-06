@@ -1,0 +1,115 @@
+{
+  "blocker_run": "9bb1be40-eaee-458c-9af1-a946e136e14a",
+  "blocker": "Live-status check: Unreadable live status: expected explicit boolean",
+  "record_repairs": 0,
+  "next_action": "Separate owner approval needed to investigate/fix unreadable status; then verify two natural collection runs. No retries or fixes performed.",
+  "installed_hashes": [
+    {
+      "match": true,
+      "file": "activity.js"
+    },
+    {
+      "match": true,
+      "file": "airtable.js"
+    },
+    {
+      "match": true,
+      "file": "archive.js"
+    },
+    {
+      "match": true,
+      "file": "cleanup.js"
+    },
+    {
+      "match": true,
+      "file": "collector.js"
+    },
+    {
+      "match": true,
+      "file": "configure.js"
+    },
+    {
+      "match": true,
+      "file": "entry.js"
+    },
+    {
+      "match": true,
+      "file": "lane-store.js"
+    },
+    {
+      "match": true,
+      "file": "lanes.js"
+    },
+    {
+      "match": true,
+      "file": "live-cadence.js"
+    },
+    {
+      "match": true,
+      "file": "live-trips.js"
+    },
+    {
+      "match": true,
+      "file": "log-retention.js"
+    },
+    {
+      "match": true,
+      "file": "membership.js"
+    },
+    {
+      "match": true,
+      "file": "model.js"
+    },
+    {
+      "match": true,
+      "file": "participation.js"
+    },
+    {
+      "match": true,
+      "file": "publication-api.js"
+    },
+    {
+      "match": true,
+      "file": "publication-journal.js"
+    },
+    {
+      "match": true,
+      "file": "publication.js"
+    },
+    {
+      "match": true,
+      "file": "retirement.js"
+    },
+    {
+      "match": true,
+      "file": "rollover.js"
+    },
+    {
+      "match": true,
+      "file": "runtime-utils.js"
+    },
+    {
+      "match": true,
+      "file": "schema.js"
+    },
+    {
+      "match": true,
+      "file": "settings.js"
+    },
+    {
+      "match": true,
+      "file": "source.js"
+    },
+    {
+      "match": true,
+      "file": "verify.js"
+    }
+  ],
+  "normal_collection_verification": "UNVERIFIED: existing status reader has rejected the source before deployment; groups/rings/classes are not invoked",
+  "task_unchanged": true,
+  "last_run": "2026-11-06T09:48:01.0000000-05:00",
+  "manual_runs": 0,
+  "observed_at": "2026-11-06T14:49:58.3244126Z",
+  "last_result": 0,
+  "offline": "18 PASS"
+}

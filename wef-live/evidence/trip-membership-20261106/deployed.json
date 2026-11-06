@@ -1,0 +1,115 @@
+{
+  "status": "Installed/readback PASS;two normal scheduled runs pending",
+  "manual_run": false,
+  "hashes": [
+    {
+      "sha256": "6f076e88094395c69b084a5563a581d5004f8470fa78c23057af0cd95dcdf633",
+      "file": "activity.js"
+    },
+    {
+      "sha256": "5f7529fa4fbb656421c583c24db7f04e46facd2e66ac0def752626dc6c102244",
+      "file": "airtable.js"
+    },
+    {
+      "sha256": "03326e694b7e7f06dccd6a73318d1a807aa4ef06cc4f3ea6e7510f2627c6f18c",
+      "file": "archive.js"
+    },
+    {
+      "sha256": "deee63d7ab4d7c3a4c8793b9ea22c12469dc1db96d6fa4679aed7c9a5c3ed995",
+      "file": "cleanup.js"
+    },
+    {
+      "sha256": "8cd0247371f17a9c6552e104329fc00f9197612d0feee6ab74bd2bbd731915ae",
+      "file": "collector.js"
+    },
+    {
+      "sha256": "c29b81c3e3e544e41ef457878201ac0af6cd0c92a6c37986548c52ef8450971a",
+      "file": "configure.js"
+    },
+    {
+      "sha256": "69757818b266db559ad796e39361dbf080c167b3d16a3ed66c4d1ae2a3e1fd0f",
+      "file": "entry.js"
+    },
+    {
+      "sha256": "f1eadb030a51dcd8a837abb0e0fb01ac3e109cae017566cd48632b7d3914af93",
+      "file": "lane-store.js"
+    },
+    {
+      "sha256": "9acaeecc35fdbe267ad703709101457a66fee6b7870200fb2bd389885a1123ea",
+      "file": "lanes.js"
+    },
+    {
+      "sha256": "d68dcf7f3ae9515c2e5ebdb81872c4311cb058a05d512e8a9f9ff36a176384b2",
+      "file": "live-cadence.js"
+    },
+    {
+      "sha256": "d3cd66257373a797bdd7c8ec3731a771e564364323c9e60c5b990c44f9e81ab2",
+      "file": "live-trips.js"
+    },
+    {
+      "sha256": "7d351cb97b711acdfa3d90120e4287e55f252a1ff1972693980f08b5d325f897",
+      "file": "log-retention.js"
+    },
+    {
+      "sha256": "e383eae0dc7dca29f1908e5a8e47fe0e296bd047794ae22077f1c645e428b6c6",
+      "file": "membership.js"
+    },
+    {
+      "sha256": "08bfdabb5637511e17a979e2a6c0319be37f68a9edce323262128ebbc78c0468",
+      "file": "model.js"
+    },
+    {
+      "sha256": "bb42027bea9eaa9557e53e63f39eeb9403760fb491dd77a971a3e6a01a0a69f8",
+      "file": "participation.js"
+    },
+    {
+      "sha256": "b25b6bd25760d7fabd53ef2077de3854a676c6e43b3a6221a59607eeba9f852f",
+      "file": "publication-api.js"
+    },
+    {
+      "sha256": "f97762d89fadba3f49c568e73b697d3ae4b2c1863cf210ad85bab391ea849809",
+      "file": "publication-journal.js"
+    },
+    {
+      "sha256": "91d083d7dbca2f474de56c9b560772b17aa892fe19b425d2796122c49c3cb96e",
+      "file": "publication.js"
+    },
+    {
+      "sha256": "67190601204fd73ea450c3bff6573073c4aff13728cd19533521f285c12f15e8",
+      "file": "retirement.js"
+    },
+    {
+      "sha256": "5da578299c557e8dd541a6266640836feafa0243ee523631e521e30fe93e5180",
+      "file": "rollover.js"
+    },
+    {
+      "sha256": "d9cf17a572611705fa2854f9648382969bd8f10297d540a367446101a1a7344b",
+      "file": "runtime-utils.js"
+    },
+    {
+      "sha256": "093f3c33b9ca3ef973cfeb2f7c8c68caa2238331a44f55665cc5cd73d1a76c18",
+      "file": "schema.js"
+    },
+    {
+      "sha256": "c577cad3b11cb8db0970da2a2092c0f21cc8c26eafd028f2308ca7bc5bb7ae35",
+      "file": "settings.js"
+    },
+    {
+      "sha256": "453193bea7af180b388e987f6f49f9fbe2dc9bac73b888edfea242d6a985392a",
+      "file": "source.js"
+    },
+    {
+      "sha256": "c0483558419c9d9ea90bd2741981da85136e509e666a0467f1048e1ae97e7976",
+      "file": "verify.js"
+    }
+  ],
+  "header_files_preserved": true,
+  "changed": [
+    "lanes.js",
+    "live-trips.js"
+  ],
+  "unchanged_js": 23,
+  "deployed_at": "2026-11-06T14:49:23.1738490Z",
+  "shared_reader_unchanged": true,
+  "task_unchanged": true
+}
