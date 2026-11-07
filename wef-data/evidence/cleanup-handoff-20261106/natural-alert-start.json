@@ -1,0 +1,8 @@
+{
+  "event_id": "calendar-day|2026-11-07",
+  "adopted_at": "2026-11-07T06:49:33.4641186Z",
+  "source": "Genuine Records natural heartbeat 2026-11-07T06:47:45.681Z",
+  "task": "wef-data-cleanup",
+  "starts": 1,
+  "route": "Existing event-driven task; not a manual test run"
+}

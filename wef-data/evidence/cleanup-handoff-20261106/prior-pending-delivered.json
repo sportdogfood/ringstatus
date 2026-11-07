@@ -1,0 +1,99 @@
+{
+  "records": [
+    {
+      "id": "rec7rEQwziaGA5gfe",
+      "createdTime": "2026-11-07T03:34:41.000Z",
+      "cellValuesByFieldId": {
+        "fld29eAQ8S6BslR4A": "wef-data",
+        "fld8XWJvBZ5VfgxLr": "{\"saved\":3846,\"day-priorities\":{\"2026-11-07\":0,\"2026-11-08\":1},\"stage-seconds\":{\"select-show-and-day\":15.419316,\"save-run-start\":15.891218,\"fetch-rings-groups-classes\":2.595296,\"prepare-rings-groups-classes\":0.016291,\"save-inventory-rings\":2.701822,\"save-inventory-groups\":11.253385,\"save-inventory-classes\":27.653348,\"fetch-and-prepare-entries-trips\":260.139131,\"save-schedules\":13.665533,\"save-class-details\":12.682666,\"save-entries\":90.971271,\"save-trips\":29.215834,\"save-results\":53.816915,\"save-run-summary\":1.172151},\"days\":[{\"day\":\"2026-11-07\",\"priority\":0,\"lane\":\"fast-collector\",\"started\":\"2026-11-07T01:51:32.721906+00:00\",\"completed\":\"2026-11-07T01:55:48.128575+00:00\",\"state\":\"Saved\",\"run-key\":\"collection-aebc7352-c986-4da3-9b70-b4f47bdead53\",\"counts\":{\"saved\":2289,\"stage-seconds\":{\"select-show-and-day\":0.001899,\"save-run-start\":8.132843,\"fetch-rings-groups-classes\":1.202654,\"prepare-rings-groups-classes\":0.007457,\"save-inventory-rings\":1.869826,\"save-inventory-groups\":7.096957,\"save-inventory-classes\":16.55599,\"fetch-and-prepare-entries-trips\":106.47825,\"save-schedules\":6.191828,\"save-class-details\":5.629636,\"save-entries\":56.923181,\"save-trips\":17.76696,\"save-results\":26.672643,\"save-run-summary\":0.866774},\"total-seconds\":255.396916},\"errors\":0},{\"day\":\"2026-11-08\",\"priority\":1,\"lane\":\"fast-collector\",\"started\":\"2026-11-07T01:55:48.128575+00:00\",\"completed\":\"2026-11-07T02:00:14.603542+00:00\",\"state\":\"Saved\",\"run-key\":\"collection-aebc7352-c986-4da3-9b70-b4f47bdead53|2026-11-08\",\"counts\":{\"saved\":1557,\"stage-seconds\":{\"select-show-and-day\":0.000833,\"save-run-start\":7.758375,\"fetch-rings-groups-classes\":1.392642,\"prepare-rings-groups-classes\":0.008834,\"save-inventory-rings\":0.831996,\"save-inventory-groups\":4.156428,\"save-inventory-classes\":11.097358,\"fetch-and-prepare-entries-trips\":153.660881,\"save-schedules\":7.473705,\"save-class-details\":7.05303,\"save-entries\":34.04809,\"save-trips\":11.448874,\"save-results\":27.144272,\"save-run-summary\":0.305377},\"total-seconds\":266.380747},\"errors\":0}],\"total-seconds\":537.338975}",
+        "fld9Jkbd3kZczzpmi": 538.077,
+        "fldCnTNSVepK8ZpTt": "2026-11-07T01:51:16.714Z",
+        "fldHstpbMoewwGrQ1": "aebc7352-c986-4da3-9b70-b4f47bdead53",
+        "fldJdLN0cXOYfQCh5": "Collection",
+        "fldXugPEgMjyb0D3d": [
+          {
+            "id": "recB8iIaaWb2UEReL",
+            "name": "aebc7352-c986-4da3-9b70-b4f47bdead53-0001"
+          }
+        ],
+        "fldfbSqR1NqMP0zix": "2026-11-07T01:51:16.714Z",
+        "fldmn0d0UcBymEG9J": "15|200000077",
+        "fldoJrZeuFABWx2d7": "Succeeded",
+        "fldr5O5v3PVxZrIpH": "collection-aebc7352-c986-4da3-9b70-b4f47bdead53",
+        "fldv8F4bAzfaJ8OP3": "2026-11-07T02:00:14.791Z"
+      }
+    },
+    {
+      "id": "recAc7AA9LN841sfI",
+      "createdTime": "2026-11-07T03:34:44.000Z",
+      "cellValuesByFieldId": {
+        "fld29eAQ8S6BslR4A": "wef-data",
+        "fld8XWJvBZ5VfgxLr": "{\"saved\":1561,\"day-priorities\":{\"2026-11-07\":0,\"2026-11-08\":1},\"stage-seconds\":{\"select-show-and-day\":0.526516,\"save-run-start\":5.564593,\"fetch-rings-groups-classes\":0.990915,\"prepare-rings-groups-classes\":0.003173,\"save-inventory-rings\":0.657969,\"save-inventory-groups\":3.974491,\"save-inventory-classes\":9.548995,\"save-schedules\":7.6949,\"save-schedule-priorities\":4.875433,\"fetch-and-prepare-entries-trips\":153.728882,\"save-class-details\":7.569258,\"save-entries\":27.354264,\"save-trips\":9.98071,\"save-results\":16.0782,\"save-run-summary\":0.316899},\"days\":[{\"day\":\"2026-11-08\",\"priority\":1,\"lane\":\"fast-collector\",\"started\":\"2026-11-07T03:30:18.366021+00:00\",\"completed\":\"2026-11-07T03:34:26.739536+00:00\",\"state\":\"Saved\",\"run-key\":\"collection-12bb662f-9232-4885-802c-c44480aa4f36|2026-11-08\",\"counts\":{\"saved\":1561,\"stage-seconds\":{\"select-show-and-day\":0.001442,\"save-run-start\":5.564593,\"fetch-rings-groups-classes\":0.990915,\"prepare-rings-groups-classes\":0.003173,\"save-inventory-rings\":0.657969,\"save-inventory-groups\":3.974491,\"save-inventory-classes\":9.548995,\"save-schedules\":7.6949,\"save-schedule-priorities\":4.875433,\"fetch-and-prepare-entries-trips\":153.728882,\"save-class-details\":7.569258,\"save-entries\":27.354264,\"save-trips\":9.98071,\"save-results\":16.0782,\"save-run-summary\":0.316899},\"total-seconds\":248.340147},\"errors\":0}],\"total-seconds\":248.959873}",
+        "fld9Jkbd3kZczzpmi": 249.574,
+        "fldCnTNSVepK8ZpTt": "2026-11-07T03:30:17.267Z",
+        "fldHstpbMoewwGrQ1": "12bb662f-9232-4885-802c-c44480aa4f36",
+        "fldJdLN0cXOYfQCh5": "Collection",
+        "fldXugPEgMjyb0D3d": [
+          {
+            "id": "recMa01oQWI7CnfgX",
+            "name": "12bb662f-9232-4885-802c-c44480aa4f36-0001"
+          }
+        ],
+        "fldfbSqR1NqMP0zix": "2026-11-07T03:30:17.267Z",
+        "fldmn0d0UcBymEG9J": "15|200000077",
+        "fldoJrZeuFABWx2d7": "Succeeded",
+        "fldr5O5v3PVxZrIpH": "collection-12bb662f-9232-4885-802c-c44480aa4f36|2026-11-08",
+        "fldv8F4bAzfaJ8OP3": "2026-11-07T03:34:26.841Z"
+      }
+    },
+    {
+      "id": "recBusJy6Rpa3EP7F",
+      "createdTime": "2026-11-07T03:34:42.000Z",
+      "cellValuesByFieldId": {
+        "fld29eAQ8S6BslR4A": "wef-data",
+        "fld8XWJvBZ5VfgxLr": "{\"saved\":1554,\"day-priorities\":{\"2026-11-07\":0,\"2026-11-08\":1},\"stage-seconds\":{\"select-show-and-day\":0.500644,\"save-run-start\":7.815179,\"fetch-rings-groups-classes\":0.886297,\"prepare-rings-groups-classes\":0.003532,\"save-inventory-rings\":0.547437,\"save-inventory-groups\":3.990577,\"save-inventory-classes\":13.435339,\"fetch-and-prepare-entries-trips\":241.609278,\"save-schedules\":9.243627,\"save-class-details\":7.112481,\"save-entries\":41.486361,\"save-trips\":20.940078,\"save-results\":40.692072,\"save-run-summary\":0.283099},\"days\":[{\"day\":\"2026-11-08\",\"priority\":1,\"lane\":\"fast-collector\",\"started\":\"2026-11-07T02:27:24.222675+00:00\",\"completed\":\"2026-11-07T02:33:52.281334+00:00\",\"state\":\"Saved\",\"run-key\":\"collection-269368d9-4ace-4e95-9718-053ef9d02dc9|2026-11-08\",\"counts\":{\"saved\":1554,\"stage-seconds\":{\"select-show-and-day\":0.001477,\"save-run-start\":7.815179,\"fetch-rings-groups-classes\":0.886297,\"prepare-rings-groups-classes\":0.003532,\"save-inventory-rings\":0.547437,\"save-inventory-groups\":3.990577,\"save-inventory-classes\":13.435339,\"fetch-and-prepare-entries-trips\":241.609278,\"save-schedules\":9.243627,\"save-class-details\":7.112481,\"save-entries\":41.486361,\"save-trips\":20.940078,\"save-results\":40.692072,\"save-run-summary\":0.283099},\"total-seconds\":388.046857},\"errors\":0}],\"total-seconds\":389.571884}",
+        "fld9Jkbd3kZczzpmi": 391.17,
+        "fldCnTNSVepK8ZpTt": "2026-11-07T02:27:21.173Z",
+        "fldHstpbMoewwGrQ1": "269368d9-4ace-4e95-9718-053ef9d02dc9",
+        "fldJdLN0cXOYfQCh5": "Collection",
+        "fldXugPEgMjyb0D3d": [
+          {
+            "id": "recGFUQhmr9ABcuj0",
+            "name": "269368d9-4ace-4e95-9718-053ef9d02dc9-0001"
+          }
+        ],
+        "fldfbSqR1NqMP0zix": "2026-11-07T02:27:21.173Z",
+        "fldmn0d0UcBymEG9J": "15|200000077",
+        "fldoJrZeuFABWx2d7": "Succeeded",
+        "fldr5O5v3PVxZrIpH": "collection-269368d9-4ace-4e95-9718-053ef9d02dc9|2026-11-08",
+        "fldv8F4bAzfaJ8OP3": "2026-11-07T02:33:52.343Z"
+      }
+    },
+    {
+      "id": "recmz5VEVpZOu83Rj",
+      "createdTime": "2026-11-07T03:34:43.000Z",
+      "cellValuesByFieldId": {
+        "fld29eAQ8S6BslR4A": "wef-data",
+        "fld8XWJvBZ5VfgxLr": "{\"saved\":3845,\"day-priorities\":{\"2026-11-07\":0,\"2026-11-08\":1},\"stage-seconds\":{\"select-show-and-day\":1.739902,\"save-run-start\":15.501437,\"fetch-rings-groups-classes\":2.878354,\"prepare-rings-groups-classes\":0.015112,\"save-inventory-rings\":1.408376,\"save-inventory-groups\":7.941032,\"save-inventory-classes\":23.182127,\"save-schedules\":18.199678,\"save-schedule-priorities\":11.68032,\"fetch-and-prepare-entries-trips\":260.961387,\"save-class-details\":19.166984,\"save-entries\":93.298682,\"save-trips\":42.309126,\"save-results\":40.685552,\"save-run-summary\":0.720043},\"days\":[{\"day\":\"2026-11-07\",\"priority\":0,\"lane\":\"fast-collector\",\"started\":\"2026-11-07T02:54:20.759553+00:00\",\"completed\":\"2026-11-07T02:58:35.937476+00:00\",\"state\":\"Saved\",\"run-key\":\"collection-cb179117-d666-470d-8a24-ae3bd00e2777\",\"counts\":{\"saved\":2284,\"stage-seconds\":{\"select-show-and-day\":0.002778,\"save-run-start\":10.2137,\"fetch-rings-groups-classes\":0.957403,\"prepare-rings-groups-classes\":0.006033,\"save-inventory-rings\":0.611941,\"save-inventory-groups\":2.90648,\"save-inventory-classes\":14.261835,\"save-schedules\":9.996407,\"save-schedule-priorities\":6.007677,\"fetch-and-prepare-entries-trips\":103.078726,\"save-class-details\":6.543844,\"save-entries\":49.678305,\"save-trips\":27.887499,\"save-results\":22.697465,\"save-run-summary\":0.313869},\"total-seconds\":255.163981},\"errors\":0},{\"day\":\"2026-11-08\",\"priority\":1,\"lane\":\"fast-collector\",\"started\":\"2026-11-07T02:58:35.939395+00:00\",\"completed\":\"2026-11-07T03:03:18.743456+00:00\",\"state\":\"Saved\",\"run-key\":\"collection-cb179117-d666-470d-8a24-ae3bd00e2777|2026-11-08\",\"counts\":{\"saved\":1561,\"stage-seconds\":{\"select-show-and-day\":0.00118,\"save-run-start\":5.287737,\"fetch-rings-groups-classes\":1.920951,\"prepare-rings-groups-classes\":0.009079,\"save-inventory-rings\":0.796435,\"save-inventory-groups\":5.034552,\"save-inventory-classes\":8.920292,\"save-schedules\":8.203271,\"save-schedule-priorities\":5.672643,\"fetch-and-prepare-entries-trips\":157.882661,\"save-class-details\":12.62314,\"save-entries\":43.620377,\"save-trips\":14.421627,\"save-results\":17.988087,\"save-run-summary\":0.406174},\"total-seconds\":282.788225},\"errors\":0}],\"total-seconds\":540.303144}",
+        "fld9Jkbd3kZczzpmi": 541.104,
+        "fldCnTNSVepK8ZpTt": "2026-11-07T02:54:17.728Z",
+        "fldHstpbMoewwGrQ1": "cb179117-d666-470d-8a24-ae3bd00e2777",
+        "fldJdLN0cXOYfQCh5": "Collection",
+        "fldXugPEgMjyb0D3d": [
+          {
+            "id": "rec0S1StzWnObXBte",
+            "name": "cb179117-d666-470d-8a24-ae3bd00e2777-0001"
+          }
+        ],
+        "fldfbSqR1NqMP0zix": "2026-11-07T02:54:17.728Z",
+        "fldmn0d0UcBymEG9J": "15|200000077",
+        "fldoJrZeuFABWx2d7": "Succeeded",
+        "fldr5O5v3PVxZrIpH": "collection-cb179117-d666-470d-8a24-ae3bd00e2777",
+        "fldv8F4bAzfaJ8OP3": "2026-11-07T03:03:18.832Z"
+      }
+    }
+  ],
+  "metadata": {
+    "totalRecordCount": 4
+  }
+}

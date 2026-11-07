@@ -1,0 +1,322 @@
+[
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-06.log",
+    "counts": {
+      "runs": 3142,
+      "errors": 2511,
+      "acks": 5653
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-06.log",
+    "counts": {
+      "runs": 18,
+      "errors": 23,
+      "acks": 41
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 0,
+      "acks": 1
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 0,
+      "acks": 1
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 0,
+      "acks": 1
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 0,
+      "acks": 1
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 3,
+      "errors": 2,
+      "acks": 5
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 5,
+      "errors": 9,
+      "acks": 14
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 0,
+      "errors": 0,
+      "acks": 0
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 2,
+      "errors": 0,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 0,
+      "acks": 1
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 0,
+      "acks": 1
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 0,
+      "acks": 1
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 0,
+      "acks": 1
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 13,
+      "errors": 5,
+      "acks": 18
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-06.log",
+    "counts": {
+      "runs": 1367,
+      "errors": 3061,
+      "acks": 4428
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 9,
+      "errors": 14,
+      "acks": 23
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 0,
+      "errors": 0,
+      "acks": 0
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 2,
+      "errors": 5,
+      "acks": 7
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 2,
+      "errors": 2,
+      "acks": 4
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 6,
+      "errors": 18,
+      "acks": 24
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 2,
+      "acks": 3
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 1,
+      "errors": 1,
+      "acks": 2
+    }
+  },
+  {
+    "file": "wef-data\\runtime\\linking\\collector-2026-11-07.log",
+    "counts": {
+      "runs": 8,
+      "errors": 5,
+      "acks": 13
+    }
+  }
+]

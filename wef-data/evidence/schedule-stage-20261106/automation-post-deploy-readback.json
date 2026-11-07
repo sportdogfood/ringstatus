@@ -1,0 +1,116 @@
+{
+  "readAt": "2026-11-07 03:12:56 UTC",
+  "id": "wflh6tXkIwRqO2lQv",
+  "name": "wef-data schedule evaluation",
+  "description": "Evaluates active saved schedules using schedule total_trips and the shared priority rules. Collector applies the same rules immediately before class detail.",
+  "deploymentStatus": "deployed",
+  "deploymentError": null,
+  "trigger": {
+    "type": "recordMatchesConditions",
+    "inputs": {
+      "tableId": "tblKMNAtvvIFSvgLh",
+      "filtersObj": {
+        "obj": {
+          "operator": "and",
+          "operands": {
+            "tuple": [
+              {
+                "obj": {
+                  "operator": "=",
+                  "operands": {
+                    "tuple": [
+                      "fld29eAQ8S6BslR4A",
+                      "wef-data"
+                    ]
+                  }
+                }
+              },
+              {
+                "obj": {
+                  "operator": "isNotEmpty",
+                  "operands": {
+                    "tuple": [
+                      "fldv8F4bAzfaJ8OP3"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "nodes": [
+    {
+      "key": "wacfDW2CpMNTU6XIb",
+      "type": "customScript",
+      "description": "Uses saved schedule data and current membership to apply existing priority rules. No class-detail dependency.",
+      "inputs": {
+        "script": "/** Schedule priority rules shared by the collector and Airtable evaluation. */\r\nfunction evaluate(records, reportError) {\r\n  const text = value => String(value ?? \"\").trim();\r\n  const tripTag = n => [\"\", \"First trip\", \"Second trip\", \"Third trip\", \"Fourth trip\", \"Fifth trip\"][n] || `Trip ${n}`;\r\n  const plans = [];\r\n  const groups = new Map();\r\n  for (const rec of records) {\r\n    if (rec.fields[\"kind\"] !== \"class\") continue;\r\n    let source;\r\n    try { source = JSON.parse(rec.fields[\"source-json\"] || \"{}\"); }\r\n    catch (err) { reportError(`${rec.id}: invalid source-json: ${err.message}`); continue; }\r\n    const name = text(source.class_name).toLowerCase();\r\n    const type = text(source.class_type).toLowerCase();\r\n    const sequence = text(source.schedule_sequencetype).toLowerCase();\r\n    const count = source.total_trips;\r\n    let flag = null;\r\n    // Category takes precedence over zero entries when both apply.\r\n    if (/\\bhandy\\b/.test(name)) flag = \"Handy\";\r\n    else if (/\\bwarm[ -]?up\\b/.test(name)) flag = \"Warmup\";\r\n    else if (/\\bschooling pony\\b/.test(name)) flag = \"Schooling pony\";\r\n    else if (/\\bmulligan\\b/.test(name)) flag = \"Mulligan\";\r\n    else if (/\\badd[ _-]back\\b/.test(name)) flag = \"Add back\";\r\n    else if (sequence === \"model\") flag = \"Model\";\r\n    else if (/\\bclassic\\b/.test(name) && [\"hunter\", \"hunters\"].includes(type)) flag = \"Classic\";\r\n    else if (count === 0) flag = \"No entries\";\r\n    const plan = {rec, fields: {\"rs-lever\": flag ? \"lever2\" : \"lever1\", \"rs-flag\": flag, \"rs-priority\": null}};\r\n    if (flag) { plans.push(plan); continue; }\r\n    if (sequence === \"under saddle/flat\") {\r\n      plan.fields[\"rs-flag\"] = \"Flat\";\r\n      plan.fields[\"rs-priority\"] = 9;\r\n      plans.push(plan);\r\n      continue;\r\n    }\r\n    const number = source.class_number;\r\n    const keyParts = text(rec.fields[\"schedule-key\"]).split(\"|\");\r\n    const ring = keyParts[3];\r\n    const group = source.class_group_id;\r\n    if (number === null || number === undefined || text(number) === \"\" || !Number.isFinite(Number(number)) || !ring || group === null || group === undefined || keyParts.length < 5) {\r\n      reportError(`${rec.id}: cannot number trip without numeric class_number and show/day/ring/group; other records continue`);\r\n      continue;\r\n    }\r\n    plan.number = Number(number);\r\n    const key = JSON.stringify([...keyParts.slice(0, 3), ring, group, text(source.class_name)]);\r\n    if (!groups.has(key)) groups.set(key, []);\r\n    groups.get(key).push(plan);\r\n    plans.push(plan);\r\n  }\r\n  for (const group of groups.values()) {\r\n    group.sort((a, b) => a.number - b.number || a.rec.id.localeCompare(b.rec.id));\r\n    group.forEach((plan, index) => {\r\n      plan.fields[\"rs-priority\"] = index + 1;\r\n      plan.fields[\"rs-flag\"] = tripTag(index + 1);\r\n    });\r\n  }\r\n  return plans;\r\n}\r\n\r\nasync function evaluateAirtable() {\r\n  const schedules = base.getTable(\"schedules\");\r\n  const query = await schedules.selectRecordsAsync({fields: [\"schedule-key\", \"kind\", \"source-json\", \"record-status\", \"rs-lever\", \"rs-flag\", \"rs-priority\"]});\r\n  const records = query.records.filter(rec => [\"Active\", \"Active \\u2014 no entries\"].includes(rec.getCellValue(\"record-status\"))).map(rec => ({id: rec.id, fields: Object.fromEntries(\r\n    [\"schedule-key\", \"kind\", \"source-json\", \"record-status\", \"rs-lever\", \"rs-flag\", \"rs-priority\"].map(name => [name, rec.getCellValue(name)]))}));\r\n  const plans = evaluate(records, message => console.error(message));\r\n  const updates = plans.filter(p => Object.entries(p.fields).some(([field, value]) => (p.rec.fields[field] ?? null) !== value))\r\n    .map(p => ({id: p.rec.id, fields: p.fields}));\r\n  let saved = 0;\r\n  for (let i = 0; i < updates.length; i += 50) {\r\n    const batch = updates.slice(i, i + 50);\r\n    try { await schedules.updateRecordsAsync(batch); saved += batch.length; }\r\n    catch (err) { console.error(`Schedule priority batch: ${err.message}`); }\r\n  }\r\n  output.set(\"evaluated\", plans.length);\r\n  output.set(\"updated\", saved);\r\n  output.set(\"flags\", plans.reduce((counts, plan) => {\r\n    const flag = plan.fields[\"rs-flag\"];\r\n    counts[flag] = (counts[flag] || 0) + 1;\r\n    return counts;\r\n  }, {}));\r\n}\r\n\r\nawait evaluateAirtable();\n"
+      },
+      "outputSchema": [
+        {
+          "name": "evaluated",
+          "type": "number"
+        },
+        {
+          "name": "updated",
+          "type": "number"
+        },
+        {
+          "name": "flags",
+          "type": {
+            "type": "object",
+            "properties": {
+              "No entries": {
+                "type": "number"
+              },
+              "Flat": {
+                "type": "number"
+              },
+              "First trip": {
+                "type": "number"
+              },
+              "Second trip": {
+                "type": "number"
+              },
+              "Third trip": {
+                "type": "number"
+              },
+              "Fourth trip": {
+                "type": "number"
+              },
+              "Fifth trip": {
+                "type": "number"
+              },
+              "Handy": {
+                "type": "number"
+              },
+              "Model": {
+                "type": "number"
+              },
+              "Warmup": {
+                "type": "number"
+              },
+              "Schooling pony": {
+                "type": "number"
+              },
+              "Mulligan": {
+                "type": "number"
+              },
+              "Add back": {
+                "type": "number"
+              },
+              "Classic": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "deployedVersion": null,
+  "configurationStatus": "valid"
+}

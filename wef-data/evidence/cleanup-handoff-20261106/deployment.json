@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-07T03:33:14.7975732Z",
+  "route": "Existing registered tasks read this checkout; no task start or schedule change",
+  "files": [
+    {
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\entry.js",
+      "sha256": "d307da12d1e2c138d6045f095d95e3fc6a424f9c467519bd04c3d9ef7409953f"
+    },
+    {
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\cleanup-local-logs.js",
+      "sha256": "a840eb2ff9fb3568c38b4c56eb10793b91698b0fa23f6c6670e0821d75efbf78"
+    },
+    {
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\attempt-log.js",
+      "sha256": "e913eb7d3a3031636dbbc5adbf0f5e197655ad71816b5fe376a86c1e01238f8a"
+    },
+    {
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\cleanup.js",
+      "sha256": "570b515390ff4f28d782678d768419a5d7c1f17e1633cbb539eef852e4b06e74"
+    }
+  ],
+  "review": "review/review-receipt.json",
+  "liveVerified": false
+}

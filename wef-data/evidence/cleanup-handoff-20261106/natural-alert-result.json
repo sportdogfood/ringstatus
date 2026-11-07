@@ -1,0 +1,47 @@
+{
+  "run_id": 1794034173999,
+  "started": "2026-11-07T06:49:33.999Z",
+  "actions": [
+    {
+      "id": "1794034173999|calendar-day|heartbeat",
+      "table": "heartbeat",
+      "trigger": "calendar-day",
+      "before": 2,
+      "old_show": null,
+      "deleted": 0,
+      "started": "2026-11-07T06:49:49.154Z",
+      "result": "Skipped",
+      "completed": "2026-11-07T06:49:55.478Z",
+      "target_count": 0
+    },
+    {
+      "id": "1794034173999|calendar-day|run-logs",
+      "table": "run-logs",
+      "trigger": "calendar-day",
+      "before": 1536,
+      "old_show": null,
+      "deleted": 630,
+      "started": "2026-11-07T06:49:51.045Z",
+      "result": "Error",
+      "error": "Cleanup record changed before deletion",
+      "completed": "2026-11-07T06:51:38.460Z",
+      "target_count": 1534
+    },
+    {
+      "id": "1794034173999|calendar-day|err-logs",
+      "table": "err-logs",
+      "trigger": "calendar-day",
+      "before": 68,
+      "old_show": null,
+      "deleted": 0,
+      "started": "2026-11-07T06:49:53.021Z",
+      "result": "Running",
+      "target_count": 66
+    }
+  ],
+  "result": "Error",
+  "show": 200000077,
+  "new_show": false,
+  "error": "Cleanup record changed before deletion",
+  "completed": "2026-11-07T06:51:38.460Z"
+}

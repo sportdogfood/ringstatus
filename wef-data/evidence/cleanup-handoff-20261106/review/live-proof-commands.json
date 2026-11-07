@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "live-proof-readonly",
+      "command": "python -B \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-handoff-20261106\\review\\live-proof-check.py\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "Python 3.11.3",
+      "started_at": "2026-11-07T06:53:12.957536+00:00",
+      "ended_at": "2026-11-07T06:53:14.051611+00:00",
+      "exit_code": 0,
+      "stdout": "{\n  \"observed_at\": \"2026-11-07T06:53:14.043522+00:00\",\n  \"deployed_hashes_match_review\": true,\n  \"scheduled_invocations\": 40,\n  \"confirmed_removal_totals\": {\n    \"runs\": 4603,\n    \"errors\": 5674,\n    \"acks\": 10277\n  },\n  \"initial_pending\": 16,\n  \"pending_readback_runs\": 4,\n  \"pending_readback_errors\": 12,\n  \"after_snapshot_pending_files\": [\n    {\n      \"workflow\": \"wef-data\",\n      \"file\": \"run-logs/8810598c-5762-4d3e-8ba2-233790462044.json\",\n      \"exists\": true,\n      \"status\": \"Succeeded\",\n      \"completed\": \"2026-11-07T06:51:55.907Z\"\n    }\n  ],\n  \"current_inventory_at\": \"2026-11-07T06:53:13.340Z\",\n  \"current_workflows\": {\n    \"wef-data\": {\n      \"counts\": {\n        \"run-logs\": 168,\n        \"err-logs\": 123,\n        \"acks\": 292\n      },\n      \"pending\": []\n    },\n    \"wef-data-linking\": {\n      \"counts\": {\n        \"run-logs\": 73,\n        \"err-logs\": 101,\n        \"acks\": 174\n      },\n      \"pending\": [\n        \"run-logs/4a5b75e2-0356-453e-8f0c-76452cbe6bed.json\"\n      ]\n    }\n  }\n}\n",
+      "stderr": ""
+    }
+  ]
+}

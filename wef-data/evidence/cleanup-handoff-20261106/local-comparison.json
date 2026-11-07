@@ -1,0 +1,50 @@
+{
+  "wef-data": {
+    "before": {
+      "run-logs": 3344,
+      "err-logs": 2672,
+      "acks": 6002
+    },
+    "after": {
+      "run-logs": 169,
+      "err-logs": 123,
+      "acks": 292
+    },
+    "initial_pending": 15,
+    "pending_still_present": [],
+    "initial_pending_no_longer_local": [
+      "run-logs/12bb662f-9232-4885-802c-c44480aa4f36.json",
+      "run-logs/269368d9-4ace-4e95-9718-053ef9d02dc9.json",
+      "run-logs/aebc7352-c986-4da3-9b70-b4f47bdead53.json",
+      "run-logs/cb179117-d666-470d-8a24-ae3bd00e2777.json",
+      "err-logs/269368d9-4ace-4e95-9718-053ef9d02dc9-0001.json",
+      "err-logs/71f38baa-76ef-498a-9a40-950a26df26d9-0002.json",
+      "err-logs/aebc7352-c986-4da3-9b70-b4f47bdead53-0001.json",
+      "err-logs/cb179117-d666-470d-8a24-ae3bd00e2777-0001.json",
+      "err-logs/ed6e31df-acab-4fbd-a768-a83b44294e5e-0002.json",
+      "err-logs/ed6e31df-acab-4fbd-a768-a83b44294e5e-0003.json",
+      "err-logs/ed6e31df-acab-4fbd-a768-a83b44294e5e-0004.json",
+      "err-logs/ed6e31df-acab-4fbd-a768-a83b44294e5e-0005.json",
+      "err-logs/ed6e31df-acab-4fbd-a768-a83b44294e5e-0006.json",
+      "err-logs/ed6e31df-acab-4fbd-a768-a83b44294e5e-0007.json",
+      "err-logs/ed6e31df-acab-4fbd-a768-a83b44294e5e-0008.json"
+    ]
+  },
+  "wef-data-linking": {
+    "before": {
+      "run-logs": 1459,
+      "err-logs": 3195,
+      "acks": 4654
+    },
+    "after": {
+      "run-logs": 72,
+      "err-logs": 102,
+      "acks": 175
+    },
+    "initial_pending": 1,
+    "pending_still_present": [],
+    "initial_pending_no_longer_local": [
+      "err-logs/7ead6700-401e-4f9a-9d4d-a83bfd842a21-0003.json"
+    ]
+  }
+}

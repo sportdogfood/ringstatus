@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "deployed-hash-and-contract",
+      "command": "\"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\.venv\\Scripts\\python.exe\" -B \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\post-deploy-review\\verify-deployed.py\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\.venv\\Scripts\\python.exe",
+      "started_at": "2026-11-07T03:13:42.995724+00:00",
+      "ended_at": "2026-11-07T03:13:43.134415+00:00",
+      "exit_code": 0,
+      "stdout": "fast_collector.py 70ca4b29d3f2aeff79b0dac9c8998e0d0b981ff324111ae600c65f0b0178f054 MATCH reviewed candidate\nschedule-priority.js 53305b974cc06378fcf95e47351f3644ddee31a090381c356d8f2061a97f52cf MATCH reviewed candidate\nschema.json db8d9f3b31d473951cddd3f0697fa37baf8dbbb815310675e107e488f95e3398 MATCH reviewed candidate\nLive automation saved readback: deployed, exact reviewed evaluator, completed-run trigger\n2026-11-07 2284 distinct acknowledged business records 255.163981 seconds 0 collection errors\n2026-11-08 1561 distinct acknowledged business records 282.788225 seconds 0 collection errors\nReused prior offline test evidence after exact candidate/deployed hash match; no rerun needed\n",
+      "stderr": ""
+    }
+  ]
+}

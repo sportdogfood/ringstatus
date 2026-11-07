@@ -1,6 +1,6 @@
 # Records coordinator daily agent-management plan
 
-Version **1.5.0**, updated **November 4, 2026**, America/New_York. Owner: Records coordinator, chat `01a169bc-e58a-7de0-94c6-5d3931fcf745`.
+Version **1.6.0**, updated **November 6, 2026**, America/New_York. Owner: Records coordinator, chat `01a169bc-e58a-7de0-94c6-5d3931fcf745`.
 
 **Current route: actual operational messages plus the approved cleanup-only exception in the existing context reminder.** The removed Shows observer and all-six timed coverage remain removed. Preserve the reminder's actual current cadence, identity, target, status, context duties and two-minute cap. November 4 approval migrates source/relationship bindings and diagnostics, not timing or ownership. Resolve current `w-shows` / `w-days` sources from the same existing schema configuration as Data; activate Records only with the reviewed matching consumer. No source switch creates an event or resets state.
 
@@ -18,7 +18,7 @@ The table below records the former eight-wake coverage; it is **inactive**, not 
 | 7:10 p.m. | Check Shows' published planning-day decision after the agreed 7 p.m. anchor and handle genuine changes. |
 | 10:10 p.m. | Reconcile outstanding failures, approvals, work and exact next actions for overnight continuity. |
 
-Handle already-authorized incoming specialist alerts on receipt and retain individual confirmations. Stay quiet for unchanged/non-actionable results; report an observed new failure, material change, required decision or verified recovery. The existing hourly input is now configured to evaluate only due cleanup alerts during chat silence. Its first natural execution after the update remains unobserved; no exact deadline or wider unattended coverage is claimed, and app/computer availability is required. A written rule or no-op evaluation proves neither recurring execution nor automatic Shows-to-Records transport.
+Handle already-authorized incoming specialist alerts on receipt and retain individual confirmations. Stay quiet for unchanged/non-actionable results; report an observed new failure, material change, required decision or verified recovery. The November6 repair restores only the existing context/cleanup reminder from PAUSED to ACTIVE, retaining its current three-hour cadence. Prior November3/4 executions remain historical; current-release natural execution is unverified; no exact deadline or wider unattended coverage is claimed, and app/computer availability is required. A written rule or no-op evaluation proves neither recurring execution nor automatic Shows-to-Records transport.
 
 ## Owned specialists and evidence
 
@@ -81,7 +81,7 @@ Before dependent cleanup work on each actual operational input or natural existi
 
 Use the unchanged exact pointer `{event_id,trigger,show_id,calendar_day,issued_at}` and `cleanup_dispatches`. Calendar day clears eligible operational logs; log-check uses 1,000/oldest-500-eligible; new show clears selected checked local show records and logging. Active/current logs and catalog/synced/administrative exclusions remain protected. Data starts the existing triggerless task after a genuine Records alert; Records never starts it. No extra helper, timer, observer, schema/task/source change, backup, fabricated event, retry/stop clear or repeated send.
 
-Historical verified calendar event `calendar-day|2026-11-03` / `1793714140373` completed Success with 1,857 logs deleted and current records retained; native verification is in `outputs/wef-data-cleanup-rules-20261103/native-verification.json`. Original show-event `1793641167487` is also handled. Neither can be replayed as proof. Future real-input execution and useful deletion are distinct from this completed event, rule documentation and a not-due evaluation. The existing reminder supplies actual recurring inputs; configuration alone is not proof of execution. A not-due owner-turn evaluation is not that proof.
+Historical verified calendar event `calendar-day|2026-11-03` / `1793714140373` completed Success with 1,857 logs deleted and current records retained; native verification is in `outputs/wef-data-cleanup-rules-20261103/native-verification.json`. Original show-event `1793641167487` is also handled. Neither can be replayed as proof. Future real-input execution and useful deletion are distinct from this completed event, rule documentation and a not-due evaluation. The existing reminder supplies recurring inputs only when ACTIVE and the host is available; the November6 scoped handoff repair restores only that same input to ACTIVE. Configuration alone is not proof of execution. A not-due owner-turn evaluation is not that proof.
 
 ## Code reviews and authorized assignments
 
@@ -111,3 +111,9 @@ November 3 owner-requested snapshot, to be refreshed by the next authorized revi
 - People: Join HTTP 422 stop from November 2, 3:54 p.m.; later process exit 0 is not recovery.
 
 This complaint concerns delayed Records oversight, not proof Records caused the service errors. Earliest Data outage, total downtime and cost remain unmeasured.
+
+## November6 cleanup handoff repair
+
+Use README's November6 cleanup-specific readiness amendment and its independent review/deployment readback. Compare installed cleanup dependencies/task plus the reviewed relevant schema projection, rather than every unrelated Data collector file. The unchanged one-pointer contract, genuine-event priorities, nine handled events, stops and Data-only execution remain controlling. Records never deletes local logs; Data's normal delivery prunes only confirmed-delivered local log families and protects pending/uncertain/current evidence.
+
+The fresh owner approval permits restoring the SAME existing reminder to ACTIVE as part of this exact handoff repair, not resumption of unrelated work. Original pause actor/reason is unverified; no distinct protected owner pause was found. Preserve identity, target, current three-hour cadence and the two-minute continuity/cleanup scope; verify only through the next actual natural wake. No new schedule, cadence change, manual run, synthetic event or old-event replay. Report actual alert delivery, Data acknowledgment, runner completion and deletion/absence proof separately; current live acceptance remains pending.

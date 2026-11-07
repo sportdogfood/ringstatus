@@ -1,6 +1,6 @@
 # wef-records-coordinator
 
-Document version **1.14.0** — updated **November 5, 2026 (America/New_York)**. This is the coordinator document version, not a collector or plugin release. This document does not authorize changes to collectors, schemas, workflows or schedules. Later explicit owner decisions control over dated snapshots.
+Document version **1.15.0** — updated **November 6, 2026 (America/New_York)**. This is the coordinator document version, not a collector or plugin release. This document does not authorize changes to collectors, schemas, workflows or schedules. Later explicit owner decisions control over dated snapshots.
 
 ## Purpose
 
@@ -8,7 +8,7 @@ Coordinate the WEF records workflow so each owner stays in its lane, producers p
 
 ## Daily agent management - current input rule, November 4, 2026
 
-Full plan: [DAILY-MANAGEMENT-PLAN.md](DAILY-MANAGEMENT-PLAN.md), **version 1.5.0**. The removed `wef-shows-changes-to-records` automation and its all-six timed monitoring stay removed. Preserve the existing context/cleanup reminder's actual ID, name, current configured cadence, target, ACTIVE status and two-minute limit; this migration changes no timing and introduces no observer.
+Full plan: [DAILY-MANAGEMENT-PLAN.md](DAILY-MANAGEMENT-PLAN.md), **version 1.6.0**. The removed `wef-shows-changes-to-records` automation and its all-six timed monitoring stay removed. Preserve the existing context/cleanup reminder's actual ID, name, current configured cadence, target, current three-hour cadence and two-minute limit; the November6 cleanup-handoff approval restores only this same reminder to ACTIVE; this migration changes no timing and introduces no observer.
 
 On November 4 the owner explicitly approved the revised `w-shows` / `w-days` migration, 18 new link fields, catalog-read 422 fix and source diagnostics, independent review, existing-route deployment and normal scheduled verification. The owner requires one verified source binding in existing `wef-data/schema.json`, no native IDs scattered through business logic and no layered fallback paths. `___shows` / `___days` are deprecated; old `wef-shows.*` targets are being replaced. Preserve historical native records and links without using them as new-source fallback.
 
@@ -62,7 +62,7 @@ These are the seven current local specialist chats coordinated by **wef-records-
 | --- | --- | --- |
 | **wef-shows** | `01a16976-f0a6-72a1-a75f-75de7f19a815` | Canonical show discovery/identity, dates, selected day, day-priority and verified transition notices. Counting and its repair are cancelled; historical count fields do not certify current counts or zero entries. |
 | **wef-live** | `01a16902-240a-7280-8661-90b0d8d7325a` | Live ring/group/class/trip observations, specifically approved publication and its own approved cleanup. Does not acquire or enrich data for Entries, own Data collection or write arbitrary destination fields/links. Preserve its current publication and retention holds. |
-| **wef-data-fast-collector** | `01a19273-bdf8-71b2-8503-cc8079efc129` | Exclusive Data acquisition, its independent linking task and the separately approved event-only cleanup task. New-show alerts select old-show cleanup; same-show day0 changes select the 1,000/500 operational-log check. Cleanup was reviewed, deployed and registered November2; first event delivery is recorded below, with completion separate from launch. No periodic cleanup polling. Does not own Season retention or sibling workflows. |
+| **wef-data-fast-collector** | `01a19273-bdf8-71b2-8503-cc8079efc129` | Exclusive Data acquisition, its independent linking task and the separately approved event-only cleanup task. New-show alerts select eligible old-show/log cleanup; actual Eastern calendar days clear eligible logs; due three-hour log checks use 1,000/oldest-500-eligible. Planning day0 changes have no cleanup action. Cleanup was reviewed, deployed and registered November2; first event delivery is recorded below, with completion separate from launch. No periodic cleanup polling. Does not own Season retention or sibling workflows. |
 | **wef-season** | `01a169c8-a4cc-7f52-b9f9-ef0a769aab58` | Retain, add, upsert, deduplicate and index `wef-season-*` horses, riders, trainers and rings, preserving supported history/memberships. Does not own Data acquisition or the dedicated People join. |
 | **wef-entries** | `01a1691d-3bd7-7eb2-af17-b9ba39a7501e` | Link existing source-supported records to schedules, horses, riders, trainers and agreed identities. Linking-only: no CWF/feed collection, collector comparison, Live enrichment or reverse gate on collectors. |
 | **wef-people** | `01a19727-9a70-7283-a865-01dd38aacb9d` | Derived People join in existing `wef-seaon-people` base `app6uHgUYCCKTVlJE`, using shared inputs read-only. Owners are excluded and horses remain unlinked under the latest owner corrections. Owns its private join/log/review tables, not upstream sources. |
@@ -75,6 +75,16 @@ Shared proxy ownership: route proxy health and credential matters to **wef-decod
 Records owns cross-specialist coordination: distribute applicable skill updates and verified show/day alerts, obtain each specialist's evidence-backed confirmation, maintain actual code-review coverage and track authorized scheduled acceptance. Each specialist stays in its lane; Records is not a production runner. Preserve the exact owner approvals, failed-path stops, records, IDs and links.
 
 The dated registration and release sections below preserve earlier evidence. They do not override this current roster or later direct owner corrections. In particular, old Data intake-only/combined Season ownership and old active-Schedules wording are historical.
+
+### Cleanup handoff correction — November 6, 2026
+
+Direct owner approval in Data message `01a1b40c-1f93-7f11-8e4c-2037ddf442f4`: fix the existing Records handoff and delivered-local-log cleanup, preserve pending logs, independent review and existing-alert verification; no new schedules, manual runs or extras. Records changes only these instructions, the existing reminder prompt and readiness metadata in the ONE existing notification state. Data owns its separate reviewed local-log deployment.
+
+The existing `wef-records-rebalance-and-context-checkpoint` reminder was **PAUSED** at the repair baseline. The November6 owner approval to fix this handoff and verify through existing alerts authorizes restoring only this same reminder to ACTIVE, retaining its current three-hour cadence and narrow context/cleanup scope. Deployment readback and the next actual natural wake remain separate proof. November4's producer update already preserved PAUSED at 15:38 UTC, before the owner's 16:04:24.079Z “just stop”; no original pause actor/reason was established in the inspected local evidence. The fresh cleanup approval supersedes that generic stop only for this scoped repair and restoration of its existing alert input; it does not resume unrelated work. No distinct protected owner pause was established.
+
+Current cleanup readiness is recorded in `C:/Users/gombc/Documents/Codex/outputs/wef-records-cleanup-handoff-20261106/consumer-readiness.json`, with independent review and actual deployment readback linked there. Match installed cleanup dependencies/task and the reviewed cleanup-specific source-binding projection from current `wef-data/schema.json`. Unrelated collector files/schema fields no longer block cleanup. A relevant cleanup dependency/binding mismatch still blocks dispatch. Old all-Data deployment manifests remain historical provenance. No consumer code, native schema, task, event shape, cadence or policy change is made by Records.
+
+Data's `wef-data/evidence/cleanup-handoff-20261106/deployment.json` records its separately reviewed delivered-local-log pruning after normal collection/linking log delivery. It preserves pending/uncertain families and current heartbeat source logs. Local pruning and Airtable cleanup have distinct execution proof. Both normal local pruning and a new genuine Records alert remain unverified until their actual results are observed. Preserve all nine completed historical dispatches; never replay them for proof.
 
 ### Records cleanup alerts on actual operational inputs - November 4, 2026
 

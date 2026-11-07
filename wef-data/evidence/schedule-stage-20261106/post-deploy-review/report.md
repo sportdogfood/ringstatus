@@ -1,0 +1,37 @@
+# Independent post-deployment review
+
+Reviewer /root/schedule_stage_review, UTC 2026-11-07T03:14:21.558917+00:00. Scope is read-only review of the deployed schedule-stage release and actual workflow, including the owner's concern about patch layering. No implementation, task or business-data changes and no manual collector/source runs.
+
+## Findings
+
+1. CONFIRMED duplicated priority evaluation. fast_collector.py saves schedules then invokes schedule-priority.js before class detail. The deployed Airtable automation wflh6tXkIwRqO2lQv still invokes the same evaluator after a completed wef-data run-log arrives. Both use the same current schedule source rules. The automation writes only differences, so stable inputs normally produce zero second writes, but it still rereads/evaluates all Active schedules. This is redundant computation/read work. No conflicting priority values were found in saved verification. Removing or changing this existing automation requires the owner's decision; this review makes no fix.
+
+2. CONFIRMED existing completion-log delivery failure affects after-run execution proof. For scheduled attempt cb179117-d666-470d-8a24-ae3bd00e2777, collection reports zero errors and successful business saves, but LogDelivery recorded `Logging delivery budget reached`. The saved delivery evidence and task record report no matching Airtable run-log at readback. Therefore the independent after-run automation's execution for that attempt is unverified. Immediate priority writes do not depend on that automation and are verified in the inflight readback. Read-only inspection of attempt-log.js:29-47 shows a 20-second or 30-request delivery budget, oldest-first iteration over local run history, and then error/heartbeat delivery. The saved failure does not retain the operations count or elapsed delivery time, so it does not identify which limit was reached. The logging implementation was outside the schedule-stage diff. No new repair is authorized by this review.
+
+3. CONFIRMED mismatch with the newly proposed workflow. Class detail is active directly after priority saving, within each day. There is no paused class-detail stage, no separate tagger invocation, and no deliberate pause before the next due day. The implemented day-priority scope is 0,1,2,3. Day4 is absent from that scope. Cleanup is independent and consumes Records alerts for new-show, calendar-day or log-check; it is not called at the end of the collector's day cycle. The owner identified the existing repository tagger.js, which sets show/date and heartbeat context. That tagger is absent from the Data invocation, and integrating it has not been approved. These are planning differences, not newly authorized edits or regressions against the previously approved release.
+
+## Deployed release and scope verdict
+
+Exact deployed SHA-256 hashes match the independently reviewed candidate for fast_collector.py, schedule-priority.js and schema.json. The current live Airtable automation was read in this review and is deployed with no differing unpublished draft. Its evaluator script matches the reviewed source prefix plus awaited Airtable invocation. No additional patch or post-review modification was found in these three files. Prior independent offline results are valid for these unchanged bytes and were reused without rerunning those suites.
+
+The last approved implementation is verified as schedule saving, immediate priority saving, then preserved class detail. It adds total-trips and priority mappings, moves schedule persistence earlier, reuses existing priority rules, and removes the later class-detail overwrite of schedule membership. The previous reviewer caught the Absent-row renumbering conflict before deployment; the reviewed final implementation filters Active membership consistently in the saved-data evaluator. This is the already-reviewed candidate, not another correction added by this review.
+
+## Actual current collection order
+
+Registered wef-data-collector wakes every three minutes through run-hidden.vbs -> run.ps1 -> entry.js -> scheduled.py -> fast_collector.run. Existing due rules select eligible priority0-3 dates. For each due day it records run start, fetches schedule, saves rings/groups/basic classes, saves schedules/status/total-trips, evaluates and saves priorities, then requests every listed class detail and saves class details, entries, horse/rider/trainer/owner records, trips and results. It finishes that day's report before moving to the next due day. Day0 follows its existing three-minute or off-day hourly rule; future-day cycle retains the existing half-hour due check. No newly proposed pause is present.
+
+The linker is independently scheduled via the same launcher with --linking -> linking-scheduled.py -> linking.py and its own saved-run due checks. It is not a mandatory next step inside collect_day. The cleanup launcher reads the Records alert state and invokes cleanup.js for the alert type; collector entry.js does not invoke cleanup or a separate tagger.
+
+## What 2,284 means
+
+The day0 report's `counts.saved = 2284` is the size of a Python set of acknowledged `(table,key)` business records during that day. It includes rings, groups, classes, schedules, entries, horses, riders, trainers, owners, trips and results when saved. It excludes runs. Repeated writes to the same schedule (data then priority) or class (basic then detail) count once within that day. It is not 2,284 schedules, source calls, write requests, or necessarily newly created records. The saved readback has 89 day0 schedule rows, including 88 classes and one break. Those 89 are current source schedule rows. The saved count can also include status-only updates to schedules missing from the response. No per-table saved tally is retained, so the total cannot establish an exact schedule-versus-detail breakdown. Across multiple days the outer result sums per-day counts, so an entity saved on both days can contribute twice to that aggregate.
+
+## Verification evidence and limits
+
+The normal scheduled attempt began November6 at9:54p.m. Eastern. Day0 (source date November7) saved2,284 business records in255.163981seconds; day1 (source date November8) saved1,561 in282.788225seconds, both with zero collection errors. Inflight day0 readback at9:55:37p.m. Eastern found89 schedules,88 classified rows, zero total-trips/priority mismatches, while class details still had older timestamps. Day1 saved readback found148 class schedules with zero total-trips/priority mismatches. Stage timings list schedule saving and priority saving before class-detail preparation. This verifies the approved early save sequence, while also proving class detail remains active.
+
+The reviewer inspected saved evidence rather than rerunning collection. Fresh read-only automation metadata confirmed current publication; no automation test or manual run was used. The structured reviewer command independently verified deployed hashes, exact automation script, saved day counts and stage ordering. Logging delivery and after-run automation execution remain distinct open operational proof. No natural new cleanup event was verified in this scoped review.
+
+## Verdict
+
+Code-review COMPLETE. Last approved schedule-stage implementation PASS, with confirmed redundant after-run priority evaluation and existing logging delivery failure disclosed above. Newly described paused/tagger/day4/end-cycle-cleanup workflow is not implemented. No claim that all workflow logging or independent downstream executions succeeded.

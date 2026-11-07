@@ -1,0 +1,18 @@
+{
+  "records": [
+    {
+      "id": "recoiz2faT92bbW66",
+      "createdTime": "2026-11-07T03:33:55.000Z",
+      "cellValuesByFieldId": {
+        "fld1znAlRQEbLbWAK": "Approved change review; no new schedule",
+        "fld5n7kiatHiz7Lzm": "2026-11-06",
+        "fldDgbrU4AKsIpKew": "wef-data-cleanup-handoff-20261106",
+        "fldJygWuQomcMQr6Z": "Review PASS; offline PASS; deployed; natural verification pending",
+        "fldziZTglr2wjNIMp": "wef-code-review-v1\nScope: Data delivered local logs only; Records owns its separate existing alert handoff. Owner approval November6: preserve pending, independent review, existing alerts, no schedules/manual runs/extras.\nReviewer: /root/schedule_stage_review at 2026-11-07T03:32:42Z. No actionable findings; 7 independent offline tests PASS. Exact ack hashes, whole pending families, heartbeat sources, active PIDs, deletion failure, repeat cleanup and actual entry caller verified with temporary fixtures.\nBaseline entry a27b7a2a1ceaaa5c9d9d05e838c2cd7f7774c09349cb7795a7978fca15aded8d. Deployed entry d307da12d1e2c138d6045f095d95e3fc6a424f9c467519bd04c3d9ef7409953f; cleanup-local-logs a840eb2ff9fb3568c38b4c56eb10793b91698b0fa23f6c6670e0821d75efbf78 at 2026-11-07T03:33:14Z. Logger and remote cleanup unchanged.\nLocal pruning is synchronous after existing collector/linker log delivery; same separate roots and IgnoreNew task settings. Collection/cadences/transport/budgets unchanged. Pending payloads are never removed.\nCode review PASS; offline PASS; exact deployment PASS; natural scheduled pruning and Records alert acceptance UNVERIFIED. Next: observe existing runs and Records existing alert; no manual execution.\nEvidence: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data/evidence/cleanup-handoff-20261106/review/{report.md,commands.json,review-receipt.json,verifier-output.json}; deployment.json and local-before.json in parent evidence directory."
+      }
+    }
+  ],
+  "metadata": {
+    "totalRecordCount": 1
+  }
+}

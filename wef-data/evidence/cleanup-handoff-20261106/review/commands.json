@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "independent-local-cleanup-tests",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-handoff-20261106\\test-local-cleanup.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T03:31:54.816960+00:00",
+      "ended_at": "2026-11-07T03:31:55.635934+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: exact delivered families removed; heartbeat and Airtable history unchanged; repeat is empty\nok 1 - exact delivered families removed; heartbeat and Airtable history unchanged; repeat is empty\n  ---\n  duration_ms: 94.7871\n  type: 'test'\n  ...\n# Subtest: missing error acknowledgment preserves entire parent family byte for byte\nok 2 - missing error acknowledgment preserves entire parent family byte for byte\n  ---\n  duration_ms: 53.4334\n  type: 'test'\n  ...\n# Subtest: changed run, changed error and malformed/missing acknowledgment are retained\nok 3 - changed run, changed error and malformed/missing acknowledgment are retained\n  ---\n  duration_ms: 131.7351\n  type: 'test'\n  ...\n# Subtest: newest success and newest error remain when newest attempt is different\nok 4 - newest success and newest error remain when newest attempt is different\n  ---\n  duration_ms: 63.4763\n  type: 'test'\n  ...\n# Subtest: active, started and other-workflow logs are never pruned\nok 5 - active, started and other-workflow logs are never pruned\n  ---\n  duration_ms: 70.8901\n  type: 'test'\n  ...\n# Subtest: error deletion failure leaves parent and pending logs readable\nok 6 - error deletion failure leaves parent and pending logs readable\n  ---\n  duration_ms: 64.953\n  type: 'test'\n  ...\n# Subtest: entry calls local cleanup only after delivery settles; failure does not change collection result\nok 7 - entry calls local cleanup only after delivery settles; failure does not change collection result\n  ---\n  duration_ms: 14.0741\n  type: 'test'\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 658.5902\n",
+      "stderr": ""
+    }
+  ]
+}

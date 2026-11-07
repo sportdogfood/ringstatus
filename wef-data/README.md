@@ -1,8 +1,18 @@
-# wef-data — November 6, README version 2026.11.06.1
+# wef-data — November 6, README version 2026.11.06.2
 
 Updated November 6, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
 
-## Current release — immediate schedule stage, November 6
+## Current cleanup correction — November 6
+
+November7 natural verification: Records' genuine scheduled calendar-day alert arrived at1:49 a.m. Eastern and Data adopted it once through the existing triggerless task. Run1794034173999 failed at1:51:38 a.m. after deleting630 run-logs, with `Cleanup record changed before deletion`. Heartbeats stayed protected; errors were not deleted. Existing cleanup stop remains; no retry or code correction was made after this failed runner verification. The comparison aborts when a batch record is missing, has changed fields or is no longer eligible; the saved error does not identify the specific record/field. Fresh approval is required for that separate correction and stop/resumption.
+
+Delivered local cleanup IS verified through40 normal scheduled invocations:4,603 run files,5,674 error files and10,277 acknowledgments removed. All16 originally pending identities were subsequently confirmed in Airtable (4runs/12errors), and independent live-evidence review confirmed these counts. This is separate from the failed Airtable cleanup. See evidence/cleanup-handoff-20261106/{scheduled-local-removals.json,prior-pending-delivered.json,prior-pending-errors-delivered.json,natural-alert-result.json}.
+
+Owner approved fixing the Records cleanup alert handoff and removing delivered local logs while preserving pending logs. The independently reviewed local cleanup was deployed at 10:33 p.m. Eastern. After each existing collector/linker log delivery finishes, it removes only completed, inactive run/error families whose current payloads match delivery acknowledgments. Pending families and the latest run, success and error history remain. Local deletion is kept out of the independent alert task to avoid racing log delivery. Logger, collection, cadences and remote cleanup policy are unchanged; no new schedule or manual run was added.
+
+Independent review and seven offline checks PASS. Records' separately reviewed correction was deployed at10:40 p.m. Eastern, restoring the SAME existing three-hour reminder ACTIVE and replacing its obsolete all-Data-release check with cleanup-specific dependencies. Nine prior dispatches and all pointer/handled-event state were preserved. No fresh natural alert has yet been observed; the last completed cleanup remains November4. Scheduled local removal and natural alert/task completion remain unverified. Evidence: [task and scope](evidence/cleanup-handoff-20261106/task.md), [review](evidence/cleanup-handoff-20261106/review/report.md), [deployment](evidence/cleanup-handoff-20261106/deployment.json). Records evidence is C:/Users/gombc/Documents/Codex/outputs/wef-records-cleanup-handoff-20261106/deployment.json. Data review record: recoiz2faT92bbW66.
+
+## Immediate schedule stage — November 6
 
 Owner approved saving schedules and applying total-trips, record-status, rs-lever, rs-flag and rs-priority before class-detail requests. Exact independently reviewed files deployed at 9:34 p.m. Eastern. Schedule total_trips supplies the zero-count decisions. Existing class detail follows as a separate stage in the same scheduled invocation. Existing day selection and cadences are preserved, as is the decoder owner's installed timeout correction.
 

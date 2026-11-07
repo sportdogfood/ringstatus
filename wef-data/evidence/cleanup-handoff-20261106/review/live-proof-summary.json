@@ -1,0 +1,43 @@
+{
+  "observed_at": "2026-11-07T06:53:14.043522+00:00",
+  "deployed_hashes_match_review": true,
+  "scheduled_invocations": 40,
+  "confirmed_removal_totals": {
+    "runs": 4603,
+    "errors": 5674,
+    "acks": 10277
+  },
+  "initial_pending": 16,
+  "pending_readback_runs": 4,
+  "pending_readback_errors": 12,
+  "after_snapshot_pending_files": [
+    {
+      "workflow": "wef-data",
+      "file": "run-logs/8810598c-5762-4d3e-8ba2-233790462044.json",
+      "exists": true,
+      "status": "Succeeded",
+      "completed": "2026-11-07T06:51:55.907Z"
+    }
+  ],
+  "current_inventory_at": "2026-11-07T06:53:13.340Z",
+  "current_workflows": {
+    "wef-data": {
+      "counts": {
+        "run-logs": 168,
+        "err-logs": 123,
+        "acks": 292
+      },
+      "pending": []
+    },
+    "wef-data-linking": {
+      "counts": {
+        "run-logs": 73,
+        "err-logs": 101,
+        "acks": 174
+      },
+      "pending": [
+        "run-logs/4a5b75e2-0356-453e-8f0c-76452cbe6bed.json"
+      ]
+    }
+  }
+}
