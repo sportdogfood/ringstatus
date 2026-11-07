@@ -1,0 +1,13 @@
+{
+  "started": "2026-11-06T22:49:07.041Z",
+  "ended": "2026-11-06T22:49:07.359Z",
+  "http": 200,
+  "response": {
+    "ok": true,
+    "renewals": 1,
+    "anonymous": true,
+    "issued": "2026-11-06T22:49:13.000Z",
+    "expires": "2026-12-06T22:49:13.000Z",
+    "renewedInsideCloudflare": true
+  }
+}

@@ -1,0 +1,11 @@
+START 2026-11-06T21:22:03.3634074Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:22:03.6533975Z exit=0
+START 2026-11-06T21:23:03.5788252Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:23:03.7154952Z exit=0
+START 2026-11-06T21:24:05.4619207Z
+{"status":"Recorded","showId":200000077,"slot":"2026-11-06|16:24","clock":false,"decoder":false,"errors":[]}
+END 2026-11-06T21:24:09.6627605Z exit=0
+START 2026-11-06T21:25:04.7161488Z
+

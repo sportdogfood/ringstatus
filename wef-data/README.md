@@ -1,6 +1,16 @@
-# wef-data — November 5, README version 2026.11.05.1
+# wef-data — November 6, README version 2026.11.06.1
 
-Updated November 5, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+Updated November 6, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+
+## Current release — immediate schedule stage, November 6
+
+Owner approved saving schedules and applying total-trips, record-status, rs-lever, rs-flag and rs-priority before class-detail requests. Exact independently reviewed files deployed at 9:34 p.m. Eastern. Schedule total_trips supplies the zero-count decisions. Existing class detail follows as a separate stage in the same scheduled invocation. Existing day selection and cadences are preserved, as is the decoder owner's installed timeout correction.
+
+The same schedule-priority.js rules serve the collector and the existing Airtable evaluation. The Airtable script is generated from the file before its CommonJS branch, followed by `await evaluateAirtable();`. Its published version reads saved schedule data and current membership, so old absent records cannot renumber active schedules. The collector logs schedule/priority timing before class-detail timing and continues detail collection after schedule write/evaluation errors.
+
+Independent review and offline checks PASS. Field and published automation readback PASS. Normal scheduled attempt cb179117-d666-470d-8a24-ae3bd00e2777 ran November6 at 9:54–10:03 p.m. Eastern. Day0/November7 saved 2,284 records and day1/November8 saved 1,561, with zero collection errors. Airtable readbacks verified total-trips and priorities on 89 day0 schedules (88 classes plus one break) and 148 day1 schedules. Both days recorded schedule and priority saves before class-detail requests. The day0 readback also observed the new schedule fields while prior class-detail timestamps were still present. No manual collection was run.
+
+Separate unresolved logging issue: after collection finished, existing log delivery reported `Logging delivery budget reached`. The attempt's Airtable run-log was absent at readback, and the published after-run automation had no new observed execution. The collector itself applied and saved the verified priorities. No logging repair or retry was performed. Current day0 is November7 while Eastern today is November6, so the existing hourly off-day rule applies; the task still wakes every three minutes. Release evidence and exact reviewed hashes: [schedule-stage-20261106](evidence/schedule-stage-20261106/task.md), [review](evidence/schedule-stage-20261106/review/report.md), [deployment](evidence/schedule-stage-20261106/deployment.json), [scheduled result](evidence/schedule-stage-20261106/scheduled-result.json). Airtable review record: rec5Ilsmi1iFHzB8j.
 
 ## November 5 — collection failure went unreported
 

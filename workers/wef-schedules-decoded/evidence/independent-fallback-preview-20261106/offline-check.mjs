@@ -1,0 +1,11 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';
+const source=fs.readFileSync('workers/wef-schedules-decoded/evidence/independent-fallback-preview-20261106/tcp-fetch.mjs','utf8');
+let wire='';let closes=0;
+const mock=raw=>()=>({opened:Promise.resolve({}),closed:Promise.resolve(),writable:new WritableStream({write(v){wire=new TextDecoder().decode(v)}}),readable:new ReadableStream({start(c){c.enqueue(new TextEncoder().encode(raw));c.close()}}),close:async()=>{closes++}});
+function load(raw){return new Function('connect',source.replace("import {connect} from 'cloudflare:sockets';",'').replace('export async function tcpFetch','async function tcpFetch')+';return tcpFetch;')(mock(raw));}
+let r=await load('HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 2\r\n\r\n{}')('https://sglapi.wellingtoninternational.com/schedule',{headers:{'cf-worker':'should-remove',Authorization:'Bearer offline',Cookie:'offline'}});assert.equal(await r.text(),'{}');assert.ok(!/cf-worker:/i.test(wire));assert.ok(wire.includes('accept-encoding: identity\r\n'));assert.ok(wire.includes('host: sglapi.wellingtoninternational.com\r\n'));
+r=await load('HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n2\r\n{}\r\n0\r\n\r\n')('https://sglapi.wellingtoninternational.com/schedule');assert.equal(await r.text(),'{}');
+await assert.rejects(()=>load('HTTP/1.1 200 OK\r\nContent-Length: 10\r\n\r\n{}')('https://sglapi.wellingtoninternational.com/schedule'),/Incomplete HTTP body/);
+await assert.rejects(()=>load('HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n5\r\n{}')('https://sglapi.wellingtoninternational.com/schedule'),/Incomplete chunk body/);
+await assert.rejects(()=>load('')('https://unapproved.invalid/'),/Unapproved/);assert.equal(closes,4);
+console.log('PASS: bounded direct-TLS request construction, no CF-Worker in serialized headers, fixed-length and chunked parsing, truncated responses rejected, destination allowlist and socket cleanup. Mock sockets only; no source requests.');

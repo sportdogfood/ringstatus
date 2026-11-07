@@ -37,18 +37,18 @@ test('reports explicit timeout for scheduled recovery without retrying',async()=
 });
 test('uses existing transport with bounded decoded source and preserves response bytes',async()=>{
  let calls=0;
- const value=await read('/entries',{customer_id:15,show_id:200000076,page:1,sort_on:'number',sort_type:'asc',search_text:''},{transport:async(url,fallback,options)=>{calls++;assert.equal(new URL(url).hostname,'sglapi.wellingtoninternational.com');assert.equal(options.env.SGL_FETCH_TRANSPORT,'node');return {response:{status:200,headers:new Headers({'x-rs-decoded':'1'})},body:Buffer.from('{"horse":"HÖRSE"}')};}});
+ const value=await read('/entries',{customer_id:15,show_id:200000076,page:1,sort_on:'number',sort_type:'asc',search_text:''},{transport:async(url,fallback,options)=>{calls++;assert.equal(new URL(url).hostname,'wef-schedules-decoded.gombcg.workers.dev');assert.equal(options.env.SGL_FETCH_TRANSPORT,'node');return {response:{status:200,headers:new Headers({'x-rs-decoded':'1'})},body:Buffer.from('{"horse":"HÖRSE"}')};}});
  assert.equal(calls,1);assert.equal(value.ok,true);assert.equal(Buffer.from(value.body,'base64').toString(),'{"horse":"HÖRSE"}');
 });
-test('local decoder fetches Wellington once and hashes the decoded bytes passed to Data',async()=>{
+test('shared proxy fetches once without source credentials and hashes bytes unchanged',async()=>{
  const oldFetch=global.fetch,oldToken=process.env.SGL_TOKEN,oldCookie=process.env.SGL_COOKIE;
  const payload={rings:[{ring_name:'H�RSE'}]},expected=Buffer.from(JSON.stringify(payload));
  let calls=0;
  process.env.SGL_TOKEN='fixture';process.env.SGL_COOKIE='sgl=fixture';
  global.fetch=async(url,options)=>{
-  calls++;assert.equal(new URL(url).hostname,'sglapi.wellingtoninternational.com');
-  assert.equal(options.headers.Authorization,'Bearer fixture');assert.equal(options.headers.Cookie,'sgl=fixture');
-  return new Response(JSON.stringify(payload));
+  calls++;assert.equal(new URL(url).hostname,'wef-schedules-decoded.gombcg.workers.dev');
+  assert.equal(options.headers.Authorization,undefined);assert.equal(options.headers.Cookie,undefined);assert.equal(options.signal,undefined);
+  return new Response(JSON.stringify(payload),{headers:{'x-rs-decoded':'1'}});
  };
  try{
   const result=await read('/schedule',{date:'2026-11-06',customer_id:15,show_id:76});

@@ -37,6 +37,7 @@ async function decodeSglPayload(body, authorization, salt, keepBlobs = false) {
     for (const child of Object.values(value)) await visit(child);
   }
   await visit(payload);
+  if (Object.keys(payload).length === 0) throw Error("Empty source payload");
   return JSON.stringify(payload);
 }
 
@@ -59,15 +60,17 @@ export default {
     const url=new URL(request.url), pathname=url.pathname.replace(/\/+$/, "") || "/";
     if(request.method!=="GET") return reply({message:"GET only"},405);
     if(pathname==="/health") return reply({ok:true,worker:"wef-schedules-decoded"});
+    const isRingDetail = /^\/ring\/[1-9]\d*$/.test(pathname);
     const isPeople=/^\/people\/\d+$/.test(pathname);
     const isClasses=/^\/classes(?:\/\d+)?$/.test(pathname);
     const isEntries=pathname==="/entries";
-    if(!["/ring","/schedule"].includes(pathname)&&!isPeople&&!isClasses&&!isEntries)
+    if(!["/ring","/schedule"].includes(pathname)&&!isRingDetail&&!isPeople&&!isClasses&&!isEntries)
       return reply({message:"Route not found"},404);
-    const allowed=pathname==="/ring"?["customer_id"]:pathname==="/schedule"?["date","show_id","customer_id"]:isPeople?["pid","show_id","customer_id"]:isEntries?["show_id","customer_id","page","sort_on","sort_type","search_text"]:["show_id","customer_id","cgid"];
+    const allowed=isRingDetail?["show_date","show_id","customer_id"]:pathname==="/ring"?["customer_id"]:pathname==="/schedule"?["date","show_id","customer_id"]:isPeople?["pid","show_id","customer_id"]:isEntries?["show_id","customer_id","page","sort_on","sort_type","search_text"]:["show_id","customer_id","cgid"];
     if([...url.searchParams.keys()].some(k=>!allowed.includes(k)) ||
        url.searchParams.get("customer_id")!=="15" ||
        (pathname!=="/ring"&&!/^\d+$/.test(url.searchParams.get("show_id")||"")) ||
+       (isRingDetail&&!/^\d{4}-\d{2}-\d{2}$/.test(url.searchParams.get("show_date")||"")) ||
        (isPeople&&url.searchParams.get("pid")!==pathname.split("/")[2]) ||
        (isEntries&&(!/^[1-9]\d*$/.test(url.searchParams.get("page")||"") ||
           (url.searchParams.has("sort_on")&&url.searchParams.get("sort_on")!=="number") ||
@@ -85,10 +88,17 @@ export default {
       Authorization:authorization,"sgl-request-origin":"SGL-API",
       Origin:"https://www.wellingtoninternational.com",Referer:"https://www.wellingtoninternational.com/"
     };
+    if (isRingDetail || pathname === "/schedule" || isClasses || isPeople) Object.assign(headers, {
+      authority: upstream.host, method: "GET", path: upstream.pathname + upstream.search, scheme: "https",
+      "accept-encoding": "gzip, deflate, br, zstd", "accept-language": "en-US,en;q=0.9", priority: "u=1, i",
+      "sec-ch-ua": '"Not-A.Brand";v="99", "Microsoft Edge";v="157", "Chromium";v="157"',
+      "sec-ch-ua-mobile": "?1", "sec-ch-ua-platform": '"iOS"', "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors", "sec-fetch-site": "same-site"
+    });
     if(env.SGL_COOKIE) headers.Cookie=env.SGL_COOKIE;
     let upstreamStatus=null,stage='fetch';
     try {
-      const response=await fetch(upstream.toString(),{method:"GET",headers,redirect:"manual",signal:AbortSignal.timeout(25000),cf:{cacheTtl:0,cacheEverything:false}});
+      const response=await (env.SGL_FETCH || fetch)(upstream.toString(),{method:"GET",headers,redirect:"manual",signal:AbortSignal.timeout(25000),cf:{cacheTtl:0,cacheEverything:false}});
       upstreamStatus=response.status;
       if(response.status>=300&&response.status<400){console.error(JSON.stringify({message:"Source redirect blocked",upstreamStatus}));return reply({message:"Source redirect blocked",statusCode:502},502);}
       if(!response.ok){console.error(JSON.stringify({message:"Source request failed",upstreamStatus}));return reply({message:"Source request failed",statusCode:response.status},response.status);}

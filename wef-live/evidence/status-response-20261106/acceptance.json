@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-06T17:05:09.889441+00:00",
+  "status_fix": "PASS:12:03 normal explicit true,collection started",
+  "offline": "20 PASS",
+  "deployment": "activity.js only;24otherJS/task/sharedreader preserved",
+  "normal_status_run": "b3b64fd8-f6bc-4e23-8ddf-dc136fe42993",
+  "classes_run": "347da9c1-f113-4870-b5d3-f06394665b26",
+  "trip_status_counts": {
+    "Active": 404,
+    "Absent": 4,
+    "Dropped": 0
+  },
+  "retained_trip_ids": 402,
+  "prior_trip_ids": 402,
+  "removed_retained_links": [],
+  "null_verification": "UNVERIFIED: unchanged widget request returned {},not a ring payload",
+  "two_runs": "UNVERIFIED: stop affected acceptance; groups/widget/class UI all returned {} with current sparse headers",
+  "needed_approval": "Apply proven public website header set to the three remaining direct feeds in source.js;preserveURLs/params/UA/proxy/cadence. Then verify two normal collections.",
+  "manual_runs": 0,
+  "record_repairs": 0
+}

@@ -1,0 +1,178 @@
+{
+  "reviewer": "wef-decoder / 01a1a753-dce7-7951-a147-1b096e1538ba",
+  "reviewed_at": "2026-11-06T23:07:14.038Z",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Verify authorized automatic independent fallback with local-first behavior and agent URLs unchanged; no runner stop or collectors.",
+  "target": "Deployed shared Worker and direct TLS modules with frozen baseline and protected installed runner.",
+  "integration_coverage": "Preview automatic outage transition, live forced fallback plus ordinary local routing through both existing URLs; 18offline checks; no collector or prolonged outage proof.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\shared-worker.mjs.before",
+      "sha256": "9c81cb5ecabc97a5944bfb21591f04eb2c012a303600342fcadbb4b33a5027dc"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\worker.js.before",
+      "sha256": "f214a299f947eba43ddc741d0174ab8bbd428148c19fe20506bff412c8ba2106"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+      "sha256": "3398bc32499461eb084482d379cb7a11e9734729180e4b09913ca860c603a327"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\fallback.mjs",
+      "sha256": "263688b38fb7f6f9c760682d20ed252e57ad1e5ffdb71106aa230105c3d6c8a0"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tcp-fetch.mjs",
+      "sha256": "e47fc959727bf6210c548101d2868ab6ac311a46592f3a4389d9225ea8053459"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\worker.js",
+      "sha256": "641a3ce66d292297ecea235b0b629466938b7a9c668c80cacdcf28a4f2986290"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\fallback.test.mjs",
+      "sha256": "7f47186d2fdfe780fdc5960dce337f7f703d46cf830e0a4caac4dbc4f186dc9a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\worker.test.js",
+      "sha256": "2fd1762135cd4027df2aa42a3efadcc88278ddca1a1852c228275fd7e5e7ef23"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\review.md",
+    "sha256": "4eb14aa635f258783c68bf54a61cd48fac52f98384e0d8abbb6f3a2e75454758"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\execution-log.json",
+      "sha256": "1bab1aceb132468d3ca80853ba31a5a509e09a2111cd27d3458323201b0e3a34"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "decoder and automatic fallback regression",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "automatic-fallback-regression"
+      ]
+    },
+    {
+      "name": "deployment via established target",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "deploy-automatic-fallback"
+      ]
+    },
+    {
+      "name": "preview and live acceptance",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected actual authorized request results executed in this chat and original tool exit0; no independent rerun. Missing full process-level live command capture disclosed in report; per-request outcomes and timestamps saved.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\scope.md",
+          "sha256": "1b97b4d8bde0285af4b3c1ea2cf5e1ea43324d4f49130c3b9273be0231c84733"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\protected-hashes.json",
+          "sha256": "fa82697e40b7b9390f390747e812449e01190d534965ff4c99a5ab52d3fd0560"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\preview-empty-checks.json",
+          "sha256": "68e4533fe91696089e732480803e03cb3907c70c2bb0905741b9dc253d9a9530"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\preview-live-checks.json",
+          "sha256": "c7786328a5092558b0d5eecccee44b13d82091979cc3185b5d7ecd487acbeb2f"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\live-checks.json",
+          "sha256": "0aa9a787cd4605bb5d383244dfe27a9ed238c5ec13fce946512d5a5bc4f8493f"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\runtime-state.json",
+          "sha256": "e24ffc696565da513982b25303ab01e82bd2addbb38b73211ec26696166d8e2d"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\deployment.json",
+          "sha256": "15794ed636346cb5f9b6642c3a588067e09b8ee2291e97dd982dc347d6611523"
+        }
+      ]
+    },
+    {
+      "name": "approval boundary and protected connection",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Current approval includes fallback integration and existing empty guard. Delta inspected against saved pre-change source, transport preview, manifests, protected runtime hashes and scope; no unrelated edits absorbed, no upgrades, local files/tasks unchanged.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+          "sha256": "3398bc32499461eb084482d379cb7a11e9734729180e4b09913ca860c603a327"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\fallback.mjs",
+          "sha256": "263688b38fb7f6f9c760682d20ed252e57ad1e5ffdb71106aa230105c3d6c8a0"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tcp-fetch.mjs",
+          "sha256": "e47fc959727bf6210c548101d2868ab6ac311a46592f3a4389d9225ea8053459"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\worker.js",
+          "sha256": "641a3ce66d292297ecea235b0b629466938b7a9c668c80cacdcf28a4f2986290"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\fallback.test.mjs",
+          "sha256": "7f47186d2fdfe780fdc5960dce337f7f703d46cf830e0a4caac4dbc4f186dc9a"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\worker.test.js",
+          "sha256": "2fd1762135cd4027df2aa42a3efadcc88278ddca1a1852c228275fd7e5e7ef23"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\scope.md",
+          "sha256": "1b97b4d8bde0285af4b3c1ea2cf5e1ea43324d4f49130c3b9273be0231c84733"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\protected-hashes.json",
+          "sha256": "fa82697e40b7b9390f390747e812449e01190d534965ff4c99a5ab52d3fd0560"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\preview-empty-checks.json",
+          "sha256": "68e4533fe91696089e732480803e03cb3907c70c2bb0905741b9dc253d9a9530"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\preview-live-checks.json",
+          "sha256": "c7786328a5092558b0d5eecccee44b13d82091979cc3185b5d7ecd487acbeb2f"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\live-checks.json",
+          "sha256": "0aa9a787cd4605bb5d383244dfe27a9ed238c5ec13fce946512d5a5bc4f8493f"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\runtime-state.json",
+          "sha256": "e24ffc696565da513982b25303ab01e82bd2addbb38b73211ec26696166d8e2d"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\automatic-fallback-release-20261106\\deployment.json",
+          "sha256": "15794ed636346cb5f9b6642c3a588067e09b8ee2291e97dd982dc347d6611523"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\package.json",
+          "sha256": "1965ea8245420438ef913761a2617f94476c6682ad542217b5146b4f8719e17a"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\AUTOMATIC-FALLBACK.md",
+          "sha256": "7df7dd852c6f7a42189b6e3be3c4ffb494b420339cc915e73a62497860b5d87a"
+        }
+      ]
+    }
+  ]
+}

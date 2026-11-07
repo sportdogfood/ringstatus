@@ -1,0 +1,9 @@
+{
+  "started": "2026-11-06T22:48:53.968Z",
+  "ended": "2026-11-06T22:48:54.634Z",
+  "http": 502,
+  "response": {
+    "stage": "independent-preview",
+    "error": "Incomplete HTTP body"
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "recordedAt": "2026-11-06T22:20:20.050Z",
+  "transportProbe": {
+    "endpoint": "https://tls.peet.ws/api/all",
+    "credentials": "Diagnostic placeholders only; no SGL token or cookie sent",
+    "local": {
+      "http": "HTTP/1.1",
+      "ja3": "d67b094811e5145139d7cea5f014309f",
+      "headers": [
+        "host: tls.peet.ws",
+        "connection: keep-alive",
+        "accept: application/json, text/plain, */*",
+        "user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+        "cache-control: no-cache",
+        "pragma: no-cache",
+        "expires: 0",
+        "authorization: Bearer diagnostic-placeholder",
+        "sgl-request-origin: SGL-API",
+        "origin: https://www.wellingtoninternational.com",
+        "referer: https://www.wellingtoninternational.com/",
+        "authority: sglapi.wellingtoninternational.com",
+        "method: GET",
+        "path: /schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+        "scheme: https",
+        "accept-encoding: gzip, deflate, br, zstd",
+        "accept-language: en-US,en;q=0.9",
+        "priority: u=1, i",
+        "sec-ch-ua: \"Not-A.Brand\";v=\"99\", \"Microsoft Edge\";v=\"157\", \"Chromium\";v=\"157\"",
+        "sec-ch-ua-mobile: ?1",
+        "sec-ch-ua-platform: \"iOS\"",
+        "sec-fetch-dest: empty",
+        "sec-fetch-mode: cors",
+        "sec-fetch-site: same-site",
+        "cookie: diagnostic=placeholder"
+      ]
+    },
+    "cloudflare": {
+      "http": "h2",
+      "ja3": "67560f98d68783bd640246df3052c151",
+      "headers": [
+        ":method: GET",
+        ":scheme: https",
+        ":authority: tls.peet.ws",
+        ":path: /api/all",
+        "x-forwarded-for: [platform address omitted]",
+        "cf-ray: a5677a4c895da680-MIA",
+        "cf-ew-via: 15",
+        "cdn-loop: cloudflare; loops=1",
+        "sgl-request-origin: SGL-API",
+        "sec-fetch-site: same-site",
+        "accept-encoding: gzip, br",
+        "accept-language: en-US,en;q=0.9",
+        "accept: application/json, text/plain, */*",
+        "authorization: Bearer diagnostic-placeholder",
+        "cache-control: no-cache",
+        "cookie: diagnostic=placeholder",
+        "expires: 0",
+        "referer: https://www.wellingtoninternational.com/",
+        "user-agent: Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+        "pragma: no-cache",
+        "origin: https://www.wellingtoninternational.com",
+        "authority: sglapi.wellingtoninternational.com",
+        "method: GET",
+        "path: /schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+        "priority: u=1, i",
+        "scheme: https",
+        "sec-ch-ua: \"Not-A.Brand\";v=\"99\", \"Microsoft Edge\";v=\"157\", \"Chromium\";v=\"157\"",
+        "sec-ch-ua-mobile: ?1",
+        "sec-ch-ua-platform: \"iOS\"",
+        "sec-fetch-dest: empty",
+        "sec-fetch-mode: cors",
+        "cf-worker: gombcg.workers.dev",
+        "cf-visitor: {\"scheme\":\"https\"}",
+        "x-forwarded-proto: https"
+      ]
+    }
+  },
+  "localWithAllCloudflareHeaders": {
+    "started": "2026-11-06T22:19:25.908Z",
+    "ended": "2026-11-06T22:19:26.098Z",
+    "test": "Local HTTP/1.1 with all observed Cloudflare-added headers and rewritten compression",
+    "status": 200,
+    "bytes": 2,
+    "rings": null,
+    "body": "{}",
+    "changedHeaders": [
+      "cf-ray",
+      "cf-ew-via",
+      "cdn-loop",
+      "x-forwarded-for",
+      "cf-worker",
+      "cf-visitor",
+      "x-forwarded-proto",
+      "accept-encoding"
+    ]
+  },
+  "headerIsolation": [
+    {
+      "started": "2026-11-06T22:19:39.079Z",
+      "ended": "2026-11-06T22:19:39.422Z",
+      "changedHeaders": [
+        "cf-ray",
+        "cf-ew-via",
+        "cdn-loop",
+        "x-forwarded-for"
+      ],
+      "status": 200,
+      "bytes": 59843,
+      "rings": 7,
+      "empty": false
+    },
+    {
+      "started": "2026-11-06T22:19:39.423Z",
+      "ended": "2026-11-06T22:19:39.520Z",
+      "changedHeaders": [
+        "cf-worker",
+        "cf-visitor",
+        "x-forwarded-proto",
+        "accept-encoding"
+      ],
+      "status": 200,
+      "bytes": 2,
+      "rings": null,
+      "empty": true
+    },
+    {
+      "started": "2026-11-06T22:19:49.876Z",
+      "ended": "2026-11-06T22:19:50.036Z",
+      "changedHeaders": [
+        "cf-worker"
+      ],
+      "status": 200,
+      "bytes": 2,
+      "rings": null,
+      "empty": true
+    },
+    {
+      "started": "2026-11-06T22:19:50.036Z",
+      "ended": "2026-11-06T22:19:50.295Z",
+      "changedHeaders": [
+        "cf-visitor",
+        "x-forwarded-proto",
+        "accept-encoding"
+      ],
+      "status": 200,
+      "bytes": 59843,
+      "rings": 7,
+      "empty": false
+    }
+  ],
+  "confirmation": [
+    {
+      "started": "2026-11-06T22:20:03.154Z",
+      "ended": "2026-11-06T22:20:03.578Z",
+      "cfWorkerAdded": false,
+      "status": 200,
+      "bytes": 59843,
+      "rings": 7,
+      "empty": false
+    },
+    {
+      "started": "2026-11-06T22:20:03.578Z",
+      "ended": "2026-11-06T22:20:03.696Z",
+      "cfWorkerAdded": true,
+      "status": 200,
+      "bytes": 2,
+      "rings": null,
+      "empty": true
+    },
+    {
+      "started": "2026-11-06T22:20:03.696Z",
+      "ended": "2026-11-06T22:20:03.876Z",
+      "cfWorkerAdded": false,
+      "status": 200,
+      "bytes": 59843,
+      "rings": 7,
+      "empty": false
+    }
+  ],
+  "finding": "CONFIRMED: Adding CF-Worker: gombcg.workers.dev alone to the otherwise-working local SGL schedule request changes populated 7-ring JSON to HTTP200 literal {}. Removing only that header restores 7 rings. Same token, cookie, URL, local connection code and other headers.",
+  "limits": "The SGL-side rule implementation is not visible. Header is a proven sufficient trigger; this does not establish it is the only condition affecting Cloudflare traffic.",
+  "productionChanged": false,
+  "collectorsRun": false,
+  "previewStopped": true,
+  "documentation": "https://developers.cloudflare.com/fundamentals/reference/http-headers/#cf-worker"
+}

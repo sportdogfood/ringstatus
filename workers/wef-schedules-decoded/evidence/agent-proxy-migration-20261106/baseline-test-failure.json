@@ -1,0 +1,9 @@
+{
+  "sameFailureWithFrozenAdapters": true,
+  "baselineReplacements": [
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\activity.js",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\source.js"
+  ],
+  "unchangedTest": "wef-live/test/collector.test.js:365",
+  "productionCodeEditedDuringComparison": false
+}

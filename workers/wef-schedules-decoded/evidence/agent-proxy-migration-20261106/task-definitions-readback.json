@@ -1,0 +1,62 @@
+[
+  {
+    "name": "wef-data-cleanup",
+    "unchanged": true
+  },
+  {
+    "name": "wef-data-collector",
+    "unchanged": true
+  },
+  {
+    "name": "wef-data-linking",
+    "unchanged": true
+  },
+  {
+    "name": "wef-decoder-named-tunnel",
+    "unchanged": true
+  },
+  {
+    "name": "wef-decoder-runner-relay",
+    "unchanged": true
+  },
+  {
+    "name": "wef-decoder-show-time-health",
+    "unchanged": true
+  },
+  {
+    "name": "wef-entries-cwf-collector",
+    "unchanged": true
+  },
+  {
+    "name": "wef-live-collector",
+    "unchanged": true
+  },
+  {
+    "name": "wef-people-join",
+    "unchanged": true
+  },
+  {
+    "name": "wef-schedules-collector",
+    "unchanged": true
+  },
+  {
+    "name": "wef-season-collector",
+    "unchanged": true
+  },
+  {
+    "name": "wef-shows-collector",
+    "unchanged": true
+  },
+  {
+    "name": "wef-tenant-cwf-collector",
+    "unchanged": true
+  },
+  {
+    "name": "wef-timing",
+    "unchanged": true
+  },
+  {
+    "name": "wef-timing-data",
+    "unchanged": true
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "host": "wef-schedules-decoded",
+    "mode": "authorized-fallback-verification",
+    "kind": "schedule",
+    "url": "https://wef-schedules-decoded.gombcg.workers.dev/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+    "started": "2026-11-06T23:04:45.945Z",
+    "ended": "2026-11-06T23:04:47.644Z",
+    "gapMs": null,
+    "status": 200,
+    "lane": "cloudflare-fallback",
+    "usable": true,
+    "rings": 7
+  },
+  {
+    "host": "wef-schedules-decoded",
+    "mode": "authorized-fallback-verification",
+    "kind": "class_detail",
+    "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031233?show_id=200000077&customer_id=15&cgid=-1",
+    "started": "2026-11-06T23:05:07.653Z",
+    "ended": "2026-11-06T23:05:09.259Z",
+    "gapMs": 20009,
+    "status": 200,
+    "lane": "cloudflare-fallback",
+    "usable": true,
+    "trips": 8
+  },
+  {
+    "host": "wef-schedules-decoded",
+    "mode": "normal",
+    "kind": "schedule",
+    "url": "https://wef-schedules-decoded.gombcg.workers.dev/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+    "started": "2026-11-06T23:05:29.267Z",
+    "ended": "2026-11-06T23:05:30.310Z",
+    "gapMs": 20008,
+    "status": 200,
+    "lane": "runner",
+    "usable": true,
+    "rings": 7
+  },
+  {
+    "host": "wef-schedules-decoded",
+    "mode": "normal",
+    "kind": "class_detail",
+    "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031233?show_id=200000077&customer_id=15&cgid=-1",
+    "started": "2026-11-06T23:05:50.322Z",
+    "ended": "2026-11-06T23:05:50.648Z",
+    "gapMs": 20012,
+    "status": 200,
+    "lane": "runner",
+    "usable": true,
+    "trips": 8
+  },
+  {
+    "host": "broad-tooth-b8ed",
+    "mode": "normal",
+    "kind": "schedule",
+    "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+    "started": "2026-11-06T23:06:10.662Z",
+    "ended": "2026-11-06T23:06:11.063Z",
+    "gapMs": 20014,
+    "status": 200,
+    "lane": "runner",
+    "usable": true,
+    "rings": 7
+  },
+  {
+    "host": "broad-tooth-b8ed",
+    "mode": "normal",
+    "kind": "class_detail",
+    "url": "https://broad-tooth-b8ed.gombcg.workers.dev/classes/200031233?show_id=200000077&customer_id=15&cgid=-1",
+    "started": "2026-11-06T23:06:31.069Z",
+    "ended": "2026-11-06T23:06:31.426Z",
+    "gapMs": 20006,
+    "status": 200,
+    "lane": "runner",
+    "usable": true,
+    "trips": 8
+  }
+]

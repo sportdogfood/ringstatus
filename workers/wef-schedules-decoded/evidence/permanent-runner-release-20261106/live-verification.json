@@ -1,0 +1,91 @@
+{
+  "started": "2026-11-06T22:29:45.756Z",
+  "ended": "2026-11-06T22:30:09.547Z",
+  "results": [
+    {
+      "round": 1,
+      "at": "2026-11-06T22:29:47.005Z",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+      "status": 200,
+      "usable": true,
+      "decoded": "1",
+      "rings": 7,
+      "bytes": 61035
+    },
+    {
+      "round": 1,
+      "at": "2026-11-06T22:29:47.335Z",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031233?show_id=200000077&customer_id=15&cgid=-1",
+      "status": 200,
+      "usable": true,
+      "decoded": "1",
+      "classId": 200031233,
+      "trips": 8,
+      "bytes": 21609
+    },
+    {
+      "round": 1,
+      "at": "2026-11-06T22:29:48.020Z",
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+      "status": 200,
+      "usable": true,
+      "decoded": "1",
+      "rings": 7,
+      "bytes": 61035
+    },
+    {
+      "round": 1,
+      "at": "2026-11-06T22:29:48.469Z",
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/classes/200031233?show_id=200000077&customer_id=15&cgid=-1",
+      "status": 200,
+      "usable": true,
+      "decoded": "1",
+      "classId": 200031233,
+      "trips": 8,
+      "bytes": 21609
+    },
+    {
+      "round": 2,
+      "at": "2026-11-06T22:30:08.902Z",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+      "status": 200,
+      "usable": true,
+      "decoded": "1",
+      "rings": 7,
+      "bytes": 61035
+    },
+    {
+      "round": 2,
+      "at": "2026-11-06T22:30:09.069Z",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031233?show_id=200000077&customer_id=15&cgid=-1",
+      "status": 200,
+      "usable": true,
+      "decoded": "1",
+      "classId": 200031233,
+      "trips": 8,
+      "bytes": 21609
+    },
+    {
+      "round": 2,
+      "at": "2026-11-06T22:30:09.325Z",
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+      "status": 200,
+      "usable": true,
+      "decoded": "1",
+      "rings": 7,
+      "bytes": 61035
+    },
+    {
+      "round": 2,
+      "at": "2026-11-06T22:30:09.547Z",
+      "url": "https://broad-tooth-b8ed.gombcg.workers.dev/classes/200031233?show_id=200000077&customer_id=15&cgid=-1",
+      "status": 200,
+      "usable": true,
+      "decoded": "1",
+      "classId": 200031233,
+      "trips": 8,
+      "bytes": 21609
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,10 @@
+{
+  "command": "[\"C:\\\\Program Files\\\\nodejs\\\\node.exe\",\"workers/wef-schedules-decoded/evidence/shared-pacing-proposal-20261106/queue-proof.mjs\"]",
+  "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+  "runtime": "v22.22.2",
+  "started_at": "2026-11-06T23:14:38.875Z",
+  "ended_at": "2026-11-06T23:14:39.179Z",
+  "exit_code": 0,
+  "stdout": "{\"proposalOnly\":true,\"productionChanged\":false,\"checks\":\"PASS\",\"concurrentCallers\":3,\"maxConcurrentSourceRequests\":1,\"gapMs\":1000,\"failureDoesNotStallQueue\":true,\"restartTimestampRespected\":true,\"virtualClock\":true,\"events\":[{\"id\":1,\"start\":0,\"end\":25},{\"id\":2,\"start\":1025,\"end\":1050},{\"id\":3,\"start\":2050,\"end\":2075}]}\n",
+  "stderr": ""
+}

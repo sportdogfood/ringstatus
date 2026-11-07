@@ -18,19 +18,16 @@ function target(route,params){
  if(!allowed||Object.keys(params).some(k=>!allowed.includes(k)))throw Error('Unapproved Data source route/parameters');
  if(route==='/schedule'&&!/^\d{4}-\d{2}-\d{2}$/.test(params.date||''))throw Error('Dated inventory required');
  if(route==='/entries'&&(!Number.isSafeInteger(params.page)||params.page<=0||params.sort_on!=='number'||params.sort_type!=='asc'||params.search_text!==''))throw Error('Invalid directory page/filter');
- const url=new URL(route,'https://sglapi.wellingtoninternational.com');url.search=new URLSearchParams(params).toString();return url.toString();
+ const url=new URL(route,'https://wef-schedules-decoded.gombcg.workers.dev');url.search=new URLSearchParams(params).toString();return url.toString();
 }
-async function read(route,params,{transport=fetchTextWithConfiguredTransport,timeout=18}={}){
+async function read(route,params,{transport=fetchTextWithConfiguredTransport,timeout=0}={}){
  const url=target(route,params),started=new Date().toISOString(),begin=Date.now();
  let result;
  const metric={route,params,started,http:null};
  const finish=()=>{metric.completed=new Date().toISOString();metric.elapsed_seconds=(Date.now()-begin)/1000;};
  try{
   result=await transport(url,async endpoint=>{
-   const decoder=require('../workers/wef-schedules-decoded/worker.js').default;
-   const {SGL_TOKEN,SGL_COOKIE}=process.env;
-   if(!SGL_TOKEN||!SGL_COOKIE)throw Error('Missing WEF Data source credentials');
-   const response=await decoder.fetch(new Request(endpoint),{SGL_TOKEN,SGL_COOKIE});
+   const response=await fetch(endpoint,{headers:{Accept:'application/json','Cache-Control':'no-cache'},...(timeout>0?{signal:AbortSignal.timeout(timeout*1000)}:{})});
    const body=Buffer.from(await response.arrayBuffer());return {response,body,text:body.toString('utf8')};
   },{env:{SGL_FETCH_TRANSPORT:'node'}});
  }catch(error){finish();if(['TimeoutError','AbortError'].includes(error.name))metric.timeout=true;return {ok:false,error:'Source transport failed:\n'+errorText(error),metric};}
@@ -41,7 +38,7 @@ async function read(route,params,{transport=fetchTextWithConfiguredTransport,tim
  if(body){metric.bytes=body.length;metric.sha256=crypto.createHash('sha256').update(body).digest('hex');capture.body=body.toString('base64');}
  if(response.status!==200){
   const text=result.text||(body?body.toString('utf8'):'');
-  // The local decoder returns a structured diagnostic. Never forward raw error pages.
+  // The shared proxy returns a structured diagnostic. Never forward raw error pages.
   let detail='';
   try{const value=JSON.parse(text);detail=value?.message||value?.error?.message||'';}catch{}
   detail=safe(typeof detail==='string'?detail:JSON.stringify(detail)).slice(0,2000);
@@ -51,38 +48,9 @@ async function read(route,params,{transport=fetchTextWithConfiguredTransport,tim
  if(!body)return {ok:false,error:'Original source bytes unavailable',metric};
  return {ok:true,body:body.toString('base64'),metric};
 }
-function cliTransport(timeout){
- // Each scheduled source-reader process handles one request. Keep Data's upstream
- // deadline alongside the decoder's own timeout without changing the shared module.
- return async(url,readDecoded)=>{
-  const nativeFetch=globalThis.fetch;
-  let upstreamError;
-  globalThis.fetch=async(input,options)=>{
-   try{
-    const response=await nativeFetch(input,{...options,signal:AbortSignal.any([
-     options.signal,AbortSignal.timeout(timeout*1000)
-    ])});
-    // Fetch resolves at headers; the decoder reads the upstream body afterward.
-    const readText=response.text.bind(response);
-    response.text=async()=>{
-     try{return await readText();}
-     catch(error){upstreamError=error;throw error;}
-    };
-    return response;
-   }catch(error){upstreamError=error;throw error;}
-  };
-  try{
-   const result=await readDecoded(url);
-   // The Worker converts upstream exceptions to HTTP 502. Preserve the original
-   // cause for the runner's established timeout and transport diagnostics.
-   if(upstreamError)throw upstreamError;
-   return result;
-  }finally{globalThis.fetch=nativeFetch;}
- };
-}
 if(require.main===module){
- const timeout=Number(process.argv[4])||18;
- Promise.resolve().then(()=>read(process.argv[2],JSON.parse(process.argv[3]),{timeout,transport:cliTransport(timeout)})).then(result=>{
+ const timeout=Number(process.argv[4])||0;
+ Promise.resolve().then(()=>read(process.argv[2],JSON.parse(process.argv[3]),{timeout})).then(result=>{
   console.log(JSON.stringify(result));process.exitCode=result.ok?0:1;
  }).catch(error=>{console.log(JSON.stringify({ok:false,error:'Invalid scheduled Data source request:\n'+errorText(error)}));process.exitCode=1;});
 }

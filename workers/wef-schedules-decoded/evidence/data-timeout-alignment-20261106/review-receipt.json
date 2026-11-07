@@ -1,0 +1,86 @@
+{
+  "reviewer": "wef-decoder",
+  "reviewed_at": "2026-11-07T02:11:04.613Z",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Review only Data timeout alignment preserving shared queue/fallback/connection/URLs/cadences",
+  "target": "Staged source-reader.js and fast_collector.py exact timeout delta; existing source test assertion",
+  "integration_coverage": "Executed staged Python-to-Node 72-second delayed decoded source response and 36 focused source/proxy/fallback/pacing tests. No live collections or scheduled proof claimed.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\source-reader.js.before",
+      "sha256": "28bc7db4aaad707139e99a7d5b2d692ffb3210e63069c6a2edb2dffee783615d"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\fast_collector.py.before",
+      "sha256": "6bc84ac7900453bd36aec61e5675a54f67427f8ce50b986bd69e29a2fcbc5798"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\source.test.js.before",
+      "sha256": "11cfbff3a626c94e0981118acee7482cc45112eec6b70172349bbf9c8f9db658"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\source-reader.js.candidate",
+      "sha256": "d1c32301cac45f8732f2402dc419d129d2eed2331b54bcd491afdb58125799b1"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\fast_collector.py.candidate",
+      "sha256": "a8f807a989b48a131252d8141877b318abb1593394c7a60b4165e3e99fc08b06"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\source.test.js.candidate",
+      "sha256": "265b3e8e78e72c117c700220609015c49f7485b65feb447e3fcb22e1ccd7f46d"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\review-report.md",
+    "sha256": "c4c6b339f8eeac07806aea5fba1e32c98006f43738e0366a9c974ddc6e53ef2e"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\execution-log.json",
+      "sha256": "348db8568e9f7a8a4eee5206b546a3e4883cec49d25ac5b8fce47c645d3248c9"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "focused preview regressions",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "preview-focused-tests"
+      ]
+    },
+    {
+      "name": "delayed end-to-end source preview",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "preview-delayed-integration-corrected"
+      ]
+    },
+    {
+      "name": "approved scope and protected behavior",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected exact five timeout lines, consumer path, preserved worker timing and existing task settings; original fixture failure retained as superseded preview setup issue.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\scope.md",
+          "sha256": "6d1afd6609f2b8c83c5a22637ca15677d8740d1a37de3156e492f336358ba459"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\protected-hashes.json",
+          "sha256": "e9ed8a6d36333401ac515eb95488c00c09360dcc78173051119b74e401601e0b"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\data-timeout-alignment-20261106\\task-before.xml",
+          "sha256": "e55f169e8f771b2e7cde790833272de8615ffd0552f16226c8dbd6c1bda1a857"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "path": "/__test/empty",
+    "status": 502,
+    "decoded": null,
+    "payload": {
+      "message": "Source fetch or protected response decoding failed",
+      "statusCode": 502
+    },
+    "pass": true
+  },
+  {
+    "path": "/__test/identified-empty",
+    "status": 200,
+    "decoded": "1",
+    "payload": {
+      "show": {
+        "show_id": 200000077
+      },
+      "rings": []
+    },
+    "pass": true
+  }
+]

@@ -1,0 +1,167 @@
+{
+  "comparison": {
+    "sameURL": true,
+    "sameMethod": true,
+    "sameHeaders": true,
+    "sameToken": true,
+    "sameCookie": true
+  },
+  "cloudflare": {
+    "execution": "schedule-diagnostic",
+    "capture": {
+      "request": {
+        "url": "https://sglapi.wellingtoninternational.com/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+        "method": "GET",
+        "redirect": "manual",
+        "headers": {
+          "accept": "application/json, text/plain, */*",
+          "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+          "cache-control": "no-cache",
+          "pragma": "no-cache",
+          "expires": "0",
+          "authorization": "[redacted]",
+          "sgl-request-origin": "SGL-API",
+          "origin": "https://www.wellingtoninternational.com",
+          "referer": "https://www.wellingtoninternational.com/",
+          "authority": "sglapi.wellingtoninternational.com",
+          "method": "GET",
+          "path": "/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+          "scheme": "https",
+          "accept-encoding": "gzip, deflate, br, zstd",
+          "accept-language": "en-US,en;q=0.9",
+          "priority": "u=1, i",
+          "sec-ch-ua": "\"Not-A.Brand\";v=\"99\", \"Microsoft Edge\";v=\"157\", \"Chromium\";v=\"157\"",
+          "sec-ch-ua-mobile": "?1",
+          "sec-ch-ua-platform": "\"iOS\"",
+          "sec-fetch-dest": "empty",
+          "sec-fetch-mode": "cors",
+          "sec-fetch-site": "same-site",
+          "cookie": "[redacted]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json",
+          "content-length": "2",
+          "content-encoding": null,
+          "date": "Fri, 06 Nov 2026 22:02:52 GMT",
+          "server": "cloudflare",
+          "cf-ray": "a567628d2b7353f5-MIA",
+          "cf-cache-status": "BYPASS",
+          "age": null,
+          "via": null,
+          "x-cache": null
+        },
+        "bytes": 2,
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "jsonKeys": [],
+        "rawEmptyObject": true,
+        "rawBody": "{}",
+        "showId": null,
+        "date": null,
+        "rings": null
+      }
+    },
+    "decoded": {
+      "status": 200,
+      "confirmed": true,
+      "bytes": 2,
+      "jsonKeys": [],
+      "showId": null,
+      "date": null,
+      "rings": null,
+      "emptyObject": true
+    }
+  },
+  "local": {
+    "execution": "schedule-diagnostic",
+    "capture": {
+      "request": {
+        "url": "https://sglapi.wellingtoninternational.com/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+        "method": "GET",
+        "redirect": "manual",
+        "headers": {
+          "accept": "application/json, text/plain, */*",
+          "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+          "cache-control": "no-cache",
+          "pragma": "no-cache",
+          "expires": "0",
+          "authorization": "[redacted]",
+          "sgl-request-origin": "SGL-API",
+          "origin": "https://www.wellingtoninternational.com",
+          "referer": "https://www.wellingtoninternational.com/",
+          "authority": "sglapi.wellingtoninternational.com",
+          "method": "GET",
+          "path": "/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+          "scheme": "https",
+          "accept-encoding": "gzip, deflate, br, zstd",
+          "accept-language": "en-US,en;q=0.9",
+          "priority": "u=1, i",
+          "sec-ch-ua": "\"Not-A.Brand\";v=\"99\", \"Microsoft Edge\";v=\"157\", \"Chromium\";v=\"157\"",
+          "sec-ch-ua-mobile": "?1",
+          "sec-ch-ua-platform": "\"iOS\"",
+          "sec-fetch-dest": "empty",
+          "sec-fetch-mode": "cors",
+          "sec-fetch-site": "same-site",
+          "cookie": "[redacted]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json; charset=utf-8",
+          "content-length": "59843",
+          "content-encoding": null,
+          "date": "Fri, 06 Nov 2026 22:02:52 GMT",
+          "server": null,
+          "cf-ray": null,
+          "cf-cache-status": null,
+          "age": null,
+          "via": null,
+          "x-cache": null
+        },
+        "bytes": 59843,
+        "sha256": "a1acf3097c5a10c4b2acc7b06af05b188624b8a566226433e76a00bda81a545e",
+        "jsonKeys": [
+          "show",
+          "show_date",
+          "show_display_date",
+          "show_display_date_day",
+          "show_planned_time",
+          "show_est_time",
+          "show_days_list",
+          "total_trips_count",
+          "rings",
+          "show_est_end_time"
+        ],
+        "rawEmptyObject": false,
+        "rawBody": "[nonempty body kept in memory only]",
+        "showId": 200000077,
+        "date": "2026-11-06",
+        "rings": 7
+      }
+    },
+    "decoded": {
+      "status": 200,
+      "confirmed": true,
+      "bytes": 61035,
+      "jsonKeys": [
+        "show",
+        "show_date",
+        "show_display_date",
+        "show_display_date_day",
+        "show_planned_time",
+        "show_est_time",
+        "show_days_list",
+        "total_trips_count",
+        "rings",
+        "show_est_end_time"
+      ],
+      "showId": 200000077,
+      "date": "2026-11-06",
+      "rings": 7,
+      "emptyObject": false
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "productionChanged": false,
+  "localRunnerUsed": false,
+  "tunnelUsed": false,
+  "collectorsRun": false,
+  "results": [
+    {
+      "round": 1,
+      "kind": "schedule",
+      "started": "2026-11-06T22:49:27.384Z",
+      "ended": "2026-11-06T22:49:27.613Z",
+      "pauseAfterPriorMs": 20025,
+      "http": 503,
+      "usable": false,
+      "response": {
+        "message": "Preview renewal required"
+      }
+    }
+  ]
+}

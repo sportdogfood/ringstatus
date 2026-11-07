@@ -1,0 +1,30 @@
+{
+  "at": "2026-11-06T23:20:29.016Z",
+  "observations": [
+    {
+      "name": "wef-sgl-pacing-preview-20261106",
+      "status": 404,
+      "success": false,
+      "errorCodes": [
+        10007
+      ]
+    },
+    {
+      "name": "wef-schedules-decoded",
+      "status": 200,
+      "success": true,
+      "errorCodes": [],
+      "pacingBinding": [
+        {
+          "name": "SGL_PACER",
+          "type": "durable_object_namespace",
+          "class_name": "SglPacer",
+          "namespace_id": "962c9a8b1a37423cbdeae0844fbeb2b9"
+        }
+      ]
+    }
+  ],
+  "previewWorkerRemoved": true,
+  "productionSettingsPresent": true,
+  "explanation": "Wrangler removed preview Worker before its unrelated KV cleanup permission error. Subsequent guarded deletion stopped at404 and issued no DELETE. Readback confirms preview absent and production queue present."
+}

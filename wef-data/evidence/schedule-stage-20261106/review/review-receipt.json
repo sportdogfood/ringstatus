@@ -1,0 +1,87 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "reviewed_at": "2026-11-07T02:29:35.054854+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Independent review of approved immediate schedule stage and offline checks; no live execution.",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\candidate",
+  "integration_coverage": "Scheduled entry path, saved-data evaluator, schema mappings, key preservation, membership repeat/failure paths, immediate source-only priorities; operational proof remains unverified.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\baseline\\fast_collector.py",
+      "sha256": "a8f807a989b48a131252d8141877b318abb1593394c7a60b4165e3e99fc08b06"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\baseline\\schedule-priority.js",
+      "sha256": "0c76a14679644bb72d58fb4597d1484f1620ac09bb2a24cb87f7d8d374400b03"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\baseline\\schema.json",
+      "sha256": "6642c78f0dcdcaeb6132fcfa309c6b55490b7e482ddaa326cf0f4533894ef33d"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\candidate\\fast_collector.py",
+      "sha256": "70ca4b29d3f2aeff79b0dac9c8998e0d0b981ff324111ae600c65f0b0178f054"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\candidate\\schedule-priority.js",
+      "sha256": "53305b974cc06378fcf95e47351f3644ddee31a090381c356d8f2061a97f52cf"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\candidate\\schema.json",
+      "sha256": "db8d9f3b31d473951cddd3f0697fa37baf8dbbb815310675e107e488f95e3398"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\review\\report.md",
+    "sha256": "5b47af31bdf66c75b760791eb422986c45396f2993c5abdb07b23624fbef8f37"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\review\\commands-initial.json",
+      "sha256": "eb6097227aa10aa36c1f458a51792f589fed73bd95d3187da8cd8522342d1829"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\review\\commands-scope.json",
+      "sha256": "791afc199fd15e2d6877846e5deee519b7c51cda67a86368eff1bcdb58981644"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "approval boundary and integration inspection",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected owner approvals in inherited chat, frozen baseline and candidate diff, schedule/priority consumer and schema; no live run performed. Report records exact approval and limitations.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\review\\report.md",
+          "sha256": "5b47af31bdf66c75b760791eb422986c45396f2993c5abdb07b23624fbef8f37"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\schedule-stage-20261106\\review\\dependency-manifest.json",
+          "sha256": "578db015737f8bce0e15b667fbd2967a518ae71be5e1bee93d3be33278bf466c"
+        }
+      ]
+    },
+    {
+      "name": "independent collector and evaluator offline execution",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "collector-offline",
+        "evaluator-offline"
+      ]
+    },
+    {
+      "name": "protected source/class/cadence and schema scope",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "scope-offline"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const shared=fs.readFileSync(new URL('../shared-worker.mjs',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'').split('export class SglPacer')[0];
+const fallbackSource=fs.readFileSync(new URL('../fallback.mjs',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
+const route='/schedule?date=2026-11-06&show_id=200000077&customer_id=15';
+const classRoute='/classes/200031233?show_id=200000077&customer_id=15&cgid=-1';
+const env={RUNNER_ORIGIN:'https://runner.example',RUNNER_KEY:'offline-verification-key',SGL_COOKIE:'offline-cookie'};
+const decoded=p=>Response.json(p,{headers:{'X-RS-Decoded':'1'}});
+const request=(path=route,key)=>new Request('https://worker.example'+path,{headers:key?{'X-RS-Fallback-Test':key}:{}});
+function load(primary,fallback,classify=()=>null){return new Function('fetch','fetchFallback','publicRoute',shared.replace('export const sourceHandler =','return'))(primary,fallback,classify);}
+
+test('healthy local response is returned without invoking fallback',async()=>{
+ let primary=0,backup=0;const p={show:{show_id:200000077},rings:[]};
+ const app=load(async(url,options)=>{primary++;assert.equal(String(url),'https://runner.example'+route);assert.deepEqual(options.headers,{Authorization:'Bearer '+env.RUNNER_KEY});return decoded(p);},async()=>{backup++;throw Error('Must not run');});
+ const r=await app.fetch(request(),env);assert.equal(r.status,200);assert.equal(r.headers.get('x-rs-source-lane'),'runner');assert.deepEqual(await r.json(),p);assert.equal(primary,1);assert.equal(backup,0);
+});
+test('HTTP errors, exception, undecoded, malformed and empty primary invoke fallback once',async()=>{
+ const cases=[()=>new Response('upstream',{status:401}),()=>new Response('upstream',{status:403}),()=>new Response('upstream',{status:429}),()=>new Response('upstream',{status:502}),()=>{throw Error('connection');},()=>Response.json({show:{show_id:1}}),()=>decoded({}),()=>new Response('bad-json',{headers:{'x-rs-decoded':'1'}}),()=>decoded(null),()=>decoded([])];
+ for(const failure of cases){let primary=0,backup=0;const app=load(async()=>{primary++;return failure();},async()=>{backup++;return decoded({rings:[{ring_id:25}]});});const r=await app.fetch(request(),env);assert.equal(r.status,200);assert.equal(r.headers.get('x-rs-source-lane'),'cloudflare-fallback');assert.equal((await r.json()).rings.length,1);assert.equal(primary,1);assert.equal(backup,1);}
+});
+test('secret-authorized verification bypasses local for both routes; invalid key does not',async()=>{
+ for(const path of [route,classRoute]){let primary=0,backup=0;const app=load(async()=>{primary++;return decoded({ok:true});},async(req)=>{backup++;assert.equal(new URL(req.url).pathname,new URL('https://w'+path).pathname);return decoded({ok:true});});
+  assert.equal((await app.fetch(request(path,env.RUNNER_KEY),env)).headers.get('x-rs-source-lane'),'cloudflare-fallback');assert.equal(primary,0);assert.equal(backup,1);
+  assert.equal((await app.fetch(request(path,'wrong'),env)).headers.get('x-rs-source-lane'),'runner');assert.equal(primary,1);assert.equal(backup,1);
+ }
+});
+test('fallback failure remains an error and invalid routes do not enter fallback',async()=>{
+ let backup=0;const app=load(async()=>new Response('unavailable',{status:502}),async()=>{backup++;return Response.json({message:'failed'},{status:502});});
+ const r=await app.fetch(request(),env);assert.equal(r.status,502);assert.equal(r.headers.has('x-rs-decoded'),false);assert.equal(backup,1);
+ assert.equal((await app.fetch(request('/people/1?pid=1&show_id=1&customer_id=15',env.RUNNER_KEY),env)).status,502);assert.equal(backup,2);
+ assert.equal((await app.fetch(request(route+'&extra=1',env.RUNNER_KEY),env)).status,400);assert.equal(backup,2);
+});
+function loadFallback(tcp,decoder,classify=()=>null,publicFetch){return new Function('tcpFetch','decoder','setTimeout','publicRoute','fetchPublic',fallbackSource.replace('export async function fetchFallback','async function fetchFallback')+';return fetchFallback;')(tcp,decoder,fn=>{fn();return 0;},classify,publicFetch);}
+const anonymous=exp=>'header.'+btoa(JSON.stringify({anon:true,exp})) +'.signature';
+test('fallback renews anonymously inside Cloudflare and reuses token without runner calls',async()=>{
+ let renewals=0,reads=0;const tcp=async(url,options)=>{assert.equal(url,'https://sglapi.wellingtoninternational.com/utilities/get-config');assert.equal(options.headers.Cookie,env.SGL_COOKIE);renewals++;return Response.json({_t:anonymous(Math.floor(Date.now()/1000)+2592000)});};
+ const fallback=loadFallback(tcp,{fetch:async(req,config)=>{reads++;assert.equal(config.SGL_FETCH,tcp);assert.equal(config.SGL_COOKIE,env.SGL_COOKIE);assert.ok(config.SGL_TOKEN.startsWith('header.'));return decoded({class:{class_id:1}});}});
+ assert.equal((await fallback(request(),env)).status,200);assert.equal((await fallback(request(classRoute),env)).status,200);assert.equal(renewals,1);assert.equal(reads,2);
+});
+test('renewal failures and expired tokens cannot become decoded success',async()=>{
+ for(const tokenResponse of [()=>new Response('secret upstream body',{status:403}),()=>Response.json({_t:anonymous(1)}),()=>Response.json({})]){
+  let reads=0;const fallback=loadFallback(async()=>tokenResponse(),{fetch:async()=>{reads++;return decoded({ok:true});}});const r=await fallback(request(),env);assert.equal(r.status,502);assert.equal(r.headers.has('x-rs-decoded'),false);assert.equal(reads,0);assert.doesNotMatch(await r.text(),/offline-cookie|secret upstream body/);
+ }
+});
+test('public false and empty arrays remain valid without a decoded marker',async()=>{
+ for(const payload of [false,[]]){let backups=0;const app=load(async()=>Response.json(payload),async()=>{backups++;},()=>({valid:true,origin:'https://sglapi.wellingtoninternational.com'}));const r=await app.fetch(request('/homepage/getLiveClassStatus?customer_id=15&datetimestamp=1'),env);assert.equal(r.status,200);assert.equal(r.headers.get('x-rs-source-lane'),'runner');assert.deepEqual(await r.json(),payload);assert.equal(backups,0);}
+});
+test('public fallback uses existing public fetch over TLS without token renewal or decoding',async()=>{
+ let called=0;const tcp=async()=>{throw Error('No renewal call expected');};const fallback=loadFallback(tcp,{fetch(){throw Error('No decoder expected');}},()=>({valid:true,origin:'https://sgl.wellingtoninternational.com'}),async(url,origin,transport)=>{called++;assert.equal(origin,'https://sgl.wellingtoninternational.com');assert.equal(transport,tcp);return Response.json(false);});const r=await fallback(request('/iphone.php/esp/webservice/LiveScoreWidget'),env);assert.equal(r.status,200);assert.equal(await r.json(),false);assert.equal(r.headers.has('x-rs-decoded'),false);assert.equal(called,1);
+});

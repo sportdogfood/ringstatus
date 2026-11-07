@@ -1,0 +1,183 @@
+{
+  "reviewer": "wef-decoder / 01a1a753-dce7-7951-a147-1b096e1538ba",
+  "reviewed_at": "2026-11-06T23:21:54.008Z",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Verify owner-approved shared one-second proxy pacing while preserving local-first/fallback/URLs; no collectors.",
+  "target": "Frozen deployed shared Worker, Durable Object queue, migration and focused tests.",
+  "integration_coverage": "Concurrent real local and fallback requests in isolated Cloudflare preview and production across two existing URLs, health recursion, persisted timestamp tests and failed cleanup readback; no collector execution.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\shared-worker.mjs.before",
+      "sha256": "3398bc32499461eb084482d379cb7a11e9734729180e4b09913ca860c603a327"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\wrangler.jsonc.before",
+      "sha256": "0241e43c56360a7b2c4cd64857ce5c60bb438af8bb03039e91f07b565f6263eb"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\tests-fallback.test.mjs.before",
+      "sha256": "7f47186d2fdfe780fdc5960dce337f7f703d46cf830e0a4caac4dbc4f186dc9a"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+      "sha256": "739523a10b46d4c1988b693e11606c829c9d9f3783998a4ae8ff8f5604f4aa08"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\sgl-pacing.mjs",
+      "sha256": "479f56d56f481a16104dc64faa33945be9175ddca0f971924b9151889787f138"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\wrangler.jsonc",
+      "sha256": "bc5699c35602798b398134dd23683614699c99d3f5696b317b41265c16c1e972"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\pacing.test.mjs",
+      "sha256": "ef8a3d297375535988ddd5fb4a3697f9985352ffcbc0af95bc04014f047dda83"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\fallback.test.mjs",
+      "sha256": "62b663e266d4130b5962787f62c537500e72508108b4489a7c3715f80aaf8213"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\review.md",
+    "sha256": "c43aa8f64778dabc97e0a5a227d855d75c38ae3cea7fbe744b881ff760daaefa"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\execution-log.json",
+      "sha256": "a0eccb52b21b35cb16c5e707c9dc18fe60b3a38220f86ca8c78becd5661eac45"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "queue and baseline regressions",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "shared-pacing-regression"
+      ]
+    },
+    {
+      "name": "deployment and live concurrency/health proof",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "deploy-shared-pacing",
+        "live-shared-pacing"
+      ]
+    },
+    {
+      "name": "isolated Cloudflare preview proof and cleanup",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Actual preview requests and API cleanup readback inspected; auxiliary Wrangler cleanup exit1 retained and explained, preview Worker404 and live queue200 verified. No repeat of failed KV enumeration or authentication changes.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\scope.md",
+          "sha256": "aa8c20bf9fac37667996fac4e4d463a327cad86e5d15a3ae90e9f04f16c804a9"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\protected-hashes.json",
+          "sha256": "29f7bebff9fea1c95a9c0b8a60deb917d4231ba8ce38c60185c40b0bcfbef780"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\preview-concurrent-checks.json",
+          "sha256": "771387a948fe1f2ba8e75385efa2c51d7cb474c9eb829bd031ffdf575f361b1c"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\preview-health.json",
+          "sha256": "5f9ab7721d0efdb96cf311bc31f44075d8b560ec2bf9f1d36f603f0ebd6667de"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\live-concurrent-checks.json",
+          "sha256": "34144610234cd2440fe68cd4e535d5d3b4ade0b65c145ba269a80450a9bb3f54"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\live-health.json",
+          "sha256": "d5833a0e7ea1f7f6fc0ebc875011a8a6e7e3970cc619e05d54f9cd546edfcb10"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\deployment.json",
+          "sha256": "65fb9043893933955f05ba849e5400ed4a293b58c7112b4713942f5a31ee5f07"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\preview-cleanup.json",
+          "sha256": "0df804dfe5f1e25bf39a676b9c9630439db62d9c50bdf553e403864a326bdbc7"
+        }
+      ]
+    },
+    {
+      "name": "approval boundary and producer/consumer preservation",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Explicit additional-component approval, exact before-source comparisons, unchanged protected local/fallback/decoder/manifests, current docs and direct-bypass limits inspected. No unapproved upgrade or collector changes.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+          "sha256": "739523a10b46d4c1988b693e11606c829c9d9f3783998a4ae8ff8f5604f4aa08"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\sgl-pacing.mjs",
+          "sha256": "479f56d56f481a16104dc64faa33945be9175ddca0f971924b9151889787f138"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\wrangler.jsonc",
+          "sha256": "bc5699c35602798b398134dd23683614699c99d3f5696b317b41265c16c1e972"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\pacing.test.mjs",
+          "sha256": "ef8a3d297375535988ddd5fb4a3697f9985352ffcbc0af95bc04014f047dda83"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\fallback.test.mjs",
+          "sha256": "62b663e266d4130b5962787f62c537500e72508108b4489a7c3715f80aaf8213"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\scope.md",
+          "sha256": "aa8c20bf9fac37667996fac4e4d463a327cad86e5d15a3ae90e9f04f16c804a9"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\protected-hashes.json",
+          "sha256": "29f7bebff9fea1c95a9c0b8a60deb917d4231ba8ce38c60185c40b0bcfbef780"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\preview-concurrent-checks.json",
+          "sha256": "771387a948fe1f2ba8e75385efa2c51d7cb474c9eb829bd031ffdf575f361b1c"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\preview-health.json",
+          "sha256": "5f9ab7721d0efdb96cf311bc31f44075d8b560ec2bf9f1d36f603f0ebd6667de"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\live-concurrent-checks.json",
+          "sha256": "34144610234cd2440fe68cd4e535d5d3b4ade0b65c145ba269a80450a9bb3f54"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\live-health.json",
+          "sha256": "d5833a0e7ea1f7f6fc0ebc875011a8a6e7e3970cc619e05d54f9cd546edfcb10"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\deployment.json",
+          "sha256": "65fb9043893933955f05ba849e5400ed4a293b58c7112b4713942f5a31ee5f07"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\shared-pacing-release-20261106\\preview-cleanup.json",
+          "sha256": "0df804dfe5f1e25bf39a676b9c9630439db62d9c50bdf553e403864a326bdbc7"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\SHARED-PACING.md",
+          "sha256": "2533b5e65e4c9f1187ff93f227b5c016918a8810634278bbe43aae5d54271511"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\package.json",
+          "sha256": "1965ea8245420438ef913761a2617f94476c6682ad542217b5146b4f8719e17a"
+        }
+      ]
+    }
+  ]
+}

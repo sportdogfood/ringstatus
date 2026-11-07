@@ -1,0 +1,24 @@
+{
+  "started": "2026-11-06T22:21:42.936Z",
+  "ended": "2026-11-06T22:21:43.780Z",
+  "removal": "Deleted from Headers and outgoing Request before fetch",
+  "echo": {
+    "status": 200,
+    "scriptHasHeader": "false",
+    "receivedCFWorker": [
+      "cf-worker: gombcg.workers.dev"
+    ],
+    "stayedRemoved": false
+  },
+  "schedule": {
+    "status": 200,
+    "scriptHasHeader": "false",
+    "bytes": 2,
+    "body": "{}",
+    "rings": null
+  },
+  "decoder": false,
+  "tunnel": false,
+  "productionChanged": false,
+  "collectorsRun": false
+}

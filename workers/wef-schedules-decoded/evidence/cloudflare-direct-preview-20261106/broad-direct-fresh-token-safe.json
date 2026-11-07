@@ -1,0 +1,30 @@
+{
+  "started": "2026-11-06T22:13:33.143Z",
+  "ended": "2026-11-06T22:13:33.711Z",
+  "tokenRenewedLocally": true,
+  "anonymous": true,
+  "issued": "2026-11-06T22:13:13.000Z",
+  "expires": "2026-12-06T22:13:13.000Z",
+  "sourceSHA256": "d68ec968a2ee035cf3d01d82f9ed33bb257a829fa03888d075df2a68bab32d80",
+  "previewSHA256": "6fe7db225d40885df8b4788049102d63037f7721b541c7fe5bfc3fe29a239151",
+  "change": "Only schedule decoder forwarding guard bypassed; existing direct fetch and headers preserved.",
+  "serviceBindings": [],
+  "tunnel": false,
+  "status": 403,
+  "bytes": 118,
+  "body": "<html>\r\n<head><title>403 Forbidden</title></head>\r\n<body>\r\n<center><h1>403 Forbidden</h1></center>\r\n</body>\r\n</html>\r\n",
+  "keys": [],
+  "rings": null,
+  "proofHeaders": {
+    "x-rs-body-is-empty-object": "false",
+    "x-rs-body-length": "118",
+    "x-rs-has-auth": "true",
+    "x-rs-has-cookie": "true",
+    "x-rs-header-mode": "full",
+    "x-rs-header-retried": "false",
+    "x-rs-passthrough": "",
+    "x-rs-retry-header-mode": "",
+    "x-rs-upstream-status": "403",
+    "x-rs-upstream-url": "https://sglapi.wellingtoninternational.com/schedule?show_id=200000077&customer_id=15&date=2026-11-06"
+  }
+}

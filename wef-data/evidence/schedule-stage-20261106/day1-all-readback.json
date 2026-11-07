@@ -1,0 +1,1981 @@
+[
+  {
+    "id": "rec0EacaYkGzS9Gpj",
+    "createdTime": "2026-11-02T06:10:24.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 9,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028690,\"class_group_sequence\":2,\"class_groupxclasses_id\":200043385,\"class_id\":200031095,\"class_list\":\"608\",\"class_name\":\"Walk\",\"class_number\":608,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:05:00\",\"estimated_start_time\":\"07:55:00\",\"group_has_warmup\":false,\"group_name\":\"Walk\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Flat",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043385",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec1Yoqit9uUskAkl",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028705,\"class_group_sequence\":17,\"class_groupxclasses_id\":200043412,\"class_id\":200031042,\"class_list\":\"402,414,415,914\",\"class_name\":\"Small Pony Hunter\",\"class_number\":415,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:44:00\",\"estimated_start_time\":\"10:44:00\",\"group_has_warmup\":true,\"group_name\":\"Small Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Corro\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043412",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec1n66lN35yl630l",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 9,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028704,\"class_group_sequence\":16,\"class_groupxclasses_id\":200043409,\"class_id\":200031147,\"class_list\":\"526\",\"class_name\":\"SFHJA Pony Hunter Seat Medal (Flat Phase)\",\"class_number\":526,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"10:44:00\",\"estimated_start_time\":\"10:29:00\",\"group_has_warmup\":false,\"group_name\":\"SFHJA Pony Hunter Seat Medal (Flat Phase)\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Flat",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043409",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec24nHDRIkBoyq3D",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028686,\"class_group_sequence\":13,\"class_groupxclasses_id\":200043377,\"class_id\":200031104,\"class_list\":\"650,319,320\",\"class_name\":\"Warm Up Hunter\",\"class_number\":650,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":true,\"group_name\":\"Low Children's Hunter\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Warmup",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043377",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec2BdPTbASWhtwRC",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028712,\"class_group_sequence\":24,\"class_groupxclasses_id\":200043431,\"class_id\":200031151,\"class_list\":\"528\",\"class_name\":\"SFHJA Children's Pony Hunter Seat Medal (Flat Phase)\",\"class_number\":528,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"11:08:00\",\"estimated_start_time\":\"11:08:00\",\"group_has_warmup\":false,\"group_name\":\"SFHJA Children's Pony Hunter Seat Medal (Flat Phase)\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043431",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec2STEqSIgxj6NJa",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028657,\"class_group_sequence\":4,\"class_groupxclasses_id\":200043318,\"class_id\":200031168,\"class_list\":\"570\",\"class_name\":\"ASPCA Maclay\",\"class_number\":570,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":false,\"group_name\":\"ASPCA Maclay\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043318",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec2lCLdPoupwd2Fh",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028629,\"class_group_sequence\":2,\"class_groupxclasses_id\":200043285,\"class_id\":200031251,\"class_list\":\"842\",\"class_name\":\"$600 1.30m Young Jumper II2b\",\"class_number\":842,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"08:36:00\",\"group_has_warmup\":false,\"group_name\":\"$600 1.30m Young Jumper II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":8,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 8,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|1|200043285",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec2sQ9WiZhhlfd5J",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028678,\"class_group_sequence\":5,\"class_groupxclasses_id\":200043364,\"class_id\":200031016,\"class_list\":\"653,284,285\",\"class_name\":\"Adult Amateur Hunter\",\"class_number\":284,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:00:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":true,\"group_name\":\"Adult Amateur Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043364",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec3EeFwEUvpLtkES",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028645,\"class_group_sequence\":4,\"class_groupxclasses_id\":200043305,\"class_id\":200031183,\"class_list\":\"792\",\"class_name\":\"Hopeful Jumper (.85m) II2d\",\"class_number\":792,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:33:00\",\"estimated_start_time\":\"08:21:00\",\"group_has_warmup\":false,\"group_name\":\"Hopeful Jumper (.85m) II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"CCTV Agent\",\"start_time_default\":\"00:00:00\",\"total_trips\":4,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 4,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043305",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec3I3quhhqMP1si8",
+    "createdTime": "2026-11-02T06:10:24.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028692,\"class_group_sequence\":4,\"class_groupxclasses_id\":200043387,\"class_id\":200031097,\"class_list\":\"610\",\"class_name\":\"Walk/Trot Pleasure\",\"class_number\":610,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:25:00\",\"estimated_start_time\":\"08:15:00\",\"group_has_warmup\":false,\"group_name\":\"Walk/Trot Pleasure\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043387",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec3S87s5AtzO62Ka",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028666,\"class_group_sequence\":13,\"class_groupxclasses_id\":200043339,\"class_id\":200031102,\"class_list\":\"210,379,380,912\",\"class_name\":\"Add Back Hunter\",\"class_number\":210,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 18-35\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Add back",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043339",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec3siVm3koiwQTe2",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 9,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028697,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043396,\"class_id\":200031074,\"class_list\":\"604\",\"class_name\":\"Short Stirrup Equitation Flat\",\"class_number\":604,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:50:00\",\"estimated_start_time\":\"08:35:00\",\"group_has_warmup\":false,\"group_name\":\"Short Stirrup Equitation Flat\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":6,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Flat",
+      "fldpzkvsMHLBBQqdX": 6,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043396",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec4BpJop7aO3syLP",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028663,\"class_group_sequence\":10,\"class_groupxclasses_id\":200043333,\"class_id\":200031264,\"class_list\":\"210,339,340,912\",\"class_name\":\"$500 Junior/Amateur Owner Hunter 3'3\\\"/3'6\\\" Classic (2nd Rd)\",\"class_number\":912,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Junior Hunter 3'3\\\" 15 & Under\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"Stephanie Schwed, Concoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043333",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec4kF3S4HOoO4vJK",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028702,\"class_group_sequence\":14,\"class_groupxclasses_id\":200043406,\"class_id\":200031066,\"class_list\":\"652,644,645\",\"class_name\":\"Modified Hunter 2'/2'6\\\"\",\"class_number\":644,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:23:00\",\"estimated_start_time\":\"10:08:00\",\"group_has_warmup\":true,\"group_name\":\"Modified Hunter 2'/2'6\\\"\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043406",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec4pFprZcFOE827X",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028637,\"class_group_sequence\":5,\"class_groupxclasses_id\":200043293,\"class_id\":200031245,\"class_list\":\"832\",\"class_name\":\"$300 1.10m Young Jumper Table II2d\",\"class_number\":832,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:30:00\",\"estimated_start_time\":\"08:21:00\",\"group_has_warmup\":false,\"group_name\":\"$300 1.10m Young Jumper Table II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043293",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec4uVyrpg08zjFA8",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028633,\"class_group_sequence\":1,\"class_groupxclasses_id\":200043289,\"class_id\":200031199,\"class_list\":\"789\",\"class_name\":\"1.20m Open Jumper II2d\",\"class_number\":789,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:06:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":false,\"group_name\":\"1.20m Open Jumper II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Ringside  Health\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043289",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec4v87W2lwmTGudE",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028667,\"class_group_sequence\":14,\"class_groupxclasses_id\":200043343,\"class_id\":200030943,\"class_list\":\"391\",\"class_name\":\"Amateur Owner Hunter 3'3\\\" 36 & Over U/S\",\"class_number\":391,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":false,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 36 & Over U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043343",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec5DuGriCNcllxzp",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028642,\"class_group_sequence\":1,\"class_groupxclasses_id\":200043300,\"class_id\":200031171,\"class_list\":\"696,699\",\"class_name\":\"Itty Bitty Jumper Open (.60-.65m) II2b\",\"class_number\":696,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"07:57:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":false,\"group_name\":\"Itty Bitty Jumpers (.60-.65m) II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"07:45:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043300",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec67zaHsvr8pDwIG",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028706,\"class_group_sequence\":18,\"class_groupxclasses_id\":200043416,\"class_id\":200031046,\"class_list\":\"402,424,425,914\",\"class_name\":\"Medium/Large Pony Hunter\",\"class_number\":425,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:44:00\",\"group_has_warmup\":true,\"group_name\":\"Medium Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Corro\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043416",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec6Au157t0itk2tx",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028663,\"class_group_sequence\":10,\"class_groupxclasses_id\":200043332,\"class_id\":200030962,\"class_list\":\"210,339,340,912\",\"class_name\":\"Junior Hunter 3'3\\\" 15 & Under\",\"class_number\":340,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Junior Hunter 3'3\\\" 15 & Under\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043332",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec6UZ3LVhtFMzWud",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028706,\"class_group_sequence\":18,\"class_groupxclasses_id\":200043414,\"class_id\":200031129,\"class_list\":\"402,424,425,914\",\"class_name\":\"Schooling Pony Hunter\",\"class_number\":402,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:44:00\",\"group_has_warmup\":true,\"group_name\":\"Medium Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Schooling pony",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043414",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec6cPUBwE5HlUXq7",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028710,\"class_group_sequence\":22,\"class_groupxclasses_id\":200043427,\"class_id\":200031108,\"class_list\":\"654,408,409\",\"class_name\":\"Warm Up Hunter\",\"class_number\":654,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"11:08:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Children's Pony Hunter\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Warmup",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043427",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec6sejaZ03Yv4gBR",
+    "createdTime": "2026-11-02T06:10:32.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028671,\"class_group_sequence\":18,\"class_groupxclasses_id\":200043353,\"class_id\":200030928,\"class_list\":\"271\",\"class_name\":\"Amateur Owner Hunter 3'6\\\" 18-35 U/S\",\"class_number\":271,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":false,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 18-35 U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043353",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec741xHyP7QkttMx",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028702,\"class_group_sequence\":14,\"class_groupxclasses_id\":200043405,\"class_id\":200031106,\"class_list\":\"652,644,645\",\"class_name\":\"Warm Up Hunter\",\"class_number\":652,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:23:00\",\"estimated_start_time\":\"10:08:00\",\"group_has_warmup\":true,\"group_name\":\"Modified Hunter 2'/2'6\\\"\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Warmup",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043405",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec76XT5wlMo4GOum",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028696,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043394,\"class_id\":200031090,\"class_list\":\"140,145,146,151,152\",\"class_name\":\"Older Cross Rail Equitation\",\"class_number\":151,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:35:00\",\"estimated_start_time\":\"08:35:00\",\"group_has_warmup\":true,\"group_name\":\"Younger/Older Cross Rail Equitations\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043394",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec7RGaiyzyzfXK9v",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028682,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043370,\"class_id\":200031021,\"class_list\":\"659,314,315\",\"class_name\":\"Children's Hunter\",\"class_number\":314,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"08:54:00\",\"group_has_warmup\":true,\"group_name\":\"Children's Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"LeMieux\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043370",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec7Yw0QTxXebvcde",
+    "createdTime": "2026-11-02T06:10:24.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028691,\"class_group_sequence\":3,\"class_groupxclasses_id\":200043386,\"class_id\":200031096,\"class_list\":\"609\",\"class_name\":\"Walk/Trot\",\"class_number\":609,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:15:00\",\"estimated_start_time\":\"08:05:00\",\"group_has_warmup\":false,\"group_name\":\"Walk/Trot\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043386",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec7oIu2zcTBZuRrE",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 2,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028702,\"class_group_sequence\":14,\"class_groupxclasses_id\":200043407,\"class_id\":200031067,\"class_list\":\"652,644,645\",\"class_name\":\"Modified Hunter 2'/2'6\\\"\",\"class_number\":645,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:23:00\",\"estimated_start_time\":\"10:08:00\",\"group_has_warmup\":true,\"group_name\":\"Modified Hunter 2'/2'6\\\"\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Second trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043407",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec7tX6c7etAulK6P",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028688,\"class_group_sequence\":15,\"class_groupxclasses_id\":200043383,\"class_id\":200031281,\"class_list\":\"1002\",\"class_name\":\"Mulligan Class\",\"class_number\":1002,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:51:00\",\"estimated_start_time\":\"09:51:00\",\"group_has_warmup\":false,\"group_name\":\"Mulligan Class\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Mulligan",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043383",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec8Gi2pswJLJCGiB",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028710,\"class_group_sequence\":22,\"class_groupxclasses_id\":200043428,\"class_id\":200031036,\"class_list\":\"654,408,409\",\"class_name\":\"Children's Pony Hunter\",\"class_number\":408,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"11:08:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Children's Pony Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043428",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec8hIZuHzVMFJkfI",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028678,\"class_group_sequence\":5,\"class_groupxclasses_id\":200043363,\"class_id\":200031107,\"class_list\":\"653,284,285\",\"class_name\":\"Warm Up Hunter\",\"class_number\":653,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:00:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":true,\"group_name\":\"Adult Amateur Hunter\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Warmup",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043363",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec8igT5YDZlagqux",
+    "createdTime": "2026-11-06T14:02:50.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028641,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043299,\"class_id\":200031216,\"class_list\":\"723\",\"class_name\":\"$2,640 NAL 1.20m Junior/Amateur Jumper Classic II2b\",\"class_number\":723,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"09:24:00\",\"estimated_start_time\":\"08:51:00\",\"group_has_warmup\":false,\"group_name\":\"$2,625 NAL 1.20m Junior/Amateur Jumper Classic II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":11,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 11,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043299",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rec8mFuppaFk09ik2",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028686,\"class_group_sequence\":13,\"class_groupxclasses_id\":200043378,\"class_id\":200031031,\"class_list\":\"650,319,320\",\"class_name\":\"Low Children's Hunter\",\"class_number\":319,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":true,\"group_name\":\"Low Children's Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043378",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec9Gq0O44rLz7veL",
+    "createdTime": "2026-11-02T06:10:32.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028672,\"class_group_sequence\":19,\"class_groupxclasses_id\":200043357,\"class_id\":200031264,\"class_list\":\"210,274,275,912\",\"class_name\":\"$500 Junior/Amateur Owner Hunter 3'3\\\"/3'6\\\" Classic (2nd Rd)\",\"class_number\":912,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 18-35\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"Stephanie Schwed, Concoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043357",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rec9gfvWq5T9n37aW",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028705,\"class_group_sequence\":17,\"class_groupxclasses_id\":200043411,\"class_id\":200031041,\"class_list\":\"402,414,415,914\",\"class_name\":\"Small Pony Conformation Hunter\",\"class_number\":414,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:44:00\",\"estimated_start_time\":\"10:44:00\",\"group_has_warmup\":true,\"group_name\":\"Small Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Corro\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043411",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recA138S0LMoK8TbP",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028653,\"class_group_sequence\":12,\"class_groupxclasses_id\":200043313,\"class_id\":200031231,\"class_list\":\"739,767\",\"class_name\":\"$1,580 1.0m Junior Jumper Classic II2b\",\"class_number\":739,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"09:36:00\",\"estimated_start_time\":\"09:03:00\",\"group_has_warmup\":false,\"group_name\":\"$1,580 1.0m Junior & Amateur Jumper Classics II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Bullseye Horse Transportation\",\"start_time_default\":\"00:00:00\",\"total_trips\":9,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 9,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043313",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recAggGHDYbFsFZ7F",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028686,\"class_group_sequence\":13,\"class_groupxclasses_id\":200043379,\"class_id\":200031032,\"class_list\":\"650,319,320\",\"class_name\":\"Low Children's Hunter\",\"class_number\":320,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":true,\"group_name\":\"Low Children's Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043379",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recBSoetPULhF73G7",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028708,\"class_group_sequence\":20,\"class_groupxclasses_id\":200043423,\"class_id\":200031053,\"class_list\":\"441\",\"class_name\":\"Green Pony Hunter U/S\",\"class_number\":441,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":false,\"group_name\":\"Green Pony Hunter U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043423",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recBxxi5iBCN1UWv1",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028651,\"class_group_sequence\":10,\"class_groupxclasses_id\":200043311,\"class_id\":200031213,\"class_list\":\"749\",\"class_name\":\"Take2 Thoroughbred Jumper (1.0m) II2d\",\"class_number\":749,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"09:03:00\",\"estimated_start_time\":\"09:03:00\",\"group_has_warmup\":false,\"group_name\":\"Take2 Thoroughbred Jumper (1.0m) II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043311",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recCgeYIvwv347IhO",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028658,\"class_group_sequence\":5,\"class_groupxclasses_id\":200043319,\"class_id\":200031159,\"class_list\":\"550\",\"class_name\":\"USEF / Valencia Saddlery Hunter Seat Medal\",\"class_number\":550,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":false,\"group_name\":\"USEF / Valencia Saddlery Hunter Seat Medal\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043319",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recCjiZxJWqVYjk4Z",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028649,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043309,\"class_id\":200031190,\"class_list\":\"782\",\"class_name\":\"Training Jumper (1.0m) II2d\",\"class_number\":782,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"08:54:00\",\"group_has_warmup\":false,\"group_name\":\"Training Jumper (1.0m) II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043309",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recDNIlFmRtUt1XVa",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028683,\"class_group_sequence\":10,\"class_groupxclasses_id\":200043372,\"class_id\":200031068,\"class_list\":\"630\",\"class_name\":\"Pleasure Horse\",\"class_number\":630,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":false,\"group_name\":\"Pleasure Horse\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043372",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recES42Ckjw3gDF3N",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028693,\"class_group_sequence\":5,\"class_groupxclasses_id\":200043388,\"class_id\":200031098,\"class_list\":\"611\",\"class_name\":\"Walk/Trot Jump\",\"class_number\":611,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:35:00\",\"estimated_start_time\":\"08:25:00\",\"group_has_warmup\":false,\"group_name\":\"Walk/Trot Jump\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043388",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recEWg9JkNSJnn8ZA",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028670,\"class_group_sequence\":17,\"class_groupxclasses_id\":200043349,\"class_id\":200031102,\"class_list\":\"210,279,280,912\",\"class_name\":\"Add Back Hunter\",\"class_number\":210,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 36 & Over\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Add back",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043349",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recEZsmqiBVA1E4Ik",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028632,\"class_group_sequence\":5,\"class_groupxclasses_id\":200043288,\"class_id\":200031254,\"class_list\":\"805\",\"class_name\":\"$20,000 Palm Beach Equine Clinic Grand Prix\",\"class_number\":805,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"11:54:00\",\"estimated_start_time\":\"10:18:00\",\"group_has_warmup\":false,\"group_name\":\"$20,000 Palm Beach Equine Clinic Grand Prix\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.a\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":33,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 33,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|1|200043288",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recEbvZRm8zTiFjbt",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028650,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043310,\"class_id\":200031242,\"class_list\":\"827\",\"class_name\":\"1.0m Young Jumper Table II\",\"class_number\":827,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"09:03:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":false,\"group_name\":\"1.0m Young Jumper Table II\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043310",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recF4ZemIntC7qcOY",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028664,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043335,\"class_id\":200030966,\"class_list\":\"210,344,345,912\",\"class_name\":\"Junior Hunter 3'6\\\"/3'3\\\"\",\"class_number\":344,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Junior Hunter 3'3\\\" 16-17\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":5,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 5,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043335",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recFKupydC04p8hPH",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028662,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043329,\"class_id\":200031264,\"class_list\":\"210,304,305,912\",\"class_name\":\"$500 Junior/Amateur Owner Hunter 3'3\\\"/3'6\\\" Classic (2nd Rd)\",\"class_number\":912,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Small Junior Hunter 3'6\\\"\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"Stephanie Schwed, Concoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043329",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recFOEx98BoTtadEr",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028660,\"class_group_sequence\":7,\"class_groupxclasses_id\":200043322,\"class_id\":200030956,\"class_list\":\"210,309,310,912\",\"class_name\":\"Large Junior Hunter 3'6\\\"\",\"class_number\":309,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Large Junior Hunter 3'6\\\"\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043322",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recFUbCFgjTXFXT5m",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028662,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043326,\"class_id\":200031102,\"class_list\":\"210,304,305,912\",\"class_name\":\"Add Back Hunter\",\"class_number\":210,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Small Junior Hunter 3'6\\\"\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Add back",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043326",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recFYO5SM5JCuQKmj",
+    "createdTime": "2026-11-06T14:02:50.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028638,\"class_group_sequence\":6,\"class_groupxclasses_id\":200043294,\"class_id\":200031222,\"class_list\":\"742,762\",\"class_name\":\"1.10m Junior Jumper II2d\",\"class_number\":742,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:39:00\",\"estimated_start_time\":\"08:30:00\",\"group_has_warmup\":false,\"group_name\":\"1.10m Junior & Amateur Jumpers II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043294",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recFYorporhlWjmRa",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028713,\"class_group_sequence\":25,\"class_groupxclasses_id\":200043432,\"class_id\":200031282,\"class_list\":\"1003\",\"class_name\":\"Mulligan Class\",\"class_number\":1003,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"11:08:00\",\"estimated_start_time\":\"11:08:00\",\"group_has_warmup\":false,\"group_name\":\"Mulligan Class\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Mulligan",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043432",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recGAtREVyqrmQuWP",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028664,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043334,\"class_id\":200031102,\"class_list\":\"210,344,345,912\",\"class_name\":\"Add Back Hunter\",\"class_number\":210,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Junior Hunter 3'3\\\" 16-17\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Add back",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043334",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recGUknoYX9VTo1Xo",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028687,\"class_group_sequence\":14,\"class_groupxclasses_id\":200043381,\"class_id\":200031026,\"class_list\":\"650,299,300\",\"class_name\":\"Low Child/Adult Amateur Hunter\",\"class_number\":299,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:51:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":true,\"group_name\":\"Low Adult Amateur Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Pilates Rocks\",\"start_time_default\":\"00:00:00\",\"total_trips\":8,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 8,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043381",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recGh0a8hqPmTgfSm",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028696,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043391,\"class_id\":200031125,\"class_list\":\"140,145,146,151,152\",\"class_name\":\"Cross Rail Warm Up\",\"class_number\":140,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:35:00\",\"estimated_start_time\":\"08:35:00\",\"group_has_warmup\":true,\"group_name\":\"Younger/Older Cross Rail Equitations\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Warmup",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043391",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recGjzR4WtMo2kznl",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028682,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043369,\"class_id\":200031113,\"class_list\":\"659,314,315\",\"class_name\":\"Warm Up Hunter\",\"class_number\":659,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"08:54:00\",\"group_has_warmup\":true,\"group_name\":\"Children's Hunter\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Warmup",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043369",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recH9K31tXe9kga5Z",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028643,\"class_group_sequence\":2,\"class_groupxclasses_id\":200043302,\"class_id\":200031236,\"class_list\":\"682\",\"class_name\":\"Pony Jumper II2d\",\"class_number\":682,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:03:00\",\"estimated_start_time\":\"07:57:00\",\"group_has_warmup\":false,\"group_name\":\"Pony Jumper II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043302",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recHLpexYnD9rXIEy",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028666,\"class_group_sequence\":13,\"class_groupxclasses_id\":200043341,\"class_id\":200030942,\"class_list\":\"210,379,380,912\",\"class_name\":\"Amateur Owner Hunter 3'3\\\" 18-35\",\"class_number\":380,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 18-35\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043341",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recHR1K2CevwUt4q2",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028660,\"class_group_sequence\":7,\"class_groupxclasses_id\":200043324,\"class_id\":200031264,\"class_list\":\"210,309,310,912\",\"class_name\":\"$500 Junior/Amateur Owner Hunter 3'3\\\"/3'6\\\" Classic (2nd Rd)\",\"class_number\":912,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Large Junior Hunter 3'6\\\"\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Concoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043324",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recHTlGx2KtqYBZhb",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028678,\"class_group_sequence\":5,\"class_groupxclasses_id\":200043365,\"class_id\":200031017,\"class_list\":\"653,284,285\",\"class_name\":\"Adult Amateur Hunter\",\"class_number\":285,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:00:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":true,\"group_name\":\"Adult Amateur Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043365",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recHyjeEGRACLbDMG",
+    "createdTime": "2026-11-02T06:10:32.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028672,\"class_group_sequence\":19,\"class_groupxclasses_id\":200043354,\"class_id\":200031102,\"class_list\":\"210,274,275,912\",\"class_name\":\"Add Back Hunter\",\"class_number\":210,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 18-35\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Add back",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043354",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recIG1wTnMuF98OU0",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028664,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043337,\"class_id\":200031264,\"class_list\":\"210,344,345,912\",\"class_name\":\"$500 Junior/Amateur Owner Hunter 3'3\\\"/3'6\\\" Classic (2nd Rd)\",\"class_number\":912,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Junior Hunter 3'3\\\" 16-17\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"Stephanie Schwed, Concoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043337",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recIL2uMJIexbKeCl",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028674,\"class_group_sequence\":1,\"class_groupxclasses_id\":200043359,\"class_id\":200031161,\"class_list\":\"575\",\"class_name\":\"USEF Adult Equitation\",\"class_number\":575,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:00:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":false,\"group_name\":\"USEF Adult Equitation\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043359",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recIwEnIm5zt1oHsY",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028706,\"class_group_sequence\":18,\"class_groupxclasses_id\":200043417,\"class_id\":200031258,\"class_list\":\"402,424,425,914\",\"class_name\":\"$250 Pony Hunter Classic (2nd Rd)\",\"class_number\":914,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:44:00\",\"group_has_warmup\":true,\"group_name\":\"Medium Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"Corro\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043417",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recJ7FPRb3wYUynjx",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028634,\"class_group_sequence\":2,\"class_groupxclasses_id\":200043290,\"class_id\":200031248,\"class_list\":\"837\",\"class_name\":\"$600 1.20m Young Jumper II2b\",\"class_number\":837,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:06:00\",\"estimated_start_time\":\"08:06:00\",\"group_has_warmup\":false,\"group_name\":\"$600 1.20m Young Jumper II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043290",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recJV14AkgAtmW1iX",
+    "createdTime": "2026-11-02T06:10:32.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028673,\"class_group_sequence\":20,\"class_groupxclasses_id\":200043358,\"class_id\":200031280,\"class_list\":\"1001\",\"class_name\":\"Mulligan Class\",\"class_number\":1001,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":false,\"group_name\":\"Mulligan Class\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Mulligan",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043358",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recJfpADhDknrNESu",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 9,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028701,\"class_group_sequence\":13,\"class_groupxclasses_id\":200043404,\"class_id\":200031063,\"class_list\":\"641\",\"class_name\":\"Modified Hunter 2'/2'6\\\" U/S\",\"class_number\":641,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:08:00\",\"estimated_start_time\":\"09:53:00\",\"group_has_warmup\":false,\"group_name\":\"Modified Hunter 2'/2'6\\\" U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Flat",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043404",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recKVMElbDFyGst2n",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028644,\"class_group_sequence\":3,\"class_groupxclasses_id\":200043304,\"class_id\":200031180,\"class_list\":\"785,797\",\"class_name\":\"Puddle Jumper Junior/Amateur (.70-.80m) II2d\",\"class_number\":797,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:21:00\",\"estimated_start_time\":\"08:03:00\",\"group_has_warmup\":false,\"group_name\":\"Puddle Jumpers (.70-.80m) II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Equine Tack & Nutritionals\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043304",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recKqhbL5Tlg9FVJu",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028709,\"class_group_sequence\":21,\"class_groupxclasses_id\":200043426,\"class_id\":200031057,\"class_list\":\"402,444,445\",\"class_name\":\"Green Pony Hunter\",\"class_number\":445,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Green Pony Conformation Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043426",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recLIyalXhDZ1GoZA",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028685,\"class_group_sequence\":12,\"class_groupxclasses_id\":200043376,\"class_id\":200031132,\"class_list\":\"650,503,504\",\"class_name\":\"2'6\\\" Child/Adult Amateur Equitation\",\"class_number\":504,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":true,\"group_name\":\"2'6\\\" Child/Adult Amateur Equitation\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043376",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recMLTqkXyutjx7fi",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028687,\"class_group_sequence\":14,\"class_groupxclasses_id\":200043380,\"class_id\":200031104,\"class_list\":\"650,299,300\",\"class_name\":\"Warm Up Hunter\",\"class_number\":650,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:51:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":true,\"group_name\":\"Low Adult Amateur Hunter\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Warmup",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043380",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recMuwtOKhOgFQ47f",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028668,\"class_group_sequence\":15,\"class_groupxclasses_id\":200043347,\"class_id\":200031264,\"class_list\":\"210,394,395,912\",\"class_name\":\"$500 Junior/Amateur Owner Hunter 3'3\\\"/3'6\\\" Classic (2nd Rd)\",\"class_number\":912,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 36 & Over\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"Stephanie Schwed, Concoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043347",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recNCuQNOGyHwnhVQ",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028711,\"class_group_sequence\":23,\"class_groupxclasses_id\":200043430,\"class_id\":200031152,\"class_list\":\"532\",\"class_name\":\"M&S Children's Pony Medal\",\"class_number\":532,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"11:08:00\",\"estimated_start_time\":\"11:08:00\",\"group_has_warmup\":false,\"group_name\":\"M&S Children's Pony Medal\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043430",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recNbyEgs8TbIStSg",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028709,\"class_group_sequence\":21,\"class_groupxclasses_id\":200043424,\"class_id\":200031129,\"class_list\":\"402,444,445\",\"class_name\":\"Schooling Pony Hunter\",\"class_number\":402,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Green Pony Conformation Hunter\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Schooling pony",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043424",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recO8WaehNDOa7hZ8",
+    "createdTime": "2026-11-02T06:10:32.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028670,\"class_group_sequence\":17,\"class_groupxclasses_id\":200043352,\"class_id\":200030937,\"class_list\":\"210,279,280,912\",\"class_name\":\"Amateur Owner Hunter 3'6\\\" 36 & Over\",\"class_number\":280,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 36 & Over\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043352",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recORyaICXJ8CQ6UN",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028707,\"class_group_sequence\":19,\"class_groupxclasses_id\":200043419,\"class_id\":200031129,\"class_list\":\"402,434,435,914\",\"class_name\":\"Schooling Pony Hunter\",\"class_number\":402,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Large Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Schooling pony",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043419",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recPQCgsO2fXe8O0Q",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028696,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043393,\"class_id\":200031088,\"class_list\":\"140,145,146,151,152\",\"class_name\":\"Younger Cross Rail Equitation\",\"class_number\":146,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:35:00\",\"estimated_start_time\":\"08:35:00\",\"group_has_warmup\":true,\"group_name\":\"Younger/Older Cross Rail Equitations\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043393",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recQDTPcMTiK4BuFA",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028655,\"class_group_sequence\":2,\"class_groupxclasses_id\":200043316,\"class_id\":200031166,\"class_list\":\"530\",\"class_name\":\"Hamel Foundation NHS 3'3\\\" Medal\",\"class_number\":530,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":false,\"group_name\":\"Hamel Foundation NHS 3'3\\\" Medal\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043316",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recQWmecAetTaWa4O",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028636,\"class_group_sequence\":4,\"class_groupxclasses_id\":200043292,\"class_id\":200031193,\"class_list\":\"717\",\"class_name\":\"1.10m Open Jumper II2d\",\"class_number\":717,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:21:00\",\"estimated_start_time\":\"08:15:00\",\"group_has_warmup\":false,\"group_name\":\"1.10m Open Jumper II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043292",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recQm7gjV00VoXWoc",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028654,\"class_group_sequence\":1,\"class_groupxclasses_id\":200043315,\"class_id\":200031155,\"class_list\":\"535\",\"class_name\":\"IHSA/USHJA 3'3\\\" Hunter Seat Medal\",\"class_number\":535,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":false,\"group_name\":\"IHSA/USHJA 3'3\\\" Hunter Seat Medal\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"07:45:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043315",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recR1Pm1ldbU4Pqt0",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028675,\"class_group_sequence\":2,\"class_groupxclasses_id\":200043360,\"class_id\":200031150,\"class_list\":\"565\",\"class_name\":\"Ariat Adult Medal\",\"class_number\":565,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:00:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":false,\"group_name\":\"Ariat Adult Medal\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043360",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recRYskyXSefTLTMy",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028660,\"class_group_sequence\":7,\"class_groupxclasses_id\":200043321,\"class_id\":200031102,\"class_list\":\"210,309,310,912\",\"class_name\":\"Add Back Hunter\",\"class_number\":210,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Large Junior Hunter 3'6\\\"\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Add back",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043321",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recRlqCjs6KyCluco",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028646,\"class_group_sequence\":5,\"class_groupxclasses_id\":200043306,\"class_id\":200031253,\"class_list\":\"815\",\"class_name\":\"$250 .85m Jumper Classic II2b\",\"class_number\":815,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:45:00\",\"estimated_start_time\":\"08:33:00\",\"group_has_warmup\":false,\"group_name\":\"$250 .85m Jumper Classic II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":4,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 4,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043306",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recSBisl10KOgFaYL",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028662,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043328,\"class_id\":200030952,\"class_list\":\"210,304,305,912\",\"class_name\":\"Small Junior Hunter 3'6\\\"\",\"class_number\":305,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Small Junior Hunter 3'6\\\"\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043328",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recScmeIMCEXoFiad",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028668,\"class_group_sequence\":15,\"class_groupxclasses_id\":200043346,\"class_id\":200030947,\"class_list\":\"210,394,395,912\",\"class_name\":\"Amateur Owner Hunter 3'3\\\" 36 & Over\",\"class_number\":395,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 36 & Over\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043346",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recSz4N5hqlUXeDEa",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028700,\"class_group_sequence\":12,\"class_groupxclasses_id\":200043403,\"class_id\":200031069,\"class_list\":\"631\",\"class_name\":\"Pleasure Pony\",\"class_number\":631,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:53:00\",\"estimated_start_time\":\"09:53:00\",\"group_has_warmup\":false,\"group_name\":\"Pleasure Pony\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043403",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recTPR0t3MAj0tX91",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028666,\"class_group_sequence\":13,\"class_groupxclasses_id\":200043342,\"class_id\":200031264,\"class_list\":\"210,379,380,912\",\"class_name\":\"$500 Junior/Amateur Owner Hunter 3'3\\\"/3'6\\\" Classic (2nd Rd)\",\"class_number\":912,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 18-35\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"Stephanie Schwed, Concoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043342",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recU0f8U824SCYFDt",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028684,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043373,\"class_id\":200031130,\"class_list\":\"502\",\"class_name\":\"2'6\\\" Child/Adult Amateur Equitation Flat\",\"class_number\":502,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":false,\"group_name\":\"2'6\\\" Child/Adult Amateur Equitation Flat\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043373",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recU4Af9Z3SPjwCON",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 2,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028699,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043402,\"class_id\":200031079,\"class_list\":\"614,605,606,619,620\",\"class_name\":\"Rusty Stirrup Equitation\",\"class_number\":620,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"09:53:00\",\"estimated_start_time\":\"09:05:00\",\"group_has_warmup\":true,\"group_name\":\"Short/Rusty Stirrup Equitations\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Second trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043402",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recUD7ColrYUHfed5",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028705,\"class_group_sequence\":17,\"class_groupxclasses_id\":200043410,\"class_id\":200031129,\"class_list\":\"402,414,415,914\",\"class_name\":\"Schooling Pony Hunter\",\"class_number\":402,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:44:00\",\"estimated_start_time\":\"10:44:00\",\"group_has_warmup\":true,\"group_name\":\"Small Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Schooling pony",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043410",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recUnFBhXanhLfQoA",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 9,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028698,\"class_group_sequence\":10,\"class_groupxclasses_id\":200043397,\"class_id\":200031077,\"class_list\":\"618\",\"class_name\":\"Rusty Stirrup Equitation Flat\",\"class_number\":618,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"09:05:00\",\"estimated_start_time\":\"08:50:00\",\"group_has_warmup\":false,\"group_name\":\"Rusty Stirrup Equitation Flat\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Flat",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043397",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recVQZx1HtGsTu5zW",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028699,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043401,\"class_id\":200031078,\"class_list\":\"614,605,606,619,620\",\"class_name\":\"Rusty Stirrup Equitation\",\"class_number\":619,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"09:53:00\",\"estimated_start_time\":\"09:05:00\",\"group_has_warmup\":true,\"group_name\":\"Short/Rusty Stirrup Equitations\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043401",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recVpu2F3aG1MIDvJ",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028668,\"class_group_sequence\":15,\"class_groupxclasses_id\":200043344,\"class_id\":200031102,\"class_list\":\"210,394,395,912\",\"class_name\":\"Add Back Hunter\",\"class_number\":210,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 36 & Over\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Add back",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043344",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recWRRZ4mUrfkvOA0",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028666,\"class_group_sequence\":13,\"class_groupxclasses_id\":200043340,\"class_id\":200030941,\"class_list\":\"210,379,380,912\",\"class_name\":\"Amateur Owner Hunter 3'3\\\" 18-35\",\"class_number\":379,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 18-35\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043340",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recX416mxENeHCM4o",
+    "createdTime": "2026-11-02T06:10:32.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028672,\"class_group_sequence\":19,\"class_groupxclasses_id\":200043355,\"class_id\":200030931,\"class_list\":\"210,274,275,912\",\"class_name\":\"Amateur Owner Hunter 3'6\\\" 18-35\",\"class_number\":274,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 18-35\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043355",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recXXk08rvdEgPa23",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028694,\"class_group_sequence\":6,\"class_groupxclasses_id\":200043389,\"class_id\":200031086,\"class_list\":\"144\",\"class_name\":\"Younger Cross Rail Equitation Flat\",\"class_number\":144,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:35:00\",\"estimated_start_time\":\"08:35:00\",\"group_has_warmup\":false,\"group_name\":\"Younger Cross Rail Equitation Flat\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043389",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recXnTPawoC2ucByd",
+    "createdTime": "2026-11-06T14:02:50.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028638,\"class_group_sequence\":6,\"class_groupxclasses_id\":200043295,\"class_id\":200031227,\"class_list\":\"742,762\",\"class_name\":\"1.10m Amateur Jumper II2d\",\"class_number\":762,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:39:00\",\"estimated_start_time\":\"08:30:00\",\"group_has_warmup\":false,\"group_name\":\"1.10m Junior & Amateur Jumpers II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043295",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recY8X3h4skj3MmGL",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028630,\"class_group_sequence\":3,\"class_groupxclasses_id\":200043286,\"class_id\":200031217,\"class_list\":\"775\",\"class_name\":\"$2,640 NAL 1.30m Junior/Amateur Jumper Classic II2b\",\"class_number\":775,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"09:36:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":false,\"group_name\":\"$2,625 NAL 1.30m Junior/Amateur Jumper Classic II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Arthramid by Contura Vet\",\"start_time_default\":\"00:00:00\",\"total_trips\":12,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 12,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|1|200043286",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recYt9iT2vJDiHMqX",
+    "createdTime": "2026-11-02T06:10:32.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028670,\"class_group_sequence\":17,\"class_groupxclasses_id\":200043351,\"class_id\":200031264,\"class_list\":\"210,279,280,912\",\"class_name\":\"$500 Junior/Amateur Owner Hunter 3'3\\\"/3'6\\\" Classic (2nd Rd)\",\"class_number\":912,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 36 & Over\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"Stephanie Schwed, Concoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043351",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recYw3d6XsXVLoUsG",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028706,\"class_group_sequence\":18,\"class_groupxclasses_id\":200043415,\"class_id\":200031045,\"class_list\":\"402,424,425,914\",\"class_name\":\"Medium/Large Pony Conformation Hunter\",\"class_number\":424,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:44:00\",\"group_has_warmup\":true,\"group_name\":\"Medium Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Corro\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043415",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recaCvo7k4HsWB2sx",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028696,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043392,\"class_id\":200031087,\"class_list\":\"140,145,146,151,152\",\"class_name\":\"Younger Cross Rail Equitation\",\"class_number\":145,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:35:00\",\"estimated_start_time\":\"08:35:00\",\"group_has_warmup\":true,\"group_name\":\"Younger/Older Cross Rail Equitations\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043392",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recaNnEtbIf3y0Dpp",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028665,\"class_group_sequence\":12,\"class_groupxclasses_id\":200043338,\"class_id\":200030938,\"class_list\":\"376\",\"class_name\":\"Amateur Owner Hunter 3'3\\\" 18-35 U/S\",\"class_number\":376,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":false,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 18-35 U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043338",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recaln5h7LkLHxk6d",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028668,\"class_group_sequence\":15,\"class_groupxclasses_id\":200043345,\"class_id\":200030946,\"class_list\":\"210,394,395,912\",\"class_name\":\"Amateur Owner Hunter 3'3\\\" 36 & Over\",\"class_number\":394,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'3\\\" 36 & Over\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043345",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recb8ACYhSGebL0ql",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028653,\"class_group_sequence\":12,\"class_groupxclasses_id\":200043314,\"class_id\":200031230,\"class_list\":\"739,767\",\"class_name\":\"$1,580 1.0m Amateur Jumper Classic II2b\",\"class_number\":767,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"09:36:00\",\"estimated_start_time\":\"09:03:00\",\"group_has_warmup\":false,\"group_name\":\"$1,580 1.0m Junior & Amateur Jumper Classics II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Bullseye Horse Transportation\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043314",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recbhzHoHxqgZB7Rh",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028699,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043399,\"class_id\":200031075,\"class_list\":\"614,605,606,619,620\",\"class_name\":\"Short Stirrup Equitation\",\"class_number\":605,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"09:53:00\",\"estimated_start_time\":\"09:05:00\",\"group_has_warmup\":true,\"group_name\":\"Short/Rusty Stirrup Equitations\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":6,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 6,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043399",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "reccBEbIIYJBE3ctv",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 9,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028681,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043368,\"class_id\":200031018,\"class_list\":\"311\",\"class_name\":\"Children's Hunter U/S\",\"class_number\":311,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:54:00\",\"estimated_start_time\":\"08:39:00\",\"group_has_warmup\":false,\"group_name\":\"Children's Hunter U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"LeMieux\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Flat",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043368",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "reccCkOYlE30Vc2vP",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028685,\"class_group_sequence\":12,\"class_groupxclasses_id\":200043375,\"class_id\":200031131,\"class_list\":\"650,503,504\",\"class_name\":\"2'6\\\" Child/Adult Amateur Equitation\",\"class_number\":503,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":true,\"group_name\":\"2'6\\\" Child/Adult Amateur Equitation\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043375",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "reccQNtPMmBesecHK",
+    "createdTime": "2026-11-06T14:02:50.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028640,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043297,\"class_id\":200031223,\"class_list\":\"743,763\",\"class_name\":\"$1,580 NAL/WIHS/M&S 1.15m Junior Jumper Classic II2b\",\"class_number\":743,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:51:00\",\"estimated_start_time\":\"08:39:00\",\"group_has_warmup\":false,\"group_name\":\"$1,580 M&S 1.10m Junior & Amateur Jumper Classics II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043297",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "reccm0POvyXZbsS6M",
+    "createdTime": "2026-11-02T06:10:32.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028672,\"class_group_sequence\":19,\"class_groupxclasses_id\":200043356,\"class_id\":200030932,\"class_list\":\"210,274,275,912\",\"class_name\":\"Amateur Owner Hunter 3'6\\\" 18-35\",\"class_number\":275,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 18-35\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043356",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recdNv3HqB8aSXQv9",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028660,\"class_group_sequence\":7,\"class_groupxclasses_id\":200043323,\"class_id\":200030957,\"class_list\":\"210,309,310,912\",\"class_name\":\"Large Junior Hunter 3'6\\\"\",\"class_number\":310,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Large Junior Hunter 3'6\\\"\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043323",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recdvbhhGxIodN2OO",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028685,\"class_group_sequence\":12,\"class_groupxclasses_id\":200043374,\"class_id\":200031104,\"class_list\":\"650,503,504\",\"class_name\":\"Warm Up Hunter\",\"class_number\":650,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":true,\"group_name\":\"2'6\\\" Child/Adult Amateur Equitation\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Warmup",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043374",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "receCXPxNDgDtPO2l",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028707,\"class_group_sequence\":19,\"class_groupxclasses_id\":200043421,\"class_id\":200031052,\"class_list\":\"402,434,435,914\",\"class_name\":\"Large Pony Hunter\",\"class_number\":435,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Large Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Corro\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043421",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "receOmaLHGxF9u31d",
+    "createdTime": "2026-11-06T14:02:50.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028640,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043298,\"class_id\":200031224,\"class_list\":\"743,763\",\"class_name\":\"$1,580 NAL/WIHS/M&S 1.15m Amateur Jumper Classic II2b\",\"class_number\":763,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:51:00\",\"estimated_start_time\":\"08:39:00\",\"group_has_warmup\":false,\"group_name\":\"$1,580 M&S 1.10m Junior & Amateur Jumper Classics II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043298",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recejCOUxd4yhtiXI",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028696,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043395,\"class_id\":200031091,\"class_list\":\"140,145,146,151,152\",\"class_name\":\"Older Cross Rail Equitation\",\"class_number\":152,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:35:00\",\"estimated_start_time\":\"08:35:00\",\"group_has_warmup\":true,\"group_name\":\"Younger/Older Cross Rail Equitations\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043395",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recfgOA1WvVHlZNZ5",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028677,\"class_group_sequence\":4,\"class_groupxclasses_id\":200043362,\"class_id\":200031013,\"class_list\":\"281\",\"class_name\":\"Adult Amateur Hunter U/S\",\"class_number\":281,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:00:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":false,\"group_name\":\"Adult Amateur Hunter U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043362",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recgf3LP4EtUJeQw8",
+    "createdTime": "2026-11-06T14:02:50.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028639,\"class_group_sequence\":7,\"class_groupxclasses_id\":200043296,\"class_id\":200031278,\"class_list\":\"999\",\"class_name\":\"Mulligan Class\",\"class_number\":999,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:39:00\",\"estimated_start_time\":\"08:39:00\",\"group_has_warmup\":false,\"group_name\":\"Mulligan Class\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Mulligan",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043296",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "rechHRJ2ogd30xia6",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028642,\"class_group_sequence\":1,\"class_groupxclasses_id\":200043301,\"class_id\":200031174,\"class_list\":\"696,699\",\"class_name\":\"Itty Bitty Jumper Junior/Amateur (.60-.65m) II2b\",\"class_number\":699,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"07:57:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":false,\"group_name\":\"Itty Bitty Jumpers (.60-.65m) II2b\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.b\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"07:45:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043301",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rechw2aro1fUoNZKK",
+    "createdTime": "2026-11-02T06:10:24.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028689,\"class_group_sequence\":1,\"class_groupxclasses_id\":200043384,\"class_id\":200031070,\"class_list\":\"607\",\"class_name\":\"Leadline\",\"class_number\":607,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"07:55:00\",\"estimated_start_time\":\"07:55:00\",\"group_has_warmup\":false,\"group_name\":\"Leadline\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"07:55:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043384",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "reciXVarayF94I3WJ",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028709,\"class_group_sequence\":21,\"class_groupxclasses_id\":200043425,\"class_id\":200031056,\"class_list\":\"402,444,445\",\"class_name\":\"Green Pony Conformation Hunter\",\"class_number\":444,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Green Pony Conformation Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043425",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recicZnWVbVmI2VNc",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 2,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028682,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043371,\"class_id\":200031022,\"class_list\":\"659,314,315\",\"class_name\":\"Children's Hunter\",\"class_number\":315,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:00:00\",\"estimated_start_time\":\"08:54:00\",\"group_has_warmup\":true,\"group_name\":\"Children's Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"LeMieux\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Second trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043371",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recihAxc5dNMNZ1jr",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028705,\"class_group_sequence\":17,\"class_groupxclasses_id\":200043418,\"class_id\":200031258,\"class_list\":\"402,414,415,914\",\"class_name\":\"$250 Pony Hunter Classic (2nd Rd)\",\"class_number\":914,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:44:00\",\"estimated_start_time\":\"10:44:00\",\"group_has_warmup\":true,\"group_name\":\"Small Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Corro\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043418",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recjZuDEfo2YMx4nJ",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028676,\"class_group_sequence\":3,\"class_groupxclasses_id\":200043361,\"class_id\":200031149,\"class_list\":\"527\",\"class_name\":\"SFHJA Adult Amateur Hunter Seat Medal (Flat Phase)\",\"class_number\":527,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:00:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":false,\"group_name\":\"SFHJA Adult Amateur Hunter Seat Medal (Flat Phase)\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043361",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "reck0MsTbqlkLKGTI",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028663,\"class_group_sequence\":10,\"class_groupxclasses_id\":200043330,\"class_id\":200031102,\"class_list\":\"210,339,340,912\",\"class_name\":\"Add Back Hunter\",\"class_number\":210,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Junior Hunter 3'3\\\" 15 & Under\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Add back",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043330",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recl4XqmpKknBmJYo",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028656,\"class_group_sequence\":3,\"class_groupxclasses_id\":200043317,\"class_id\":200031160,\"class_list\":\"585\",\"class_name\":\"USEF / NCEA Junior Hunter Seat Medal\",\"class_number\":585,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":false,\"group_name\":\"USEF / NCEA Junior Hunter Seat Medal\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043317",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "reclAGARuKNpviJYg",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028663,\"class_group_sequence\":10,\"class_groupxclasses_id\":200043331,\"class_id\":200030961,\"class_list\":\"210,339,340,912\",\"class_name\":\"Junior Hunter 3'3\\\" 15 & Under\",\"class_number\":339,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Junior Hunter 3'3\\\" 15 & Under\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043331",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recmA9Q93871x3CCP",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028647,\"class_group_sequence\":6,\"class_groupxclasses_id\":200043307,\"class_id\":200031187,\"class_list\":\"753\",\"class_name\":\"Training Jumper (.90m) II2d\",\"class_number\":753,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:51:00\",\"estimated_start_time\":\"08:45:00\",\"group_has_warmup\":false,\"group_name\":\"Training Jumper (.90m) II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043307",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recmJivocdxx0l5zj",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028652,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043312,\"class_id\":200031279,\"class_list\":\"1000\",\"class_name\":\"Mulligan Class\",\"class_number\":1000,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:03:00\",\"estimated_start_time\":\"09:03:00\",\"group_has_warmup\":false,\"group_name\":\"Mulligan Class\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "Mulligan",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043312",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recmvc84yRObjJeWK",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028707,\"class_group_sequence\":19,\"class_groupxclasses_id\":200043422,\"class_id\":200031258,\"class_list\":\"402,434,435,914\",\"class_name\":\"$250 Pony Hunter Classic (2nd Rd)\",\"class_number\":914,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Large Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":false,\"sponsor\":\"Corro\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Classic",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043422",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recnaI05JqpY9pBh2",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 2,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028710,\"class_group_sequence\":22,\"class_groupxclasses_id\":200043429,\"class_id\":200031037,\"class_list\":\"654,408,409\",\"class_name\":\"Children's Pony Hunter\",\"class_number\":409,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"11:08:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Children's Pony Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Second trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043429",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recnlTsfFr67AKhG3",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028644,\"class_group_sequence\":3,\"class_groupxclasses_id\":200043303,\"class_id\":200031177,\"class_list\":\"785,797\",\"class_name\":\"Puddle Jumper Open (.70-.80m) II2d\",\"class_number\":785,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:21:00\",\"estimated_start_time\":\"08:03:00\",\"group_has_warmup\":false,\"group_name\":\"Puddle Jumpers (.70-.80m) II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Equine Tack & Nutritionals\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043303",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recnyKbpsNIbZQBuN",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028679,\"class_group_sequence\":6,\"class_groupxclasses_id\":200043366,\"class_id\":200031146,\"class_list\":\"555\",\"class_name\":\"THIS Children's Medal\",\"class_number\":555,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":false,\"group_name\":\"THIS Children's Medal\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":8,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 8,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043366",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "reco5uDAQjD8OepBk",
+    "createdTime": "2026-11-06T14:02:48.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028635,\"class_group_sequence\":3,\"class_groupxclasses_id\":200043291,\"class_id\":200031196,\"class_list\":\"746\",\"class_name\":\"1.15m Open Jumper II2d\",\"class_number\":746,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:15:00\",\"estimated_start_time\":\"08:06:00\",\"group_has_warmup\":false,\"group_name\":\"1.15m Open Jumper II2d\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.d\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Omega Alpha\",\"start_time_default\":\"00:00:00\",\"total_trips\":3,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 3,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|5|200043291",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recoB8q35ukmA5cnI",
+    "createdTime": "2026-11-02T06:10:25.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028695,\"class_group_sequence\":7,\"class_groupxclasses_id\":200043390,\"class_id\":200031089,\"class_list\":\"150\",\"class_name\":\"Older Cross Rail Equitation Flat\",\"class_number\":150,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:35:00\",\"estimated_start_time\":\"08:35:00\",\"group_has_warmup\":false,\"group_name\":\"Older Cross Rail Equitation Flat\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043390",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recoBbZTkQlx1OZ41",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028661,\"class_group_sequence\":8,\"class_groupxclasses_id\":200043325,\"class_id\":200030948,\"class_list\":\"301\",\"class_name\":\"Small Junior Hunter 3'6\\\" U/S\",\"class_number\":301,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":false,\"group_name\":\"Small Junior Hunter 3'6\\\" U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043325",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recoOmCevw7KYZhtR",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 2,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028699,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043400,\"class_id\":200031076,\"class_list\":\"614,605,606,619,620\",\"class_name\":\"Short Stirrup Equitation\",\"class_number\":606,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"09:53:00\",\"estimated_start_time\":\"09:05:00\",\"group_has_warmup\":true,\"group_name\":\"Short/Rusty Stirrup Equitations\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":6,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Second trip",
+      "fldpzkvsMHLBBQqdX": 6,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043400",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recpV0aLMgkNSyth9",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028707,\"class_group_sequence\":19,\"class_groupxclasses_id\":200043420,\"class_id\":200031051,\"class_list\":\"402,434,435,914\",\"class_name\":\"Large Pony Conformation Hunter\",\"class_number\":434,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"10:59:00\",\"estimated_start_time\":\"10:59:00\",\"group_has_warmup\":true,\"group_name\":\"Large Pony Conf/Handy Hunter & Classic\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Corro\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043420",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recrycwvTr24rIvwT",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028631,\"class_group_sequence\":4,\"class_groupxclasses_id\":200043287,\"class_id\":200031207,\"class_list\":\"701\",\"class_name\":\"1.40m Open Jumper II2.1\",\"class_number\":701,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"10:18:00\",\"estimated_start_time\":\"09:36:00\",\"group_has_warmup\":false,\"group_name\":\"1.40m Open Jumper II2.1\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.1\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Bainbridge Companies\",\"start_time_default\":\"00:00:00\",\"total_trips\":14,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 14,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|1|200043287",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "rectpcEQ77eJyo7a2",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028670,\"class_group_sequence\":17,\"class_groupxclasses_id\":200043350,\"class_id\":200030936,\"class_list\":\"210,279,280,912\",\"class_name\":\"Amateur Owner Hunter 3'6\\\" 36 & Over\",\"class_number\":279,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":true,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 36 & Over\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043350",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recuGN4v90wQ5TdIi",
+    "createdTime": "2026-11-02T06:10:31.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028669,\"class_group_sequence\":16,\"class_groupxclasses_id\":200043348,\"class_id\":200030933,\"class_list\":\"276\",\"class_name\":\"Amateur Owner Hunter 3'6\\\" 36 & Over U/S\",\"class_number\":276,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":false,\"group_name\":\"Amateur Owner Hunter 3'6\\\" 36 & Over U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"Hemp Bedding\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043348",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recuUlyBieOU8XxTH",
+    "createdTime": "2026-11-06T14:02:46.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028648,\"class_group_sequence\":7,\"class_groupxclasses_id\":200043308,\"class_id\":200031239,\"class_list\":\"822\",\"class_name\":\".90m Young Jumper Table II\",\"class_number\":822,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:54:00\",\"estimated_start_time\":\"08:51:00\",\"group_has_warmup\":false,\"group_name\":\".90m Young Jumper Table II\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":1,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 1,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|4|200043308",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recuw0WqO8buzXkNP",
+    "createdTime": "2026-11-02T06:10:20.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 9,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028680,\"class_group_sequence\":7,\"class_groupxclasses_id\":200043367,\"class_id\":200031145,\"class_list\":\"525\",\"class_name\":\"SFHJA Junior Hunter Seat Medal (Flat Phase)\",\"class_number\":525,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"08:39:00\",\"estimated_start_time\":\"08:24:00\",\"group_has_warmup\":false,\"group_name\":\"SFHJA Junior Hunter Seat Medal (Flat Phase)\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":9,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Flat",
+      "fldpzkvsMHLBBQqdX": 9,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043367",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recw4VyvIvvup7oll",
+    "createdTime": "2026-11-02T06:10:26.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028699,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043398,\"class_id\":200031127,\"class_list\":\"614,605,606,619,620\",\"class_name\":\"Stirrup Warm Up\",\"class_number\":614,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:53:00\",\"estimated_start_time\":\"09:05:00\",\"group_has_warmup\":true,\"group_name\":\"Short/Rusty Stirrup Equitations\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Warmup",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043398",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recw6Ker7H1KM6D52",
+    "createdTime": "2026-11-02T06:10:27.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028703,\"class_group_sequence\":15,\"class_groupxclasses_id\":200043408,\"class_id\":200031148,\"class_list\":\"541\",\"class_name\":\"WIHS Pony Equitation\",\"class_number\":541,\"class_type\":\"Equitation\",\"completed_trips\":0,\"estimated_end_time\":\"10:29:00\",\"estimated_start_time\":\"10:23:00\",\"group_has_warmup\":true,\"group_name\":\"WIHS Pony Equitation\",\"is_open_card_warmup\":true,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":2,\"warmup_class\":1}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 2,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|6|200043408",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recwPJoa3wve5BEYQ",
+    "createdTime": "2026-11-02T06:10:19.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 1,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028628,\"class_group_sequence\":1,\"class_groupxclasses_id\":200043284,\"class_id\":200031205,\"class_list\":\"772\",\"class_name\":\"1.30m Open Jumper II2.1\",\"class_number\":772,\"class_type\":\"Jumpers\",\"completed_trips\":0,\"estimated_end_time\":\"08:36:00\",\"estimated_start_time\":\"08:00:00\",\"group_has_warmup\":false,\"group_name\":\"1.30m Open Jumper II2.1\",\"is_open_card_warmup\":false,\"jumper_table\":\"USEF Table II.2.1\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"\",\"start_time_default\":\"00:00:00\",\"total_trips\":12,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "First trip",
+      "fldpzkvsMHLBBQqdX": 12,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|1|200043284",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recxciwEzUUMYBe3F",
+    "createdTime": "2026-11-02T06:10:21.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 2,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028687,\"class_group_sequence\":14,\"class_groupxclasses_id\":200043382,\"class_id\":200031027,\"class_list\":\"650,299,300\",\"class_name\":\"Low Child/Adult Amateur Hunter\",\"class_number\":300,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"09:51:00\",\"estimated_start_time\":\"09:00:00\",\"group_has_warmup\":true,\"group_name\":\"Low Adult Amateur Hunter\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Pilates Rocks\",\"start_time_default\":\"00:00:00\",\"total_trips\":8,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Second trip",
+      "fldpzkvsMHLBBQqdX": 8,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|3|200043382",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  },
+  {
+    "id": "recyGkUPcdE36jcvl",
+    "createdTime": "2026-11-02T06:10:28.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028659,\"class_group_sequence\":6,\"class_groupxclasses_id\":200043320,\"class_id\":200030953,\"class_list\":\"306\",\"class_name\":\"Large Junior Hunter 3'6\\\" U/S\",\"class_number\":306,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":false,\"group_name\":\"Large Junior Hunter 3'6\\\" U/S\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043320",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recyyipJqIP5YVYZG",
+    "createdTime": "2026-11-02T06:10:29.000Z",
+    "cellValuesByFieldId": {
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028662,\"class_group_sequence\":9,\"class_groupxclasses_id\":200043327,\"class_id\":200030951,\"class_list\":\"210,304,305,912\",\"class_name\":\"Small Junior Hunter 3'6\\\"\",\"class_number\":304,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"07:45:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Small Junior Hunter 3'6\\\"\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":0,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active — no entries",
+      "fldZ7R2biLhBcXmU4": "No entries",
+      "fldpzkvsMHLBBQqdX": 0,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043327",
+      "flds4AaAYNYmTV9vc": "lever2"
+    }
+  },
+  {
+    "id": "recz0AveXTikNmWBP",
+    "createdTime": "2026-11-02T06:10:30.000Z",
+    "cellValuesByFieldId": {
+      "fld5J5WVPJ8Quh8ii": 2,
+      "fld9Scl1p9axLjRx7": "{\"cancelled\":0,\"class_group_id\":200028664,\"class_group_sequence\":11,\"class_groupxclasses_id\":200043336,\"class_id\":200030967,\"class_list\":\"210,344,345,912\",\"class_name\":\"Junior Hunter 3'6\\\"/3'3\\\"\",\"class_number\":345,\"class_type\":\"Hunters\",\"completed_trips\":0,\"estimated_end_time\":\"08:24:00\",\"estimated_start_time\":\"07:45:00\",\"group_has_warmup\":true,\"group_name\":\"Junior Hunter 3'3\\\" 16-17\",\"is_open_card_warmup\":false,\"jumper_table\":\"\",\"results_verified\":0,\"schedule_break\":0,\"schedule_sequencetype\":\"Over Fences\",\"show_total_trips\":true,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"start_time_default\":\"00:00:00\",\"total_trips\":5,\"warmup_class\":0}",
+      "fldMMzKmYZWiBndos": "2026-11-07T02:58:42.809Z",
+      "fldXSh9Qj0ilXMOG4": "Active",
+      "fldZ7R2biLhBcXmU4": "Second trip",
+      "fldpzkvsMHLBBQqdX": 5,
+      "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|7|200043336",
+      "flds4AaAYNYmTV9vc": "lever1"
+    }
+  }
+]

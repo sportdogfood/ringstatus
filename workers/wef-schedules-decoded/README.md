@@ -1,5 +1,11 @@
 # wef-schedules-decoded
 
+**Current verified setup and change boundary:** [6 November 2026 permanent runner baseline](VERIFIED-BASELINE.md). The dated description below is historical; use that baseline for the current hosted request path, token renewal, live evidence and known limits.
+
+Current addition: [automatic schedule and class-detail fallback](AUTOMATIC-FALLBACK.md), independent of the local runner and tunnel. Normal traffic remains local-first.
+
+Current pacing: [shared one-second queue](SHARED-PACING.md) across proxy requests, with local-first and fallback unchanged.
+
 Separate Cloudflare Worker for decoded WEF source reads. Existing legacy routes
 are not routed through this Worker. It has no scheduled trigger and performs no
 Airtable writes. SGL_TOKEN and SGL_COOKIE are server-side secret bindings copied

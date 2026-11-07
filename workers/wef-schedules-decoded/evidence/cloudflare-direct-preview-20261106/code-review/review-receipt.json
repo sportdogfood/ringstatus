@@ -1,0 +1,110 @@
+{
+  "reviewer": "wef-decoder / 01a1a753-dce7-7951-a147-1b096e1538ba",
+  "reviewed_at": "2026-11-06T22:04:05.757Z",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Review exact local/Cloudflare schedule comparison and empty-success decoder behavior without production edits or source retries.",
+  "target": "Frozen existing decoder plus temporary schedule-only diagnostics.",
+  "integration_coverage": "Request construction, equal credential fingerprints, raw response before decoder, downstream success marker; upstream private filtering policy remains unverified.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-schedule-local-token-20261106\\decoder.mjs",
+      "sha256": "66fc72f8e02b9ee62ada124469778a43678c0c8df5d267a3c104c5ba99a16dd4"
+    },
+    {
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-direct-preview-20261106\\compare-token.mjs",
+      "sha256": "50f6ac611e785f50ccb1edd7ba4116654431d6ccb589bc476f49c9567edad39e"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\worker.js",
+      "sha256": "66fc72f8e02b9ee62ada124469778a43678c0c8df5d267a3c104c5ba99a16dd4"
+    },
+    {
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-schedule-local-token-20261106\\preview.mjs",
+      "sha256": "7a21a6d9c54e5a96ead2d9a384cb161db11ad0f7d876fc3f9b3a5edc0745ec69"
+    },
+    {
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-schedule-local-token-20261106\\capture.mjs",
+      "sha256": "dd060c8d5807231fdbe774bcdd975f4bb4c00c481a8247404c22c3c75723c840"
+    },
+    {
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-schedule-local-token-20261106\\decoder-captured.mjs",
+      "sha256": "d5954d9055dd44e123f6172bc781ce13f462c99d86ef0d18ad4e93b8eb071b38"
+    },
+    {
+      "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-schedule-local-token-20261106\\compare-schedule.mjs",
+      "sha256": "dd7e9a3e6994902aefa7100ae681400e910154a04e94fb56469b585f3c8daa10"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\cloudflare-direct-preview-20261106\\code-review\\review.md",
+    "sha256": "6410d4bd54a9dff22fee2a3dd9dc7579e6f0967eef0131ce72a8c029ead0b5b1"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\cloudflare-direct-preview-20261106\\code-review\\execution-log.json",
+      "sha256": "34e4b4997b0e490efb38ff332834517117eb7a9681df8db160759dbab53b9a9d"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "FAIL",
+  "required_checks": [
+    {
+      "name": "offline empty-response and comparison checks",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "offline-review"
+      ]
+    },
+    {
+      "name": "approval-boundary and consumer source trace",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected source, temp preview-only delta, current user permissions, and saved request/response metadata. No deployment or collector run.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\worker.js",
+          "sha256": "66fc72f8e02b9ee62ada124469778a43678c0c8df5d267a3c104c5ba99a16dd4"
+        },
+        {
+          "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-schedule-local-token-20261106\\preview.mjs",
+          "sha256": "7a21a6d9c54e5a96ead2d9a384cb161db11ad0f7d876fc3f9b3a5edc0745ec69"
+        },
+        {
+          "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-schedule-local-token-20261106\\capture.mjs",
+          "sha256": "dd060c8d5807231fdbe774bcdd975f4bb4c00c481a8247404c22c3c75723c840"
+        },
+        {
+          "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-schedule-local-token-20261106\\decoder-captured.mjs",
+          "sha256": "d5954d9055dd44e123f6172bc781ce13f462c99d86ef0d18ad4e93b8eb071b38"
+        },
+        {
+          "path": "C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-cloudflare-schedule-local-token-20261106\\compare-schedule.mjs",
+          "sha256": "dd7e9a3e6994902aefa7100ae681400e910154a04e94fb56469b585f3c8daa10"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\cloudflare-direct-preview-20261106\\schedule-comparison-safe.json",
+          "sha256": "e0066f03b9cd9aae2e83c5ee23fc2c1cfac5a5fc3758a16f64d48ad5cd487a8c"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\package.json",
+          "sha256": "1965ea8245420438ef913761a2617f94476c6682ad542217b5146b4f8719e17a"
+        }
+      ]
+    },
+    {
+      "name": "live comparison evidence",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected the immediately preceding authorized one-pair comparison; no repeat source request in this review execution.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\cloudflare-direct-preview-20261106\\schedule-comparison-safe.json",
+          "sha256": "e0066f03b9cd9aae2e83c5ee23fc2c1cfac5a5fc3758a16f64d48ad5cd487a8c"
+        }
+      ]
+    }
+  ]
+}

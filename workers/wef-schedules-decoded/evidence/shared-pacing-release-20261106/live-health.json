@@ -1,0 +1,14 @@
+{
+  "at": "2026-11-06T23:19:16.602Z",
+  "status": 200,
+  "payload": {
+    "ok": true,
+    "worker": "wef-schedules-decoded",
+    "show_id": "200000077",
+    "rings": 7,
+    "schedule_status": 200
+  },
+  "queueStart": 1794007162710,
+  "queueEnd": 1794007162927,
+  "pass": true
+}

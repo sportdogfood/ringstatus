@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-06T23:05:19.1728627Z",
+  "tasks": [
+    {
+      "TaskName": "wef-decoder-named-tunnel",
+      "State": "Running"
+    },
+    {
+      "TaskName": "wef-decoder-runner-relay",
+      "State": "Running"
+    }
+  ],
+  "relayListenerCount": 0
+}

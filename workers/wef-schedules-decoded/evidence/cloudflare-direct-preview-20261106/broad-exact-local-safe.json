@@ -1,0 +1,83 @@
+{
+  "started": "2026-11-06T22:17:06.031Z",
+  "ended": "2026-11-06T22:17:06.386Z",
+  "sameTokenFileAsCloudflare": true,
+  "token": {
+    "issued": "2026-11-06T22:15:49.000Z",
+    "expires": "2026-12-06T22:15:49.000Z",
+    "freshAnonymousToken": true,
+    "exactApplicationHeadersVerifiedOffline": true,
+    "exactURLVerifiedOffline": true,
+    "decoder": false,
+    "tunnel": false
+  },
+  "status": 200,
+  "outgoing": {
+    "url": "https://sglapi.wellingtoninternational.com/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+    "method": "GET",
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+      "cache-control": "no-cache",
+      "pragma": "no-cache",
+      "expires": "0",
+      "sgl-request-origin": "SGL-API",
+      "origin": "https://www.wellingtoninternational.com",
+      "referer": "https://www.wellingtoninternational.com/",
+      "authority": "sglapi.wellingtoninternational.com",
+      "method": "GET",
+      "path": "/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+      "scheme": "https",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "accept-language": "en-US,en;q=0.9",
+      "priority": "u=1, i",
+      "sec-ch-ua": "\"Not-A.Brand\";v=\"99\", \"Microsoft Edge\";v=\"157\", \"Chromium\";v=\"157\"",
+      "sec-ch-ua-mobile": "?1",
+      "sec-ch-ua-platform": "\"iOS\"",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "authorization": "[redacted]",
+      "cookie": "[redacted]"
+    },
+    "cf": {
+      "cacheTtl": 0,
+      "cacheEverything": false
+    }
+  },
+  "upstream": {
+    "status": 200,
+    "bytes": 59843,
+    "sha256": "cde97001e992de01fbc00be0f43a00f309e57329e5f329dce6758b0c3b600e44",
+    "keys": [
+      "show",
+      "show_date",
+      "show_display_date",
+      "show_display_date_day",
+      "show_planned_time",
+      "show_est_time",
+      "show_days_list",
+      "total_trips_count",
+      "rings",
+      "show_est_end_time"
+    ],
+    "rings": 7,
+    "showId": 200000077,
+    "headers": {
+      "date": "Fri, 06 Nov 2026 22:17:12 GMT",
+      "server": null,
+      "cf-ray": null,
+      "cf-cache-status": null,
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "59843",
+      "content-encoding": null,
+      "age": null,
+      "via": null,
+      "x-cache": null,
+      "vary": "Origin"
+    }
+  },
+  "body": "[populated raw response kept in memory only]",
+  "exactURL": true,
+  "exactHeaders": true
+}

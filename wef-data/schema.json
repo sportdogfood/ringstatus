@@ -1256,6 +1256,32 @@
             "prefersSingleRecordLink": false,
             "inverseLinkFieldId": "fldEaEEFOeZEyhcDB"
           }
+        },
+        {
+          "name": "total-trips",
+          "id": "fldpzkvsMHLBBQqdX",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
+        },
+        {
+          "name": "rs-lever",
+          "id": "flds4AaAYNYmTV9vc",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rs-flag",
+          "id": "fldZ7R2biLhBcXmU4",
+          "type": "singleLineText"
+        },
+        {
+          "name": "rs-priority",
+          "id": "fld5J5WVPJ8Quh8ii",
+          "type": "number",
+          "options": {
+            "precision": 0
+          }
         }
       ]
     },

@@ -1,0 +1,77 @@
+[
+  {
+    "name": "wef-data-cleanup",
+    "path": "\\",
+    "sha256": "5ddb2499b05915806e6c841c1faff2ce4d404ef0fb87d6666f520a2627b3c022"
+  },
+  {
+    "name": "wef-data-collector",
+    "path": "\\",
+    "sha256": "e55b942fd946cbd0c561486a9e9cda9a4a0785e248574aefeb0606c80b34887c"
+  },
+  {
+    "name": "wef-data-linking",
+    "path": "\\",
+    "sha256": "e0abd50715b76d7ac8bb779bdce3c8c665cdfee42214748e29ddf70a217070d7"
+  },
+  {
+    "name": "wef-decoder-named-tunnel",
+    "path": "\\",
+    "sha256": "f68b86fcfb87581bf3f6582350ed78658891ec70d18447f48f8a6fdc24459d95"
+  },
+  {
+    "name": "wef-decoder-runner-relay",
+    "path": "\\",
+    "sha256": "f2842c4ac830f3b52a33f985c2400b82b5f2938f5dc37794262dc54a94f50277"
+  },
+  {
+    "name": "wef-decoder-show-time-health",
+    "path": "\\",
+    "sha256": "2583d21a9b8d12610e6c8c9bb91e0f7ddf3894cf864d11ee9729ea05e8218124"
+  },
+  {
+    "name": "wef-entries-cwf-collector",
+    "path": "\\",
+    "sha256": "3f401b18bc0f1766f854cda41a9e2f30d7e1e8bf853a055ef126a6df25a8af53"
+  },
+  {
+    "name": "wef-live-collector",
+    "path": "\\",
+    "sha256": "e2935841febbc594bee3ae8f0fbfc19ee067d5bd087e57a3bda3773178e3761b"
+  },
+  {
+    "name": "wef-people-join",
+    "path": "\\",
+    "sha256": "a11a349a6fa1bfb796e2dcb8530f4b5c68e4401babe6495178160b14d3e9f6f2"
+  },
+  {
+    "name": "wef-schedules-collector",
+    "path": "\\",
+    "sha256": "99203ea63306c0223540db7dc7337d312ce38cb2e932b4b56da869b4f6d5b5a6"
+  },
+  {
+    "name": "wef-season-collector",
+    "path": "\\",
+    "sha256": "66de4068c7804f940242cbfe07ef41a0ad11f6c074538415dda7cc9e045be9f4"
+  },
+  {
+    "name": "wef-shows-collector",
+    "path": "\\",
+    "sha256": "e98e3877d157c8077c2a7a6f21f2dd3a3b2ae38757dfee970f15f08c5e9dfb4f"
+  },
+  {
+    "name": "wef-tenant-cwf-collector",
+    "path": "\\",
+    "sha256": "2be91a8a531f5a69facaba97abefd9b63aa6af0ffdb0f8116b0c45dfabdeadcd"
+  },
+  {
+    "name": "wef-timing",
+    "path": "\\",
+    "sha256": "054ac72ec067d4c333a67514b745db52aae51234c26d5c4b8f5c0ce906eacdf6"
+  },
+  {
+    "name": "wef-timing-data",
+    "path": "\\",
+    "sha256": "66befc4cfd999ca45d227ebb58b9d37b347f2937cf9ff6f49fe58d902a19f480"
+  }
+]

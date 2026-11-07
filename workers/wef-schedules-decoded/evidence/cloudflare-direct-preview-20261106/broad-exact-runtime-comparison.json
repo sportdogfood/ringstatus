@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-11-06T22:17:34.214Z",
+  "local": {
+    "status": 200,
+    "bytes": 59843,
+    "rings": 7
+  },
+  "cloudflare": {
+    "status": 200,
+    "bytes": 2,
+    "body": "{}"
+  },
+  "sameApplicationCode": true,
+  "sameTokenAndCookieFile": true,
+  "sameApplicationURL": true,
+  "sameApplicationHeaders": true,
+  "decoder": false,
+  "tunnel": false,
+  "confirmed": "Raw HTTP response differs between Node on this machine and Cloudflare remote preview before any decoding. Fresh token works locally.",
+  "unverified": "Exact platform-added on-wire request headers, egress source, TLS fingerprint and upstream filtering decision. A code-only or IP-only cause is not established.",
+  "documentation": [
+    "https://developers.cloudflare.com/fundamentals/reference/http-headers/",
+    "https://developers.cloudflare.com/workers/runtime-apis/fetch/"
+  ]
+}

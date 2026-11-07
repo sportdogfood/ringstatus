@@ -1,0 +1,22 @@
+{
+  "installedAt": "2026-11-07T02:11:20.220Z",
+  "route": "Existing scheduled task executes checkout directly; next normal process loads installed files. No task restart or Worker deployment.",
+  "installed": [
+    {
+      "path": "wef-data/source-reader.js",
+      "sha256": "d1c32301cac45f8732f2402dc419d129d2eed2331b54bcd491afdb58125799b1",
+      "candidateMatch": true
+    },
+    {
+      "path": "wef-data/fast_collector.py",
+      "sha256": "a8f807a989b48a131252d8141877b318abb1593394c7a60b4165e3e99fc08b06",
+      "candidateMatch": true
+    },
+    {
+      "path": "wef-data/tests/source.test.js",
+      "sha256": "265b3e8e78e72c117c700220609015c49f7485b65feb447e3fcb22e1ccd7f46d",
+      "candidateMatch": true
+    }
+  ],
+  "protectedFilesUnchanged": true
+}

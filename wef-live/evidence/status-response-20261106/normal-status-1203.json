@@ -1,0 +1,25 @@
+{
+  "due": true,
+  "run_id": "b3b64fd8-f6bc-4e23-8ddf-dc136fe42993",
+  "lane": "live-check",
+  "started": "2026-11-06T17:03:08.525Z",
+  "ok": true,
+  "issues": [],
+  "logging_errors": [],
+  "stage_errors": [],
+  "live_status": true,
+  "scope": {
+    "show": 200000077,
+    "customer": 15,
+    "date": "2026-11-06",
+    "authority": "rec8GtJJ7eSjY3Nd3",
+    "checked_at": "2026-11-02T06:04:12.307Z",
+    "active": true
+  },
+  "collect": true,
+  "minutes": 3,
+  "reason": "live-today",
+  "today": "2026-11-06",
+  "next_check_at": "2026-11-06T17:06:00.000Z",
+  "completed": "2026-11-06T17:03:11.242Z"
+}

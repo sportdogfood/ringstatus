@@ -1,0 +1,112 @@
+{
+  "path": "Actual Cloudflare remote preview -> temporary tunnel using existing cloudflared -> isolated existing runner relay -> SGL -> existing decoder",
+  "productionChanged": false,
+  "collectorsRun": false,
+  "results": [
+    {
+      "n": 1,
+      "started": "2026-11-06T22:23:42.438Z",
+      "ended": "2026-11-06T22:23:43.811Z",
+      "status": 200,
+      "decoded": "1",
+      "rings": 7,
+      "showId": 200000077,
+      "date": "2026-11-06",
+      "bytes": 61035
+    },
+    {
+      "n": 2,
+      "started": "2026-11-06T22:23:43.811Z",
+      "ended": "2026-11-06T22:23:44.283Z",
+      "status": 200,
+      "decoded": "1",
+      "rings": 7,
+      "showId": 200000077,
+      "date": "2026-11-06",
+      "bytes": 61035
+    },
+    {
+      "n": 3,
+      "started": "2026-11-06T22:23:44.284Z",
+      "ended": "2026-11-06T22:23:44.727Z",
+      "status": 200,
+      "decoded": "1",
+      "rings": 7,
+      "showId": 200000077,
+      "date": "2026-11-06",
+      "bytes": 61035
+    }
+  ],
+  "runner": [
+    {
+      "stage": "runner_inbound",
+      "path": "/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+      "cfWorker": "trycloudflare.com",
+      "at": "2026-11-06T22:23:43.078Z"
+    },
+    {
+      "stage": "renewal",
+      "status": 200,
+      "anonymous": true,
+      "valid": true,
+      "at": "2026-11-06T22:23:43.233Z"
+    },
+    {
+      "stage": "runner_outgoing_echo",
+      "sequence": 1,
+      "receivedCFWorker": [],
+      "applicationHasCFWorker": false,
+      "at": "2026-11-06T22:23:43.484Z"
+    },
+    {
+      "stage": "sgl_raw",
+      "status": 200,
+      "bytes": 59843,
+      "rings": 7,
+      "at": "2026-11-06T22:23:43.665Z"
+    },
+    {
+      "stage": "runner_inbound",
+      "path": "/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+      "cfWorker": "trycloudflare.com",
+      "at": "2026-11-06T22:23:43.857Z"
+    },
+    {
+      "stage": "runner_outgoing_echo",
+      "sequence": 2,
+      "receivedCFWorker": [],
+      "applicationHasCFWorker": false,
+      "at": "2026-11-06T22:23:44.094Z"
+    },
+    {
+      "stage": "sgl_raw",
+      "status": 200,
+      "bytes": 59843,
+      "rings": 7,
+      "at": "2026-11-06T22:23:44.240Z"
+    },
+    {
+      "stage": "runner_inbound",
+      "path": "/schedule?date=2026-11-06&show_id=200000077&customer_id=15",
+      "cfWorker": "trycloudflare.com",
+      "at": "2026-11-06T22:23:44.353Z"
+    },
+    {
+      "stage": "runner_outgoing_echo",
+      "sequence": 3,
+      "receivedCFWorker": [],
+      "applicationHasCFWorker": false,
+      "at": "2026-11-06T22:23:44.581Z"
+    },
+    {
+      "stage": "sgl_raw",
+      "status": 200,
+      "bytes": 59843,
+      "rings": 7,
+      "at": "2026-11-06T22:23:44.693Z"
+    }
+  ],
+  "previewStopped": true,
+  "temporaryTunnelStopped": true,
+  "isolatedRunnerStopped": true
+}

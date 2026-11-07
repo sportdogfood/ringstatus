@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-07T00:04:29.991Z",
+  "status": 200,
+  "snippets": [
+    "    if (feed) {",
+    "    const fallbackEligible = true;",
+    "      headers.set(\"X-RS-Source-Lane\", \"cloudflare-fallback\");",
+    "    if (fallbackEligible && env.RUNNER_KEY && request.headers.get(\"X-RS-Fallback-Test\") === env.RUNNER_KEY) return fallback(\"authorized-verification\");",
+    "      if (fallbackEligible) {",
+    "        ...fallbackEligible ? { \"X-RS-Source-Lane\": \"runner\" } : {},",
+    "      return fallbackEligible ? fallback(\"runner-unavailable\") : reply2({ message: \"Runner unavailable\" }, 502);"
+  ]
+}

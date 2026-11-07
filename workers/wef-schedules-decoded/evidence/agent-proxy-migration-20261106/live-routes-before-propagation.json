@@ -1,0 +1,15 @@
+[
+  {
+    "kind": "status",
+    "mode": "normal",
+    "started": "2026-11-07T00:01:34.936Z",
+    "ended": "2026-11-07T00:01:52.477Z",
+    "status": 200,
+    "lane": null,
+    "queueStart": "1794009718737",
+    "queueEnd": "1794009718821",
+    "usable": false,
+    "shape": "boolean",
+    "reason": "true"
+  }
+]

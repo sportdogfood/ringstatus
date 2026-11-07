@@ -1,0 +1,49 @@
+START 2026-11-06T21:22:03.3634074Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:22:03.6533975Z exit=0
+START 2026-11-06T21:23:03.5788252Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:23:03.7154952Z exit=0
+START 2026-11-06T21:24:05.4619207Z
+{"status":"Recorded","showId":200000077,"slot":"2026-11-06|16:24","clock":false,"decoder":false,"errors":[]}
+END 2026-11-06T21:24:09.6627605Z exit=0
+START 2026-11-06T21:25:04.7161488Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:25:04.9128206Z exit=0
+START 2026-11-06T21:26:04.0231745Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:26:04.1515041Z exit=0
+START 2026-11-06T21:27:04.6954651Z
+{"status":"Recorded","showId":200000077,"slot":"2026-11-06|16:27","clock":false,"decoder":false,"errors":[]}
+END 2026-11-06T21:27:08.0659595Z exit=0
+START 2026-11-06T21:28:03.6611085Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:28:03.8214549Z exit=0
+START 2026-11-06T21:29:04.0359974Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:29:04.4217972Z exit=0
+START 2026-11-06T21:30:04.9055614Z
+{"status":"Recorded","showId":200000077,"slot":"2026-11-06|16:30","clock":false,"decoder":false,"errors":[]}
+END 2026-11-06T21:30:08.2879221Z exit=0
+START 2026-11-06T21:31:04.6722154Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:31:04.8243342Z exit=0
+START 2026-11-06T21:32:04.5825584Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:32:04.7326059Z exit=0
+START 2026-11-06T21:33:04.8898216Z
+{"status":"Recorded","showId":200000077,"slot":"2026-11-06|16:33","clock":true,"decoder":false,"errors":[]}
+END 2026-11-06T21:33:09.5804004Z exit=0
+START 2026-11-06T21:34:09.1593025Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:34:09.4960010Z exit=0
+START 2026-11-06T21:35:04.0630769Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:35:04.2242152Z exit=0
+START 2026-11-06T21:36:05.6165411Z
+{"status":"Recorded","showId":200000077,"slot":"2026-11-06|16:36","clock":true,"decoder":false,"errors":[]}
+END 2026-11-06T21:36:10.1738289Z exit=0
+START 2026-11-06T21:37:04.9890473Z
+{"status":"Skipped","reason":"Outside cadence slot"}
+END 2026-11-06T21:37:05.1894763Z exit=0
+

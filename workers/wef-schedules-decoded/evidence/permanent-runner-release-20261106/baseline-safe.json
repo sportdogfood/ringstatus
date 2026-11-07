@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-06T22:29:00.866Z",
+  "localSharedSourceInLiveBundle": false,
+  "runtimeFilesMatch": {
+    "runner-relay.mjs": true,
+    "worker.js": true,
+    "public-live.mjs": true
+  },
+  "hashes": {
+    "runner-relay.mjs": "84609e512f56d601f138700a9de059c27d9275ad2dd21baef532b25233d899c0",
+    "worker.js": "66fc72f8e02b9ee62ada124469778a43678c0c8df5d267a3c104c5ba99a16dd4",
+    "shared-worker.mjs": "9c81cb5ecabc97a5944bfb21591f04eb2c012a303600342fcadbb4b33a5027dc",
+    "public-live.mjs": "75feb663e2a6fa110f2b74e149d7c4768bacbe50046e6363b434516bf0abf814"
+  }
+}

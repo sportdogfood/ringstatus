@@ -1,0 +1,28 @@
+{
+  "started": "2026-11-06T22:16:09.456Z",
+  "ended": "2026-11-06T22:16:09.973Z",
+  "issued": "2026-11-06T22:15:49.000Z",
+  "expires": "2026-12-06T22:15:49.000Z",
+  "freshAnonymousToken": true,
+  "exactApplicationHeadersVerifiedOffline": true,
+  "exactURLVerifiedOffline": true,
+  "decoder": false,
+  "tunnel": false,
+  "status": 200,
+  "bytes": 2,
+  "body": "{}",
+  "keys": [],
+  "rings": null,
+  "proofHeaders": {
+    "x-rs-body-is-empty-object": "true",
+    "x-rs-body-length": "2",
+    "x-rs-has-auth": "true",
+    "x-rs-has-cookie": "true",
+    "x-rs-header-mode": "full",
+    "x-rs-header-retried": "false",
+    "x-rs-passthrough": "",
+    "x-rs-retry-header-mode": "",
+    "x-rs-upstream-status": "200",
+    "x-rs-upstream-url": "https://sglapi.wellingtoninternational.com/schedule?show_id=200000077&customer_id=15&date=2026-11-06"
+  }
+}

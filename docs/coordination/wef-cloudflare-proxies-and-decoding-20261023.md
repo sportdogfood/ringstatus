@@ -1,5 +1,7 @@
 # WEF Cloudflare proxies, Workers and decoding
 
+**Dated snapshot:** current schedule/class-detail routing and the owner-requested freeze are documented in the [6 November 2026 verified baseline](../../workers/wef-schedules-decoded/VERIFIED-BASELINE.md). The topology and deployment versions below describe 23 October, not the restored permanent runner path.
+
 Route-by-route follow-up: [Endpoint decoding need and module consumers](wef-endpoint-decoding-assessment-20261023.md). Additional route availability is not proof of protected payloads or a current consumer requirement.
 
 Checked 23 October 2026 using local sources, existing release evidence and read-only Cloudflare management APIs. No public Worker or Wellington endpoint was invoked. No collector, deployment, configuration or record was changed. This document is a source-access reference for wef-data-boundaries-working.md and wef-records-owner-acknowledgments-20261023.md.

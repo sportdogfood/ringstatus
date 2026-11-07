@@ -1,0 +1,30 @@
+{
+  "savedAt": "2026-11-06T22:51:16.621Z",
+  "previewFiles": [
+    {
+      "path": "tcp-fetch.mjs",
+      "sha256": "eee17f3b05d6242af2665c59658d3e786597a8bca5cbd5c7fc5893de6f07ddf9"
+    },
+    {
+      "path": "preview-data.mjs",
+      "sha256": "c88a09744f94328146148a4693a2e6da8cde17cc0ccce8342fee27fcd1b1f918"
+    },
+    {
+      "path": "decoder.mjs",
+      "sha256": "5f2e5537ef0ff3dba927bf6631239dd11f8dab6ff9afa544ceeb996a32bc0580"
+    },
+    {
+      "path": "wrangler.json",
+      "sha256": "33d86b73d300a0a28120bbd5aa901fe290eeba30eeff0fa65e3881085167105a"
+    }
+  ],
+  "decoderDelta": "Only fetch transport replaced; installed production decoder otherwise unchanged",
+  "bindings": [
+    "SGL_COOKIE"
+  ],
+  "serviceBindings": [],
+  "localRunnerOriginConfigured": false,
+  "installedDecoderSHA256": "66fc72f8e02b9ee62ada124469778a43678c0c8df5d267a3c104c5ba99a16dd4",
+  "productionTaskAndConnectionChanges": false,
+  "emptyPayloadFix": "Separate candidate remains local only; not included in this preview or deployed."
+}

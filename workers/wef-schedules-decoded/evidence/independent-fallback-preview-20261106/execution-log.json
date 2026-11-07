@@ -1,0 +1,16 @@
+{
+  "reviewer": "wef-decoder / 01a1a753-dce7-7951-a147-1b096e1538ba",
+  "commands": [
+    {
+      "id": "tcp-offline-review",
+      "command": "[\"C:\\\\Program Files\\\\nodejs\\\\node.exe\",\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\workers\\\\wef-schedules-decoded\\\\evidence\\\\independent-fallback-preview-20261106\\\\offline-check.mjs\"]",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-06T22:51:46.697Z",
+      "ended_at": "2026-11-06T22:51:46.817Z",
+      "exit_code": 0,
+      "stdout": "PASS: bounded direct-TLS request construction, no CF-Worker in serialized headers, fixed-length and chunked parsing, truncated responses rejected, destination allowlist and socket cleanup. Mock sockets only; no source requests.\n",
+      "stderr": ""
+    }
+  ]
+}

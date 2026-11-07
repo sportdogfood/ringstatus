@@ -1,0 +1,1 @@
+Earlier scope-check helper exited before the regression suite: its expected inserted line used LF while the actual candidate preserved CRLF. The helper comparison was normalized for line endings; decoder and test sources were not changed after that check. Tool output reference: 2ecbd2 / command chunk 2acbd2. This was a helper expectation failure, not a regression-test result.

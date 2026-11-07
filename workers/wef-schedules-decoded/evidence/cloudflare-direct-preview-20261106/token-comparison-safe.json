@@ -1,0 +1,54 @@
+{
+  "sameCookie": true,
+  "cloudflare": {
+    "message": "Direct Cloudflare preview failed",
+    "stage": "get-config",
+    "upstreamStatus": null,
+    "reason": "token_payload_unreadable",
+    "diagnostics": {
+      "status": 200,
+      "contentType": "application/json",
+      "date": "Fri, 06 Nov 2026 21:56:05 GMT",
+      "bodyBytes": 2,
+      "cookiePresent": true,
+      "jsonType": "object",
+      "keys": [],
+      "tokenPresent": false,
+      "tokenType": "undefined",
+      "tokenLength": null,
+      "parts": null
+    }
+  },
+  "local": {
+    "ok": true,
+    "diagnostics": {
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "date": "Fri, 06 Nov 2026 21:56:04 GMT",
+      "bodyBytes": 333,
+      "cookiePresent": true,
+      "jsonType": "object",
+      "keys": [
+        "protection",
+        "mobile_app",
+        "_t"
+      ],
+      "tokenPresent": true,
+      "tokenType": "string",
+      "tokenLength": 177,
+      "parts": 3,
+      "claimKeys": [
+        "anon",
+        "sid",
+        "iat",
+        "exp"
+      ],
+      "anonymous": true,
+      "expType": "number",
+      "expValid": true,
+      "tokenIssued": "2026-11-06T21:56:04.000Z",
+      "tokenExpires": "2026-12-06T21:56:04.000Z",
+      "now": "2026-11-06T21:55:58.435Z"
+    }
+  }
+}

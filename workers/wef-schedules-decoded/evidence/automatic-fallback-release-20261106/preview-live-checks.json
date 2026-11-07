@@ -1,0 +1,42 @@
+[
+  {
+    "mode": "normal",
+    "kind": "schedule",
+    "started": "2026-11-06T23:02:46.417Z",
+    "ended": "2026-11-06T23:02:46.907Z",
+    "status": 200,
+    "lane": "runner",
+    "usable": true,
+    "rings": 7
+  },
+  {
+    "mode": "normal",
+    "kind": "class_detail",
+    "started": "2026-11-06T23:03:06.910Z",
+    "ended": "2026-11-06T23:03:07.200Z",
+    "status": 200,
+    "lane": "runner",
+    "usable": true,
+    "trips": 8
+  },
+  {
+    "mode": "simulated-runner-outage",
+    "kind": "schedule",
+    "started": "2026-11-06T23:03:27.209Z",
+    "ended": "2026-11-06T23:03:28.982Z",
+    "status": 200,
+    "lane": "cloudflare-fallback",
+    "usable": true,
+    "rings": 7
+  },
+  {
+    "mode": "simulated-runner-outage",
+    "kind": "class_detail",
+    "started": "2026-11-06T23:03:48.998Z",
+    "ended": "2026-11-06T23:03:50.510Z",
+    "status": 200,
+    "lane": "cloudflare-fallback",
+    "usable": true,
+    "trips": 8
+  }
+]

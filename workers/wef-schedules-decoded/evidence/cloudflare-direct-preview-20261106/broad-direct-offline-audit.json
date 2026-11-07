@@ -1,0 +1,87 @@
+{
+  "started": "2026-11-06T22:14:54.008Z",
+  "ended": "2026-11-06T22:14:54.039Z",
+  "runtime": "v22.22.2",
+  "checks": {
+    "onlyForwardingGuardChanged": true,
+    "exactlyOneDirectFetch": true,
+    "decoderNotCalled": true,
+    "tokenAndCookieSent": true,
+    "upstream403Preserved": true
+  },
+  "differences": [
+    {
+      "header": "user-agent",
+      "broad": "Mozilla/5.0",
+      "workingLocal": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "header": "authority",
+      "broad": null,
+      "workingLocal": "sglapi.wellingtoninternational.com"
+    },
+    {
+      "header": "method",
+      "broad": null,
+      "workingLocal": "GET"
+    },
+    {
+      "header": "path",
+      "broad": null,
+      "workingLocal": "/schedule?date=2026-11-06&show_id=200000077&customer_id=15"
+    },
+    {
+      "header": "scheme",
+      "broad": null,
+      "workingLocal": "https"
+    },
+    {
+      "header": "accept-encoding",
+      "broad": null,
+      "workingLocal": "gzip, deflate, br, zstd"
+    },
+    {
+      "header": "accept-language",
+      "broad": null,
+      "workingLocal": "en-US,en;q=0.9"
+    },
+    {
+      "header": "priority",
+      "broad": null,
+      "workingLocal": "u=1, i"
+    },
+    {
+      "header": "sec-ch-ua",
+      "broad": null,
+      "workingLocal": "\"Not-A.Brand\";v=\"99\", \"Microsoft Edge\";v=\"157\", \"Chromium\";v=\"157\""
+    },
+    {
+      "header": "sec-ch-ua-mobile",
+      "broad": null,
+      "workingLocal": "?1"
+    },
+    {
+      "header": "sec-ch-ua-platform",
+      "broad": null,
+      "workingLocal": "\"iOS\""
+    },
+    {
+      "header": "sec-fetch-dest",
+      "broad": null,
+      "workingLocal": "empty"
+    },
+    {
+      "header": "sec-fetch-mode",
+      "broad": null,
+      "workingLocal": "cors"
+    },
+    {
+      "header": "sec-fetch-site",
+      "broad": null,
+      "workingLocal": "same-site"
+    }
+  ],
+  "querySameValues": true,
+  "requestURL": "https://sglapi.wellingtoninternational.com/schedule?show_id=200000077&customer_id=15&date=2026-11-06",
+  "conclusion": "Direct broad test did not use the working local full headers. Its User-Agent is Mozilla/5.0 and browser headers are absent. This is a confirmed request difference, not proof of the upstream 403 cause."
+}

@@ -1,0 +1,146 @@
+{
+  "productionChanged": false,
+  "localRunnerUsed": false,
+  "tunnelUsed": false,
+  "collectorsRun": false,
+  "results": [
+    {
+      "round": 1,
+      "kind": "schedule",
+      "started": "2026-11-06T22:50:46.993Z",
+      "ended": "2026-11-06T22:50:48.849Z",
+      "pauseAfterPriorMs": null,
+      "http": 200,
+      "usable": true,
+      "response": {
+        "status": 200,
+        "decoded": "1",
+        "bytes": 61035,
+        "showId": 200000077,
+        "date": "2026-11-06",
+        "rings": 7,
+        "classId": null,
+        "trips": null,
+        "entryIds": null,
+        "resolvedClassIds": 53,
+        "empty": false,
+        "renewals": 1
+      }
+    },
+    {
+      "round": 1,
+      "kind": "class_detail",
+      "started": "2026-11-06T22:51:08.852Z",
+      "ended": "2026-11-06T22:51:10.359Z",
+      "pauseAfterPriorMs": 20003,
+      "http": 200,
+      "usable": true,
+      "response": {
+        "status": 200,
+        "decoded": "1",
+        "bytes": 21609,
+        "showId": null,
+        "date": null,
+        "rings": null,
+        "classId": 200031233,
+        "trips": 8,
+        "entryIds": 8,
+        "resolvedClassIds": null,
+        "empty": false,
+        "renewals": 1
+      }
+    },
+    {
+      "round": 2,
+      "kind": "schedule",
+      "started": "2026-11-06T22:51:30.385Z",
+      "ended": "2026-11-06T22:51:31.961Z",
+      "pauseAfterPriorMs": 20026,
+      "http": 200,
+      "usable": true,
+      "response": {
+        "status": 200,
+        "decoded": "1",
+        "bytes": 61035,
+        "showId": 200000077,
+        "date": "2026-11-06",
+        "rings": 7,
+        "classId": null,
+        "trips": null,
+        "entryIds": null,
+        "resolvedClassIds": 53,
+        "empty": false,
+        "renewals": 1
+      }
+    },
+    {
+      "round": 2,
+      "kind": "class_detail",
+      "started": "2026-11-06T22:51:51.965Z",
+      "ended": "2026-11-06T22:51:52.400Z",
+      "pauseAfterPriorMs": 20004,
+      "http": 200,
+      "usable": true,
+      "response": {
+        "status": 200,
+        "decoded": "1",
+        "bytes": 21609,
+        "showId": null,
+        "date": null,
+        "rings": null,
+        "classId": 200031233,
+        "trips": 8,
+        "entryIds": 8,
+        "resolvedClassIds": null,
+        "empty": false,
+        "renewals": 1
+      }
+    },
+    {
+      "round": 3,
+      "kind": "schedule",
+      "started": "2026-11-06T22:52:12.416Z",
+      "ended": "2026-11-06T22:52:13.983Z",
+      "pauseAfterPriorMs": 20016,
+      "http": 200,
+      "usable": true,
+      "response": {
+        "status": 200,
+        "decoded": "1",
+        "bytes": 61035,
+        "showId": 200000077,
+        "date": "2026-11-06",
+        "rings": 7,
+        "classId": null,
+        "trips": null,
+        "entryIds": null,
+        "resolvedClassIds": 53,
+        "empty": false,
+        "renewals": 1
+      }
+    },
+    {
+      "round": 3,
+      "kind": "class_detail",
+      "started": "2026-11-06T22:52:34.054Z",
+      "ended": "2026-11-06T22:52:34.461Z",
+      "pauseAfterPriorMs": 20071,
+      "http": 200,
+      "usable": true,
+      "response": {
+        "status": 200,
+        "decoded": "1",
+        "bytes": 21609,
+        "showId": null,
+        "date": null,
+        "rings": null,
+        "classId": 200031233,
+        "trips": 8,
+        "entryIds": 8,
+        "resolvedClassIds": null,
+        "empty": false,
+        "renewals": 1
+      }
+    }
+  ]
+}

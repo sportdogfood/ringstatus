@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-11-06T22:30:13.6013650Z",
+  "relayState": "Running",
+  "tunnelState": "Running",
+  "relayLastResult": 267009,
+  "listenerCount": 1,
+  "relayRestartCount": 99,
+  "relayExecutionLimit": "PT0S"
+}

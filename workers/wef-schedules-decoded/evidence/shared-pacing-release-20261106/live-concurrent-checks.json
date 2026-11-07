@@ -1,0 +1,46 @@
+{
+  "sent": "2026-11-06T23:19:10.717Z",
+  "completed": "2026-11-06T23:19:15.372Z",
+  "simultaneousAgents": 3,
+  "rows": [
+    {
+      "host": "wef-schedules-decoded",
+      "kind": "schedule",
+      "force": false,
+      "status": 200,
+      "lane": "runner",
+      "queueStart": 1794007160003,
+      "queueEnd": 1794007160550,
+      "rings": 7,
+      "usable": true
+    },
+    {
+      "host": "broad-tooth-b8ed",
+      "kind": "class_detail",
+      "force": false,
+      "status": 200,
+      "lane": "runner",
+      "queueStart": 1794007161550,
+      "queueEnd": 1794007161710,
+      "trips": 8,
+      "usable": true
+    },
+    {
+      "host": "wef-schedules-decoded",
+      "kind": "class_detail",
+      "force": true,
+      "status": 200,
+      "lane": "cloudflare-fallback",
+      "queueStart": 1794007157685,
+      "queueEnd": 1794007159003,
+      "trips": 8,
+      "usable": true
+    }
+  ],
+  "gapsMs": [
+    1000,
+    1000
+  ],
+  "pass": true,
+  "collectorsRun": false
+}

@@ -1,0 +1,57 @@
+{
+  "lane": "groups",
+  "run_id": "00c1f30e-8864-41c9-9c0e-9653043ce0ce",
+  "started": "2026-11-06T17:03:11.314Z",
+  "ok": true,
+  "issues": [
+    {
+      "message": "Unreadable/ambiguous source show"
+    }
+  ],
+  "stage_errors": [],
+  "logging_errors": [],
+  "changes": [],
+  "coverage": [],
+  "archives": [
+    {
+      "at": "2026-11-06T17:03:11.985Z",
+      "kind": "source-groups",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a.json.gz",
+      "records": 1,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "shows": [
+        200000077
+      ],
+      "dates": [
+        "2026-11-06"
+      ]
+    }
+  ],
+  "timings": {
+    "collection_ms": 152.71720000000005,
+    "save_ms": 0,
+    "collection_started": "2026-11-06T17:03:11.814Z",
+    "collection_completed": "2026-11-06T17:03:11.967Z",
+    "requests": [
+      {
+        "label": "groups",
+        "started": "2026-11-06T17:03:11.814Z",
+        "completed": "2026-11-06T17:03:11.967Z"
+      }
+    ],
+    "total_ms": 672
+  },
+  "counts": {},
+  "scope": {
+    "show": 200000077,
+    "customer": 15,
+    "date": "2026-11-06",
+    "authority": "rec8GtJJ7eSjY3Nd3",
+    "checked_at": "2026-11-02T06:04:12.307Z",
+    "active": true
+  },
+  "day_priority": 0,
+  "live_status": true,
+  "completed": "2026-11-06T17:03:11.986Z"
+}

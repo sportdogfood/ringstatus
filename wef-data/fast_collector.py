@@ -47,8 +47,8 @@ class SourceFailure(RuntimeError):
 class Source:
     def __init__(self,capture_root=None):
         self.capture_root=pathlib.Path(capture_root) if capture_root is not None else None
-    def fetch(self,route,params,timeout=18):
-        try:result=subprocess.run(['node',str(pathlib.Path(__file__).with_name('source-reader.js')),route,packed(params),str(timeout)],capture_output=True,timeout=timeout+10)
+    def fetch(self,route,params,timeout=0):
+        try:result=subprocess.run(['node',str(pathlib.Path(__file__).with_name('source-reader.js')),route,packed(params),str(timeout)],capture_output=True,timeout=timeout+10 if timeout>0 else None)
         except subprocess.TimeoutExpired:raise SourceFailure('Source reader timed out',{'route':route,'params':params,'timeout':True,'completed':stamp()}) from None
         diagnostic={'route':route,'params':params,'exit-code':result.returncode}
         if self.capture_root is not None:
@@ -242,7 +242,9 @@ def collect_day(schema_file, selection):
                     'source-position':pos,'source-id':str(item['class_groupxclasses_id']) if item.get('class_groupxclasses_id') is not None else None,
                     'name':item.get('class_name') or item.get('group_name'),
                     'start-time':item.get('estimated_start_time') or item.get('start_time_default'),
-                    'end-time':item.get('estimated_end_time'),'source-json':packed(item),'last-success':metric['completed'],'record-status':'Active'}
+                    'end-time':item.get('estimated_end_time'),'source-json':packed(item),'last-success':metric['completed'],
+                    'total-trips':item.get('total_trips'),
+                    'record-status':'Active \u2014 no entries' if not item.get('schedule_break') and type(item.get('total_trips')) in (int,float) and item['total_trips']==0 else 'Active'}
                 if ck is None:
                     if not item.get('schedule_break'):
                         inventory_complete=False;error(rk,'Source class has no class_id')
@@ -259,6 +261,23 @@ def collect_day(schema_file, selection):
     for table in tables[:3]:
         save(table,source_rows(graph[table]));timed('save-inventory-'+table)
 
+    # Save the schedule stage before making any class-detail request.
+    absent_schedules=missing_rows('schedules',schedules,show+'|'+day+'|','Dropped') if inventory_complete else []
+    saved_schedules=save('schedules',list(schedules.values())+absent_schedules)
+    timed('save-schedules')
+    try:
+        records=[{'id':store.inventory('schedules').get(key,{}).get('id',key),'fields':row} for key,row in schedules.items()]
+        evaluation=subprocess.run(['node',str(pathlib.Path(__file__).with_name('schedule-priority.js'))],
+            input=packed(records),capture_output=True,text=True,encoding='utf-8',check=True)
+        priorities=json.loads(evaluation.stdout)
+        by_id={record['id']:record['fields']['schedule-key'] for record in records}
+        save('schedules',[{'schedule-key':by_id[row['id']],**row['fields']} for row in priorities['updates']
+            if by_id[row['id']] in saved_schedules])
+        for message in priorities['errors']:error('Schedule priority',message)
+    except Exception as exception:error('Schedule priority',exception)
+    timed('save-schedule-priorities')
+
+    # Class-detail stage: existing requests and detail-table writes follow.
     from record_mappings import RESULT_FIELDS,trip_records
     classes={};entries={};trips={};results={};missing_trips=[]
     entities={table:{} for table in ('horses','riders','trainers','owners')}
@@ -310,12 +329,6 @@ def collect_day(schema_file, selection):
                     missing_trips.extend(missing_rows('trips',current_trips,key+'|','dropped','absent'))
             except Exception as exception:error(key,exception)
     timed('fetch-and-prepare-entries-trips')
-    for row in schedules.values():
-        targets=row['class']['$links']
-        if targets and targets[0][1] in classes:
-            row['record-status']=classes[targets[0][1]]['record-status']
-    absent_schedules=missing_rows('schedules',schedules,show+'|'+day+'|','Dropped') if inventory_complete else []
-    save('schedules',list(schedules.values())+absent_schedules);timed('save-schedules')
     absent_classes=missing_rows('classes',inventory['classes'],show+'|'+day+'|','Dropped') if inventory_complete else []
     updated_classes=save('classes',list(classes.values())+absent_classes);timed('save-class-details')
     save('entries',entries.values())

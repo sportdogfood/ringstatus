@@ -1,0 +1,29 @@
+{
+  "started": "2026-11-06T22:46:56.988Z",
+  "ended": "2026-11-06T22:46:57.691Z",
+  "http": 200,
+  "response": {
+    "transport": "Cloudflare TLS socket, no runner or tunnel",
+    "statusLine": "HTTP/1.1 200 OK",
+    "responseHeaders": [
+      "Date: Fri, 06 Nov 2026 22:47:04 GMT",
+      "Content-Type: application/json; charset=utf-8",
+      "Content-Length: 333",
+      "Connection: close",
+      "Access-Control-Allow-Origin: https://www.wellingtoninternational.com",
+      "Vary: Origin",
+      "Access-Control-Allow-Credentials: true",
+      "ETag: W/\"14d-yag9x55EOvkgaWV0vpVI4hiPqeg\""
+    ],
+    "bodyBytes": 333,
+    "jsonKeys": [
+      "protection",
+      "mobile_app",
+      "_t"
+    ],
+    "tokenPresent": true,
+    "anonymous": true,
+    "valid": true,
+    "parseable": true
+  }
+}

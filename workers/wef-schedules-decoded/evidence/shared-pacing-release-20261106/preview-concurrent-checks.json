@@ -1,0 +1,44 @@
+{
+  "sent": "2026-11-06T23:18:01.298Z",
+  "completed": "2026-11-06T23:18:05.595Z",
+  "simultaneousAgents": 3,
+  "rows": [
+    {
+      "kind": "schedule",
+      "force": false,
+      "status": 200,
+      "lane": "runner",
+      "queueStart": 1794007089341,
+      "queueEnd": 1794007089635,
+      "rings": 7,
+      "usable": true
+    },
+    {
+      "kind": "class_detail",
+      "force": true,
+      "status": 200,
+      "lane": "cloudflare-fallback",
+      "queueStart": 1794007090635,
+      "queueEnd": 1794007091897,
+      "trips": 8,
+      "usable": true
+    },
+    {
+      "kind": "class_detail",
+      "force": false,
+      "status": 200,
+      "lane": "runner",
+      "queueStart": 1794007087917,
+      "queueEnd": 1794007088341,
+      "trips": 8,
+      "usable": true
+    }
+  ],
+  "gapsMs": [
+    1000,
+    1000
+  ],
+  "pass": true,
+  "productionChanged": false,
+  "collectorsRun": false
+}

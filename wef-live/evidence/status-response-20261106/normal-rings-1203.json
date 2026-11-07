@@ -1,0 +1,53 @@
+{
+  "lane": "rings",
+  "run_id": "19b2b274-7eac-44e9-9e40-068e9491c483",
+  "started": "2026-11-06T17:03:11.330Z",
+  "ok": true,
+  "issues": [],
+  "stage_errors": [],
+  "logging_errors": [],
+  "changes": [],
+  "coverage": [],
+  "archives": [
+    {
+      "at": "2026-11-06T17:03:12.044Z",
+      "kind": "source-widget",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a.json.gz",
+      "records": 1,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "shows": [
+        200000077
+      ],
+      "dates": [
+        "2026-11-06"
+      ]
+    }
+  ],
+  "timings": {
+    "collection_ms": 109.14980000000014,
+    "save_ms": 0,
+    "collection_started": "2026-11-06T17:03:11.925Z",
+    "collection_completed": "2026-11-06T17:03:12.034Z",
+    "requests": [
+      {
+        "label": "rings",
+        "started": "2026-11-06T17:03:11.925Z",
+        "completed": "2026-11-06T17:03:12.034Z"
+      }
+    ],
+    "total_ms": 714
+  },
+  "counts": {},
+  "scope": {
+    "show": 200000077,
+    "customer": 15,
+    "date": "2026-11-06",
+    "authority": "rec8GtJJ7eSjY3Nd3",
+    "checked_at": "2026-11-02T06:04:12.307Z",
+    "active": true
+  },
+  "day_priority": 0,
+  "live_status": true,
+  "completed": "2026-11-06T17:03:12.044Z"
+}

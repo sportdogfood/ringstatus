@@ -1,0 +1,20 @@
+{
+  "observedAt": {
+    "current_time": "2026-11-07 02:55:37 UTC"
+  },
+  "rows": 89,
+  "classified": 88,
+  "priorityMismatches": [],
+  "totalTripsMismatches": 0,
+  "errors": [],
+  "classesStillEarlier": true,
+  "flags": {
+    "First trip": 48,
+    "Mulligan": 5,
+    "Second trip": 14,
+    "Flat": 8,
+    "Warmup": 8,
+    "Add back": 4,
+    "Schooling pony": 1
+  }
+}
