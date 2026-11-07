@@ -1,0 +1,87 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "reviewed_at": "2026-11-07T14:08:25.155278+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Independent review of explicitly requested new standalone simple cleanup lane",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\candidate",
+  "integration_coverage": "New lane + launcher/hook cutover, fake event thresholds/pending/parent references/continuation and stale local snapshot; no deployment/live proof",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\baseline\\cleanup-run.js",
+      "sha256": "de43a587d0ec2ebfacc253d780264f14888b6a15899b9f9115563dd5ff357ee2"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\baseline\\entry.js",
+      "sha256": "d307da12d1e2c138d6045f095d95e3fc6a424f9c467519bd04c3d9ef7409953f"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\baseline\\run.ps1",
+      "sha256": "b16c658d4b99283734e69ebfb811e1b8d204f71ffef30abf25c1088bf605b39c"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\candidate\\cleanup-run.js",
+      "sha256": "736828dca3d0e0566eab8039b410cab2627113102cfb550c2145ebaabf4624c7"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\candidate\\entry.js",
+      "sha256": "a27b7a2a1ceaaa5c9d9d05e838c2cd7f7774c09349cb7795a7978fca15aded8d"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\candidate\\run.ps1",
+      "sha256": "af47fdb3108f0facf25e6e81bfebda85a8ba9cb25007e41eb9b9fa4798a84e09"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\candidate\\cleanup-lane.js",
+      "sha256": "c36d20922f77ffce37f2803452ea8c4d9ad7f244bc24daed7bcb885af8c7e9dd"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\review\\report.md",
+    "sha256": "2ce1e7fe1bfbaa549b24eb72f63f2454b0cfa65e20a8bce2148ff11ebceefc24"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\review\\commands.json",
+      "sha256": "85e4a3fe7eb64b6208e6bac4de6ae7e4e35b24c3fa11f5b3cc966e01ff67bd2b"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "FAIL",
+  "required_checks": [
+    {
+      "name": "Independent supplied seven tests and targeted edges",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "supplied",
+        "edges"
+      ]
+    },
+    {
+      "name": "Owner scope, actual diff and integration inspection",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Read explicit replacement contract, oldhook removal, new source, current logger file-reading behavior; no runtime edit",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\task.md",
+          "sha256": "a3f4bead6c2ae142736825abab2ff9b71c2c8dd160bb4868175d0fbab6c504f9"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\hashes.json",
+          "sha256": "a1c3dcafb40c7be4a236288032417408e158e7a4d9c1f57083a2d3e81a4d9bb6"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\review\\edges.js",
+          "sha256": "deeb54afdaabe07a5e11813810c38388c8739a8b723346a30685a43e566d1d2b"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\attempt-log.js",
+          "sha256": "e913eb7d3a3031636dbbc5adbf0f5e197655ad71816b5fe376a86c1e01238f8a"
+        }
+      ]
+    }
+  ]
+}

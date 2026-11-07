@@ -1,0 +1,74 @@
+{
+  "run_id": 1794059296142,
+  "started": "2026-11-07T13:48:16.142Z",
+  "actions": [
+    {
+      "id": "1794059296142|calendar-day|heartbeat",
+      "table": "heartbeat",
+      "trigger": "calendar-day",
+      "before": 2,
+      "old_show": null,
+      "deleted": 0,
+      "started": "2026-11-07T13:48:36.362Z",
+      "result": "Skipped",
+      "completed": "2026-11-07T13:48:38.191Z",
+      "target_count": 0
+    },
+    {
+      "id": "1794059296142|calendar-day|run-logs",
+      "table": "run-logs",
+      "trigger": "calendar-day",
+      "before": 1038,
+      "old_show": null,
+      "deleted": 1036,
+      "started": "2026-11-07T13:48:36.943Z",
+      "result": "Success",
+      "completed": "2026-11-07T13:56:45.169Z",
+      "local": [
+        {
+          "workflow": "wef-data",
+          "result": "Success",
+          "deleted": 7,
+          "error": ""
+        },
+        {
+          "workflow": "wef-data-linking",
+          "result": "Success",
+          "deleted": 7,
+          "error": ""
+        }
+      ],
+      "target_count": 1036
+    },
+    {
+      "id": "1794059296142|calendar-day|err-logs",
+      "table": "err-logs",
+      "trigger": "calendar-day",
+      "before": 192,
+      "old_show": null,
+      "deleted": 190,
+      "started": "2026-11-07T13:48:37.594Z",
+      "result": "Success",
+      "completed": "2026-11-07T13:56:45.710Z",
+      "local": [
+        {
+          "workflow": "wef-data",
+          "result": "Success",
+          "deleted": 2,
+          "error": ""
+        },
+        {
+          "workflow": "wef-data-linking",
+          "result": "Success",
+          "deleted": 10,
+          "error": ""
+        }
+      ],
+      "target_count": 190
+    }
+  ],
+  "result": "Success",
+  "show": 200000077,
+  "new_show": false,
+  "completed": "2026-11-07T13:56:46.115Z"
+}

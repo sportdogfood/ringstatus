@@ -1,0 +1,23 @@
+{
+  "deployed_at": "2026-11-07T14:12:43.569962+00:00",
+  "route": "existing triggerless wef-data-cleanup task -> cleanup-hidden.vbs -> cleanup-run.js -> cleanup-lane.js",
+  "files": {
+    "cleanup-lane.js": "4507c507cd1bc595cd14baf52dd35645aac9f57ddcc304d91078eb5620f642d6",
+    "cleanup-run.js": "736828dca3d0e0566eab8039b410cab2627113102cfb550c2145ebaabf4624c7",
+    "entry.js": "a27b7a2a1ceaaa5c9d9d05e838c2cd7f7774c09349cb7795a7978fca15aded8d",
+    "run.ps1": "af47fdb3108f0facf25e6e81bfebda85a8ba9cb25007e41eb9b9fa4798a84e09",
+    "attempt-log.js": "d679ca3b117d0dc6b5b609d33a5e6c852e6bf9ea6b281f567b094b01b451b896"
+  },
+  "retired": [
+    "cleanup.js",
+    "cleanup-airtable.js",
+    "cleanup-fields.js",
+    "cleanup-local-logs.js",
+    "cleanup-settings.js"
+  ],
+  "retirement": "No launcher or collector/linker cleanup hook invokes retired modules; historical files retained.",
+  "manual_run": false,
+  "new_schedule": false,
+  "natural_alert_verified": false,
+  "review": "review-release/review-receipt.json"
+}

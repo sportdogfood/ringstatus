@@ -1,0 +1,22 @@
+{
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-pending\\baseline\\cleanup-airtable.js",
+      "sha256": "89da871ef867e58ecc6163e093a767bdac3dd321343b083ed4e77880d83115d3"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-pending\\baseline\\cleanup-local-logs.js",
+      "sha256": "71e6023d969c8f2db701ad67a698fc3452279a47b47525a6c747da557aa7a150"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\candidate\\cleanup-airtable.js",
+      "sha256": "e4c95154ee3d23d81ce9addd91ea6164e3a39c4a55970b79c999d6e41bfcb95b"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\candidate\\cleanup-local-logs.js",
+      "sha256": "56da14c7eaaa40a8eaf75579840954d988f8a3dc7e34283ade7825e1a2f51e71"
+    }
+  ]
+}

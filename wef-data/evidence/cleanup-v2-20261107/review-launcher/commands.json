@@ -1,0 +1,104 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "test-v2.js",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\test-v2.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:00:50.770301+00:00",
+      "ended_at": "2026-11-07T13:00:51.484457+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: sole control/outcomes V2, combined local counts, exact event checkpoint, no old tables\nok 1 - sole control/outcomes V2, combined local counts, exact event checkpoint, no old tables\n  ---\n  duration_ms: 64.4526\n  type: 'test'\n  ...\n# Subtest: Airtable table failure does not suppress other table or local cleanup; preserves failed stop\nok 2 - Airtable table failure does not suppress other table or local cleanup; preserves failed stop\n  ---\n  duration_ms: 14.0232\n  type: 'test'\n  ...\n# Subtest: existing failure stop is never cleared by migration invocation\nok 3 - existing failure stop is never cleared by migration invocation\n  ---\n  duration_ms: 6.0896\n  type: 'test'\n  ...\n# Subtest: V2 write rejection does not prevent other table deletion or local completion\nok 4 - V2 write rejection does not prevent other table deletion or local completion\n  ---\n  duration_ms: 13.1264\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 429.1277\n",
+      "stderr": ""
+    },
+    {
+      "id": "test-local-preservation.js",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\test-local-preservation.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:00:51.484457+00:00",
+      "ended_at": "2026-11-07T13:00:53.095797+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: exact delivered families removed; heartbeat and Airtable history unchanged; repeat is empty\nok 1 - exact delivered families removed; heartbeat and Airtable history unchanged; repeat is empty\n  ---\n  duration_ms: 108.6434\n  type: 'test'\n  ...\n# Subtest: missing error acknowledgment preserves entire parent family byte for byte\nok 2 - missing error acknowledgment preserves entire parent family byte for byte\n  ---\n  duration_ms: 110.2738\n  type: 'test'\n  ...\n# Subtest: changed run, changed error and malformed/missing acknowledgment are retained\nok 3 - changed run, changed error and malformed/missing acknowledgment are retained\n  ---\n  duration_ms: 150.8185\n  type: 'test'\n  ...\n# Subtest: newest success and newest error remain when newest attempt is different\nok 4 - newest success and newest error remain when newest attempt is different\n  ---\n  duration_ms: 93.447\n  type: 'test'\n  ...\n# Subtest: active, started and other-workflow logs are never pruned\nok 5 - active, started and other-workflow logs are never pruned\n  ---\n  duration_ms: 111.7645\n  type: 'test'\n  ...\n# Subtest: error deletion failure leaves parent and pending logs readable\nok 6 - error deletion failure leaves parent and pending logs readable\n  ---\n  duration_ms: 131.428\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 988.2753\n",
+      "stderr": ""
+    },
+    {
+      "id": "test-local-alert.js",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\test-local-alert.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:00:53.095797+00:00",
+      "ended_at": "2026-11-07T13:00:55.583725+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: alert-owned local request, natural completion receipts, once per workflow, pending stays\nok 1 - alert-owned local request, natural completion receipts, once per workflow, pending stays\n  ---\n  duration_ms: 1154.628\n  type: 'test'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1462.6229\n",
+      "stderr": ""
+    },
+    {
+      "id": "review-launcher/edge-checks.js",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-launcher\\edge-checks.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:00:55.583725+00:00",
+      "ended_at": "2026-11-07T13:01:04.781120+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: registered service exited: terminal Error with unknown counts\nok 1 - registered service exited: terminal Error with unknown counts\n  ---\n  duration_ms: 149.4598\n  type: 'test'\n  ...\n# Subtest: actual launcher not-due service: both workflow switches; no business entry\nok 2 - actual launcher not-due service: both workflow switches; no business entry\n  ---\n  duration_ms: 8348.2338\n  type: 'test'\n  ...\n# Subtest: receipt publication failure preserves actual nonzero deletion counts\nok 3 - receipt publication failure preserves actual nonzero deletion counts\n  ---\n  duration_ms: 45.6594\n  type: 'test'\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 3\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 8825.8691\n",
+      "stderr": ""
+    },
+    {
+      "id": "final-test-v2.js",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\test-v2.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:01:24.396771+00:00",
+      "ended_at": "2026-11-07T13:01:24.753492+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: sole control/outcomes V2, combined local counts, exact event checkpoint, no old tables\nok 1 - sole control/outcomes V2, combined local counts, exact event checkpoint, no old tables\n  ---\n  duration_ms: 41.5428\n  type: 'test'\n  ...\n# Subtest: Airtable table failure does not suppress other table or local cleanup; preserves failed stop\nok 2 - Airtable table failure does not suppress other table or local cleanup; preserves failed stop\n  ---\n  duration_ms: 14.8085\n  type: 'test'\n  ...\n# Subtest: existing failure stop is never cleared by migration invocation\nok 3 - existing failure stop is never cleared by migration invocation\n  ---\n  duration_ms: 6.9058\n  type: 'test'\n  ...\n# Subtest: V2 write rejection does not prevent other table deletion or local completion\nok 4 - V2 write rejection does not prevent other table deletion or local completion\n  ---\n  duration_ms: 24.7435\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 232.053\n",
+      "stderr": ""
+    },
+    {
+      "id": "final-test-local-preservation.js",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\test-local-preservation.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:01:24.753492+00:00",
+      "ended_at": "2026-11-07T13:01:25.359238+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: exact delivered families removed; heartbeat and Airtable history unchanged; repeat is empty\nok 1 - exact delivered families removed; heartbeat and Airtable history unchanged; repeat is empty\n  ---\n  duration_ms: 61.9195\n  type: 'test'\n  ...\n# Subtest: missing error acknowledgment preserves entire parent family byte for byte\nok 2 - missing error acknowledgment preserves entire parent family byte for byte\n  ---\n  duration_ms: 43.7095\n  type: 'test'\n  ...\n# Subtest: changed run, changed error and malformed/missing acknowledgment are retained\nok 3 - changed run, changed error and malformed/missing acknowledgment are retained\n  ---\n  duration_ms: 121.3209\n  type: 'test'\n  ...\n# Subtest: newest success and newest error remain when newest attempt is different\nok 4 - newest success and newest error remain when newest attempt is different\n  ---\n  duration_ms: 51.4329\n  type: 'test'\n  ...\n# Subtest: active, started and other-workflow logs are never pruned\nok 5 - active, started and other-workflow logs are never pruned\n  ---\n  duration_ms: 61.6002\n  type: 'test'\n  ...\n# Subtest: error deletion failure leaves parent and pending logs readable\nok 6 - error deletion failure leaves parent and pending logs readable\n  ---\n  duration_ms: 45.9076\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 496.2439\n",
+      "stderr": ""
+    },
+    {
+      "id": "final-test-local-alert.js",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\test-local-alert.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:01:25.359238+00:00",
+      "ended_at": "2026-11-07T13:01:26.720658+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: alert-owned local request, natural completion receipts, once per workflow, pending stays\nok 1 - alert-owned local request, natural completion receipts, once per workflow, pending stays\n  ---\n  duration_ms: 1058.4004\n  type: 'test'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1173.4558\n",
+      "stderr": ""
+    },
+    {
+      "id": "final-review-launcher/edge-checks.js",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-launcher\\edge-checks.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:01:26.720658+00:00",
+      "ended_at": "2026-11-07T13:01:32.476802+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: registered service exited: terminal Error with unknown counts\nok 1 - registered service exited: terminal Error with unknown counts\n  ---\n  duration_ms: 157.1901\n  type: 'test'\n  ...\n# Subtest: actual launcher not-due service: both workflow switches; no business entry\nok 2 - actual launcher not-due service: both workflow switches; no business entry\n  ---\n  duration_ms: 5223.6109\n  type: 'test'\n  ...\n# Subtest: receipt publication failure preserves actual nonzero deletion counts\nok 3 - receipt publication failure preserves actual nonzero deletion counts\n  ---\n  duration_ms: 36.7564\n  type: 'test'\n  ...\n# Subtest: dead registered service is not retried by a later helper call\nok 4 - dead registered service is not retried by a later helper call\n  ---\n  duration_ms: 69.5813\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 5632.8533\n",
+      "stderr": ""
+    },
+    {
+      "id": "dual-and-launcher-final",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-launcher\\edge-checks.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:01:43.172207+00:00",
+      "ended_at": "2026-11-07T13:01:48.550503+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: registered service exited: terminal Error with unknown counts\nok 1 - registered service exited: terminal Error with unknown counts\n  ---\n  duration_ms: 96.2303\n  type: 'test'\n  ...\n# Subtest: actual launcher not-due service: both workflow switches; no business entry\nok 2 - actual launcher not-due service: both workflow switches; no business entry\n  ---\n  duration_ms: 4623.7239\n  type: 'test'\n  ...\n# Subtest: receipt publication failure preserves actual nonzero deletion counts\nok 3 - receipt publication failure preserves actual nonzero deletion counts\n  ---\n  duration_ms: 49.2722\n  type: 'test'\n  ...\n# Subtest: dead registered service is not retried by a later helper call\nok 4 - dead registered service is not retried by a later helper call\n  ---\n  duration_ms: 196.8998\n  type: 'test'\n  ...\n# Subtest: dual terminal publication failure retains Started; registered dead process reports unknown counts\nok 5 - dual terminal publication failure retains Started; registered dead process reports unknown counts\n  ---\n  duration_ms: 38.4315\n  type: 'test'\n  ...\n1..5\n# tests 5\n# suites 0\n# pass 5\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 5138.5026\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "deployed_at": "2026-11-07T13:37:11.8709989Z",
+  "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\cleanup-airtable.js",
+  "sha256": "de78c60de0c0e7a6f26770f7fb2da556c429ee3484a673996e0b61804d8e6caf",
+  "baseline_sha256": "e4c95154ee3d23d81ce9addd91ea6164e3a39c4a55970b79c999d6e41bfcb95b",
+  "review": "review/review-receipt.json",
+  "route": "Existing checkout/triggerless Records-driven task",
+  "stop_cleared": false,
+  "natural_verification": "Not yet verified",
+  "consumer_error_merge": {
+    "deployed_at": "2026-11-07T13:39:44.7090877Z",
+    "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\cleanup.js",
+    "sha256": "e1909c60104c2371b34defd8f1becc4a9a44d3f7f256a4910cc9b07d84ebd5b8",
+    "review": "review-merge/review-receipt.json"
+  }
+}

@@ -6,7 +6,7 @@ sys.path[:0]=[str(PARENT/'wef-data'),str(PARENT/'wef-schedules/tests')]
 from data_runner import atomic,stamp
 from data_contract import packed
 from wef_data_airtable import Airtable,TransportDeferred
-from season_store import SeasonStore
+from season_store import SeasonStore,epoch
 from ring_helpers import sync as sync_ring_helpers
 from horse_associations import sync as sync_horse_associations
 
@@ -28,15 +28,14 @@ def sources(client,canonical=False):
     schema=json.loads((PARENT/'wef-data/schema.json').read_text(encoding='utf-8'))
     facts={};native={};definitions={}
     for table,names in SOURCE_FIELDS.items():
-        source={'shows':'wef-shows.shows','days':'wef-shows.show-days'}.get(table,table) if canonical else table
+        source={'shows':'w-shows','days':'w-days'}.get(table,table) if canonical else table
         definition=schema['tables'][source]
         fields=copy.deepcopy(definition['fields'])
         if canonical:
             for field in fields:
                 field['name']={'show-day-key':'day-key'}.get(field['name'],field['name'].replace('_','-'))
             overrides={
-                'classes':{'show':'fldmQ3e7HnOa1tLSF','day':'fldJRAL0bwhFqtt6j'},
-                'entries':{'show':'fld5K8CbE6aj1sXJV'},
+                **{name:{logical:next(f['id'] for f in schema['tables'][name]['fields'] if f['name']==actual) for logical,actual in [('show','w-shows'),('day','w-days')]} for name in ['classes','rings','entries']},
             }.get(table,{})
             for name,identity in overrides.items():
                 fields=[f for f in fields if f['name']!=name]
@@ -58,6 +57,10 @@ def sources(client,canonical=False):
                 # A missing relationship withholds that membership, never the entity.
                 row[field['name']]={'$links':[list(native[v['id'] if isinstance(v,dict) else v])
                     for v in row.get(field['name'],[]) if (v['id'] if isinstance(v,dict) else v) in native]}
+    if canonical:
+        for row in facts['days'].values():
+            if isinstance(row.get('show'),str):
+                row['show']={'$links':[['shows',row['show']]] if row['show'] in facts['shows'] else []}
     return facts
 
 def linked(row,field,target):
@@ -102,6 +105,38 @@ def project(facts,entity):
                 add(keys[0],linked(cls,'show','shows'),linked(cls,'day','days'))
     return graph
 
+def pending_bytes(root):
+    try:return (root/'pending-create.json').read_bytes()
+    except FileNotFoundError:return None
+
+def release_rejected_create(root,error,before=None):
+    # Only a definite HTTP rejection can release its create reservation.
+    # TransportDeferred/unknown outcomes retain the original reconciliation state.
+    if str(error) in ('Airtable HTTP 400','Airtable HTTP 422'):
+        pending=root/'pending-create.json'
+        if pending.exists() and pending.read_bytes()!=before:pending.unlink()
+
+def apply_records(store,graph,errors):
+    before=pending_bytes(store.root)
+    try:return store.apply(graph)
+    except (ValueError,RuntimeError) as error:
+        if not isinstance(error,ValueError) and str(error) not in ('Airtable HTTP 400','Airtable HTTP 422'):raise
+        release_rejected_create(store.root,error,before)
+        # The normal healthy batch stays unchanged. Isolate rejected rows only.
+        counts={'records-added':0,'records-updated':0,'records-unchanged':0}
+        for table,rows in graph.items():
+            for key,row in rows.items():
+                item={name:{} for name in graph};item[table]={key:row}
+                before=pending_bytes(store.root)
+                try:
+                    result=store.apply(item)
+                    for name,value in result.items():counts[name]+=value
+                except TransportDeferred:raise
+                except Exception as error:
+                    release_rejected_create(store.root,error,before)
+                    errors.append({'category':'Record','target':table+' '+key,'message':str(error),'write-outcome':'Unknown'})
+        return counts
+
 def process(entity,config,client,facts):
     runtime=ROOT/'runtime'/entity
     store=SeasonStore(client,config,runtime)
@@ -114,17 +149,53 @@ def process(entity,config,client,facts):
                 supported=[key for key in row[field] if key in available]
                 unmatched+=len(row[field])-len(supported);row[field]=supported
             graph[table]={}
-    counters=store.apply(graph)
+    errors=[]
+    # Withhold a conflicting native identity before the existing batch writer.
+    for table,rows in graph.items():
+        existing=store.inventory(table)
+        for key,row in list(rows.items()):
+            old=existing.get(key,{}).get('fields',{})
+            conflicts=[name for name,value in row.items() if name.endswith('-id') and old.get(store.fields[table][name]['id']) not in (None,value)]
+            try:
+                for value in [row.get('last-success'),old.get(store.fields[table].get('last-success',{}).get('id'))]:
+                    if value:epoch(value)
+            except (ValueError,TypeError,AttributeError):conflicts.append('last-success')
+            if conflicts:
+                errors.append({'category':'Record','target':table+' '+key,'message':'Source ID conflict: '+','.join(conflicts),'write-outcome':'NotSent'})
+                del rows[key]
+    counters=apply_records(store,graph,errors)
+    counters['records-skipped']=len(errors)
     if config.get('synced-context'):counters['memberships-unmatched']=unmatched
-    if entity=='horses':counters.update(sync_horse_associations(client,config,facts,runtime))
+    if entity=='horses':
+        supported=copy.deepcopy(facts)
+        supported['horses']={k:v for k,v in facts['horses'].items() if k in graph[entity] and not any(e['target']==entity+' '+k for e in errors)}
+        counters.update(sync_horse_associations(client,config,supported,runtime,excluded=set(facts['horses'])-set(supported['horses'])))
     if config.get('ring-helpers'):
         source=[]
         for show in facts['shows']:
-            rings={k:r for k,r in facts['rings'].items() if linked(r,'show','shows')==[show]}
+            rings={k:r for k,r in facts['rings'].items() if k in graph[entity] and not any(e['target']==entity+' '+k for e in errors) and linked(r,'show','shows')==[show]}
             if rings:source.append(({'shows':facts['shows'],'rings':rings},{'show-key':show}))
-        helpers=sync_ring_helpers(client,config['ring-helpers'],source,runtime)
-        counters.update({'ring-helper-'+name:value for name,value in helpers.items()})
-    result={'status':'Succeeded','stage':'Upsert','counts':counters}
+        before=pending_bytes(runtime/'ring-helpers')
+        try:
+            helpers=sync_ring_helpers(client,config['ring-helpers'],source,runtime)
+            counters.update({'ring-helper-'+name:value for name,value in helpers.items()})
+        except TransportDeferred:raise
+        except (ValueError,RuntimeError) as error:
+            if not isinstance(error,ValueError) and str(error) not in ('Airtable HTTP 400','Airtable HTTP 422'):raise
+            release_rejected_create(runtime/'ring-helpers',error,before)
+            # A malformed helper source must not suppress unrelated helpers.
+            for batch,reference in source:
+                for key,ring in batch['rings'].items():
+                    before=pending_bytes(runtime/'ring-helpers')
+                    try:
+                        result=sync_ring_helpers(client,config['ring-helpers'],[({'shows':batch['shows'],'rings':{key:ring}},reference)],runtime)
+                        for name,value in result.items():counters['ring-helper-'+name]=counters.get('ring-helper-'+name,0)+value
+                    except TransportDeferred:raise
+                    except Exception as error:
+                        release_rejected_create(runtime/'ring-helpers',error,before)
+                        errors.append({'category':'Record','target':'ring-helper '+key,'message':str(error),'write-outcome':'Unknown'})
+        counters['records-skipped']=len(errors)
+    result={'status':'Succeeded','stage':'Upsert','counts':counters,'errors':errors}
     selected=[key for key,row in facts['shows'].items() if row.get('is-default') is True]
     if len(selected)==1:result['show-key']=selected[0]
     return result
@@ -142,9 +213,6 @@ def run():
         source_error=error
     for entity,schema in config['entities'].items():
         runtime=ROOT/'runtime'/entity
-        if (runtime/'stopped.json').exists():
-            results[entity]={'status':'Skipped','stage':'StopGuard','reason':'Season entity stopped; owner approval required'}
-            continue
         try:
             if schema.get('synced-context') and source_error is not None:raise source_error
             # Preserve the separately owned Rings context path during this migration.
@@ -153,8 +221,8 @@ def run():
         except TransportDeferred as error:
             results[entity]={'status':'Deferred','stage':'SourceRead' if error is source_error else 'Persistence','error':{'category':'Transport','operation':error.operation['method'],'target':error.operation['table'],'message':str(error),'write-outcome':error.operation.get('write-outcome','Unknown')}}
         except Exception as error:
-            result={'status':'Failed','stage':'SourceRead' if error is source_error else 'Apply','error':{'category':'Validation','message':type(error).__name__+': '+str(error),'write-outcome':'Unknown'}}
-            atomic(runtime/'stopped.json',{'at':stamp(),**result});results[entity]=result
+            result={'status':'Deferred','stage':'SourceRead' if error is source_error else 'Apply','error':{'category':'Validation','message':type(error).__name__+': '+str(error),'write-outcome':'Unknown'}}
+            results[entity]=result
     return results
 
 if __name__=='__main__':

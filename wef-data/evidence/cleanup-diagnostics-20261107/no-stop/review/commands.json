@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "no-stop",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\no-stop\\review\\check.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:47:00.711129+00:00",
+      "ended_at": "2026-11-07T13:47:01.030706+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: error stays recorded without restart barrier; later invocation succeeds and duplicate stays deduplicated\nok 1 - error stays recorded without restart barrier; later invocation succeeds and duplicate stays deduplicated\n  ---\n  duration_ms: 49.4542\n  type: 'test'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 151.9626\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "pending-native",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\test-pending-native.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:09:11.946767+00:00",
+      "ended_at": "2026-11-07T13:09:12.298724+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: older pending local family protects its actual native Airtable parent and all errors\nok 1 - older pending local family protects its actual native Airtable parent and all errors\n  ---\n  duration_ms: 92.0069\n  type: 'test'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 216.4706\n",
+      "stderr": ""
+    },
+    {
+      "id": "pending-native-base-final",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\test-pending-native.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:10:08.569556+00:00",
+      "ended_at": "2026-11-07T13:10:08.914789+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: older pending local family protects its actual native Airtable parent and all errors\nok 1 - older pending local family protects its actual native Airtable parent and all errors\n  ---\n  duration_ms: 94.2415\n  type: 'test'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 220.1899\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "cleared_at": "2026-11-07T13:43:05.0304747Z",
+  "run_id": 1794034173999,
+  "prior_stop_sha256": "4cfb2257795eac783fa22aa8d04d22585eb981cc7c3062c15b48039661fc50bf",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\runtime\\cleanup\\cleanup-stop.json",
+  "clear_verified": true,
+  "authority": "Direct owner approval to deploy, clear cleanup stop and verify through existing Records alerts",
+  "other_stops_changed": false,
+  "task_started": false
+}

@@ -1,8 +1,9 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const settings=require('./settings'),model=require('./model'),activity=require('./activity');
-function inWindow(now){
- const time=new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(now));
+const easternValue=value=>typeof value==='string'&&/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value)?value:null;
+function inWindow(now,eastern){
+ const time=easternValue(eastern)?.slice(11,16)||new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(now));
  return time>='05:00'&&time<='19:00';
 }
 async function context(api){
@@ -14,15 +15,17 @@ async function context(api){
  if(matches.length!==1)throw Error('Expected one canonical day-priority 0');
  const date=model.day(matches[0].fields.date)||model.day(matches[0].fields['show-day-key'].split('|')[2]);
  if(!date||matches[0].fields['show-day-key']!==`15|${show}|${date}`)throw Error('Invalid canonical day-0 identity');
- return{show,customer:15,date,authority:defaults[0].id,checked_at:f.last_checked,active:true};
+ const published=matches[0].fields['eastern-time (from show-times)'];
+ const eastern_time=easternValue(Array.isArray(published)?published[0]:published);
+ return{show,customer:15,date,authority:defaults[0].id,checked_at:f.last_checked,active:true,...(eastern_time?{eastern_time}:{})};
 }
 function decision(status,scope,now){
- const today=model.localDay(now);
+ const today=easternValue(scope?.eastern_time)?.slice(0,10)||model.localDay(now);
  if(status===false)return{collect:false,minutes:60,reason:'live-false',today};
  if(status!==true)return{collect:false,minutes:3,reason:'live-status-unavailable',today};
  if(!scope)return{collect:false,minutes:60,reason:'show-context-unavailable',today};
  if(scope.date!==today)return{collect:false,minutes:60,reason:'priority-date-mismatch',today};
- if(!inWindow(now))return{collect:false,minutes:60,reason:'outside-collection-window',today};
+ if(!inWindow(now,scope?.eastern_time))return{collect:false,minutes:60,reason:'outside-collection-window',today};
  return{collect:true,minutes:3,reason:'live-today',today};
 }
 function write(file,value){const tmp=file+'.'+process.pid+'.tmp';fs.writeFileSync(tmp,JSON.stringify(value,null,2));fs.renameSync(tmp,file);}

@@ -1,6 +1,6 @@
 # wef-records-coordinator
 
-Document version **1.15.0** — updated **November 6, 2026 (America/New_York)**. This is the coordinator document version, not a collector or plugin release. This document does not authorize changes to collectors, schemas, workflows or schedules. Later explicit owner decisions control over dated snapshots.
+Document version **1.16.0** — updated **November 7, 2026 (America/New_York)**. This is the coordinator document version, not a collector or plugin release. This document does not authorize changes to collectors, schemas, workflows or schedules. Later explicit owner decisions control over dated snapshots.
 
 ## Purpose
 
@@ -8,13 +8,24 @@ Coordinate the WEF records workflow so each owner stays in its lane, producers p
 
 ## Daily agent management - current input rule, November 4, 2026
 
-Full plan: [DAILY-MANAGEMENT-PLAN.md](DAILY-MANAGEMENT-PLAN.md), **version 1.6.0**. The removed `wef-shows-changes-to-records` automation and its all-six timed monitoring stay removed. Preserve the existing context/cleanup reminder's actual ID, name, current configured cadence, target, current three-hour cadence and two-minute limit; the November6 cleanup-handoff approval restores only this same reminder to ACTIVE; this migration changes no timing and introduces no observer.
+Full plan: [DAILY-MANAGEMENT-PLAN.md](DAILY-MANAGEMENT-PLAN.md), **version 1.7.0**. The removed `wef-shows-changes-to-records` automation and its all-six timed monitoring stay removed. Preserve the existing context/cleanup reminder's actual ID, name, current configured cadence, target, current three-hour cadence and two-minute limit; the November6 cleanup-handoff approval restores only this same reminder to ACTIVE; this migration changes no timing and introduces no observer.
 
 On November 4 the owner explicitly approved the revised `w-shows` / `w-days` migration, 18 new link fields, catalog-read 422 fix and source diagnostics, independent review, existing-route deployment and normal scheduled verification. The owner requires one verified source binding in existing `wef-data/schema.json`, no native IDs scattered through business logic and no layered fallback paths. `___shows` / `___days` are deprecated; old `wef-shows.*` targets are being replaced. Preserve historical native records and links without using them as new-source fallback.
 
 Records evaluates cleanup on actual operational messages and natural wakes of the existing approved reminder. Resolve the same schema binding as the reviewed Data consumer and require coherent producer/consumer deployment before dispatch. A source-table switch alone is not a show/day event. Preserve the one pointer, all requested/handled events and original clocks. Preparation, review, deployment, scheduled execution and useful native output are separate acceptance claims; current release evidence controls, not this document or an old receipt.
 
 The historical six-agent review, open oversight complaint and independent service failures remain recorded below. Cleanup success does not establish collection or linker recovery. No broader all-six monitoring is restored.
+
+
+## CleanupV2-only handoff — November7, 2026
+
+The owner directly approved cleanupV2-only control/outcomes, combined local and Airtable cleanup, pending-log preservation, independent review, deployment and proof through existing Records alerts (Data message `01a1b608-2edb-7501-92ff-cb0fd0c7891a`). No other lane changes, new schedules or extras. The new contract supersedes earlier current instructions to use `cleanup` / `cleanup-logs`; those tables' historical records remain preserved, with no current reads/writes by this stage.
+
+Records uses the exact reviewed, installed Data cleanupV2 manifest and matching relevant schema projection in `C:/Users/gombc/Documents/Codex/outputs/wef-records-cleanup-handoff-20261106/cleanupv2/consumer-readiness.json`. This binding amendment is deployed only after Data's actual reviewed consumer is installed. No second source map, alert keys, timer, producer runtime or business execution is added. Preserve the same existing ACTIVE three-hour context/cleanup reminder, source clocks, alert shape, priorities, stops and history.
+
+One genuine existing Records alert covers the combined local/Airtable cleanup. Data alone owns execution, preserves pending/uncertain/current local families and records actual outcomes in cleanupV2. Separate local completion from Airtable deletion; a result from one does not establish combined Success. Exact installed behavior/review/deployment/live evidence remains controlling; the earlier continuous-local-pruning release is historical.
+
+Natural calendar-day alert `calendar-day|2026-11-07` was delivered/adopted once, but run `1794034173999` failed at `2026-11-07T06:51:38.460Z` with “Cleanup record changed before deletion”, reporting 630 run-log deletions. Its persistent stop and failed event remain preserved. This table migration does not itself release that stop, authorize a retry or manufacture a new event. Finish approved preparation/review/deployment independently; require actual applicable resumption authority and a genuine existing alert for operational proof. Do not replay previously deleted work, clear stops or treat a prepared table/configuration as completion.
 
 ## This agent's failures and required reminders
 

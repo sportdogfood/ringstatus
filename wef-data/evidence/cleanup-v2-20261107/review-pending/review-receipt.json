@@ -1,0 +1,78 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "reviewed_at": "2026-11-07T13:10:08.959122+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Review exact cleanup-only pending native-family preservation delta",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\candidate",
+  "integration_coverage": "Actual logger ack reuse, pending helper, adapter prepare and mocked native IDs; unchanged prior runtime tests reused; natural proof and Records hash-reference refresh pending; no new dependency",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-pending\\baseline\\cleanup-airtable.js",
+      "sha256": "89da871ef867e58ecc6163e093a767bdac3dd321343b083ed4e77880d83115d3"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-pending\\baseline\\cleanup-local-logs.js",
+      "sha256": "71e6023d969c8f2db701ad67a698fc3452279a47b47525a6c747da557aa7a150"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\candidate\\cleanup-airtable.js",
+      "sha256": "e4c95154ee3d23d81ce9addd91ea6164e3a39c4a55970b79c999d6e41bfcb95b"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\candidate\\cleanup-local-logs.js",
+      "sha256": "56da14c7eaaa40a8eaf75579840954d988f8a3dc7e34283ade7825e1a2f51e71"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-pending\\report.md",
+    "sha256": "4483330d0d56d45b6e082af0f652d45dcb443916dd1c5306cb500d830bdefca4"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-pending\\commands.json",
+      "sha256": "a3249f3c331543980ede200a9c0cdf261a93892ba1f52abca88c46dada1a8a4d"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "Independent pending native integration test",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "pending-native-base-final"
+      ]
+    },
+    {
+      "name": "Approval, integration and unchanged-check reuse",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Compared two-file delta under explicit preserve-pending scope; unchanged prior tests inspected/reused, not rerun",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\task.md",
+          "sha256": "5612f9bf7a0d41beb34d1704da6d39dc50dd33cb55507b73e9a73e22c573baf9"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-launcher\\review-receipt.json",
+          "sha256": "9634fb7e8996c02e954cf0259f25b6ba659eacf0a3635015deb2660f7bdb903f"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-launcher\\commands.json",
+          "sha256": "4504c3cc061355695c16a0cdbb2807a115d0b129bee87369764881f1ccd6c8aa"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\attempt-log.js",
+          "sha256": "e913eb7d3a3031636dbbc5adbf0f5e197655ad71816b5fe376a86c1e01238f8a"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-v2-20261107\\review-pending\\manifest.json",
+          "sha256": "3994355d67a1d51a52741e0aed2e97447f9e37ed453acf9b455f89d30668a603"
+        }
+      ]
+    }
+  ]
+}

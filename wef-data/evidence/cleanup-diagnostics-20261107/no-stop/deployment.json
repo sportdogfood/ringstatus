@@ -1,0 +1,8 @@
+{
+  "deployed_at": "2026-11-07T13:47:48.6643626Z",
+  "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\cleanup.js",
+  "sha256": "f0321153f0e52096ea18a0f9cd08ac1f65ee3385c154e68353cf6635513b14b1",
+  "review": "review/review-receipt.json",
+  "change": "Removed stop-file read/create/write; errors still recorded, existing task IgnoreNew unchanged",
+  "business_run_started": false
+}

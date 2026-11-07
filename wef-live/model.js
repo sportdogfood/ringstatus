@@ -209,15 +209,16 @@ function classDetail(payload, decoded, s, c, now) {
     Number(payload.recs) !== payload.rows.length
   )
     throw Error("Incomplete class detail");
-  if (
+  // Explicit null selects live-only observations; supplied decoded inputs keep exact validation.
+  if (decoded !== null && (
     Number(decoded?.class?.class_id) !== cid ||
     Number(decoded?.class?.show_id) !== s.show ||
     day(decoded.class_related_data?.date) !== s.date ||
     !Array.isArray(decoded.trips)
-  )
+  ))
     throw Error("Decoded class scope mismatch");
   const trips = new Map();
-  for (const t of decoded.trips) {
+  for (const t of decoded?.trips || []) {
     const id = integer(t.trip_id, "decoded trip");
     if (trips.has(id)) throw Error("Duplicate decoded trip");
     trips.set(id, t);
@@ -226,22 +227,23 @@ function classDetail(payload, decoded, s, c, now) {
     if (Number(r.class_id) !== cid) throw Error("Live row class mismatch");
     const tid = integer(r.id, "live trip"),
       t = trips.get(tid);
-    if (!t) { const error=Error("No decoded identity for trip " + tid);error.code="LIVE_IDENTITY_SNAPSHOT_MISMATCH";error.trip_id=tid;throw error; }
-    const eid = integer(t.entry_id, "entry ID");
+    if (decoded !== null && !t) { const error=Error("No decoded identity for trip " + tid);error.code="LIVE_IDENTITY_SNAPSHOT_MISMATCH";error.trip_id=tid;throw error; }
+    const eid=t?integer(t.entry_id,"entry ID"):null;
+    const identity=t?{
+      "entry-id": eid,
+      "horse-id": number(t.horse_id), "rider-id": number(t.rider_id), "trainer-id": number(t.trainer_id),
+      "entry-key": key(s.show,s.date,eid,cid),
+    }:{};
     return {
-      ...common(s, now, { live: r, identity: t }),
+      ...common(s, now, { live: r, ...(t?{identity:t}:{}) }),
+      ...identity,
       "source-updated-at": text(payload.curr_updated_at),
       "live-entry-key": key(s.show, s.date, cid, tid),
       "trip-id": tid,
-      "entry-id": eid,
       "entry-number": number(r.ENo),
-      "horse-id": number(t.horse_id),
       "horse-name": text(r.Hor),
-      "rider-id": number(t.rider_id),
       "rider-name": text(r.Rid),
-      "trainer-id": number(t.trainer_id),
-      "trainer-name": text(r.Tra || t.trainer),
-      "entry-key": key(s.show, s.date, eid, cid),
+      "trainer-name": text(r.Tra || t?.trainer),
       "order-of-go": number(r.OOG),
       "actual-order": number(r.Actual_OOG),
       scratch: flag(r.Scr),

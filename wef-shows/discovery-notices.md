@@ -1,7 +1,18 @@
 # Shows discovery notices
 
-Version: 1.3
-Updated: November 4, 2026 (America/New_York)
+## Current recipients - owner update November 7, 2026
+
+Contact only **wef-records-coordinator, wef-timing-coordinator,
+wef-messages-coordinator and wef-waze-coordinator** for future discovery notices,
+weekday reminders and receipt follow-ups. **wef-publish-coordinator is removed.**
+This supersedes older five-recipient instructions below. Preserve all historical
+sends and receipts; do not contact Publish for historical follow-up. The existing
+daily automation now lists four recipients; schedule, tolerance and duplicate
+protection are unchanged. Collector scope remains locked.
+
+
+Version: 1.4
+Updated: November 7, 2026 (America/New_York)
 
 ## Weekday notice tolerance - approved November 4, 2026
 

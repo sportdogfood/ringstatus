@@ -166,27 +166,19 @@ async function lane(name,{
    let latest;try{latest=read(path.join(runtime,'lane-groups-state.json'));}catch(e){issue('Shared class references unreadable: '+e.message);return r;}
    if(latest?.shared?.scope?.show!==r.scope.show||latest.shared.scope.date!==r.scope.date||!Array.isArray(latest.shared.classes)){issue('No matching saved class references');return r;}
    const rings=scoped(await db.list('live-rings')),groups=scoped(await db.list('live-groups'));
-   const references=latest.shared.classes,results=[],tripSources=[];let next=0,successfulPairs=0;
+   const references=latest.shared.classes,results=[];let next=0,successfulDetails=0;
    await Promise.all(Array.from({length:Math.min(4,references.length)},async()=>{
     while(next<references.length){const c=references[next++];
      try{
-      const pair=await Promise.allSettled([collect('class-'+c['class-id'],sources.endpoints.detail(r.scope,c['class-id'])),collect('identity-'+c['class-id'],sources.endpoints.decoded(r.scope,c['class-id']),true)]);
-      // Class trips are their own source records; UI detail absence does not suppress them.
-      if(pair[1].status==='fulfilled'){
-       const decoded=pair[1].value;
-       try{const mapped=require('./live-trips').project(decoded.data,pair[0].status==='fulfilled'?pair[0].value.data:null,r.scope,c,decoded.received,issue);
-        tripSources.push({c,...mapped,received:decoded.received,classSource:{class:decoded.data.class,class_related_data:decoded.data.class_related_data}});
-       }catch(e){issue(e.message,{class_id:c['class-id']});}
-      }
-      const failed=pair.filter(x=>x.status==='rejected');if(failed.length){for(const f of failed)issue(f.reason.message,{class_id:c['class-id']});continue;}
-      successfulPairs++;
-      const [live,decoded]=pair.map(x=>x.value),payload=live.data,identity=decoded.data;
-      await evidence('class-'+c['class-id'],{detail:payload,decoded:identity});
+      // Decoded acquisition is paused. Live details collect and save on their own.
+      const live=await collect('class-'+c['class-id'],sources.endpoints.detail(r.scope,c['class-id'])),payload=live.data;
+      successfulDetails++;
+      await evidence('class-'+c['class-id'],{detail:payload});
       // Validate class scope independently, then isolate each malformed/unresolved trip.
-      const empty=model.classDetail({...payload,rows:[],recs:0},identity,r.scope,c,live.received),entries=[];
+      const empty=model.classDetail({...payload,rows:[],recs:0},null,r.scope,c,live.received),entries=[];
       if(!Array.isArray(payload.rows)||Number(payload.recs)!==payload.rows.length){issue('Incomplete class detail',{class_id:c['class-id']});continue;}
       for(const row of payload.rows){try{
-       const observed=model.classDetail({...payload,rows:[row],recs:1},identity,r.scope,c,live.received).entries[0];
+       const observed=model.classDetail({...payload,rows:[row],recs:1},null,r.scope,c,live.received).entries[0];
        for(const [field,source]of Object.entries({'entry-number':'ENo','horse-name':'Hor','rider-name':'Rid','order-of-go':'OOG','actual-order':'Actual_OOG','scratch':'Scr','gone':'Gone'}))if(row[source]===undefined||row[source]===null||observed[field]===null)delete observed[field];
        if(row.ActualPos===undefined&&row.Pos===undefined)delete observed.position;
        for(const field of ['horse-id','rider-id','trainer-id'])if(observed[field]===null)delete observed[field];
@@ -201,40 +193,16 @@ async function lane(name,{
     }
    }));
    const priorClasses=scoped(await db.list('live-classes'));
-   const classSources=[...results,...tripSources.filter(source=>!results.some(x=>x.c['class-key']===source.c['class-key'])).map(source=>({c:{...source.c,'last-seen':source.received,'source-json':JSON.stringify(source.classSource)},received:source.received}))];
+   const classSources=results;
    const rows=classSources.map(({c})=>{const ring=lookup(rings,'ring-key',c._ring),links=c._groups.map(k=>lookup(groups,'group-key',k)),prior=priorClasses.find(x=>x.fields['class-key']===c['class-key']);return{...clean(c),...(ring?{ring:[ring]}:{}),...(links.every(Boolean)?{groups:[...new Set([...(prior?.fields.groups||[]),...links])]}:{})};});
-   if(references.length&&!successfulPairs&&!tripSources.length)throw Error('No class source collections succeeded');
+   if(references.length&&!successfulDetails)throw Error('No class source collections succeeded');
    await save('live-classes','class-key',rows,k=>classSources.find(x=>x.c['class-key']===k).received);
    const classes=await db.list('live-classes');
    const entries=[];for(const result of results){const id=lookup(classes,'class-key',result.c['class-key']);if(!id)continue;
     entries.push(...result.entries.map(e=>({...clean(e),class:[id]})));
    }
    await save('live-entries','live-entry-key',entries,k=>entries.find(e=>e['live-entry-key']===k)['last-seen']);
-   const legacy=await db.list('live-entries'),trips=[];
-   for(const source of tripSources){
-    const cls=classes.filter(x=>x.fields['class-key']===source.c['class-key']);
-    const ring=rings.filter(x=>x.fields['ring-key']===source.c._ring);
-    const groupIds=(source.c._groups||[]).flatMap(k=>groups.filter(x=>x.fields['group-key']===k).map(x=>x.id));
-    if(source.rows.length&&cls.length!==1)issue('Missing/ambiguous shared class link for trips',{class_id:source.c['class-id']});
-    if(source.rows.length&&ring.length!==1)issue('Missing/ambiguous shared ring link for trips',{class_id:source.c['class-id']});
-    for(const row of source.rows){
-     const oldKey=model.key(r.scope.show,r.scope.date,row['class-id'],row['trip-id']);
-     const old=source.rows.filter(x=>x['trip-id']===row['trip-id']).length===1?legacy.filter(x=>x.fields['live-entry-key']===oldKey&&Number(x.fields['entry-id'])===row['entry-id']):[];
-     trips.push({...row,...(cls.length===1?{class:[cls[0].id],...(cls[0].fields.schedules?.length?{schedules:cls[0].fields.schedules}:{})}:{}),...(ring.length===1?{ring:[ring[0].id]}:{}),...(groupIds.length?{groups:[...new Set(groupIds)]}:{}),...(old.length===1?{'legacy-live-entry':[old[0].id]}:{})});
-    }
-   }
-   // Only a successfully read, complete class inventory advances missing trips.
-   // Status-only patches retain every source field and native link on absent rows.
-   const priorTrips=scoped(await db.list('live-trips')),tripRows=[...trips],tripTimes=new Map(trips.map(x=>[x['trip-key'],x['last-seen']]));
-   for(const source of tripSources){
-    const cid=source.c['class-id'],prior=priorTrips.filter(x=>Number(x.fields['class-id'])===cid);
-    const current=trips.filter(x=>x['class-id']===cid),present=new Set(current.map(x=>x['trip-key']));
-    if(source.complete)for(const {fields:row} of prior)if(!present.has(row['trip-key'])){
-     tripRows.push({'trip-key':row['trip-key'],'record-status':membership.nextStatus(row['record-status'],false)});
-     tripTimes.set(row['trip-key'],source.received);
-    }
-   }
-   await save('live-trips','trip-key',tripRows,k=>tripTimes.get(k));
+   // Existing live-trips, identities, membership states and links remain untouched while paused.
 
   }
  }catch(e){await stageFailure('collection/save',e);}
@@ -257,6 +225,7 @@ async function scheduled(options={}){
  const policy=await require('./live-cadence').check(options);
  // Lanes start together; each owns its receipt and catches its own stage failures.
  const reports=!policy.due?[]:policy.collect?await Promise.all(LANES.map(name=>lane(name,{...options,showContext:policy.scope,getStatus:async()=>policy.live_status}))):[policy];
+ if(policy.due&&policy.collect)reports.push(await (options.linker||require('./linker').link)({...options,scope:policy.scope}));
  // Cleanup is a separate post-collection action; publication remains on hold.
  let cleanupResult;
  try{const result=await (options.cleanup||require('./cleanup').cleanup)({...options,checkShow:policy.due,protectedRuns:reports.map(r=>r.run_id)});

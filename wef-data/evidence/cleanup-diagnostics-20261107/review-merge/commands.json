@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "merge-diagnostics",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\test-diagnostics.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T13:39:05.990032+00:00",
+      "ended_at": "2026-11-07T13:39:06.479826+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: count mismatch identifies expected/missing native IDs and counts\nok 1 - count mismatch identifies expected/missing native IDs and counts\n  ---\n  duration_ms: 6.5565\n  type: 'test'\n  ...\n# Subtest: same count different member identifies missing and returned IDs\nok 2 - same count different member identifies missing and returned IDs\n  ---\n  duration_ms: 2.7015\n  type: 'test'\n  ...\n# Subtest: field mismatch identifies exact field names without copying values\nok 3 - field mismatch identifies exact field names without copying values\n  ---\n  duration_ms: 3.3205\n  type: 'test'\n  ...\n# Subtest: lost eligibility records native ID, affected completion fields and predicate result\nok 4 - lost eligibility records native ID, affected completion fields and predicate result\n  ---\n  duration_ms: 2.1096\n  type: 'test'\n  ...\n# Subtest: matching records still delete; computed values and deleted native links remain normalized\nok 5 - matching records still delete; computed values and deleted native links remain normalized\n  ---\n  duration_ms: 2.4534\n  type: 'test'\n  ...\n# Subtest: full exact error reaches V2/local outcomes; concurrent local failure=false\nok 6 - full exact error reaches V2/local outcomes; concurrent local failure=false\n  ---\n  duration_ms: 44.6674\n  type: 'test'\n  ...\n# Subtest: full exact error reaches V2/local outcomes; concurrent local failure=true\nok 7 - full exact error reaches V2/local outcomes; concurrent local failure=true\n  ---\n  duration_ms: 18.0942\n  type: 'test'\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 260.2626\n",
+      "stderr": ""
+    }
+  ]
+}

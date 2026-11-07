@@ -1,8 +1,49 @@
 # wef-shows
 
-Version: **1.8.4**
+## Current recipients - owner update November 7, 2026
 
-Updated: **November 4, 2026 (America/New_York)**
+Contact only **wef-records-coordinator, wef-timing-coordinator,
+wef-messages-coordinator and wef-waze-coordinator** for future discovery notices,
+weekday reminders and receipt follow-ups. **wef-publish-coordinator is removed.**
+This supersedes older five-recipient instructions below. Preserve all historical
+sends and receipts; do not contact Publish for historical follow-up. The existing
+daily automation now lists four recipients; schedule, tolerance and duplicate
+protection are unchanged. Collector scope remains locked.
+
+
+Version: **1.8.6**
+
+Updated: **November 7, 2026 (America/New_York)**
+
+## Verified lock renewal - November 7, 2026
+
+**LOCKED; README v1.8.5; lock v1.1.** Deployed baseline remains
+`day-state-20261102`. All 21 runtime hashes match the original November 2 lock.
+[Current dated lock](evidence/locked-20261107/lock.json). Original evidence is preserved.
+
+Latest inspected normal run completed **November 7, 7:59:13 a.m. Eastern**:
+`f4ce6988-b977-420d-a498-9af6479bd888`. Saved receipt, Airtable heartbeat and
+run-log show Success, no recorded errors; preceding 7:54 run also succeeded.
+Task exit: 0. Show **200000077 - 2026 ESP November (#7129)**, November 5-8;
+planning day 0 **November 7**.
+
+The November 5 and November 6 normal weekday notices both have all five actual
+coordinator acknowledgments. Evidence:
+`.git/ringstatus-control/wef-shows-weekday-notice-state.json`.
+This supersedes the pending-delivery snapshots below.
+
+Two separate fresh InPrivate browser checks on November 6 selected show 200000077
+and source-selected date **November 6** from the clean Show Schedule page.
+Browser verification is diagnostic only, not a deployed discovery change.
+The collector's retained source date remains November 5, last checked November 2;
+planning day 0 does not represent a fresh source observation.
+
+Cadence is unchanged: five-minute validation, heartbeat and logs; new-show checks
+Sunday 10 p.m. Eastern, then three-hour retries; planning day advances after 7 p.m.
+when tomorrow is inside the show range. Next new-show check: November 8, 10 p.m.
+Eastern. Counts stay cancelled. Hourly out-of-show telemetry remains held.
+Automatic NEW SHOW/NEW SHOW-DAY delivery remains unimplemented; the verified
+weekday reminder is separate. No collector, task, automation or Airtable changes.
 
 ## Weekday notice tolerance - approved November 4, 2026
 
@@ -17,7 +58,7 @@ The notice announces the next weekday/date; it does not change show day0/priorit
 The November4 18:57:03 wake was rejected by the former strict rule; that evidence
 is preserved. The revised normal route is ACTIVE and read back against review;
 22independentofflinechecks PASS. Normal delivery and all five acknowledgments are
-PENDING the next native occurrence (November5,19:00Eastern target). No manual replay.
+VERIFIED on normal November 5 and November 6 wakes. No manual replay.
 See [tolerance deployment](evidence/weekday-tolerance-20261104/deployment.json).
 
 ## Proxy ownership - November 4, 2026
@@ -42,7 +83,7 @@ deduplication and receipt follow-up in the same daily workflow. The only runtime
 write is `.git/ringstatus-control/wef-shows-weekday-notice-state.json`.
 First eligible normal run: November 4, 2026 at19:00Eastern; no November3backfill.
 Configuration readback and independent19offlinechecks PASS. Actual scheduled sends
-and five receipts remain PENDING that first normal run; no manual runs/sends made.
+and five receipts were verified November 5 and November 6; no manual test runs.
 See [deployment and remaining proof](evidence/weekday-notice-20261103/deployment.json).
 This narrow owner approval does not deploy the held hourly heartbeat change or
 install automatic NEW SHOW/NEW SHOW-DAY discovery delivery.
@@ -108,7 +149,7 @@ Normal-run acceptance: October31 20:34 Eastern PASS (run 343cdab8-1245-46d9-9e47
 ## Historical release records - superseded
 
 The dated records below preserve earlier implementations and evidence. They do
-not authorize counting or reopen cancelled work. Version 1.8.4 above is current;
+not authorize counting or reopen cancelled work. Version 1.8.5 above is current;
 the established discovery and day-priority cadence remains unchanged.
 
 ## Direct proxy count ownership — approved October31, 2026

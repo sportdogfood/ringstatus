@@ -1,0 +1,113 @@
+{
+  "verified_at": "2026-11-07T15:01:55.918453+00:00",
+  "result": "PASS:two normal scheduled collections/linker passes;empty-only native linking;repeat zero changes;prior records/links preserved",
+  "runs": [
+    {
+      "status_run_id": "5484f5bc-b6df-46b9-ae2a-371be60274c0",
+      "collection_run_ids": [
+        "4dbfd4bd-89fe-4738-bbb3-d5a4b110afa8",
+        "ac0e5f13-48c4-4c89-8a75-56b86767f041",
+        "ce2c3ce0-87ca-440d-8f67-4a04e717ca8e"
+      ],
+      "linker_run_id": "848ab5c5-ad1e-4cce-910b-0676ca5786d7",
+      "linker_started": "2026-11-07T14:53:05.721Z",
+      "linker_completed": "2026-11-07T14:55:22.068Z",
+      "changed_records": 968,
+      "skips": 7,
+      "stage_errors": [],
+      "logging_errors": [],
+      "decoded_requests": 0
+    },
+    {
+      "status_run_id": "58101c79-526d-476d-96a3-75b3a6b1bd75",
+      "collection_run_ids": [
+        "113c6aad-cc99-4054-a3d3-919d6e544e90",
+        "e05cc08a-bf7e-4388-80f5-9d969cb6f540",
+        "02c3134c-3063-4759-8977-9a64d8e6eaeb"
+      ],
+      "linker_run_id": "183b4610-7d39-4c07-ac48-432a4da7280a",
+      "linker_started": "2026-11-07T14:59:03.665Z",
+      "linker_completed": "2026-11-07T14:59:15.197Z",
+      "changed_records": 0,
+      "skips": 7,
+      "stage_errors": [],
+      "logging_errors": [],
+      "decoded_requests": 0
+    }
+  ],
+  "prior_records_retained": 968,
+  "prior_populated_forward_fields_preserved": 2300,
+  "empty_fields_filled_readback": 2897,
+  "external_linked_records": {
+    "show": 968,
+    "show-day": 968,
+    "data-schedules": 961
+  },
+  "unmatched": [
+    {
+      "message": "No unique exact match for live-groups.data-schedules",
+      "table": "live-groups",
+      "id": "recI9FkfiQnCiGbyw",
+      "class_id": null,
+      "trip_id": null,
+      "group_id": 200028530
+    },
+    {
+      "message": "No unique exact match for live-groups.data-schedules",
+      "table": "live-groups",
+      "id": "recyV06Ly6O58Ey7h",
+      "class_id": null,
+      "trip_id": null,
+      "group_id": 200028533
+    },
+    {
+      "message": "No unique exact match for live-classes.data-schedules",
+      "table": "live-classes",
+      "id": "recQ7q5IUrpbfAWno",
+      "class_id": 200031158,
+      "trip_id": null,
+      "group_id": null
+    },
+    {
+      "message": "No unique exact match for live-trips.data-schedules",
+      "table": "live-trips",
+      "id": "recAceEFqLYNQ58vs",
+      "class_id": 200031158,
+      "trip_id": 200400305,
+      "group_id": null
+    },
+    {
+      "message": "No unique exact match for live-trips.data-schedules",
+      "table": "live-trips",
+      "id": "recSdT38J5NDzdkSn",
+      "class_id": 200031158,
+      "trip_id": 200400442,
+      "group_id": null
+    },
+    {
+      "message": "No unique exact match for live-entries.data-schedules",
+      "table": "live-entries",
+      "id": "rec7pwX1huIC1hKU3",
+      "class_id": null,
+      "trip_id": 200400442,
+      "group_id": null
+    },
+    {
+      "message": "No unique exact match for live-entries.data-schedules",
+      "table": "live-entries",
+      "id": "recbSvJuHVVmzz3io",
+      "class_id": null,
+      "trip_id": 200400305,
+      "group_id": null
+    }
+  ],
+  "unmatched_reason": "Only Dropped Data schedule occurrences match these two retained groups/class200031158 and its two trips/twoentries;existing Dropped exclusion retained. No guessing or record repairs.",
+  "decoded_trip_business_values_retained": 423,
+  "stages4_5_6_unchanged": true,
+  "offline": "17PASS;author review,not independent",
+  "reverted": false,
+  "revert_plan": "revert.ps1;authorizedcode-only restoration on failure;not needed",
+  "natural_null_proof": "Not claimed or required;existing tested null-as-empty normalization unchanged",
+  "manual_runs": 0,
+  "record_repairs": 0
+}

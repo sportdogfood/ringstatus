@@ -1,0 +1,179 @@
+{
+  "tables": [
+    {
+      "tableId": "tblw8bodkRbCItxIH",
+      "fields": [
+        {
+          "id": "fldR2Br9LUjubPF76",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblFl6yEGsBn08WwW",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldhZIgeendgl5FF4"
+          }
+        },
+        {
+          "id": "fldhzx1sxRtzxgefs",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblHDYbGRyGsbnTjp",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld0bqd0znwjpuWiR"
+          }
+        },
+        {
+          "id": "fldqiXoCUHcDSWH4I",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblANR5KCdfNjUCfR",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldIHscY7Xs9YX0DR"
+          }
+        }
+      ]
+    },
+    {
+      "tableId": "tblMhQtjpvyODEUSn",
+      "fields": [
+        {
+          "id": "fldCt7JwEYtSrPLZ7",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblFl6yEGsBn08WwW",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldeYSC2oBijPDFFW"
+          }
+        },
+        {
+          "id": "fldee28rXISDLmPmT",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblHDYbGRyGsbnTjp",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldrOEcfIB3i634wM"
+          }
+        },
+        {
+          "id": "fldLAwvo3HkzUKB42",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblANR5KCdfNjUCfR",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldNBsuPvGCqSqVAK"
+          }
+        }
+      ]
+    },
+    {
+      "tableId": "tblNaM9ehOJFsrveV",
+      "fields": [
+        {
+          "id": "fldikpKUaT3pIawGE",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblFl6yEGsBn08WwW",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldGWiRoQ5tN3O1RX"
+          }
+        },
+        {
+          "id": "fldy8qawd7mbvdVOI",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblHDYbGRyGsbnTjp",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldIpdYTed9YESk43"
+          }
+        },
+        {
+          "id": "fldB5XP2ALBQDzjaf",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblANR5KCdfNjUCfR",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldTIiTmHbXVai7xG"
+          }
+        }
+      ]
+    },
+    {
+      "tableId": "tblhUd5DucnpkEall",
+      "fields": [
+        {
+          "id": "fldgf0OvTxBTAukYN",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblFl6yEGsBn08WwW",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld8CE0DMu7KkbUUT"
+          }
+        },
+        {
+          "id": "fld7EhecETDIX3zrO",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblHDYbGRyGsbnTjp",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldPIDyiXH815z9Dh"
+          }
+        },
+        {
+          "id": "fld1AMVDvmxsYUMr4",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblANR5KCdfNjUCfR",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldcZtVJVKqwSEjjk"
+          }
+        }
+      ]
+    },
+    {
+      "tableId": "tblf7550e7UGT8ZSF",
+      "fields": [
+        {
+          "id": "fldzVjy0cboH3yg8a",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblFl6yEGsBn08WwW",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld2kruFof0QzQTI0"
+          }
+        },
+        {
+          "id": "fldohFUhGbRcRr4cl",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblHDYbGRyGsbnTjp",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldoIuGzx4R0v9L7W"
+          }
+        },
+        {
+          "id": "fldFL9tiqvNcZ71bL",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblANR5KCdfNjUCfR",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldHo0U1JRY60a84z"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,15 +1,16 @@
 "use strict";
 // Local Airtable adapter. Live delete-only retirement; original values and exact deletions remain verified.
 const settings = require("./cleanup-settings");
-const tableId=table=>require('./schema.json').tables[table]?.id||table;
+const tableId=table=>table==='cleanupV2'?settings.CONTROL_ID:require('./schema.json').tables[table]?.id||table;
 const same=(a,b)=>JSON.stringify(a==null||a===''?null:a)===JSON.stringify(b==null||b===''?null:b)||((a==null||a==='')&&(b===false||Array.isArray(b)&&!b.length));
 function unique(rows,key){const seen=new Set();for(const r of rows){const k=r.fields[key];if(k==null||k===''||seen.has(k))throw Error('Missing or duplicate '+key);seen.add(k);}}
 function airtable({
   token = settings.AIRTABLE_TOKEN,
   request = globalThis.fetch,
+  localPending = () => require('./cleanup-local-logs').pending(require('node:path').join(__dirname,'runtime','logging'),settings.BASE_ID),
   pause = (ms) => new Promise((r) => setTimeout(r, ms)),
 } = {}) {
-  const writable = new Set(['cleanup','cleanup-logs','err-logs']),
+  const writable = new Set(['cleanupV2']),
     unresolved = new Set();
   const readable=new Map([[settings.BASE_ID,new Set([...writable,...require('./cleanup').TABLES,'w-shows'])]]);
   async function call(base, table, method = "GET", body, query = "", limit = {}) {
@@ -135,7 +136,22 @@ function airtable({
       const batch=rows.slice(i,i+10),q=new URLSearchParams({filterByFormula:'OR('+batch.map(r=>`RECORD_ID()="${r.id}"`).join(',')+')'});
       const current=(await call(settings.BASE_ID,table,'GET',undefined,'?'+q)).records;
       if(current.length!==batch.length||batch.some(r=>{const c=current.find(c=>c.id===r.id);return !c||
-        !util.isDeepStrictEqual(afterDeleted(r.fields),afterDeleted(c.fields))||!cleanup.eligible(table,c,policy.trigger,policy.show,api.runShows);}))throw Error('Cleanup record changed before deletion');
+        !util.isDeepStrictEqual(afterDeleted(r.fields),afterDeleted(c.fields))||!cleanup.eligible(table,c,policy.trigger,policy.show,api.runShows);})){
+        const failures=[];
+        if(current.length!==batch.length)failures.push({reason:'batch-count-mismatch',expected:batch.length,actual:current.length});
+        for(const r of batch){
+          const c=current.find(c=>c.id===r.id);
+          if(!c){failures.push({reason:'missing-record',record_id:r.id});continue;}
+          const before=afterDeleted(r.fields),after=afterDeleted(c.fields);
+          const fields=[...new Set([...Object.keys(before),...Object.keys(after)])].filter(k=>!util.isDeepStrictEqual(before[k],after[k])).sort();
+          if(fields.length)failures.push({reason:'fields-changed',record_id:r.id,fields});
+          if(!cleanup.eligible(table,c,policy.trigger,policy.show,api.runShows))failures.push({reason:'no-longer-eligible',record_id:r.id,
+            fields:['run-logs','runs'].includes(table)?['status','completed']:table==='err-logs'?['occurred-at']:[],
+            completed:cleanup.completed(table,c)});
+        }
+        throw Error('Cleanup record changed before deletion: '+JSON.stringify({table,batch:Math.floor(i/10)+1,offset:i,
+          expected_count:batch.length,actual_count:current.length,record_ids:batch.map(r=>r.id),returned_record_ids:current.map(r=>r.id),failures}));
+      }
       await pause(250);const query=new URLSearchParams();for(const r of batch)query.append('records[]',r.id);
       const response=await request(`https://api.airtable.com/v0/${settings.BASE_ID}/${encodeURIComponent(tableId(table))}?${query}`,{method:'DELETE',headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000)});
       if(!response.ok)throw Error('Cleanup deletion HTTP '+response.status);
@@ -149,6 +165,9 @@ function airtable({
     const logs=await list('run-logs'),errors=await list('err-logs'),heartbeats=await list('heartbeat');
     const {showOf,protectedRows}=require('./cleanup-fields');
     api.protectedIds=protectedRows(logs,errors,heartbeats);
+    const pending=localPending();
+    for(const r of logs)if(pending.attempts.includes(r.fields['attempt-id']))api.protectedIds.add(r.id);
+    for(const r of errors)if(pending.errors.includes(r.fields['error-id'])||(r.fields.run||[]).some(id=>api.protectedIds.has(id)))api.protectedIds.add(r.id);
     api.loggingSnapshotIds=new Set([...logs,...errors,...heartbeats].map(r=>r.id));
     const knownRuns=new Set(logs.map(r=>r.id));
     for(const r of errors)if((r.fields.run||[]).some(id=>!knownRuns.has(id)))api.protectedIds.add(r.id);

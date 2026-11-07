@@ -1,0 +1,16 @@
+{
+  "reviewer": "wef-live author",
+  "commands": [
+    {
+      "id": "shows-time-offline",
+      "command": "node --test wef-live/evidence/shows-time-20261107/shows-time.test.cjs wef-live/evidence/shows-time-20261107/retry.test.cjs",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "stdout": "TAP version 13\n# Subtest: status failures use3minutes; confirmedfalse/date/window rules stay unchanged\nok 1 - status failures use3minutes; confirmedfalse/date/window rules stay unchanged\n  ---\n  duration_ms: 21.8449\n  type: 'test'\n  ...\n# Subtest: legacy hourly error checkpoint is naturally due at3minutes without manual state change\nok 2 - legacy hourly error checkpoint is naturally due at3minutes without manual state change\n  ---\n  duration_ms: 12.8155\n  type: 'test'\n  ...\n# Subtest: repeated status failures wait3minutes,log individually,and do not retry early\nok 3 - repeated status failures wait3minutes,log individually,and do not retry early\n  ---\n  duration_ms: 12.4048\n  type: 'test'\n  ...\n# Subtest: recovery to confirmedfalse records hourly checkpoint,not3minutes\nok 4 - recovery to confirmedfalse records hourly checkpoint,not3minutes\n  ---\n  duration_ms: 10.3069\n  type: 'test'\n  ...\n# Subtest: recovery to true/today resumes collection on normal3minute cadence\nok 5 - recovery to true/today resumes collection on normal3minute cadence\n  ---\n  duration_ms: 10.1075\n  type: 'test'\n  ...\n# Subtest: Shows published Eastern date and time decide eligibility,not a conflicting host clock\nok 6 - Shows published Eastern date and time decide eligibility,not a conflicting host clock\n  ---\n  duration_ms: 0.8469\n  type: 'test'\n  ...\n# Subtest: false and failed status rules remain60/3minutes with published time\nok 7 - false and failed status rules remain60/3minutes with published time\n  ---\n  duration_ms: 0.2204\n  type: 'test'\n  ...\n# Subtest: context reads existing canonical lookup without another table or request\nok 8 - context reads existing canonical lookup without another table or request\n  ---\n  duration_ms: 1.4413\n  type: 'test'\n  ...\n# Subtest: missing published time keeps existing Eastern calculation without blocking collection\nok 9 - missing published time keeps existing Eastern calculation without blocking collection\n  ---\n  duration_ms: 18.5448\n  type: 'test'\n  ...\n1..9\n# tests 9\n# suites 0\n# pass 9\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 192.1841",
+      "exit_code": 0,
+      "stderr": "",
+      "started_at": "2026-11-07T12:37:46.3728884Z",
+      "runtime": "v22.22.2",
+      "ended_at": "2026-11-07T12:37:46.8806787Z"
+    }
+  ]
+}

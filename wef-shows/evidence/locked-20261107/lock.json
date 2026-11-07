@@ -1,0 +1,63 @@
+{
+  "version": "1.1",
+  "locked_at": "2026-11-02T18:27:18.498991+00:00",
+  "owner_instruction": "update your readme and date and version your lock",
+  "meaning": "Scope/deployed implementation freeze; existing scheduled workflow and readonly reviews continue. Not a stop or filesystem permission change.",
+  "baseline": "day-state-20261102",
+  "baseline_manifest": "wef-shows/evidence/day-state-20261102/manifest.json",
+  "baseline_runtime_and_tests_hashes_verified_before_documentation_lock": true,
+  "runtime_files": {
+    "wef-shows\\airtable.js": "f97bd4964e3b39197e284418c98f3fa1b81f8f284c7afbd514a7263d9a147154",
+    "wef-shows\\audit-schema.js": "015574366da8f8f535f6340b811d58e597650585c7eb8e49b52148dcb5b44f1c",
+    "wef-shows\\audit.js": "95649c14e6acf807721a81c3449fca321a2a855bf748262d5708513f3ff59f30",
+    "wef-shows\\authority-age.js": "6022ef852fa6ecbecf7d32bcd9fc297e1cd2f326b6c7c1cf6e29435deadff2e8",
+    "wef-shows\\collector.js": "65e93b249793c1960477e9da9c71790d6bbf572aa15ac5a474f7e4eff895939c",
+    "wef-shows\\configure.js": "d8dcc4da0a6b1c0606788feaea71a8d113ce8ff0c06a0f3362ae6ec73f223d37",
+    "wef-shows\\day-archive.js": "17b706949743f316bba2c6cad5b9ce166b10138d6613e4766ee7da4663597512",
+    "wef-shows\\day-priority.js": "04d2d40bc081f476ebea00bcff7a71750b88867605dcca9b66633055a17a914d",
+    "wef-shows\\day-schema.js": "d2ae8a640bc1457cda72125e47bd22ccbde988175157abb04c380e6815d2737b",
+    "wef-shows\\day-source.js": "c212c2c1fc1bd226e20e214469051b3a2291c18432a075eef7a9c8e88d9ac0e6",
+    "wef-shows\\direct-counts.js": "1f295b267984c462e7eedbfef89c9d0120135d8ada13e0ea34f058681416802e",
+    "wef-shows\\discovery-policy.js": "c9baa13920e1e7396f525d9c087c7392a5c5a5a6117dbb2535a2cff8035b3b29",
+    "wef-shows\\discovery-window.js": "cd58bd4ced4af3a358c45af40d3ab6c58aca0cf70fd2ff8d58059ff32a71b9f8",
+    "wef-shows\\entry.js": "2ecb076a6df89cba7d0e5b80937651a3152c551a5dbccec66b4ae0f3985d2f7b",
+    "wef-shows\\settings.js": "2c12ce868e2b8b588a6285301795916582a3c48f49155b115093751983048a3d",
+    "wef-shows\\show-days.js": "eb04aa65739da1ad5772fadcb0de5db88b6ba4b9eea1a14f044ae14f3f7c5425",
+    "wef-shows\\source-fetch.js": "11df76a20ed236aa6ebe068ea376585d1adceb877b3b6346cb122a47fdad6104",
+    "wef-shows\\verify-audit.js": "290766240ad39d86fbf01cd2db514695770e1148398770e69dd65fc47140b7fb",
+    "wef-shows\\verify-consumers.js": "0c4a0761e5ffd1a542d9934499db8a0d08a3b1429df06257dbc8ad4f0994a70a",
+    "wef-shows\\verify-days.js": "d6a910762e520898b1668e50f82293828dd0415af1e083da430d1b36f30a5479",
+    "wef-shows\\verify.js": "31122a40e990a229b8529a46bc42059a57f45f33b02c9ddbd0f051a04f364dad"
+  },
+  "documentation": {
+    "wef-shows\\README.md": "3e3d4b46cbefda12092ca6dd599dd14cae8bb146103f8064a614fbf0bec8964b",
+    "wef-shows\\scope.md": "fa1606ee6a4ea1cc2089d91b16bb5fc4d12623e0522847b60baec4ab13502a0c",
+    "wef-shows\\AGENTS.md": "5e983111c45185d5653f1ea6c46a0a448c4f86c2f6eca1b8e19c077fd8b4279d",
+    "wef-shows\\discovery-notices.md": "521054aa73a2294b80220b3a47047310296a2fa06b221dd88c759296967004c5"
+  },
+  "latest_normal_run_inspected": {
+    "run_id": "f4ce6988-b977-420d-a498-9af6479bd888",
+    "started": "2026-11-07T12:59:04.203Z",
+    "completed": "2026-11-07T12:59:13.086Z",
+    "ok": true
+  },
+  "most_recent_Airtable_readback_in_chat": "November 7, 07:59 Eastern heartbeat and matching run-log Success; preceding 07:54 run-log Success; task exit0.",
+  "pending": [
+    "Hourly heartbeat/logging outside show date range: offline24PASS, independentreviewPASS, registered reciN6QUAdKA1cxYb, not deployed.",
+    "Automatic direct discovery notices to Records, Timing, Messages, Waze, Publish: recipient policy added; delivery not configured."
+  ],
+  "protected": "Documentation only. Runtime, tasks, automations, schema, business data, count stops and archives unchanged.",
+  "updated_date": "2026-11-07",
+  "timezone": "America/New_York",
+  "renewed_at": "2026-11-07T13:01:24.451743+00:00",
+  "previous_lock": "wef-shows/evidence/locked-20261102/lock.json",
+  "original_lock_sha256": "f4ee583a3a545273a7d37865818fa2c9d9f723efeb51c7235e2c928a6fc80580",
+  "readme_version": "1.8.5",
+  "documentation_update_only": true,
+  "runtime_hashes_verified_on_renewal": 21,
+  "weekday_notice_evidence": {
+    "event": "weekday-shift|America/New_York|2026-11-06|19:00",
+    "receipts_confirmed": 5,
+    "state_file": ".git/ringstatus-control/wef-shows-weekday-notice-state.json"
+  }
+}

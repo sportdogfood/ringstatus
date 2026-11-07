@@ -1,0 +1,131 @@
+{
+  "verified_at": "2026-11-07T15:24:52.561292+00:00",
+  "result": "PASS:corrected w-shows/w-days references in two normal runs;old populated fields retained;Data/class-group/collection unchanged;repeat zero changes",
+  "runs": [
+    {
+      "status_run_id": "88c231c8-8e64-4080-bb7a-7469b0cd03ac",
+      "collection_run_ids": [
+        "9276ad37-0711-4fd4-b6fb-46b1ca95d6f3",
+        "d89cbc86-481a-475e-b117-2bf2355fecf7",
+        "7eb720b1-e994-4c10-98b2-720b17ce73c3"
+      ],
+      "linker_run_id": "d2affa8e-8ab8-435c-9eb4-9b4f56b4e6c7",
+      "linker_started": "2026-11-07T15:17:00.273Z",
+      "linker_completed": "2026-11-07T15:19:13.052Z",
+      "changed_records": 968,
+      "skips": 7,
+      "stage_errors": [],
+      "logging_errors": [],
+      "decoded_requests": 0
+    },
+    {
+      "status_run_id": "cc265824-f4fa-4cdb-a679-cb907f8c49e9",
+      "collection_run_ids": [
+        "9d777c94-131d-41ea-8786-aa928da97a40",
+        "a9bf252a-45da-4e30-95dc-a79d89f83b6e",
+        "9d352dcc-0349-49c8-a669-b9710a9a0e2c"
+      ],
+      "linker_run_id": "fc59007d-2174-40bb-b723-8859c5ae922c",
+      "linker_started": "2026-11-07T15:23:08.256Z",
+      "linker_completed": "2026-11-07T15:23:19.772Z",
+      "changed_records": 0,
+      "skips": 7,
+      "stage_errors": [],
+      "logging_errors": [],
+      "decoded_requests": 0
+    }
+  ],
+  "prior_records_retained": 968,
+  "prior_populated_forward_fields_preserved": 5197,
+  "empty_fields_filled_readback": 1936,
+  "external_linked_records": {
+    "w-shows": 968,
+    "w-days": 968,
+    "data-schedules": 961
+  },
+  "unmatched": [
+    {
+      "message": "No unique exact match for live-groups.data-schedules. No retry recommended until source data changes.",
+      "table": "live-groups",
+      "id": "recI9FkfiQnCiGbyw",
+      "class_id": null,
+      "trip_id": null,
+      "group_id": 200028530
+    },
+    {
+      "message": "No unique exact match for live-groups.data-schedules. No retry recommended until source data changes.",
+      "table": "live-groups",
+      "id": "recyV06Ly6O58Ey7h",
+      "class_id": null,
+      "trip_id": null,
+      "group_id": 200028533
+    },
+    {
+      "message": "No unique exact match for live-classes.data-schedules. No retry recommended until source data changes.",
+      "table": "live-classes",
+      "id": "recQ7q5IUrpbfAWno",
+      "class_id": 200031158,
+      "trip_id": null,
+      "group_id": null
+    },
+    {
+      "message": "No unique exact match for live-trips.data-schedules. No retry recommended until source data changes.",
+      "table": "live-trips",
+      "id": "recAceEFqLYNQ58vs",
+      "class_id": 200031158,
+      "trip_id": 200400305,
+      "group_id": null
+    },
+    {
+      "message": "No unique exact match for live-trips.data-schedules. No retry recommended until source data changes.",
+      "table": "live-trips",
+      "id": "recSdT38J5NDzdkSn",
+      "class_id": 200031158,
+      "trip_id": 200400442,
+      "group_id": null
+    },
+    {
+      "message": "No unique exact match for live-entries.data-schedules. No retry recommended until source data changes.",
+      "table": "live-entries",
+      "id": "rec7pwX1huIC1hKU3",
+      "class_id": null,
+      "trip_id": 200400442,
+      "group_id": null
+    },
+    {
+      "message": "No unique exact match for live-entries.data-schedules. No retry recommended until source data changes.",
+      "table": "live-entries",
+      "id": "recbSvJuHVVmzz3io",
+      "class_id": null,
+      "trip_id": 200400305,
+      "group_id": null
+    }
+  ],
+  "unmatched_reason": "Seven existing Dropped-only Data misses remain empty;log recommends no retry until source data changes. No cache or new gate added.",
+  "decoded_trip_business_values_retained": 423,
+  "stages4_5_6_unchanged": true,
+  "offline": "17PASS;author review,not independent;class-group reciprocal schema/sample verified",
+  "reverted": false,
+  "revert_plan": "revert.ps1;authorizedcode-only restoration on failure;not needed",
+  "natural_null_proof": "Not claimed or required;existing tested null-as-empty normalization unchanged",
+  "manual_runs": 0,
+  "record_repairs": 0,
+  "existing_class_group_link": {
+    "class_id": 200031204,
+    "class_record": "rec0WBxprmgYOo40Q",
+    "group_id": 200028523,
+    "group_record": "rec3YE5kQmPsLGXxG",
+    "forward": "live-classes.groups",
+    "reciprocal": "live-groups.live-classes",
+    "both_directions_verified": true,
+    "code_changed": false
+  },
+  "Data_schedules_rules_changed": false,
+  "retry_advisory": "No retry recommended until source data changes;informational only. No new cache or eligibility gate;no per-miss network retries.",
+  "shared_reference_targets": [
+    "w-shows",
+    "w-days",
+    "wef-data.schedules"
+  ],
+  "old_show_and_show_day_links_retained": true
+}

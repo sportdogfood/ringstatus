@@ -23,7 +23,7 @@ function finish(root,id,result,at=iso()){
  if(result.counts)row['counts-json']=JSON.stringify(result.counts);
  if(result.reason)row.reason=safe(result.reason);atomic(file(root,id),row);return row;
 }
-function files(root,table){const dir=path.join(root,table);return fs.existsSync(dir)?fs.readdirSync(dir).filter(f=>f.endsWith('.json')).map(f=>JSON.parse(fs.readFileSync(path.join(dir,f),'utf8'))):[];}
+function files(root,table){const dir=path.join(root,table);return fs.existsSync(dir)?fs.readdirSync(dir).filter(f=>f.endsWith('.json')).flatMap(f=>{let text;try{text=fs.readFileSync(path.join(dir,f),'utf8');}catch(error){if(error.code==='ENOENT')return [];throw error;}return [JSON.parse(text)];}):[];}
 function digest(value){return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');}
 function same(actual,expected){return Object.entries(expected).every(([k,v])=>JSON.stringify(actual[k]??(Array.isArray(v)?[]:v===''?'':null))===JSON.stringify(v));}
 async function flush(root,config,request,{milliseconds=20000,operations=30}={}){

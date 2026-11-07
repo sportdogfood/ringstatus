@@ -1,0 +1,30 @@
+[
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\entry.js",
+    "sha256": "d307da12d1e2c138d6045f095d95e3fc6a424f9c467519bd04c3d9ef7409953f"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\attempt-log.js",
+    "sha256": "e913eb7d3a3031636dbbc5adbf0f5e197655ad71816b5fe376a86c1e01238f8a"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\cleanup-run.js",
+    "sha256": "de43a587d0ec2ebfacc253d780264f14888b6a15899b9f9115563dd5ff357ee2"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\cleanup-hidden.vbs",
+    "sha256": "ec9d252665e55abf6d585712acad147c396f0b0186dc08d8e6251714a7f90099"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\logging-schema.json",
+    "sha256": "f437a7b750dff73d32b7e4b65742c8f355cb7ef0b53c502986ed5a8b6bfd9292"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\cleanup-fields.js",
+    "sha256": "cf3fcb91eb92b01a505d9a01636c98961cbf5b31d9653e29cd3eaf58cd91d83b"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\schema.json",
+    "sha256": "db8d9f3b31d473951cddd3f0697fa37baf8dbbb815310675e107e488f95e3398"
+  }
+]

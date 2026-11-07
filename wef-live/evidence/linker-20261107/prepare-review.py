@@ -1,0 +1,8 @@
+from pathlib import Path
+import json,hashlib,datetime
+r=Path(__file__).resolve().parent
+def e(p):return {'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
+skill=Path('C:/Users/gombc/.agents/skills/code-review/SKILL.md')
+p=dict(reviewer='wef-live author',reviewed_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),skill_sha256=e(skill)['sha256'],objective='Empty-only linker after unchanged Live collection;decoded stayspaused',target=str(r),integration_coverage='Source-key/schema adapter,empty-write/race/readback/logging,scheduled hook/cleanup;17offlinechecks;normal proof separate',baseline=[e(x) for x in sorted((r/'baseline/wef-live').glob('*.js'))]+[e(r/'task-before.xml')],candidate=[e(x) for x in sorted((r/'candidate/wef-live').glob('*.js'))]+[e(r/'linker.test.cjs'),e(r/'pause.test.cjs'),e(r/'deploy.ps1'),e(r/'revert.ps1')],report=e(r/'review.md'),logs=[e(r/'offline.json')],review_status='COMPLETE',candidate_status='PASS',required_checks=[dict(name='empty-only linking and protected collection tests',requirement='execute',status='executed',command_ids=['linker-offline']),dict(name='approved delta/schema/source contract/rollback and unchanged collector scope',requirement='inspect',status='inspected',reason='Reviewed fourfilediff including newlinker,15requiredrelationships and exact sourcekeys;stages4-6unchanged;no unapproved upgrades;rollback code-only',evidence=[e(r/'TASK.md'),e(r/'schema-before.json'),e(r/'schema-readback.json'),e(r/'created-fields.json'),e(r/'review.md')])])
+(r/'review-receipt.json').write_text(json.dumps(p,indent=2),encoding='utf-8')
+

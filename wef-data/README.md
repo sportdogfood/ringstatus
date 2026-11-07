@@ -1,6 +1,40 @@
-# wef-data — November 6, README version 2026.11.06.2
+# wef-data - November 7, README version 2026.11.07.3
 
-Updated November 6, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+Updated November 7, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+
+## Current cleanup replacement - November 7, 9:15 a.m. Eastern
+
+Independent delete-only cleanup-lane.js is deployed through the SAME cleanup-run.js/cleanup-hidden.vbs and triggerless wef-data-cleanup task. Existing Records three-hour reminder and target are preserved; only its obsolete cleanup prerequisites were removed. New calendar day clears completed logs; three-hour checks delete oldest 500 eligible at 1,000+ per logging table; new show clears checked owned show records and completed logs; new show-day does nothing. Active/current/pending logs, reference tables and cleanup history remain. No record archives/backups or new schedule. cleanupV2 remains the control/latest outcome table.
+
+Old cleanup.js, cleanup-airtable.js, cleanup-fields.js, cleanup-local-logs.js and cleanup-settings.js are DEPRECATED and disconnected from production launchers. Old collector/linker cleanup hooks are removed. No collection/linking logic or cadence change. The sole approved logger change skips an individual read ENOENT after cleanup removes a completed file; all other read/parse errors remain. Delivery acknowledgments remain to prevent recreation of deleted records. No new waits, locks, request flags or stop files.
+
+Independent review PASS: nine cleanup checks and four actual-reader checks. Deployed/source/config readback PASS. Next genuine Records alert execution is UNVERIFIED; no manual cleanup, fake alert or completed-event replay was used. Evidence: evidence/cleanup-simple-20261107/{deployment.json,handoff-deployment.json,route-readback.json,review-release/,review-handoff/}. Existing historical state/outcomes are preserved; code installation is not a cleanup execution.
+
+Earlier sections below are dated history and superseded where they describe the retired cleanup implementation.
+
+## Latest actual cleanup result — November7 8:56 a.m. Eastern
+
+The owner-approved existing Records attempt2 completed Success at13:56:46.115Z, run1794059296142, task exit0. Fresh cleanupV2 readback confirmed1,036run-logs and190err-logs deleted; heartbeat0/Skipped. Local receipts confirmed14run files and12error files deleted, plus26delivery acknowledgments. Delete-only: no backups/record snapshots. Pending families remained subject to the reviewed delivery protections; no persistent cleanup stop file exists.
+
+Exact-error diagnostics and simultaneous-error preservation were independently reviewed and deployed. The owner subsequently prohibited restart flags; cleanup.js no longer reads/creates/writes/deletes cleanup-stop.json, independently reviewed before this invocation. Historical attempt1/run1794034173999 and its630reported deletions remain separate. No collection/linking code or cadence changes were made by this diagnostic correction. No new cleanup failure occurred naturally; detailed failure branches were verified offline rather than manufactured in production.
+
+The successful run does NOT resolve the owner's additional-gate concern. Pre-delete comparisons, Records readiness checks, local history exclusions and local-confirmation waiting remain as inventoried in evidence/cleanup-diagnostics-20261107/gates-current.md. No broader gate removal is claimed. Records' corresponding stop-prerequisite wording removal/readback is separately owned; only confirmed source changes may be reported complete.
+
+Proof: evidence/cleanup-diagnostics-20261107/{verified-alert-result.json,resumed-alert-start.json,stop-release.json,deployment.json,no-stop/deployment.json,review/,review-merge/,no-stop/review/}. Earlier sections below are dated preparation/history and do not override this actual outcome.
+
+## Current release — cleanupV2 and cleanup-only launcher
+
+Owner explicitly approved cleanupV2-only control/outcomes, combined local/Airtable cleanup and the cleanup-only launcher handoff. Five independently reviewed runtime files deployed November7 at8:02:50 a.m. Eastern. cleanupV2 native ID tblIhyIiYgvHHeChy holds48 actual-table inventory rows,15 selected. Old cleanup and cleanup-logs records remain preserved; the new cleanup runtime neither reads nor writes those two tables. No new fields or schedules. Existing result choices are accepted through the V2-only typecast PATCH; actual natural-alert acceptance is still unverified.
+
+Final pending-family protection was independently reviewed and installed at8:10:36 a.m. Eastern: pending local run/error families also protect their actual Airtable parent and error records until confirmed delivery. This prevents retaining a local error while deleting the native parent ID it still needs. The targeted actual-helper/adapter fixture passed; fully delivered older families remain eligible. Existing BASE_ID is reused, with no added configuration dependency. Exact final hashes and review are in deployment.json and review-pending/ under this release's evidence directory. No cleanup execution or stop clearance occurred during installation.
+
+Records' exact matching V2-only producer was independently reviewed and deployed/read back at8:13:05 a.m. Eastern. Its existing ACTIVE three-hour identity/cadence and all10event records, including the failed calendar-day event and previous630reported deletions, were preserved. Evidence: C:/Users/gombc/Documents/Codex/outputs/wef-records-cleanup-handoff-20261106/cleanupv2/{deployment.json,review-pending-match/}. Independent authorized preparation and deployment are complete. Combined natural-alert execution remains unverified because the original failed-run stop1794034173999 is retained; its release and Records-route resumption require the owner's exact permission. No manual run or new schedule is proposed.
+
+The existing Records alert starts the independent cleanup task. It requests local cleanup once for each existing workflow root. An ordinary delivery-completion call or the explicitly approved existing not-due launcher branch services that request under existing IgnoreNew serialization. No collection/link run is started to obtain a cleanup receipt. Pending/unacknowledged families, active attempts and heartbeat source history remain protected. Local counts are labeled in each logging row's purpose; numeric records-deleted remains Airtable-only. Registered service outcomes preserve actual partial counts and prevent duplicate processing. No elapsed-time cutoff was installed. An ended registered service without a terminal outcome reports unconfirmed completion rather than fabricated zero counts.
+
+Independent review PASS:11 supplied checks plus5 reviewer checks, including both actual launcher switches in disposable fixtures. Earlier candidate FAIL and resolved findings remain in evidence. Summary-write rejection and per-table errors are recorded while unaffected actions continue. Existing changed-record comparison is preserved; it is not claimed repaired. The old failed run1794034173999 stop and failed calendar-day event remain unchanged; no replay/manual run/stop clearance occurred. Records' matching readiness update is separate preparation. Natural-alert execution of this release is not yet verified.
+
+Evidence: [scope](evidence/cleanup-v2-20261107/task.md), [independent review](evidence/cleanup-v2-20261107/review-launcher/report.md), [deployment](evidence/cleanup-v2-20261107/deployment.json). Source collection, linking logic, entry.js, logger, keys, links and registered cadences were unchanged.
 
 ## Current cleanup correction — November 6
 

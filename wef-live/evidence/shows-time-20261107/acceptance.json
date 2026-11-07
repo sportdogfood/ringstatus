@@ -1,0 +1,16 @@
+{
+  "manual_runs": 0,
+  "live_status": true,
+  "result": "PASS: normal07:42Status read existing Shows Eastern time and canonical priority0;true/time/date allowed collection",
+  "task_unchanged": true,
+  "eastern_time": "2026-11-07 07:39:13",
+  "offline": "9PASS",
+  "minutes": 3,
+  "paused_collection_acceptance": "../pause-decoded-20261107/acceptance.json",
+  "normal_run": "d9187550-5d3f-4283-b21e-45849ac2ac23",
+  "canonical_day": "2026-11-07",
+  "verified_at": "2026-11-07T12:43:10.1260232Z",
+  "record_repairs": 0,
+  "current25_hashes_match": true,
+  "collect": true
+}

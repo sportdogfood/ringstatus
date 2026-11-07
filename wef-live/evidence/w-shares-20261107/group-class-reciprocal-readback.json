@@ -1,0 +1,29 @@
+{
+  "records": [
+    {
+      "id": "rec3YE5kQmPsLGXxG",
+      "createdTime": "2026-11-07T10:00:21.000Z",
+      "cellValuesByFieldId": {
+        "fld0IoGPIIPoKzeB1": [
+          {
+            "id": "recL11EiEB5Iva78O",
+            "name": "200000077|2026-11-07|51"
+          }
+        ],
+        "fld9KGjoIza9Mdato": "Active",
+        "fldClr0QPgwmhQdOO": 200028523,
+        "fldGusnteia52NKFm": [
+          {
+            "id": "rec0WBxprmgYOo40Q",
+            "name": "200000077|2026-11-07|200031204"
+          }
+        ],
+        "fldJH2GmyFEAIk1fl": "2026-11-07",
+        "fldqp8iJphmhvEz7s": "200000077|2026-11-07|200028523"
+      }
+    }
+  ],
+  "metadata": {
+    "totalRecordCount": 1
+  }
+}

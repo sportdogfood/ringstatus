@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "handoff-nine",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\test.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T14:14:59.360511+00:00",
+      "ended_at": "2026-11-07T14:14:59.527551+00:00",
+      "exit_code": 0,
+      "stdout": "PASS calendar day deletes completed logs, protects current/active, references and show rows\nPASS new show clears owned tables but not references/history\nPASS new show-day does nothing without API calls\nPASS threshold 999 none, 1000 oldest 500 eligible; same rule applies to runs\nPASS batch error records exact cause and continues tables and later batches\nPASS same successful Records event cannot delete another 500\nPASS logging read error does not stop new-show cleanup or hide its cause\nPASS successful event updates existing Records show/day/three-hour checkpoint\nPASS local deletes delivered completed family; keeps pending and current\n9 checks passed; no live calls\n",
+      "stderr": ""
+    }
+  ]
+}

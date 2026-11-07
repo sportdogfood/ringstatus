@@ -1,0 +1,12 @@
+{
+  "event_id": "calendar-day|2026-11-07",
+  "attempt": 2,
+  "adopted_at": "2026-11-07T13:48:06.0306481Z",
+  "source": "One actual Records resumption notification already received",
+  "task": "wef-data-cleanup",
+  "task_start_count": 1,
+  "manual_test": false,
+  "deletion_mode": "delete-only",
+  "pending_logs": "preserved",
+  "persistent_stop": "removed"
+}

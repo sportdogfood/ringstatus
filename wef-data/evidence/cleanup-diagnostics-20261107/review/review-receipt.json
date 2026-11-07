@@ -1,0 +1,62 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "reviewed_at": "2026-11-07T13:36:34.755344+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Independent one-file exact cleanup diagnostic review preserving deletion/pending behavior",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\candidate\\cleanup-airtable.js",
+  "integration_coverage": "Guard parity, diagnostic content, fakeHTTP deletion behavior and exact existing V2/local error propagation; no natural run",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\baseline\\cleanup-airtable.js",
+      "sha256": "e4c95154ee3d23d81ce9addd91ea6164e3a39c4a55970b79c999d6e41bfcb95b"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\candidate\\cleanup-airtable.js",
+      "sha256": "de78c60de0c0e7a6f26770f7fb2da556c429ee3484a673996e0b61804d8e6caf"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\review\\report.md",
+    "sha256": "0cc11c8c1df426dfdf70f2cf849e88f66643b3fc716b3127bacd9e95a849bd7b"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\review\\commands.json",
+      "sha256": "197f66eaa7b7092935070e7b2295fe696a75438fb9df2879b6c94171d244dac7"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "Independent six targeted diagnostics checks",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "diagnostics"
+      ]
+    },
+    {
+      "name": "Approval boundary and unchanged integration semantics",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Compared one-file delta, text-restored baseline equality, protected pending logic and inspected existing downstream catch paths; no runtime changes",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\task.md",
+          "sha256": "9159282c829756ff628c4fb2e9ed8cf22fc31cddc788d0f18f6d21b082f417b0"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\test-diagnostics.js",
+          "sha256": "97068e6400739c1acd87852a3b7c0de7e85b55fd84f8755924ab60bf5524ede0"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\candidate\\cleanup.js",
+          "sha256": "4263ee9609f6759655b88654fd77f09db18da3640789e7ee2d0ca40733f0765f"
+        }
+      ]
+    }
+  ]
+}

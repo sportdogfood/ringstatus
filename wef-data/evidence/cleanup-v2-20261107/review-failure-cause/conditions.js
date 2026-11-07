@@ -1,0 +1,14 @@
+const test=require('node:test'),assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs');
+const root=path.resolve(__dirname,'../../..'),{airtable}=require(path.join(root,'cleanup-airtable.js')),schema=require(path.join(root,'schema.json'));
+const initial={id:'recFixture',fields:{'attempt-id':'old',workflow:'wef-data',started:'2026-11-06T10:00:00Z',completed:'2026-11-06T10:01:00Z',status:'Succeeded',reason:'original'}};
+for(const [name,current] of [
+ ['batch count differs',[]],
+ ['same count but expected native member missing',[{...initial,id:'recDifferent'}]],
+ ['same member but ordinary field changed',[{...initial,fields:{...initial.fields,reason:'different'}}]],
+ ['same member is no longer eligible',[{...initial,fields:{...initial.fields,status:'Started'}}]]
+])test(name+' produces identical error and no DELETE',async()=>{
+ const methods=[];const api=airtable({token:'fixture',localPending:()=>({attempts:[],errors:[]}),pause:async()=>{},request:async(url,options)=>{methods.push(options.method);assert.equal(options.method,'GET');const table=decodeURIComponent(new URL(url).pathname.split('/').at(-1));return{ok:true,json:async()=>({records:table===(schema.tables['w-shows']?.id||'w-shows')?[{id:'recShow',fields:{show_id:77,customer_id:15,is_default:true}}]:current})};}});
+ await assert.rejects(api.retireCleanup('run-logs',[initial],{show:77,trigger:'calendar-day',deletedIds:new Set(),protectedRuns:new Set()}),{message:'Cleanup record changed before deletion'});assert(!methods.includes('DELETE'));assert.equal(methods.length,2);
+});
+test('matching baseline proceeds through DELETE and verified absence in fake transport only',async()=>{let removed=false;const methods=[];const api=airtable({token:'fixture',localPending:()=>({attempts:[],errors:[]}),pause:async()=>{},request:async(url,options)=>{methods.push(options.method);if(options.method==='DELETE'){removed=true;return{ok:true,json:async()=>({records:[{id:initial.id,deleted:true}]})};}const table=decodeURIComponent(new URL(url).pathname.split('/').at(-1));return{ok:true,json:async()=>({records:table===(schema.tables['w-shows']?.id||'w-shows')?[{id:'recShow',fields:{show_id:77,customer_id:15,is_default:true}}]:removed?[]:[initial]})};}});let count=0;await api.retireCleanup('run-logs',[initial],{show:77,trigger:'calendar-day',deletedIds:new Set(),protectedRuns:new Set()},ids=>count+=ids.length);assert.equal(count,1);assert.equal(methods.filter(m=>m==='DELETE').length,1);});
+test('failed baseline and deployed retireCleanup implementation match exactly',()=>{const before=fs.readFileSync(path.resolve(__dirname,'../baseline/cleanup-airtable.js'),'utf8'),after=fs.readFileSync(path.join(root,'cleanup-airtable.js'),'utf8');const extract=s=>s.slice(s.indexOf('  async function retireCleanup('),s.indexOf('  const api={list,upsert,call,retireCleanup'));assert.equal(extract(after),extract(before));});

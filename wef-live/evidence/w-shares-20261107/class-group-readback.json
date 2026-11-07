@@ -1,0 +1,35 @@
+{
+  "records": [
+    {
+      "id": "rec0WBxprmgYOo40Q",
+      "createdTime": "2026-11-07T10:06:48.000Z",
+      "cellValuesByFieldId": {
+        "fldHnLaPKFS9sH90h": [
+          {
+            "id": "rec3YE5kQmPsLGXxG",
+            "name": "200000077|2026-11-07|200028523"
+          }
+        ],
+        "fldIXYMAkQnJ3U09F": [
+          {
+            "id": "recL11EiEB5Iva78O",
+            "name": "200000077|2026-11-07|51"
+          }
+        ],
+        "fldJndpmUiZyPoJ3n": "200000077|2026-11-07|200031204",
+        "fldikpKUaT3pIawGE": [
+          {
+            "id": "recydKUFSTp2QuQqZ",
+            "name": "15|200000077"
+          }
+        ],
+        "fldl6BEroGFLsPPUh": 200031204,
+        "fldnjYKtPufr9mp44": "2026-11-07"
+      }
+    }
+  ],
+  "metadata": {
+    "totalRecordCount": 70
+  },
+  "nextCursor": "itr3EodETHgw3g4aV/rec0WBxprmgYOo40Q"
+}

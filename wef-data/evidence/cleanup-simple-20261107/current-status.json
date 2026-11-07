@@ -1,0 +1,16 @@
+{
+  "verified_at": "2026-11-07T14:18:10.881169+00:00",
+  "files": {
+    "cleanup-lane.js": "ba57c28e494c55816716a4898a371f0b61365ff5385d6d721743284beede96f1",
+    "cleanup-run.js": "736828dca3d0e0566eab8039b410cab2627113102cfb550c2145ebaabf4624c7",
+    "entry.js": "a27b7a2a1ceaaa5c9d9d05e838c2cd7f7774c09349cb7795a7978fca15aded8d",
+    "run.ps1": "af47fdb3108f0facf25e6e81bfebda85a8ba9cb25007e41eb9b9fa4798a84e09",
+    "attempt-log.js": "d679ca3b117d0dc6b5b609d33a5e6c852e6bf9ea6b281f567b094b01b451b896"
+  },
+  "source_readback": "PASS",
+  "review_record": "recBibJmCD2ZrTOM7",
+  "review_record_result": "Review PASS; deployed/read back; genuine alert unverified",
+  "route_readback": "route-readback.json",
+  "next": "Next genuine Records alert; do not manually run or replay",
+  "natural_alert_verified": false
+}

@@ -1,0 +1,11 @@
+{
+  "wef-data\\evidence\\cleanup-simple-20261107\\baseline\\attempt-log.js": "e913eb7d3a3031636dbbc5adbf0f5e197655ad71816b5fe376a86c1e01238f8a",
+  "wef-data\\evidence\\cleanup-simple-20261107\\baseline\\cleanup-run.js": "de43a587d0ec2ebfacc253d780264f14888b6a15899b9f9115563dd5ff357ee2",
+  "wef-data\\evidence\\cleanup-simple-20261107\\baseline\\entry.js": "d307da12d1e2c138d6045f095d95e3fc6a424f9c467519bd04c3d9ef7409953f",
+  "wef-data\\evidence\\cleanup-simple-20261107\\baseline\\run.ps1": "b16c658d4b99283734e69ebfb811e1b8d204f71ffef30abf25c1088bf605b39c",
+  "wef-data\\evidence\\cleanup-simple-20261107\\candidate\\attempt-log.js": "d679ca3b117d0dc6b5b609d33a5e6c852e6bf9ea6b281f567b094b01b451b896",
+  "wef-data\\evidence\\cleanup-simple-20261107\\candidate\\cleanup-lane.js": "4507c507cd1bc595cd14baf52dd35645aac9f57ddcc304d91078eb5620f642d6",
+  "wef-data\\evidence\\cleanup-simple-20261107\\candidate\\cleanup-run.js": "736828dca3d0e0566eab8039b410cab2627113102cfb550c2145ebaabf4624c7",
+  "wef-data\\evidence\\cleanup-simple-20261107\\candidate\\entry.js": "a27b7a2a1ceaaa5c9d9d05e838c2cd7f7774c09349cb7795a7978fca15aded8d",
+  "wef-data\\evidence\\cleanup-simple-20261107\\candidate\\run.ps1": "af47fdb3108f0facf25e6e81bfebda85a8ba9cb25007e41eb9b9fa4798a84e09"
+}

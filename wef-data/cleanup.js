@@ -22,49 +22,46 @@ async function canonical(api){
  return Number(rows[0].fields.show_id);
 }
 async function cleanup({api=require('./cleanup-airtable').airtable(),runtime=settings.RUNTIME,clock=()=>new Date().toISOString(),
- protectedRuns=[],alertShow,alertDay,trigger,eventId,alertAt}={}){
+ local=require('./cleanup-local-logs'),protectedRuns=[],alertShow,alertDay,trigger,eventId,alertAt}={}){
  if(!Number.isSafeInteger(alertShow)||alertShow<=0||!/^\d{4}-\d{2}-\d{2}$/.test(alertDay)||!['new-show','calendar-day','log-check'].includes(trigger)||typeof eventId!=='string'||!eventId||(!Number.isFinite(Date.parse(alertAt))||new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(alertAt))!==alertDay))throw Error('Verified Records cleanup alert required');
  fs.mkdirSync(runtime,{recursive:true});
- const stateFile=path.join(runtime,'cleanup-state.json'),stop=path.join(runtime,'cleanup-stop.json');
+ const stateFile=path.join(runtime,'cleanup-state.json');
  const run={run_id:Date.now(),started:clock(),actions:[],result:'Success'};
  // Live delete-only receipt: counts and action metadata, never deleted record snapshots.
  const savedRun=()=>({...run,selections:undefined,actions:run.actions.map(({rows,...a})=>({...a,target_count:rows.length}))});
  const receipt=()=>write(path.join(runtime,'cleanup-'+run.run_id+'.json'),savedRun());
- if(fs.existsSync(stop)){run.result='Blocked';run.error='Cleanup stopped after a prior incomplete/error action; collection continues';run.completed=clock();receipt();return run;}
- const fd=fs.openSync(stop,'wx');try{fs.writeFileSync(fd,JSON.stringify({run_id:run.run_id,started:run.started}));fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
  const protectedIds=new Set(protectedRuns),deletedIds=new Set();let activeAction;
  const protect=(t,r)=>api.protectedIds?.has(r.id)||protectedIds.has(r.fields['attempt-id'])||(LOGS.includes(t)&&api.loggingSnapshotIds&&!api.loggingSnapshotIds.has(r.id));
  async function publish(action){
-  const fields={'cleanup-id':action.id,'run-id':run.run_id,table:action.table,trigger:action.trigger,started:action.started,result:action.result,
-   'new-show-id':run.show,'records-archived':0,'records-deleted':action.deleted||0};
-  if(action.old_show)fields['old-show-id']=action.old_show;
-  if(action.completed)fields.completed=action.completed;
-  if(action.error)fields.error=action.error;
-  await api.upsert('cleanup-logs','cleanup-id',[fields]);
   const latest={'\uFEFFName':action.table,started:action.started,result:action.result,'new-show-id':run.show,records:action.before,
    'old-show-id':action.old_show||null,'records-archived':0,'records-deleted':action.deleted||0,
    'archive-file':'',error:action.error||'','run-id':run.run_id};
   latest.completed=action.completed||null;
   // Existing cleanup rows are selected by exact native ID; never create duplicates.
   const row=run.selections.find(r=>r.fields['\uFEFFName']===action.table);
-  const saved=await api.call(settings.BASE_ID,'cleanup','PATCH',{records:[{id:row.id,fields:latest}]});
+  latest.purpose=String(row.fields.purpose||'').split('\nLatest local cleanup:')[0]+(action.local?'\nLatest local cleanup: '+JSON.stringify(action.local):'');
+  const saved=await api.call(settings.BASE_ID,'cleanupV2','PATCH',{records:[{id:row.id,fields:latest}],typecast:true});
   if(saved.records?.length!==1||saved.records[0].id!==row.id)throw Error('Cleanup summary write unconfirmed');
+ }
+ async function report(action){
+  try{await publish(action);}catch(e){action.publication_error=e.message;run.result='Error';run.error='cleanupV2 outcome not saved: '+e.message;}
  }
  async function execute(plans){
   // Live delete-only action logging before deletion.
   for(const a of plans){
    activeAction=a;run.actions.push(a);a.started=clock();a.result=a.rows.length?'Running':'Skipped';
-   await publish(a);
+   await report(a);
   }
   for(const a of plans){
    activeAction=a;
-   if(a.rows.length){
+   try{if(a.rows.length){
     if(await canonical(api)!==run.show)throw Error('Default show changed during cleanup');
     await api.retireCleanup(a.table,a.rows,{trigger:a.trigger,show:run.show,deletedIds,protectedRuns:protectedIds},
      batch=>{a.deleted=(a.deleted||0)+batch.length;for(const id of batch)deletedIds.add(id);});
     a.result='Success';
    }
-   a.completed=clock();await publish(a);
+   }catch(e){a.result='Error';a.error=e.message;run.result='Error';run.error=e.message;}
+   a.completed=clock();await report(a);
   }
   activeAction=null;
  }
@@ -73,7 +70,7 @@ async function cleanup({api=require('./cleanup-airtable').airtable(),runtime=set
   run.show=await canonical(api);
   if(run.show!==alertShow)throw Error('Alert does not match canonical default show');
   if(api.prepare)await api.prepare();
-  run.selections=(await api.list('cleanup')).filter(r=>r.fields.cleanup==='checked'&&TABLES.includes(r.fields['\uFEFFName']));
+  run.selections=(await api.list('cleanupV2')).filter(r=>r.fields.cleanup==='checked'&&TABLES.includes(r.fields['\uFEFFName']));
   const selected=TABLES.filter(t=>run.selections.some(r=>r.fields['\uFEFFName']===t));
   run.new_show=previous.show!==run.show;
   const plan=(table,trigger,rows,before)=>{
@@ -81,6 +78,8 @@ async function cleanup({api=require('./cleanup-airtable').airtable(),runtime=set
    return{id:run.run_id+'|'+trigger+'|'+table,table,trigger,rows,before,old_show:old.length===1?old[0]:trigger==='new-show'&&previous.show!==run.show?previous.show:null,deleted:0};
   };
   let handled=false;
+  const due=previous.event_id!==eventId&&(trigger==='new-show'&&run.new_show||trigger==='calendar-day'&&previous.show===run.show&&(!previous.calendar_day||alertDay>previous.calendar_day)||trigger==='log-check'&&previous.show===run.show&&(!previous.last_log_check||Date.parse(alertAt)>Date.parse(previous.last_log_check)));
+  const localRequest=due?local.request(runtime,{event_id:eventId,run_id:run.run_id},selected):null;
   if(previous.event_id!==eventId&&(trigger==='new-show'||previous.show===run.show)){
    if(trigger==='new-show'&&run.new_show){
     handled=true;
@@ -103,16 +102,26 @@ async function cleanup({api=require('./cleanup-airtable').airtable(),runtime=set
     }
     await execute(quick);
    }
-   if(handled)write(stateFile,{...previous,show:run.show,event_id:eventId,
+   if(handled&&localRequest){
+    const receipts=await local.wait(localRequest);
+    for(const table of ['run-logs','err-logs'].filter(t=>selected.includes(t))){
+     let action=run.actions.find(a=>a.table===table);
+     if(!action){action=plan(table,trigger,[],0);action.started=run.started;action.result='Skipped';run.actions.push(action);}
+     action.local=receipts.map(r=>({workflow:r.workflow,result:r.result,deleted:r.counts?r.counts[table==='run-logs'?'runs':'errors']||0:null,error:r.error||''}));
+     if(action.result==='Skipped'&&action.local.some(r=>r.deleted>0))action.result='Success';
+     if(receipts.some(r=>r.result==='Error')){action.result='Error';const localError=receipts.filter(r=>r.error).map(r=>r.error).join('; ');action.error=[action.error,localError].filter(Boolean).join('\n');run.result='Error';run.error=[run.error,localError].filter(Boolean).join('\n');}
+     action.completed=clock();await report(action);
+    }
+   }
+   if(handled&&run.result==='Success')write(stateFile,{...previous,show:run.show,event_id:eventId,
     calendar_day:['new-show','calendar-day'].includes(trigger)?alertDay:previous.calendar_day,
     last_log_check:!previous.last_log_check||Date.parse(alertAt)>Date.parse(previous.last_log_check)?alertAt:previous.last_log_check,run_id:run.run_id,completed:clock()});
   }
-  run.completed=clock();receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());fs.unlinkSync(stop);
+  run.completed=clock();receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());
  }catch(e){
   run.result='Error';run.error=e.message;run.completed=clock();
   if(activeAction){activeAction.result='Error';activeAction.error=e.message;activeAction.completed=run.completed;try{await publish(activeAction);}catch(log){run.logging_error=log.message;}}
-  try{await api.upsert('err-logs','error-id',[{'error-id':'cleanup-'+run.run_id,'occurred-at':run.completed,category:'Cleanup',operation:'Cleanup',target:activeAction?.table||'cleanup',message:'Cleanup: '+e.message,'write-outcome':'Unknown'}]);}catch(log){run.error_log_error=log.message;}
-  write(stop,{run_id:run.run_id,at:run.completed,error:e.message});receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());
+  receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());
  }
  return run;
 }

@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "reader-integration",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-simple-20261107\\review-release\\checks.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-07T14:11:56.508314+00:00",
+      "ended_at": "2026-11-07T14:11:57.163544+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: retained delivery acknowledgment prevents recreation of preloaded deleted run\nok 1 - retained delivery acknowledgment prevents recreation of preloaded deleted run\n  ---\n  duration_ms: 68.0019\n  type: 'test'\n  ...\n# Subtest: removed listed file skipped while unrelated pending run is delivered\nok 2 - removed listed file skipped while unrelated pending run is delivered\n  ---\n  duration_ms: 20.2017\n  type: 'test'\n  ...\n# Subtest: EACCES still surfaces\nok 3 - EACCES still surfaces\n  ---\n  duration_ms: 10.8055\n  type: 'test'\n  ...\n# Subtest: bad-json still surfaces\nok 4 - bad-json still surfaces\n  ---\n  duration_ms: 7.7742\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 400.2072\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,3 +1,12 @@
+# Controlling approved repair — November 7, 2026
+
+Season remains owner-locked to four entity transfers, supported trip/show/day/person links, hourly operation and accurate silent error logging. The approved three-file repair is deployed.57 tests and independent review passed; normal hourly recovery remains unverified until the November7 8:51a.m.Eastern run. Further code/schema/task/scope changes still require explicit approval; the existing approved read-only hourly verification continues. No business-error persistent stops or added readiness gates; uncertain native writes retain their existing reconciliation protection. Historical lock details follow and are superseded where different.
+
+Current SHA256:
+- season.py: `6f91f80f150a5e1b3fa89bec606862228d0ec98f9aa198fff865838d7c55f404`
+- horse_associations.py: `50b93880ef96f9f5476904e0ce618692c6d862e90567230c69a34c1500e5fd7a`
+- entry.js: `f7dacc1ed911eaafc7f5ceb8ba8d59031702909ed1817a8c766d040968a956e9`
+
 # wef-season — owner-locked scope and deployed baseline
 
 Locked by the owner November 4, 2026. Version 2026.11.04.1.

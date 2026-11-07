@@ -1,0 +1,40 @@
+param([switch]$Linking)
+$ErrorActionPreference = 'Stop'
+Set-Location -LiteralPath $PSScriptRoot
+$dueArgs = @((Join-Path $PSScriptRoot 'entry.js'), '--due')
+if ($Linking) { $dueArgs += '--linking' }
+& node @dueArgs
+if ($LASTEXITCODE -eq 3) {
+    $cleanupArgs = @((Join-Path $PSScriptRoot 'cleanup-local-logs.js'), '--service')
+    if ($Linking) { $cleanupArgs += '--linking' }
+    & node @cleanupArgs
+    exit 0
+}
+if ($LASTEXITCODE -ne 0) { throw 'Data due check failed' }
+$stateDir = Join-Path $PSScriptRoot 'runtime'
+New-Item -ItemType Directory -Path $stateDir -Force | Out-Null
+$workflow = if ($Linking) { 'wef-data-linking' } else { 'wef-data' }
+$executionDir = if ($Linking) { Join-Path $stateDir 'linking' } else { $stateDir }
+New-Item -ItemType Directory -Path $executionDir -Force | Out-Null
+$logPath = Join-Path $executionDir ('collector-' + (Get-Date -Format 'yyyy-MM-dd') + '.log')
+$envPath = Join-Path $stateDir 'collector.env'
+. (Join-Path $PSScriptRoot 'attempt-log.ps1')
+$attemptRoot = Join-Path $stateDir ('logging/' + $workflow)
+$env:WEF_LOG_ATTEMPT_ID = Start-WefAttempt $attemptRoot $workflow 'appdl16HJ5ETm8N69'
+Add-Content -LiteralPath $logPath -Value ('START ' + (Get-Date -Format o))
+$collectorExit = 1
+try {
+    if (-not (Test-Path -LiteralPath $envPath)) { throw 'Missing private runtime/collector.env' }
+    $ErrorActionPreference = 'Continue'
+    $LASTEXITCODE = $null
+    $nodeArgs = @(('--env-file=' + $envPath), (Join-Path $PSScriptRoot 'entry.js'))
+    if ($Linking) { $nodeArgs += '--linking' }
+    & node @nodeArgs >> $logPath 2>&1
+    if ($null -ne $LASTEXITCODE) { $collectorExit = $LASTEXITCODE }
+}
+finally {
+    $ErrorActionPreference = 'Stop'
+    Complete-WefFallback $attemptRoot $env:WEF_LOG_ATTEMPT_ID $collectorExit
+    Add-Content -LiteralPath $logPath -Value ('END ' + (Get-Date -Format o) + ' exit=' + $collectorExit)
+}
+exit $collectorExit

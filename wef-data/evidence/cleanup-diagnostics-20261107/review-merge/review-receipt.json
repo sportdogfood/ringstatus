@@ -1,0 +1,66 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "reviewed_at": "2026-11-07T13:39:06.532079+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Limited review preserving exact remote diagnostic when local cleanup also fails",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\candidate\\cleanup.js",
+  "integration_coverage": "One-line error merge, seven fakeHTTP/disposable propagation cases, unchanged prior adapter; no live run",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\baseline\\cleanup.js",
+      "sha256": "4263ee9609f6759655b88654fd77f09db18da3640789e7ee2d0ca40733f0765f"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\candidate\\cleanup.js",
+      "sha256": "e1909c60104c2371b34defd8f1becc4a9a44d3f7f256a4910cc9b07d84ebd5b8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\candidate\\cleanup-airtable.js",
+      "sha256": "de78c60de0c0e7a6f26770f7fb2da556c429ee3484a673996e0b61804d8e6caf"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\review-merge\\report.md",
+    "sha256": "3693f2bb0c6fcc8b0ec1d080f18759030883987ef8388ab5b199bb57af402bf0"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\review-merge\\commands.json",
+      "sha256": "6946fb7c4a33f85d5a8e9ded854b0a4ad1f8b999c9bfe87ecb13bc32a37c9a6b"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "Independent seven diagnostic and merged outcome checks",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "merge-diagnostics"
+      ]
+    },
+    {
+      "name": "Approval boundary, actual delta and prior adapter reuse",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Read scoped task and one-line diff; reused unchanged adapter review",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\task.md",
+          "sha256": "bff01dd458628d255bc8304bc0e07f5fdc3793ced770304513ebaf958307518c"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\test-diagnostics.js",
+          "sha256": "78ff7fdf865acd6f3d79f2ad60d8f786b751e251560977c5efccbdcead655622"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-diagnostics-20261107\\review\\report.md",
+          "sha256": "0cc11c8c1df426dfdf70f2cf849e88f66643b3fc716b3127bacd9e95a849bd7b"
+        }
+      ]
+    }
+  ]
+}

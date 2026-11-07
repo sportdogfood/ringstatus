@@ -203,4 +203,5 @@ const links = {
     collection: "collections",
   },
 };
+for(const table of ['live-rings','live-groups','live-classes','live-trips','live-entries'])Object.assign(links[table],{'w-shows':'w-shows','w-days':'w-days','data-schedules':'wef-data.schedules'});
 module.exports = { tables, field, links };

@@ -1,0 +1,107 @@
+[
+  {
+    "table": "live-rings",
+    "field": "show",
+    "target": "wef-shows.show",
+    "id": "fldR2Br9LUjubPF76",
+    "actionId": "actuMEmV4UNZu7u6S"
+  },
+  {
+    "table": "live-rings",
+    "field": "show-day",
+    "target": "wef-shows.show-days",
+    "id": "fldhzx1sxRtzxgefs",
+    "actionId": "act5t0fD6O6nrpVui"
+  },
+  {
+    "table": "live-rings",
+    "field": "data-schedules",
+    "target": "wef-data.schedules",
+    "id": "fldqiXoCUHcDSWH4I",
+    "actionId": "actOP6ov9bpCRCEV6"
+  },
+  {
+    "table": "live-groups",
+    "field": "show",
+    "target": "wef-shows.show",
+    "id": "fldCt7JwEYtSrPLZ7",
+    "actionId": "actS4xIA5qW8wkLoi"
+  },
+  {
+    "table": "live-groups",
+    "field": "show-day",
+    "target": "wef-shows.show-days",
+    "id": "fldee28rXISDLmPmT",
+    "actionId": "actX9WbCqaW3WZV93"
+  },
+  {
+    "table": "live-groups",
+    "field": "data-schedules",
+    "target": "wef-data.schedules",
+    "id": "fldLAwvo3HkzUKB42",
+    "actionId": "act6DnnMnbSovmt5C"
+  },
+  {
+    "table": "live-classes",
+    "field": "show",
+    "target": "wef-shows.show",
+    "id": "fldikpKUaT3pIawGE",
+    "actionId": "actPKTxbwY1S9JwZg"
+  },
+  {
+    "table": "live-classes",
+    "field": "show-day",
+    "target": "wef-shows.show-days",
+    "id": "fldy8qawd7mbvdVOI",
+    "actionId": "actJbWisj2t19G5A5"
+  },
+  {
+    "table": "live-classes",
+    "field": "data-schedules",
+    "target": "wef-data.schedules",
+    "id": "fldB5XP2ALBQDzjaf",
+    "actionId": "acta1OnB2Shzoofu5"
+  },
+  {
+    "table": "live-trips",
+    "field": "show",
+    "target": "wef-shows.show",
+    "id": "fldgf0OvTxBTAukYN",
+    "actionId": "actmydNHUGE6xCwH0"
+  },
+  {
+    "table": "live-trips",
+    "field": "show-day",
+    "target": "wef-shows.show-days",
+    "id": "fld7EhecETDIX3zrO",
+    "actionId": "actfn3Opz3jmtJ3rh"
+  },
+  {
+    "table": "live-trips",
+    "field": "data-schedules",
+    "target": "wef-data.schedules",
+    "id": "fld1AMVDvmxsYUMr4",
+    "actionId": "actF2mZwAh663CGtl"
+  },
+  {
+    "table": "live-entries",
+    "field": "show",
+    "target": "wef-shows.show",
+    "id": "fldzVjy0cboH3yg8a",
+    "actionId": "actOR6HV7Hfax2wPM"
+  },
+  {
+    "table": "live-entries",
+    "field": "show-day",
+    "target": "wef-shows.show-days",
+    "id": "fldohFUhGbRcRr4cl",
+    "actionId": "actcNnofNoLniqq7v"
+  },
+  {
+    "table": "live-entries",
+    "field": "data-schedules",
+    "target": "wef-data.schedules",
+    "id": "fldFL9tiqvNcZ71bL",
+    "actionId": "act2mIP07xI0k9eE5"
+  }
+]

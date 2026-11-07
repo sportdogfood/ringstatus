@@ -12,7 +12,7 @@ function airtable({
   const readable = new Map([
     [
       settings.BASE_ID,
-      new Set([...writable, "wef-schedules.schedules"]),
+      new Set([...writable, "w-shows", "w-days", "wef-data.schedules"]),
     ],
     [settings.SHOWS_BASE, new Set(["shows", "show-days"])],
     [settings.SCHEDULES_BASE, new Set(['schedules','show-collection'])],

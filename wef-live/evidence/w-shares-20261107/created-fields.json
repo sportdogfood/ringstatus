@@ -1,0 +1,72 @@
+[
+  {
+    "table": "live-rings",
+    "field": "w-shows",
+    "id": "fldwoKhwDsQkXCYOP",
+    "target": "w-shows",
+    "actionId": "actaSRXD4DSnMe3pA"
+  },
+  {
+    "table": "live-rings",
+    "field": "w-days",
+    "id": "fldWqrn4ZMYIjgDAL",
+    "target": "w-days",
+    "actionId": "actWkDFcxeSvRlWP2"
+  },
+  {
+    "table": "live-groups",
+    "field": "w-shows",
+    "id": "fldDtYfOyyF4QfWDq",
+    "target": "w-shows",
+    "actionId": "actz2BWG9nApoU6wJ"
+  },
+  {
+    "table": "live-groups",
+    "field": "w-days",
+    "id": "fldfL6fobW01Oc07J",
+    "target": "w-days",
+    "actionId": "actwsvxed4tJxvgkN"
+  },
+  {
+    "table": "live-classes",
+    "field": "w-shows",
+    "id": "fldutOQkWFL3kllBu",
+    "target": "w-shows",
+    "actionId": "actb6uoULwl7b9JhT"
+  },
+  {
+    "table": "live-classes",
+    "field": "w-days",
+    "id": "fldL1oa42BI5MrRQa",
+    "target": "w-days",
+    "actionId": "acttMzUm0ajK7q2Bq"
+  },
+  {
+    "table": "live-trips",
+    "field": "w-shows",
+    "id": "fldcw8BNbncIL931q",
+    "target": "w-shows",
+    "actionId": "actILg48HXPjdNDgX"
+  },
+  {
+    "table": "live-trips",
+    "field": "w-days",
+    "id": "fld2TFUfUHvtK3vm2",
+    "target": "w-days",
+    "actionId": "actPHG6coJ8qHMr8e"
+  },
+  {
+    "table": "live-entries",
+    "field": "w-shows",
+    "id": "fldBh1moZNlzhnY5s",
+    "target": "w-shows",
+    "actionId": "actzvNqsHJYJc42eu"
+  },
+  {
+    "table": "live-entries",
+    "field": "w-days",
+    "id": "fldEgiAt9qQyP0dHC",
+    "target": "w-days",
+    "actionId": "actPgYJfjagD0OqZ7"
+  }
+]

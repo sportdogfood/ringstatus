@@ -1,0 +1,8 @@
+{
+  "deployed_at": "2026-11-07T14:15:32.320943+00:00",
+  "cleanup_lane_sha256": "ba57c28e494c55816716a4898a371f0b61365ff5385d6d721743284beede96f1",
+  "review": "review-handoff/review-receipt.json",
+  "delta": "Preserve existing Records cleanup-state checkpoint path and fields; no new checkpoint or rule.",
+  "manual_run": false,
+  "natural_alert_verified": false
+}

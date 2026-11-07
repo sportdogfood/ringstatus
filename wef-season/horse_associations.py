@@ -93,11 +93,6 @@ def prepare(facts,previous):
         for day in days:
             if day not in facts['days'] or links(facts['days'][day],'show','shows')!=shows:
                 conflict(kind,key,horse,'Day/show disagreement',{'shows':shows,'days':days});return
-        if kind=='trips':
-            for ek in links(row,'entry','entries'):
-                parent=links(facts['entries'].get(ek,{}),'horse','horses')
-                if parent and parent!=[horse]:
-                    conflict(kind,key,horse,'Trip/entry horse disagreement',{'trip':horse,'entry':parent});return
         for role,field in FIELDS.items():
             people=links(row,role if kind=='trips' else role+'s',role+'s')
             if len(people)>1:
@@ -128,11 +123,11 @@ def prepare(facts,previous):
         output[horse]=row
     return output,conflicts
 
-def sync(client,config,facts,runtime):
+def sync(client,config,facts,runtime,excluded=()):
     definition=copy.deepcopy(config['tables']['horses'])
     definition['fields']=[f for f in definition['fields'] if f['name'] in ('horse-key',*FIELDS.values())]
     store=SeasonStore(client,{'base':config['base'],'tables':{'horses':definition}},runtime/'associations')
-    inventory=store.inventory('horses');fields=store.fields['horses']
+    inventory={k:v for k,v in store.inventory('horses').items() if k not in excluded};fields=store.fields['horses']
     previous={key:{name:record['fields'].get(field['id']) for name,field in fields.items()} for key,record in inventory.items()}
     rows,conflicts=prepare(facts,previous)
     result=store.apply({'horses':rows})

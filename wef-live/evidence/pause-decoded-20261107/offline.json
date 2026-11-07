@@ -1,0 +1,16 @@
+{
+  "commands": [
+    {
+      "id": "pause-decoded-offline",
+      "stderr": "",
+      "started_at": "2026-11-07T12:33:08.0076839Z",
+      "ended_at": "2026-11-07T12:33:08.6543391Z",
+      "command": "node --test wef-live/evidence/pause-decoded-20261107/pause.test.cjs",
+      "exit_code": 0,
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "stdout": "TAP version 13\n# Subtest: live details collect/save without any decoded request,trip read/write or identity gate\nok 1 - live details collect/save without any decoded request,trip read/write or identity gate\n  ---\n  duration_ms: 57.4988\n  type: 'test'\n  ...\n# Subtest: existing entry identity fields and native links survive live-only updates\nok 2 - existing entry identity fields and native links survive live-only updates\n  ---\n  duration_ms: 29.0083\n  type: 'test'\n  ...\n# Subtest: live-only model preserves explicit zeros/false,validates source class and never fabricates identities\nok 3 - live-only model preserves explicit zeros/false,validates source class and never fabricates identities\n  ---\n  duration_ms: 2.0271\n  type: 'test'\n  ...\n# Subtest: existing decoded model callers preserve their exact previous fields and validation\nok 4 - existing decoded model callers preserve their exact previous fields and validation\n  ---\n  duration_ms: 2.8021\n  type: 'test'\n  ...\n# Subtest: empty live detail succeeds; malformed row logs and other rows/class keep saving\nok 5 - empty live detail succeeds; malformed row logs and other rows/class keep saving\n  ---\n  duration_ms: 36.7173\n  type: 'test'\n  ...\n# Subtest: completed:null is an empty list without warnings; record and other ring links remain\nok 6 - completed:null is an empty list without warnings; record and other ring links remain\n  ---\n  duration_ms: 33.0786\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 332.1909",
+      "runtime": "v22.22.2"
+    }
+  ],
+  "reviewer": "wef-live author"
+}

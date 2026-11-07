@@ -1,6 +1,6 @@
 # Records coordinator daily agent-management plan
 
-Version **1.6.0**, updated **November 6, 2026**, America/New_York. Owner: Records coordinator, chat `01a169bc-e58a-7de0-94c6-5d3931fcf745`.
+Version **1.7.0**, updated **November 7, 2026**, America/New_York. Owner: Records coordinator, chat `01a169bc-e58a-7de0-94c6-5d3931fcf745`.
 
 **Current route: actual operational messages plus the approved cleanup-only exception in the existing context reminder.** The removed Shows observer and all-six timed coverage remain removed. Preserve the reminder's actual current cadence, identity, target, status, context duties and two-minute cap. November 4 approval migrates source/relationship bindings and diagnostics, not timing or ownership. Resolve current `w-shows` / `w-days` sources from the same existing schema configuration as Data; activate Records only with the reviewed matching consumer. No source switch creates an event or resets state.
 
@@ -117,3 +117,13 @@ This complaint concerns delayed Records oversight, not proof Records caused the 
 Use README's November6 cleanup-specific readiness amendment and its independent review/deployment readback. Compare installed cleanup dependencies/task plus the reviewed relevant schema projection, rather than every unrelated Data collector file. The unchanged one-pointer contract, genuine-event priorities, nine handled events, stops and Data-only execution remain controlling. Records never deletes local logs; Data's normal delivery prunes only confirmed-delivered local log families and protects pending/uncertain/current evidence.
 
 The fresh owner approval permits restoring the SAME existing reminder to ACTIVE as part of this exact handoff repair, not resumption of unrelated work. Original pause actor/reason is unverified; no distinct protected owner pause was found. Preserve identity, target, current three-hour cadence and the two-minute continuity/cleanup scope; verify only through the next actual natural wake. No new schedule, cadence change, manual run, synthetic event or old-event replay. Report actual alert delivery, Data acknowledgment, runner completion and deletion/absence proof separately; current live acceptance remains pending.
+
+## CleanupV2-only handoff — November7, 2026
+
+The owner directly approved cleanupV2-only control/outcomes, combined local and Airtable cleanup, pending-log preservation, independent review, deployment and proof through existing Records alerts (Data message `01a1b608-2edb-7501-92ff-cb0fd0c7891a`). No other lane changes, new schedules or extras. The new contract supersedes earlier current instructions to use `cleanup` / `cleanup-logs`; those tables' historical records remain preserved, with no current reads/writes by this stage.
+
+Records uses the exact reviewed, installed Data cleanupV2 manifest and matching relevant schema projection in `C:/Users/gombc/Documents/Codex/outputs/wef-records-cleanup-handoff-20261106/cleanupv2/consumer-readiness.json`. This binding amendment is deployed only after Data's actual reviewed consumer is installed. No second source map, alert keys, timer, producer runtime or business execution is added. Preserve the same existing ACTIVE three-hour context/cleanup reminder, source clocks, alert shape, priorities, stops and history.
+
+One genuine existing Records alert covers the combined local/Airtable cleanup. Data alone owns execution, preserves pending/uncertain/current local families and records actual outcomes in cleanupV2. Separate local completion from Airtable deletion; a result from one does not establish combined Success. Exact installed behavior/review/deployment/live evidence remains controlling; the earlier continuous-local-pruning release is historical.
+
+Natural calendar-day alert `calendar-day|2026-11-07` was delivered/adopted once, but run `1794034173999` failed at `2026-11-07T06:51:38.460Z` with “Cleanup record changed before deletion”, reporting 630 run-log deletions. Its persistent stop and failed event remain preserved. This table migration does not itself release that stop, authorize a retry or manufacture a new event. Finish approved preparation/review/deployment independently; require actual applicable resumption authority and a genuine existing alert for operational proof. Do not replay previously deleted work, clear stops or treat a prepared table/configuration as completion.

@@ -1,0 +1,34 @@
+{
+  "tables": [
+    {
+      "tableId": "tblMhQtjpvyODEUSn",
+      "fields": [
+        {
+          "id": "fldGusnteia52NKFm",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblNaM9ehOJFsrveV",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldHnLaPKFS9sH90h"
+          }
+        }
+      ]
+    },
+    {
+      "tableId": "tblNaM9ehOJFsrveV",
+      "fields": [
+        {
+          "id": "fldHnLaPKFS9sH90h",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblMhQtjpvyODEUSn",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldGusnteia52NKFm"
+          }
+        }
+      ]
+    }
+  ]
+}

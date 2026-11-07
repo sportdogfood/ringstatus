@@ -1,5 +1,16 @@
 # wef-season — retained entities and horse associations
 
+## Current release — November 7, 2026
+
+Deployed at 8:02 a.m. Eastern. Season reads current Data w-shows/w-days and their existing class links. Horse assignments use supported trips without parent-entry comparisons. Conflicting source identities are retained unchanged, logged in existing err-logs and skipped; valid records continue. Rejected rings do not reach helpers; skipped horses do not reach secondary association/library writes. Existing healthy batches remain the normal path. Known rejected creates release only their newly written reservation; pre-existing uncertain reservations are preserved for reconciliation. Unknown writes are never blindly replayed. Source/read outages are logged as Deferred; no business-error persistent stop is created. No new gate, schema, task, Data change or manual run.
+
+57 writer and independent checks, JavaScript syntax, and the real-store uncertain-reservation regression passed. Only season.py, horse_associations.py and entry.js changed. The original Rings stop is preserved in outputs/season-record-errors-20261107/rings-stop-before.json and was released under the repair approval. Historical records/conflicts remain retained.
+
+**Hourly acceptance is pending the next normal 8:51 a.m. Eastern run on November 7.** Deployment/tests do not establish recovery. Next verification: all four outcomes; Rings record-specific skipped errors without a renewed stop; corrected current show/day memberships and supported horse/person links; no lost baseline keys, native IDs, histories or nicknames. Baselines are before-{horses,riders,trainers,rings}.json and before-rings-helper.json in the release packet. No new observer or timer is configured.
+
+[Deployment](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/season-record-errors-20261107/deployment.json>) · [Final independent review](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/season-record-errors-20261107/review-reservation-final/independent-review.md>). Older dated snapshots below remain historical where they differ.
+
+
 ## Owner lock — November 4, 2026
 
 **LOCKED:** Season only adds/upserts/deduplicates four entities, maintains supported trip-based person/show/day links while preserving keys/history, and runs/reports through the existing hourly task. Further implementation changes require explicit owner approval. Normal hourly operation and already-approved read-only verification continue. [Locked scope and deployed hashes](<C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-season/LOCK.md>).
@@ -14,8 +25,8 @@ At 3:16 p.m. Eastern the reviewed one-line removal was deployed: horse associati
 Hourly acceptance remains pending the next normal3:51p.m.Eastern run; deployment is not scheduled verification. Evidence: outputs/trip-only-associations-20261103/deployment.json and review-final/. This current update supersedes older statements that entry-based assignment checks remain deployed.
 
 
-**README version: 1.1.9**  
-**Updated: November 4, 2026, America/New_York**
+**README version: 1.2.0**  
+**Updated: November 7, 2026, America/New_York**
 
 ## Scope and ownership
 

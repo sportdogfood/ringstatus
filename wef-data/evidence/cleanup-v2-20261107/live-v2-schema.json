@@ -1,0 +1,77 @@
+{
+  "id": "tblIhyIiYgvHHeChy",
+  "name": "cleanupV2",
+  "primaryFieldId": "fldKjmFaaBt3yTuGF",
+  "fields": [
+    {
+      "id": "fldKjmFaaBt3yTuGF",
+      "name": "﻿Name",
+      "type": "multilineText"
+    },
+    {
+      "id": "fldoSteokSwtKkwao",
+      "name": "records",
+      "type": "number"
+    },
+    {
+      "id": "fldPdK4lIHVng09Er",
+      "name": "purpose",
+      "type": "multilineText"
+    },
+    {
+      "id": "fldip5SV6Oq6rb20Y",
+      "name": "cleanup",
+      "type": "singleSelect"
+    },
+    {
+      "id": "fldKT0yw9y6vVFFsG",
+      "name": "started",
+      "type": "dateTime"
+    },
+    {
+      "id": "fldtfYtd0dZXppisd",
+      "name": "completed",
+      "type": "dateTime"
+    },
+    {
+      "id": "fldHr91pmw8EBCT37",
+      "name": "result",
+      "type": "singleSelect"
+    },
+    {
+      "id": "fld74HBO1huX4XO6S",
+      "name": "old-show-id",
+      "type": "number"
+    },
+    {
+      "id": "fldFcnasA6AVgex7K",
+      "name": "new-show-id",
+      "type": "number"
+    },
+    {
+      "id": "fldzWG4d5mbkLk9IP",
+      "name": "records-archived",
+      "type": "number"
+    },
+    {
+      "id": "fld4jnmzwJkKTe8wJ",
+      "name": "records-deleted",
+      "type": "number"
+    },
+    {
+      "id": "fldM11eR0n3DcQZgh",
+      "name": "archive-file",
+      "type": "multilineText"
+    },
+    {
+      "id": "fldbZzlXUkbA2vpiw",
+      "name": "error",
+      "type": "multilineText"
+    },
+    {
+      "id": "fldoBlDL8V0qpLwqO",
+      "name": "run-id",
+      "type": "number"
+    }
+  ]
+}

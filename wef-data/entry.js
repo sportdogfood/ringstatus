@@ -110,8 +110,6 @@ async function scheduled(){
   logging.finish(root,attempt,{status:errors.some(error=>!error.nonblocking)?'Partial':'Succeeded',stage,'show-key':report['show-key'],'run-key':report['run-key'],counts:report.counts,reason:errors.length?errors[0].error:undefined});
   const delivered=await logging.deliver(root,config);
   if(!delivered.ok)logging.recordError(root,attempt,{category:'Logging',message:delivered.error,'write-outcome':'Unknown'},'LogDelivery');
-  try{console.log(JSON.stringify({localLogCleanup:require('./cleanup-local-logs').prune(root,config)}));}
-  catch(error){logging.recordError(root,attempt,{category:'Logging',operation:'Clean delivered local logs',message:error.message,'write-outcome':'Unknown'},'LocalLogCleanup');}
  }
 }
 if(require.main===module){

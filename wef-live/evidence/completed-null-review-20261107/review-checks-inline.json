@@ -1,0 +1,16 @@
+{
+  "reviewer": "wef-live author",
+  "commands": [
+    {
+      "exit_code": 0,
+      "runtime": "Python 3.11.3",
+      "command": "python -B (inline manifest and frozen-null-path equality verification; saved in verify-current.py)",
+      "ended_at": "2026-11-07T13:05:52.4850515Z",
+      "stderr": "",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "id": "verify-current-null-baseline",
+      "started_at": "2026-11-07T13:05:52.2835006Z",
+      "stdout": "{\"installed_runtime_hashes_matched\": 25, \"null_path_exact_frozen_dependencies\": 5, \"prior_null_test_output\": \"PASS;inspected reuse,not rerun\", \"new_runtime_change\": false, \"new_deployment_needed\": false}"
+    }
+  ]
+}
