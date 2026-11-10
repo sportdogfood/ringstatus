@@ -141,7 +141,7 @@ async function readHorseData(dataset, bindings, fetchImpl) {
   for (const { fields } of added) {
     const horse = toHorse(fields);
     const id = String(horse.horseId);
-    if (!catalog.has(id)) catalog.set(id, horse);
+    if (!catalog.has(id)) catalog.set(id, { ...horse, tackAddition: true });
   }
   if (dataset === 'horses') return [...catalog.values()];
 
