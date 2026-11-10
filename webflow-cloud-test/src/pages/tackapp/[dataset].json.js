@@ -9,6 +9,8 @@ const DIRECTORY = 'tbl8uYnqzysdiBqiu';
 const CASTLEWOOD = 'recZ9MyqRplHD9AY8';
 const TENANT = 8778;
 const WRITE_ORIGIN = 'https://ringstatus.com';
+const TACK_ORIGIN = 'https://tack.ringstatus.com';
+const writeOrigins = new Set([WRITE_ORIGIN, TACK_ORIGIN]);
 const directoryFields = ['horse-id', 'horse-name', 'horse-nickname'];
 const additionFields = ['addition_key', 'tenant_id', 'source', 'horse_key', 'show_name', 'barn_name', 'color', 'gender', 'added_by', 'directory_record_id'];
 const colors = new Set(['Grey', 'Chestnut', 'Bay', 'Palomino', 'Liverchestnut', 'Black', 'Paint']);
@@ -160,12 +162,33 @@ async function readHorseData(dataset, bindings, fetchImpl) {
 const reply = (status, body) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 const failure = (status, error) => reply(status, { error });
 
-export const POST = ({ request, params }) => params.dataset === 'horses'
-  ? handleTackHorseAdd(request, env, fetch)
+function allowTackCredentials(response, request) {
+  response.headers.append('Vary', 'Origin');
+  if (request.headers.get('Origin') === TACK_ORIGIN && new URL(request.url).origin === WRITE_ORIGIN) {
+    response.headers.set('Access-Control-Allow-Origin', TACK_ORIGIN);
+    response.headers.set('Access-Control-Allow-Credentials', 'true');
+  }
+  return response;
+}
+
+export const OPTIONS = ({ request, params }) => {
+  if (params.dataset !== 'horses' || new URL(request.url).origin !== WRITE_ORIGIN ||
+      request.headers.get('Origin') !== TACK_ORIGIN ||
+      request.headers.get('Access-Control-Request-Method') !== 'POST') {
+    return failure(403, 'origin_denied');
+  }
+  return allowTackCredentials(new Response(null, { status: 204, headers: {
+    'Access-Control-Allow-Methods': 'POST',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  } }), request);
+};
+
+export const POST = async ({ request, params }) => params.dataset === 'horses'
+  ? allowTackCredentials(await handleTackHorseAdd(request, env, fetch), request)
   : failure(405, 'method_not_allowed');
 
 export async function handleTackHorseAdd(request, bindings, fetchImpl, authorize = iamActor) {
-  if (new URL(request.url).origin !== WRITE_ORIGIN || request.headers.get('Origin') !== WRITE_ORIGIN) {
+  if (new URL(request.url).origin !== WRITE_ORIGIN || !writeOrigins.has(request.headers.get('Origin'))) {
     return failure(403, 'origin_denied');
   }
   if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) {
