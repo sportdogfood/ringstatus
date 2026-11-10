@@ -10,7 +10,7 @@ const WRITE_ORIGIN = 'https://ringstatus.com';
 const TACK_ORIGIN = 'https://tack.ringstatus.com';
 const writeOrigins = new Set([WRITE_ORIGIN, TACK_ORIGIN]);
 const additionFields = ['addition_key', 'tenant_id', 'source', 'horse_key', 'show_name', 'barn_name', 'color', 'gender', 'added_by', 'directory_record_id'];
-const rosterFields = ['horse_key', 'show_name', 'barn_name', 'barn_active', 'source', 'addition_key'];
+const rosterFields = ['horse_key', 'show_name', 'barn_name', 'barn_active', 'source', 'addition_key', 'app_inactive'];
 const colors = new Set(['Grey', 'Chestnut', 'Bay', 'Palomino', 'Liverchestnut', 'Black', 'Paint']);
 const genders = new Set(['Mare', 'Gelding']);
 
@@ -142,7 +142,7 @@ async function readHorseData(dataset, bindings, fetchImpl) {
   if (!roster.length || new Set(roster.map(row => row.fields.horse_key)).size !== roster.length) {
     throw new Error('TackLists roster is empty or has duplicate keys');
   }
-  if (dataset === 'horses') return roster.map(({ fields }) => ({
+  if (dataset === 'horses') return roster.filter(({ fields }) => fields.app_inactive !== 1).map(({ fields }) => ({
     ...toHorse(fields), ...(fields.source === 'Default' ? {} : { tackAddition: true }),
   }));
 
