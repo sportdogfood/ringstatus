@@ -1,27 +1,20 @@
 import { env } from 'cloudflare:workers';
 import { claimOnce, completeClaim, requireClaimDatabase } from '../../lib/rs-recognition-claims.js';
 
-const RINGSTATUS = 'apptdhhNzduxm5gjn';
-const ADDITIONS = 'tblVkaUDMLmyDn0ft';
-const DIRECTORY_BASE = 'appETrjio9Yj9Pv17';
-const DIRECTORY = 'tbl8uYnqzysdiBqiu';
+const TACKAPP = 'appPLyqAX4IctCOeq';
+const ADDITIONS = 'tblYG2yUEJO5Mmser'; // tack-horse-additions
+const ROSTER = 'tblmi0Ozfd0axbWto'; // tack-all
+const DIRECTORY = 'tbl0CrISBsZM6J4UC'; // w-horses, read only
 const TENANT = 8778;
 const WRITE_ORIGIN = 'https://ringstatus.com';
 const TACK_ORIGIN = 'https://tack.ringstatus.com';
 const writeOrigins = new Set([WRITE_ORIGIN, TACK_ORIGIN]);
-const directoryFields = ['horse-id', 'horse-name', 'horse-nickname'];
 const additionFields = ['addition_key', 'tenant_id', 'source', 'horse_key', 'show_name', 'barn_name', 'color', 'gender', 'added_by', 'directory_record_id'];
+const rosterFields = ['horse_key', 'show_name', 'barn_name', 'barn_active', 'source', 'addition_key'];
 const colors = new Set(['Grey', 'Chestnut', 'Bay', 'Palomino', 'Liverchestnut', 'Black', 'Paint']);
 const genders = new Set(['Mare', 'Gelding']);
 
 const datasets = new Map([
-  ['horses', {
-    table: 'tblliyUZ1ZS88Kfvl', // ww_horses
-    view: 'viwaB98wQ0MZcWkXC', // 8778-tacklists-full-roster
-    fields: ['horseId', 'horseName', 'barnName', 'barnActive'],
-    key: 'horseId',
-    label: 'horseName',
-  }],
   ['lists', {
     table: 'tblRGvWvkLYV7RKqK', // tack_lists
     view: 'viw3WXE5krtboYmxr', // 8778-tack-lists
@@ -44,7 +37,9 @@ export const GET = async ({ request, params }) => {
   if (appOrigins.has(origin)) headers.set('Access-Control-Allow-Origin', origin);
 
   const dataset = datasets.get(params.dataset);
-  if (!dataset && params.dataset !== 'horse-search') return Response.json({ error: 'dataset_not_found' }, { status: 404, headers });
+  if (!dataset && !['horses', 'horse-search'].includes(params.dataset)) {
+    return Response.json({ error: 'dataset_not_found' }, { status: 404, headers });
+  }
 
   const base = env.AIRTABLE_BASE_ID || env.AIRTABLE_BASE;
   const token = env.AIRTABLE_TOKEN;
@@ -119,9 +114,9 @@ const clean = value => typeof value === 'string' ? value.trim() : '';
 const validHorseId = value => Number.isSafeInteger(value) && value > 0;
 const validRecordId = value => typeof value === 'string' && /^rec[A-Za-z0-9]{14}$/.test(value);
 const validUuid = value => typeof value === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(value);
-const directoryToken = bindings => bindings.AIRTABLE_TACK_DIRECTORY_TOKEN || bindings.AIRTABLE_TOKEN;
+const tackToken = bindings => bindings.AIRTABLE_TACKAPP_TOKEN || bindings.AIRTABLE_TOKEN;
 const additions = (bindings, fetchImpl, filter = '') => listRecords({
-  base: RINGSTATUS, token: bindings.AIRTABLE_TOKEN, table: ADDITIONS, fields: additionFields,
+  base: TACKAPP, token: tackToken(bindings), table: ADDITIONS, fields: additionFields,
   formula: filter ? `AND({tenant_id}=${TENANT},${filter})` : `{tenant_id}=${TENANT}`,
 }, fetchImpl);
 
@@ -129,33 +124,60 @@ function toHorse(fields) {
   const horseId = String(fields.horse_key ?? '');
   const horseName = clean(fields.barn_name) || clean(fields.show_name);
   if (!horseId || !horseName) throw new Error('Invalid TackLists addition');
-  return { horseId: /^\d+$/.test(horseId) ? Number(horseId) : horseId, horseName, barnName: horseName, barnActive: false };
+  return { horseId: /^\d+$/.test(horseId) ? Number(horseId) : horseId, horseName, barnName: horseName, barnActive: fields.barn_active === true };
+}
+
+const readRoster = (bindings, fetchImpl) => listRecords({
+  base: TACKAPP, token: tackToken(bindings), table: ROSTER, fields: rosterFields,
+}, fetchImpl);
+
+function isRosterHorse(roster, horseId, name) {
+  return roster.some(({ fields }) => fields.horse_key === String(horseId) ||
+    (fields.horse_key?.startsWith('hps_') &&
+      [fields.show_name, fields.barn_name].some(label => clean(label).toLowerCase() === name.toLowerCase())));
 }
 
 async function readHorseData(dataset, bindings, fetchImpl) {
-  const [defaults, added] = await Promise.all([
-    readDataset(bindings.AIRTABLE_BASE_ID || bindings.AIRTABLE_BASE, bindings.AIRTABLE_TOKEN, datasets.get('horses')),
-    additions(bindings, fetchImpl),
-  ]);
-  const catalog = new Map(defaults.map(horse => [String(horse.horseId), horse]));
-  for (const { fields } of added) {
-    const horse = toHorse(fields);
-    const id = String(horse.horseId);
-    if (!catalog.has(id)) catalog.set(id, { ...horse, tackAddition: true });
+  const roster = await readRoster(bindings, fetchImpl);
+  if (!roster.length || new Set(roster.map(row => row.fields.horse_key)).size !== roster.length) {
+    throw new Error('TackLists roster is empty or has duplicate keys');
   }
-  if (dataset === 'horses') return [...catalog.values()];
+  if (dataset === 'horses') return roster.map(({ fields }) => ({
+    ...toHorse(fields), ...(fields.source === 'Default' ? {} : { tackAddition: true }),
+  }));
 
-  const rows = await listRecords({ base: DIRECTORY_BASE, token: directoryToken(bindings), table: DIRECTORY,
+  const rows = await listRecords({ base: TACKAPP, token: tackToken(bindings), table: DIRECTORY,
     fields: ['horse-id', 'horse-name'], paced: true }, fetchImpl);
   const matches = [];
+  const seen = new Set();
   for (const { id, fields } of rows) {
     const horseId = fields['horse-id'];
     const name = clean(fields['horse-name']);
-    if (!validRecordId(id) || !validHorseId(horseId) || !name || catalog.has(String(horseId))) continue;
-    catalog.set(String(horseId), null);
-    matches.push({ recordId: id, name });
+    if (!validRecordId(id) || !validHorseId(horseId) || !name || seen.has(horseId) || isRosterHorse(roster, horseId, name)) continue;
+    seen.add(horseId);
+    matches.push({ recordId: id, horseId, name });
   }
   return matches.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+async function upsertTackRow(bindings, fetchImpl, table, key, fields) {
+  const result = await airtable(fetchImpl, tableUrl(TACKAPP, table), tackToken(bindings), {
+    method: 'PATCH', body: JSON.stringify({ performUpsert: { fieldsToMergeOn: [key] }, records: [{ fields }] }),
+  });
+  const row = result.records?.[0];
+  if (result.records?.length !== 1 || !validRecordId(row?.id) || row.fields?.[key] !== fields[key]) {
+    throw new Error('TackLists save could not be confirmed');
+  }
+  return row;
+}
+
+async function publishAddition(bindings, fetchImpl, { fields }) {
+  const { horse_key, show_name, barn_name, source, addition_key, color, gender, directory_record_id } = fields;
+  await upsertTackRow(bindings, fetchImpl, ROSTER, 'horse_key', {
+    horse_key, show_name, barn_name, source, addition_key,
+    ...(color ? { color } : {}), ...(gender ? { gender } : {}),
+    ...(directory_record_id ? { source_record_id: directory_record_id } : {}),
+  });
 }
 
 const reply = (status, body) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
@@ -222,7 +244,7 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl) {
 
     const fields = { tenant_id: TENANT, added_by: `tack-session:${body.session_id.toLowerCase()}`, source: body.source };
     if (body?.source === 'Directory' && validRecordId(body.directory_record_id)) {
-      const record = await airtable(fetchImpl, tableUrl(DIRECTORY_BASE, DIRECTORY, body.directory_record_id), directoryToken(bindings));
+      const record = await airtable(fetchImpl, tableUrl(TACKAPP, DIRECTORY, body.directory_record_id), tackToken(bindings));
       const id = record.fields?.['horse-id'];
       const show = clean(record.fields?.['horse-name']);
       if (record.id !== body.directory_record_id || !validHorseId(id) || !show) return failure(404, 'horse_not_found');
@@ -239,25 +261,24 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl) {
     } else return failure(400, 'invalid_request');
 
     const lookup = () => additions(bindings, fetchImpl, `{addition_key}='${fields.addition_key}'`);
-    const replay = rows => {
+    const replay = async rows => {
       if (rows.length !== 1) throw new Error('Unexpected TackLists addition count');
       const existing = rows[0].fields;
       if (fields.source === 'Manual' && !Object.entries(fields).every(([key, value]) => existing[key] === value)) {
         return failure(409, 'request_conflict');
       }
+      await publishAddition(bindings, fetchImpl, rows[0]);
       return reply(200, { horse: toHorse(existing), additionId: rows[0].id });
     };
     const existing = await lookup();
     if (existing.length) return replay(existing);
     if (fields.source === 'Directory') {
-      const defaults = await listRecords({ base: RINGSTATUS, token: bindings.AIRTABLE_TOKEN,
-        table: datasets.get('horses').table, view: datasets.get('horses').view,
-        fields: ['horseId'], formula: `{horseId}=${Number(fields.horse_key)}` }, fetchImpl);
-      if (defaults.some(row => String(row.fields.horseId) === fields.horse_key)) return failure(409, 'horse_already_in_picker');
+      const roster = await readRoster(bindings, fetchImpl);
+      if (isRosterHorse(roster, fields.horse_key, fields.show_name)) return failure(409, 'horse_already_in_picker');
     }
 
     // One writer owns the log entry and its attribution. A retry checks Airtable before any new write.
-    const claim = await claimOnce(bindings, 'tackapp-horse-addition', fields.addition_key);
+    const claim = await claimOnce(bindings, 'tackapp-base-horse-addition', fields.addition_key);
     if (!claim.won) {
       const confirmed = await lookup();
       return confirmed.length ? replay(confirmed) : failure(503, 'write_outcome_unknown');
@@ -273,11 +294,8 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl) {
     }
     let saved;
     try {
-      const result = await airtable(fetchImpl, tableUrl(RINGSTATUS, ADDITIONS), bindings.AIRTABLE_TOKEN, {
-        method: 'PATCH', body: JSON.stringify({ performUpsert: { fieldsToMergeOn: ['addition_key'] }, records: [{ fields }] }),
-      });
-      saved = result.records?.[0];
-      if (result.records?.length !== 1 || !validRecordId(saved?.id) || !Object.entries(fields).every(([key, value]) => saved.fields?.[key] === value)) {
+      saved = await upsertTackRow(bindings, fetchImpl, ADDITIONS, 'addition_key', { ...fields, added_at: new Date().toISOString() });
+      if (!Object.entries(fields).every(([key, value]) => saved.fields?.[key] === value)) {
         return failure(503, 'write_outcome_unknown');
       }
     } catch (error) {
@@ -286,6 +304,7 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl) {
       }
       return failure(503, 'write_outcome_unknown');
     }
+    await publishAddition(bindings, fetchImpl, saved);
     try { await completeClaim(bindings, claim, { additionId: saved.id }); }
     catch { console.error('[tackapp] addition confirmed but claim completion failed'); }
     return reply(201, { horse: toHorse(saved.fields), additionId: saved.id });
