@@ -1,12 +1,10 @@
 import { env } from 'cloudflare:workers';
-import { iamActor } from '../../lib/rs-inputs-iam-policy.js';
-import { claimOnce, completeClaim } from '../../lib/rs-recognition-claims.js';
+import { claimOnce, completeClaim, requireClaimDatabase } from '../../lib/rs-recognition-claims.js';
 
 const RINGSTATUS = 'apptdhhNzduxm5gjn';
 const ADDITIONS = 'tblVkaUDMLmyDn0ft';
 const DIRECTORY_BASE = 'appETrjio9Yj9Pv17';
 const DIRECTORY = 'tbl8uYnqzysdiBqiu';
-const CASTLEWOOD = 'recZ9MyqRplHD9AY8';
 const TENANT = 8778;
 const WRITE_ORIGIN = 'https://ringstatus.com';
 const TACK_ORIGIN = 'https://tack.ringstatus.com';
@@ -120,6 +118,7 @@ async function listRecords({ base, token, table, view, fields, formula, paced = 
 const clean = value => typeof value === 'string' ? value.trim() : '';
 const validHorseId = value => Number.isSafeInteger(value) && value > 0;
 const validRecordId = value => typeof value === 'string' && /^rec[A-Za-z0-9]{14}$/.test(value);
+const validUuid = value => typeof value === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(value);
 const directoryToken = bindings => bindings.AIRTABLE_TACK_DIRECTORY_TOKEN || bindings.AIRTABLE_TOKEN;
 const additions = (bindings, fetchImpl, filter = '') => listRecords({
   base: RINGSTATUS, token: bindings.AIRTABLE_TOKEN, table: ADDITIONS, fields: additionFields,
@@ -162,11 +161,10 @@ async function readHorseData(dataset, bindings, fetchImpl) {
 const reply = (status, body) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 const failure = (status, error) => reply(status, { error });
 
-function allowTackCredentials(response, request) {
+function allowTackOrigin(response, request) {
   response.headers.append('Vary', 'Origin');
   if (request.headers.get('Origin') === TACK_ORIGIN && new URL(request.url).origin === WRITE_ORIGIN) {
     response.headers.set('Access-Control-Allow-Origin', TACK_ORIGIN);
-    response.headers.set('Access-Control-Allow-Credentials', 'true');
   }
   return response;
 }
@@ -177,17 +175,28 @@ export const OPTIONS = ({ request, params }) => {
       request.headers.get('Access-Control-Request-Method') !== 'POST') {
     return failure(403, 'origin_denied');
   }
-  return allowTackCredentials(new Response(null, { status: 204, headers: {
+  return allowTackOrigin(new Response(null, { status: 204, headers: {
     'Access-Control-Allow-Methods': 'POST',
     'Access-Control-Allow-Headers': 'Content-Type',
   } }), request);
 };
 
 export const POST = async ({ request, params }) => params.dataset === 'horses'
-  ? allowTackCredentials(await handleTackHorseAdd(request, env, fetch), request)
+  ? allowTackOrigin(await handleTackHorseAdd(request, env, fetch), request)
   : failure(405, 'method_not_allowed');
 
-export async function handleTackHorseAdd(request, bindings, fetchImpl, authorize = iamActor) {
+async function reserveAddition(db) {
+  // Bound writes to the shared roster even when browsers start new sessions.
+  const hour = Math.floor(Date.now() / 3600000);
+  return db.prepare(`INSERT INTO recognize_claims (claim_key, state, result_json)
+    VALUES ('tackapp-addition-budget-v1', 'complete', json_object('hour', ?1, 'count', 1))
+    ON CONFLICT (claim_key) DO UPDATE SET result_json = json_object('hour', ?1, 'count',
+      CASE WHEN json_extract(result_json, '$.hour') = ?1 THEN json_extract(result_json, '$.count') + 1 ELSE 1 END)
+    WHERE json_extract(result_json, '$.hour') <> ?1 OR json_extract(result_json, '$.count') < 60
+    RETURNING claim_key`).bind(hour).first();
+}
+
+export async function handleTackHorseAdd(request, bindings, fetchImpl) {
   if (new URL(request.url).origin !== WRITE_ORIGIN || !writeOrigins.has(request.headers.get('Origin'))) {
     return failure(403, 'origin_denied');
   }
@@ -195,10 +204,6 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl, authorize
     return failure(415, 'invalid_content_type');
   }
   try {
-    const actor = await authorize(request, bindings);
-    if (!actor?.id || !actor.permissions?.includes('inputs:write') || !actor.barnIds?.includes(CASTLEWOOD)) {
-      return failure(403, 'permission_denied');
-    }
     const bytes = new Uint8Array(2048);
     const reader = request.body?.getReader();
     if (!reader) return failure(400, 'invalid_request');
@@ -213,8 +218,9 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl, authorize
     let body;
     try { body = JSON.parse(new TextDecoder().decode(bytes.subarray(0, length))); }
     catch { return failure(400, 'invalid_request'); }
+    if (!validUuid(body?.session_id)) return failure(400, 'invalid_session');
 
-    const fields = { tenant_id: TENANT, added_by: actor.id, source: body?.source };
+    const fields = { tenant_id: TENANT, added_by: `tack-session:${body.session_id.toLowerCase()}`, source: body.source };
     if (body?.source === 'Directory' && validRecordId(body.directory_record_id)) {
       const record = await airtable(fetchImpl, tableUrl(DIRECTORY_BASE, DIRECTORY, body.directory_record_id), directoryToken(bindings));
       const id = record.fields?.['horse-id'];
@@ -222,7 +228,7 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl, authorize
       if (record.id !== body.directory_record_id || !validHorseId(id) || !show) return failure(404, 'horse_not_found');
       Object.assign(fields, { addition_key: `${TENANT}:directory:${id}`, horse_key: String(id),
         directory_record_id: record.id, show_name: show, barn_name: clean(record.fields['horse-nickname']) || show });
-    } else if (body?.source === 'Manual' && typeof body.request_id === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(body.request_id)) {
+    } else if (body?.source === 'Manual' && validUuid(body.request_id)) {
       const show = clean(body.show_name), barn = clean(body.barn_name);
       if (!show || show.length > 150 || !barn || barn.length > 150 || !colors.has(body.color) || !genders.has(body.gender)) {
         return failure(400, 'invalid_horse_details');
@@ -256,6 +262,15 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl, authorize
       const confirmed = await lookup();
       return confirmed.length ? replay(confirmed) : failure(503, 'write_outcome_unknown');
     }
+    const db = requireClaimDatabase(bindings);
+    const releaseClaim = () => db.prepare("DELETE FROM recognize_claims WHERE claim_key = ? AND state = 'claimed' AND result_json IS NULL").bind(claim.key).run();
+    let reserved;
+    try { reserved = await reserveAddition(db); }
+    catch (error) { await releaseClaim(); throw error; }
+    if (!reserved) {
+      await releaseClaim();
+      return failure(429, 'addition_limit_reached');
+    }
     let saved;
     try {
       const result = await airtable(fetchImpl, tableUrl(RINGSTATUS, ADDITIONS), bindings.AIRTABLE_TOKEN, {
@@ -267,7 +282,7 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl, authorize
       }
     } catch (error) {
       if (error.providerStatus >= 400 && error.providerStatus < 500 && error.providerStatus !== 408) {
-        await bindings.RS_RECOGNITION_CONTROL_DB.prepare("DELETE FROM recognize_claims WHERE claim_key = ? AND state = 'claimed' AND result_json IS NULL").bind(claim.key).run();
+        await releaseClaim();
       }
       return failure(503, 'write_outcome_unknown');
     }
@@ -275,7 +290,6 @@ export async function handleTackHorseAdd(request, bindings, fetchImpl, authorize
     catch { console.error('[tackapp] addition confirmed but claim completion failed'); }
     return reply(201, { horse: toHorse(saved.fields), additionId: saved.id });
   } catch (error) {
-    if (error.code === 'authentication_required') return failure(401, 'authentication_required');
     if (error.providerStatus === 404) return failure(404, 'horse_not_found');
     return failure(503, 'storage_unavailable');
   }
