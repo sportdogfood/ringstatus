@@ -100,6 +100,40 @@ test('full upsert is Data-only, reuses date keys and preserves an unchanged Day 
   assert.equal((await readScheduleFeed(api,showId,'full')).records[1].name,'Updated note');
 });
 
+test('full feed keeps all snapshot trips when normalized trip records are missing; Day 0 remains strict',async()=>{
+  const api=memory();
+  const first={...rawTrip,estimated_go_time:'09:03:00',gone_in:1};
+  const second={...rawTrip,entryxclasses_uuid:'DEF',trip_id:102,order_of_go:3,estimated_go_time:'09:07:00',scratch_trip:1};
+  api.data.classes[0]['source-json'].trips=[first,second];
+  api.data.classes[0]['entry-count']=2;
+  api.data.schedules[0]['source-json'].total_trips=2;
+  api.data.trips=[];
+  await refreshScheduleFeed(api,'full',now);
+  const full=await readScheduleFeed(api,showId,'full'), entries=full.records[0].entries;
+  assert.equal(entries.length,2);
+  assert.deepEqual(entries.map(e=>e.key),[tripKey,classKey+'|12|DEF']);
+  assert.deepEqual(entries.map(e=>e.name),['Horse','Horse']);
+  assert.deepEqual(entries.map(e=>e.go),['9:03A','9:07A']);
+  assert.equal(entries[0].goneIn,1);assert.equal(entries[1].status,'scratch');
+  assert.deepEqual((await refreshScheduleFeed(api,'full',now)).upserts,[]);
+  await assert.rejects(refreshScheduleFeed(api,'day0',now),/incomplete_shared_class_trips/);
+});
+
+test('full snapshot content remains authoritative while optional native IDs are retained',async()=>{
+  const api=memory();
+  api.data.trips[0]['source-json']={...rawTrip,horse_id:999,order_of_go:99};
+  await refreshScheduleFeed(api,'full',now);
+  const entry=(await readScheduleFeed(api,showId,'full')).records[0].entries[0];
+  assert.equal(entry.tripId,'trip');assert.equal(entry.order,2);assert.equal(entry.name,'Horse');
+});
+
+test('duplicate snapshot trip identities reject the full feed before writing',async()=>{
+  const api=memory();
+  api.data.classes[0]['source-json'].trips.push({...rawTrip});
+  await assert.rejects(refreshScheduleFeed(api,'full',now),/invalid_shared_trip_identity/);
+  assert.deepEqual(api.writes,[]);
+});
+
 test('full feed includes November 15 at priority 4 once shared rows arrive',async () => {
   const api = memory();
   const sunday = '2026-11-15';

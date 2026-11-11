@@ -28,7 +28,7 @@ test('current shared capture publishes November 11–14 locally and marks Novemb
   const scope=await sharedScope(api),report=[];
   for(const day of scope.days){
     if(day.date==='2026-11-15')continue;
-    const {dataset}=await buildSharedDay(api,scope,day,'2026-11-11T13:14:46.750Z');
+    const {dataset}=await buildSharedDay(api,scope,day,'2026-11-11T13:14:46.750Z',undefined,{snapshots:true});
     const stored=encodePayload(dataset);
     expected.push(...dataset.records);
     assert.deepEqual(decodePayload(stored),dataset);
