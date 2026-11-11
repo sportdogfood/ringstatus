@@ -5,7 +5,7 @@ import {headerDropdowns} from './header-dropdown.js';
 import {dayRows} from './day.js?v=source-order-1';
 import {enableDragScroll} from './drag-scroll.js?v=entry-lane-1';
 import {addComment} from './comments.js?v=tokens-policy-1';
-import {records,days,ringDetails,metadata,replaceData,scopeReady} from './schedule-data.js';
+import {records,days,ringDetails,metadata,replaceData,selectRingDetails,scopeReady} from './schedule-data.js';
 import {createDeviceData,trainerOptions,filterTrainer} from './device-data.js';
 import {pingLocation} from './device-location.js';
 import {ringPanel,detailPanel,icon,commentsList,dayLine} from './components.js?v=group-subline-1';
@@ -77,6 +77,7 @@ pageNav.addEventListener('click',event=>{
 
 function syncDay(){
  if(!state.day)return;
+ selectRingDetails(state.day);
  const options=trainerOptions(records,state.day);
  trainerControl.hidden=!document.body.hasAttribute('data-trainer-filter')||options.length===0;
  if(state.trainer&&!options.some(([id])=>id===state.trainer))state.trainer='';
@@ -95,7 +96,8 @@ function syncDay(){
  schedule.setAttribute('aria-label','Schedule for '+dateText);
  if(isDay)document.querySelector('.v2-day-tools h1').textContent=state.day===new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())?'Today':dateText;
  const footer=document.querySelector('.rings-shell-footer');
- footer.textContent=(metadata.source==='wef-data'?'Airtable refreshed':'Airtable snapshot')+' · '+new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:metadata.timezone,timeZoneName:'short'}).format(new Date(metadata.capturedAt))+(metadata.source==='wef-data'?'':' - not live');
+ const feedSource=['wef-data','wef-schedule-app'].includes(metadata.source);
+ footer.textContent=Number.isFinite(Date.parse(metadata.capturedAt))?(feedSource?'Airtable refreshed':'Airtable snapshot')+' · '+new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:metadata.timezone,timeZoneName:'short'}).format(new Date(metadata.capturedAt))+(feedSource?'':' - not live'):'Loading schedule';
  footer.title=metadata.show+' · '+metadata.capturedAt;
  const rows=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
@@ -112,9 +114,11 @@ let entryLaneCleanup=[];
 function renderSchedule(){
  entryLaneCleanup.forEach(cleanup=>cleanup());entryLaneCleanup=[];
  const dayRecords=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
+ const pendingNote=days.find(d=>d.date===state.day)?.pending?'<p class="rings-detail-note" role="status">Schedule pending for '+escape(dateLabel(state.day))+'.'+(dayRecords.length?' Showing last loaded schedule.':'')+'</p>':'';
  if(isDay){
   const rows=dayRows(dayRecords,{status:state.dayStatus,sort:state.daySort,direction:state.dayDirection});
   schedule.innerHTML='<section class="rings-panel v2-day-list" aria-label="Classes in day order"><div class="v2-day-head">'+daySortHead('time','TIME')+daySortHead('ring','RING')+'<span>NO</span><span>CLASS</span><span>STATUS</span><span>ENTRIES</span></div>'+rows.map(dayLine).join('')+(rows.length?'':'<p class="rings-detail-note">No classes match this view.</p>')+'</section>';
+  if(pendingNote)schedule.innerHTML=pendingNote+(rows.length?schedule.innerHTML:'');
   schedule.style.paddingBottom='0px';return;
  }
  const visible=state.horses.size?dayRecords.map(row=>({...row,entries:row.entries.filter(e=>state.horses.has(e.horseId))})).filter(row=>row.entries.length):dayRecords;
@@ -126,6 +130,7 @@ function renderSchedule(){
   ringActions.scrollLeft=left;ringAnchorSignature=signature;
  }
  schedule.innerHTML=rings.filter(r=>(!state.horses.size&&!state.trainer)||visible.some(row=>row.ring===r)).map(r=>`<div id="ring-${r}" class="rings-anchor">${ringPanel(r,visible.filter(row=>row.ring===r))}</div>`).join('')||'<p class="rings-detail-note" role="status">No schedule rows match this view.</p>';
+ if(pendingNote)schedule.innerHTML=pendingNote+(visible.length?schedule.innerHTML:'');
  entryLaneCleanup=[...schedule.querySelectorAll('.rings-entry-rollups')].map(enableDragScroll);
  if(state.ring!==null&&!visible.some(r=>String(r.ring)===state.ring))state.ring=null;
  ringActions.querySelectorAll('[data-ring]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.ring===state.ring));b.disabled=false;});
