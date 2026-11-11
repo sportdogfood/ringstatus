@@ -6,8 +6,8 @@ const positive = value => Number.isSafeInteger(Number(value)) && Number(value) >
 const json = value => typeof value === 'string' ? JSON.parse(value) : value;
 const removed = row => ['absent','dropped'].includes(String(row['record-status']).toLowerCase());
 const linkedId = value => typeof value === 'string' ? value : value?.id;
-function put(map, key, value) {
-  if (map.has(key) && JSON.stringify(map.get(key)) !== JSON.stringify(value)) throw Error('conflicting_shared_identity');
+function put(map, key, value, kind) {
+  if (map.has(key) && JSON.stringify(map.get(key)) !== JSON.stringify(value)) throw Error(`conflicting_shared_${kind}_identity`);
   map.set(key, value);
   return value;
 }
@@ -40,7 +40,7 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
   const inScope = row => row['w-shows'] === show['show-key'] && row['w-days'] === key;
   function ring(keyRef, number, id, name) {
     if (keyRef !== key + '|' + number || !positive(number) || !positive(id)) throw Error('invalid_shared_ring');
-    return put(rings, keyRef, {id:keyRef,show:[showId],day:[dayId],'ring-id':id,'ring-number':number,'ring-name':name});
+    return put(rings, keyRef, {id:keyRef,show:[showId],day:[dayId],'ring-id':id,'ring-number':number,'ring-name':name},'ring');
   }
   const scheduleJson = new Map(schedules.map(r => [r.id,json(r['source-json'])]));
   for (const row of schedules.filter(r => r.kind !== 'class')) {
@@ -71,7 +71,7 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
       row.group !== `${row.ring}|${raw.class_group_id}` || !Number.isSafeInteger(row['source-position']) ||
       (row.kind === 'class' && (row.class !== `${row.ring}|${raw.class_id}` ||
         row['schedule-key'] !== `${row.ring}|${raw.class_groupxclasses_id}`))) throw Error('invalid_shared_schedule');
-    put(groups,row.group,{id:row.group,'group-name':raw.group_name});
+    put(groups,row.group,{id:row.group,'group-name':raw.group_name},'group');
     return {...row, show:[showId], day:[dayId], ring:[row.ring], group:[row.group],
       class:row.kind === 'class' ? [row.class] : [], 'source-json':raw};
   });
@@ -148,14 +148,14 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
     const entityId = ref?.id ?? `${kind}:${id}`;
     put(entities[kind],entityId,{id:entityId,[kind+'-id']:id,[kind+'-name']:name,
       [`${kind}-nickname (from w-${kind}s)`]:ref?.[kind+'-nickname'],
-      [`${kind}-fallback (from w-${kind}s)`]:ref?.[kind+'-fallback']});
+      [`${kind}-fallback (from w-${kind}s)`]:ref?.[kind+'-fallback']},kind);
     return [entityId];
   }
   const projectedTrips = activeTrips.map(({row,raw,classKey}) => {
     const number = Number(raw.number), entry = `${show.show_id}|${raw.entry_id}`;
     if (!positive(number) || (row.entry && row.entry !== entry)) throw Error('invalid_shared_entry');
     const horse = participant('horse',row,raw), rider = participant('rider',row,raw), trainer = participant('trainer',row,raw);
-    put(entries,entry,{id:entry,show:[showId],horse,'entry-number':number});
+    put(entries,entry,{id:entry,show:[showId],horse,'entry-number':number},'entry');
     return {...row,class:[classKey],entry:[entry],horse,rider,trainer,'source-json':raw,
       'order-of-go':row['order-of-go'] ?? raw.order_of_go, scratch:row.scratch ?? raw.scratch_trip,
       'gone-in':row['gone-in'] ?? raw.gone_in};

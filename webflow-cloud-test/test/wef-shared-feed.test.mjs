@@ -1,3 +1,4 @@
+import {refreshReadableSchedule} from '../src/lib/wef-schedule/readable-feed.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomBytes } from 'node:crypto';
@@ -51,11 +52,13 @@ function filter(rows, formula='') {
   return rows.filter(row => terms.some(([,key,value]) => (key === 'is_default' ? Number(row[key]) : row[key]) === JSON.parse(value)));
 }
 
-const mergeKeys = {feed:'show-day-key',runs:'run-id',heartbeat:'heartbeat-key',errors:'error-key'};
+const mergeKeys = {dataRows:'schedule-key',day0Rows:'schedule-key',feed:'show-day-key',runs:'run-id',heartbeat:'heartbeat-key',errors:'error-key'};
 function memory(data=fixture()) {
+  data.dataRows??=[];data.day0Rows??=[];
   const reads=[], writes=[];
   return {
     data,reads,writes,
+    async upsertRows(name,rows){return Promise.all(rows.map(row=>this.upsert(name,row)));},
     async read(name,formula) {reads.push(name);return structuredClone(filter(data[name],formula));},
     async upsert(name,fields) {
       const key = mergeKeys[name], prior = data[name].find(row => row[key] === fields[key]);
@@ -364,4 +367,99 @@ test('pending source retains the last good day and does not rewrite unchanged ma
   assert.deepEqual((await refreshScheduleFeed(api,'full',now)).upserts,[dayKey(other)]);
   assert.deepEqual(api.data.feed.map(r=>r.id),ids);
   assert.deepEqual((await readScheduleFeed(api,showId,'full')).metadata.pendingDays,[]);
+});
+
+
+test('readable full rows preserve originals and skip unchanged writes, including flag-only changes',async()=>{
+ const api=memory(), source=structuredClone(api.data.schedules);
+ await refreshScheduleFeed(api,'full',now);
+ assert.equal((await refreshReadableSchedule(api,'full',now)).upserts,2);
+ const row=api.data.dataRows.find(r=>r['schedule-key']===scheduleKey);
+ const first=row.id, record=row['record-json'];
+ assert.equal(JSON.parse(record).entries[0].key,tripKey);
+ assert.equal((await refreshReadableSchedule(api,'full',now)).upserts,0);
+ api.data.schedules[0]['rs-flag']='No entries';
+ assert.equal((await refreshReadableSchedule(api,'full',now)).upserts,1);
+ assert.equal(row['rs-flag'],'No entries');assert.equal(row.id,first);assert.equal(row['record-json'],record);
+ assert.equal(Object.keys(row).some(k=>k.startsWith('publication-')||k==='publish-default'),false);
+ assert.deepEqual(api.data.schedules.map(({['rs-flag']:ignored,...r})=>r),source);
+});
+
+test('readable Day0 carries accepted Live, skips repeats and clears obsolete live fields',async()=>{
+ const api=memory();live(api.data);
+ await refreshScheduleFeed(api,'full',now);await refreshReadableSchedule(api,'full',now);
+ await refreshScheduleFeed(api,'day0',now);
+ assert.equal((await refreshReadableSchedule(api,'day0',now)).upserts,1);
+ const row=api.data.day0Rows[0];assert.equal(JSON.parse(row['record-json']).entries[0].order,1);
+ assert.equal(row['diff-applied'],true);assert.equal(JSON.parse(row['live-state-json']).currentTripKey,tripKey);
+ assert.deepEqual(row['baseline-record'],[api.data.dataRows[0].id]);
+ assert.equal((await refreshReadableSchedule(api,'day0',now)).upserts,0);
+ for(const k of ['liveRings','liveGroups','liveClasses','liveEntries'])api.data[k]=[];
+ await refreshScheduleFeed(api,'day0','2026-11-12T17:01:00Z');
+ assert.equal((await refreshReadableSchedule(api,'day0',now)).upserts,1);
+ assert.equal(row['live-state-json'],null);assert.equal(row['diff-applied'],false);
+ assert.equal(JSON.parse(row['record-json']).entries[0].order,2);
+ assert.equal((await refreshReadableSchedule(api,'day0',now)).upserts,0);
+});
+
+test('Day0 rollover retains and hides prior-day rows without deleting them',async()=>{
+ const api=memory();await refreshScheduleFeed(api,'full',now);await refreshReadableSchedule(api,'full',now);
+ await refreshReadableSchedule(api,'day0',now);const old=structuredClone(api.data.day0Rows[0]);
+ api.data.days[0]['day-priority']=1;api.data.days[1]['day-priority']=0;
+ await refreshScheduleFeed(api,'day0',now);const result=await refreshReadableSchedule(api,'day0',now);
+ assert.equal(result.records,1);assert.equal(result.retired,1);assert.equal(api.data.day0Rows.length,2);
+ assert.equal(api.data.day0Rows[0]['stage-status'],'Outside current scope');
+ assert.equal(api.data.day0Rows[0]['record-json'],old['record-json']);
+ assert.equal((await refreshReadableSchedule(api,'day0',now)).upserts,0);
+});
+
+test('pending full days retain their prior readable records and metadata',async()=>{
+ const api=memory();await refreshScheduleFeed(api,'full',now);await refreshReadableSchedule(api,'full',now);
+ const before=structuredClone(api.data.dataRows);api.data.schedules.pop();
+ await refreshScheduleFeed(api,'full',now);
+ assert.equal((await refreshReadableSchedule(api,'full',now)).upserts,0);
+ assert.deepEqual(api.data.dataRows,before);
+});
+
+test('confirmed removal retires only the derived occurrence and repeat does not rewrite it',async()=>{
+ const api=memory(), clone=structuredClone(api.data.schedules[0]);clone.id='second';clone['schedule-key']=ringKey(date)+'|26';clone['source-position']=1;clone['source-json'].class_groupxclasses_id=26;api.data.schedules.push(clone);
+ await refreshScheduleFeed(api,'full',now);await refreshReadableSchedule(api,'full',now);
+ api.data.schedules.pop();await refreshScheduleFeed(api,'full',now);
+ assert.equal((await refreshReadableSchedule(api,'full',now)).retired,1);
+ assert.equal(api.data.dataRows.length,3);
+ const retired=api.data.dataRows.find(r=>r['schedule-key']===clone['schedule-key']);
+ assert.equal(retired['stage-status'],'Removed from current source');assert.ok(retired['record-json']);
+ assert.equal((await refreshReadableSchedule(api,'full',now)).upserts,0);
+});
+
+test('derived failure logs Error and stage even after Data save succeeds',async()=>{
+ const api=memory();api.upsertRows=async()=>{throw Error('readable_write_readback');};
+ const result=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
+ assert.equal(result.log.result,'Error');assert.equal(result.log.errors,'readable_write_readback');
+ assert.equal(JSON.parse(result.log.summary).stage,'readable');assert.equal(api.data.errors.length,1);
+ assert.equal(api.data.heartbeat[0].result,'Error');assert.equal(api.data.feed.length,2);
+});
+
+test('invalid readable source identity fails before any derived write',async()=>{
+ const api=memory();await refreshScheduleFeed(api,'full',now);api.data.schedules[0].id='changed-native-id';
+ await assert.rejects(refreshReadableSchedule(api,'full',now),/readable_source_identity/);
+ assert.equal(api.data.dataRows.length,0);
+});
+
+test('identity conflict still rejects incompatible entries with a specific error',async()=>{
+ const api=memory();api.data.classes[0]['source-json'].trips.push({...rawTrip,entryxclasses_uuid:'SECOND',number:999});
+ await assert.rejects(refreshScheduleFeed(api,'full',now),/conflicting_shared_entry_identity/);
+ assert.deepEqual(api.writes,[]);
+});
+
+test('derived batch adapter normalizes false and empty links and forbids synced writes',async()=>{
+ let saved=[],calls=0;const api=sharedBase({token:'fixture',writable:true,pause:async()=>{},fetchImpl:async(url,init)=>{
+  calls++;if(init.method==='PATCH'){saved=JSON.parse(init.body).records.map((r,i)=>({id:'rec'+String(i+100).padStart(14,'0'),fields:r.fields}));return Response.json({records:saved});}
+  return Response.json({records:saved.map(r=>({id:r.id,fields:Object.fromEntries(Object.entries(r.fields).filter(([,v])=>v!==false&&!(Array.isArray(v)&&!v.length)))}))});
+ }});
+ await api.upsertRows('day0Rows',[{'schedule-key':'key','diff-applied':false,'baseline-record':[],'rs-priority':0}]);
+ assert.equal(calls,2);
+ await assert.rejects(api.upsertRows('schedules',[{'schedule-key':'key'}]),/invalid_readable_batch/);
+ await assert.rejects(api.upsertRows('day0Rows',[{'schedule-key':'key','publish-default':'Yes'}]),/invalid_readable_write/);
+ assert.equal(calls,2);
 });
