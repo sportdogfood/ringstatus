@@ -30,7 +30,7 @@ test('independent identity, cookie renewal and separate private access',async()=
   const login=await credential(f);assert.equal(login.body.verified,true);
   await assert.rejects(iamActor(new Request(origin,{headers:{Cookie:cookieOf(login)}}),f.env),/authentication_required/);
   await f.db.prepare('UPDATE recognize_iam_devices SET expires_at=?').bind(Date.now()+60000).run();
-  const known=await call(f,'recognize',{},cookieOf(login));assert.equal(known.body.person_uid,'independent');assert.equal(known.body.matched_by,'device_token');
+  const known=await call(f,'recognize',{},cookieOf(login));assert.equal(known.body.person_uid,'independent');assert.equal(known.body.matched_by,'device_token');assert.equal(known.body.identity_only,false);assert.equal(known.body.person_name,'Independent');assert.equal(known.response.headers.get('X-RS-Airtable-Calls'),'0');
   assert.match(known.response.headers.get('set-cookie'),/Max-Age=31536000/);
   const device=await f.db.prepare('SELECT expires_at FROM recognize_iam_devices').first();assert.ok(device.expires_at>Date.now()+364*86400000);
   const member=await credential(f,'2025550102','203.0.113.2');assert.equal((await iamActor(new Request(origin,{headers:{Cookie:cookieOf(member)}}),f.env)).id,'member');
@@ -40,7 +40,7 @@ test('independent identity, cookie renewal and separate private access',async()=
 test('unique exact edge IP recognizes, persists through refresh, never grants private access',async()=>{
  const f=await fixture();try{
   await credential(f,'2025550102');await refreshIam(f.input);
-  const geo=await call(f,'recognize');assert.equal(geo.body.person_uid,'member');assert.equal(geo.body.matched_by,'geoip');
+  const geo=await call(f,'recognize');assert.equal(geo.body.person_uid,'member');assert.equal(geo.body.matched_by,'geoip');assert.equal(geo.body.identity_only,true);
   const cookie=geo.response.headers.get('set-cookie').split(';')[0];
   await assert.rejects(iamActor(new Request(origin,{headers:{Cookie:cookie}}),f.env),/authentication_required/);
   const repeat=await call(f,'recognize',{},cookie);assert.equal(repeat.body.person_uid,'member');

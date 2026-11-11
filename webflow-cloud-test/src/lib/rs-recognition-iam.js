@@ -89,7 +89,7 @@ export async function handleIamRecognition(request,env,ctx=null){
     if(!p.identity_only)await learnGeoip(db,ipKey,p.person_uid);
    }
    const history_event_uid=audit(env,ctx,{event_uid:crypto.randomUUID(),event_type:'recognition',person_uid:p?.person_uid||'',person_record_id:p?.person_record_id||'',device_token:token||body.device_token||'',session_uid:body.session_uid||'',page_path:body.page_path||'',matched_by,at:new Date().toISOString()});
-   const response=respond({ok:true,history_event_uid,recognized:!!p,matched_by,...(p?{person_uid:p.person_uid,person_name:p.person_name,first_name:p.first_name,device_fingerprint:await accessHash(token)}:{})});
+   const response=respond({ok:true,history_event_uid,recognized:!!p,matched_by,...(p?{person_uid:p.person_uid,person_name:p.person_name,first_name:p.first_name,identity_only:!!p.identity_only,device_fingerprint:await accessHash(token)}:{})});
    if(p)response.headers.append('Set-Cookie',cookie(token));
    return response;
   }

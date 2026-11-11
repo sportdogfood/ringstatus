@@ -53,6 +53,7 @@ function drain(key){
  const work=(async()=>{while(actor===currentUid&&check===generation){
   const entry=pending.find(p=>operationKey(p.body)===key);if(!entry||entry.needsPin||entry.error||entry.blocked)return;
   try{
+   if(confirmed?.loaded?.profile===false)await loadProfileView('profile',{priority:true});
    if(entry.ready)await entry.ready;if(actor!==currentUid||check!==generation)throw Error('Profile changed before this save.');
    if(!entry.sent){const revision=revisionFor(entry);if(revision!==undefined)entry.body.expectedRevision=revision;const original={...entry.body};delete original.requestId;entry.fingerprint=await fingerprintOf(original);if(actor!==currentUid||check!==generation)throw Error('Profile changed before this save.');entry.sent=true;retainPending();}
    const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-RS-Actor-Scope':actor},body:JSON.stringify(entry.body),signal:AbortSignal.timeout(20000)});
@@ -106,8 +107,9 @@ export function refreshProfile(){
  periodicRefresh=work;void work.finally(()=>{if(periodicRefresh===work)periodicRefresh=null;}).catch(()=>{});return work;
 }
 export function loadProfileView(view,{priority=false,background=false}={}){
- if(!['roster','team','horses'].includes(view)||!currentUid||!confirmed)return Promise.reject(Error('Profile is required first.'));
+ if(!['profile','roster','team','horses'].includes(view)||!currentUid||!confirmed)return Promise.reject(Error('Profile is required first.'));
  if(priority)prioritizePackage(view);
+ if(view==='profile'&&refreshing)return refreshing;
  if(view==='horses')horsesRequested=true;
  if(scopedLoads.has(view))return scopedLoads.get(view);
  const actor=currentUid,check=generation,fingerprint=currentFingerprint;
@@ -130,6 +132,7 @@ async function fetchProfile(uid,check,fingerprint,view='profile',signal){
   if(view==='horses'){
    // A package response cannot replace newer Profile or Team records.
    const own=state=>JSON.stringify((state?.memberships||[]).filter(m=>m.userId===uid).map(m=>[m.id,m.teamId,m.active,m.role]));
+   if(confirmed?.loaded?.profile===false)mergeLoaded(data.state);
    if(own(confirmed)!==own(data.state)||confirmed?.teamConflict!==data.state.teamConflict){viewEtags.delete(view);return profileState();}
    confirmed={...confirmed,horses:data.state.horses,horseTeamId:data.state.horseTeamId,loaded:{...confirmed.loaded,horses:true}};
   }else mergeLoaded(data.state);const etag=response.headers.get('ETag');if(etag)viewEtags.set(view,etag);}
@@ -159,6 +162,13 @@ function loadResolvedProfile(uid,fingerprint){
  // Recognize has confirmed this person on the new device session. The working
  // copy belongs to the person, not the retired sign-in token.
  if(!confirmed&&!storage.getItem('rs_recognition_pending_signout_v1')){try{const cached=JSON.parse(storage.getItem(snapshotKey(uid))||'null');if(fingerprint&&cached?.uid===uid&&cached.state?.identity?.currentId===uid){confirmed=cached.state;remember(fingerprint);notify();}}catch{}}
+ // The existing authenticated Recognize reply is enough to paint the person.
+ // This is not a loaded Profile record or an editable set of blank fields.
+ const identity=recognitionAdapter.profileIdentity?.();
+ if(!confirmed&&fingerprint&&identity?.uid===uid&&!storage.getItem('rs_recognition_pending_signout_v1')){
+  confirmed={identity:{currentId:uid},profiles:[{id:uid,name:identity.name,first:identity.name,last:'',tags:[]}],teams:[],memberships:[],invitations:[],loaded:{profile:false,roster:false,team:false}};
+  remember(fingerprint);notify();
+ }
  const refresh=readProfile(uid,check,fingerprint);void refresh.then(()=>pingGeoip(uid,check,fingerprint)).catch(()=>{});refreshing=refresh;void refresh.finally(()=>{if(refreshing===refresh)refreshing=null;}).catch(()=>{});
  const work=confirmed?Promise.resolve(profileState()):refresh;
  if(confirmed)void refresh.catch(error=>{if(check!==generation||currentUid!==uid||currentFingerprint!==fingerprint)return;if([401,403].includes(error.status)){confirmed=null;storage.removeItem(snapshotKey(uid));}notify(error);});
