@@ -27,7 +27,7 @@ export async function sharedScope(api) {
   return {show, days:days.sort((a,b) => a.date.localeCompare(b.date)), day0:day0[0]};
 }
 
-export async function buildSharedDay(api, scope, day, now, scopedSchedules) {
+export async function buildSharedDay(api, scope, day, now, scopedSchedules, {snapshots=false} = {}) {
   const {show} = scope, showId = show.id, dayId = day.id, key = day['show-day-key'];
   const ringPrefix = `${show.customer_id}|${show.facility_id}|`;
   const schedules = (scopedSchedules ?? await api.read('schedules', prefix('schedule-key', key + '|'))).filter(r => !removed(r));
@@ -76,7 +76,21 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules) {
       class:row.kind === 'class' ? [row.class] : [], 'source-json':raw};
   });
   const scopedTrips = new Map();
-  for (const row of trips) {
+  // Full Data uses the trip arrays saved with each validated shared class.
+  // A normalized row is optional here and supplies only its existing record ID.
+  const sourceTrips = snapshots ? [...classMap].flatMap(([classKey,{row,raw}]) => {
+    if (!Array.isArray(raw.trips)) throw Error('incomplete_shared_class_trips');
+    return raw.trips.map(trip => {
+      const tripKey=`${classKey}|${trip.entry_id}|${trip.entryxclasses_uuid}`;
+      const ids=trips.filter(t=>t['trip-key']===tripKey);
+      if (ids.length>1) throw Error('invalid_shared_trip_identity');
+      return {id:ids[0]?.id ?? tripKey,'trip-key':tripKey,'w-shows':show['show-key'],'w-days':key,
+        class:classKey,'source-uuid':trip.entryxclasses_uuid,'trip-id':trip.trip_id,'record-status':'active',
+        'order-of-go':trip.order_of_go,'actual-order':trip.actual_order,'estimated-go-time':trip.estimated_go_time,
+        scratch:trip.scratch_trip,'gone-in':trip.gone_in,'last-success':row['last-success'],'source-json':trip};
+    });
+  }) : trips;
+  for (const row of sourceTrips) {
     const [customer, showNumber, date, ringNumber, classNumber, entryNumber, uuid, ...extra] = row['trip-key']?.split('|') ?? [];
     const classKey = [customer,showNumber,date,ringNumber,classNumber].join('|');
     const group = classMap.get(classKey);
@@ -87,7 +101,7 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules) {
     const raw = json(row['source-json']);
     if (!raw || String(raw.entry_id) !== entryNumber || raw.entryxclasses_uuid !== uuid ||
       row['source-uuid'] !== uuid || (row['trip-id'] && Number(row['trip-id']) !== Number(raw.trip_id))) throw Error('invalid_shared_trip_source');
-    if (!removed(row)) {
+    if (!removed(row) && !snapshots) {
       if (row['record-status'] !== 'active') throw Error('unknown_shared_trip_status');
       const links = group.row.trips ?? [];
       if (row.class && !links.some(link => linkedId(link) === row.id)) throw Error('shared_trip_link_conflict');

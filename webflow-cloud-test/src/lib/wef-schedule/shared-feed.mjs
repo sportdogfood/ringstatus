@@ -101,7 +101,7 @@ export async function refreshScheduleFeed(api, lane, now, progress = []) {
       const previous = savedByKey.get(day['show-day-key']);
       const old = previous && parseFeed(scope,day,previous);
       let dataset;
-      try {({dataset} = await buildSharedDay(api,scope,day,now,byDay.get(day.date)));}
+      try {({dataset} = await buildSharedDay(api,scope,day,now,byDay.get(day.date),{snapshots:true}));}
       catch(error) {
         const incomplete = /^(invalid_shared_class|missing_shared_class|unconfirmed_empty_day:)/.test(error.message);
         if (day.date === scope.day0.date || !incomplete) throw error;
