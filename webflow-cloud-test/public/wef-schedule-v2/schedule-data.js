@@ -2,13 +2,18 @@ import {packageStore} from './package-store.js';
 import {assemblePackages,validDataset} from './device-data.js';
 export let records=[],days=[],metadata={timezone:'America/New_York'};
 export const ringDetails={};
+let sharedRings={};
+export function selectRingDetails(date){
+ for(const key of Object.keys(ringDetails))delete ringDetails[key];
+ Object.assign(ringDetails,days.find(day=>day.date===date)?.ringDetails??sharedRings);
+}
 export function replaceData(data){
  records=data.records;days=data.days;metadata=data.metadata;
- for(const key of Object.keys(ringDetails))delete ringDetails[key];
- Object.assign(ringDetails,data.ringDetails);
+ sharedRings=data.ringDetails;
+ selectRingDetails(data.metadata.defaultDate);
 }
 const endpoint=document.body.dataset.scheduleEndpoint;
-const scopeKey='rs-schedule-current-scope-v1';
+const scopeKey='rs-schedule-app-current-scope-v1';
 if(endpoint){
  // Prepare confirmed device data before making the scope request.
  try{

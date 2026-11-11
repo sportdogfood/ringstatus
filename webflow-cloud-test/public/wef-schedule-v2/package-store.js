@@ -24,7 +24,7 @@ export function packageStore(indexedDB=globalThis.indexedDB){
      const map=new Map(rowsRequest.result.map(r=>[r.value.key,r.value]));
      const old=manifest?{...manifest,records:manifest.order.map(id=>map.get(id))}:null;
      if(!incoming){if(old)delete old.order;result=old;return;}
-     if(old&&Date.parse(old.metadata.package.startedAt)>Date.parse(incoming.metadata.package.startedAt)){result=old;return;}
+     if(old&&old.metadata.appliedBaseVersion===incoming.metadata.appliedBaseVersion&&Date.parse(old.metadata.package.startedAt)>Date.parse(incoming.metadata.package.startedAt)){result=old;return;}
      const diff=diffRecords(old?.records||[],incoming.records,'key');
      for(const id of [...diff.added,...diff.updated]){
       const value=diff.records.find(r=>r.key===id);records.put({key:JSON.stringify([scope,id]),package:scope,value});
