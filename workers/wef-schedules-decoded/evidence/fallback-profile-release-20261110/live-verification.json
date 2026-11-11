@@ -1,0 +1,41 @@
+{
+  "results": [
+    {
+      "kind": "fallback-schedule14",
+      "at": "2026-11-10T22:46:07.773Z",
+      "http": 200,
+      "lane": "cloudflare-fallback",
+      "profile": "windows-clean",
+      "queueStart": "1794350772399",
+      "queueEnd": "1794350775836",
+      "show": 200000078,
+      "date": "2026-11-14",
+      "rings": 9,
+      "trips": null
+    },
+    {
+      "kind": "fallback-schedule25",
+      "at": "2026-11-10T22:46:38.631Z",
+      "http": 200,
+      "lane": "cloudflare-fallback",
+      "profile": "windows-clean",
+      "queueStart": "1794350803355",
+      "queueEnd": "1794350806724",
+      "show": 200000081,
+      "date": "2026-11-25",
+      "rings": 9,
+      "trips": null
+    },
+    {
+      "kind": "fallback-class",
+      "at": "2026-11-10T22:47:44.530Z",
+      "http": 502,
+      "lane": "cloudflare-fallback",
+      "profile": "android-clean",
+      "queueStart": "1794350860623",
+      "queueEnd": "1794350872639",
+      "rings": null,
+      "trips": null
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "filter-eight",
+      "command": "python -B \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\test_filter.py\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "3.11.3 (tags/v3.11.3:f3909b8, Apr  4 2023, 23:49:59) [MSC v.1934 64 bit (AMD64)]",
+      "started_at": "2026-11-08T19:22:41.696836+00:00",
+      "ended_at": "2026-11-08T19:22:42.731446+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_all_skipped_still_saves_schedule_without_detail_clock_or_trip_changes (__main__.ClassFilter.test_all_skipped_still_saves_schedule_without_detail_clock_or_trip_changes) ... ok\ntest_class_state_read_failure_is_logged_and_schedule_and_details_continue (__main__.ClassFilter.test_class_state_read_failure_is_logged_and_schedule_and_details_continue) ... ok\ntest_detail_failure_keeps_schedule_and_priority (__main__.ClassFilter.test_detail_failure_keeps_schedule_and_priority) ... ok\ntest_filter_skips_requests_keeps_schedule_and_saved_detail (__main__.ClassFilter.test_filter_skips_requests_keeps_schedule_and_saved_detail) ... ok\ntest_membership_repeat_reappearance_and_failed_schedule (__main__.ClassFilter.test_membership_repeat_reappearance_and_failed_schedule) ... ok\ntest_predicate_exact_combination (__main__.ClassFilter.test_predicate_exact_combination) ... ok\ntest_saved_before_details_and_details_still_save (__main__.ClassFilter.test_saved_before_details_and_details_still_save) ... ok\ntest_schedule_write_failure_does_not_prevent_details (__main__.ClassFilter.test_schedule_write_failure_does_not_prevent_details) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.689s\n\nOK\n"
+    },
+    {
+      "id": "edges",
+      "command": "python -B \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\review\\edges.py\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "3.11.3 (tags/v3.11.3:f3909b8, Apr  4 2023, 23:49:59) [MSC v.1934 64 bit (AMD64)]",
+      "started_at": "2026-11-08T19:22:42.731446+00:00",
+      "ended_at": "2026-11-08T19:22:43.422134+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_dropped_reappearance_does_not_create_permanent_suppression (__main__.Edges.test_dropped_reappearance_does_not_create_permanent_suppression) ... ok\ntest_failed_selected_detail_counts_and_skipped_membership (__main__.Edges.test_failed_selected_detail_counts_and_skipped_membership) ... ok\ntest_zero_classes_and_string_verification (__main__.Edges.test_zero_classes_and_string_verification) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.350s\n\nOK\n"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "writer": "01a16f18-32b3-7900-8bbc-e8de123ca3b8",
+  "commands": [
+    {
+      "id": "trip-offline-1",
+      "command": "node wef-trip-calculator/test.js",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T02:51:27.607019+00:00",
+      "ended_at": "2026-11-08T02:51:28.330292+00:00",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n592 !== 656\n\n    at C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\test.js:10:92\n    at check (C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\test.js:8:38)\n    at Object.<anonymous> (C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\test.js:10:1)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5) {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 592,\n  expected: 656,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v22.22.2\n"
+    }
+  ]
+}

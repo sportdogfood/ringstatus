@@ -1,0 +1,222 @@
+{
+  "base": "appCaSmL819KK7UFJ",
+  "checkedAt": "2026-11-10T22:54:59.188Z",
+  "tables": [
+    {
+      "id": "tblhL9n1COVPvr851",
+      "name": "decode-change-log",
+      "description": "Verified decoder changes, symptoms, proof and current deployment state. No credentials or token values.",
+      "primaryFieldId": "fldEHcds8g7kB86RZ",
+      "fields": [
+        {
+          "id": "fldEHcds8g7kB86RZ",
+          "name": "change-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld1nbmGqnZN4MLAH",
+          "name": "date",
+          "type": "date"
+        },
+        {
+          "id": "fldnJ3NyXQ9P2JiDn",
+          "name": "change",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldtsqPyTyJjtsW9W",
+          "name": "symptom",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldzEDFDB7QBlh5Xp",
+          "name": "lane",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldclQ8p7sWyujKFe",
+          "name": "profile",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fld3IOEWtPZviRnbS",
+          "name": "state",
+          "type": "singleSelect"
+        },
+        {
+          "id": "fldvrZKRJZ5C73wIk",
+          "name": "verified-result",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldpOBMHrUzol7rcy",
+          "name": "evidence",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldKdB3aglAW90nem",
+          "name": "worker-version",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "id": "tbluyUciGZCt3xnsB",
+      "name": "decoder-run-log",
+      "description": "Decoder health and authorized diagnostic outcomes. Historical imports retain original times and identify their environment. No collectors or secret values.",
+      "primaryFieldId": "fldXTdpT4VBCGTYbS",
+      "fields": [
+        {
+          "id": "fldXTdpT4VBCGTYbS",
+          "name": "run-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldylmaT8tN1seAIl",
+          "name": "checked-at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldXEgO6gYFsNoOp9",
+          "name": "environment",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldkcV9BX0xTAQ8yI",
+          "name": "endpoint",
+          "type": "url"
+        },
+        {
+          "id": "fldDdCPxDPMdlfcgQ",
+          "name": "lane",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldouJifQPJZUh1Qv",
+          "name": "profile",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldruAsvtfju5hx9h",
+          "name": "http-status",
+          "type": "number"
+        },
+        {
+          "id": "fldkRzpOnvCcjcObS",
+          "name": "result",
+          "type": "singleSelect"
+        },
+        {
+          "id": "fldbaNDd4afEj1QnQ",
+          "name": "rings",
+          "type": "number"
+        },
+        {
+          "id": "fldVBv5dBELafZnuz",
+          "name": "trips",
+          "type": "number"
+        },
+        {
+          "id": "fld0bDCrgZhCrTj2X",
+          "name": "show",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fld1vQvX6HE1KFvUu",
+          "name": "show-day",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldW5PJlpfzbI5Xp4",
+          "name": "details",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld18wmilRgSvGuWI",
+          "name": "evidence",
+          "type": "multilineText"
+        },
+        {
+          "id": "fld16WUYXvRfv00QA",
+          "name": "decoder-fail-alerts",
+          "type": "multipleRecordLinks"
+        }
+      ]
+    },
+    {
+      "id": "tblJZga4wx3JV3LCX",
+      "name": "decoder-fail-alerts",
+      "description": "Decoder outage and recovery events linked to existing warning delivery records. Existing warning-log remains the delivery authority. No duplicate notifications.",
+      "primaryFieldId": "fldxNcRrNHE8vqLAM",
+      "fields": [
+        {
+          "id": "fldxNcRrNHE8vqLAM",
+          "name": "alert-id",
+          "type": "singleLineText"
+        },
+        {
+          "id": "fldQW7l6o2RLy4FA0",
+          "name": "at",
+          "type": "dateTime"
+        },
+        {
+          "id": "fldd1qWbteBDsFxqz",
+          "name": "kind",
+          "type": "singleSelect"
+        },
+        {
+          "id": "fldLOFyBiGz8n4yu3",
+          "name": "message",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldlllAMKdpWHx7UM",
+          "name": "cause",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldh6ti4vzakYubAp",
+          "name": "show",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldxHp5Hox99w8BqO",
+          "name": "show-day",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fld1xr3jIvkhMGBuY",
+          "name": "warning",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "flduWk1I9wuTPHS88",
+          "name": "run",
+          "type": "multipleRecordLinks"
+        },
+        {
+          "id": "fldX29JoKmBtyvrU0",
+          "name": "evidence",
+          "type": "multilineText"
+        },
+        {
+          "id": "fldToYoC7AyjgTY5H",
+          "name": "delivery-status",
+          "type": "multipleLookupValues"
+        },
+        {
+          "id": "fldSB9n95jqpg24Hq",
+          "name": "delivery-at",
+          "type": "dateTime",
+          "description": "Exact submission time copied from the linked warning record, never an owner-read acknowledgment."
+        }
+      ]
+    }
+  ],
+  "verifiedRecords": {
+    "decode-change-log": 11,
+    "decoder-run-log": 17,
+    "decoder-fail-alerts": 3
+  },
+  "monitor": "Existing hourly heartbeat appends health outcomes, mirrors warning events and reads passive Cloudflare tunnel status. Interval unchanged. First normal append pending. Continuous console capture is not installed."
+}

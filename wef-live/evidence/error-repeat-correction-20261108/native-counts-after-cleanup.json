@@ -1,0 +1,87 @@
+{
+  "checked_at": "2026-11-08T15:14:46Z",
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "heartbeat",
+        "data": {
+          "records": [
+            {
+              "id": "rec03WY49e9NL6zmm",
+              "createdTime": "2026-11-08T12:57:13.000Z",
+              "cellValuesByFieldId": {
+                "fld8IrgGV18uytxo0": "2026-11-08T12:57:06.273Z",
+                "fld8TKLXrdL7BJRB8": "53ae53ad-1add-4b96-8b85-644b7a7d0901",
+                "fldGIVg96CJmEq3iJ": "53ae53ad-1add-4b96-8b85-644b7a7d0901",
+                "fldLrhc5BlVINDbrn": "Success",
+                "fldhDlhhMjQTx8xvL": "{\"lane\":\"groups\",\"day_priority\":0,\"live_status\":true,\"membership\":{\"complete\":true,\"groups\":31,\"class_appearances\":52,\"unique_classes\":52},\"timings\":{\"collection_ms\":780.6856,\"save_ms\":826.701,\"collection_started\":\"2026-11-08T12:57:06.745Z\",\"collection_completed\":\"2026-11-08T12:57:07.526Z\",\"save_started\":\"2026-11-08T12:57:08.331Z\",\"save_completed\":\"2026-11-08T12:57:10.764Z\",\"total_ms\":4491},\"counts\":{\"live-groups\":31,\"live-class-appearances\":52},\"changed_records\":2,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-groups-53ae53ad-1add-4b96-8b85-644b7a7d0901.json\"}",
+                "fldrZinQhKPeeW3hx": "2026-11-08T12:57:10.764Z",
+                "fldvDgSo14YK9yIkL": "2026-11-08T12:57:10.764Z"
+              }
+            }
+          ],
+          "metadata": {
+            "totalRecordCount": 291
+          },
+          "nextCursor": "itrKsYiLAS1Izat6v/rec03WY49e9NL6zmm"
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "run-logs",
+        "data": {
+          "records": [
+            {
+              "id": "rec091D1NWBZSwhWe",
+              "createdTime": "2026-11-08T14:51:22.000Z",
+              "cellValuesByFieldId": {
+                "fld5yvsEBvJ50WjV6": "2026-11-08",
+                "fldC6qE4BzSH7EdD9": "Success",
+                "fldWF8eWlCe449xe3": 200000077,
+                "fldZsMHo6AqEMy3lE": "2026-11-08T14:51:14.813Z",
+                "fldbQDrUz1396ZiLC": "{\"lane\":\"classes\",\"parent_run_id\":\"d1a84a25-30ba-436f-acfd-584a114b1ec7\",\"table\":\"live-classes\",\"key\":\"200000077|2026-11-08|200031075\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"200400349,200400748,200401366\",\"after\":\"200400349,200400581,200400748,200401366\"},{\"field\":\"source-json.curr\",\"before\":\"200401366\",\"after\":\"200400581\"},{\"field\":\"gone\",\"before\":3,\"after\":4},{\"field\":\"current-trip-id\",\"before\":200401366,\"after\":200400581}]}",
+                "fldjzS1Dm5yxaErZk": "2026-11-08T14:51:05.083Z",
+                "fldzrFL2SMGej8f6D": "d1a84a25-30ba-436f-acfd-584a114b1ec7|diff|3"
+              }
+            }
+          ],
+          "metadata": {
+            "totalRecordCount": 287
+          },
+          "nextCursor": "itr4urpytEH1X1E93/rec091D1NWBZSwhWe"
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "errs-log",
+        "data": {
+          "records": [
+            {
+              "id": "rec03zkputAlRoJVT",
+              "createdTime": "2026-11-08T14:55:31.000Z",
+              "cellValuesByFieldId": {
+                "fldBHUDwXOwfPxMci": 200401440,
+                "fldBuotPnn7x888zy": "da08b43d-2be2-4c59-9714-36ac426a8451",
+                "fldTh2o2pU0eHhGvq": "2026-11-08T14:54:42.378Z",
+                "fldUmRS6HRQlir2Nb": "2026-11-08",
+                "fldVJYFCEur4r6UTE": "2026-11-08T14:55:31.000Z",
+                "fldinJc1Vy08uH9t7": "da08b43d-2be2-4c59-9714-36ac426a8451|793",
+                "fldvlhRJm5OvBNwIt": "linker: No unique exact match for live-entries.w-riders (rider-id=missing). No retry recommended until source data changes.",
+                "fldwSQslvBcnGikCR": 200000077
+              }
+            }
+          ],
+          "metadata": {
+            "totalRecordCount": 500
+          },
+          "nextCursor": "itrZP6bddNc34MQ2w/rec03zkputAlRoJVT"
+        }
+      }
+    }
+  ]
+}

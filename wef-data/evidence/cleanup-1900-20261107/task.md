@@ -1,0 +1,7 @@
+# Approved cleanup alignment - November 7
+
+Owner: APPROVED TO EDIT. Align code and cleanupV2: clear completed logs, including runs, at 7 p.m. Eastern; apply 1,000/500 every 3 hours; clear owned records on new show. Independent review, verify via Records alerts. No new schedules or extras.
+
+Delta: only cleanup-lane.js timing/event selection and daily completion checkpoint, existing Records cleanup prompt and existing three-hour reminder alignment to include19:00 Eastern, cleanupV2 purpose text and current README. Existing triggerless task/launcher, collector/linker/logger, deletion eligibility, pending/current protection, reference/history protection, keys and saved records remain unchanged. No new schedule, task, archives, manual cleanup or fake/replayed alert. Same calendar-day trigger now represents daily19:00 action; distinct daily-19 event key avoids treating historical midnight cleanup as tonight's completed clear. Source clock is actual Eastern time, including DST.
+
+Baseline: live source copied byte-for-byte to baseline; existing Records automation metadata/prompt saved. cleanupV2 existing15 checked tables, including runs. Verify offline timing/dedup/threshold/state preservation, independently review; deploy exact reviewed inputs; read back existing automation and cleanupV2; genuine Records alert execution separately. A7p.m. reminder is best-effort on available host, not a promise of exact unattended execution while offline.

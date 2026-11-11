@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-08T00:16:03.896800+00:00",
+  "deployed_hashes": "PASS all26JS",
+  "offline": "PASS9",
+  "review": "PASS author,not independent",
+  "scheduled_status": {
+    "result": "PASS",
+    "run_id": "d602e778-0b69-45fb-b867-e41990d67d2d",
+    "started": "2026-11-08T00:15:15.196Z",
+    "live_status": true,
+    "reason": "priority-date-mismatch",
+    "next_check_at": "2026-11-08T01:15:00.000Z",
+    "stage_errors": [],
+    "logging_errors": []
+  },
+  "scheduled_groups_rings_class_details": "UNVERIFIED:normal collection not eligible;Shows priority0 November8 vs today November7 and outside05:00-19:00 Eastern",
+  "decoded_paused": true,
+  "manual_runs": false,
+  "record_repairs": false,
+  "alerts": "Unchanged:errs-log only,no connected immediate Records chat transport",
+  "remaining": "Inspect next naturally eligible normal collection for all3detail feeds;do not invoke manually,force dates,changecadence or createobserver"
+}

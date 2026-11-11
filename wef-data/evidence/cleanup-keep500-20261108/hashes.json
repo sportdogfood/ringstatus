@@ -1,0 +1,8 @@
+{
+  "wef-data\\evidence\\cleanup-keep500-20261108\\baseline\\automation.json": "ff938f44c8549dd4cb4d61aef90c083194a5f7b242a8bea3c5195088ebd1c7f2",
+  "wef-data\\evidence\\cleanup-keep500-20261108\\baseline\\cleanup-lane.js": "2a0db19d7e846f7f5e8bec1c8aab7e9452c5bf556ec231042cb3f269fbc9384d",
+  "wef-data\\evidence\\cleanup-keep500-20261108\\candidate\\automation.json": "4ec6a7a2e931f7b0570ee1ae195615a97129d785c1636b7c20a5fbda6eecdf26",
+  "wef-data\\evidence\\cleanup-keep500-20261108\\candidate\\cleanup-lane.js": "161feaf0f4dd2364c412537a7a001d6c2225df028e1bf990c4b31fe0eb77b9dd",
+  "wef-data\\evidence\\cleanup-keep500-20261108\\candidate\\cleanupv2-purposes.json": "37bd726bb1826c16b7095615aad9e096ed36d7e5d3882351e98b4df64a56dbe5",
+  "wef-data\\evidence\\cleanup-keep500-20261108\\candidate\\records-prompt.txt": "e3fc31a9331bc5d0120f7e488e4eed66cc4ec12d940f13b08a8bbb8301a82f04"
+}

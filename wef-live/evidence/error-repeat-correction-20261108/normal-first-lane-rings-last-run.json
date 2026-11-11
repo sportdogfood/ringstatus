@@ -1,0 +1,461 @@
+{
+  "lane": "rings",
+  "run_id": "c6b04a8c-9573-428e-810b-dc2420650ca7",
+  "started": "2026-11-08T15:09:06.186Z",
+  "ok": true,
+  "issues": [],
+  "stage_errors": [],
+  "logging_errors": [],
+  "changes": [
+    {
+      "table": "live-rings",
+      "key": "200000077|2026-11-08|37",
+      "created": false,
+      "fields": [
+        {
+          "field": "source-json.livenow",
+          "before": [
+            {
+              "class_group_id": "200028687",
+              "group_name": "Low Child/Adult Amateur Hunter",
+              "day": "2026-11-08",
+              "group_sequence": "5",
+              "estimated_start_time": "09:30:01",
+              "jumper_table": "",
+              "hunter_type": "Score Without Jog",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "3",
+              "classes": [
+                "200031026",
+                "200031027",
+                "200031104"
+              ],
+              "classNumbers": [
+                "299",
+                "300",
+                "650"
+              ],
+              "classNames": [
+                "Low Child/Adult Amateur Hunter",
+                "Low Child/Adult Amateur Hunter",
+                "Warm Up Hunter"
+              ],
+              "class_numbers": "299, 300, 650",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 11,
+              "total": 17,
+              "jo_gone": 0,
+              "jo_total": 0,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031027",
+              "recent_updated_classes": [
+                "200031027",
+                "200031104",
+                "200031026"
+              ],
+              "ring_id": "37",
+              "ring": "Rost Arena",
+              "link": "/liveclass/detail?cid=200031026&class_group_id=200028687",
+              "trips": "11/17"
+            }
+          ],
+          "after": [
+            {
+              "class_group_id": "200028687",
+              "group_name": "Low Child/Adult Amateur Hunter",
+              "day": "2026-11-08",
+              "group_sequence": "5",
+              "estimated_start_time": "09:30:01",
+              "jumper_table": "",
+              "hunter_type": "Score Without Jog",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "3",
+              "classes": [
+                "200031026",
+                "200031027",
+                "200031104"
+              ],
+              "classNumbers": [
+                "299",
+                "300",
+                "650"
+              ],
+              "classNames": [
+                "Low Child/Adult Amateur Hunter",
+                "Low Child/Adult Amateur Hunter",
+                "Warm Up Hunter"
+              ],
+              "class_numbers": "299, 300, 650",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 12,
+              "total": 17,
+              "jo_gone": 0,
+              "jo_total": 0,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031026",
+              "recent_updated_classes": [
+                "200031026",
+                "200031027",
+                "200031104"
+              ],
+              "ring_id": "37",
+              "ring": "Rost Arena",
+              "link": "/liveclass/detail?cid=200031026&class_group_id=200028687",
+              "trips": "12/17"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "table": "live-rings",
+      "key": "200000077|2026-11-08|52",
+      "created": false,
+      "fields": [
+        {
+          "field": "source-json.livenow",
+          "before": [
+            {
+              "class_group_id": "200028646",
+              "group_name": "$250 .85m Jumper Classic II2b",
+              "day": "2026-11-08",
+              "group_sequence": "5",
+              "estimated_start_time": "09:55:01",
+              "jumper_table": "USEF Table II.2.b",
+              "hunter_type": "",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "4",
+              "classes": [
+                "200031253"
+              ],
+              "classNumbers": [
+                "815"
+              ],
+              "classNames": [
+                "$250 .85m Jumper Classic II2b"
+              ],
+              "class_numbers": "815",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 4,
+              "total": 8,
+              "jo_gone": 1,
+              "jo_total": 1,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031253",
+              "recent_updated_classes": [
+                "200031253"
+              ],
+              "ring_id": "52",
+              "ring": "Mogavero",
+              "link": "/liveclass/detail?cid=200031253&class_group_id=200028646",
+              "trips": "4/8"
+            }
+          ],
+          "after": [
+            {
+              "class_group_id": "200028646",
+              "group_name": "$250 .85m Jumper Classic II2b",
+              "day": "2026-11-08",
+              "group_sequence": "5",
+              "estimated_start_time": "09:55:01",
+              "jumper_table": "USEF Table II.2.b",
+              "hunter_type": "",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "4",
+              "classes": [
+                "200031253"
+              ],
+              "classNumbers": [
+                "815"
+              ],
+              "classNames": [
+                "$250 .85m Jumper Classic II2b"
+              ],
+              "class_numbers": "815",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 4,
+              "total": 8,
+              "jo_gone": 2,
+              "jo_total": 2,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031253",
+              "recent_updated_classes": [
+                "200031253"
+              ],
+              "ring_id": "52",
+              "ring": "Mogavero",
+              "link": "/liveclass/detail?cid=200031253&class_group_id=200028646",
+              "trips": "4/8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "table": "live-rings",
+      "key": "200000077|2026-11-08|49",
+      "created": false,
+      "fields": [
+        {
+          "field": "source-json.livenow",
+          "before": [
+            {
+              "class_group_id": "200028638",
+              "group_name": "1.10m Junior & Amateur Jumpers II2d",
+              "day": "2026-11-08",
+              "group_sequence": "4",
+              "estimated_start_time": "10:05:01",
+              "jumper_table": "USEF Table II.2.d",
+              "hunter_type": "",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "5",
+              "classes": [
+                "200031222",
+                "200031227"
+              ],
+              "classNumbers": [
+                "742",
+                "762"
+              ],
+              "classNames": [
+                "1.10m Junior Jumper II2d",
+                "1.10m Amateur Jumper II2d"
+              ],
+              "class_numbers": "742, 762",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 1,
+              "total": 4,
+              "jo_gone": 0,
+              "jo_total": 0,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031227",
+              "recent_updated_classes": [
+                "200031227",
+                "200031222"
+              ],
+              "ring_id": "49",
+              "ring": "Denemethy",
+              "link": "/liveclass/detail?cid=200031222&class_group_id=200028638",
+              "trips": "1/4"
+            }
+          ],
+          "after": [
+            {
+              "class_group_id": "200028638",
+              "group_name": "1.10m Junior & Amateur Jumpers II2d",
+              "day": "2026-11-08",
+              "group_sequence": "4",
+              "estimated_start_time": "10:05:01",
+              "jumper_table": "USEF Table II.2.d",
+              "hunter_type": "",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "5",
+              "classes": [
+                "200031222",
+                "200031227"
+              ],
+              "classNumbers": [
+                "742",
+                "762"
+              ],
+              "classNames": [
+                "1.10m Junior Jumper II2d",
+                "1.10m Amateur Jumper II2d"
+              ],
+              "class_numbers": "742, 762",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 2,
+              "total": 4,
+              "jo_gone": 1,
+              "jo_total": 1,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031227",
+              "recent_updated_classes": [
+                "200031227",
+                "200031222"
+              ],
+              "ring_id": "49",
+              "ring": "Denemethy",
+              "link": "/liveclass/detail?cid=200031222&class_group_id=200028638",
+              "trips": "2/4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "table": "live-rings",
+      "key": "200000077|2026-11-08|51",
+      "last_success": "2026-11-08T15:09:07.427Z",
+      "last_changed": "2026-11-08T15:00:06.744Z"
+    },
+    {
+      "table": "live-rings",
+      "key": "200000077|2026-11-08|25",
+      "last_success": "2026-11-08T15:09:07.427Z",
+      "last_changed": "2026-11-08T15:06:07.915Z"
+    },
+    {
+      "table": "live-rings",
+      "key": "200000077|2026-11-08|56",
+      "last_success": "2026-11-08T15:09:07.427Z",
+      "last_changed": "2026-11-08T14:45:07.111Z"
+    },
+    {
+      "table": "live-rings",
+      "key": "200000077|2026-11-08|37",
+      "last_success": "2026-11-08T15:09:07.427Z",
+      "last_changed": "2026-11-08T15:09:07.427Z"
+    },
+    {
+      "table": "live-rings",
+      "key": "200000077|2026-11-08|52",
+      "last_success": "2026-11-08T15:09:07.427Z",
+      "last_changed": "2026-11-08T15:09:07.427Z"
+    },
+    {
+      "table": "live-rings",
+      "key": "200000077|2026-11-08|49",
+      "last_success": "2026-11-08T15:09:07.427Z",
+      "last_changed": "2026-11-08T15:09:07.427Z"
+    }
+  ],
+  "archives": [
+    {
+      "at": "2026-11-08T15:09:07.437Z",
+      "kind": "source-widget",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\9c0ddde8a840c6cb728fd4f9e55851f0b541508dd61f82f3fddea74945339489.json.gz",
+      "records": 1,
+      "sha256": "9c0ddde8a840c6cb728fd4f9e55851f0b541508dd61f82f3fddea74945339489",
+      "shows": [
+        200000077
+      ],
+      "dates": [
+        "2026-11-08"
+      ]
+    }
+  ],
+  "timings": {
+    "collection_ms": 117.72380000000021,
+    "save_ms": 788.3926000000001,
+    "collection_started": "2026-11-08T15:09:07.309Z",
+    "collection_completed": "2026-11-08T15:09:07.427Z",
+    "requests": [
+      {
+        "label": "rings",
+        "started": "2026-11-08T15:09:07.309Z",
+        "completed": "2026-11-08T15:09:07.427Z"
+      }
+    ],
+    "save_started": "2026-11-08T15:09:08.241Z",
+    "saves": [
+      {
+        "table": "live-rings",
+        "started": "2026-11-08T15:09:08.241Z",
+        "completed": "2026-11-08T15:09:09.030Z",
+        "rows": 6,
+        "changed": 3,
+        "source_to_save": [
+          {
+            "key": "200000077|2026-11-08|51",
+            "source_response_at": "2026-11-08T15:09:07.427Z",
+            "elapsed_ms": 1603
+          },
+          {
+            "key": "200000077|2026-11-08|25",
+            "source_response_at": "2026-11-08T15:09:07.427Z",
+            "elapsed_ms": 1603
+          },
+          {
+            "key": "200000077|2026-11-08|56",
+            "source_response_at": "2026-11-08T15:09:07.427Z",
+            "elapsed_ms": 1603
+          },
+          {
+            "key": "200000077|2026-11-08|37",
+            "source_response_at": "2026-11-08T15:09:07.427Z",
+            "elapsed_ms": 1603
+          },
+          {
+            "key": "200000077|2026-11-08|52",
+            "source_response_at": "2026-11-08T15:09:07.427Z",
+            "elapsed_ms": 1603
+          },
+          {
+            "key": "200000077|2026-11-08|49",
+            "source_response_at": "2026-11-08T15:09:07.427Z",
+            "elapsed_ms": 1603
+          }
+        ]
+      }
+    ],
+    "save_completed": "2026-11-08T15:09:09.030Z",
+    "total_ms": 2844
+  },
+  "counts": {
+    "live-rings": 6
+  },
+  "scope": {
+    "show": 200000077,
+    "customer": 15,
+    "date": "2026-11-08",
+    "authority": "rec8GtJJ7eSjY3Nd3",
+    "checked_at": "2026-11-02T06:04:12.307Z",
+    "active": true,
+    "eastern_time": "2026-11-08 10:09:11"
+  },
+  "day_priority": 0,
+  "live_status": true,
+  "completed": "2026-11-08T15:09:09.030Z"
+}

@@ -1,0 +1,374 @@
+{
+  "verified_at": "2026-11-08T23:41:17.516Z",
+  "receipt": {
+    "run_id": "7d0b3a07-e099-4517-8547-89b5d596373e",
+    "started": "2026-11-08T23:40:04.330Z",
+    "completed": "2026-11-08T23:40:30.322Z",
+    "source_lane": "data_live",
+    "destination": "appYOykKIy1kAquhP",
+    "status": "complete",
+    "class_status": "complete",
+    "ok": true,
+    "ring": {
+      "day": "2026-11-08",
+      "run_id": "7d0b3a07-e099-4517-8547-89b5d596373e",
+      "started": "2026-11-08T23:40:04.330Z",
+      "ok": true,
+      "rings": [
+        {
+          "ring": 5,
+          "as_of": "2026-11-08T20:21:06.487Z",
+          "pace": null,
+          "end_in": null,
+          "estimated_end": null
+        },
+        {
+          "ring": 4,
+          "as_of": "2026-11-08T18:18:06.885Z",
+          "pace": null,
+          "end_in": null,
+          "estimated_end": null
+        },
+        {
+          "ring": 1,
+          "as_of": "2026-11-08T20:48:06.559Z",
+          "pace": null,
+          "end_in": null,
+          "estimated_end": null
+        },
+        {
+          "ring": 3,
+          "as_of": "2026-11-08T15:39:07.459Z",
+          "pace": null,
+          "end_in": null,
+          "estimated_end": null
+        },
+        {
+          "ring": 6,
+          "as_of": "2026-11-08T15:39:07.459Z",
+          "pace": null,
+          "end_in": null,
+          "estimated_end": null
+        },
+        {
+          "ring": 7,
+          "as_of": "2026-11-08T14:45:07.111Z",
+          "pace": null,
+          "end_in": null,
+          "estimated_end": null
+        }
+      ],
+      "issues": [],
+      "written": 6,
+      "completed": "2026-11-08T23:40:12.412Z"
+    },
+    "classes": {
+      "run_id": "7d0b3a07-e099-4517-8547-89b5d596373e",
+      "started": "2026-11-08T23:40:12.415Z",
+      "day": "2026-11-08",
+      "ok": true,
+      "written": 3,
+      "summaries": 3,
+      "issues": [],
+      "show": 200000077,
+      "evaluated": 3,
+      "completed": "2026-11-08T23:40:29.256Z"
+    },
+    "errors": [],
+    "issues": [
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date",
+      "Host clock not verified against Airtable Date"
+    ],
+    "counts": {
+      "evaluated": 6,
+      "written": 6,
+      "unchanged": 0,
+      "purged": 0,
+      "classes_evaluated": 3,
+      "classes_written": 3,
+      "classes_unchanged": 0
+    },
+    "cleanup": {
+      "run_id": "e39a772b-1504-4b09-9821-654bb3b17514",
+      "started": "2026-11-08T23:40:30.325Z",
+      "policy": "delete-only",
+      "result": "Skipped",
+      "actions": [],
+      "deleted": 0,
+      "reason": "Cleanup not due",
+      "next_quick_check_at": "2026-11-09T02:28:30.275Z",
+      "completed": "2026-11-08T23:40:31.055Z",
+      "clock_warnings": [
+        "Host clock not verified against Airtable Date"
+      ]
+    },
+    "class_cleanup": {
+      "ok": true,
+      "deleted": 0,
+      "reason": "Not due"
+    }
+  },
+  "snapshots": [
+    {
+      "id": "recJ5LyU9aEnFCEq4",
+      "createdTime": "2026-11-08T23:40:35.000Z",
+      "fields": {
+        "snapshot-key": "15|200000077|2026-11-08|6|200031045|7d0b3a07-e099-4517-8547-89b5d596373e",
+        "class-key": "15|200000077|2026-11-08|6|200031045",
+        "phase": "base",
+        "status": "Upcoming",
+        "status-basis": "Live current/next Ring links",
+        "count-basis": "Live class",
+        "pace-method": "default",
+        "previous-snapshot": "15|200000077|2026-11-08|6|200031045|f130d096-0bbb-4e3d-bfee-9d38e75697ff",
+        "show-id": 200000077,
+        "total": 1,
+        "gone": 0,
+        "left": 1,
+        "date": "2026-11-08",
+        "snapshot-at": "2026-11-08T23:40:12.415Z",
+        "observed-at": "2026-11-08T12:06:07.767Z",
+        "scheduled-start": "2026-11-08T15:38:27.000Z",
+        "expected-start": "2026-11-08T15:38:27.000Z",
+        "expected-end": "2026-11-08T15:41:01.476Z",
+        "class": "https://airtable.com/appeqxxJyPGS1iqdm/tblUgcgOMvfjbEthx/recuChqIuesmVoWqM",
+        "ring": "https://airtable.com/appeqxxJyPGS1iqdm/tblxxij3WQdPVjelc/rec7Vj2Cy2hAVJLtR",
+        "group": "https://airtable.com/appeqxxJyPGS1iqdm/tblqj4kMTYxSM9KMg/recHiFXor91BH7tMj",
+        "ring-snapshot": "https://airtable.com/appeqxxJyPGS1iqdm/tbl1DRKWEQmkiUBsj/recbXS8QyrmFAlSoH",
+        "schedule": "https://airtable.com/appeqxxJyPGS1iqdm/tbluS3qhA6LNEmH1H/recNONlIyeseHTa5m",
+        "next-classes": "[{\"id\":\"recFVf1qNK4IXXCav\",\"name\":\"Schooling Pony Hunter\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblXwDb5zxYbwFcLe/recFVf1qNK4IXXCav\"},{\"id\":\"recO0b9gGDky09GZl\",\"name\":\"Medium Pony Hunter\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblXwDb5zxYbwFcLe/recO0b9gGDky09GZl\"},{\"id\":\"recYQUFnQfvg8bjvQ\",\"name\":\"Medium Pony Hunter\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblXwDb5zxYbwFcLe/recYQUFnQfvg8bjvQ\"}]",
+        "changed-fields": "ring-snapshot",
+        "changes": "[{\"field\":\"ring-snapshot\",\"previous\":\"https://airtable.com/appeqxxJyPGS1iqdm/tbl1DRKWEQmkiUBsj/recJIyOXWeRd8yeWT\",\"current\":\"https://airtable.com/appeqxxJyPGS1iqdm/tbl1DRKWEQmkiUBsj/recbXS8QyrmFAlSoH\"}]",
+        "observations": "Scheduled start has passed; Live has not confirmed a start.",
+        "unavailable-reasons": "actual_start_unknown",
+        "is-live": {
+          "id": "seloxs7GyP9vJP6DO",
+          "name": "false",
+          "color": "grayLight2"
+        },
+        "pace-used": 2.5746,
+        "minutes-left": 0,
+        "schedule-offset-minutes": 0,
+        "estimated-start": "2026-11-08T15:38:27.000Z",
+        "estimated-starts-in": 0,
+        "estimated-end": "2026-11-08T15:41:01.476Z",
+        "estimated-ends-in": 0,
+        "current-trips": "[]",
+        "next-trips": "[{\"id\":\"rec1sNeVU8u0Du1Uv\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblIJ8YtqPNAmQY1k/rec1sNeVU8u0Du1Uv\",\"trip\":200399494,\"horse\":\"DCW POCKET FULL OF MIRACLES\",\"rider\":\"TAYLOR BORSTAD\",\"order\":null,\"gone\":0,\"scratch\":false,\"reportedCurrent\":false},{\"id\":\"rece8ggBSxeurIMWn\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblIJ8YtqPNAmQY1k/rece8ggBSxeurIMWn\",\"trip\":200399493,\"horse\":\"DCW POCKET FULL OF MIRACLES\",\"rider\":\"TAYLOR BORSTAD\",\"order\":null,\"gone\":0,\"scratch\":false,\"reportedCurrent\":false}]"
+      }
+    },
+    {
+      "id": "recL6oT2UlNHzPtmU",
+      "createdTime": "2026-11-08T23:40:34.000Z",
+      "fields": {
+        "snapshot-key": "15|200000077|2026-11-08|6|200031046|7d0b3a07-e099-4517-8547-89b5d596373e",
+        "class-key": "15|200000077|2026-11-08|6|200031046",
+        "phase": "base",
+        "status": "Upcoming",
+        "status-basis": "Live current/next Ring links",
+        "count-basis": "Live class",
+        "pace-method": "default",
+        "previous-snapshot": "15|200000077|2026-11-08|6|200031046|f130d096-0bbb-4e3d-bfee-9d38e75697ff",
+        "show-id": 200000077,
+        "total": 1,
+        "gone": 0,
+        "left": 1,
+        "date": "2026-11-08",
+        "snapshot-at": "2026-11-08T23:40:12.415Z",
+        "observed-at": "2026-11-08T12:06:07.773Z",
+        "scheduled-start": "2026-11-08T15:38:27.000Z",
+        "expected-start": "2026-11-08T15:38:27.000Z",
+        "expected-end": "2026-11-08T15:41:01.476Z",
+        "class": "https://airtable.com/appeqxxJyPGS1iqdm/tblUgcgOMvfjbEthx/recf1YOFCJqnokH2r",
+        "ring": "https://airtable.com/appeqxxJyPGS1iqdm/tblxxij3WQdPVjelc/rec7Vj2Cy2hAVJLtR",
+        "group": "https://airtable.com/appeqxxJyPGS1iqdm/tblqj4kMTYxSM9KMg/recHiFXor91BH7tMj",
+        "ring-snapshot": "https://airtable.com/appeqxxJyPGS1iqdm/tbl1DRKWEQmkiUBsj/recbXS8QyrmFAlSoH",
+        "schedule": "https://airtable.com/appeqxxJyPGS1iqdm/tbluS3qhA6LNEmH1H/recT6Erv5EcH90wV7",
+        "next-classes": "[{\"id\":\"recFVf1qNK4IXXCav\",\"name\":\"Schooling Pony Hunter\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblXwDb5zxYbwFcLe/recFVf1qNK4IXXCav\"},{\"id\":\"recO0b9gGDky09GZl\",\"name\":\"Medium Pony Hunter\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblXwDb5zxYbwFcLe/recO0b9gGDky09GZl\"},{\"id\":\"recYQUFnQfvg8bjvQ\",\"name\":\"Medium Pony Hunter\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblXwDb5zxYbwFcLe/recYQUFnQfvg8bjvQ\"}]",
+        "changed-fields": "ring-snapshot",
+        "changes": "[{\"field\":\"ring-snapshot\",\"previous\":\"https://airtable.com/appeqxxJyPGS1iqdm/tbl1DRKWEQmkiUBsj/recJIyOXWeRd8yeWT\",\"current\":\"https://airtable.com/appeqxxJyPGS1iqdm/tbl1DRKWEQmkiUBsj/recbXS8QyrmFAlSoH\"}]",
+        "observations": "Scheduled start has passed; Live has not confirmed a start.",
+        "unavailable-reasons": "actual_start_unknown",
+        "is-live": {
+          "id": "seloxs7GyP9vJP6DO",
+          "name": "false",
+          "color": "grayLight2"
+        },
+        "pace-used": 2.5746,
+        "minutes-left": 0,
+        "schedule-offset-minutes": 0,
+        "estimated-start": "2026-11-08T15:38:27.000Z",
+        "estimated-starts-in": 0,
+        "estimated-end": "2026-11-08T15:41:01.476Z",
+        "estimated-ends-in": 0,
+        "current-trips": "[]",
+        "next-trips": "[{\"id\":\"rec1sNeVU8u0Du1Uv\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblIJ8YtqPNAmQY1k/rec1sNeVU8u0Du1Uv\",\"trip\":200399494,\"horse\":\"DCW POCKET FULL OF MIRACLES\",\"rider\":\"TAYLOR BORSTAD\",\"order\":null,\"gone\":0,\"scratch\":false,\"reportedCurrent\":false},{\"id\":\"rece8ggBSxeurIMWn\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblIJ8YtqPNAmQY1k/rece8ggBSxeurIMWn\",\"trip\":200399493,\"horse\":\"DCW POCKET FULL OF MIRACLES\",\"rider\":\"TAYLOR BORSTAD\",\"order\":null,\"gone\":0,\"scratch\":false,\"reportedCurrent\":false}]"
+      }
+    },
+    {
+      "id": "recccDDtm4ITu85Cf",
+      "createdTime": "2026-11-08T23:40:32.000Z",
+      "fields": {
+        "snapshot-key": "15|200000077|2026-11-08|6|200031129|7d0b3a07-e099-4517-8547-89b5d596373e",
+        "class-key": "15|200000077|2026-11-08|6|200031129",
+        "phase": "base",
+        "status": "Upcoming",
+        "status-basis": "Live current/next Ring links",
+        "count-basis": "Live class",
+        "pace-method": "default",
+        "previous-snapshot": "15|200000077|2026-11-08|6|200031129|f130d096-0bbb-4e3d-bfee-9d38e75697ff",
+        "show-id": 200000077,
+        "total": 0,
+        "gone": 0,
+        "left": 0,
+        "date": "2026-11-08",
+        "snapshot-at": "2026-11-08T23:40:12.415Z",
+        "observed-at": "2026-11-08T12:06:07.761Z",
+        "scheduled-start": "2026-11-08T15:38:27.000Z",
+        "expected-start": "2026-11-08T15:38:27.000Z",
+        "expected-end": "2026-11-08T15:38:27.000Z",
+        "class": "https://airtable.com/appeqxxJyPGS1iqdm/tblUgcgOMvfjbEthx/rec1Jy7zRNWITproQ",
+        "ring": "https://airtable.com/appeqxxJyPGS1iqdm/tblxxij3WQdPVjelc/rec7Vj2Cy2hAVJLtR",
+        "group": "https://airtable.com/appeqxxJyPGS1iqdm/tblqj4kMTYxSM9KMg/recHiFXor91BH7tMj",
+        "ring-snapshot": "https://airtable.com/appeqxxJyPGS1iqdm/tbl1DRKWEQmkiUBsj/recbXS8QyrmFAlSoH",
+        "schedule": "https://airtable.com/appeqxxJyPGS1iqdm/tbluS3qhA6LNEmH1H/recSE4RIT5GFuEMlB",
+        "next-classes": "[{\"id\":\"recFVf1qNK4IXXCav\",\"name\":\"Schooling Pony Hunter\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblXwDb5zxYbwFcLe/recFVf1qNK4IXXCav\"},{\"id\":\"recO0b9gGDky09GZl\",\"name\":\"Medium Pony Hunter\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblXwDb5zxYbwFcLe/recO0b9gGDky09GZl\"},{\"id\":\"recYQUFnQfvg8bjvQ\",\"name\":\"Medium Pony Hunter\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblXwDb5zxYbwFcLe/recYQUFnQfvg8bjvQ\"}]",
+        "changed-fields": "ring-snapshot",
+        "changes": "[{\"field\":\"ring-snapshot\",\"previous\":\"https://airtable.com/appeqxxJyPGS1iqdm/tbl1DRKWEQmkiUBsj/recJIyOXWeRd8yeWT\",\"current\":\"https://airtable.com/appeqxxJyPGS1iqdm/tbl1DRKWEQmkiUBsj/recbXS8QyrmFAlSoH\"}]",
+        "observations": "Scheduled start has passed; Live has not confirmed a start.",
+        "unavailable-reasons": "actual_start_unknown",
+        "is-live": {
+          "id": "seloxs7GyP9vJP6DO",
+          "name": "false",
+          "color": "grayLight2"
+        },
+        "pace-used": 2.5746,
+        "minutes-left": 0,
+        "schedule-offset-minutes": 0,
+        "estimated-start": "2026-11-08T15:38:27.000Z",
+        "estimated-starts-in": 0,
+        "estimated-end": "2026-11-08T15:38:27.000Z",
+        "estimated-ends-in": 0,
+        "current-trips": "[]",
+        "next-trips": "[{\"id\":\"rec1sNeVU8u0Du1Uv\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblIJ8YtqPNAmQY1k/rec1sNeVU8u0Du1Uv\",\"trip\":200399494,\"horse\":\"DCW POCKET FULL OF MIRACLES\",\"rider\":\"TAYLOR BORSTAD\",\"order\":null,\"gone\":0,\"scratch\":false,\"reportedCurrent\":false},{\"id\":\"rece8ggBSxeurIMWn\",\"link\":\"https://airtable.com/appeqxxJyPGS1iqdm/tblIJ8YtqPNAmQY1k/rece8ggBSxeurIMWn\",\"trip\":200399493,\"horse\":\"DCW POCKET FULL OF MIRACLES\",\"rider\":\"TAYLOR BORSTAD\",\"order\":null,\"gone\":0,\"scratch\":false,\"reportedCurrent\":false}]"
+      }
+    }
+  ],
+  "summaries": [
+    {
+      "id": "recuChqIuesmVoWqM",
+      "createdTime": "2026-11-06T01:41:07.000Z",
+      "fields": {
+        "class-key": "15|200000077|2026-11-08|6|200031045",
+        "class-name": "Medium Pony Hunter",
+        "status": "Not Started",
+        "last-success": "2026-11-08T23:39:53.765Z",
+        "schedules": [
+          {
+            "id": "recNONlIyeseHTa5m",
+            "name": "15|200000077|2026-11-08|6|200043415"
+          }
+        ],
+        "class-status-as-of": "As of 6:40 PM — Medium Pony Hunter — Upcoming. 1 total, 0 gone, 1 left. Start 10:38 AM, in 0 minutes. Estimated end 10:41 AM, in 0 minutes. Pace 2.5746 min/trip (default). Scheduled start has passed; Live has not confirmed a start."
+      }
+    },
+    {
+      "id": "recf1YOFCJqnokH2r",
+      "createdTime": "2026-11-06T01:41:07.000Z",
+      "fields": {
+        "class-key": "15|200000077|2026-11-08|6|200031046",
+        "class-name": "Medium Pony Hunter",
+        "status": "Not Started",
+        "last-success": "2026-11-08T23:39:57.130Z",
+        "schedules": [
+          {
+            "id": "recT6Erv5EcH90wV7",
+            "name": "15|200000077|2026-11-08|6|200043416"
+          }
+        ],
+        "class-status-as-of": "As of 6:40 PM — Medium Pony Hunter — Upcoming. 1 total, 0 gone, 1 left. Start 10:38 AM, in 0 minutes. Estimated end 10:41 AM, in 0 minutes. Pace 2.5746 min/trip (default). Scheduled start has passed; Live has not confirmed a start."
+      }
+    },
+    {
+      "id": "rec1Jy7zRNWITproQ",
+      "createdTime": "2026-11-06T01:41:07.000Z",
+      "fields": {
+        "class-key": "15|200000077|2026-11-08|6|200031129",
+        "class-name": "Schooling Pony Hunter",
+        "status": "Not Started",
+        "last-success": "2026-11-08T23:39:43.913Z",
+        "schedules": [
+          {
+            "id": "recSE4RIT5GFuEMlB",
+            "name": "15|200000077|2026-11-08|6|200043414"
+          },
+          {
+            "id": "recfLhLS7XDlZtMRV",
+            "name": "15|200000077|2026-11-08|6|200043424"
+          },
+          {
+            "id": "recu1xPQhSF2PkQ3Y",
+            "name": "15|200000077|2026-11-08|6|200043419"
+          },
+          {
+            "id": "rec5e4i2YZEojNP48",
+            "name": "15|200000077|2026-11-08|6|200043410"
+          }
+        ],
+        "class-status-as-of": "As of 6:40 PM — Schooling Pony Hunter — Upcoming. 0 total, 0 gone, 0 left. Start 10:38 AM, in 0 minutes. Estimated end 10:38 AM, in 0 minutes. Pace 2.5746 min/trip (default). Scheduled start has passed; Live has not confirmed a start."
+      }
+    }
+  ],
+  "priorSnapshotsPreserved": true,
+  "checks": [
+    {
+      "snapshot": "recJ5LyU9aEnFCEq4",
+      "priorSnapshot": "recvUQAjOZnclQ7vH",
+      "classRecord": "recuChqIuesmVoWqM",
+      "key": "15|200000077|2026-11-08|6|200031045",
+      "snapshotAt": "2026-11-08T23:40:12.415Z",
+      "status": "Upcoming",
+      "summary": "As of 6:40 PM — Medium Pony Hunter — Upcoming. 1 total, 0 gone, 1 left. Start 10:38 AM, in 0 minutes. Estimated end 10:41 AM, in 0 minutes. Pace 2.5746 min/trip (default). Scheduled start has passed; Live has not confirmed a start.",
+      "pass": true
+    },
+    {
+      "snapshot": "recL6oT2UlNHzPtmU",
+      "priorSnapshot": "recm9JoWJ8kB1VCGa",
+      "classRecord": "recf1YOFCJqnokH2r",
+      "key": "15|200000077|2026-11-08|6|200031046",
+      "snapshotAt": "2026-11-08T23:40:12.415Z",
+      "status": "Upcoming",
+      "summary": "As of 6:40 PM — Medium Pony Hunter — Upcoming. 1 total, 0 gone, 1 left. Start 10:38 AM, in 0 minutes. Estimated end 10:41 AM, in 0 minutes. Pace 2.5746 min/trip (default). Scheduled start has passed; Live has not confirmed a start.",
+      "pass": true
+    },
+    {
+      "snapshot": "recccDDtm4ITu85Cf",
+      "priorSnapshot": "recmzaTPfyzDRoSsS",
+      "classRecord": "rec1Jy7zRNWITproQ",
+      "key": "15|200000077|2026-11-08|6|200031129",
+      "snapshotAt": "2026-11-08T23:40:12.415Z",
+      "status": "Upcoming",
+      "summary": "As of 6:40 PM — Schooling Pony Hunter — Upcoming. 0 total, 0 gone, 0 left. Start 10:38 AM, in 0 minutes. Estimated end 10:38 AM, in 0 minutes. Pace 2.5746 min/trip (default). Scheduled start has passed; Live has not confirmed a start.",
+      "pass": true
+    }
+  ],
+  "pass": true
+}

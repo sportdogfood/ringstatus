@@ -1,0 +1,9 @@
+# Extend existing empty-only Live linker with entity refs
+Direct owner: 'lets identify where we need these new table links and extend the linker to inlude them'. Later steering: 'make the statement and add a rule that any field that starts with "___" is likely the wrong one and we can create a reference to the replacement if necessary'.
+Baseline26JS remove-records-alerts-20261107/deployed.json verified. Scope: linker.js+airtable.js readonlyallowlist+schema.js6nativefieldtargets;6necessarynativefields on live-trips/live-entries to existing w-horses/w-riders/w-trainers. Match positive source IDs to unique same helper ID only;no name/nickname fallback,helperwrites,newIDs or enrichment. Current helpers have numeric-ID primary keys globally,1250horses/790riders/331trainers observed;no newhelpers/source collection.
+Fillemptylinks only,day0only,existingnormalstage7aftercollection;ambiguous/missingrefs logindividualissuesandcontinue. Existinglinks/businessfields/provenance/collection/stages4-6/pauseddecoded/cleanup/task/header/Recordsremoval protected. No manualrun/recordrepair/backfill/newtimer/observer/sourceprobe. Schemafields only;records populated by normaleligiblelinkpasses. Normalpopulationoutsidecurrenttimewindow remains unverified until eligible normalruns;do notforce.
+Fieldrule added to moduleAGENTS/README with verifiedold->newmapping. ___ prefixes not used as new entitylink targets;historicalvalues retained,nounnecessaryreplacementfields. Classes/groups/rings reachentities viaexistingchildrelationships;no inventedmulti-entityrollups.
+
+Latest explicit owner mappings: ___wef-shows.show-days=w-days;___wef-shows.show=w-shows. Documented,activeREFSalreadycorrect;no manualrename/migration.
+
+Ownerexplicitlyreconfirmed approval:extendlinker/addnewtables to live-trips and live-entries only. No new businessstage or helpercollection.

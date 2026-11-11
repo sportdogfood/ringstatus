@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/review_cleanup7pm",
+  "commands": [
+    {
+      "id": "review-integrity-verifier",
+      "command": "python -B scripts/verify_review.py --receipt \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\remove-records-alerts-20261107\\review-receipt.json\"",
+      "cwd": "C:\\Users\\gombc\\.agents\\skills\\code-review",
+      "runtime": "Python 3.11.3",
+      "started_at": "2026-11-08T02:13:47.232368+00:00",
+      "ended_at": "2026-11-08T02:13:47.389244+00:00",
+      "exit_code": 0,
+      "stdout": "{\"status\": \"PASS\", \"errors\": [], \"mechanical_only\": true, \"review_status\": \"COMPLETE\", \"candidate_status\": \"PASS\", \"reviewer\": \"/root/review_cleanup7pm\", \"command_count\": 1}\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {recordRenewal} from './health-records.mjs';
 import { publicRoute, fetchPublic } from './public-live.mjs';
 import http from 'node:http';
 import { timingSafeEqual } from 'node:crypto';
@@ -7,9 +10,16 @@ const { RUNNER_KEY, SGL_COOKIE, SGL_TOKEN } = process.env;
 if (!RUNNER_KEY || RUNNER_KEY.length < 32 || !SGL_COOKIE || !SGL_TOKEN) {
   throw Error('Missing runner credentials');
 }
+let logToken=process.env.WEF_SHOWS_AIRTABLE_TOKEN;
+if(!logToken){
+ try{const text=fs.readFileSync(path.resolve(process.cwd(),'../wef-shows/runtime/collector.env'),'utf8');const match=text.match(/^WEF_SHOWS_AIRTABLE_TOKEN=(.*)$/m);if(match)logToken=match[1].trim().replace(/^['"]|['"]$/g,'');}catch{}
+}
+const logEnv={WEF_SHOWS_AIRTABLE_TOKEN:logToken};
 let cachedToken;
 let renewal;
 async function renewSourceToken() {
+  const started=new Date().toISOString(),id=crypto.randomUUID();let status=null;
+  try{
   const response = await fetch('https://sglapi.wellingtoninternational.com/utilities/get-config', {
     redirect: 'error', signal: AbortSignal.timeout(15000),
     headers: {
@@ -20,6 +30,7 @@ async function renewSourceToken() {
       'sec-fetch-mode': 'cors', 'sec-fetch-site': 'same-site', 'sec-fetch-dest': 'empty'
     }
   });
+  status=response.status;
   if (!response.ok) throw Error('Token renewal failed');
   const { _t: token } = await response.json();
   const claims = JSON.parse(Buffer.from(token.split('.')[1], 'base64url'));
@@ -27,7 +38,9 @@ async function renewSourceToken() {
     throw Error('Invalid anonymous token');
   }
   cachedToken = { token, expires: claims.exp * 1000 };
+  await recordRenewal(logEnv,{'refresh-id':id,'started-at':started,'completed-at':new Date().toISOString(),lane:'runner',endpoint:'https://sglapi.wellingtoninternational.com/utilities/get-config',reason:'missing-or-near-expiry',result:'Succeeded','http-status':status,'token-expires-at':new Date(cachedToken.expires).toISOString()});
   return token;
+  }catch(error){await recordRenewal(logEnv,{'refresh-id':id,'started-at':started,'completed-at':new Date().toISOString(),lane:'runner',endpoint:'https://sglapi.wellingtoninternational.com/utilities/get-config',reason:'missing-or-near-expiry',result:'Failed','http-status':status,error:'Token renewal failed or invalid response'});throw error;}
 }
 function sourceToken() {
   if (cachedToken && cachedToken.expires > Date.now() + 86400000) return cachedToken.token;

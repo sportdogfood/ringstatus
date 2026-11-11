@@ -1,0 +1,12 @@
+{
+  "nineLanes": true,
+  "access": true,
+  "formats": true,
+  "deployedRoutes": true,
+  "fallback": true,
+  "alerts": true,
+  "relatedRouteReuse": true,
+  "failedVsUntested": true,
+  "sourceCoverage": true,
+  "ownerIdentityReview": true
+}

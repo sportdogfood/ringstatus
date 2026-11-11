@@ -1,0 +1,73 @@
+{
+  "event_id": "daily-19|2026-11-08",
+  "run_id": 1794182465527,
+  "heartbeat_received": "2026-11-08T23:58:44.900Z",
+  "pointer_issued": "2026-11-09T00:00:13.645Z",
+  "started": "2026-11-09T00:01:05.527Z",
+  "completed": "2026-11-09T00:01:36.819Z",
+  "result": "Success",
+  "errors": [],
+  "task_exit": 0,
+  "native_tables": [
+    {
+      "table": "runs",
+      "before": 134,
+      "after": 13,
+      "priorIDsMissing": 121
+    },
+    {
+      "table": "run-logs",
+      "before": 275,
+      "after": 24,
+      "priorIDsMissing": 252
+    },
+    {
+      "table": "err-logs",
+      "before": 153,
+      "after": 11,
+      "priorIDsMissing": 142
+    },
+    {
+      "table": "heartbeat",
+      "before": 2,
+      "after": 2,
+      "priorIDsMissing": 0
+    }
+  ],
+  "cleanupV2": [
+    {
+      "table": "runs",
+      "run": 1794182465527,
+      "result": "Success",
+      "deleted": 121
+    },
+    {
+      "table": "run-logs",
+      "run": 1794182465527,
+      "result": "Success",
+      "deleted": 252
+    },
+    {
+      "table": "err-logs",
+      "run": 1794182465527,
+      "result": "Success",
+      "deleted": 142
+    },
+    {
+      "table": "heartbeat",
+      "run": 1794182465527,
+      "result": "Success",
+      "deleted": 0
+    }
+  ],
+  "local": {
+    "runs": 937,
+    "errors": 988,
+    "acks": 0
+  },
+  "acceptance": {
+    "genuine_daily_alert": "PASS",
+    "airtable_deletions_confirmed": 515
+  },
+  "route": "Existing Records alert and registered cleanup task"
+}

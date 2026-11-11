@@ -1,0 +1,16 @@
+{
+  "reviewer": "writer:/root",
+  "commands": [
+    {
+      "id": "writer-6",
+      "command": "node wef-timing/evidence/class-simple-20261108/test.js",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T20:17:53.756806+00:00",
+      "ended_at": "2026-11-08T20:17:53.965711+00:00",
+      "exit_code": 0,
+      "stdout": "PASS owner math: actual1:59, observed2:28,30total10gone =>2.9pace,3:26finish,58minutes\nPASS next scheduled3:00 is projected3:26 with26-minute late warning\nPASS trip context uses source current ID and saved next roster\nPASS schedule-only upcoming3:00 is32minutes from2:28\nPASS measured class count intervals outrank default without inventing actual start\nPASS missing observations use labeled default, not a false measured pace\nPASS bad clock affects its fields, not other classes or snapshot creation\nPASS unknown preceding round does not invent next start\nPASS upcoming Data class still gets snapshot when Live detail is absent\nPASS repeat cycle preserves source time, adds new key and exact count diff\nPASS complete offline reader->save->readback->Class print->logs/heartbeat\nPASS same cycle deduplicates snapshots; next cycle appends even unchanged source\nPASS failed snapshot readback stops publication before summary update\nPASS real HTTP adapter paginates, preserves Date formula, and restricts source writes\nPASS cleanup19:00Eastern; new-show priority; three-hour due; day0 irrelevant\nPASS cleanup999none/1000oldest500 and active/pending protections\nPASS old answers: unknown date, young, current/future or referenced remain protected\nPASS full archive file/hash/catalog independent readback required\nPASS prepared shared entry invokes fresh Class directly, independent of old handoff/clock gate\nPASS empty current Ring pointer wins over stale group backlink\nPASS is-live preserves explicit source false\nPASS run/error/heartbeat carry known show identity for new-show cleanup\nPASS invalid default identity is a failure, not a successful empty cycle\nPASS shared group remaining workload is counted once for next start\nPASS explicit retired checkpoint proof uses real checkpoint schema and full executor\nPASS retained answer reference by record ID remains protected\nPASS invalid cleanup default identity cannot manufacture a new-show event\nPASS heartbeat failure retains actual snapshot counts and returns failure evidence\nPASS prepared receipt preserves existing shape and Ring results on Class exception\nPASS prepared receipt retains Ring failure and separates Class warnings\nPASS saved current/next classes produce observations and timing using real history\n{\"passed\":31,\"observations\":438,\"snapshots\":4,\"measured\":1,\"as_of\":\"2026-11-08T19:52:09.175Z\"}\n",
+      "stderr": ""
+    }
+  ]
+}

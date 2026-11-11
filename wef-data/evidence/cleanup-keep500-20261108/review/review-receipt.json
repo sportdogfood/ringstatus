@@ -1,0 +1,78 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "reviewed_at": "2026-11-08T15:06:03.746778+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Independent approved1000+keep500quantity correction review",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\candidate",
+  "integration_coverage": "Exact three-line quantity delta/local-native consistency, protected shortage, unchanged schedule/state, purpose-only five rows and prompt equality; no live proof",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\baseline\\automation.json",
+      "sha256": "ff938f44c8549dd4cb4d61aef90c083194a5f7b242a8bea3c5195088ebd1c7f2"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\baseline\\cleanup-lane.js",
+      "sha256": "2a0db19d7e846f7f5e8bec1c8aab7e9452c5bf556ec231042cb3f269fbc9384d"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\candidate\\automation.json",
+      "sha256": "4ec6a7a2e931f7b0570ee1ae195615a97129d785c1636b7c20a5fbda6eecdf26"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\candidate\\cleanup-lane.js",
+      "sha256": "161feaf0f4dd2364c412537a7a001d6c2225df028e1bf990c4b31fe0eb77b9dd"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\candidate\\cleanupv2-purposes.json",
+      "sha256": "37bd726bb1826c16b7095615aad9e096ed36d7e5d3882351e98b4df64a56dbe5"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\candidate\\records-prompt.txt",
+      "sha256": "e3fc31a9331bc5d0120f7e488e4eed66cc4ec12d940f13b08a8bbb8301a82f04"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\review\\report.md",
+    "sha256": "6542b10b51bab980a188ee267256ab574c4c28e44be91ec4f2edb803975daf7c"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\review\\commands.json",
+      "sha256": "f35e98aa3b56474acea69cfac4b9e9d6829109a8e60a45966b4eb22d9558a6c6"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "Independent nine targeted quantity checks",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "keep500"
+      ]
+    },
+    {
+      "name": "Owner boundary and downstream quantity consistency",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Read task, entire three-expression diff, unchanged automation metadata and purpose-only payloads; no native edit",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\task.md",
+          "sha256": "4321e7a56179f93eb66d4df1be8920cd360820df549f499fd86b1aab87f43db3"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\test-keep500.js",
+          "sha256": "73daf515071ccfde6733c6e29390e790721955b52c5349490b3b6df8e5556db7"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\hashes.json",
+          "sha256": "fed21910a7fb615dec42c9d97b7f403220fbe72e203ae0753b873ea916107b04"
+        }
+      ]
+    }
+  ]
+}

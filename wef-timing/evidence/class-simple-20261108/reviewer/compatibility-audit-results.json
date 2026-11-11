@@ -1,0 +1,26 @@
+[
+  {
+    "name": "default Ring producer remains the proven ring-snapshot.run route",
+    "result": "PASS"
+  },
+  {
+    "name": "legacy shared receipt fields survive successful simple workflow",
+    "result": "PASS"
+  },
+  {
+    "name": "Ring failure reaches legacy root errors, not Class-only warnings",
+    "result": "PASS"
+  },
+  {
+    "name": "unexpected Class throw preserves Ring result and unknown Class counts",
+    "result": "PASS"
+  },
+  {
+    "name": "heartbeat reporting failure preserves verified snapshot delivery counts",
+    "result": "PASS"
+  },
+  {
+    "name": "initial run-log reporting failure does not erase independent calculation",
+    "result": "PASS"
+  }
+]

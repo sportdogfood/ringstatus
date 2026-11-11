@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-07T23:38:11.342Z",
+  "status": "PASS",
+  "browser_metadata": {
+    "show_id": 200000077,
+    "show_name": "2026 ESP November (#7129)",
+    "facility_id": 500,
+    "start_date": "2026-11-05T00:00:00.000Z",
+    "end_date": "2026-11-08T00:00:00.000Z"
+  },
+  "source_selected_date": "2026-11-07",
+  "offline_new_show": 200000077,
+  "new_show_days": [
+    {
+      "date": "2026-11-05",
+      "priority": -2
+    },
+    {
+      "date": "2026-11-06",
+      "priority": -1
+    },
+    {
+      "date": "2026-11-07",
+      "priority": 0
+    },
+    {
+      "date": "2026-11-08",
+      "priority": 1
+    }
+  ],
+  "older_show_non_default": true,
+  "older_day_priority": 999,
+  "repeat_no_duplicates": true,
+  "archives_verified": true,
+  "limitations": "Offline test adapts captured browser default_show into existing discoverFocus ring-shaped fixture. Primary browser integration and fallback switching are not implemented or deployed. No production collector invoked; no Airtable writes."
+}

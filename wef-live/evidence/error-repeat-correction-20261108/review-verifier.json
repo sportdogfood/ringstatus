@@ -1,0 +1,27 @@
+{
+  "reviewer": "/root/review_cleanup7pm",
+  "commands": [
+    {
+      "id": "review-integrity-verifier",
+      "command": "python -B scripts/verify_review.py --receipt \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\error-repeat-correction-20261108\\review-receipt.json\"",
+      "cwd": "C:\\Users\\gombc\\.agents\\skills\\code-review",
+      "runtime": "Python 3.11.3",
+      "started_at": "2026-11-08T15:02:38.093002+00:00",
+      "ended_at": "2026-11-08T15:02:38.252335+00:00",
+      "exit_code": 0,
+      "stdout": "{\"status\": \"PASS\", \"errors\": [], \"mechanical_only\": true, \"review_status\": \"COMPLETE\", \"candidate_status\": \"PASS\", \"reviewer\": \"/root/review_cleanup7pm\", \"command_count\": 4}\n",
+      "stderr": ""
+    },
+    {
+      "id": "review-integrity-latest-retention-clarification",
+      "command": "python -B scripts/verify_review.py --receipt \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\error-repeat-correction-20261108\\review-receipt.json\"",
+      "cwd": "C:\\Users\\gombc\\.agents\\skills\\code-review",
+      "runtime": "Python 3.11.3",
+      "started_at": "2026-11-08T15:06:58.236181+00:00",
+      "ended_at": "2026-11-08T15:06:58.442780+00:00",
+      "exit_code": 0,
+      "stdout": "{\"status\": \"PASS\", \"errors\": [], \"mechanical_only\": true, \"review_status\": \"COMPLETE\", \"candidate_status\": \"PASS\", \"reviewer\": \"/root/review_cleanup7pm\", \"command_count\": 5}\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,411 @@
+{
+  "alert": {
+    "event_id": "new-show|200000077|200000078|2026-11-09",
+    "trigger": "new-show",
+    "show_id": 200000078,
+    "calendar_day": "2026-11-09",
+    "issued_at": "2026-11-09T09:03:24.719Z",
+    "heartbeat_received": "2026-11-09T09:02:52.591Z"
+  },
+  "task_exit": 0,
+  "task_result": {
+    "event": "new-show|200000077|200000078|2026-11-09",
+    "result": "Success",
+    "run": 1794215050051,
+    "started": "2026-11-09T09:04:10.051Z",
+    "completed": "2026-11-09T09:08:46.031Z",
+    "local": {
+      "runs": 249,
+      "errors": 174,
+      "acks": 0
+    },
+    "errors": [],
+    "actions": [
+      {
+        "table": "schedules",
+        "deleted": 997,
+        "started": "2026-11-09T09:04:12.500Z",
+        "completed": "2026-11-09T09:04:42.657Z",
+        "result": "Success"
+      },
+      {
+        "table": "groups",
+        "deleted": 590,
+        "started": "2026-11-09T09:04:42.890Z",
+        "completed": "2026-11-09T09:04:59.866Z",
+        "result": "Success"
+      },
+      {
+        "table": "horses",
+        "deleted": 540,
+        "started": "2026-11-09T09:05:00.119Z",
+        "completed": "2026-11-09T09:05:15.976Z",
+        "result": "Success"
+      },
+      {
+        "table": "owners",
+        "deleted": 396,
+        "started": "2026-11-09T09:05:16.225Z",
+        "completed": "2026-11-09T09:05:27.826Z",
+        "result": "Success"
+      },
+      {
+        "table": "riders",
+        "deleted": 362,
+        "started": "2026-11-09T09:05:28.107Z",
+        "completed": "2026-11-09T09:05:38.849Z",
+        "result": "Success"
+      },
+      {
+        "table": "results",
+        "deleted": 2086,
+        "started": "2026-11-09T09:05:39.130Z",
+        "completed": "2026-11-09T09:06:39.968Z",
+        "result": "Success"
+      },
+      {
+        "table": "trainers",
+        "deleted": 206,
+        "started": "2026-11-09T09:06:40.189Z",
+        "completed": "2026-11-09T09:06:46.770Z",
+        "result": "Success"
+      },
+      {
+        "table": "classes",
+        "deleted": 772,
+        "started": "2026-11-09T09:06:47.032Z",
+        "completed": "2026-11-09T09:07:10.326Z",
+        "result": "Success"
+      },
+      {
+        "table": "err-logs",
+        "deleted": 109,
+        "started": "2026-11-09T09:07:10.583Z",
+        "completed": "2026-11-09T09:07:13.405Z",
+        "result": "Success"
+      },
+      {
+        "table": "trips",
+        "deleted": 2086,
+        "started": "2026-11-09T09:07:13.676Z",
+        "completed": "2026-11-09T09:08:14.872Z",
+        "result": "Success"
+      },
+      {
+        "table": "rings",
+        "deleted": 68,
+        "started": "2026-11-09T09:08:15.100Z",
+        "completed": "2026-11-09T09:08:17.190Z",
+        "result": "Success"
+      },
+      {
+        "table": "heartbeat",
+        "deleted": 0,
+        "started": "2026-11-09T09:08:17.465Z",
+        "completed": "2026-11-09T09:08:17.465Z",
+        "result": "Success"
+      },
+      {
+        "table": "entries",
+        "deleted": 575,
+        "started": "2026-11-09T09:08:17.699Z",
+        "completed": "2026-11-09T09:08:34.523Z",
+        "result": "Success"
+      },
+      {
+        "table": "run-logs",
+        "deleted": 218,
+        "started": "2026-11-09T09:08:34.767Z",
+        "completed": "2026-11-09T09:08:40.478Z",
+        "result": "Success"
+      },
+      {
+        "table": "runs",
+        "deleted": 123,
+        "started": "2026-11-09T09:08:40.722Z",
+        "completed": "2026-11-09T09:08:45.143Z",
+        "result": "Success"
+      }
+    ]
+  },
+  "cleanupV2": [
+    {
+      "table": "schedules",
+      "run": 1794215050051,
+      "deleted": 997,
+      "result": "Success",
+      "completed": "2026-11-09T09:04:42.657Z"
+    },
+    {
+      "table": "groups",
+      "run": 1794215050051,
+      "deleted": 590,
+      "result": "Success",
+      "completed": "2026-11-09T09:04:59.866Z"
+    },
+    {
+      "table": "horses",
+      "run": 1794215050051,
+      "deleted": 540,
+      "result": "Success",
+      "completed": "2026-11-09T09:05:15.976Z"
+    },
+    {
+      "table": "owners",
+      "run": 1794215050051,
+      "deleted": 396,
+      "result": "Success",
+      "completed": "2026-11-09T09:05:27.826Z"
+    },
+    {
+      "table": "riders",
+      "run": 1794215050051,
+      "deleted": 362,
+      "result": "Success",
+      "completed": "2026-11-09T09:05:38.849Z"
+    },
+    {
+      "table": "results",
+      "run": 1794215050051,
+      "deleted": 2086,
+      "result": "Success",
+      "completed": "2026-11-09T09:06:39.968Z"
+    },
+    {
+      "table": "trainers",
+      "run": 1794215050051,
+      "deleted": 206,
+      "result": "Success",
+      "completed": "2026-11-09T09:06:46.770Z"
+    },
+    {
+      "table": "classes",
+      "run": 1794215050051,
+      "deleted": 772,
+      "result": "Success",
+      "completed": "2026-11-09T09:07:10.326Z"
+    },
+    {
+      "table": "err-logs",
+      "run": 1794215050051,
+      "deleted": 109,
+      "result": "Success",
+      "completed": "2026-11-09T09:07:13.405Z"
+    },
+    {
+      "table": "trips",
+      "run": 1794215050051,
+      "deleted": 2086,
+      "result": "Success",
+      "completed": "2026-11-09T09:08:14.872Z"
+    },
+    {
+      "table": "rings",
+      "run": 1794215050051,
+      "deleted": 68,
+      "result": "Success",
+      "completed": "2026-11-09T09:08:17.190Z"
+    },
+    {
+      "table": "heartbeat",
+      "run": 1794215050051,
+      "deleted": 0,
+      "result": "Success",
+      "completed": "2026-11-09T09:08:17.465Z"
+    },
+    {
+      "table": "entries",
+      "run": 1794215050051,
+      "deleted": 575,
+      "result": "Success",
+      "completed": "2026-11-09T09:08:34.523Z"
+    },
+    {
+      "table": "run-logs",
+      "run": 1794215050051,
+      "deleted": 218,
+      "result": "Success",
+      "completed": "2026-11-09T09:08:40.478Z"
+    },
+    {
+      "table": "runs",
+      "run": 1794215050051,
+      "deleted": 123,
+      "result": "Success",
+      "completed": "2026-11-09T09:08:45.143Z"
+    }
+  ],
+  "native_readback": [
+    {
+      "table": "schedules",
+      "before": 997,
+      "after": 166,
+      "baseline_sample": "rec00bbpLPWe55YyZ"
+    },
+    {
+      "table": "groups",
+      "before": 590,
+      "after": 119,
+      "baseline_sample": "rec00HKszL5FxmCGZ"
+    },
+    {
+      "table": "horses",
+      "before": 540,
+      "after": 12,
+      "baseline_sample": "rec08eQXcJDUeushI",
+      "samplePresent": false
+    },
+    {
+      "table": "owners",
+      "before": 396,
+      "after": 9,
+      "baseline_sample": "rec09n3X1MGSM4hMc",
+      "samplePresent": false
+    },
+    {
+      "table": "riders",
+      "before": 362,
+      "after": 8,
+      "baseline_sample": "rec07LBpO357PlgbU",
+      "samplePresent": false
+    },
+    {
+      "table": "results",
+      "before": 2086,
+      "after": 13,
+      "baseline_sample": "rec00efUlRVguQQlh",
+      "samplePresent": false
+    },
+    {
+      "table": "trainers",
+      "before": 206,
+      "after": 7,
+      "baseline_sample": "rec04TcCITrsE7tG9",
+      "samplePresent": false
+    },
+    {
+      "table": "classes",
+      "before": 772,
+      "after": 108,
+      "baseline_sample": "rec04vpYdMF3Nn3vr"
+    },
+    {
+      "table": "err-logs",
+      "before": 131,
+      "after": 22,
+      "baseline_sample": "rec00SWLhR64ZaRBX",
+      "samplePresent": false
+    },
+    {
+      "table": "trips",
+      "before": 2086,
+      "after": 0,
+      "baseline_sample": "rec00UWqeS3uhUrLI",
+      "samplePresent": false
+    },
+    {
+      "table": "rings",
+      "before": 68,
+      "after": 0,
+      "baseline_sample": "rec18cUSq1lqQ5suf",
+      "samplePresent": false
+    },
+    {
+      "table": "heartbeat",
+      "before": 2,
+      "after": 2,
+      "baseline_sample": "recHUu09GX1kFKF41",
+      "samplePresent": true
+    },
+    {
+      "table": "entries",
+      "before": 575,
+      "after": 0,
+      "baseline_sample": "rec008vspHaOt9ewH",
+      "samplePresent": false
+    },
+    {
+      "table": "run-logs",
+      "before": 230,
+      "after": 12,
+      "baseline_sample": "rec0CDGBD285zkVHu",
+      "samplePresent": false
+    },
+    {
+      "table": "runs",
+      "before": 127,
+      "after": 7,
+      "baseline_sample": "rec04BO5T7RBS419m",
+      "samplePresent": false
+    }
+  ],
+  "airtable_deleted_total": 9128,
+  "local_deleted_total": 423,
+  "scope": "15 checked tables. Readback counts can include concurrent collector writes. Per-table deletion totals come from acknowledged deletes and cleanupV2.",
+  "collector_overlap": {
+    "previous_completed_result": {
+      "state": "Saved",
+      "show": "15|200000078",
+      "saved": 1653,
+      "days": [
+        {
+          "day": "2026-11-12",
+          "priority": 1,
+          "started": "2026-11-09T08:36:16.300997+00:00",
+          "completed": "2026-11-09T08:37:22.321942+00:00",
+          "saved": 137,
+          "errors": 0
+        },
+        {
+          "day": "2026-11-13",
+          "priority": 2,
+          "started": "2026-11-09T08:37:22.323850+00:00",
+          "completed": "2026-11-09T08:44:20.437110+00:00",
+          "saved": 640,
+          "errors": 0
+        },
+        {
+          "day": "2026-11-14",
+          "priority": 3,
+          "started": "2026-11-09T08:44:20.439024+00:00",
+          "completed": "2026-11-09T08:54:44.864521+00:00",
+          "saved": 876,
+          "errors": 0
+        }
+      ],
+      "errors": []
+    },
+    "active_attempt": {
+      "id": "cec89fb2-c80d-4c04-b564-5ed93fafb71d",
+      "status": "Started",
+      "started": "2026-11-09T09:06:15.493Z"
+    },
+    "new_show_samples": [
+      {
+        "table": "schedules",
+        "count": 166,
+        "key": "15|200000078|2026-11-13|7|200043492",
+        "created": "2026-11-09T09:08:06.000Z"
+      },
+      {
+        "table": "groups",
+        "count": 119,
+        "key": "15|200000078|2026-11-13|4|200028775",
+        "created": "2026-11-09T09:07:43.000Z"
+      },
+      {
+        "table": "classes",
+        "count": 108,
+        "key": "15|200000078|2026-11-13|1|200031716",
+        "created": "2026-11-09T09:07:47.000Z"
+      },
+      {
+        "table": "results",
+        "count": 13,
+        "key": "15|200000078|2026-11-12|1|200031715|200247419|AB28B5AC92854EC29A9DFD37B8E06A03",
+        "created": "2026-11-09T09:07:33.000Z"
+      }
+    ],
+    "observation": "New-show collection saved records before cleanup started. Another scheduled collector run started while cleanup was running. At native readback rings, entries and trips were empty. The active collector had not yet reported its final outcome."
+  }
+}

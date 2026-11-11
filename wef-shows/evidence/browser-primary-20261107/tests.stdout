@@ -1,0 +1,313 @@
+TAP version 13
+# Subtest: Airtable timestamp readback accepts equivalent source offsets without repeated writes
+ok 1 - Airtable timestamp readback accepts equivalent source offsets without repeated writes
+  ---
+  duration_ms: 575.33
+  type: 'test'
+  ...
+# Subtest: repeat error persistence is idempotent; previous source success survives a later failed attempt
+ok 2 - repeat error persistence is idempotent; previous source success survives a later failed attempt
+  ---
+  duration_ms: 3.3274
+  type: 'test'
+  ...
+# Subtest: retained authority follows Eastern windows, expires after a missed window, and never changes timestamps
+ok 3 - retained authority follows Eastern windows, expires after a missed window, and never changes timestamps
+  ---
+  duration_ms: 3.7926
+  type: 'test'
+  ...
+# Subtest: Data Python validator agrees on daily and DST authority windows
+not ok 4 - Data Python validator agrees on daily and DST authority windows
+  ---
+  duration_ms: 5.0553
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\authority-age.test.js:28:1'
+  failureType: 'testCodeFailure'
+  error: 'spawnSync C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-data\\.venv\\Scripts\\python.exe ENOENT'
+  code: 'ENOENT'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1120:20)
+    spawnSync (node:child_process:902:24)
+    execFileSync (node:child_process:945:15)
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-shows\staged\browser-primary-20261107\wef-shows\tests\authority-age.test.js:42:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: Live, Entries and Timing accept retained show authority, preserving unrelated age rules
+not ok 5 - Live, Entries and Timing accept retained show authority, preserving unrelated age rules
+  ---
+  duration_ms: 1.3523
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\authority-age.test.js:46:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../../wef-live/model'
+    Require stack:
+    - C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-shows\staged\browser-primary-20261107\wef-shows\tests\authority-age.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1383:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+    Function._load (node:internal/modules/cjs/loader:1192:37)
+    TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    Module.require (node:internal/modules/cjs/loader:1463:12)
+    require (node:internal/modules/helpers:147:16)
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-shows\staged\browser-primary-20261107\wef-shows\tests\authority-age.test.js:49:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+  ...
+# Subtest: calendar authority has a separate thirty-minute validation clock, never renews source time or unrelated evidence
+not ok 6 - calendar authority has a separate thirty-minute validation clock, never renews source time or unrelated evidence
+  ---
+  duration_ms: 1.4175
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\authority-age.test.js:62:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../../wef-live/model'
+    Require stack:
+    - C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-shows\staged\browser-primary-20261107\wef-shows\tests\authority-age.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Function._resolveFilename (node:internal/modules/cjs/loader:1383:15)
+    defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+    Function._load (node:internal/modules/cjs/loader:1192:37)
+    TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    Module.require (node:internal/modules/cjs/loader:1463:12)
+    require (node:internal/modules/helpers:147:16)
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-shows\staged\browser-primary-20261107\wef-shows\tests\authority-age.test.js:71:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+  ...
+# Subtest: captured browser metadata validates without either proxy endpoint
+ok 7 - captured browser metadata validates without either proxy endpoint
+  ---
+  duration_ms: 583.4509
+  type: 'test'
+  ...
+# Subtest: browser evidence rejects mismatched default, URL, day, incomplete metadata and encoded payload
+ok 8 - browser evidence rejects mismatched default, URL, day, incomplete metadata and encoded payload
+  ---
+  duration_ms: 9.2231
+  type: 'test'
+  ...
+# Subtest: browser launch is headless with new context, clean page URL and cleanup; response-only acquisition
+ok 9 - browser launch is headless with new context, clean page URL and cleanup; response-only acquisition
+  ---
+  duration_ms: 3.339
+  type: 'test'
+  ...
+# Subtest: missing browser response and whole-attempt timeout close the browser and fail for fallback
+ok 10 - missing browser response and whole-attempt timeout close the browser and fail for fallback
+  ---
+  duration_ms: 22.6954
+  type: 'test'
+  ...
+# Subtest: priority phase runs despite count stop, preserves selected anchor and skips midnight repeat
+ok 11 - priority phase runs despite count stop, preserves selected anchor and skips midnight repeat
+  ---
+  duration_ms: 500.3893
+  type: 'test'
+  ...
+# Subtest: discovery before19 labels every current date and marks old-show days inactive; repeat skips
+ok 12 - discovery before19 labels every current date and marks old-show days inactive; repeat skips
+  ---
+  duration_ms: 18.639
+  type: 'test'
+  ...
+# Subtest: duplicate inventory fails before writes and durably stops only priority phase
+ok 13 - duplicate inventory fails before writes and durably stops only priority phase
+  ---
+  duration_ms: 8.1146
+  type: 'test'
+  ...
+# Subtest: ambiguous multi-show link is withheld before writes
+ok 14 - ambiguous multi-show link is withheld before writes
+  ---
+  duration_ms: 6.5305
+  type: 'test'
+  ...
+# Subtest: normal wake initializes v1 state once; unchanged repeat preserves verification timestamp
+ok 15 - normal wake initializes v1 state once; unchanged repeat preserves verification timestamp
+  ---
+  duration_ms: 8.7032
+  type: 'test'
+  ...
+# Subtest: new-show rollover changes former day0 to inactive999 and stamps both shows
+ok 16 - new-show rollover changes former day0 to inactive999 and stamps both shows
+  ---
+  duration_ms: 8.9519
+  type: 'test'
+  ...
+# Subtest: failed status readback never stamps last_checked and retains existing stop behavior
+ok 17 - failed status readback never stamps last_checked and retains existing stop behavior
+  ---
+  duration_ms: 6.8253
+  type: 'test'
+  ...
+# Subtest: lookup disagreement is withheld before writes
+ok 18 - lookup disagreement is withheld before writes
+  ---
+  duration_ms: 12.9104
+  type: 'test'
+  ...
+# Subtest: normal repeats manage dates without count requests, Data reads or historical count mutations
+ok 19 - normal repeats manage dates without count requests, Data reads or historical count mutations
+  ---
+  duration_ms: 433.5852
+  type: 'test'
+  ...
+# Subtest: missing canonical dates are created with existing keys and links, without count metadata
+ok 20 - missing canonical dates are created with existing keys and links, without count metadata
+  ---
+  duration_ms: 109.2697
+  type: 'test'
+  ...
+# Subtest: date publication refuses duplicate keys and wrong existing native links
+ok 21 - date publication refuses duplicate keys and wrong existing native links
+  ---
+  duration_ms: 1.6572
+  type: 'test'
+  ...
+# Subtest: valid subset zero publishes same day/native link on repeats; absent day stays unknown
+ok 22 - valid subset zero publishes same day/native link on repeats; absent day stays unknown
+  ---
+  duration_ms: 475.5486
+  type: 'test'
+  ...
+# Subtest: unknown coverage remains null not zero
+ok 23 - unknown coverage remains null not zero
+  ---
+  duration_ms: 1.6838
+  type: 'test'
+  ...
+# Subtest: unknown day without inventory retains null source time and does not stop remaining days
+ok 24 - unknown day without inventory retains null source time and does not stop remaining days
+  ---
+  duration_ms: 3.4804
+  type: 'test'
+  ...
+# Subtest: invalid or failed evidence preserves accepted body and original counts/time
+ok 25 - invalid or failed evidence preserves accepted body and original counts/time
+  ---
+  duration_ms: 1.703
+  type: 'test'
+  ...
+# Subtest: scope mismatch fails before publishing counts
+ok 26 - scope mismatch fails before publishing counts
+  ---
+  duration_ms: 0.4626
+  type: 'test'
+  ...
+# Subtest: mixed projection, tampered digest and changed fence are rejected
+ok 27 - mixed projection, tampered digest and changed fence are rejected
+  ---
+  duration_ms: 3.1645
+  type: 'test'
+  ...
+# Subtest: expiry uses source time despite recent verification; exact five minutes is stale
+ok 28 - expiry uses source time despite recent verification; exact five minutes is stale
+  ---
+  duration_ms: 0.2291
+  type: 'test'
+  ...
+# Subtest: failed staged write preserves authoritative previous body; readback refuses mixed projections
+ok 29 - failed staged write preserves authoritative previous body; readback refuses mixed projections
+  ---
+  duration_ms: 3.2256
+  type: 'test'
+  ...
+# Subtest: duplicate canonical keys fail without writes
+ok 30 - duplicate canonical keys fail without writes
+  ---
+  duration_ms: 0.7101
+  type: 'test'
+  ...
+# Subtest: normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+ok 31 - normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+  ---
+  duration_ms: 406.0835
+  type: 'test'
+  ...
+# Subtest: Sunday poll repeats after three hours until show changes then stops until next Sunday
+ok 32 - Sunday poll repeats after three hours until show changes then stops until next Sunday
+  ---
+  duration_ms: 197.9876
+  type: 'test'
+  ...
+# Subtest: failed source logs linked error, retains authority time and does not retry on five-minute wakes
+ok 33 - failed source logs linked error, retains authority time and does not retry on five-minute wakes
+  ---
+  duration_ms: 50.5829
+  type: 'test'
+  ...
+# Subtest: existing count stop stays byte-identical while calendar and heartbeat proceed
+ok 34 - existing count stop stays byte-identical while calendar and heartbeat proceed
+  ---
+  duration_ms: 27.5408
+  type: 'test'
+  ...
+# Subtest: tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+ok 35 - tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+  ---
+  duration_ms: 38.0273
+  type: 'test'
+  ...
+# Subtest: archive failure prevents calendar mutation
+ok 36 - archive failure prevents calendar mutation
+  ---
+  duration_ms: 5.976
+  type: 'test'
+  ...
+# Subtest: adapter still rejects cross-base writes and deletes
+ok 37 - adapter still rejects cross-base writes and deletes
+  ---
+  duration_ms: 10.2755
+  type: 'test'
+  ...
+# Subtest: consumer freshness expires without authority heartbeat even when source date is retained
+ok 38 - consumer freshness expires without authority heartbeat even when source date is retained
+  ---
+  duration_ms: 14.7401
+  type: 'test'
+  ...
+# Subtest: browser primary creates linked show-days and archive, no proxy requests; repeat preserves keys and source time
+ok 39 - browser primary creates linked show-days and archive, no proxy requests; repeat preserves keys and source time
+  ---
+  duration_ms: 133.1052
+  type: 'test'
+  ...
+# Subtest: browser failure uses original ring/schedule pair only, with linked failure evidence
+ok 40 - browser failure uses original ring/schedule pair only, with linked failure evidence
+  ---
+  duration_ms: 57.5567
+  type: 'test'
+  ...
+# Subtest: both discovery methods fail without replacing canonical show or retrying the next wake
+ok 41 - both discovery methods fail without replacing canonical show or retrying the next wake
+  ---
+  duration_ms: 56.1754
+  type: 'test'
+  ...
+# Subtest: browser archive failure is not a browser discovery failure and never invokes fallback
+ok 42 - browser archive failure is not a browser discovery failure and never invokes fallback
+  ---
+  duration_ms: 14.5303
+  type: 'test'
+  ...
+1..42
+# tests 42
+# suites 0
+# pass 39
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2033.7271

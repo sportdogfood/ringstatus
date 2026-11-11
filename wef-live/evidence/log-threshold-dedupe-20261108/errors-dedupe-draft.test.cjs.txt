@@ -1,0 +1,20 @@
+"use strict";
+const test=require('node:test'),assert=require('node:assert/strict');
+const {prepare}=require('./candidate/wef-live/error-log');
+const run=()=>({scope:{show:77,date:'2026-11-08'},issues:[],stage_errors:[],logging_errors:[]});
+const e=(message='Missing ID',id='rec1')=>({message,id,table:'live-entries',trip_id:11});
+test('unchangedconditionloggedonce despite changingrunid/time;changedconditionlogsagain',()=>{
+ const a=run(),err=e();let p=prepare(a,{},[err]);assert.equal(p.errors.length,1);p.commit(true);a.issues=[err];const b=run();b.run_id='different';p=prepare(b,a,[{...err,at:'newtime',run_id:'newrun'}]);assert.equal(p.errors.length,0);assert.equal(b.unchanged_error_count,1);p.commit(true);const c=run();p=prepare(c,b,[e('ID changed')]);assert.equal(p.errors.length,1);
+});
+test('conditionrecoveryandreturnlogsagain;newscopeisnot suppressed',()=>{
+ const a=run();let p=prepare(a,{},[e()]);p.commit(true);const b=run();p=prepare(b,a,[]);p.commit(true);assert.deepEqual(b.logged_error_keys,[]);assert.equal(prepare(run(),b,[e()]).errors.length,1);const c=run();c.scope.date='2026-11-09';assert.equal(prepare(c,a,[e()]).errors.length,1);
+});
+test('failederrlogwrite doesnotmarknewerrorrecorded;nextnormalrunmayreport',()=>{
+ const a=run();let p=prepare(a,{},[e()]);p.commit(false);assert.deepEqual(a.logged_error_keys,[]);assert.equal(prepare(run(),a,[e()]).errors.length,1);
+});
+test('seedsalreadyloggedlegacy948issueswithout re-emitting them',()=>{
+ const prior=run();prior.issues=Array.from({length:948},(_,i)=>e('No unique ID '+i,'rec'+i));const current=run();const p=prepare(current,prior,prior.issues);assert.equal(p.errors.length,0);assert.equal(current.unchanged_error_count,948);p.commit(true);assert.equal(current.logged_error_keys.length,948);
+});
+test('legacyfailederrlogisnotassumed delivered;duplicatesinsideonerunlogonce',()=>{
+ const prior=run();prior.issues=[e()];prior.logging_errors=['errs-log: HTTP 429'];const a=run();assert.equal(prepare(a,prior,[e(),e()]).errors.length,1);
+});

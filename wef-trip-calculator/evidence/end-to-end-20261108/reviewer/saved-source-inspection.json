@@ -1,0 +1,26 @@
+{
+  "tables": {
+    "w-shows": 3,
+    "w-days": 1,
+    "wef-live.trips": 307,
+    "wef-live.rings": 6,
+    "wef-live.groups": 37,
+    "wef-live.classes": 54,
+    "wef-data.schedules": 190,
+    "ring-status": 30,
+    "class-status": 48
+  },
+  "trip_status_counts": {
+    "Gone": 297,
+    "Scratched": 8,
+    "Pending": 2
+  },
+  "pending_source_orders": [
+    null,
+    null
+  ],
+  "group_status_counts": {
+    "Completed": 32,
+    "Upcoming": 5
+  }
+}

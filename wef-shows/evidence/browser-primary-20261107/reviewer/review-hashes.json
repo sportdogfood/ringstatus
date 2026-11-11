@@ -1,0 +1,133 @@
+{
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\collector.js",
+      "sha256": "32289ce7da712fa559db35151afd987ff21d9282c289f3b5889b68c06114ca84"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\audit.js",
+      "sha256": "cffb02c598c72e26123c77a041a4b65a86dcc8e44030b756bb1dbc4b7024d65d"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\browser-discovery.js",
+      "sha256": "eb93f7867c1d694a506b9f2559cd499e3d86ad7c3ee189f457b8b7865021be8e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\shows.test.js",
+      "sha256": "da2bf5fbab717eb2bf44d2b352bb8524c163c76c0f14567aa06cf23668c040fa"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\day-priority.test.js",
+      "sha256": "d004ae06ea0542986ec0d8e68d33644bacf20440054611088f60ea113e685f41"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\browser-discovery.test.js",
+      "sha256": "b1dc0f5cf7f78270cbe77df71c795b42db1479b5705c5b745f515e3b887b7e3a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\fixtures\\browser-schedule.json",
+      "sha256": "fbdd54045ff85f6ad105aa7a47a6506efa305582a49c5d0644c369d34f28b1bd"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\browser-decode.js",
+      "sha256": "b369821e88439e26b7b97697f9743bed536dd1e1b6576e90499358ee8c0f04d8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\browser-decode.test.js",
+      "sha256": "578bb108ce37cec65c26c07a12ade45a52ed94c56221e2c28a074beadf9412e3"
+    }
+  ],
+  "protected_files_verified": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "dependencies": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\show-source.js",
+      "sha256": "9a5a8cc4086f8bfdeacf0ec67cff37ad9721981090842d2f5231a8019d8516a6"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\store.js",
+      "sha256": "989fe06e4293dad86f82cbc75414d7ea308cb9ed71d278e4d96a7ffa15bd271b"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\normalizer.js",
+      "sha256": "e02dd6548ed1d6d32fcb06675cd9cc969635e9cd6d3545414fd52a004e6d9ee6"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\collector-core.js",
+      "sha256": "f706baf1ed6686a61de6f803c0f6b8b9ee79bd9ea5b71125069295bc638ae855"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-schedules\\collect.js",
+      "sha256": "dc420c8b139698fe7d1275aca09df857a0bc3c802c9323b6325d21600d1985a0"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\source-fetch.js",
+      "sha256": "11df76a20ed236aa6ebe068ea376585d1adceb877b3b6346cb122a47fdad6104"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\audit-schema.js",
+      "sha256": "015574366da8f8f535f6340b811d58e597650585c7eb8e49b52148dcb5b44f1c"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\discovery-policy.js",
+      "sha256": "c9baa13920e1e7396f525d9c087c7392a5c5a5a6117dbb2535a2cff8035b3b29"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\run.ps1",
+      "sha256": "16b54d3b9dc095ee2d76154d1f309d2e54e5139aaaed7e810d54430f47c16082"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\worker.js",
+      "sha256": "8bc87128b4e0210302d4795c2186673b954fdd63a74cc60f5a0848fa17d390f3"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\browser-discovery-test-20261107\\browser-schedule.json",
+      "sha256": "6041b1f2387e7b7a8f80aaa535bebfe95ee9a3eaa5a4a1eadd5c411adbbf6a3f"
+    }
+  ],
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\browser-primary-20261107\\before\\wef-shows\\collector.js",
+      "sha256": "65e93b249793c1960477e9da9c71790d6bbf572aa15ac5a474f7e4eff895939c"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\browser-primary-20261107\\before\\wef-shows\\audit.js",
+      "sha256": "95649c14e6acf807721a81c3449fca321a2a855bf748262d5708513f3ff59f30"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\browser-primary-20261107\\before\\wef-shows\\tests\\shows.test.js",
+      "sha256": "bef795b841823aa6b2c062b49d3ff04471e6d833f17c695e4eda4d99beac7f59"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\evidence\\browser-primary-20261107\\before\\wef-shows\\tests\\day-priority.test.js",
+      "sha256": "b4ab661132cfeaa8c5826b01c7aad95c22108418184e8bf11ed0e40a36ee33f3"
+    }
+  ],
+  "at": "2026-11-07T23:48:34.7941366Z"
+}

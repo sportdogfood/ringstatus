@@ -1,0 +1,11 @@
+{
+  "status": "Earlier write/readback comparison superseded by source-provenance audit",
+  "reason": "Thirteen unrelated records contained a repeated class body. Earlier readback matched the faulty prepared samples and did not validate endpoint-to-response provenance.",
+  "correctionEvidence": "../payload-audit-20261111/independent-source-verification.json",
+  "recordsAudited": 229,
+  "recordsCorrected": 13,
+  "sourceComparisonsPassed": 13,
+  "wrongClassPayloadsRemaining": 0,
+  "newSglRequests": 0,
+  "GetShowData": "Latest successful two-part payload preserved"
+}

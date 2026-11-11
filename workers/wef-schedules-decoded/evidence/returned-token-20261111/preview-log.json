@@ -1,0 +1,16 @@
+{
+  "reviewer": "wef-decoder",
+  "commands": [
+    {
+      "runtime": "Cloudflare remote preview through existing Wrangler 4.82.1; IPv4 preferred for preview upload",
+      "started_at": "2026-11-11T18:29:06.6339922Z",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "id": "cloudflare-preview",
+      "stderr": "",
+      "stdout": "{\"status\":200,\"returnedTokenReceived\":true,\"tokenCached\":true,\"replayUsedReturnedToken\":true,\"sourceRequests\":2,\"replayGapMs\":1000,\"decoded\":true,\"classId\":200031333,\"trips\":2,\"tripIdsPopulated\":true}",
+      "command": "curl.exe -sS --max-time 60 http://127.0.0.1:18766/",
+      "exit_code": 0,
+      "ended_at": "2026-11-11T18:29:08.5893164Z"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+diff --git "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/airtable.js" "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/airtable.js"
+index 16011dca..e7fd07de 100644
+--- "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/airtable.js"
++++ "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/airtable.js"
+@@ -19,7 +19,6 @@ function airtable({
+   ]);
+   async function call(base, table, method = "GET", body, query = "", limit = {}) {
+     if (!readable.get(base)?.has(table)) throw Error("Unapproved read target");
+-    if(base===settings.BASE_ID&&table==="errs-log"&&method!=="GET")throw Error("errs-log writes disabled by owner");
+     if (
+       method !== "GET" &&
+       (base !== settings.BASE_ID ||
+diff --git "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/cleanup.js" "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/cleanup.js"
+index 0e01c007..e1bb6016 100644
+--- "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/cleanup.js"
++++ "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/cleanup.js"
+@@ -27,7 +27,7 @@ function quickRows(table,rows,total=rows.length,draining=false){
+  if(!LOGS.includes(table)||total<=500||(!draining&&total<1000))return[];
+  const available=rows.filter(r=>completed(table,r)&&Number.isFinite(Date.parse(r.createdTime)))
+   .sort((a,b)=>Date.parse(a.createdTime)-Date.parse(b.createdTime)||a.id.localeCompare(b.id));
+- return available.slice(0,Math.min(500,total-500));
++ return available.slice(0,total-500);
+ }
+ function write(file,value){const tmp=file+'.'+process.pid+'.tmp';fs.writeFileSync(tmp,JSON.stringify(value,null,2));fs.renameSync(tmp,file);}
+ async function canonical(api){
+@@ -72,7 +72,7 @@ async function cleanup({api=require('./airtable').airtable(),runtime=settings.RU
+    activeAction=a;
+    if(a.rows.length){
+     if(await canonical(api)!==run.show)throw Error('Default show changed during cleanup');
+-    await api.retireCleanup(a.table,a.rows,{trigger:a.trigger,show:run.show,deletedIds,protectedRuns:protectedIds},
++    for(let offset=0;offset<a.rows.length;offset+=500)await api.retireCleanup(a.table,a.rows.slice(offset,offset+500),{trigger:a.trigger,show:run.show,deletedIds,protectedRuns:protectedIds},
+      batch=>{a.deleted=(a.deleted||0)+batch.length;for(const id of batch)deletedIds.add(id);});
+     a.result='Success';
+    }
+@@ -119,10 +119,12 @@ async function cleanup({api=require('./airtable').airtable(),runtime=settings.RU
+   await execute(quick);
+   write(stateFile,{show:run.show,day:run.day,quick_checked_at:(run.quick_due||run.new_show)?run.started:(previous.quick_checked_at||previous.completed),daily_clear_day:run.daily_due?run.daily_clear_day:previous.daily_clear_day,draining_logs:[...draining],run_id:run.run_id,completed:clock()});
+   if(!run.actions.length){run.result='Skipped';run.reason='Log counts below trigger/target or no eligible records';}
++  try{await require('./error-log').report({api,runtime,lane:'cleanup',rows:[]});}catch(log){run.error_log_error=log.message;}
+   run.completed=clock();receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());fs.unlinkSync(stop);
+  }catch(e){
+   run.result='Error';run.error=e.message;run.completed=clock();
+   if(activeAction){activeAction.result='Error';activeAction.error=e.message;activeAction.completed=run.completed;try{await publish(activeAction);}catch(log){run.logging_error=log.message;}}
++  try{await require('./error-log').report({api,runtime,lane:'cleanup',rows:[{'error-key':run.run_id+'|cleanup','run-id':run.run_id,'occurred-at':run.completed,'show-id':run.show||null,message:'Cleanup: '+e.message}]});}catch(log){run.error_log_error=log.message;}
+   write(stop,{run_id:run.run_id,at:run.completed,error:e.message});receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());
+  }
+  return run;
+diff --git "a/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/error-log.js" "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/error-log.js"
+new file mode 100644
+index 00000000..c38dbe26
+--- /dev/null
++++ "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/error-log.js"
+@@ -0,0 +1,23 @@
++"use strict";
++const fs=require('node:fs'),path=require('node:path'),settings=require('./settings');
++// One row per new/changed condition. Full affected-record details stay in run receipts.
++async function report({api,runtime,lane,rows}){
++ const file=path.join(runtime,'errors-'+lane+'.json');
++ const signature=f=>JSON.stringify([f['show-id']??null,f.date??'',f.message]);
++ const current=new Map(rows.map(f=>[signature(f),f]));
++ let previous=[];
++ try{previous=JSON.parse(fs.readFileSync(file,'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
++ const seen=new Set(previous),fresh=[...current].filter(([key])=>!seen.has(key));
++ const checkpoint=keys=>{fs.mkdirSync(runtime,{recursive:true});const tmp=file+'.'+process.pid+'.tmp';fs.writeFileSync(tmp,JSON.stringify([...keys]));fs.renameSync(tmp,file);};
++ for(let i=0;i<fresh.length;i+=10){
++  const batch=fresh.slice(i,i+10);
++  // Record the attempt first: a lost response must not cause duplicate creates.
++  // Any uncertain outcome is reported by the caller in its existing local receipt.
++  for(const [key]of batch)seen.add(key);checkpoint(seen);
++  const saved=await api.call(settings.BASE_ID,'errs-log','POST',{records:batch.map(([,fields])=>({fields}))});
++  if(saved.records?.length!==batch.length)throw Error('Incomplete error log response');
++ }
++ checkpoint(current.keys());
++ return {logged:fresh.length,suppressed:rows.length-fresh.length};
++}
++module.exports={report};
+diff --git "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/lanes.js" "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/lanes.js"
+index 37dbf355..35ab0729 100644
+--- "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/lanes.js"
++++ "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/lanes.js"
+@@ -214,6 +214,8 @@ async function lane(name,{
+   const summary=JSON.stringify({lane:name,skipped:r.skipped,day_priority:r.day_priority,live_status:r.live_status,membership:r.membership,timings:Object.fromEntries(Object.entries(r.timings).filter(([k])=>!['requests','saves'].includes(k))),counts:r.counts,changed_records:r.changes.length,issues:r.issues.length,diffs_and_coverage:receipt});
+   await log('run-logs','run-id',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':r.scope?.show||null,date:r.scope?.date||'',summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000),'ring-count':r.counts['live-rings']||0,'group-count':r.counts['live-groups']||0,'class-count':r.counts['live-class-appearances']??r.counts['live-classes']??0,'entry-count':r.counts['live-entries']||0}]);
+   await log('run-logs','run-id',r.changes.map((change,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':r.scope?.show||null,date:r.scope?.date||'',summary:JSON.stringify({lane:name,parent_run_id:r.run_id,...change})})));
++  const errors=[...r.issues,...r.stage_errors,...r.logging_errors.map(message=>({message}))];
++  try{await require('./error-log').report({api,runtime,lane:name,rows:errors.map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':r.scope?.show||null,date:r.scope?.date||'',message:name+': '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null}))});}catch(e){r.logging_errors.push('errs-log: '+e.message);}
+   await log('heartbeat','heartbeat-key',[{'heartbeat-key':r.run_id,'run-id':r.run_id,started:r.started,completed:r.completed,'checked-at':r.completed,result,summary}]);
+   try{write(path.join(runtime,'lane-'+name+'-'+r.run_id+'.json'),r);write(path.join(runtime,'lane-'+name+'-last-run.json'),r);}catch{}
+  }
+diff --git "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/linker.js" "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/linker.js"
+index 2be77f78..42920f76 100644
+--- "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/linker.js"
++++ "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/linker.js"
+@@ -99,6 +99,7 @@ async function link({scope,api=require('./airtable').airtable(),runtime=settings
+  const summary=JSON.stringify({lane:'linker',counts:r.counts,changed_records:r.changes.length,issues:r.issues.length});
+  async function log(table,rows){for(let i=0;i<rows.length;i+=10){try{const batch=rows.slice(i,i+10);const saved=await api.call(settings.BASE_ID,table,'POST',{records:batch.map(fields=>({fields}))});if(saved.records?.length!==batch.length)throw Error('Incomplete linker log response');}catch(e){r.logging_errors.push(table+': '+e.message);}}}
+  await log('run-logs',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':scope.show,date:scope.date,summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000)},...r.changes.map((c,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':scope.show,date:scope.date,summary:JSON.stringify({lane:'linker',parent_run_id:r.run_id,...c})}))]);
++ try{await require('./error-log').report({api,runtime,lane:'linker',rows:[...r.issues,...r.stage_errors].map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':scope.show,date:scope.date,message:'linker: '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null}))});}catch(e){r.logging_errors.push('errs-log: '+e.message);}
+  await log('heartbeat',[{'heartbeat-key':r.run_id,'run-id':r.run_id,started:r.started,completed:r.completed,'checked-at':r.completed,'show-id':scope.show,date:scope.date,result,summary}]);
+  try{fs.mkdirSync(runtime,{recursive:true});for(const name of ['linker-'+r.run_id+'.json','linker-last-run.json']){const file=path.join(runtime,name),tmp=file+'.tmp';fs.writeFileSync(tmp,JSON.stringify(r,null,2));fs.renameSync(tmp,file);}}catch(e){r.logging_errors.push('Local linker receipt: '+e.message);}
+  return r;
+diff --git "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/live-cadence.js" "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/live-cadence.js"
+index e736e5cc..3590d870 100644
+--- "a/wef-live\\evidence\\error-repeat-correction-20261108\\baseline\\wef-live/live-cadence.js"
++++ "b/wef-live\\evidence\\error-repeat-correction-20261108\\candidate\\wef-live/live-cadence.js"
+@@ -61,6 +61,8 @@ async function check({api=require('./airtable').airtable(),getStatus=activity.re
+   await log('heartbeat','heartbeat-key',[{...common,'heartbeat-key':r.run_id,'checked-at':r.completed}]);
+   await log('run-logs','run-id',[common]);
+  }
++ const errors=[...issues,...r.logging_errors.map(message=>({message:'Live check logging: '+message}))];
++ try{await require('./error-log').report({api,runtime,lane:'live-check',rows:errors.map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,...(r.scope?{'show-id':r.scope.show,date:r.scope.date}:{}),message:e.message}))});}catch(e){r.logging_errors.push('errs-log: '+e.message);}
+  try{write(path.join(runtime,'live-check-'+r.run_id+'.json'),r);write(path.join(runtime,'live-check-last-run.json'),r);}catch(e){r.logging_errors.push('Local check receipt: '+e.message);}
+  return r;
+ }

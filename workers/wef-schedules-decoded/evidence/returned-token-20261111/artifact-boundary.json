@@ -1,0 +1,9 @@
+{
+  "activeVersion": "1c176106-d141-487c-a762-fd3ea765f2a6",
+  "baselineWorkerMatchesCanonical": true,
+  "unrelatedBundleBytesUnchanged": true,
+  "baselineSHA256": "8f9b8f3184eaab58eeec6318c27a6b5a5e10f4b131fb0873595c97416698653e",
+  "candidateSHA256": "ecdce96e0dade9ec0abd1839e403930e32d0e430a859d45966c132dbcde8145f",
+  "productionArtifact": "candidate.mjs",
+  "previewHookExcluded": true
+}

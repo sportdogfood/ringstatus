@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "keep500",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-keep500-20261108\\test-keep500.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T15:06:01.541486+00:00",
+      "ended_at": "2026-11-08T15:06:03.741772+00:00",
+      "exit_code": 0,
+      "stdout": "PASS total999 deletes0\nPASS total1000 deletes500\nPASS total1001 deletes501\nPASS total1421 deletes921\nPASS total1700 deletes1200\nPASS total2500 deletes2000\nPASS protected records retained when500 cannot be reached\nPASS daily/newshow stillclearall eligible\nPASS local1200runs/1200errors bothleave500\n9 keep500 checks passed; no live calls\n",
+      "stderr": ""
+    }
+  ]
+}

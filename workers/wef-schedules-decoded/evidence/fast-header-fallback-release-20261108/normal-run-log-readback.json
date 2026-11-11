@@ -1,0 +1,32 @@
+[
+  {
+    "id": "6c078066-7d5e-4017-a024-e87a94c1f6e5",
+    "workflow": "wef-data",
+    "base": "appdl16HJ5ETm8N69",
+    "stage": "Collection",
+    "owner-pid": 29720,
+    "status": "Succeeded",
+    "started": "2026-11-08T14:33:16.011Z",
+    "child-pid": 17696,
+    "completed": "2026-11-08T14:39:00.631Z",
+    "elapsed-seconds": 344.62,
+    "run-key": "collection-6c078066-7d5e-4017-a024-e87a94c1f6e5",
+    "show-key": "15|200000077",
+    "counts-json": "{\"saved\":1898,\"day-priorities\":{\"2026-11-08\":0},\"stage-seconds\":{\"select-show-and-day\":0.478009,\"save-run-start\":6.617695,\"fetch-rings-groups-classes\":4.424806,\"prepare-rings-groups-classes\":0.00156,\"save-inventory-rings\":0.587742,\"save-inventory-groups\":3.501954,\"save-inventory-classes\":8.796103,\"save-schedules\":6.337512,\"save-schedule-priorities\":2.409464,\"fetch-and-prepare-entries-trips\":222.36744,\"save-class-details\":6.677843,\"save-entries\":40.084399,\"save-trips\":17.134275,\"save-results\":24.504771,\"save-run-summary\":0.25955},\"days\":[{\"day\":\"2026-11-08\",\"priority\":0,\"lane\":\"fast-collector\",\"started\":\"2026-11-08T14:33:16.851077+00:00\",\"completed\":\"2026-11-08T14:39:00.567999+00:00\",\"state\":\"Saved\",\"run-key\":\"collection-6c078066-7d5e-4017-a024-e87a94c1f6e5\",\"counts\":{\"saved\":1898,\"stage-seconds\":{\"select-show-and-day\":0.000749,\"save-run-start\":6.617695,\"fetch-rings-groups-classes\":4.424806,\"prepare-rings-groups-classes\":0.00156,\"save-inventory-rings\":0.587742,\"save-inventory-groups\":3.501954,\"save-inventory-classes\":8.796103,\"save-schedules\":6.337512,\"save-schedule-priorities\":2.409464,\"fetch-and-prepare-entries-trips\":222.36744,\"save-class-details\":6.677843,\"save-entries\":40.084399,\"save-trips\":17.134275,\"save-results\":24.504771,\"save-run-summary\":0.25955},\"total-seconds\":343.705907},\"errors\":0}],\"total-seconds\":344.217371}"
+  },
+  {
+    "id": "18a518eb-c275-4049-be62-c2126c56d4c0",
+    "workflow": "wef-data",
+    "base": "appdl16HJ5ETm8N69",
+    "stage": "Collection",
+    "owner-pid": 22068,
+    "status": "Succeeded",
+    "started": "2026-11-08T14:39:16.396Z",
+    "child-pid": 24444,
+    "completed": "2026-11-08T14:45:01.364Z",
+    "elapsed-seconds": 344.968,
+    "run-key": "collection-18a518eb-c275-4049-be62-c2126c56d4c0",
+    "show-key": "15|200000077",
+    "counts-json": "{\"saved\":1898,\"day-priorities\":{\"2026-11-08\":0},\"stage-seconds\":{\"select-show-and-day\":0.525443,\"save-run-start\":6.712771,\"fetch-rings-groups-classes\":2.807284,\"prepare-rings-groups-classes\":0.001637,\"save-inventory-rings\":0.584865,\"save-inventory-groups\":2.991201,\"save-inventory-classes\":8.001009,\"save-schedules\":4.916652,\"save-schedule-priorities\":2.229048,\"fetch-and-prepare-entries-trips\":222.031159,\"save-class-details\":6.273591,\"save-entries\":41.900885,\"save-trips\":23.638714,\"save-results\":21.487622,\"save-run-summary\":0.272899},\"days\":[{\"day\":\"2026-11-08\",\"priority\":0,\"lane\":\"fast-collector\",\"started\":\"2026-11-08T14:39:17.440122+00:00\",\"completed\":\"2026-11-08T14:45:01.302077+00:00\",\"state\":\"Saved\",\"run-key\":\"collection-18a518eb-c275-4049-be62-c2126c56d4c0\",\"counts\":{\"saved\":1898,\"stage-seconds\":{\"select-show-and-day\":0.00105,\"save-run-start\":6.712771,\"fetch-rings-groups-classes\":2.807284,\"prepare-rings-groups-classes\":0.001637,\"save-inventory-rings\":0.584865,\"save-inventory-groups\":2.991201,\"save-inventory-classes\":8.001009,\"save-schedules\":4.916652,\"save-schedule-priorities\":2.229048,\"fetch-and-prepare-entries-trips\":222.031159,\"save-class-details\":6.273591,\"save-entries\":41.900885,\"save-trips\":23.638714,\"save-results\":21.487622,\"save-run-summary\":0.272899},\"total-seconds\":343.850409},\"errors\":0}],\"total-seconds\":344.432779}"
+  }
+]

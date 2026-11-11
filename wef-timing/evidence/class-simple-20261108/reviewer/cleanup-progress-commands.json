@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/class_status_review",
+  "commands": [
+    {
+      "id": "cleanup-progress-reporting-failure",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\cleanup-progress-check.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T20:20:57.293334+00:00",
+      "ended_at": "2026-11-08T20:20:57.861484+00:00",
+      "exit_code": 1,
+      "stdout": "{\"first_error\":\"offline summary write failed\",\"deleted_first\":500,\"deleted_after_next_cycle\":1000,\"second\":{\"ok\":true,\"event\":{\"kind\":\"quick\",\"show\":200000077,\"day\":\"2026-11-08\"},\"deleted\":500,\"actions\":[{\"name\":\"run-logs\",\"deleted\":500}]}}\n",
+      "stderr": "AssertionError [ERR_ASSERTION]: A failed summary must not allow another500 within the same three-hour event\n\n1000 !== 500\n\n    at C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\cleanup-progress-check.js:11:248 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 1000,\n  expected: 500,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+    }
+  ]
+}

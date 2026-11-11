@@ -1,0 +1,14 @@
+$ErrorActionPreference='Stop'
+$r=$PSScriptRoot
+$module=(Resolve-Path (Join-Path $r '../..')).Path
+if((Get-ScheduledTask wef-live-collector).State -ne 'Ready'){throw 'Normal runner active; no installation'}
+if(((Get-ScheduledTaskInfo wef-live-collector).NextRunTime-(Get-Date)).TotalSeconds -lt 15){throw 'Too near normal tick; no installation'}
+foreach($f in Get-ChildItem "$r/baseline/wef-live" -File -Filter '*.js'){if((Get-FileHash $f.FullName).Hash -ne (Get-FileHash (Join-Path $module $f.Name)).Hash){throw "Intervening change $($f.Name)"}}
+$taskBefore=([xml](Export-ScheduledTask wef-live-collector)).OuterXml
+$changed=@('live-trips.js','lanes.js')
+foreach($name in $changed){Copy-Item (Join-Path "$r/candidate/wef-live" $name) (Join-Path $module ($name+'.deploy-tmp'));Move-Item -LiteralPath (Join-Path $module ($name+'.deploy-tmp')) -Destination (Join-Path $module $name) -Force}
+$hashes=@(foreach($f in Get-ChildItem "$r/candidate/wef-live" -Filter '*.js'){$hash=(Get-FileHash (Join-Path $module $f.Name)).Hash.ToLowerInvariant();if($hash -ne (Get-FileHash $f.FullName).Hash.ToLowerInvariant()){throw 'Installed mismatch'};@{file=$f.Name;sha256=$hash}})
+if(([xml](Export-ScheduledTask wef-live-collector)).OuterXml -ne $taskBefore){throw 'Task changed'}
+$taskBefore | Set-Content "$r/task.xml"
+@{deployed_at=[DateTime]::UtcNow.ToString('o');hashes=$hashes;changed=$changed;unchanged_js=25;task_unchanged=$true;decoded_paused=$true;manual_run=$false;status='Installed/readback PASS; normal proof pending'} | ConvertTo-Json -Depth 7 | Set-Content "$r/deployed.json"
+Write-Output 'Live-response trips installed; no additional requests; task unchanged'

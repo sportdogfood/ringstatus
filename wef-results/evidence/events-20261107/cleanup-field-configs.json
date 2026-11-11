@@ -1,0 +1,137 @@
+{
+  "content": [],
+  "structuredContent": {
+    "tables": [
+      {
+        "tableId": "tbliDin45vgkMxZra",
+        "fields": [
+          {
+            "id": "fldAHF5SuvOhhp62R",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldavHrSO6hR1UtKM",
+            "type": "number",
+            "config": {
+              "precision": 1
+            }
+          },
+          {
+            "id": "fldLM7qvDLcBku7Yj",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldv4FhgzsNUYOqn9",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selJFYKrFkc7seZW0",
+                  "name": "checked",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selOm1qz38adQQ831",
+                  "name": "",
+                  "color": "cyanLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fldJM4u6DUrFFahFm",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "client"
+            }
+          },
+          {
+            "id": "fldQjEGcXmJrHSF8V",
+            "type": "dateTime",
+            "config": {
+              "dateFormat": {
+                "name": "iso",
+                "format": "YYYY-MM-DD"
+              },
+              "timeFormat": {
+                "name": "24hour",
+                "format": "HH:mm"
+              },
+              "timeZone": "client"
+            }
+          },
+          {
+            "id": "fldEnF2kjSSidstaM",
+            "type": "singleSelect",
+            "config": {
+              "choices": [
+                {
+                  "id": "selUAs5NnjynLZRec",
+                  "name": "Success",
+                  "color": "blueLight2"
+                },
+                {
+                  "id": "selbYz36KxAqB9gJk",
+                  "name": "",
+                  "color": "cyanLight2"
+                }
+              ]
+            }
+          },
+          {
+            "id": "fld3bQUqU2j85aWYU",
+            "type": "number",
+            "config": {
+              "precision": 0
+            }
+          },
+          {
+            "id": "fldn4Uv6QXkC15ips",
+            "type": "number",
+            "config": {
+              "precision": 0
+            }
+          },
+          {
+            "id": "fldfg0gcqSnd7d4XO",
+            "type": "number",
+            "config": {
+              "precision": 0
+            }
+          },
+          {
+            "id": "fldCCiw1OB6ZJ06sy",
+            "type": "number",
+            "config": {
+              "precision": 0
+            }
+          },
+          {
+            "id": "fldi7iNrqIglvVvUR",
+            "type": "multilineText"
+          },
+          {
+            "id": "fldn24fojoVClL02b",
+            "type": "multilineText"
+          },
+          {
+            "id": "fld3kNxUePx7y6xST",
+            "type": "number",
+            "config": {
+              "precision": 0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "isError": false
+}

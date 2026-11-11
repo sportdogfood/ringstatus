@@ -1,0 +1,63 @@
+{
+  "at": "2026-11-10T22:25:07.863Z",
+  "environment": "Cloudflare remote preview, existing direct TLS fallback, no runner or tunnel",
+  "productionChanged": false,
+  "credentialBindingsChanged": false,
+  "collectorsRun": false,
+  "previewTokenHeaderChange": {
+    "Sec-Fetch-Site": "same-site"
+  },
+  "result": {
+    "renewed": true,
+    "results": [
+      {
+        "profile": "windows-clean",
+        "date": "2026-11-14",
+        "show": "200000078",
+        "status": 200,
+        "rings": 9,
+        "returnedShow": 200000078,
+        "returnedDate": "2026-11-14",
+        "detail": {
+          "stage": "schedule-request"
+        }
+      },
+      {
+        "profile": "windows-clean",
+        "date": "2026-11-25",
+        "show": "200000081",
+        "status": 200,
+        "rings": 9,
+        "returnedShow": 200000081,
+        "returnedDate": "2026-11-25",
+        "detail": {
+          "stage": "schedule-request"
+        }
+      },
+      {
+        "profile": "android-clean",
+        "date": "2026-11-14",
+        "show": "200000078",
+        "status": 200,
+        "rings": 9,
+        "returnedShow": 200000078,
+        "returnedDate": "2026-11-14",
+        "detail": {
+          "stage": "schedule-request"
+        }
+      },
+      {
+        "profile": "android-clean",
+        "date": "2026-11-25",
+        "show": "200000081",
+        "status": 200,
+        "rings": 9,
+        "returnedShow": 200000081,
+        "returnedDate": "2026-11-25",
+        "detail": {
+          "stage": "schedule-request"
+        }
+      }
+    ]
+  }
+}

@@ -1,8 +1,101 @@
 # wef-ring-pace owner
 
-**README version: 1.4 | Updated: November 2, 2026 | Timezone: America/New_York**
+**README version: 2.3 | Updated: November 8, 2026 | Timezone: America/New_York**
 
-## Current cadence and cleanup delivery
+## Current status — November 8, 2026
+
+The existing three-minute task still uses the installed snapshot writer and cleaner. The latest inspected normal receipt, at 7:34 p.m. Eastern, reports six Ring snapshots saved and no run errors. The cleanup receipt says `Cleanup not due` and records zero deletions. This is receipt evidence. The saved-record verification below covers the earlier 2:46 and 2:49 p.m. runs.
+
+`wef-ring-pace/linker.js` is in the repository. Its staged caller fills empty show, day, ring, schedule, and current/next group, class and trip links before the single snapshot save. Existing links are preserved. Missing expected links or ambiguous single matches are logged and left empty. The staged cleaner implements the locked contract below. Independent review and both offline checks passed. The installed caller and cleaner still match their previous file hashes. Activation approval and normal-run proof are pending.
+
+Evidence: `C:/Users/gombc/Documents/Codex/staging/wef-ring-cleanup-contract-20261108/` contains `CURRENT-RESULT.md`, `release-manifest.json`, `reviewer-final/review.md`, and `reviewer-final/review-verification.json`.
+
+## New simpler script — activated and normal snapshots verified
+
+Owner-approved new implementation `wef-timing/ring-snapshot.js` (SHA256 6b00215bf788806a297c44272c88dccfcdbf7f39f8d2147c0a51da26dac2baac) activated November 8 at 2:43:55 p.m. Eastern on the unchanged three-minute task. Thirteen approved current/next/end-time fields were created and read back. The only existing runtime changes are Ring read-only access to Live trips and the existing Ring call selecting the new script. Class code and task definition remain unchanged.
+
+One immutable timing-answers snapshot per ring contains today's current and next group, class and trip links. Linking is built into ring-snapshot.js; no separate linker task. Current-group elapsed time divided by gone gives pace; remaining trips multiplied by pace gives end-in and estimated-end-time. The source start is estimated-start-time, explicitly labelled as an estimated basis. No old daily average, historical measurement reader, separate current cache or next-class record. Earlier Completed groups are not substituted for a current group. Zero gone leaves predictions blank; malformed inputs are logged while other rings continue. Early/late compares the projected end with that snapshot's saved schedule end when available.
+
+Normal 2:46 and 2:49 p.m. runs each saved six ring snapshots. All current/next group, class and trip bindings and arithmetic passed independent read-only inspection; the first six snapshots remained unchanged after the second run. International's second snapshot is as of 2:48:06 p.m.: estimated start 1:45:01 p.m., total 36, gone 30, remaining 6, elapsed 63.0907 minutes, pace 2.1030 minutes/trip, end-in 12.6181 minutes, estimated end 3:00:43 p.m., 4.6745 minutes early against its saved schedule end. Five rings had no current group and no invented pace; Ring 6's next group, three classes and two trips appear on its same snapshot.
+
+Existing ring-cleanup.js remains connected after scheduled execution. Both observed runs returned Cleanup not due, deleted zero: this verifies connection and not-due handling, not deletion. Those two shared receipts reported a separate checkpoint clock error. Ring subreceipts and saved outputs were verified independently. No manual business runs, Class changes, new schedules, source repairs or backfill.
+
+Evidence: C:/Users/gombc/Documents/Codex/staging/wef-ring-current-snapshot-20261108/ — deployment-receipt.json, created-fields-readback.json, normal-first-run.json, normal-second-run.json, normal-verification-inspection.json and reviewer-normal/review.md. Creation and activation checks also passed independent review. The stopped verify-normal.cjs assertion compared an earlier saved schedule end with a later changed source; it remains recorded as failed and was not rewritten/rerun. Independent inspection separately confirmed each snapshot's subtraction against its own saved inputs. Earlier sections below preserve historical evidence and do not define the new calculation.
+
+## Locked cleanup contract
+
+Cleanup is delete-only and acts only on supported tables checked in Airtable's `cleanup` table. It runs through the existing normal runner.
+
+| Trigger | What gets deleted |
+| --- | --- |
+| A log table reaches 1,000 records | Delete the oldest eligible records until 500 remain. If protected records prevent reaching 500, continue on later normal runs. |
+| First normal run at or after 7 p.m. Eastern | Clear all eligible records from checked `heartbeat`, `run-logs`, and `errs-log` tables once per daily cutoff. |
+| The default show changes | Fully reset checked supported live tables and clear eligible logs. The reset can include rows already collected for the new show. A date change within the same show leaves live records in place. |
+
+## Known trouble — November 8, 2026
+
+- **Installed cleaner differs from the locked contract.** It caps each quick pass at 500 deletions and can stop above 500. Its show-change path waits for a coordinator request and filters by show identity instead of resetting the full checked `timing-answers` table. These are still live differences until the staged correction is activated.
+- **Activation and scheduled proof are pending.** The new linker is present and both staged changes passed independent offline checks. Verify the current default show is saved on the first normal wake, then check saved links in Airtable. Prove deletion when a normal cutoff, threshold, or default-show change makes cleanup due. The 7:34 p.m. cleanup receipt was `Cleanup not due` with zero deletions. Earlier successful deletions used earlier code.
+- **Earlier offline cleanup check stopped on Windows `EPERM`.** The temporary state-file replacement failed during a large simulated deletion run. The failed check is retained. Revised targeted checks passed independently with smaller stateful fixtures. The original review findings on queued eligibility, unchecked tables and authority changes were addressed in the staged candidate. Default-show initialization still needs normal-run proof.
+- **Earlier shared checkpoint clock error.** The 2:46 and 2:49 p.m. shared receipts reported `Host clock not verified against Airtable Date`. Ring snapshots from those runs were independently verified. The later 7:34 p.m. receipt reported no run errors.
+- **Stopped schedule comparison.** `verify-normal.cjs` failed when it compared an earlier immutable schedule value with a later changed source. That check remains stopped. Independent read-only inspection verified each saved snapshot against its own inputs.
+- **Calculation limits.** Pace uses the estimated start supplied by the source. No current group or zero gone leaves pace and end predictions blank. Five rings had no current group in the independently inspected runs.
+- **Historical retention stop.** The separate two-base retention candidate remains stopped after failed verification.
+
+Earlier complaint dispositions and dated evidence remain below.
+
+## Earlier Ring calculations — November 8, 1:49 p.m. Eastern
+
+Ring computes TODAY's as-of pace, minutes early/late, current class and next class. Upcoming waiting contributes no measured pace or initial estimate. Original successful saved Live receipt measurements are used for each group/phase/membership sequence when available; derived snapshots remain context and can provide measurement history only for uncovered sequences. Underway and Completed evidence remains usable without rereads changing the original measured clocks. This scope does not include Class calculation/consumption.
+
+Reviewed source ef2e7d57e3a23e528a55a6fbd2dca67846802ec668ecb5b74ffc9316489abf3c deployed at 1:43:53 p.m. through the unchanged existing task. Normal 1:46 and 1:49 p.m. runs each saved six observations and updated the same six current answers. Actual native GET readback passed against 112 original saved source archives, including every measured endpoint/status/count, elapsed minutes/trips/pace division, selected source counts/raw clocks, schedule comparison, source class names and parsed fields. All thirty-four protected files match; Class, cleanup, task definitions and cadence unchanged. No manual workflow runs, source/record repairs, historical backfill or new schedules. Initial failed numerical proof at 1:28 p.m. remains preserved; it is superseded by this corrected-source proof, not relabeled successful.
+
+The native timing-answers columns now expose calculation group/status/total/gone, source clock, estimated and scheduled starts/ends, comparison end, projected finish/basis, measured minutes/trips/as-of, ring state/offset, current/next names and readable original interval evidence in Eastern time. Each snapshot links only its selected calculation group, that group's class schedule rows and selected-plus-next class context. Historical measurement contributors appear in pace-evidence rather than all being linked to every snapshot. Group total/gone describe the selected group; pace-elapsed-minutes and pace-completed-trips describe compatible intervals across today's ring history.
+
+| Current ring | Measured minutes / trips | Minutes per trip |
+| --- | --- | --- |
+| International | 188.8427 / 79 | 2.3904 |
+| Rost | 117.0269 / 21 | 5.5727 |
+| Mogavero | 174.0180 / 46 | 3.7830 |
+| Denemethy | 143.9954 / 41 | 3.5121 |
+| Ring 6 | 66.0300 / 18 | 3.6683 |
+| Source Ring 8 (number 7) | 71.9978 / 12 | 5.9998 |
+
+Actual transition verified: International changed from the last Completed group to Underway group200028632, class805 $20,000 Palm Beach Equine Clinic Grand Prix, total36/gone1 as of1:48:07p.m. Eastern. Its original-source pace2.3904135021097046 projects3:11:47p.m., compared with saved scheduled end3:31:55p.m.:20.1215minutes early. Native current ID stayed the same, selected group link changed, current class source name matched, and the first run's immutable snapshot remained unchanged. Next class is absent in that source snapshot.
+
+Completed-group finish-basis is first_seen_completed: original collector confirmation, not an exact official finish timestamp. All states are as of their displayed source clocks; later scheduled evaluation does not manufacture a fresh source observation. No remaining acceptance blocker for this approved Ring correction. Evidence: C:/Users/gombc/Documents/Codex/staging/wef-ring-pace-arithmetic-20261108/normal-verification.json, active-transition-verification.json, deployment-receipt.json, reviewer-original/, and the corresponding normal-run/native-readback/source-fixture/original-manifest files.
+
+## Earlier November 8 — source links verified; arithmetic failure evidence
+
+Native source links are now present on timing-answers: w-shows, w-days, wef-live.rings, wef-live.groups, wef-data.schedules and wef-live.classes. The existing scheduled writer populates exact matching today's show/day/ring source context, including completed/next groups, nondropped schedules and member classes. These links open supporting current source records; original historical observation evidence remains in the answer payload. Historical answers were not backfilled.
+
+Independently reviewed one-file change deployed at 1:02:47 p.m. Eastern. Normal 1:04 and 1:07 p.m. runs each saved six new observations and updated the same six current answers. Connector GET readback verified all six native link arrays for each saved answer against the source record identities. First-run snapshots remained unchanged. Installed hash matches frozen candidate 7905a847d7289a6370ceed76c263628fe7939f689d49134d2e7ee80d0d8ba819; thirty-four protected files, Class calculator, cleanup and task settings are unchanged. No manual workflow run or new schedule. Evidence: C:/Users/gombc/Documents/Codex/staging/wef-ring-source-links-20261108/normal-verification.json, schema-receipt.json, deployment-receipt.json, reviewer-empty-links/.
+
+The original check's linked-record object expectation failure was corrected under fresh approval. Independent review then found omitted-empty-array responses would cause false write failures; a separately approved Ring-only response normalization corrected this while preserving the shared/Class verifier. Original failure packets remain preserved; fresh independent execution and review passed.
+
+**Numerical pace is not accepted.** Today's read-only source audit confirmed every inspected ring's pace includes waiting while groups were Upcoming, inflating minutes per trip. At the audited 12:52 p.m. evaluation, published/reference observed intervals were International11.0736/2.3746, Rost18.1164/5.5727, Mogavero12.6730/3.7830, Denemethy21.1183/3.5121, Ring6 17.0021/3.6683 and source Ring8 10.2893/5.9998. The reference calculation uses original compatible Underway/Completed observations, excluding Upcoming wait; it is a read-only diagnostic, not deployed replacement code. International's 12:51 source snapshot projected16.89minutes late using inflated pace versus approximately0.50minutes early using the diagnostic interval pace. Completed-group offsets subtract scheduled end from first-seen Completed; completion is known within approximately3minute observation windows, not exact finish timestamps. This links-only change intentionally does not alter arithmetic. Older successful-save/repeat-run claims below do not establish useful numerical pace.
+
+## Historical Ring snapshot delivery — November 7
+
+Deployed at 9:42:58 p.m. Eastern through the unchanged existing wef-timing-data task. Normal 9:43 and 9:46 p.m. runs each saved seven new immutable Ring observations and updated the same seven current answers in timing-answers. Independent connector GET readback verified all fourteen new snapshot IDs, exact payload hashes, day-0 identity, pace/state/current/next data, retained original source/measurement clocks, unchanged first-run observations and the unchanged Ring 4 diagnostic record. Source data remains the saved daytime November 7 evidence; evening evaluation is not a new source observation.
+
+Ring now evaluates every dynamically discovered ring every three minutes, TODAY Eastern only, using synced rings/groups/classes, saved schedules and original successful collector receipt history. Completed groups remain usable. Unchanged measured counts preserve the proven pace and interval clocks. Final Completed-group selection follows group sequence and uses its first matching original Completed receipt; no ring reread is treated as a finish. Questionable inputs are logged per ring and other calculations continue. No fixed ring count, new schedule, schema, dependency or manual workflow run. Current/next classes describe Ring context only.
+
+Fresh independent review COMPLETE/PASS and one independent offline execution passed all thirteen targeted checks. Installed three-file hashes match the frozen release; thirty protected files, Class stage, old core/consume and deployed cleanup remain unchanged. The existing shared Class checkpoint clock failure remains outside Ring acceptance; Ring publication succeeded before it. The previous initial deployment refusal occurred while the existing task was busy, before changes; installation succeeded once the task was idle.
+
+Read evidence: C:/Users/gombc/Documents/Codex/staging/wef-ring-snapshots-20261107/normal-verification.json, deployment-receipt.json, installed-hash-verification.json, normal-first-run.json, normal-second-run.json and reviewer-two-fixes/. This release supersedes older pace-stopped, Underway-only, and hourly/Live-off Ring cadence statements below. Cleanup policy and the stopped historical two-base retention package are unchanged.
+
+## Historical cleanup release — November 7
+
+Deployed at9:11p.m. Eastern through the existing wef-timing-data task. Completed Ring logs, including runs in the existing run-logs table, clear at/after19:00Eastern once daily; the1000/oldest500 check is due every3hours on existing wakes. Genuine coordinator new-show requests clear eligible Ring-owned old-show records. Error records retain their parent completion evidence until deletion is confirmed, including across budget continuation. Active/unfinished operations, retained answer references and synced/control tables remain protected. No new tables/schedules, local-log deletion or Records alerts. Class code/execution is unchanged.
+
+Independent source review and one independent offline execution passed13targeted checks. The writer's earlier offline Windows EPERM state-file rename failure is retained; the unchanged baseline atomic-write method was not patched or retried. Exact review and failure provenance: C:/Users/gombc/Documents/Codex/staging/wef-ring-cleanup-alignment-20261107/reviewer-parent-order/.
+
+Only the approved November3 clock-error stop was preserved/cleared at installation, after confirming pending:null and work:[]. Date-header mismatch is now a cleanup-only logged warning; other lanes remain unchanged. Normal9:13p.m. cleanup completed without errors, recorded the daily check and three-hour check time, and correctly skipped deletion because native run-logs/heartbeat/errs-log each contained0records. A safe skip is not actual deletion proof. Normal9:16p.m. repeat correctly returned Cleanup not due and preserved the next three-hour check at00:13:07Eastern November8. Native tables remained0/0/0; no manual runs or seeded records. Exact proof: release normal-verification.json and RESULT.md.
+
+The cleanup release alone did not establish pace calculations; the later verified Ring snapshot release above does. Older cleanup/cadence sections below retain dated evidence and are superseded only for the cleanup alignment described here.
+
+## Historical cadence and cleanup delivery — November 2
 
 The agreed outcome includes **both cleanup and Ring cadence following Live**. Both implementations are now deployed. Actual new-show deletion and the current Live-off cadence behavior are verified through normal scheduled runs. I previously narrowed delivery to cleanup code while leaving cadence prepared; that delivery omission is now corrected within the verification scope below. A successful install or safely skipped run alone did not establish cleanup; the actual deletion evidence does.
 
@@ -33,7 +126,7 @@ All **14 existing complaints remain Open**. The remediation column records only 
 | [Misattributed the two-run requirement to the owner](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/reco9BAv4010FLhWZ) | Proposed |
 | [Narrowed implemented status handling to Underway/live groups](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recyRABftnIufoidq) | Proposed |
 
-## Current cleanup release - November 2
+## Historical cleanup release - November 2
 
 **Actual deletion verified at 2:59 p.m. Eastern:** the genuine coordinator request was consumed after 138 eligible old answers were deleted through the normal 2:55/2:58 scheduled runs. Exact-ID absence and retained-record hashes were read back; no manual workflow was run. This supersedes the earlier no-deletion-proof condition below.
 
@@ -47,37 +140,27 @@ The cleanup release did not itself deploy cadence; the later reviewed two-file c
 
 ## Current responsibility
 
-Ring-pace calculates today's pace by ring from saved Live snapshots.
+Read today's saved show/day, ring, group, class, trip and schedule data. Discover rings from the source. Save one immutable as-of snapshot per ring containing its current and next group/class/trip context.
 
-- Read today's synced rings and linked groups. Discover the ring count from the source; do not assume five.
-- Use current/next/completed links, status, total, gone and source timestamps to interpret each ring's snapshot.
-- Calculate minutes per trip as elapsed observation minutes divided by the increase in gone between compatible snapshots of the same group and phase.
-- Keep one current result per ring and preserve today's immutable snapshot evidence.
-- Retain the last proven pace and its original measurement time when counts do not advance. Do not present a reread as a new measurement.
-- Isolate malformed ring data; report missing or conflicting evidence without inventing progress, starts or finishes.
-- Publish Ring results and review, deploy and verify only specifically approved Ring changes.
+For the current group, divide elapsed minutes since its estimated start by gone. Multiply that pace by total minus gone to estimate minutes remaining and end time. Compare projected end with that snapshot's scheduled end for early/late state. Isolate questionable ring inputs and log them while other rings continue. Current and next links are built into the snapshot writer; no separate linker task.
 
-Class calculations, fallback policy and Class consumption belong to Class/the coordinator. Entry predictions, collectors, source-record repairs, messaging and publication belong to their owners. Shared code or a shared scheduled task does not transfer those responsibilities to Ring.
+Class calculations and consumption, collectors, source repairs and messaging remain outside Ring scope. Completed historical groups are not substituted for today's current group by this implementation.
 
 ## Cadence and outputs
 
-The existing Windows task `wef-timing-data` runs every **three minutes** through hidden VBS → PowerShell → `entry-data.js` → `data-runner.js`. The runner executes the business workflow; Codex does not start manual runs.
+Existing `wef-timing-data` wakes every three minutes through VBS → PowerShell → `entry-data.js` → `data-runner.js` → `ring-snapshot.js`. Ring writes `ring-observation` rows to `wef-ring-pace` base `appYOykKIy1kAquhP`, `timing-answers` table `tblhIjSjeGs5td23c`. New snapshots do not update old `ring-current` cache rows, write separate next rows or use a history checkpoint. Source as-of comes from the current group's `last-seen`, or ring `last-seen` when there is no current group; preserve `source-updated-at` separately.
 
-Ring reads synced `wef-live.rings` and `wef-live.groups` in base `appYOykKIy1kAquhP`. `wef-live.classes` and `wef-live.entries` are known source tables, not additional Ring calculation ownership. Ring answers are in `timing-answers` (`tblhIjSjeGs5td23c`): `ring-current`, `ring-observation` and `ring-pace`. Saved continuation state is in `engine-checkpoints` (`tblfWyTqeyvIvhAjb`).
-
-Keep source `source-updated-at`, collector `last-seen` and the measured interval endpoints distinct. Preserve raw source timestamps where their timezone interpretation is unverified. Pace measures interval throughput, including pauses, rather than an individual trip's duration.
+Existing `ring-cleanup.js` runs afterward on the same scheduled path. See the locked cleanup contract and known implementation differences above.
 
 ## Verified release and remaining gaps
 
-On October 31 the two Ring Date-field filters were corrected, independently reviewed and deployed. Ring saved-output readbacks passed for the normal **12:04 and 12:07 p.m. Eastern** runs. This proves the date-filter correction and Ring repeat-run behavior; it does not establish Class consumption or guarantee a numerical pace for every ring. Evidence: `C:/Users/gombc/Documents/Codex/staging/wef-ring-date-filter-20261031/two-normal-verification.json`.
+The November 8 normal 2:46 and 2:49 p.m. snapshot inspection is the saved-record proof for the installed Ring writer. The staged linker and cleaner have independent offline proof and await activation. Historical date-filter, history-pace, Live-off cadence and cache claims below do not define this implementation. The inspection verified link bindings and current-group arithmetic. The cleanup calls in those runs were not due. The implementation differences above come from source inspection.
 
-The current measurement selector accepts Underway/live groups. Upcoming/Completed links are retained as context; broader agreed status handling remains a known gap. The previously identified checkpoint-format and helper-refactor approval gaps remain unresolved; the date-only repair did not change them.
-
-No manual production runs, source-record repairs, unapproved structural changes or post-failure edits without fresh approval. Retention work and other stopped paths are not resumed by this documentation update. Follow [workspace instructions](WORKSPACE-INSTRUCTIONS.md), applicable AGENTS.md and the latest human scope.
+No runtime changes, deployments, tests or manual production runs were performed for this README correction. Separate stopped paths remain stopped. Follow [workspace instructions](WORKSPACE-INSTRUCTIONS.md), applicable AGENTS.md and the latest human scope.
 
 ## Historical notes — not current operating status
 
-The dated material below preserves earlier decisions, evidence and stops. Its older “current,” “pending” and ownership statements are superseded by the October 31 scope and verified release above where they conflict. Skill version numbers below are historical installation receipts, not this README's version. This documentation version does not change software, tasks or deployment.
+The dated material below preserves earlier decisions, evidence and stops. Its older “current,” “pending” and ownership statements are superseded by the November 8 scope and verified release above where they conflict. Skill version numbers below are historical installation receipts, not this README's version. This documentation version does not change software, tasks or deployment.
 
 ## Current procedures - installed0.2.2 application receipt, October30 2026
 

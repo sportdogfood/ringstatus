@@ -1,0 +1,13 @@
+{
+  "passed": 15,
+  "day": "2026-11-06",
+  "evaluated_at": "2026-11-07T00:03:35.518Z",
+  "snapshots": 43,
+  "statuses": {
+    "Completed": 42,
+    "Upcoming": 1
+  },
+  "actual_starts": 0,
+  "predicted_ends": 1,
+  "note": "Read-only saved Airtable rows. Retrospective fixture, not a reconstructed historical inventory; original source clocks preserved."
+}

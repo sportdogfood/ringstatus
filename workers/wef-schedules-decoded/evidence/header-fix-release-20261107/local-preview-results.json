@@ -1,0 +1,30 @@
+[
+  {
+    "round": 1,
+    "kind": "schedule",
+    "status": 200,
+    "count": 7,
+    "ok": true
+  },
+  {
+    "round": 1,
+    "kind": "class",
+    "status": 200,
+    "count": 8,
+    "ok": true
+  },
+  {
+    "round": 2,
+    "kind": "schedule",
+    "status": 200,
+    "count": 7,
+    "ok": true
+  },
+  {
+    "round": 2,
+    "kind": "class",
+    "status": 200,
+    "count": 8,
+    "ok": true
+  }
+]

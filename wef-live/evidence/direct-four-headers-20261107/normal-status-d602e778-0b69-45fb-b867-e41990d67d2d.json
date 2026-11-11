@@ -1,0 +1,29 @@
+{
+  "due": true,
+  "run_id": "d602e778-0b69-45fb-b867-e41990d67d2d",
+  "lane": "live-check",
+  "started": "2026-11-08T00:15:15.196Z",
+  "ok": true,
+  "issues": [
+    {
+      "message": "Warning: live status is true but today 2026-11-07 differs from Shows priority-0 date 2026-11-08 for show 200000077"
+    }
+  ],
+  "logging_errors": [],
+  "stage_errors": [],
+  "live_status": true,
+  "scope": {
+    "show": 200000077,
+    "customer": 15,
+    "date": "2026-11-08",
+    "authority": "rec8GtJJ7eSjY3Nd3",
+    "checked_at": "2026-11-02T06:04:12.307Z",
+    "active": true
+  },
+  "collect": false,
+  "minutes": 60,
+  "reason": "priority-date-mismatch",
+  "today": "2026-11-07",
+  "next_check_at": "2026-11-08T01:15:00.000Z",
+  "completed": "2026-11-08T00:15:16.476Z"
+}

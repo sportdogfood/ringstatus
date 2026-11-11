@@ -1,0 +1,25 @@
+{
+  "run_id": "a1c4ebc9-61d1-46e1-9114-94157ba1799d",
+  "started": "2026-11-08T01:18:04.683Z",
+  "actions": [
+    {
+      "id": "a1c4ebc9-61d1-46e1-9114-94157ba1799d|quick-cleanup|run-logs",
+      "table": "run-logs",
+      "trigger": "quick-cleanup",
+      "before": 5908,
+      "old_show": null,
+      "deleted": 500,
+      "started": "2026-11-08T01:18:34.596Z",
+      "result": "Success",
+      "completed": "2026-11-08T01:19:58.004Z",
+      "target_count": 500
+    }
+  ],
+  "result": "Success",
+  "day": "2026-11-07",
+  "new_day": false,
+  "quick_due": true,
+  "show": 200000077,
+  "new_show": false,
+  "completed": "2026-11-08T01:20:00.314Z"
+}

@@ -1,0 +1,268 @@
+TAP version 13
+# Subtest: Airtable timestamp readback accepts equivalent source offsets without repeated writes
+ok 1 - Airtable timestamp readback accepts equivalent source offsets without repeated writes
+  ---
+  duration_ms: 6.4932
+  type: 'test'
+  ...
+# Subtest: repeat error persistence is idempotent; previous source success survives a later failed attempt
+ok 2 - repeat error persistence is idempotent; previous source success survives a later failed attempt
+  ---
+  duration_ms: 2.9877
+  type: 'test'
+  ...
+# Subtest: retained authority follows Eastern windows, expires after a missed window, and never changes timestamps
+ok 3 - retained authority follows Eastern windows, expires after a missed window, and never changes timestamps
+  ---
+  duration_ms: 2.4261
+  type: 'test'
+  ...
+# Subtest: Data Python validator agrees on daily and DST authority windows
+ok 4 - Data Python validator agrees on daily and DST authority windows
+  ---
+  duration_ms: 378.4447
+  type: 'test'
+  ...
+# Subtest: Live, Entries and Timing accept retained show authority, preserving unrelated age rules
+ok 5 - Live, Entries and Timing accept retained show authority, preserving unrelated age rules
+  ---
+  duration_ms: 48.0556
+  type: 'test'
+  ...
+# Subtest: calendar authority has a separate thirty-minute validation clock, never renews source time or unrelated evidence
+ok 6 - calendar authority has a separate thirty-minute validation clock, never renews source time or unrelated evidence
+  ---
+  duration_ms: 329.7811
+  type: 'test'
+  ...
+# Subtest: captured browser metadata validates without either proxy endpoint
+ok 7 - captured browser metadata validates without either proxy endpoint
+  ---
+  duration_ms: 4.7144
+  type: 'test'
+  ...
+# Subtest: browser evidence rejects mismatched default, URL, day, incomplete metadata and encoded payload
+ok 8 - browser evidence rejects mismatched default, URL, day, incomplete metadata and encoded payload
+  ---
+  duration_ms: 7.8496
+  type: 'test'
+  ...
+# Subtest: browser launch is headless with new context, clean page URL and cleanup; response-only acquisition
+ok 9 - browser launch is headless with new context, clean page URL and cleanup; response-only acquisition
+  ---
+  duration_ms: 3.0072
+  type: 'test'
+  ...
+# Subtest: missing browser response and whole-attempt timeout close the browser and fail for fallback
+ok 10 - missing browser response and whole-attempt timeout close the browser and fail for fallback
+  ---
+  duration_ms: 19.8237
+  type: 'test'
+  ...
+# Subtest: browser discovery updates focus evidence and preserves scoped overrides
+ok 11 - browser discovery updates focus evidence and preserves scoped overrides
+  ---
+  duration_ms: 92.3632
+  type: 'test'
+  ...
+# Subtest: priority phase runs despite count stop, preserves selected anchor and skips midnight repeat
+ok 12 - priority phase runs despite count stop, preserves selected anchor and skips midnight repeat
+  ---
+  duration_ms: 82.0343
+  type: 'test'
+  ...
+# Subtest: discovery before19 labels every current date and marks old-show days inactive; repeat skips
+ok 13 - discovery before19 labels every current date and marks old-show days inactive; repeat skips
+  ---
+  duration_ms: 11.444
+  type: 'test'
+  ...
+# Subtest: duplicate inventory fails before writes and durably stops only priority phase
+ok 14 - duplicate inventory fails before writes and durably stops only priority phase
+  ---
+  duration_ms: 6.7318
+  type: 'test'
+  ...
+# Subtest: ambiguous multi-show link is withheld before writes
+ok 15 - ambiguous multi-show link is withheld before writes
+  ---
+  duration_ms: 5.9786
+  type: 'test'
+  ...
+# Subtest: normal wake initializes v1 state once; unchanged repeat preserves verification timestamp
+ok 16 - normal wake initializes v1 state once; unchanged repeat preserves verification timestamp
+  ---
+  duration_ms: 11.1665
+  type: 'test'
+  ...
+# Subtest: new-show rollover changes former day0 to inactive999 and stamps both shows
+ok 17 - new-show rollover changes former day0 to inactive999 and stamps both shows
+  ---
+  duration_ms: 9.3529
+  type: 'test'
+  ...
+# Subtest: failed status readback never stamps last_checked and retains existing stop behavior
+ok 18 - failed status readback never stamps last_checked and retains existing stop behavior
+  ---
+  duration_ms: 5.4812
+  type: 'test'
+  ...
+# Subtest: lookup disagreement is withheld before writes
+ok 19 - lookup disagreement is withheld before writes
+  ---
+  duration_ms: 5.3854
+  type: 'test'
+  ...
+# Subtest: normal repeats manage dates without count requests, Data reads or historical count mutations
+ok 20 - normal repeats manage dates without count requests, Data reads or historical count mutations
+  ---
+  duration_ms: 102.4621
+  type: 'test'
+  ...
+# Subtest: missing canonical dates are created with existing keys and links, without count metadata
+ok 21 - missing canonical dates are created with existing keys and links, without count metadata
+  ---
+  duration_ms: 22.3996
+  type: 'test'
+  ...
+# Subtest: date publication refuses duplicate keys and wrong existing native links
+ok 22 - date publication refuses duplicate keys and wrong existing native links
+  ---
+  duration_ms: 1.4634
+  type: 'test'
+  ...
+# Subtest: valid subset zero publishes same day/native link on repeats; absent day stays unknown
+ok 23 - valid subset zero publishes same day/native link on repeats; absent day stays unknown
+  ---
+  duration_ms: 11.6001
+  type: 'test'
+  ...
+# Subtest: unknown coverage remains null not zero
+ok 24 - unknown coverage remains null not zero
+  ---
+  duration_ms: 1.5581
+  type: 'test'
+  ...
+# Subtest: unknown day without inventory retains null source time and does not stop remaining days
+ok 25 - unknown day without inventory retains null source time and does not stop remaining days
+  ---
+  duration_ms: 1.7517
+  type: 'test'
+  ...
+# Subtest: invalid or failed evidence preserves accepted body and original counts/time
+ok 26 - invalid or failed evidence preserves accepted body and original counts/time
+  ---
+  duration_ms: 1.3889
+  type: 'test'
+  ...
+# Subtest: scope mismatch fails before publishing counts
+ok 27 - scope mismatch fails before publishing counts
+  ---
+  duration_ms: 0.3775
+  type: 'test'
+  ...
+# Subtest: mixed projection, tampered digest and changed fence are rejected
+ok 28 - mixed projection, tampered digest and changed fence are rejected
+  ---
+  duration_ms: 1.7462
+  type: 'test'
+  ...
+# Subtest: expiry uses source time despite recent verification; exact five minutes is stale
+ok 29 - expiry uses source time despite recent verification; exact five minutes is stale
+  ---
+  duration_ms: 7.4223
+  type: 'test'
+  ...
+# Subtest: failed staged write preserves authoritative previous body; readback refuses mixed projections
+ok 30 - failed staged write preserves authoritative previous body; readback refuses mixed projections
+  ---
+  duration_ms: 3.5967
+  type: 'test'
+  ...
+# Subtest: duplicate canonical keys fail without writes
+ok 31 - duplicate canonical keys fail without writes
+  ---
+  duration_ms: 0.6234
+  type: 'test'
+  ...
+# Subtest: normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+ok 32 - normal repeat runs retain source date/time, heartbeat and logs; calendar change keeps native ID and schedules consumes it
+  ---
+  duration_ms: 115.0294
+  type: 'test'
+  ...
+# Subtest: Sunday poll repeats after three hours until show changes then stops until next Sunday
+ok 33 - Sunday poll repeats after three hours until show changes then stops until next Sunday
+  ---
+  duration_ms: 88.3121
+  type: 'test'
+  ...
+# Subtest: failed source logs linked error, retains authority time and does not retry on five-minute wakes
+ok 34 - failed source logs linked error, retains authority time and does not retry on five-minute wakes
+  ---
+  duration_ms: 24.2287
+  type: 'test'
+  ...
+# Subtest: existing count stop stays byte-identical while calendar and heartbeat proceed
+ok 35 - existing count stop stays byte-identical while calendar and heartbeat proceed
+  ---
+  duration_ms: 23.3887
+  type: 'test'
+  ...
+# Subtest: tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+ok 36 - tampered source archive, wrong selection evidence and ambiguous canonical inventory fail closed
+  ---
+  duration_ms: 15.579
+  type: 'test'
+  ...
+# Subtest: archive failure prevents calendar mutation
+ok 37 - archive failure prevents calendar mutation
+  ---
+  duration_ms: 6.4018
+  type: 'test'
+  ...
+# Subtest: adapter still rejects cross-base writes and deletes
+ok 38 - adapter still rejects cross-base writes and deletes
+  ---
+  duration_ms: 9.2579
+  type: 'test'
+  ...
+# Subtest: consumer freshness expires without authority heartbeat even when source date is retained
+ok 39 - consumer freshness expires without authority heartbeat even when source date is retained
+  ---
+  duration_ms: 12.0559
+  type: 'test'
+  ...
+# Subtest: browser primary creates linked show-days and archive, no proxy requests; repeat preserves keys and source time
+ok 40 - browser primary creates linked show-days and archive, no proxy requests; repeat preserves keys and source time
+  ---
+  duration_ms: 64.9643
+  type: 'test'
+  ...
+# Subtest: browser failure uses original ring/schedule pair only, with linked failure evidence
+ok 41 - browser failure uses original ring/schedule pair only, with linked failure evidence
+  ---
+  duration_ms: 35.6642
+  type: 'test'
+  ...
+# Subtest: both discovery methods fail without replacing canonical show or retrying the next wake
+ok 42 - both discovery methods fail without replacing canonical show or retrying the next wake
+  ---
+  duration_ms: 12.4192
+  type: 'test'
+  ...
+# Subtest: browser archive failure is not a browser discovery failure and never invokes fallback
+ok 43 - browser archive failure is not a browser discovery failure and never invokes fallback
+  ---
+  duration_ms: 11.902
+  type: 'test'
+  ...
+1..43
+# tests 43
+# suites 0
+# pass 43
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 971.4708

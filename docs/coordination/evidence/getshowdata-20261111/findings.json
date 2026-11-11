@@ -1,0 +1,206 @@
+{
+  "endpoint": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData",
+  "parameters": {
+    "show_id": "200000078",
+    "company_id": "15"
+  },
+  "browser": {
+    "profile": "Existing Edge Office session",
+    "sameOriginControls": {
+      "url": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData?show_id=200000078&company_id=15",
+      "method": "GET",
+      "headers": {
+        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0",
+        "sec-ch-ua": "\"Chromium\";v=\"158\", \"Not.A/Brand\";v=\"24\", \"Microsoft Edge\";v=\"158\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-dest": "empty"
+      },
+      "bearer": false,
+      "withCookies": {
+        "status": 200,
+        "classes": 429,
+        "divisions": 82
+      },
+      "withoutCookies": {
+        "status": 200,
+        "body": "DoLogin",
+        "at": "2026-11-11T16:58:35.343Z"
+      }
+    },
+    "conclusion": "Existing browser cookie/session state is necessary in this controlled pair. The individual determining cookie was not isolated; no cookie values were saved. An earlier cross-origin custom cache-control request failed CORS preflight and is excluded from the access comparison."
+  },
+  "anonymousTokenTests": [
+    {
+      "label": "showdata-fresh-config",
+      "url": "https://sglapi.wellingtoninternational.com/utilities/get-config",
+      "method": "GET",
+      "profile": "config",
+      "requestBearer": false,
+      "requestCookies": false,
+      "startedAt": "2026-11-11T16:57:52.164Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 333,
+      "bodyHash": "5aefdcb670116ab9c44ef7ebf9d531a77510c465c39299310ce9a36c288ea12d",
+      "date": "Wed, 11 Nov 2026 16:58:00 GMT",
+      "location": null,
+      "cookieNames": [],
+      "bodyKind": "object",
+      "topKeys": [
+        "protection",
+        "mobile_app",
+        "_t"
+      ],
+      "arrayLength": null,
+      "hasReturnedToken": true,
+      "hasProtectedFields": false,
+      "sourceMessage": null,
+      "token": {
+        "anon": true,
+        "issuedAt": "2026-11-11T16:58:00.000Z",
+        "expiresAt": "2026-12-11T16:58:00.000Z",
+        "claimKeys": [
+          "anon",
+          "sid",
+          "iat",
+          "exp"
+        ]
+      },
+      "flags": {},
+      "arrayCounts": {},
+      "completedAt": "2026-11-11T16:57:52.275Z"
+    },
+    {
+      "label": "showdata-fresh-anonymous-token",
+      "url": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData?show_id=200000078&company_id=15",
+      "method": "GET",
+      "profile": "legacy-iphone",
+      "requestBearer": true,
+      "requestCookies": false,
+      "startedAt": "2026-11-11T16:57:53.282Z",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 7,
+      "bodyHash": "785d6cf6d3e037b09105d34c85f9cdf5798d2fa28c2f70a01277a1f98bd95293",
+      "date": "Wed, 11 Nov 2026 16:58:02 GMT",
+      "location": null,
+      "cookieNames": [
+        "symfony"
+      ],
+      "bodyKind": "text",
+      "topKeys": [],
+      "arrayLength": null,
+      "hasReturnedToken": false,
+      "hasProtectedFields": false,
+      "sourceMessage": null,
+      "htmlTitle": "",
+      "htmlContainsAuthForm": true,
+      "htmlContainsTokenName": false,
+      "completedAt": "2026-11-11T16:57:53.418Z"
+    },
+    {
+      "label": "showdata-fresh-token-desktop-headers",
+      "url": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData?show_id=200000078&company_id=15",
+      "method": "GET",
+      "profile": "windows-clean",
+      "requestBearer": true,
+      "requestCookies": false,
+      "startedAt": "2026-11-11T16:59:42.761Z",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 7,
+      "bodyHash": "785d6cf6d3e037b09105d34c85f9cdf5798d2fa28c2f70a01277a1f98bd95293",
+      "date": "Wed, 11 Nov 2026 16:59:51 GMT",
+      "location": null,
+      "cookieNames": [
+        "symfony"
+      ],
+      "bodyKind": "text",
+      "topKeys": [],
+      "arrayLength": null,
+      "hasReturnedToken": false,
+      "hasProtectedFields": false,
+      "sourceMessage": null,
+      "completedAt": "2026-11-11T16:59:42.888Z"
+    }
+  ],
+  "analysis": {
+    "at": "2026-11-11T17:03:53.923Z",
+    "show": "200000078",
+    "classCount": 429,
+    "divisionCount": 82,
+    "classKeys": [
+      "sgl_id",
+      "class_id",
+      "name",
+      "number",
+      "scheduled_date",
+      "cancelled",
+      "web_adddrops_disabled",
+      "required",
+      "division_id"
+    ],
+    "divisionKeys": [
+      "sgl_id",
+      "division_id",
+      "name"
+    ],
+    "topKeys": [
+      "sgl_id",
+      "show_id",
+      "customer_id",
+      "show_name",
+      "start_date",
+      "end_date",
+      "web_deposit_required",
+      "show_series_id",
+      "web_require_credit_card_on_file",
+      "masterfees_changeenabled",
+      "charge_add_fee_on_web",
+      "class_add_fee",
+      "class_add_fee_each",
+      "class_add_date",
+      "class_add_fee_time",
+      "charge_drop_fee_on_web",
+      "class_drop_fee",
+      "class_drop_fee_each",
+      "class_drop_fee_date",
+      "class_drop_fee_time",
+      "pre_order_cutoff_date",
+      "pre_order_cutoff_time",
+      "barn_types",
+      "credit_hold",
+      "divisions",
+      "classes",
+      "showfees",
+      "donation_fees",
+      "donation_amounts",
+      "class_drop_fee_amount",
+      "class_add_fee_amount",
+      "pre_order_datetime",
+      "timezoneoffset"
+    ],
+    "dateCounts": {
+      "2026-11-13": 108,
+      "2026-11-14": 167,
+      "2026-11-15": 126,
+      "0000-00-00": 20,
+      "2026-11-12": 8
+    },
+    "cancelled": 0,
+    "unassignedDivision": 102,
+    "uniqueClasses": 429,
+    "nonzeroDivisionLinksResolve": true,
+    "hasToken": false,
+    "primaryChars": 97834,
+    "remainderChars": 2487,
+    "rawChars": 100425,
+    "rawSha256": "d38a7afbcfcc52554c123f1fd48160a3800fd86aa81b73e63a6df32e4a7d4d00"
+  },
+  "use": "Bulk show/class/division metadata by explicit show ID; class ID/name/number/date/cancelled/division links. Twenty undated classes retained; no date invented. Not default-show discovery or a token refresh. No rings/start times/trip/OOG/result arrays are in this captured response. Participant identity coverage is not adjudicated.",
+  "scope": "Diagnostic only. No production code/configuration, credentials or collectors changed."
+}

@@ -1,0 +1,50 @@
+{
+  "records": [
+    {
+      "id": "rec1sA1YJkeOQ5VHa",
+      "createdTime": "2026-11-08T15:09:47.000Z",
+      "cellValuesByFieldId": {
+        "fldBHUDwXOwfPxMci": 200401530,
+        "fldBuotPnn7x888zy": "412667bc-ea86-4c07-9593-182bfc011d1c",
+        "fldTh2o2pU0eHhGvq": "2026-11-08T15:09:39.480Z",
+        "fldUmRS6HRQlir2Nb": "2026-11-08",
+        "fldVJYFCEur4r6UTE": "2026-11-08T15:09:47.000Z",
+        "fldinJc1Vy08uH9t7": "412667bc-ea86-4c07-9593-182bfc011d1c|945",
+        "fldvlhRJm5OvBNwIt": "linker: No unique exact match for live-entries.w-horses (horse-id=missing). No retry recommended until source data changes.",
+        "fldwSQslvBcnGikCR": 200000077
+      }
+    },
+    {
+      "id": "recJrXOcmQbFe98h5",
+      "createdTime": "2026-11-08T15:09:47.000Z",
+      "cellValuesByFieldId": {
+        "fldBHUDwXOwfPxMci": 200401530,
+        "fldBuotPnn7x888zy": "412667bc-ea86-4c07-9593-182bfc011d1c",
+        "fldTh2o2pU0eHhGvq": "2026-11-08T15:09:39.480Z",
+        "fldUmRS6HRQlir2Nb": "2026-11-08",
+        "fldVJYFCEur4r6UTE": "2026-11-08T15:09:47.000Z",
+        "fldinJc1Vy08uH9t7": "412667bc-ea86-4c07-9593-182bfc011d1c|947",
+        "fldvlhRJm5OvBNwIt": "linker: No unique exact match for live-entries.w-trainers (trainer-id=missing). No retry recommended until source data changes.",
+        "fldwSQslvBcnGikCR": 200000077
+      }
+    },
+    {
+      "id": "recPjR03wFE7x9jt8",
+      "createdTime": "2026-11-08T15:09:47.000Z",
+      "cellValuesByFieldId": {
+        "fldBHUDwXOwfPxMci": 200401530,
+        "fldBuotPnn7x888zy": "412667bc-ea86-4c07-9593-182bfc011d1c",
+        "fldTh2o2pU0eHhGvq": "2026-11-08T15:09:39.480Z",
+        "fldUmRS6HRQlir2Nb": "2026-11-08",
+        "fldVJYFCEur4r6UTE": "2026-11-08T15:09:47.000Z",
+        "fldinJc1Vy08uH9t7": "412667bc-ea86-4c07-9593-182bfc011d1c|946",
+        "fldvlhRJm5OvBNwIt": "linker: No unique exact match for live-entries.w-riders (rider-id=missing). No retry recommended until source data changes.",
+        "fldwSQslvBcnGikCR": 200000077
+      }
+    }
+  ],
+  "metadata": {
+    "totalRecordCount": 500
+  },
+  "nextCursor": "itrqkCFLiGY7EzT9u/recPjR03wFE7x9jt8"
+}

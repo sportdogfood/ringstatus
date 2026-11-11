@@ -1,0 +1,97 @@
+{
+  "at": "2026-11-07T23:39:38.001Z",
+  "results": [
+    {
+      "kind": "health",
+      "status": 200,
+      "lane": null,
+      "ok": true,
+      "worker": "wef-schedules-decoded",
+      "show_id": "200000077",
+      "rings": 7,
+      "schedule_status": 200,
+      "attempts": [
+        {
+          "round": 1,
+          "profile": "original-header",
+          "lane": "runner",
+          "status": 200,
+          "usable": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "kind": "schedule",
+      "status": 200,
+      "lane": "runner",
+      "rings": 7
+    },
+    {
+      "kind": "class",
+      "status": 200,
+      "lane": "cloudflare-fallback",
+      "class": 200031233,
+      "trips": 8
+    }
+  ],
+  "health": [
+    {
+      "id": "recBHZPxfVwugzO6s",
+      "service": "decoder",
+      "details": "{\"attempts\":[{\"round\":1,\"profile\":\"original-header\",\"lane\":\"runner\",\"status\":200,\"usable\":true}],\"errors\":[],\"rings\":7}",
+      "show-day": [
+        "rec1mryBzjt5wl1TI"
+      ],
+      "http-status": 200,
+      "health-key": "decoder",
+      "checked-at": "2026-11-07T23:39:38.356Z",
+      "last-success-at": "2026-11-07T23:39:38.356Z",
+      "show": [
+        "rec8GtJJ7eSjY3Nd3"
+      ],
+      "endpoint": "https://wef-schedules-decoded.gombcg.workers.dev/health",
+      "status": "Healthy",
+      "recovered-at": "2026-11-07T21:39:17.353Z"
+    }
+  ],
+  "tokens": [
+    {
+      "id": "rec2haqPZEorFeVc2",
+      "lane": "local-preview",
+      "at": "2026-11-07T23:30:02.767Z",
+      "result": "Succeeded"
+    },
+    {
+      "id": "recNTI6cN0iKGCXq9",
+      "lane": "cloudflare-fallback",
+      "at": "2026-11-07T23:39:42.169Z",
+      "result": "Succeeded"
+    },
+    {
+      "id": "recXZ2pTvU5eL7u73",
+      "lane": "cloudflare-fallback",
+      "at": "2026-11-07T23:31:01.693Z",
+      "result": "Succeeded"
+    },
+    {
+      "id": "recmvlsc1uOAgWcD5",
+      "lane": "runner",
+      "at": "2026-11-07T23:34:50.277Z",
+      "result": "Succeeded"
+    },
+    {
+      "id": "recqg1GWdfEANvkrq",
+      "lane": "local-preview",
+      "at": "2026-11-07T23:28:54.880Z",
+      "result": "Failed"
+    },
+    {
+      "id": "reczJWKO6GLoQLV74",
+      "lane": "runner",
+      "at": "2026-11-07T23:34:34.531Z",
+      "result": "Succeeded"
+    }
+  ],
+  "warnings": []
+}

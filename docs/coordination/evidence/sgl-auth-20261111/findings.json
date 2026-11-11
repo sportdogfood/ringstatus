@@ -1,0 +1,398 @@
+{
+  "marker": "AUTH-20261111-A",
+  "selectedCount": 26,
+  "runtimeRoutes": 29,
+  "sourceContractRoutes": 11,
+  "findings": [
+    {
+      "route": "https://sglapi.wellingtoninternational.com/utilities/get-config",
+      "labels": [
+        "config-no-auth"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "HTTP 200 without cookies/bearer returned protection, mobile_app and _t. JWT claims anon=true with 30-day expiry. This exact fresh token subsequently decoded 9 schedule rings and class 200031333 with 2 trips.",
+      "next": "Use as the existing bootstrap; compare data-response token adoption in preview before any production change.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/shows",
+      "labels": [
+        "shows-no-auth"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "HTTP 200 without cookies/bearer returned 802 shows, default_show=200000078 and _t claiming anon=true. This token was not separately replayed.",
+      "next": "Alternative anonymous issuance point on the same SGL API transport; not an independent transport fallback.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/schedule",
+      "labels": [
+        "schedule-no-auth",
+        "schedule-config-token",
+        "schedule-invalid-signature",
+        "schedule-reissued-token"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "For actual default show 200000078 / selected date 2026-11-11: no-cookie/no-bearer request returned 9 rings and a new anonymous _t. A config token produced protected fields and decoded 9 rings. A deliberately changed signature (decoded bytes confirmed different) produced a new anonymous _t; replay with that token decoded 9 rings. Schedule contained zero classes for this date. Expired-token behavior was not simulated.",
+      "next": "Preview the existing main.js save-_t / retry-once behavior against the unchanged runner/fallback; this local diagnostic is not production or collector proof.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/classes/{id}",
+      "labels": [
+        "class-no-auth",
+        "class-config-token",
+        "class-reissued-token"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "Class ID 200031333 came from the current show's actual /classes directory, entry_count=2. No credentials returned 2 trips plus _t. Both the config token and this class response's own _t produced protected responses that the unchanged decoder read as the same class and 2 trips. This is a November 13 class within show 200000078, not proof of today's full class collection.",
+      "next": "Keep Fast's failed collection open. Prepare a bounded response-_t adoption plan and verify the actual pipeline after separate edit approval.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/classes",
+      "labels": [
+        "classes-list-no-auth"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "Missed lead: source-default page=1, sort_on=number, sort_type=asc, empty search returned 10 class rows for show 200000078 and an anonymous _t. It supplied the real class ID used by this test.",
+      "next": "Use source-derived IDs for later class diagnostics; do not hardcode a production health sample.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/ring",
+      "labels": [
+        "ring-no-auth"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "HTTP 200 without cookies/bearer returned show 200000078, 9 rings and anonymous _t.",
+      "next": "Alternative issuance candidate using the same API transport; no new proxy route or collector proposed.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/classsignup",
+      "labels": [
+        "class-signups-no-auth"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "HTTP 200 without cookies/bearer, source personal-team value team_id=0, selected date 2026-11-11 returned 9 rings and anonymous _t.",
+      "next": "Record as a source opportunity only; existing proxy contracts remain unchanged.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/classsignup/{id}",
+      "labels": [
+        "class-signup-detail-no-auth"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "Actual class response supplied class_group_id=200028831. GET with that group ID (including source eid=group ID) returned class_group, class_data, 2 entry_x_classes and anonymous _t. This is not an entry directory ID.",
+      "next": "Keep group versus entry IDs distinct; no proxy contract addition approved.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results",
+      "labels": [
+        "results-list-jumper-no-auth"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "Source default div_type=jumper returned 24 divisions, 20 loose classes and anonymous _t. The noncanonical all-filter response is excluded from useful-data proof.",
+      "next": "Use a returned division_id and source channel default=1 for result detail tests.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/{id}",
+      "labels": [
+        "division-results-no-auth"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "Path {id} is a division ID, not class ID. Actual returned division_id=200006030 with channel=1 produced matching division metadata, 3 classes, zero standings entries and anonymous _t. The earlier class-ID request is explicitly invalid and excluded.",
+      "next": "Treat as division standings; do not compare it to class detail or infer an empty class from its entries array.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/users/getUser",
+      "labels": [
+        "api-user-no-auth"
+      ],
+      "result": "Anonymous token issued",
+      "finding": "Missed lead: HTTP 200 without cookies/bearer returned user=null and an anonymous _t. It supplies anonymous state/token, not a logged-in user.",
+      "next": "Possible no-input issuance alternative; same API transport and no production fallback change.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/users/getLoggedInUser",
+      "labels": [
+        "api-user-state-no-auth",
+        "api-user-state-anonymous-token"
+      ],
+      "result": "Login required",
+      "finding": "HTTP 401 Unauthorized both without credentials and with the same fresh anonymous token that worked on schedule/class. No _t returned.",
+      "next": "Logged-in-user route; anonymous bearer is insufficient in these controlled tests.",
+      "publicAccess": "Verified requires authentication"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getShowData",
+      "labels": [
+        "api-showdata-no-auth",
+        "api-showdata-config-token"
+      ],
+      "result": "Login required",
+      "finding": "HTTP 401 Unauthorized both without credentials and with the working anonymous token. No _t returned.",
+      "next": "Defer as owner requested; this sample is not an anonymous whole-show bootstrap.",
+      "publicAccess": "Verified requires authentication"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData",
+      "labels": [
+        "legacy-showdata-no-auth",
+        "legacy-showdata-anonymous-session"
+      ],
+      "result": "Login required",
+      "finding": "HTTP 200 body was exactly DoLogin, both with no cookies and with a fresh anonymous Detail-page symfony session. No _t returned. Earlier browser data used an existing session and does not contradict this result.",
+      "next": "Not an anonymous fallback in these tests. Do not label the 200/DoLogin body useful data.",
+      "publicAccess": "Verified requires authentication"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/Index",
+      "labels": [
+        "legacy-signup-index-no-auth"
+      ],
+      "result": "Login required",
+      "finding": "HTTP 200 body was exactly DoLogin for real group 200028831 and personal team_id=0. No _t returned.",
+      "next": "Account/session-dependent signup page; source API /classsignup reads are separate.",
+      "publicAccess": "Verified requires authentication"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/associated-horses/get-horses",
+      "labels": [
+        "associated-horses-no-auth"
+      ],
+      "result": "Public read — no token",
+      "finding": "HTTP 200 without credentials returned [] and no _t. Empty account-associated list is not a token or whole-show horse inventory.",
+      "next": "No further anonymous-token lead demonstrated; preserve the empty result without inferring participant coverage.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus",
+      "labels": [
+        "live-status-no-auth"
+      ],
+      "result": "Public read — no token",
+      "finding": "HTTP 200 without credentials returned JSON scalar true (content-type text/html). No token returned.",
+      "next": "Status-only response; not schedule/class-detail or token health.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax",
+      "labels": [
+        "legacy-groups-no-auth"
+      ],
+      "result": "Public read — no token",
+      "finding": "HTTP 200 without credentials returned one current-show wrapper, show 200000078, with empty json_data. No _t returned.",
+      "next": "Public empty group observation; no anonymous-auth issuance observed.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+      "labels": [
+        "legacy-widget-no-auth"
+      ],
+      "result": "Public read — no token",
+      "finding": "Source POST with datetimestamp/customer_id/from_wp_api returned HTTP 200 without credentials: one show wrapper with empty live_data. No _t returned.",
+      "next": "Public live-ring observation, not an auth bootstrap.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapp.showgroundslive.com/version.json",
+      "labels": [
+        "version-no-auth"
+      ],
+      "result": "Public read — no token",
+      "finding": "HTTP 200 without credentials returned version and builtAt. No _t or session cookie.",
+      "next": "Keep clock/build observation separate from data authentication and health.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus",
+      "labels": [
+        "legacy-class-status-no-auth"
+      ],
+      "result": "Public read — no token",
+      "finding": "HTTP 200 without credentials returned is_live=false for actual class 200031333, with class_group_id=0. No _t returned.",
+      "next": "A non-live flag does not by itself establish trip availability.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/Detail",
+      "labels": [
+        "legacy-detail-page-no-auth"
+      ],
+      "result": "Public read — no token",
+      "finding": "HTTP 200 without credentials returned 41,064-byte ShowGroundsLive HTML and a fresh symfony cookie. Inline GetData requests the exact tested getLiveClassData URL for show 200000078/class 200031333. No token field.",
+      "next": "HTML/source metadata and an anonymous session are not a user login or guaranteed trip response.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData",
+      "labels": [
+        "legacy-class-detail-no-auth",
+        "legacy-class-detail-xhr-no-auth",
+        "legacy-class-detail-anonymous-session",
+        "legacy-class-detail-prior-browser-control"
+      ],
+      "result": "Public read — no token",
+      "finding": "Real class 200031333 returned HTTP 404 {}. Adding only X-Requested-With or only the fresh Detail-page cookie did not change it. Changing only cid to the earlier browser-verified 200031716 returned HTTP 200 with 21 rows, still without cookies/bearer. No _t returned. Response availability is class-dependent; the internal reason for the first class's 404 is unverified.",
+      "next": "Do not treat this route as a complete Fast class-detail replacement. Establish supported class/date/type coverage before relying on it.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/ExportToExcel/showid/{show_id}/date/{date}/excel_export/1",
+      "labels": [
+        "schedule-export-no-auth"
+      ],
+      "result": "Public read — no token",
+      "finding": "Actual source show/date yielded HTTP 200 application/vnd.ms-excel, 7,169 bytes, without cookies/bearer. No JSON token response. File contents were not parsed.",
+      "next": "Schedule export candidate only; no evidence that it issues an anonymous token.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/GetAssocaitedHorsesAndPeople",
+      "labels": [
+        "legacy-associated-no-auth"
+      ],
+      "result": "Unresolved error",
+      "finding": "Request aborted at its diagnostic 25-second deadline without an HTTP response. Actual TimeoutError recorded. This establishes neither authentication rejection nor public access.",
+      "next": "Cause unverified. No unchanged retry loop; keep separate from the API associated-horse [] response.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/IsLoggedIn",
+      "labels": [
+        "legacy-user-state-post-no-auth"
+      ],
+      "result": "Session check — no token",
+      "finding": "Missed lead: source POST from_wp_api=true returned HTTP 200 success=false and a symfony cookie without credentials. No _t.",
+      "next": "Checks a legacy login session; the new anonymous cookie is not a signed-in user.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/webservice/isLoggedIn",
+      "labels": [
+        "legacy-user-state-no-auth"
+      ],
+      "result": "Session check — no token",
+      "finding": "Missed lead: HTTP 302 to http://www.showgroundslive.com/sgl with cookie name sgl. Redirect was not followed; no JSON/token received at the inspected hop.",
+      "next": "Session check/redirect, not a confirmed anonymous issuer; final redirected content untested.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/AuthenticateUserViaJWT",
+      "labels": [
+        "legacy-jwt-bridge-anonymous",
+        "legacy-jwt-bridge-anonymous-bearer"
+      ],
+      "result": "Anonymous token rejected",
+      "finding": "Source contract uses an existing token and MD5(IphoneWebserviceApi + timestamp + SGL). With the working fresh anonymous token, actual body was success=false, message=Invalid Token; adding the same bearer header did not change it. No _t. Why this bridge rejects that token is not proven; account-login callers use it after a user access_token.",
+      "next": "Do not rely on this bridge to turn an anonymous token into a user session. No real-user token/login test performed.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/password-policy",
+      "labels": [
+        "password-policy-no-auth"
+      ],
+      "result": "Public read — no token",
+      "finding": "Missed lead: HTTP 200 without credentials returned min/max password-policy fields only, no _t.",
+      "next": "Password form configuration is not an auth-token issuer in this test.",
+      "publicAccess": "Verified public"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/login",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source POST requires username/password/company_id/remember_me, then stores response access_token and user/team data before legacy login. These are account credentials, not an anonymous no-input contract. Source/caller checked; no live account action invoked.",
+      "next": "Outside anonymous bootstrap needs unless the owner separately requests account-login/recovery work.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/flogin",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source POST reads flid/flogin URL values into username/password, stores user access_token, then invokes the legacy JWT bridge. This is a credential-bearing login link, not proven anonymous bootstrap. Source/caller checked; no live account action invoked.",
+      "next": "Outside anonymous bootstrap needs unless the owner separately requests account-login/recovery work.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/VerifyOTP",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source GET requires a real otp and session_token. It validates a verification session. Neither required input was supplied; no invented OTP/session was sent. Source/caller checked; no live account action invoked.",
+      "next": "Outside anonymous bootstrap needs unless the owner separately requests account-login/recovery work.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/verify-reset-token",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source GET takes a real reset-link key. The client refuses a missing key and consumes status/message to permit a password reset. No valid reset key was available; no invented reset token was sent. Source/caller checked; no live account action invoked.",
+      "next": "Outside anonymous bootstrap needs unless the owner separately requests account-login/recovery work.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/mobile-verification/clear-session-values",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source GET clears mobile-verification session values; its consumer reads company_name data. It is a state-changing verification step, not a source-backed no-input token issuer. Actual caller inspected; no mutation or real-user recovery action performed.",
+      "next": "Keep parked; this source contract does not establish anonymous bootstrap or token renewal.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/accept-by-token/{id}",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source POST accepts or declines a real user request/agreement/invitation identified by a URL token. It changes request/consent state, so it was not invoked. Actual caller inspected; no mutation or real-user recovery action performed.",
+      "next": "Keep parked; this source contract does not establish anonymous bootstrap or token renewal.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/decline-by-token/{id}",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source POST accepts or declines a real user request/agreement/invitation identified by a URL token. It changes request/consent state, so it was not invoked. Actual caller inspected; no mutation or real-user recovery action performed.",
+      "next": "Keep parked; this source contract does not establish anonymous bootstrap or token renewal.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/refreshACHBalance",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source POST refreshes a selected bank payment method's ACH balance (payment_method_id/company_id/team_id); the word refresh refers to bank balance, not an auth token. Actual caller inspected; no mutation or real-user recovery action performed.",
+      "next": "Keep parked; this source contract does not establish anonymous bootstrap or token renewal.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/token/{id}",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source GET loads an existing request/agreement/invitation using its URL token and handles Invalid or expired request. A real request token is required; no token was invented. Actual caller inspected; no mutation or real-user recovery action performed.",
+      "next": "Keep parked; this source contract does not establish anonymous bootstrap or token renewal.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/ClearSessionValues",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source GET clears mobile-verification session values; its consumer reads company_name data. It is a state-changing verification step, not a source-backed no-input token issuer. Actual caller inspected; no mutation or real-user recovery action performed.",
+      "next": "Keep parked; this source contract does not establish anonymous bootstrap or token renewal.",
+      "publicAccess": "Not verified"
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/RefreshACHBalance",
+      "labels": [],
+      "result": "Account/action contract only",
+      "finding": "Source POST refreshes a selected bank payment method's ACH balance (payment_method_id/company_id/team_id); the word refresh refers to bank balance, not an auth token. Actual caller inspected; no mutation or real-user recovery action performed.",
+      "next": "Keep parked; this source contract does not establish anonymous bootstrap or token renewal.",
+      "publicAccess": "Not verified"
+    }
+  ]
+}

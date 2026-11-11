@@ -1,0 +1,34 @@
+{
+  "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+  "at": "2026-11-11T18:31:37.905619Z",
+  "deployment": "efece2b1-f3d2-488a-97f8-a6dc0dbd9cc5",
+  "bindings": [
+    {
+      "name": "RUNNER_KEY",
+      "type": "secret_text"
+    },
+    {
+      "name": "RUNNER_ORIGIN",
+      "type": "plain_text",
+      "text": "https://wef-decoder-runner.ringstatus.com"
+    },
+    {
+      "name": "SGL_COOKIE",
+      "type": "secret_text"
+    },
+    {
+      "name": "SGL_PACER",
+      "type": "durable_object_namespace",
+      "namespace_id": "962c9a8b1a37423cbdeae0844fbeb2b9"
+    },
+    {
+      "name": "SGL_TOKEN",
+      "type": "secret_text"
+    },
+    {
+      "name": "WEF_SHOWS_AIRTABLE_TOKEN",
+      "type": "secret_text"
+    }
+  ],
+  "codeMatches": true
+}

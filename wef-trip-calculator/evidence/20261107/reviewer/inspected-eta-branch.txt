@@ -1,0 +1,21 @@
+84:   const preceding=schedule?schedules.filter(r=>r.fields.ring===schedule.fields.ring&&r.fields.kind==='class'&&r.fields.group!==schedule.fields.group&&Number.isFinite(r.fields['source-position'])&&r.fields['source-position']<schedule.fields['source-position']).sort((a,b)=>b.fields['source-position']-a.fields['source-position'])[0]:null;
+85:   let previousEnd=null;
+86:   if(preceding){
+87:    const pc=classes.find(r=>r.fields['class-key']===preceding.fields.class);
+88:    if(pc){const pi={...identity,group:Number(pc.fields.group?.split('|')[4]),class:pc.fields['class-id']};
+89:     const pp=input('class-status').map(r=>classAnswer(r,pi,at)).filter(Boolean).sort((a,b)=>instant(b.row.fields['evaluated-at'])-instant(a.row.fields['evaluated-at']));
+90:     previousEnd=pp[0]?.end||null;
+91:     if(!previousEnd&&pc.fields.status!=='Completed')reasons.push('preceding_class_end_missing');
+92:    }else reasons.push('preceding_class_identity_missing');
+93:   }
+94:   let start=cls?.start||null,estimated=null,basis='unavailable';
+95:   if(status==='Pending'&&c?.fields.status==='Completed')reasons.push('class_completed_with_pending_trip');
+96:   if(status==='Pending'&&ahead!==null&&cls&&schedule&&ringState&&!phaseUnknown&&!shared&&!reasons.some(r=>['class_completed_with_pending_trip','observation_missing_or_future','class_identity_missing_or_ambiguous','preceding_class_end_missing','preceding_class_identity_missing','live_trip_ambiguous'].includes(r))){
+97:    // Same arithmetic as legacy start + (pending rank - 1) * pace.
+98:    // Underway uses the saved observation as the remaining-work estimate anchor.
+99:    if(c.fields.status==='Underway'&&source==='live'&&ringState.current_class?.group_id===group&&ringState.current_class.classes?.some(x=>x.id===classId)){start=observed;basis='remaining_from_observation';}
+100:    else if(c.fields.status==='Underway'){start=null;reasons.push('ring_current_class_not_confirmed');}
+101:    else {start=max(start,previousEnd);basis='class_start_and_preceding_end';}
+102:    if(instant(start)!==null)estimated=add(start,ahead*PACE);
+103:   }
+104:   const provider=providerTime(f['estimated-go-time'],day);

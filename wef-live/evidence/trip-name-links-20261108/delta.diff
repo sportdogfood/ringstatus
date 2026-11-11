@@ -1,0 +1,24 @@
+diff --git "a/wef-live\\evidence\\trip-name-links-20261108\\baseline\\wef-live/linker.js" "b/wef-live\\evidence\\trip-name-links-20261108\\candidate\\wef-live/linker.js"
+index 42920f76..e280f784 100644
+--- "a/wef-live\\evidence\\trip-name-links-20261108\\baseline\\wef-live/linker.js"
++++ "b/wef-live\\evidence\\trip-name-links-20261108\\candidate\\wef-live/linker.js"
+@@ -7,6 +7,7 @@ const REFS=['w-shows','w-days','wef-data.schedules','w-horses','w-riders','w-tra
+ const empty=v=>v==null||(Array.isArray(v)&&v.length===0);
+ const num=v=>v!==null&&v!==undefined&&v!==''&&Number.isSafeInteger(Number(v))&&Number(v)>0?Number(v):null;
+ const key=(...v)=>v.join('|');
++const nameKey=v=>typeof v==='string'?v.trim().replace(/\s+/g,' ').toLowerCase():'';
+ function plan(data,scope,onIssue=()=>{}){
+  const rows=t=>(data[t]||[]).filter(r=>Number(r.fields['show-id'])===scope.show&&r.fields.date===scope.date);
+  const rings=rows('live-rings'),groups=rows('live-groups'),classes=rows('live-classes'),entries=rows('live-entries');
+@@ -61,8 +62,9 @@ function plan(data,scope,onIssue=()=>{}){
+   }
+   if(table==='live-trips'||table==='live-entries')fill('class',()=>{const r=classOf(table,row);return r?[r]:[];});
+   if(table==='live-trips'||table==='live-entries')for(const [field,idField]of [['w-horses','horse-id'],['w-riders','rider-id'],['w-trainers','trainer-id']]){
+-   const id=num(f[idField]);
+-   fill(field,()=>{if(!id)return[];const matches=(data[field]||[]).filter(r=>num(r.fields[idField])===id);return matches.length===1?matches:[];},idField+'='+(id||'missing'));
++   const id=num(f[idField]),nameField=idField.replace(/-id$/,'-name');
++   const byName=table==='live-trips'&&(f[idField]===null||f[idField]===undefined||f[idField]==='')&&nameKey(f[nameField]);
++   fill(field,()=>{const matches=id?(data[field]||[]).filter(r=>num(r.fields[idField])===id):byName?(data[field]||[]).filter(r=>nameKey(r.fields[nameField])===byName):[];return matches.length===1?matches:[];},byName?nameField+'='+f[nameField]:idField+'='+(id||'missing'));
+   }
+   if(table==='live-trips')fill('legacy-live-entry',()=>{
+    const cid=num(f['class-id']),tid=num(f['trip-id']);if(!cid||!tid)return[];

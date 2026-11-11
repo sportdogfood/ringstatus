@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "state": "Saved",
+  "show-key": "15|200000077",
+  "day": "2026-11-08",
+  "run-key": "collection-6c078066-7d5e-4017-a024-e87a94c1f6e5",
+  "counts": {
+    "saved": 1898,
+    "day-priorities": {
+      "2026-11-08": 0
+    },
+    "stage-seconds": {
+      "select-show-and-day": 0.478009,
+      "save-run-start": 6.617695,
+      "fetch-rings-groups-classes": 4.424806,
+      "prepare-rings-groups-classes": 0.00156,
+      "save-inventory-rings": 0.587742,
+      "save-inventory-groups": 3.501954,
+      "save-inventory-classes": 8.796103,
+      "save-schedules": 6.337512,
+      "save-schedule-priorities": 2.409464,
+      "fetch-and-prepare-entries-trips": 222.36744,
+      "save-class-details": 6.677843,
+      "save-entries": 40.084399,
+      "save-trips": 17.134275,
+      "save-results": 24.504771,
+      "save-run-summary": 0.25955
+    },
+    "days": [
+      {
+        "day": "2026-11-08",
+        "priority": 0,
+        "lane": "fast-collector",
+        "started": "2026-11-08T14:33:16.851077+00:00",
+        "completed": "2026-11-08T14:39:00.567999+00:00",
+        "state": "Saved",
+        "run-key": "collection-6c078066-7d5e-4017-a024-e87a94c1f6e5",
+        "counts": {
+          "saved": 1898,
+          "stage-seconds": {
+            "select-show-and-day": 0.000749,
+            "save-run-start": 6.617695,
+            "fetch-rings-groups-classes": 4.424806,
+            "prepare-rings-groups-classes": 0.00156,
+            "save-inventory-rings": 0.587742,
+            "save-inventory-groups": 3.501954,
+            "save-inventory-classes": 8.796103,
+            "save-schedules": 6.337512,
+            "save-schedule-priorities": 2.409464,
+            "fetch-and-prepare-entries-trips": 222.36744,
+            "save-class-details": 6.677843,
+            "save-entries": 40.084399,
+            "save-trips": 17.134275,
+            "save-results": 24.504771,
+            "save-run-summary": 0.25955
+          },
+          "total-seconds": 343.705907
+        },
+        "errors": 0
+      }
+    ],
+    "total-seconds": 344.217371
+  },
+  "item-errors": []
+}

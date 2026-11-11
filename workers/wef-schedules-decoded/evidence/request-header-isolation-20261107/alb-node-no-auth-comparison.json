@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-11-07T21:27:52.637Z",
+  "scope": "No Authorization or Cookie sent. SGL config endpoint, same headers other than ordinary authority; DNS destination pinned per node, TLS hostname and certificate validation retained.",
+  "results": [
+    {
+      "ip": "100.57.42.211",
+      "ordinaryAuthorityHeader": false,
+      "error": "Invalid IP address: undefined"
+    },
+    {
+      "ip": "100.57.42.211",
+      "ordinaryAuthorityHeader": true,
+      "error": "Invalid IP address: undefined"
+    },
+    {
+      "ip": "100.59.103.186",
+      "ordinaryAuthorityHeader": false,
+      "error": "Invalid IP address: undefined"
+    },
+    {
+      "ip": "100.59.103.186",
+      "ordinaryAuthorityHeader": true,
+      "error": "Invalid IP address: undefined"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "command": "C:\\Python311\\python.exe -B scripts/verify_review.py --receipt \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\reviewer\\review-receipt.json\"",
+  "cwd": "C:\\Users\\gombc\\.agents\\skills\\code-review",
+  "runtime": "3.11.3 (tags/v3.11.3:f3909b8, Apr  4 2023, 23:49:59) [MSC v.1934 64 bit (AMD64)]",
+  "started_at": "2026-11-09T00:34:31.702627+00:00",
+  "ended_at": "2026-11-09T00:34:31.832352+00:00",
+  "exit_code": 0,
+  "stdout": "{\"status\": \"PASS\", \"errors\": [], \"mechanical_only\": true, \"review_status\": \"COMPLETE\", \"candidate_status\": \"FAIL\", \"reviewer\": \"/root/trip_review\", \"command_count\": 1}\n",
+  "stderr": ""
+}

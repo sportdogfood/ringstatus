@@ -1,0 +1,106 @@
+--- baseline/airtable.js
++++ candidate/airtable.js
+@@ -19,6 +19,7 @@
+   ]);
+   async function call(base, table, method = "GET", body, query = "", limit = {}) {
+     if (!readable.get(base)?.has(table)) throw Error("Unapproved read target");
++    if(base===settings.BASE_ID&&table==="errs-log"&&method!=="GET")throw Error("errs-log writes disabled by owner");
+     if (
+       method !== "GET" &&
+       (base !== settings.BASE_ID ||
+--- baseline/cleanup.js
++++ candidate/cleanup.js
+@@ -23,11 +23,11 @@
+  const id=row.fields?.['run-id'];
+  return typeof id==='string'&&[...runs].some(run=>id===run||id.startsWith(run+'|'));
+ }
+-function quickRows(table,rows,total=rows.length){
+- if(!LOGS.includes(table)||total<1000)return[];
++function quickRows(table,rows,total=rows.length,draining=false){
++ if(!LOGS.includes(table)||total<=500||(!draining&&total<1000))return[];
+  const available=rows.filter(r=>completed(table,r)&&Number.isFinite(Date.parse(r.createdTime)))
+   .sort((a,b)=>Date.parse(a.createdTime)-Date.parse(b.createdTime)||a.id.localeCompare(b.id));
+- return available.length>=500?available.slice(0,500):[];
++ return available.slice(0,Math.min(500,total-500));
+ }
+ function write(file,value){const tmp=file+'.'+process.pid+'.tmp';fs.writeFileSync(tmp,JSON.stringify(value,null,2));fs.renameSync(tmp,file);}
+ async function canonical(api){
+@@ -85,8 +85,8 @@
+   run.day=localDay(run.started);
+   run.daily_clear_day=dailyClearDay(run.started);
+   run.daily_due=previous.daily_clear_day!==run.daily_clear_day;
+-  const lastQuick=Date.parse(previous.quick_checked_at||previous.completed);
+-  run.quick_due=!Number.isFinite(lastQuick)||Date.parse(run.started)-lastQuick>=3*60*60*1000;
++  // Catch the threshold on each existing normal invocation, never wait three hours.
++  run.quick_due=true;
+   // Reuse existing normal wakes; no independent timer or midnight clear.
+   if(!checkShow&&!run.daily_due&&!run.quick_due)return{...run,result:'Skipped',reason:'Cleanup not due',completed:clock()};
+   run.show=await canonical(api);
+@@ -108,21 +108,21 @@
+    for(const t of selected){const rows=await api.list(t);plans.push(plan(t,'new-show',rows.filter(r=>eligible(t,r,'new-show',run.show)&&!protect(t,r)),rows.length));}
+    await execute(plans);
+   }
+-  const quick=[];
++  const quick=[],draining=new Set(run.new_show?[]:(previous.draining_logs||[]));
+   for(const t of LOGS.filter(t=>!run.new_show&&(run.daily_due||run.quick_due)&&selected.includes(t))){const rows=await api.list(t);
+    // Threshold uses full table count; selection excludes active/current-invocation records.
+    const available=rows.filter(r=>completed(t,r)&&!protect(t,r));
+-   const targets=run.daily_due?available:quickRows(t,available,rows.length);
++   const targets=run.daily_due?available:quickRows(t,available,rows.length,draining.has(t));
+    if(targets.length||run.daily_due)quick.push(plan(t,run.daily_due?'daily-clear':'quick-cleanup',targets,rows.length));
++   if(!run.daily_due&&(rows.length>=1000||draining.has(t))&&rows.length-targets.length>500)draining.add(t);else draining.delete(t);
+   }
+   await execute(quick);
+-  write(stateFile,{show:run.show,day:run.day,quick_checked_at:(run.quick_due||run.new_show)?run.started:(previous.quick_checked_at||previous.completed),daily_clear_day:run.daily_due?run.daily_clear_day:previous.daily_clear_day,run_id:run.run_id,completed:clock()});
++  write(stateFile,{show:run.show,day:run.day,quick_checked_at:(run.quick_due||run.new_show)?run.started:(previous.quick_checked_at||previous.completed),daily_clear_day:run.daily_due?run.daily_clear_day:previous.daily_clear_day,draining_logs:[...draining],run_id:run.run_id,completed:clock()});
+   if(!run.actions.length){run.result='Skipped';run.reason='Log counts below trigger/target or no eligible records';}
+   run.completed=clock();receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());fs.unlinkSync(stop);
+  }catch(e){
+   run.result='Error';run.error=e.message;run.completed=clock();
+   if(activeAction){activeAction.result='Error';activeAction.error=e.message;activeAction.completed=run.completed;try{await publish(activeAction);}catch(log){run.logging_error=log.message;}}
+-  try{await api.upsert('errs-log','error-key',[{'error-key':run.run_id+'|cleanup','run-id':run.run_id,'occurred-at':run.completed,'show-id':run.show||null,message:'Cleanup: '+e.message}]);}catch(log){run.error_log_error=log.message;}
+   write(stop,{run_id:run.run_id,at:run.completed,error:e.message});receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());
+  }
+  return run;
+--- baseline/lanes.js
++++ candidate/lanes.js
+@@ -212,10 +212,8 @@
+   const result=!r.ok?'Failed':r.skipped?'Skipped':r.issues.length?'Partial':'Success';
+   const receipt=path.join(runtime,'lane-'+name+'-'+r.run_id+'.json');
+   const summary=JSON.stringify({lane:name,skipped:r.skipped,day_priority:r.day_priority,live_status:r.live_status,membership:r.membership,timings:Object.fromEntries(Object.entries(r.timings).filter(([k])=>!['requests','saves'].includes(k))),counts:r.counts,changed_records:r.changes.length,issues:r.issues.length,diffs_and_coverage:receipt});
+-  await log('run-logs','run-id',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':r.scope?.show||null,date:r.scope?.date||'',summary,errors:r.stage_errors.map(x=>x.message).join('\n'),'ring-count':r.counts['live-rings']||0,'group-count':r.counts['live-groups']||0,'class-count':r.counts['live-class-appearances']??r.counts['live-classes']??0,'entry-count':r.counts['live-entries']||0}]);
++  await log('run-logs','run-id',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':r.scope?.show||null,date:r.scope?.date||'',summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000),'ring-count':r.counts['live-rings']||0,'group-count':r.counts['live-groups']||0,'class-count':r.counts['live-class-appearances']??r.counts['live-classes']??0,'entry-count':r.counts['live-entries']||0}]);
+   await log('run-logs','run-id',r.changes.map((change,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':r.scope?.show||null,date:r.scope?.date||'',summary:JSON.stringify({lane:name,parent_run_id:r.run_id,...change})})));
+-  const errors=[...r.issues,...r.stage_errors,...r.logging_errors.map(message=>({message}))];
+-  await log('errs-log','error-key',errors.map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':r.scope?.show||null,date:r.scope?.date||'',message:name+': '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null})));
+   await log('heartbeat','heartbeat-key',[{'heartbeat-key':r.run_id,'run-id':r.run_id,started:r.started,completed:r.completed,'checked-at':r.completed,result,summary}]);
+   try{write(path.join(runtime,'lane-'+name+'-'+r.run_id+'.json'),r);write(path.join(runtime,'lane-'+name+'-last-run.json'),r);}catch{}
+  }
+--- baseline/linker.js
++++ candidate/linker.js
+@@ -98,8 +98,7 @@
+  const result=!r.ok?'Failed':r.issues.length?'Partial':'Success';
+  const summary=JSON.stringify({lane:'linker',counts:r.counts,changed_records:r.changes.length,issues:r.issues.length});
+  async function log(table,rows){for(let i=0;i<rows.length;i+=10){try{const batch=rows.slice(i,i+10);const saved=await api.call(settings.BASE_ID,table,'POST',{records:batch.map(fields=>({fields}))});if(saved.records?.length!==batch.length)throw Error('Incomplete linker log response');}catch(e){r.logging_errors.push(table+': '+e.message);}}}
+- await log('run-logs',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':scope.show,date:scope.date,summary,errors:r.stage_errors.map(x=>x.message).join('\n')},...r.changes.map((c,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':scope.show,date:scope.date,summary:JSON.stringify({lane:'linker',parent_run_id:r.run_id,...c})}))]);
+- await log('errs-log',[...r.issues,...r.stage_errors].map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':scope.show,date:scope.date,message:'linker: '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null})));
++ await log('run-logs',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':scope.show,date:scope.date,summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000)},...r.changes.map((c,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':scope.show,date:scope.date,summary:JSON.stringify({lane:'linker',parent_run_id:r.run_id,...c})}))]);
+  await log('heartbeat',[{'heartbeat-key':r.run_id,'run-id':r.run_id,started:r.started,completed:r.completed,'checked-at':r.completed,'show-id':scope.show,date:scope.date,result,summary}]);
+  try{fs.mkdirSync(runtime,{recursive:true});for(const name of ['linker-'+r.run_id+'.json','linker-last-run.json']){const file=path.join(runtime,name),tmp=file+'.tmp';fs.writeFileSync(tmp,JSON.stringify(r,null,2));fs.renameSync(tmp,file);}}catch(e){r.logging_errors.push('Local linker receipt: '+e.message);}
+  return r;
+--- baseline/live-cadence.js
++++ candidate/live-cadence.js
+@@ -57,12 +57,10 @@
+  }
+  if(!r.collect){
+   const summary=JSON.stringify({lane:'live-check',live_status:r.live_status??null,today:r.today,priority_0_date:r.scope?.date,reason:r.reason,next_check_at:r.next_check_at,collection:'Skipped'});
+-  const common={'run-id':r.run_id,started:r.started,completed:r.completed,result:'Skipped',summary,...(r.scope?{'show-id':r.scope.show,date:r.scope.date}:{})};
++  const common={'run-id':r.run_id,started:r.started,completed:r.completed,result:'Skipped',summary,errors:[...new Set(issues.map(e=>e.message))].join('\n').slice(0,60000),...(r.scope?{'show-id':r.scope.show,date:r.scope.date}:{})};
+   await log('heartbeat','heartbeat-key',[{...common,'heartbeat-key':r.run_id,'checked-at':r.completed}]);
+   await log('run-logs','run-id',[common]);
+  }
+- const errors=[...issues,...r.logging_errors.map(message=>({message:'Live check logging: '+message}))];
+- await log('errs-log','error-key',errors.map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,...(r.scope?{'show-id':r.scope.show,date:r.scope.date}:{}),message:e.message})));
+  try{write(path.join(runtime,'live-check-'+r.run_id+'.json'),r);write(path.join(runtime,'live-check-last-run.json'),r);}catch(e){r.logging_errors.push('Local check receipt: '+e.message);}
+  return r;
+ }

@@ -1,0 +1,30 @@
+[
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-timing.js",
+    "sha256": "5018658ea2d0656594ec5834bddba108082fb43177eb5ec6c353f17e53630a49"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-adapter.js",
+    "sha256": "e57bd6815221a20c73e8ab32442490f6b501a76b746369c524d2553b04885c0e"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\api.js",
+    "sha256": "3da76f0cbfc2efb8fd088e5240d78c724fa8ebb3ea97c16a75764ac93b450424"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\pace.js",
+    "sha256": "228221bd84fa57b36f8020d9563889729590a73645d69d3c8964c89b4c7f003e"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-live-source.js",
+    "sha256": "1458a2f2e319b3198e538b22d95fb083e668cb74c0de631f047d9638b8260606"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\ring-cleanup.js",
+    "sha256": "3401d8b35e9657bad0cf8ca4d2d9b12a359a53822af28283fe516f3b9b749df2"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\ring-cleanup-plan.js",
+    "sha256": "3b6ec6f5f55bcdba55a2d891be1b5d7b679257fb9b3c2696ebafbd945e1a19cd"
+  }
+]

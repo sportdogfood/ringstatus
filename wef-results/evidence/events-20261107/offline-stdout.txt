@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: gone-in arms listening without requiring existing nonzero results
+ok 1 - gone-in arms listening without requiring existing nonzero results
+  ---
+  duration_ms: 4.68
+  type: 'test'
+  ...
+# Subtest: first subsequent nonzero result change creates Y once with identities and source time
+ok 2 - first subsequent nonzero result change creates Y once with identities and source time
+  ---
+  duration_ms: 4.936
+  type: 'test'
+  ...
+# Subtest: old nonzero values at gone-in are only a baseline; receipt clocks never trigger Y
+ok 3 - old nonzero values at gone-in are only a baseline; receipt clocks never trigger Y
+  ---
+  duration_ms: 1.8902
+  type: 'test'
+  ...
+# Subtest: result alerts before gone-in cannot arm or create Y
+ok 4 - result alerts before gone-in cannot arm or create Y
+  ---
+  duration_ms: 0.7573
+  type: 'test'
+  ...
+# Subtest: X captures every nonzero field and result instance with one nonzero sufficient
+ok 5 - X captures every nonzero field and result instance with one nonzero sufficient
+  ---
+  duration_ms: 14.9718
+  type: 'test'
+  ...
+# Subtest: X waits for nonzero result arrival and later source alert, never a poll
+ok 6 - X waits for nonzero result arrival and later source alert, never a poll
+  ---
+  duration_ms: 2.5918
+  type: 'test'
+  ...
+# Subtest: polling never arms Y or creates X/Y even when both source flags qualify
+ok 7 - polling never arms Y or creates X/Y even when both source flags qualify
+  ---
+  duration_ms: 0.9242
+  type: 'test'
+  ...
+# Subtest: only exact dynamic priority-zero scopes qualify; null is not zero
+ok 8 - only exact dynamic priority-zero scopes qualify; null is not zero
+  ---
+  duration_ms: 0.871
+  type: 'test'
+  ...
+# Subtest: nonzero ignores blanks null booleans and nonnumeric text, retains numeric nonzero
+ok 9 - nonzero ignores blanks null booleans and nonnumeric text, retains numeric nonzero
+  ---
+  duration_ms: 0.8342
+  type: 'test'
+  ...
+# Subtest: changed verified X becomes Conflict and preserves original result values
+ok 10 - changed verified X becomes Conflict and preserves original result values
+  ---
+  duration_ms: 1.5075
+  type: 'test'
+  ...
+# Subtest: missing source trip and duplicate saved keys are visible conflicts
+ok 11 - missing source trip and duplicate saved keys are visible conflicts
+  ---
+  duration_ms: 2.175
+  type: 'test'
+  ...
+# Subtest: linker fills all five empty links, preserves nonempty links and repeats quietly
+ok 12 - linker fills all five empty links, preserves nonempty links and repeats quietly
+  ---
+  duration_ms: 1.3036
+  type: 'test'
+  ...
+# Subtest: missing reference links do not gate result creation; linker fills them when available
+ok 13 - missing reference links do not gate result creation; linker fills them when available
+  ---
+  duration_ms: 1.2113
+  type: 'test'
+  ...
+# Subtest: daily cleaner protects today/active/missing clocks and all source/reference tables
+ok 14 - daily cleaner protects today/active/missing clocks and all source/reference tables
+  ---
+  duration_ms: 13.0956
+  type: 'test'
+  ...
+# Subtest: cap only above 1000 deletes oldest 500 eligible; repeat at 501 deletes none
+ok 15 - cap only above 1000 deletes oldest 500 eligible; repeat at 501 deletes none
+  ---
+  duration_ms: 137.5329
+  type: 'test'
+  ...
+# Subtest: cap keeps exactly 1000 and protects current records even above threshold
+ok 16 - cap keeps exactly 1000 and protects current records even above threshold
+  ---
+  duration_ms: 120.2455
+  type: 'test'
+  ...
+# Subtest: new default cleanup removes only completed old-show records and retains expectations/conflicts/current
+ok 17 - new default cleanup removes only completed old-show records and retains expectations/conflicts/current
+  ---
+  duration_ms: 1.9433
+  type: 'test'
+  ...
+# Subtest: cleanup follows Eastern date across DST and preserves ambiguous default shows
+ok 18 - cleanup follows Eastern date across DST and preserves ambiguous default shows
+  ---
+  duration_ms: 1.8075
+  type: 'test'
+  ...
+# Subtest: unknown cleanup delete outcome stops without retry and records error without a fake success
+ok 19 - unknown cleanup delete outcome stops without retry and records error without a fake success
+  ---
+  duration_ms: 2.3739
+  type: 'test'
+  ...
+# Subtest: runner wrapper logs actual failure and leaves source tables untouched
+ok 20 - runner wrapper logs actual failure and leaves source tables untouched
+  ---
+  duration_ms: 0.6192
+  type: 'test'
+  ...
+# Subtest: wrong base rejects before any writes
+ok 21 - wrong base rejects before any writes
+  ---
+  duration_ms: 0.3495
+  type: 'test'
+  ...
+# Subtest: native packaging uses current schemas, exact schedules, nine inactive candidates and no external calls
+ok 22 - native packaging uses current schemas, exact schedules, nine inactive candidates and no external calls
+  ---
+  duration_ms: 8.7031
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 498.2741

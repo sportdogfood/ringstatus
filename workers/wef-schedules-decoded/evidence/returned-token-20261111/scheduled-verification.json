@@ -1,0 +1,173 @@
+{
+  "result": "FAIL",
+  "returnedTokenPreview": "PASS",
+  "deployment": "PASS",
+  "normalClassSave": "Not verified; class request failed before detail save",
+  "at": "2026-11-11T18:40:53.005Z",
+  "cloudflare": [
+    {
+      "timestamp": 1794422271195,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422270133,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422269068,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422268006,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422266946,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422263401,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422262336,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422261265,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422260202,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422259142,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Source fetch or protected response decoding failed",
+        "stage": "decode",
+        "error": "Error: Empty source payload",
+        "upstreamStatus": 200
+      }
+    },
+    {
+      "timestamp": 1794422259078,
+      "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+      "entrypoint": "SglPacer",
+      "requestId": "292f5fd41523a4bb228499acffb3b9af",
+      "url": "https://wef-schedules-decoded.gombcg.workers.dev/classes/200031471?customer_id=15&show_id=200000078",
+      "source": {
+        "level": "error",
+        "message": "Using direct source fallback",
+        "path": "/classes/200031576",
+        "reason": "runner-empty-or-invalid"
+      }
+    }
+  ],
+  "airtable": [
+    {
+      "id": "recc0ebGwU1BoZTD3",
+      "key": "15|200000078|2026-11-15|6|200031471",
+      "fullClass": false
+    }
+  ],
+  "deploymentAt": "2026-11-11T18:31:37.905619Z",
+  "previewRequest": "/classes/200031333?show_id=200000078&customer_id=15&cgid=-1",
+  "failedNormalRequest": "/classes/200031471?customer_id=15&show_id=200000078",
+  "scope": "No further code edits or source calls after the failed normal verification"
+}

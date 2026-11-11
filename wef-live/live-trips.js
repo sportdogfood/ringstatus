@@ -40,4 +40,24 @@ function project(decoded,live,s,c,at,onIssue=()=>{}){
  }catch(e){complete=false;onIssue(e.message,{class_id:cid,trip_id:model.number(raw?.trip_id)});}}
  return{rows,complete};
 }
-module.exports={project,RESULTS};
+// Reuse normalized rows from the one live-detail request; no decoded request.
+function fromLive(entries,s,c,prior,at,onIssue=()=>{}){
+ const rows=[],seen=new Set();let complete=true;
+ for(const entry of entries){try{
+  const tid=entry['trip-id'],cid=c['class-id'];
+  const matches=prior.filter(r=>Number(r['show-id'])===s.show&&r.date===s.date&&Number(r['class-id'])===cid&&Number(r['trip-id'])===tid);
+  if(matches.length>1){complete=false;onIssue('Ambiguous saved live trip '+tid,{class_id:cid,trip_id:tid});continue;}
+  const old=matches[0],ring=model.number(c._ring?.split('|').at(-1));
+  if(seen.has(tid))throw Error('Duplicate live trip '+tid);seen.add(tid);
+  const row={'trip-key':old?.['trip-key']||model.key(s.customer,s.show,s.date,ring??'',cid,'',tid),'show-id':s.show,'customer-id':s.customer,date:s.date,'class-id':cid,'class-key':c['class-key'],'trip-id':tid,'last-seen':at,'record-status':'Active'};
+  if(ring!==null)row['ring-id']=ring;
+  for(const field of ['entry-number','horse-name','rider-name','trainer-name','order-of-go','actual-order','scratch','gone','position'])if(supplied(entry[field]))row[field]=entry[field];
+  const previousSource=old?.['source-json']?JSON.parse(old['source-json']):{};
+  row['source-json']=JSON.stringify({...previousSource,...JSON.parse(entry['source-json'])});
+  row['source-updated-at']=entry['source-updated-at'];
+  if(supplied(entry.position))row['results-json']=JSON.stringify({...JSON.parse(old?.['results-json']||'{}'),position:String(entry.position)});
+  rows.push(row);
+ }catch(e){complete=false;onIssue(e.message,{class_id:c['class-id'],trip_id:entry['trip-id']});}}
+ return{rows,complete};
+}
+module.exports={project,fromLive,RESULTS};

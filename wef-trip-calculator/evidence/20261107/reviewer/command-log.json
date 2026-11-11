@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/trip_review",
+  "commands": [
+    {
+      "id": "independent-cleanup-1",
+      "command": "node wef-trip-calculator/evidence/20261107/reviewer/cleanup-only-checks.js",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T02:53:30.968095+00:00",
+      "ended_at": "2026-11-08T02:53:31.104550+00:00",
+      "exit_code": 0,
+      "stdout": "PASS daily transition is Eastern19:00, winter and summer\nPASS three-hour check independent of completed daily event\nPASS threshold999 skips, threshold1000 selects oldest500\nPASS daily clears all eligible completed logs instead of500\nPASS current active, protected runs, pending and unchecked selections survive\nPASS synced and control tables never selected\nPASS new show retires only approved unreferenced old-show snapshots\nPASS same-day and future snapshots remain protected on new show\nPASS unresolved errors survive while explicitly resolved errors are eligible\nPASS delete requires intent and separate absence readback\nPASS changed-target readback prevents deletion\nPASS uncertain delete leaves intent unfinished\nPASS base isolation\n{\"checks\":13,\"scope\":\"Independent offline cleanup-only; fake transport; no calculator execution or production writes\"}\n",
+      "stderr": ""
+    }
+  ]
+}

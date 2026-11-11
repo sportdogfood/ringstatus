@@ -1,0 +1,49 @@
+{
+  "verified_at": "2026-11-08T02:16:28.404639+00:00",
+  "result": "PASS",
+  "installed": "26JS verified;25unchanged;exact proven entryrestored;notifierdeleted",
+  "independent_review": "PASS4;prior24cleanupchecks reusedbyexacthash",
+  "records_alerts": "REMOVED",
+  "records_verification": "OWNER-CANCELLED,not verified",
+  "task_unchanged": true,
+  "normal": {
+    "run_id": "e626d1e6-9b10-40f9-b7ee-d645a967e4a7",
+    "started": "2026-11-08T02:15:04.094Z",
+    "live_status": true,
+    "reason": "priority-date-mismatch",
+    "stage_errors": [],
+    "logging_errors": [],
+    "task_exit": 0
+  },
+  "cleanup_repeat": {
+    "run_id": "f84f1ca6-20ad-4560-b72e-6278f5aae453",
+    "result": "Skipped",
+    "daily_due": false,
+    "quick_due": false,
+    "actions": 0
+  },
+  "old_alert_receipts_unchanged": [
+    {
+      "file": "records-alert-24ac8784-bfcc-46b6-992f-f700af949f51.json",
+      "mtime": "2026-11-08T01:06:03.958999+00:00"
+    },
+    {
+      "file": "records-alert-65a538cc-d259-4571-aa21-2079db3205af.json",
+      "mtime": "2026-11-08T01:00:11.289582+00:00"
+    },
+    {
+      "file": "records-alert-connection-current-cli.json",
+      "mtime": "2026-11-08T01:06:03.959999+00:00"
+    },
+    {
+      "file": "records-alert-connection.json",
+      "mtime": "2026-11-08T01:00:11.290508+00:00"
+    }
+  ],
+  "source_collection_unchanged": true,
+  "cleanup_rules": "daily19:00Eastern completedlogs;3hour1000/500;newshowcheckedownedrecords;active/currentprotected",
+  "manual_runs": false,
+  "record_repairs": false,
+  "new_schedule": false,
+  "limits": "No new canonical show or due3hthreshold event manufactured. Existing current quiet status rule selectedtomorrow;source detailfeedsawaiteligibleday0 as before."
+}

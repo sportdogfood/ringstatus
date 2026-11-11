@@ -1,0 +1,75 @@
+diff --git "a/wef-live\\evidence\\live-response-trips-20261108\\baseline\\wef-live/lanes.js" "b/wef-live\\evidence\\live-response-trips-20261108\\candidate\\wef-live/lanes.js"
+index 35ab0729..142e30f7 100644
+--- "a/wef-live\\evidence\\live-response-trips-20261108\\baseline\\wef-live/lanes.js"
++++ "b/wef-live\\evidence\\live-response-trips-20261108\\candidate\\wef-live/lanes.js"
+@@ -175,7 +175,7 @@ async function lane(name,{
+       successfulDetails++;
+       await evidence('class-'+c['class-id'],{detail:payload});
+       // Validate class scope independently, then isolate each malformed/unresolved trip.
+-      const empty=model.classDetail({...payload,rows:[],recs:0},null,r.scope,c,live.received),entries=[];
++      const empty=model.classDetail({...payload,rows:[],recs:0},null,r.scope,c,live.received),entries=[];let tripsComplete=true;
+       if(!Array.isArray(payload.rows)||Number(payload.recs)!==payload.rows.length){issue('Incomplete class detail',{class_id:c['class-id']});continue;}
+       for(const row of payload.rows){try{
+        const observed=model.classDetail({...payload,rows:[row],recs:1},null,r.scope,c,live.received).entries[0];
+@@ -184,11 +184,11 @@ async function lane(name,{
+        for(const field of ['horse-id','rider-id','trainer-id'])if(observed[field]===null)delete observed[field];
+        if(!observed['trainer-name'])delete observed['trainer-name'];
+        entries.push(observed);
+-      }catch(e){if(e.code!=='LIVE_IDENTITY_SNAPSHOT_MISMATCH')issue(e.message,{class_id:c['class-id'],trip_id:e.trip_id});}}
++      }catch(e){tripsComplete=false;if(e.code!=='LIVE_IDENTITY_SNAPSHOT_MISMATCH')issue(e.message,{class_id:c['class-id'],trip_id:e.trip_id});}}
+       for(const [field,source]of [['gone','gone_trips'],['jo-gone','jo_gone_trips'],['r2-gone','r2_gone_trips']])if(typeof payload[source]!=='string')delete empty.fields[field];
+       if(payload.curr===undefined||payload.curr===null)delete empty.fields['current-trip-id'];
+       empty.fields['source-json']=JSON.stringify(Object.fromEntries(Object.entries(payload).filter(([k])=>k!=='rows')));
+-      results.push({c:{...c,...empty.fields,total:payload.rows.length,'last-seen':live.received},entries,received:live.received});
++      results.push({c:{...c,...empty.fields,total:payload.rows.length,'last-seen':live.received},entries,received:live.received,tripsComplete});
+      }catch(e){issue(e.message,{class_id:c['class-id']});}
+     }
+    }));
+@@ -202,7 +202,16 @@ async function lane(name,{
+     entries.push(...result.entries.map(e=>({...clean(e),class:[id]})));
+    }
+    await save('live-entries','live-entry-key',entries,k=>entries.find(e=>e['live-entry-key']===k)['last-seen']);
+-   // Existing live-trips, identities, membership states and links remain untouched while paused.
++   // The same response also supplies day-0 trips. Decoded acquisition stays paused.
++   const priorTrips=scoped(await db.list('live-trips')).map(x=>x.fields),tripRows=[],tripObservedAt=new Map();
++   for(const result of results){
++    const projected=require('./live-trips').fromLive(result.entries,r.scope,result.c,priorTrips,result.received,issue);
++    const previous=priorTrips.filter(x=>Number(x['class-id'])===result.c['class-id']);
++    const states=require('./membership').reconcile(previous.map(x=>({...x,key:x['trip-key']})),projected.rows.map(x=>({...x,key:x['trip-key']})),{complete:result.tripsComplete&&projected.complete,scope:r.scope});
++    const observed=new Map(projected.rows.map(x=>[x['trip-key'],x]));
++    for(const state of states){tripRows.push(observed.get(state.key)||{'trip-key':state.key,'record-status':state['record-status']});tripObservedAt.set(state.key,result.received);}
++   }
++   await save('live-trips','trip-key',tripRows,k=>tripObservedAt.get(k));
+ 
+   }
+  }catch(e){await stageFailure('collection/save',e);}
+diff --git "a/wef-live\\evidence\\live-response-trips-20261108\\baseline\\wef-live/live-trips.js" "b/wef-live\\evidence\\live-response-trips-20261108\\candidate\\wef-live/live-trips.js"
+index 34b6c5fb..8c09a49a 100644
+--- "a/wef-live\\evidence\\live-response-trips-20261108\\baseline\\wef-live/live-trips.js"
++++ "b/wef-live\\evidence\\live-response-trips-20261108\\candidate\\wef-live/live-trips.js"
+@@ -40,4 +40,24 @@ function project(decoded,live,s,c,at,onIssue=()=>{}){
+  }catch(e){complete=false;onIssue(e.message,{class_id:cid,trip_id:model.number(raw?.trip_id)});}}
+  return{rows,complete};
+ }
+-module.exports={project,RESULTS};
++// Reuse normalized rows from the one live-detail request; no decoded request.
++function fromLive(entries,s,c,prior,at,onIssue=()=>{}){
++ const rows=[],seen=new Set();let complete=true;
++ for(const entry of entries){try{
++  const tid=entry['trip-id'],cid=c['class-id'];
++  const matches=prior.filter(r=>Number(r['show-id'])===s.show&&r.date===s.date&&Number(r['class-id'])===cid&&Number(r['trip-id'])===tid);
++  if(matches.length>1){complete=false;onIssue('Ambiguous saved live trip '+tid,{class_id:cid,trip_id:tid});continue;}
++  const old=matches[0],ring=model.number(c._ring?.split('|').at(-1));
++  if(seen.has(tid))throw Error('Duplicate live trip '+tid);seen.add(tid);
++  const row={'trip-key':old?.['trip-key']||model.key(s.customer,s.show,s.date,ring??'',cid,'',tid),'show-id':s.show,'customer-id':s.customer,date:s.date,'class-id':cid,'class-key':c['class-key'],'trip-id':tid,'last-seen':at,'record-status':'Active'};
++  if(ring!==null)row['ring-id']=ring;
++  for(const field of ['entry-number','horse-name','rider-name','trainer-name','order-of-go','actual-order','scratch','gone','position'])if(supplied(entry[field]))row[field]=entry[field];
++  const previousSource=old?.['source-json']?JSON.parse(old['source-json']):{};
++  row['source-json']=JSON.stringify({...previousSource,...JSON.parse(entry['source-json'])});
++  row['source-updated-at']=entry['source-updated-at'];
++  if(supplied(entry.position))row['results-json']=JSON.stringify({...JSON.parse(old?.['results-json']||'{}'),position:String(entry.position)});
++  rows.push(row);
++ }catch(e){complete=false;onIssue(e.message,{class_id:c['class-id'],trip_id:entry['trip-id']});}}
++ return{rows,complete};
++}
++module.exports={project,fromLive,RESULTS};

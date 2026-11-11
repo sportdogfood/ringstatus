@@ -36,7 +36,7 @@ def run(schema_file):
         show=owner['fields']['show-key'];sid=str(owner['fields']['show_id'])
         source_days=read('w-days',{'show-day-key','show','date','day-priority'})
         days={r['fields']['date'][:10]:r for r in source_days if r['fields'].get('show')==show and r['fields'].get('show-day-key')==show+'|'+str(r['fields'].get('date',''))[:10]
-              and type(r['fields'].get('day-priority')) in (int,float) and r['fields']['day-priority'] in (0,1,2,3)}
+              and type(r['fields'].get('day-priority')) in (int,float) and r['fields']['day-priority'] in (0,1,2,3,4)}
         data={'w-shows':keyed('w-shows',shows),
               'w-days':keyed('w-days',source_days)}
         for table in ('rings','groups','classes','schedules','trips','results'):
@@ -161,7 +161,7 @@ def run(schema_file):
                         if field!='show' and isinstance(value,dict) and '$links' in value:edge(table,key,field,value['$links'])
         for mapped in facts:
             day=mapped['trips'][0]['class']['$links'][0][1].split('|')[2]
-            for table in ('entries','riders','trainers','owners','results'):
+            for table in ('entries','horses','trips','riders','trainers','owners','results'):
                 for row in mapped[table]:parents(table,row[primary(table)],day)
         for table,target in [('horses','w-horses'),('riders','w-riders'),('trainers','w-trainers')]:
             for key in entity_keys[table]:edge(table,key,target,[(target,key)])

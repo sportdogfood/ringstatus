@@ -1,12 +1,23 @@
 # wef-season — retained entities and horse associations
 
+## Verified operation — November 7, 2026
+
+The normal 8:51 a.m. Eastern run completed at 8:55 a.m.; all four bases succeeded. Rings processed 26 records and logged/skipped six conflicting ring IDs while continuing; no new stop was created. Horses reported 19 association conflicts, which were withheld. Trainers had log-delivery timeout/budget errors; its business records completed successfully. These limitations were disclosed, not counted as error-free operation.
+
+The read-only native comparison following that run preserved all baseline keys, native IDs, history, show/day/person links and nicknames, with zero duplicate keys/links: horses 1,241→1,243; riders 779→782; trainers 329→329; rings 88→88; helpers 14→14. Horse 200001614 retained show15|200000077, November6/7/8, rider1000002903 and trainer39138. This is the dated comparison performed in this chat, not a new evening native audit; raw after-inventories were not written during that read-only request.
+
+Latest scheduled receipt inspected for this documentation update: November7 7:51p.m.Eastern, completed7:53p.m. All four bases Succeeded. Rings processed26 and logged/skipped the same6identity conflicts. Horse association conflicts:29; their current detailed breakdown was not re-investigated in this documentation update. No unmatched local memberships or person-library keys were reported. Latest per-attempt err-logs showed only the6Ringrecord errors; no logging/process errors on the other3bases. Earlier Trainers log-delivery errors remain dated evidence.
+
+Season remains owner-locked and hourly. No product, schema, Airtable-record or task changes, source requests or manual collector runs were made for this README update. [Saved latest scheduled receipt](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/readme-refresh-20261107/latest-scheduled-result.json>). The deployed release and57-test independent review below remain unchanged.
+
+
 ## Current release — November 7, 2026
 
 Deployed at 8:02 a.m. Eastern. Season reads current Data w-shows/w-days and their existing class links. Horse assignments use supported trips without parent-entry comparisons. Conflicting source identities are retained unchanged, logged in existing err-logs and skipped; valid records continue. Rejected rings do not reach helpers; skipped horses do not reach secondary association/library writes. Existing healthy batches remain the normal path. Known rejected creates release only their newly written reservation; pre-existing uncertain reservations are preserved for reconciliation. Unknown writes are never blindly replayed. Source/read outages are logged as Deferred; no business-error persistent stop is created. No new gate, schema, task, Data change or manual run.
 
 57 writer and independent checks, JavaScript syntax, and the real-store uncertain-reservation regression passed. Only season.py, horse_associations.py and entry.js changed. The original Rings stop is preserved in outputs/season-record-errors-20261107/rings-stop-before.json and was released under the repair approval. Historical records/conflicts remain retained.
 
-**Hourly acceptance is pending the next normal 8:51 a.m. Eastern run on November 7.** Deployment/tests do not establish recovery. Next verification: all four outcomes; Rings record-specific skipped errors without a renewed stop; corrected current show/day memberships and supported horse/person links; no lost baseline keys, native IDs, histories or nicknames. Baselines are before-{horses,riders,trainers,rings}.json and before-rings-helper.json in the release packet. No new observer or timer is configured.
+**Hourly recovery verified in the November7 8:51a.m.Eastern run; see the current verification above.** The following verification checklist describes the completed check: Deployment/tests do not establish recovery. Next verification: all four outcomes; Rings record-specific skipped errors without a renewed stop; corrected current show/day memberships and supported horse/person links; no lost baseline keys, native IDs, histories or nicknames. Baselines are before-{horses,riders,trainers,rings}.json and before-rings-helper.json in the release packet. No new observer or timer is configured.
 
 [Deployment](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/season-record-errors-20261107/deployment.json>) · [Final independent review](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/season-record-errors-20261107/review-reservation-final/independent-review.md>). Older dated snapshots below remain historical where they differ.
 
@@ -15,7 +26,7 @@ Deployed at 8:02 a.m. Eastern. Season reads current Data w-shows/w-days and thei
 
 **LOCKED:** Season only adds/upserts/deduplicates four entities, maintains supported trip-based person/show/day links while preserving keys/history, and runs/reports through the existing hourly task. Further implementation changes require explicit owner approval. Normal hourly operation and already-approved read-only verification continue. [Locked scope and deployed hashes](<C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-season/LOCK.md>).
 
-The trip-only release is deployed and reviewed; the next normal hourly acceptance remains pending at 3:51 p.m. Eastern November 4. This lock adds no runtime gate or stop.
+The trip-only release is deployed and reviewed; its dated pending acceptance has been superseded by the verified November7 result above. This lock adds no runtime gate or stop.
 
 
 ## Trip-only assignments — November 4, 2026
@@ -25,8 +36,8 @@ At 3:16 p.m. Eastern the reviewed one-line removal was deployed: horse associati
 Hourly acceptance remains pending the next normal3:51p.m.Eastern run; deployment is not scheduled verification. Evidence: outputs/trip-only-associations-20261103/deployment.json and review-final/. This current update supersedes older statements that entry-based assignment checks remain deployed.
 
 
-**README version: 1.2.0**  
-**Updated: November 7, 2026, America/New_York**
+**README version: 1.2.1**  
+**Updated: November 7, 2026, 7:57 PM America/New_York**
 
 ## Scope and ownership
 

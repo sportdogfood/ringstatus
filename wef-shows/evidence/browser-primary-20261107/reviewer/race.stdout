@@ -1,0 +1,1 @@
+CONFIRMED: capture rejected and closed before valid schedule response arriving 20ms after matching URL; 200ms budget unused.

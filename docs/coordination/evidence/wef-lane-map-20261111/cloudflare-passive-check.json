@@ -1,0 +1,22 @@
+{
+  "proxy": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"checkedAt\": \"2026-11-11T17:27:35.375Z\",\n  \"scriptReadable\": true,\n  \"scriptChars\": 39809,\n  \"features\": {\n    \"classHealth\": false,\n    \"windowsProfile\": true,\n    \"androidProfile\": true,\n    \"returnedTokenRejected\": true,\n    \"publicLiveRoutes\": true,\n    \"classes\": true,\n    \"entries\": true,\n    \"classsignup\": false,\n    \"getShowData\": false,\n    \"resultsRoute\": false,\n    \"showsRoute\": false\n  },\n  \"deployment\": {\n    \"deployments\": [\n      {\n        \"id\": \"54bff4c8-d23f-42ef-9b5b-245b629aa19a\",\n        \"source\": \"wrangler\",\n        \"strategy\": \"percentage\",\n        \"author_email\": \"gombcg@gmail.com\",\n        \"annotations\": {\n          \"workers/triggered_by\": \"deployment\"\n        },\n        \"versions\": [\n          {\n            \"version_id\": \"1c176106-d141-487c-a762-fd3ea765f2a6\",\n            \"percentage\": 100\n          }\n        ],\n        \"created_on\": \"2026-11-10T22:40:10.258941Z\"\n      }\n    ]\n  }\n}"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  },
+  "routes": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"protectedRouteValidation\": \"et) text = text.split(secret).join(\\\"[redacted]\\\");\\n  return text.replace(/Bearer\\\\s+[^\\\\s\\\"'<>]+/gi, \\\"Bearer [redacted]\\\").slice(0, 2e3);\\n}\\n__name(diagnostic, \\\"diagnostic\\\");\\nvar worker_default = {\\n  async fetch(request, env) {\\n    const url = new URL(request.url), pathname = url.pathname.replace(/\\\\/+$/, \\\"\\\") || \\\"/\\\";\\n    if (request.method !== \\\"GET\\\") return reply({ message: \\\"GET only\\\" }, 405);\\n    if (pathname === \\\"/health\\\") return reply({ ok: true, worker: \\\"wef-schedules-decoded\\\" });\\n    const isRingDetail = /^\\\\/ring\\\\/[1-9]\\\\d*$/.test(pathname);\\n    const isPeople = /^\\\\/people\\\\/\\\\d+$/.test(pathname);\\n    const isClasses = /^\\\\/classes(?:\\\\/\\\\d+)?$/.test(pathname);\\n    const isEntries = pathname === \\\"/entries\\\";\\n    if (![\\\"/ring\\\", \\\"/schedule\\\"].includes(pathname) && !isRingDetail && !isPeople && !isClasses && !isEntries)\\n      return reply({ message: \\\"Route not found\\\" }, 404);\\n    const allowed = isRingDetail ? [\\\"show_date\\\", \\\"show_id\\\", \\\"customer_id\\\"] : pathname === \\\"/ring\\\" ? [\\\"customer_id\\\"] : pathname === \\\"/schedule\\\" ? [\\\"date\\\", \",\n  \"publicRoutes\": null,\n  \"healthOnlySchedule\": true\n}"
+      }
+    ],
+    "structuredContent": null,
+    "isError": false
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/class_status_review",
+  "commands": [
+    {
+      "id": "predelete-archive-order",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\predelete-order-check.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T20:20:15.042953+00:00",
+      "ended_at": "2026-11-08T20:20:15.159964+00:00",
+      "exit_code": 1,
+      "stdout": "{\"case\":\"record changes to future scope during archive/catalog readback\",\"protected_record_survives\":false,\"error\":null}\n",
+      "stderr": "AssertionError [ERR_ASSERTION]: Future record changed during archive work was deleted\n    at C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\predelete-order-check.js:13:290 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n"
+    }
+  ]
+}

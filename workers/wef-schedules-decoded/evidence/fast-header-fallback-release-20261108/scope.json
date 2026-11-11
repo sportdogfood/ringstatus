@@ -1,0 +1,15 @@
+{
+  "approved": "Apply existing header fallback and renewal sequence to actual schedule and class requests; existing queue pause, URLs, connection, task schedules and agent code unchanged. Preview, deploy, normal scheduled proof; no manual collectors, new infrastructure or other additions.",
+  "at": "2026-11-08T14:29:30.539320+00:00",
+  "files": {
+    "workers/wef-schedules-decoded/shared-worker.mjs": "6daa86ae2428d8681b1bdddbfcbfedf6744caaa95995d7f90017b343d71a05a9",
+    "workers/wef-schedules-decoded/tests/fallback.test.mjs": "38c0f3a7add83a190b2d13e4857be0d12a0b0203348c56b838ecae92e91016f9",
+    "workers/wef-schedules-decoded/sgl-pacing.mjs": "479f56d56f481a16104dc64faa33945be9175ddca0f971924b9151889787f138",
+    "workers/wef-schedules-decoded/fallback.mjs": "c5433cb80a29375188095658b034c89f68ef714703ebf3cc21b17013256e7bc9",
+    "workers/wef-schedules-decoded/worker.js": "8bc87128b4e0210302d4795c2186673b954fdd63a74cc60f5a0848fa17d390f3",
+    "wef-data/source-reader.js": "d1c32301cac45f8732f2402dc419d129d2eed2331b54bcd491afdb58125799b1",
+    "wef-data/fast_collector.py": "70ca4b29d3f2aeff79b0dac9c8998e0d0b981ff324111ae600c65f0b0178f054",
+    "workers/wef-schedules-decoded/show-time-health.mjs": "0596a90d0c6b4b57efdf664d9741b41a76e5880133461e36410e3b1e7d58516e",
+    "workers/wef-schedules-decoded/wrangler.jsonc": "5ab86d303fa878081bda5082e2696bb1e0043325f5fd472b82102bf0f928c12d"
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\accepted\\class-snapshot.js",
+    "sha256": "b8e7ffc509b8a9796e168507ef4338e21b5114391129ab1dd514feb7299d2000",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-snapshot.js"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\accepted\\class-cleanup.js",
+    "sha256": "270549c01c862ee918da2ab5ea5eeabe9c1d2274e3d5d627559b87942a3b72dd",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-cleanup.js"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\accepted\\data-runner.js",
+    "sha256": "f31e9eddffd8512dcb3c0deccca1eb76b029cdabd14718d5ef12db5f7c8640f0",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\candidate\\data-runner.js"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\accepted\\entry-data.js",
+    "sha256": "106f8131132209e9cf5735b315425e38c029e604670856c270db85a6a7f66d40",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\candidate\\entry-data.js"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\accepted\\schema-changes.json",
+    "sha256": "66c9570263733e30b05eca592a116c0ed0363ad76d76286cb9c2d48357dec451",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\schema-changes.json"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\accepted\\test.js",
+    "sha256": "d22c138c0b081119ff0cd9be491ed8c7059dd6cad0c1c43fef690548366d38ac",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\test.js"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\accepted\\saved-observations.json",
+    "sha256": "62d7582339e534478ab9d94cbf5abbb4b871ba66b0a889ccd62915bd4b656038",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\saved-observations.json"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\accepted\\CLASS-SNAPSHOT.md",
+    "sha256": "45b8d77a94f6e91df7bd6cf8581ef909646731190ed12b6fd76127a58e3f88ed",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\CLASS-SNAPSHOT.md"
+  }
+]

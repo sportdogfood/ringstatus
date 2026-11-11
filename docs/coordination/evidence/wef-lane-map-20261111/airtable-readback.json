@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-11T17:33:31.754Z",
+  "endpointRecords": 19,
+  "differences": 0,
+  "task": "OPP-017",
+  "taskStatus": {
+    "id": "selo6Ado12IJtacko",
+    "name": "Open",
+    "color": "grayLight2"
+  },
+  "sourceTests": 0,
+  "productionChanges": 0,
+  "collectors": 0
+}

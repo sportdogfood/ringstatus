@@ -1,0 +1,143 @@
+{
+  "run_id": "f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+  "started": "2026-11-09T02:16:04.268Z",
+  "completed": "2026-11-09T02:16:34.297Z",
+  "source_lane": "data_live",
+  "destination": "appYOykKIy1kAquhP",
+  "status": "complete",
+  "class_status": "complete",
+  "ok": true,
+  "ring": {
+    "day": "2026-11-08",
+    "run_id": "f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+    "started": "2026-11-09T02:16:04.268Z",
+    "ok": true,
+    "rings": [
+      {
+        "ring": 5,
+        "as_of": "2026-11-08T20:21:06.487Z",
+        "pace": null,
+        "end_in": null,
+        "estimated_end": null
+      },
+      {
+        "ring": 4,
+        "as_of": "2026-11-08T18:18:06.885Z",
+        "pace": null,
+        "end_in": null,
+        "estimated_end": null
+      },
+      {
+        "ring": 1,
+        "as_of": "2026-11-08T20:48:06.559Z",
+        "pace": null,
+        "end_in": null,
+        "estimated_end": null
+      },
+      {
+        "ring": 3,
+        "as_of": "2026-11-08T15:39:07.459Z",
+        "pace": null,
+        "end_in": null,
+        "estimated_end": null
+      },
+      {
+        "ring": 6,
+        "as_of": "2026-11-08T15:39:07.459Z",
+        "pace": null,
+        "end_in": null,
+        "estimated_end": null
+      },
+      {
+        "ring": 7,
+        "as_of": "2026-11-08T14:45:07.111Z",
+        "pace": null,
+        "end_in": null,
+        "estimated_end": null
+      }
+    ],
+    "issues": [],
+    "written": 6,
+    "completed": "2026-11-09T02:16:12.179Z"
+  },
+  "classes": {
+    "run_id": "f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+    "started": "2026-11-09T02:16:12.197Z",
+    "day": "2026-11-08",
+    "ok": true,
+    "written": 3,
+    "summaries": 3,
+    "issues": [],
+    "show": 200000077,
+    "evaluated": 3,
+    "completed": "2026-11-09T02:16:33.265Z"
+  },
+  "errors": [],
+  "issues": [
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date",
+    "Host clock not verified against Airtable Date"
+  ],
+  "counts": {
+    "evaluated": 6,
+    "written": 6,
+    "unchanged": 0,
+    "purged": 0,
+    "classes_evaluated": 3,
+    "classes_written": 3,
+    "classes_unchanged": 0
+  },
+  "cleanup": {
+    "run_id": "da7f02b9-63a5-4f48-9987-89c8c600750d",
+    "started": "2026-11-09T02:16:34.304Z",
+    "policy": "delete-only",
+    "result": "Skipped",
+    "actions": [],
+    "deleted": 0,
+    "reason": "Cleanup not due",
+    "next_quick_check_at": "2026-11-09T03:01:58.296Z",
+    "completed": "2026-11-09T02:16:35.042Z",
+    "clock_warnings": [
+      "Host clock not verified against Airtable Date"
+    ]
+  },
+  "class_cleanup": {
+    "ok": true,
+    "deleted": 0,
+    "reason": "Not due"
+  },
+  "trip": {
+    "run_id": "f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+    "started": "2026-11-09T02:16:35.369Z",
+    "day": "2026-11-08",
+    "ok": true,
+    "evaluated": 307,
+    "snapshots": 307,
+    "marked": 307,
+    "estimated": 0,
+    "issues": [],
+    "show": 200000077,
+    "completed": "2026-11-09T02:17:43.272Z",
+    "cleanup": {
+      "ok": false,
+      "reason": "Trip Airtable GET errors HTTP 403"
+    }
+  }
+}

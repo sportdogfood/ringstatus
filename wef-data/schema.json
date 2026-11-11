@@ -1059,6 +1059,12 @@
             "prefersSingleRecordLink": false,
             "inverseLinkFieldId": "fldwVpHe9SvFypNkx"
           }
+        },
+        {
+          "id": "fldO6Duw7yrbEgN4i",
+          "name": "class_related_data.results_verified",
+          "type": "formula",
+          "options": {}
         }
       ]
     },
@@ -1289,6 +1295,28 @@
       "id": "tblkGRRMJxnH55hi8",
       "primaryFieldId": "fldNgHp20qp9SInB5",
       "fields": [
+        {
+          "id": "fldH9W0a4h9WPOTuj",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldUFwd83tSH0VEkN"
+          }
+        },
+        {
+          "id": "fldNnCMEQSGFedeLX",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldBOqlFvzl2GLjT3"
+          }
+        },
         {
           "id": "fldNgHp20qp9SInB5",
           "name": "horse-key",
@@ -1771,6 +1799,28 @@
       "id": "tblt0GvQ39bHIu930",
       "primaryFieldId": "fldzqdj7PBgYfhNhG",
       "fields": [
+        {
+          "id": "fldzOwSg1zDKNdxv4",
+          "name": "w-shows",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblGc03icHzudV1v2",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldGv7e7xykB44JEs"
+          }
+        },
+        {
+          "id": "fldIzZXr9bNcC0CUT",
+          "name": "w-days",
+          "type": "multipleRecordLinks",
+          "options": {
+            "linkedTableId": "tblpRrsNXQdr3KrC9",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldURCbFEcD4ojnTd"
+          }
+        },
         {
           "id": "fldzqdj7PBgYfhNhG",
           "name": "trip-key",

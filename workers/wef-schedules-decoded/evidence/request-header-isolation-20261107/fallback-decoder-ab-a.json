@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-11-07T21:18:51.046Z",
+  "scope": "Existing hosted/fallback decoder executed locally using actual SGL requests; identity encoding as fallback transport. Not a Cloudflare runtime/deployment test.",
+  "results": [
+    {
+      "mode": "fallback-decoder-original",
+      "upstream": {
+        "status": 200,
+        "bytes": 2,
+        "empty": true,
+        "server": "awselb/2.0"
+      },
+      "resultStatus": 502,
+      "message": "Source fetch or protected response decoding failed"
+    },
+    {
+      "mode": "fallback-decoder-minus-invalid-headers",
+      "upstream": {
+        "status": 200,
+        "bytes": 76429,
+        "empty": false,
+        "server": null
+      },
+      "resultStatus": 200,
+      "rings": 7
+    },
+    {
+      "mode": "fallback-decoder-original-again",
+      "upstream": {
+        "status": 200,
+        "bytes": 2,
+        "empty": true,
+        "server": "awselb/2.0"
+      },
+      "resultStatus": 502,
+      "message": "Source fetch or protected response decoding failed"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "deployed": true,
+  "at": "2026-11-07T23:48:54.092058+00:00",
+  "files": [
+    {
+      "path": "wef-shows/collector.js",
+      "before": "65e93b249793c1960477e9da9c71790d6bbf572aa15ac5a474f7e4eff895939c",
+      "sha256": "32289ce7da712fa559db35151afd987ff21d9282c289f3b5889b68c06114ca84"
+    },
+    {
+      "path": "wef-shows/audit.js",
+      "before": "95649c14e6acf807721a81c3449fca321a2a855bf748262d5708513f3ff59f30",
+      "sha256": "cffb02c598c72e26123c77a041a4b65a86dcc8e44030b756bb1dbc4b7024d65d"
+    },
+    {
+      "path": "wef-shows/browser-discovery.js",
+      "before": null,
+      "sha256": "eb93f7867c1d694a506b9f2559cd499e3d86ad7c3ee189f457b8b7865021be8e"
+    },
+    {
+      "path": "wef-shows/tests/shows.test.js",
+      "before": "bef795b841823aa6b2c062b49d3ff04471e6d833f17c695e4eda4d99beac7f59",
+      "sha256": "da2bf5fbab717eb2bf44d2b352bb8524c163c76c0f14567aa06cf23668c040fa"
+    },
+    {
+      "path": "wef-shows/tests/day-priority.test.js",
+      "before": "b4ab661132cfeaa8c5826b01c7aad95c22108418184e8bf11ed0e40a36ee33f3",
+      "sha256": "d004ae06ea0542986ec0d8e68d33644bacf20440054611088f60ea113e685f41"
+    },
+    {
+      "path": "wef-shows/tests/browser-discovery.test.js",
+      "before": null,
+      "sha256": "b1dc0f5cf7f78270cbe77df71c795b42db1479b5705c5b745f515e3b887b7e3a"
+    },
+    {
+      "path": "wef-shows/tests/fixtures/browser-schedule.json",
+      "before": null,
+      "sha256": "fbdd54045ff85f6ad105aa7a47a6506efa305582a49c5d0644c369d34f28b1bd"
+    },
+    {
+      "path": "wef-shows/browser-decode.js",
+      "before": null,
+      "sha256": "b369821e88439e26b7b97697f9743bed536dd1e1b6576e90499358ee8c0f04d8"
+    },
+    {
+      "path": "wef-shows/tests/browser-decode.test.js",
+      "before": null,
+      "sha256": "578bb108ce37cec65c26c07a12ade45a52ed94c56221e2c28a074beadf9412e3"
+    }
+  ],
+  "manual_runs": 0,
+  "record_repairs": 0,
+  "task_changes": 0,
+  "stop_files_cleared": 0,
+  "normal_runs": [
+    {
+      "run_id": "c8026fe1-91cf-45b0-9180-08c9a5ff93c3",
+      "started": "2026-11-07T23:49:11.692Z",
+      "completed": "2026-11-07T23:49:24.093Z",
+      "ok": true,
+      "show_id": 200000077,
+      "selected_date": "2026-11-07"
+    },
+    {
+      "run_id": "11948fc1-a8b6-41db-aada-ac7ffcdb82a2",
+      "started": "2026-11-07T23:54:10.132Z",
+      "completed": "2026-11-07T23:54:17.220Z",
+      "ok": true,
+      "show_id": 200000077,
+      "selected_date": "2026-11-07"
+    }
+  ],
+  "scheduled_source_discovery": "UNVERIFIED: next unchanged slot November8 22:00Eastern",
+  "first_task_exit": 0,
+  "first_airtable_log": {
+    "record": "recCh7108aknl7CcX",
+    "result": "Success"
+  },
+  "first_airtable_heartbeat": {
+    "checked_at": "2026-11-07T23:49:24.093Z",
+    "result": "Success"
+  },
+  "task_exit_evidence": [
+    "END 2026-11-07T18:49:30.1554383-05:00 exit=0",
+    "END 2026-11-07T18:54:21.3428466-05:00 exit=0"
+  ],
+  "normal_retained_state_acceptance": "PASS",
+  "second_airtable_log": {
+    "record": "reca98dLBINpeGpjf",
+    "result": "Success"
+  },
+  "second_airtable_heartbeat": {
+    "checked_at": "2026-11-07T23:54:17.220Z",
+    "result": "Success"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "snapshot": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "run-logs": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "heartbeat": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "errs-log": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  }
+}

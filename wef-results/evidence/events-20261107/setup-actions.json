@@ -1,0 +1,200 @@
+[
+  {
+    "content": [],
+    "structuredContent": {
+      "success": true
+    },
+    "isError": false
+  },
+  {
+    "content": [],
+    "structuredContent": {
+      "success": true,
+      "actionId": "actttPBEPVl4jEyw5"
+    },
+    "isError": false
+  },
+  {
+    "name": "w-shows",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Parameters failed connector schema validation: field.options.prefersSingleRecordLink [additionalProperties]: Additional property 'prefersSingleRecordLink' is not allowed"
+        }
+      ],
+      "structuredContent": {
+        "error": "Parameters failed connector schema validation: field.options.prefersSingleRecordLink [additionalProperties]: Additional property 'prefersSingleRecordLink' is not allowed",
+        "error_code": "INVALID_ARGUMENT",
+        "error_data": {
+          "reason": "INVALID_PARAMETERS",
+          "clamp_errors": [
+            {
+              "path": [
+                "field",
+                "options",
+                "prefersSingleRecordLink"
+              ],
+              "message": "Additional property 'prefersSingleRecordLink' is not allowed",
+              "keyword": "additionalProperties"
+            }
+          ],
+          "clamp_rewrites": [
+            {
+              "path": [
+                "field",
+                "options",
+                "prefersSingleRecordLink"
+              ],
+              "message": "Removed additional property 'prefersSingleRecordLink'",
+              "original_value": true,
+              "new_value": null,
+              "keyword": "additionalProperties"
+            },
+            {
+              "path": [
+                "_meta"
+              ],
+              "message": "Removed additional property '_meta'",
+              "original_value": {
+                "callId": "exec-bb883635-ad59-48fa-acd4-7f62f2682238",
+                "sessionId": "01a169d7-0bcd-7ca1-8b39-4e124da8b363",
+                "windowId": "01a169d7-0bcd-7ca1-8b39-4e124da8b363:2",
+                "itemId": "ctc_065d444daf24eb96016aefe88d699087d1901c8f39e1609c3f",
+                "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+                "io.modelcontextprotocol/clientInfo": {
+                  "name": "codex-mcp-client",
+                  "title": "Codex",
+                  "version": "0.167.0-alpha.3.2"
+                },
+                "io.modelcontextprotocol/clientCapabilities": {
+                  "extensions": {
+                    "io.modelcontextprotocol/ui": {
+                      "mimeTypes": [
+                        "text/html;profile=mcp-app",
+                        "text/html+skybridge"
+                      ]
+                    },
+                    "openai/elicitation": {
+                      "form": {}
+                    },
+                    "openai/form": {}
+                  },
+                  "elicitation": {
+                    "form": {},
+                    "url": {}
+                  }
+                },
+                "progressToken": 31,
+                "openai/userLocation": {
+                  "city": "Lake Worth Beach",
+                  "region": "Florida",
+                  "country": "US",
+                  "timezone": "America/New_York"
+                }
+              },
+              "new_value": null,
+              "keyword": "additionalProperties"
+            }
+          ]
+        }
+      },
+      "isError": true
+    }
+  },
+  {
+    "name": "w-shows",
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "id": "fldp0TW3tistwHMoo",
+        "name": "w-shows",
+        "type": "multipleRecordLinks",
+        "options": {
+          "linkedTableId": "tblpIERB9RxRUhm5N",
+          "isReversed": false,
+          "prefersSingleRecordLink": false,
+          "inverseLinkFieldId": "fld4IIaSqSM7NmYbT"
+        },
+        "actionId": "actL95lcM7wy6Lq9X"
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "w-days",
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "id": "fldU2cOuevVRPJZiY",
+        "name": "w-days",
+        "type": "multipleRecordLinks",
+        "options": {
+          "linkedTableId": "tbllf9NXgbd3hfjJD",
+          "isReversed": false,
+          "prefersSingleRecordLink": false,
+          "inverseLinkFieldId": "fld6Kk0a9ImBYx7SE"
+        },
+        "actionId": "act0dkpbV2baVqvkh"
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "wef-data.results",
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "id": "fldrSaCxUOLxN5qYe",
+        "name": "wef-data.results",
+        "type": "multipleRecordLinks",
+        "options": {
+          "linkedTableId": "tbljKNTCoDG7Z3q6O",
+          "isReversed": false,
+          "prefersSingleRecordLink": false,
+          "inverseLinkFieldId": "fldI1rCNqdnPbinHn"
+        },
+        "actionId": "actom5fDLIDvdRFWa"
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "w-horses",
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "id": "flda1hItwASqJb2kw",
+        "name": "w-horses",
+        "type": "multipleRecordLinks",
+        "options": {
+          "linkedTableId": "tblCx44gRMEM9f453",
+          "isReversed": false,
+          "prefersSingleRecordLink": false,
+          "inverseLinkFieldId": "fldc1zoUnJTkdDomw"
+        },
+        "actionId": "acth5svOXUwAmVfm7"
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "w-riders",
+    "result": {
+      "content": [],
+      "structuredContent": {
+        "id": "fldhjVlosSKZPkOBA",
+        "name": "w-riders",
+        "type": "multipleRecordLinks",
+        "options": {
+          "linkedTableId": "tblxS6hR5t9MIllXh",
+          "isReversed": false,
+          "prefersSingleRecordLink": false,
+          "inverseLinkFieldId": "fldjPtiJMDeeAfRYM"
+        },
+        "actionId": "actzyyacz0iEesXNw"
+      },
+      "isError": false
+    }
+  }
+]

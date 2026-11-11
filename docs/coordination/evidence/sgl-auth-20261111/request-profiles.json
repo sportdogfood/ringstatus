@@ -1,0 +1,36 @@
+{
+  "apiHeaders": {
+    "Accept": "application/json, text/plain, */*",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0",
+    "Origin": "https://www.wellingtoninternational.com",
+    "Referer": "https://www.wellingtoninternational.com/",
+    "sgl-request-origin": "SGL-API",
+    "Cache-Control": "no-cache",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Sec-Fetch-Site": "same-site",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "sec-ch-ua": "\"Chromium\";v=\"158\", \"Not.A/Brand\";v=\"24\", \"Microsoft Edge\";v=\"158\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\""
+  },
+  "legacyHeaders": {
+    "Accept": "application/json",
+    "Cache-Control": "no-cache",
+    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "Sec-Fetch-Site": "cross-site"
+  },
+  "configHeaders": {
+    "Accept": "application/json, text/plain, */*",
+    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+    "Origin": "https://www.wellingtoninternational.com",
+    "Referer": "https://www.wellingtoninternational.com/",
+    "sgl-request-origin": "SGL-API",
+    "Cache-Control": "no-cache",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Sec-Fetch-Site": "same-site"
+  },
+  "spacing": "At least one second after previous response",
+  "cookies": "Omitted except separately labeled anonymous-session controls",
+  "credentials": "Fresh anonymous tokens held in memory only; no saved production/browser credentials"
+}

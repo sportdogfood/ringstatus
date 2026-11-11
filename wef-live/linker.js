@@ -3,10 +3,11 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const settings=require('./settings');
 const TABLES=['live-rings','live-groups','live-classes','live-trips','live-entries'];
-const REFS=['w-shows','w-days','wef-data.schedules'];
+const REFS=['w-shows','w-days','wef-data.schedules','w-horses','w-riders','w-trainers'];
 const empty=v=>v==null||(Array.isArray(v)&&v.length===0);
 const num=v=>v!==null&&v!==undefined&&v!==''&&Number.isSafeInteger(Number(v))&&Number(v)>0?Number(v):null;
 const key=(...v)=>v.join('|');
+const nameKey=v=>typeof v==='string'?v.trim().replace(/\s+/g,' ').toLowerCase():'';
 function plan(data,scope,onIssue=()=>{}){
  const rows=t=>(data[t]||[]).filter(r=>Number(r.fields['show-id'])===scope.show&&r.fields.date===scope.date);
  const rings=rows('live-rings'),groups=rows('live-groups'),classes=rows('live-classes'),entries=rows('live-entries');
@@ -37,11 +38,11 @@ function plan(data,scope,onIssue=()=>{}){
  const plans=[];
  for(const table of TABLES)for(const row of rows(table)){
   const f=row.fields,fields={};
-  const fill=(field,resolve)=>{
+  const fill=(field,resolve,identity)=>{
    if(!empty(f[field]))return;
    const matches=resolve();
    if(matches?.length)fields[field]=[...new Set(matches.map(x=>x.id))];
-   else onIssue('No unique exact match for '+table+'.'+field+'. No retry recommended until source data changes.',{table,id:row.id,class_id:num(f['class-id']),trip_id:num(f['trip-id']),group_id:num(f['class-group-id'])});
+   else onIssue('No unique exact match for '+table+'.'+field+(identity?' ('+identity+')':'')+'. No retry recommended until source data changes.',{table,id:row.id,class_id:num(f['class-id']),trip_id:num(f['trip-id']),group_id:num(f['class-group-id'])});
   };
   fill('w-shows',()=>{const r=one(data[REFS[0]]||[],'show-key',key(scope.customer,scope.show));return r?[r]:[];});
   fill('w-days',()=>{const r=one(data[REFS[1]]||[],'show-day-key',key(scope.customer,scope.show,scope.date));return r?[r]:[];});
@@ -60,6 +61,11 @@ function plan(data,scope,onIssue=()=>{}){
    fill('groups',()=>{const ring=ringOf(table,row);return ring?groups.filter(g=>num(raw(g).ring_id)===num(ring.fields['ring-id'])&&Array.isArray(raw(g).classes)&&raw(g).classes.some(id=>Number(id)===num(f['class-id']))):[];});
   }
   if(table==='live-trips'||table==='live-entries')fill('class',()=>{const r=classOf(table,row);return r?[r]:[];});
+  if(table==='live-trips'||table==='live-entries')for(const [field,idField]of [['w-horses','horse-id'],['w-riders','rider-id'],['w-trainers','trainer-id']]){
+   const id=num(f[idField]),nameField=idField.replace(/-id$/,'-name');
+   const byName=table==='live-trips'&&(f[idField]===null||f[idField]===undefined||f[idField]==='')&&nameKey(f[nameField]);
+   fill(field,()=>{const matches=id?(data[field]||[]).filter(r=>num(r.fields[idField])===id):byName?(data[field]||[]).filter(r=>nameKey(r.fields[nameField])===byName):[];return matches.length===1?matches:[];},byName?nameField+'='+f[nameField]:idField+'='+(id||'missing'));
+  }
   if(table==='live-trips')fill('legacy-live-entry',()=>{
    const cid=num(f['class-id']),tid=num(f['trip-id']);if(!cid||!tid)return[];
    const r=one(entries,'live-entry-key',key(scope.show,scope.date,cid,tid));
@@ -94,8 +100,8 @@ async function link({scope,api=require('./airtable').airtable(),runtime=settings
  const result=!r.ok?'Failed':r.issues.length?'Partial':'Success';
  const summary=JSON.stringify({lane:'linker',counts:r.counts,changed_records:r.changes.length,issues:r.issues.length});
  async function log(table,rows){for(let i=0;i<rows.length;i+=10){try{const batch=rows.slice(i,i+10);const saved=await api.call(settings.BASE_ID,table,'POST',{records:batch.map(fields=>({fields}))});if(saved.records?.length!==batch.length)throw Error('Incomplete linker log response');}catch(e){r.logging_errors.push(table+': '+e.message);}}}
- await log('run-logs',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':scope.show,date:scope.date,summary,errors:r.stage_errors.map(x=>x.message).join('\n')},...r.changes.map((c,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':scope.show,date:scope.date,summary:JSON.stringify({lane:'linker',parent_run_id:r.run_id,...c})}))]);
- await log('errs-log',[...r.issues,...r.stage_errors].map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':scope.show,date:scope.date,message:'linker: '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null})));
+ await log('run-logs',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':scope.show,date:scope.date,summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000)},...r.changes.map((c,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':scope.show,date:scope.date,summary:JSON.stringify({lane:'linker',parent_run_id:r.run_id,...c})}))]);
+ try{await require('./error-log').report({api,runtime,lane:'linker',rows:[...r.issues,...r.stage_errors].map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':scope.show,date:scope.date,message:'linker: '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null}))});}catch(e){r.logging_errors.push('errs-log: '+e.message);}
  await log('heartbeat',[{'heartbeat-key':r.run_id,'run-id':r.run_id,started:r.started,completed:r.completed,'checked-at':r.completed,'show-id':scope.show,date:scope.date,result,summary}]);
  try{fs.mkdirSync(runtime,{recursive:true});for(const name of ['linker-'+r.run_id+'.json','linker-last-run.json']){const file=path.join(runtime,name),tmp=file+'.tmp';fs.writeFileSync(tmp,JSON.stringify(r,null,2));fs.renameSync(tmp,file);}}catch(e){r.logging_errors.push('Local linker receipt: '+e.message);}
  return r;

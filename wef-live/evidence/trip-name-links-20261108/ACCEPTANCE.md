@@ -1,0 +1,9 @@
+# Trip name fallback acceptance
+
+Normal13:42Eastern collection208b9ddc-586c-41ef-8c72-1bcc64e7b487 succeeded:54classes/306entries/306trips, no stage/logging errors. Normal linker1d8396d5-2d88-46d5-bad8-3c3515671a6d succeeded;306trip records changed, and only w-horses/w-riders/w-trainers fields were patched. Actual helper matches/native readback:306horse links,297rider links,298trainer links.9rider/8trainer trip rows are ambiguous and remain empty; no wrong/ambiguous helper link written.
+
+Rider ambiguities: LILLIE KEENAN, SARAH DUHON, MADISON MYRO. Trainer ambiguities: DANIEL MICHAN HALBINGER, ROBERTO TERAN TAFUR, KYLE TIDWELL. These names refer to multiple existing helper records; no helper merges or guessed matches. No new tables, source ID backfills or live-entries fallback.
+
+native-first-link-check.json confirms existing native links/source IDs retained. The first broad all-array check also compared dynamic Eastern-time lookup arrays and therefore returned false; its original evidence remains native-first.json. Narrow native-link inspection found only expected advancing Eastern-time values, not lost links. Normal task post-run cleanup completedSuccess18:45:59Z, taskReady. No manual collector/linker/provider calls or record repairs.
+
+Normal13:48Eastern collection69cb7837-565a-41af-8569-ec8a19f6b9cb succeeded54classes/306entries/306trips without stage/logging errors. Linkerdeac36e2-4f8a-40c7-83bf-275c33743b91 succeeded with ZERO changes and no logging errors. Native repeat readback retained306horse/297rider/298trainer links, every prior helper link unchanged and every ambiguous slot still empty. Cleanup5ad14b63-56a2-4ab5-a50d-589e561bf60f completedSkipped18:48:55Z; taskReady. Two normal populated runs/native acceptancePASS. Source ID fields remain source evidence and are not backfilled from helper links.

@@ -1,0 +1,22 @@
+[
+  {
+    "path": "wef-data/runtime/wef-decoder-runner/worker.js",
+    "sha256": "66fc72f8e02b9ee62ada124469778a43678c0c8df5d267a3c104c5ba99a16dd4"
+  },
+  {
+    "path": "wef-data/runtime/wef-decoder-runner/runner-relay.mjs",
+    "sha256": "84609e512f56d601f138700a9de059c27d9275ad2dd21baef532b25233d899c0"
+  },
+  {
+    "path": "workers/wef-schedules-decoded/worker.js",
+    "sha256": "641a3ce66d292297ecea235b0b629466938b7a9c668c80cacdcf28a4f2986290"
+  },
+  {
+    "path": "workers/wef-schedules-decoded/fallback.mjs",
+    "sha256": "85b45c66c1b77191bdee423877dbb1095ec447979f6259268dc01d9fb3d79032"
+  },
+  {
+    "path": "workers/wef-schedules-decoded/tcp-fetch.mjs",
+    "sha256": "89658c3278116527ed0c3e9911c9cc6fe3c633f4f874e5f6b98627a8c3ac7245"
+  }
+]

@@ -1,0 +1,106 @@
+{
+  "verified_at": "2026-11-08T01:52:04.670132+00:00",
+  "result": "PASS",
+  "deployed_hashes": "27JS verified;25 unchanged",
+  "task_definition": "unchanged",
+  "offline": "16PASS",
+  "review": "authorPASS,not independent",
+  "initial_run_logs": 5908,
+  "final_run_logs": 500,
+  "deleted": 5408,
+  "normal_cleanup_runs": [
+    {
+      "run_id": "a1c4ebc9-61d1-46e1-9114-94157ba1799d",
+      "started": "2026-11-08T01:18:04.683Z",
+      "completed": "2026-11-08T01:20:00.314Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "d971d36a-995d-4879-9f95-6f0148b61cda",
+      "started": "2026-11-08T01:21:03.364Z",
+      "completed": "2026-11-08T01:22:53.765Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "d6cf37e2-59d9-4692-94d5-6ced49ec4554",
+      "started": "2026-11-08T01:24:04.568Z",
+      "completed": "2026-11-08T01:25:58.402Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "291e3343-71b8-4be7-a76e-6dca40f7c062",
+      "started": "2026-11-08T01:27:03.789Z",
+      "completed": "2026-11-08T01:28:49.251Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "f84a5b87-3ce3-4d57-af81-ca2727a3e4d4",
+      "started": "2026-11-08T01:30:03.523Z",
+      "completed": "2026-11-08T01:31:48.300Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "97cf675a-8421-4fde-9182-2ff8bd6153bf",
+      "started": "2026-11-08T01:33:03.625Z",
+      "completed": "2026-11-08T01:34:44.083Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "28aed3eb-cd31-4bda-9ead-13fe491c6fc9",
+      "started": "2026-11-08T01:36:03.283Z",
+      "completed": "2026-11-08T01:37:45.105Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "d1ba1669-7c0a-45d3-8296-06f6169ab324",
+      "started": "2026-11-08T01:39:03.829Z",
+      "completed": "2026-11-08T01:40:42.283Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "390bf9ea-f7a0-43f1-8e33-c19a6d154037",
+      "started": "2026-11-08T01:42:03.595Z",
+      "completed": "2026-11-08T01:43:38.464Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "85f7dd4f-c965-4dc9-b2ee-e3f559d9a47e",
+      "started": "2026-11-08T01:45:03.837Z",
+      "completed": "2026-11-08T01:46:45.270Z",
+      "deleted": 500
+    },
+    {
+      "run_id": "402eff3a-b2d2-49d8-94c7-2c050fd37db5",
+      "started": "2026-11-08T01:48:03.432Z",
+      "completed": "2026-11-08T01:49:21.825Z",
+      "deleted": 408
+    }
+  ],
+  "final_partial_chunk": 408,
+  "repeat_run": {
+    "run_id": "1c5580b1-20b6-409a-9a4e-cb001bf46c6d",
+    "started": "2026-11-08T01:51:03.431Z",
+    "completed": "2026-11-08T01:51:11.977Z",
+    "result": "Skipped",
+    "actions": 0
+  },
+  "airtable_cleanup_logs": "11Success records;5408 deleted readback",
+  "final_counts": [
+    {
+      "name": "run-logs",
+      "count": 500
+    },
+    {
+      "name": "heartbeat",
+      "count": 657
+    },
+    {
+      "name": "errs-log",
+      "count": 889
+    }
+  ],
+  "limits": "657heartbeat/889errs-log below1000,not triggered;500 is triggered drain target,not instantaneous hard cap. Active/current protection retained,offline verified;no production records altered manually. All3public detail feed normal collection still awaits eligibleday0;Records delivery conflict unchanged/outside this correction.",
+  "manual_runs": false,
+  "manual_deletes": false,
+  "record_repairs": false
+}

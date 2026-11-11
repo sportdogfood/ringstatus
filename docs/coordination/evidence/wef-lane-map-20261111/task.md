@@ -1,0 +1,5 @@
+# Nine-lane acquisition map — November 11, 2026
+
+Owner requests complete mapping of show detail, show-days, show-time, rings, schedule, classes, trips, signups/OOG and results: access/auth, response formats, direct/proxy need, actual fallback, alerts, related-route generalization, failed vs untested cases, original-source coverage and built/deployed routes. Deliver one evidence-backed map and concrete decisions; no new production code/configuration/credentials, collectors, source calls or infrastructure. Existing corrected payloads and owner identity-review boundary preserved. Read existing records/code and passive Cloudflare deployed script only.
+
+Completed the requested map and concrete procedure/implementation-gap decisions. Existing source-strategy review updated in place; prior document preserved. 19 Airtable endpoint references plus OPP-017 updated/read back. All nine lanes covered. Actual source/format gaps remain explicitly unverified, not silently marked passing. Production remains frozen.

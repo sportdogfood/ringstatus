@@ -1,0 +1,56 @@
+{
+  "normalScheduledRuns": [
+    {
+      "run": "collection-6c078066-7d5e-4017-a024-e87a94c1f6e5",
+      "started": "2026-11-08T14:33:16.851077+00:00",
+      "completed": "2026-11-08T14:39:00.567999+00:00",
+      "saved": 1898,
+      "errors": 0
+    },
+    {
+      "run": "collection-18a518eb-c275-4049-be62-c2126c56d4c0",
+      "started": "2026-11-08T14:39:17.440122+00:00",
+      "completed": "2026-11-08T14:45:01.302077+00:00",
+      "saved": 1898,
+      "errors": 0
+    }
+  ],
+  "manualCollectors": false,
+  "protectedFiles": [
+    {
+      "path": "workers/wef-schedules-decoded/sgl-pacing.mjs",
+      "unchanged": true,
+      "sha256": "479f56d56f481a16104dc64faa33945be9175ddca0f971924b9151889787f138"
+    },
+    {
+      "path": "workers/wef-schedules-decoded/fallback.mjs",
+      "unchanged": true,
+      "sha256": "c5433cb80a29375188095658b034c89f68ef714703ebf3cc21b17013256e7bc9"
+    },
+    {
+      "path": "workers/wef-schedules-decoded/worker.js",
+      "unchanged": true,
+      "sha256": "8bc87128b4e0210302d4795c2186673b954fdd63a74cc60f5a0848fa17d390f3"
+    },
+    {
+      "path": "wef-data/source-reader.js",
+      "unchanged": true,
+      "sha256": "d1c32301cac45f8732f2402dc419d129d2eed2331b54bcd491afdb58125799b1"
+    },
+    {
+      "path": "wef-data/fast_collector.py",
+      "unchanged": true,
+      "sha256": "70ca4b29d3f2aeff79b0dac9c8998e0d0b981ff324111ae600c65f0b0178f054"
+    },
+    {
+      "path": "workers/wef-schedules-decoded/show-time-health.mjs",
+      "unchanged": true,
+      "sha256": "0596a90d0c6b4b57efdf664d9741b41a76e5880133461e36410e3b1e7d58516e"
+    },
+    {
+      "path": "workers/wef-schedules-decoded/wrangler.jsonc",
+      "unchanged": true,
+      "sha256": "5ab86d303fa878081bda5082e2696bb1e0043325f5fd472b82102bf0f928c12d"
+    }
+  ]
+}

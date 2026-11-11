@@ -1,0 +1,17 @@
+{
+  "observed_at": "2026-11-08T01:06:34.108026+00:00",
+  "offline": "PASS6",
+  "review": "PASS author,not independent",
+  "deployed_hashes": "PASS27JS;26unchanged",
+  "normal_invocation": "2026-11-07 20:06 Eastern",
+  "delivery": "FAIL",
+  "alert_id": "24ac8784-bfcc-46b6-992f-f700af949f51",
+  "error": "Records delivery exited 1 without acknowledgement: 2026-11-08T01:06:03.817039Z ERROR codex_core::session::session: failed to initialize thread persistence: thread-store conflict: thread 01a169bc-e58a-7de0-94c6-5d3931fcf745 already has an active writer\n2026-11-08T01:06:03.817213Z ERROR codex_core::session: Failed to create session: thread-store conflict: thread 01a169bc-e58a-7de0-94c6-5d3931fcf745 already has an active writer\nError: thread/resume: thread/resume failed: thread 01a169bc-e58a-7de0-94c6-5d3931fcf745 already has an active writer (code -32600)\n",
+  "confirmed_cause": "Desktop owns active writer for existing Records thread;separateCLI thread/resume refused with -32600",
+  "collection_unchanged": true,
+  "task_exit": 0,
+  "manual_runs": false,
+  "record_repairs": false,
+  "verification_stop": "No lock removal, retry, alternate route or further corrective code edits after failed normal proof",
+  "remaining": "Existing CLI resume route cannot deliver to a desktop-owned chat. A supported way for scheduled runner to submit to existing app writer is required; not currently demonstrated. Do not claim automatic delivery works."
+}

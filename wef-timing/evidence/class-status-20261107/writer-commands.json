@@ -1,0 +1,16 @@
+{
+  "reviewer": "writer:/root/01a16f18-25b9-7222-9b53-b64496ec84d9",
+  "commands": [
+    {
+      "id": "writer-offline",
+      "command": "node wef-timing/evidence/class-status-20261107/offline-test.js",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T02:45:50.238290+00:00",
+      "ended_at": "2026-11-08T02:45:50.383831+00:00",
+      "exit_code": 0,
+      "stdout": "PASS all saved Active November 6 classes evaluated\nPASS fixed pace; unknown actual start is never invented\nPASS unchanged input produces new snapshots with explicit unchanged diff\nPASS original observation times survive repeat snapshots\nPASS shared groups do not claim individual finish\nPASS completed classes do not acquire a new predicted finish\nPASS count diff preserves previous/current values and measured class pace\nPASS 999 logs: none; 1000 logs: oldest 500\nPASS active, pending and unchecked work protected\nPASS 19:00 Eastern daily event; earlier time has no daily deletion\nPASS new show comes from ID change; day-0 is irrelevant\nPASS synced, class history and reference tables cannot be deleted\nPASS future/current timing answers protected on show change\nPASS offline deletion requires intent, exact readback and absence proof\nPASS changed rows block deletion\n{\"passed\":15,\"snapshots\":43,\"day\":\"2026-11-06\"}\n",
+      "stderr": ""
+    }
+  ]
+}

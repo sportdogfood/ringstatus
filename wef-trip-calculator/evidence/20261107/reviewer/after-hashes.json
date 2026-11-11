@@ -1,0 +1,77 @@
+{
+  "at": "2026-11-08T02:53:52.111821+00:00",
+  "files": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\trip-status.js",
+      "sha256": "206f683aecb9ad1b19ded3d77c987e0b1daeeea29fc85ec4cb2c100080e5e910",
+      "inspected_sha256": "206f683aecb9ad1b19ded3d77c987e0b1daeeea29fc85ec4cb2c100080e5e910",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\cleanup.js",
+      "sha256": "14eadfcc9a73ee992efb7701df83bc4becfe54dbcf73b65ca43c1719c7854a54",
+      "inspected_sha256": "14eadfcc9a73ee992efb7701df83bc4becfe54dbcf73b65ca43c1719c7854a54",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\test.js",
+      "sha256": "c2110d5d671696a7f9f9da0df4d98b1e41f50a01f0e52333a75bd7eafc016551",
+      "inspected_sha256": "c2110d5d671696a7f9f9da0df4d98b1e41f50a01f0e52333a75bd7eafc016551",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\README.md",
+      "sha256": "d272bc295299a5e581f239b39170872819d5a870dffb4dd291024fbc36aa28a6",
+      "inspected_sha256": "d272bc295299a5e581f239b39170872819d5a870dffb4dd291024fbc36aa28a6",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\schema.json",
+      "sha256": "25b632a976b1ee3f89eb94ccf0561edd1df5d0f3c5ffae7f0396e7dcc59f50c2",
+      "inspected_sha256": "25b632a976b1ee3f89eb94ccf0561edd1df5d0f3c5ffae7f0396e7dcc59f50c2",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\20261107\\yesterday-inputs.json",
+      "sha256": "72d39d28fdc1892231428f4e679407aef6eb3ee63d4c1c421ae6e6213eb02b78",
+      "inspected_sha256": "72d39d28fdc1892231428f4e679407aef6eb3ee63d4c1c421ae6e6213eb02b78",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\trips_calculator.js",
+      "sha256": "1c35fd8ed037c6fcd9faa7bfa19ebc0a251ed1214e9df1ef331a9af6c8cec52c",
+      "inspected_sha256": "1c35fd8ed037c6fcd9faa7bfa19ebc0a251ed1214e9df1ef331a9af6c8cec52c",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-entry-calculator\\calculator.js",
+      "sha256": "d665d2155e42f86e37388fd1b61b52956fb342d1aaeced74d8f4f7619e107af1",
+      "inspected_sha256": "d665d2155e42f86e37388fd1b61b52956fb342d1aaeced74d8f4f7619e107af1",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-status.js",
+      "sha256": "318f6c77f85da97def1b7d2d70f3cbfa13b9e6da572c050ac71799f73138bcd3",
+      "inspected_sha256": "318f6c77f85da97def1b7d2d70f3cbfa13b9e6da572c050ac71799f73138bcd3",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-status-cleanup.js",
+      "sha256": "9da4e291d42ea4632a5f682bab517a4573a79dcaa7124b5e63997efe23b8854f",
+      "inspected_sha256": "9da4e291d42ea4632a5f682bab517a4573a79dcaa7124b5e63997efe23b8854f",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-timing.js",
+      "sha256": "5018658ea2d0656594ec5834bddba108082fb43177eb5ec6c353f17e53630a49",
+      "inspected_sha256": "5018658ea2d0656594ec5834bddba108082fb43177eb5ec6c353f17e53630a49",
+      "matches_frozen": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-adapter.js",
+      "sha256": "e57bd6815221a20c73e8ab32442490f6b501a76b746369c524d2553b04885c0e",
+      "inspected_sha256": "e57bd6815221a20c73e8ab32442490f6b501a76b746369c524d2553b04885c0e",
+      "matches_frozen": true
+    }
+  ]
+}

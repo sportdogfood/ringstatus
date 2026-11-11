@@ -1,0 +1,38 @@
+[
+  {
+    "path": "workers/wef-schedules-decoded/shared-worker.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "workers/wef-schedules-decoded/schedule-health.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "workers/wef-schedules-decoded/sgl-pacing.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "workers/wef-schedules-decoded/tcp-fetch.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "workers/wef-schedules-decoded/wrangler.jsonc",
+    "unchanged": true
+  },
+  {
+    "path": "wef-data/runtime/wef-decoder-runner/worker.js",
+    "unchanged": true
+  },
+  {
+    "path": "wef-data/runtime/wef-decoder-runner/runner-relay.mjs",
+    "unchanged": true
+  },
+  {
+    "path": "wef-data/fast_collector.py",
+    "unchanged": true
+  },
+  {
+    "path": "wef-data/entry.js",
+    "unchanged": true
+  }
+]

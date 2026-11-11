@@ -1,0 +1,82 @@
+{
+  "version": "1.2",
+  "locked_at": "2026-11-02T18:27:18.498991+00:00",
+  "owner_instruction": "Implement browser discovery as primary, with /ring and /schedule only as fallback. Test, deploy and verify normal scheduled runs. Keep cadence and existing workflows unchanged. No manual runs or record repairs.",
+  "meaning": "Scope/deployed implementation freeze; existing scheduled workflow and readonly reviews continue. Not a stop or filesystem permission change.",
+  "baseline": "browser-primary-20261107",
+  "baseline_manifest": "wef-shows/evidence/browser-primary-20261107/manifest.json",
+  "baseline_runtime_and_tests_hashes_verified_before_documentation_lock": true,
+  "runtime_files": {
+    "wef-shows/airtable.js": "f97bd4964e3b39197e284418c98f3fa1b81f8f284c7afbd514a7263d9a147154",
+    "wef-shows/audit-schema.js": "015574366da8f8f535f6340b811d58e597650585c7eb8e49b52148dcb5b44f1c",
+    "wef-shows/audit.js": "cffb02c598c72e26123c77a041a4b65a86dcc8e44030b756bb1dbc4b7024d65d",
+    "wef-shows/authority-age.js": "6022ef852fa6ecbecf7d32bcd9fc297e1cd2f326b6c7c1cf6e29435deadff2e8",
+    "wef-shows/browser-decode.js": "b369821e88439e26b7b97697f9743bed536dd1e1b6576e90499358ee8c0f04d8",
+    "wef-shows/browser-discovery.js": "eb93f7867c1d694a506b9f2559cd499e3d86ad7c3ee189f457b8b7865021be8e",
+    "wef-shows/collector.js": "32289ce7da712fa559db35151afd987ff21d9282c289f3b5889b68c06114ca84",
+    "wef-shows/configure.js": "d8dcc4da0a6b1c0606788feaea71a8d113ce8ff0c06a0f3362ae6ec73f223d37",
+    "wef-shows/day-archive.js": "17b706949743f316bba2c6cad5b9ce166b10138d6613e4766ee7da4663597512",
+    "wef-shows/day-priority.js": "04d2d40bc081f476ebea00bcff7a71750b88867605dcca9b66633055a17a914d",
+    "wef-shows/day-schema.js": "d2ae8a640bc1457cda72125e47bd22ccbde988175157abb04c380e6815d2737b",
+    "wef-shows/day-source.js": "c212c2c1fc1bd226e20e214469051b3a2291c18432a075eef7a9c8e88d9ac0e6",
+    "wef-shows/direct-counts.js": "1f295b267984c462e7eedbfef89c9d0120135d8ada13e0ea34f058681416802e",
+    "wef-shows/discovery-policy.js": "c9baa13920e1e7396f525d9c087c7392a5c5a5a6117dbb2535a2cff8035b3b29",
+    "wef-shows/discovery-window.js": "cd58bd4ced4af3a358c45af40d3ab6c58aca0cf70fd2ff8d58059ff32a71b9f8",
+    "wef-shows/entry.js": "2ecb076a6df89cba7d0e5b80937651a3152c551a5dbccec66b4ae0f3985d2f7b",
+    "wef-shows/settings.js": "2c12ce868e2b8b588a6285301795916582a3c48f49155b115093751983048a3d",
+    "wef-shows/show-days.js": "eb04aa65739da1ad5772fadcb0de5db88b6ba4b9eea1a14f044ae14f3f7c5425",
+    "wef-shows/source-fetch.js": "11df76a20ed236aa6ebe068ea376585d1adceb877b3b6346cb122a47fdad6104",
+    "wef-shows/verify-audit.js": "290766240ad39d86fbf01cd2db514695770e1148398770e69dd65fc47140b7fb",
+    "wef-shows/verify-consumers.js": "0c4a0761e5ffd1a542d9934499db8a0d08a3b1429df06257dbc8ad4f0994a70a",
+    "wef-shows/verify-days.js": "d6a910762e520898b1668e50f82293828dd0415af1e083da430d1b36f30a5479",
+    "wef-shows/verify.js": "31122a40e990a229b8529a46bc42059a57f45f33b02c9ddbd0f051a04f364dad"
+  },
+  "documentation": {
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\README.md": "c6381da73437b3357b1d4b0de910389b901d5f9d14201cfdff59b11de3d85517",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\scope.md": "cab64591f443bd040f02d9b5ae9c62da5a5bc7053049e71520bd5c5ac401a156",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\AGENTS.md": "4ad5b3d73124ffe3b97234438b915dc361d23167d8d216b80c45a010be16ea88"
+  },
+  "latest_normal_run_inspected": {
+    "run_id": "11948fc1-a8b6-41db-aada-ac7ffcdb82a2",
+    "started": "2026-11-07T23:54:10.132Z",
+    "completed": "2026-11-07T23:54:17.220Z",
+    "ok": true
+  },
+  "most_recent_Airtable_readback_in_chat": "November7 18:54 run11948fc1-a8b6-41db-aada-ac7ffcdb82a2 Success; matching heartbeat checked23:54:17.220Z, task wrapper exit0",
+  "pending": [
+    "Hourly heartbeat/logging outside show date range: offline24PASS, independentreviewPASS, registered reciN6QUAdKA1cxYb, not deployed.",
+    "Automatic direct discovery notices to Records, Timing, Messages, Waze, Publish: recipient policy added; delivery not configured."
+  ],
+  "protected": "Only approved browser-primary discovery delta deployed. No task/cadence, schema, credential, dependency, counts, downstream workflow or record repairs.",
+  "updated_date": "2026-11-07",
+  "timezone": "America/New_York",
+  "renewed_at": "2026-11-07T23:49:09.217810+00:00",
+  "previous_lock": "wef-shows/evidence/locked-20261107/lock.json",
+  "original_lock_sha256": "f4ee583a3a545273a7d37865818fa2c9d9f723efeb51c7235e2c928a6fc80580",
+  "readme_version": "1.9.0",
+  "documentation_update_only": false,
+  "runtime_hashes_verified_on_renewal": 23,
+  "weekday_notice_evidence": {
+    "event": "weekday-shift|America/New_York|2026-11-06|19:00",
+    "receipts_confirmed": 5,
+    "state_file": ".git/ringstatus-control/wef-shows-weekday-notice-state.json"
+  },
+  "approved_delta_manifest": "wef-shows/evidence/browser-primary-20261107/manifest.json",
+  "deployment": "wef-shows/evidence/browser-primary-20261107/deployment.json",
+  "normal_runs": [
+    {
+      "run_id": "c8026fe1-91cf-45b0-9180-08c9a5ff93c3",
+      "started": "2026-11-07T23:49:11.692Z",
+      "completed": "2026-11-07T23:49:24.093Z",
+      "ok": true
+    },
+    {
+      "run_id": "11948fc1-a8b6-41db-aada-ac7ffcdb82a2",
+      "started": "2026-11-07T23:54:10.132Z",
+      "completed": "2026-11-07T23:54:17.220Z",
+      "ok": true
+    }
+  ],
+  "scheduled_browser_source_proof": "Pending unchanged November8 22:00Eastern discovery slot",
+  "runtime_hashes_verified_count": 23
+}

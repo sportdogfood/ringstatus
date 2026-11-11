@@ -1,3 +1,19 @@
+## Owner-approved name fallback — November 8, 2026
+Unique normalized helper-name lookup is authorized for empty day-0 live-trips entity links only when source IDs are blank. Supplied-ID logic remains unchanged; ambiguous matches and all populated links remain untouched. No ID field backfill, live-entries fallback, new tables, manual runs or repairs. Delta/evidence: evidence/trip-name-links-20261108. This supersedes older ID-only descriptions only within this exact approved boundary. General lock remains outside this delta.
+
+## Owner-approved delta — November 8, 2026
+Live-response day-0 trips are enabled from the same already-fetched class payload; decoded acquisition remains paused. Existing entry/class collection, source identities absent from live data, populated native links and recurring cleanup/logging remain. Exact baseline/delta/test/review/deployment: evidence/live-response-trips-20261108. No manual runs, repairs, source tests, new tasks or schemas. General lock remains outside this approved delta. Supersedes older all-trip-output-paused language only.
+
+## Owner field rule — November 7, 2026
+
+**Any field starting with `___` is likely retired or the wrong target. Verify and use its replacement, and document the mapping when needed. Preserve existing values; do not use the old field for new links without verification.** Create an explicit reference to a verified replacement only when needed; do not guess matches, rename/delete old fields or duplicate an existing correct link.
+
+Owner-specified shared-table replacements:
+- `___wef-shows.show-days` → `w-days`
+- `___wef-shows.show` → `w-shows`
+
+The active linker uses the replacement tables. Retired references and their existing values remain historical.
+
 ## Owner correction — November3,2026: live-trips only
 
 Current build removes the three unnecessary empty live-trip-results/messages/comments tables. Results belong directly on live-trips; downstream messages/comments reference trip-key. No child-table reads/writes or cleanup targets remain; only live-trips is new-show-cleanup-owned. New result fields and removed schema/configuration verified in evidence/live-trips-simple-20261103/schema-readback.json. Current25JS baseline is deployed.json in that directory. Day0source/cadence,sourceidentity,legacy links,active/current logs and prior cleanup rules preserved. No manual business runs/repairs/new schedules/gates. General lock and unrelated holds remain. Older four-table descriptions below are superseded.

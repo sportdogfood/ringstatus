@@ -1,0 +1,12 @@
+{
+  "approved": "Default-show schedule health; original/profile1/profile2 then renew and repeat; first usable response stops; health, token and warning logs; existing chat warning delivery; show-time separate. No collectors/new infrastructure/unrelated changes.",
+  "files": {
+    "workers/wef-schedules-decoded/shared-worker.mjs": "7d7a4db6dd307ace033e9ca40f0ea2f7998be563f3fd1a4f785654d8e2f04d72",
+    "workers/wef-schedules-decoded/fallback.mjs": "85b45c66c1b77191bdee423877dbb1095ec447979f6259268dc01d9fb3d79032",
+    "workers/wef-schedules-decoded/worker.js": "e6b2c505a163e9956c7ee23a552ca5b204e313f0bd71506f2cc4c471a4e237e4",
+    "workers/wef-schedules-decoded/runner-relay.mjs": "84609e512f56d601f138700a9de059c27d9275ad2dd21baef532b25233d899c0",
+    "wef-data/runtime/wef-decoder-runner/runner-relay.mjs": "84609e512f56d601f138700a9de059c27d9275ad2dd21baef532b25233d899c0",
+    "workers/wef-schedules-decoded/wrangler.jsonc": "bc5699c35602798b398134dd23683614699c99d3f5696b317b41265c16c1e972",
+    "workers/wef-schedules-decoded/show-time-health.mjs": "0596a90d0c6b4b57efdf664d9741b41a76e5880133461e36410e3b1e7d58516e"
+  }
+}

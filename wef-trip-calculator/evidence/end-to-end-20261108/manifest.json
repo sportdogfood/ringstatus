@@ -1,0 +1,18 @@
+{
+  "wef-trip-calculator/cleanup.js": "46098f34ddfd6e043f4e6a8c4466b4812d31d1eaab8d7ebac459e70b40e581e7",
+  "wef-trip-calculator/cleanup.test.js": "03e7650045ab874ba17830926b20658484a0a8b46145d2e3a139fe330f8f7138",
+  "wef-trip-calculator/linker.js": "57e9bdef31dbcd86f9c7754d22208a0471b7d60ea7a989291cacf859a228a1a0",
+  "wef-trip-calculator/README.md": "8d808ab9f669d253681cb470fee7daff402f9391a0ebea875364d4766409ff82",
+  "wef-trip-calculator/runner.js": "f80682bc78ec186d7bede9ae919de2510d857617b46a40a2c7e78a70fdd909b8",
+  "wef-trip-calculator/schema.json": "25b632a976b1ee3f89eb94ccf0561edd1df5d0f3c5ffae7f0396e7dcc59f50c2",
+  "wef-trip-calculator/test.js": "e24083a900d8d88cf9e97431b21bcb64a05f9ae46f3a7706394556265940847d",
+  "wef-trip-calculator/trip-status.js": "df75a33f6411915e90403af6bb0336addd9a79936df3cff8cae7bf4792e7f9c6",
+  "wef-trip-calculator/evidence/end-to-end-20261108/saved-inputs.jsonl": "f5d58a0eb3ff151bed7f63303046887c3d84e36cf74aba1bae1cda48fad3638f",
+  "wef-trip-calculator/evidence/end-to-end-20261108/candidate/entry-data.js": "0179fb4280d66a37788ccc1d70523b0b8e45896f1f406068664060107b73e5c9",
+  "wef-trip-calculator/evidence/end-to-end-20261108/schema-changes.json": "c34b5a290382e122a4312802f6deae7887fd58b2cad084bcd7fdb9154ec82503",
+  "wef-trip-calculator/evidence/end-to-end-20261108/scope.md": "a4feef869f74c5e427eaacfe1e2de77213731db764b1c42b7d2859906a0f0f07",
+  "wef-timing/entry-data.js": "106f8131132209e9cf5735b315425e38c029e604670856c270db85a6a7f66d40",
+  "wef-timing/data-runner.js": "f31e9eddffd8512dcb3c0deccca1eb76b029cdabd14718d5ef12db5f7c8640f0",
+  "wef-timing/class-snapshot.js": "b8e7ffc509b8a9796e168507ef4338e21b5114391129ab1dd514feb7299d2000",
+  "wef-timing/ring-snapshot.js": "6b00215bf788806a297c44272c88dccfcdbf7f39f8d2147c0a51da26dac2baac"
+}

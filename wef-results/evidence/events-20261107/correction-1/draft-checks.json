@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Results events — wef-data.trips created",
+    "id": "wflOFAja0i8ShBVeQ",
+    "status": "undeployed",
+    "configuration": "valid",
+    "deployedVersion": null,
+    "scriptMatch": true,
+    "inputsMatch": true,
+    "triggerMatch": false
+  },
+  {
+    "name": "Results events — default show created",
+    "id": "wfl7ompDrRRnx7EUR",
+    "status": "undeployed",
+    "configuration": "valid",
+    "deployedVersion": null,
+    "scriptMatch": true,
+    "inputsMatch": true,
+    "triggerMatch": false
+  },
+  {
+    "name": "Results events — wef-data.results created",
+    "id": "wflCBa1cK8EyqkCBz",
+    "status": "undeployed",
+    "configuration": "valid",
+    "deployedVersion": null,
+    "scriptMatch": true,
+    "inputsMatch": true,
+    "triggerMatch": false
+  },
+  {
+    "name": "Results events — wef-data.results changed",
+    "id": "wflUMOcFB8B3Qqtuc",
+    "status": "undeployed",
+    "configuration": "valid",
+    "deployedVersion": null,
+    "scriptMatch": true,
+    "inputsMatch": true,
+    "triggerMatch": false
+  },
+  {
+    "name": "Results events — completed logs 7pm Eastern",
+    "id": "wflfYo9GeBO4wE0YF",
+    "status": "undeployed",
+    "configuration": "valid",
+    "deployedVersion": null,
+    "scriptMatch": true,
+    "inputsMatch": true,
+    "triggerMatch": false
+  },
+  {
+    "name": "Results events — wef-data.trips changed",
+    "id": "wfleHE4BSvsqFsG64",
+    "status": "undeployed",
+    "configuration": "valid",
+    "deployedVersion": null,
+    "scriptMatch": true,
+    "inputsMatch": true,
+    "triggerMatch": false
+  },
+  {
+    "name": "Results events — reconcile and empty links",
+    "id": "wfldx7lPNyHt1ZJ6z",
+    "status": "undeployed",
+    "configuration": "valid",
+    "deployedVersion": null,
+    "scriptMatch": true,
+    "inputsMatch": true,
+    "triggerMatch": false
+  },
+  {
+    "name": "Results events — default show changed",
+    "id": "wflrl9c6qwVTYX4Yh",
+    "status": "undeployed",
+    "configuration": "valid",
+    "deployedVersion": null,
+    "scriptMatch": true,
+    "inputsMatch": true,
+    "triggerMatch": false
+  },
+  {
+    "name": "Results events — log cap every three hours",
+    "id": "wflw2JEI2FLbLhB52",
+    "status": "undeployed",
+    "configuration": "valid",
+    "deployedVersion": null,
+    "scriptMatch": true,
+    "inputsMatch": true,
+    "triggerMatch": false
+  }
+]

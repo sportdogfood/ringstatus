@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/review_cleanup7pm",
+  "commands": [
+    {
+      "id": "remove-alerts-native-offline",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\remove-records-alerts-20261107\\entry.test.cjs\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T02:13:10.612640+00:00",
+      "ended_at": "2026-11-08T02:13:10.754012+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: proven original entry restored byte-for-byte;Records alert module absent\nok 1 - proven original entry restored byte-for-byte;Records alert module absent\n  ---\n  duration_ms: 1.6015\n  type: 'test'\n  ...\n# Subtest: normal reports unchanged,noalertrequire/noCLI,and preserved module export\nok 2 - normal reports unchanged,noalertrequire/noCLI,and preserved module export\n  ---\n  duration_ms: 4.0324\n  type: 'test'\n  ...\n# Subtest: failed report still returns1 without notification transport\nok 3 - failed report still returns1 without notification transport\n  ---\n  duration_ms: 1.0276\n  type: 'test'\n  ...\n# Subtest: uncaught scheduled failure still returns1 and logs original error without alerts\nok 4 - uncaught scheduled failure still returns1 and logs original error without alerts\n  ---\n  duration_ms: 1.4488\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 83.3775\n",
+      "stderr": ""
+    }
+  ]
+}

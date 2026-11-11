@@ -1,0 +1,29 @@
+{
+  "records": [
+    {
+      "id": "rec70KnNzBms3sj1M",
+      "createdTime": "2026-11-10T06:00:13.000Z",
+      "cellValuesByFieldId": {
+        "fld3BbcLv6jBY5DCi": "HTTP 200; version 0.1.45; Date Tue, 10 Nov 2026 23:00:12 GMT; Age absent. Response-header clock only; cache freshness is not yet independently verified. Linked to selected show-day 2026-11-11; source clock date remains 2026-11-10.",
+        "fld5vtNUlGUTeef5o": "15|200000078|2026-11-10",
+        "fldHZz5Ms4VanU429": "2026-11-10T23:00:12.000Z",
+        "fldZs48q5iQM8S51B": [
+          {
+            "id": "recqIXAwokTzdiyWp",
+            "name": "15|200000078"
+          }
+        ],
+        "fldlSusO8mlfC4oll": [
+          {
+            "id": "recSDxcUJg9vRSoW0",
+            "name": "15|200000078|2026-11-11"
+          }
+        ],
+        "fldtJiduZe0RI7DaZ": "2026-11-10T23:00:03.808Z"
+      }
+    }
+  ],
+  "metadata": {
+    "totalRecordCount": 1
+  }
+}

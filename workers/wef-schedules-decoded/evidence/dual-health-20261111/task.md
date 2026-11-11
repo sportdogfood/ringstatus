@@ -1,0 +1,9 @@
+# Schedule and class-detail health — November 11
+
+Approved: add both checks and communicate full collection/fallback/alert procedures to Fast. Existing default show lookup, runner, tunnel, URLs, pacing, credentials and collector schedules stay unchanged. No manual collectors or source business record repairs.
+
+Baseline: current working schedule-health.mjs copied beside this record before editing. Other existing checkout changes belong to their owners. Delta limited to schedule-health.mjs, its focused tests, decoder documentation and existing monitor instructions. Class sample comes from the successful default-show schedule, never a hardcoded class. Empty class trips are legitimate. No scheduled class is reported explicitly as untested, not a class success. Any sampled class exhaustion makes overall health fail and uses existing warning transitions/logs. Preview writes health/warnings only to memory.
+
+Fast instructed in its existing chat to document current full collection, proxy-owned fallback and actual alert delivery evidence, without code changes or manual collectors. Final delivery must distinguish proxy health from full inventory/collector success.
+
+Preview: remote Cloudflare preview returned nine rings but no class ID in default-date schedule. Class request was not exercised; required dual-route preview proof FAILED. Production untouched. Existing no-edit-after-failed-verification boundary now applies. Next proposed correction: select a class from Fast's saved inventory for the same default show when returned schedule has none; no hardcoded class and no new source schedule call. Await explicit edit approval. Fast confirmed latest completed cycle saved five dates with 392 class failures; class failures are excluded from its alert filter. README updated by Fast; no collector/code changes.

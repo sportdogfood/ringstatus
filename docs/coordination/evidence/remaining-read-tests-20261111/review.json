@@ -1,0 +1,40 @@
+{
+  "at": "2026-11-11T18:11:55Z",
+  "scope": "Authorized read endpoint diagnostics and research Airtable/documentation only",
+  "primaryPayloadRecords": 36,
+  "supplementaryPayloads": 15,
+  "diagnosticRequests": 68,
+  "nineLanes": 9,
+  "sourceAndSavedReadback": "PASS: saved-payload-verification.json",
+  "ownerNotesUsefulTestNowDifferences": 0,
+  "taskMetadataReadbackDifferences": 0,
+  "verified": [
+    "All source payload fields and rows match captured source files",
+    "All multipart bodies reconstruct fully",
+    "802 shows retained across 3 fields",
+    "Completed hunter 8/8 and jumper 4/4 trip IDs and populated results match legacy data",
+    "Both API completed class examples results_verified=1",
+    "Official Excel all 67 class numbers match same-day API schedule"
+  ],
+  "limitations": [
+    "Championship detail lacks a source-published chip ID in three tested parent lists",
+    "No active ListAjax/widget sample or complete event timing proof",
+    "Identity-field acceptance remains with owner",
+    "Source diagnostics are not scheduled collection proof"
+  ],
+  "protected": {
+    "productionChanged": false,
+    "collectorsRun": false,
+    "credentialsChanged": false,
+    "proxyURLsOrPauseChanged": false,
+    "sourceBusinessRecordsRepaired": false
+  },
+  "researchSchemaDelta": "Only payload-2 and payload-3 added to existing opportunities table to preserve full overlength responses",
+  "reviewCorrections": [
+    "Python source-file comparison corrected to preserve HTML CRLF bytes",
+    "Verifier made route placeholders generic for source show_id/date",
+    "One retained DoLogin provenance file was reclassified as text after a stale temporary parse variable was detected; no erroneous source was saved to Airtable"
+  ],
+  "reportSHA256": "5b477cbafe2e1046a915d37859a1296978582a52513c5eaded50e89e6df72706",
+  "nextAction": "No further blind probes. Conditional detail requires an actual parent-published championship/chip ID. Production implementation remains separately paused."
+}

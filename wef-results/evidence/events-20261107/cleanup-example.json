@@ -1,0 +1,290 @@
+{
+  "content": [],
+  "structuredContent": {
+    "records": [
+      {
+        "id": "rec2FkE4wK8jPfQqt",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fld3bQUqU2j85aWYU": 200000076,
+          "fldAHF5SuvOhhp62R": "live-entries",
+          "fldCCiw1OB6ZJ06sy": 192,
+          "fldEnF2kjSSidstaM": {
+            "id": "selUAs5NnjynLZRec",
+            "name": "Success",
+            "color": "blueLight2"
+          },
+          "fldJM4u6DUrFFahFm": "2026-11-02T14:27:00.000Z",
+          "fldLM7qvDLcBku7Yj": "ACTIVE — Stores collected trip and entry observations, including horse/rider/trainer identities, order, scratch, gone and placing. Entries reads Live downstream.",
+          "fldQjEGcXmJrHSF8V": "2026-11-02T14:28:00.000Z",
+          "fldavHrSO6hR1UtKM": 192,
+          "fldfg0gcqSnd7d4XO": 192,
+          "fldi7iNrqIglvVvUR": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-entries\\754ea9e78df4ccd7cb9ee6c54b40f49fb1a91b4653e56e15cf2225a060eb0591.json.gz",
+          "fldn4Uv6QXkC15ips": 200000077,
+          "fldv4FhgzsNUYOqn9": {
+            "id": "selJFYKrFkc7seZW0",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "rec4sPyLgz7FStZaI",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "wef-shows.show-days",
+          "fldLM7qvDLcBku7Yj": "RETAINED SYNC — Local copy of canonical show days and day-priority. The current collector reads Shows.show-days directly in wef-shows, not this local sync."
+        }
+      },
+      {
+        "id": "rec6wpN6lN4iJubMJ",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fld3bQUqU2j85aWYU": 200000076,
+          "fldAHF5SuvOhhp62R": "live-classes",
+          "fldCCiw1OB6ZJ06sy": 43,
+          "fldEnF2kjSSidstaM": {
+            "id": "selUAs5NnjynLZRec",
+            "name": "Success",
+            "color": "blueLight2"
+          },
+          "fldJM4u6DUrFFahFm": "2026-11-02T14:27:00.000Z",
+          "fldLM7qvDLcBku7Yj": "ACTIVE — Stores one collected class-detail record per show/day/class and links to its groups, ring and live entries.",
+          "fldQjEGcXmJrHSF8V": "2026-11-02T14:28:00.000Z",
+          "fldavHrSO6hR1UtKM": 43,
+          "fldfg0gcqSnd7d4XO": 43,
+          "fldi7iNrqIglvVvUR": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-classes\\c3ece027335be11733235f8912631478fd73b4fdb50d2dc7a33d64e98d1b120c.json.gz",
+          "fldn4Uv6QXkC15ips": 200000077,
+          "fldv4FhgzsNUYOqn9": {
+            "id": "selJFYKrFkc7seZW0",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recAsdLfCRHUwn5FO",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "cleanup",
+          "fldLM7qvDLcBku7Yj": "CONTROL AND LATEST STATUS — Lists every base table and its purpose. Checked owned tables participate in new-show cleanup; only checked heartbeat/run-logs/errs-log participate in 1,000/500 quick cleanup. Records is the table count at action start; action results and archive/delete counts show the latest cleanup. History is in cleanup-logs."
+        }
+      },
+      {
+        "id": "recHR3mKbnKyF5U4B",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "heartbeat",
+          "fldCCiw1OB6ZJ06sy": 378,
+          "fldEnF2kjSSidstaM": {
+            "id": "selUAs5NnjynLZRec",
+            "name": "Success",
+            "color": "blueLight2"
+          },
+          "fldJM4u6DUrFFahFm": "2026-11-02T14:27:00.000Z",
+          "fldLM7qvDLcBku7Yj": "ACTIVE — Stamps the start and completion of each lane invocation to show cadence and outcome.",
+          "fldQjEGcXmJrHSF8V": "2026-11-02T14:29:00.000Z",
+          "fldavHrSO6hR1UtKM": 381,
+          "fldfg0gcqSnd7d4XO": 378,
+          "fldi7iNrqIglvVvUR": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-heartbeat\\90d0571780974ac1e5c40d0cb5b3714597b12663fdbdd0d0220178eeee474540.json.gz",
+          "fldn4Uv6QXkC15ips": 200000077,
+          "fldv4FhgzsNUYOqn9": {
+            "id": "selJFYKrFkc7seZW0",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recL5wdF1JHLH9tve",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "cleanup-logs",
+          "fldLM7qvDLcBku7Yj": "PERMANENT ACTION LOG — Records each new-show or quick-cleanup table action, result, counts and archive location/hash. Never included in either cleanup rule."
+        }
+      },
+      {
+        "id": "recTSsjJlHhKYK0eg",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fld3bQUqU2j85aWYU": 200000076,
+          "fldAHF5SuvOhhp62R": "live-rings",
+          "fldCCiw1OB6ZJ06sy": 5,
+          "fldEnF2kjSSidstaM": {
+            "id": "selUAs5NnjynLZRec",
+            "name": "Success",
+            "color": "blueLight2"
+          },
+          "fldJM4u6DUrFFahFm": "2026-11-02T14:27:00.000Z",
+          "fldLM7qvDLcBku7Yj": "ACTIVE — Stores collected ring observations and current, next and completed group links.",
+          "fldQjEGcXmJrHSF8V": "2026-11-02T14:28:00.000Z",
+          "fldavHrSO6hR1UtKM": 5,
+          "fldfg0gcqSnd7d4XO": 5,
+          "fldi7iNrqIglvVvUR": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-rings\\8057cdaf9606d9d95f52557701292685a04a79252529bcec6c16e43f54584053.json.gz",
+          "fldn4Uv6QXkC15ips": 200000077,
+          "fldv4FhgzsNUYOqn9": {
+            "id": "selJFYKrFkc7seZW0",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recXrTjx8ss68AncQ",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "collections",
+          "fldLM7qvDLcBku7Yj": "RETAINED CATALOG — Keeps any previous collected-dataset and archive-file evidence and native collection links. Collection saves source evidence locally. The approved new cleanup catalogs its archives in cleanup-logs and never deletes this table."
+        }
+      },
+      {
+        "id": "recZKOUtFkXw3j2XH",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fld3bQUqU2j85aWYU": 200000076,
+          "fldAHF5SuvOhhp62R": "run-logs",
+          "fldCCiw1OB6ZJ06sy": 111,
+          "fldEnF2kjSSidstaM": {
+            "id": "selUAs5NnjynLZRec",
+            "name": "Success",
+            "color": "blueLight2"
+          },
+          "fldJM4u6DUrFFahFm": "2026-11-02T14:27:00.000Z",
+          "fldLM7qvDLcBku7Yj": "ACTIVE — Records each lane's outcome, counts, collection/save timings and changed-business-field diffs.",
+          "fldQjEGcXmJrHSF8V": "2026-11-02T14:30:00.000Z",
+          "fldavHrSO6hR1UtKM": 381,
+          "fldfg0gcqSnd7d4XO": 111,
+          "fldi7iNrqIglvVvUR": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-run-logs\\f538a1a72184965449e7f01aabcd25050f7aabb0e3d31223628c7beb7eae8807.json.gz",
+          "fldn4Uv6QXkC15ips": 200000077,
+          "fldv4FhgzsNUYOqn9": {
+            "id": "selJFYKrFkc7seZW0",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "reccS8IDtEXBnVoAJ",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fld3bQUqU2j85aWYU": 200000076,
+          "fldAHF5SuvOhhp62R": "live-class-appearances",
+          "fldCCiw1OB6ZJ06sy": 43,
+          "fldEnF2kjSSidstaM": {
+            "id": "selUAs5NnjynLZRec",
+            "name": "Success",
+            "color": "blueLight2"
+          },
+          "fldJM4u6DUrFFahFm": "2026-11-02T14:27:00.000Z",
+          "fldLM7qvDLcBku7Yj": "ACTIVE — Stores each show/day/group/class appearance separately, with Active/Absent/Dropped membership and links to the group and unique class detail.",
+          "fldQjEGcXmJrHSF8V": "2026-11-02T14:28:00.000Z",
+          "fldavHrSO6hR1UtKM": 43,
+          "fldfg0gcqSnd7d4XO": 43,
+          "fldi7iNrqIglvVvUR": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-class-appearances\\935744c3207cc96ffcf21292b4334f6fd08c1d28cd0e93bcda10f98fcd5677f6.json.gz",
+          "fldn4Uv6QXkC15ips": 200000077,
+          "fldv4FhgzsNUYOqn9": {
+            "id": "selJFYKrFkc7seZW0",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "reccsXKtu4rkWVQP5",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "wef-schedules.schedules",
+          "fldLM7qvDLcBku7Yj": "RETAINED REFERENCE — Synced schedules and existing native Live links. Not read by the current three-lane collection path; preserve existing links."
+        }
+      },
+      {
+        "id": "recdTHlCBkegMJeie",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "wef-entries.entries",
+          "fldLM7qvDLcBku7Yj": "RETAINED REFERENCE — Synced Entries records retained for existing native links/history. Live does not read Entries; Entries reads Live."
+        }
+      },
+      {
+        "id": "recdpHDAVZxpbPOtG",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fld3bQUqU2j85aWYU": 200000076,
+          "fldAHF5SuvOhhp62R": "errs-log",
+          "fldCCiw1OB6ZJ06sy": 190,
+          "fldEnF2kjSSidstaM": {
+            "id": "selUAs5NnjynLZRec",
+            "name": "Success",
+            "color": "blueLight2"
+          },
+          "fldJM4u6DUrFFahFm": "2026-11-02T14:27:00.000Z",
+          "fldLM7qvDLcBku7Yj": "ACTIVE — Records individual source, identity, stage and logging errors, with class/trip/group IDs when available.",
+          "fldQjEGcXmJrHSF8V": "2026-11-02T14:30:00.000Z",
+          "fldavHrSO6hR1UtKM": 191,
+          "fldfg0gcqSnd7d4XO": 190,
+          "fldi7iNrqIglvVvUR": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-errs-log\\da5313ef5e6c011d748194472ad6b0b3670e353e22f8b8b15fab5e7200efcb82.json.gz",
+          "fldn4Uv6QXkC15ips": 200000077,
+          "fldv4FhgzsNUYOqn9": {
+            "id": "selJFYKrFkc7seZW0",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "rechXuoewXSvMqBZH",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "meta",
+          "fldLM7qvDLcBku7Yj": "UNUSED BY COLLECTOR — Existing table with only a Name field; no references in the current three-lane collection path. No deletion approved."
+        }
+      },
+      {
+        "id": "reckFjSrKmza0oXCM",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "code-reviews",
+          "fldLM7qvDLcBku7Yj": "ADMINISTRATIVE — Stores routine code-review dates, results and findings. Not a table read or written by the three collection lanes."
+        }
+      },
+      {
+        "id": "recqKNpT2hPMh7Gf4",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fld3bQUqU2j85aWYU": 200000076,
+          "fldAHF5SuvOhhp62R": "live-groups",
+          "fldCCiw1OB6ZJ06sy": 27,
+          "fldEnF2kjSSidstaM": {
+            "id": "selUAs5NnjynLZRec",
+            "name": "Success",
+            "color": "blueLight2"
+          },
+          "fldJM4u6DUrFFahFm": "2026-11-02T14:27:00.000Z",
+          "fldLM7qvDLcBku7Yj": "ACTIVE — Stores collected live groups, progress counts, ring/class links and Active/Absent/Dropped source membership.",
+          "fldQjEGcXmJrHSF8V": "2026-11-02T14:28:00.000Z",
+          "fldavHrSO6hR1UtKM": 27,
+          "fldfg0gcqSnd7d4XO": 27,
+          "fldi7iNrqIglvVvUR": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\cleanup-new-show-live-groups\\49c9b0adb1d487cf7489e91726649e6df88fd430cee3e92397db1d18eef4d623.json.gz",
+          "fldn4Uv6QXkC15ips": 200000077,
+          "fldv4FhgzsNUYOqn9": {
+            "id": "selJFYKrFkc7seZW0",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recykD1vNLFi47ZOR",
+        "createdTime": "2026-11-08T03:06:34.000Z",
+        "cellValuesByFieldId": {
+          "fldAHF5SuvOhhp62R": "wef-shows.show",
+          "fldLM7qvDLcBku7Yj": "RETAINED SYNC — Local copy of canonical show information. The current collector reads Shows.shows directly in wef-shows, not this local sync."
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 17
+    }
+  },
+  "isError": false
+}

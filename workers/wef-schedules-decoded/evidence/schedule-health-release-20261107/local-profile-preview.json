@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-11-07T23:30:06.831Z",
+  "tokenLogSaved": true,
+  "defaultShow": 200000077,
+  "results": [
+    {
+      "profile": "original-header",
+      "status": 200,
+      "show": 200000077,
+      "date": "2026-11-07",
+      "rings": 7,
+      "usable": true
+    },
+    {
+      "profile": "profile-fb-header1",
+      "status": 200,
+      "show": 200000077,
+      "date": "2026-11-07",
+      "rings": 7,
+      "usable": true
+    },
+    {
+      "profile": "profile-fb-header2",
+      "status": 200,
+      "show": 200000077,
+      "date": "2026-11-07",
+      "rings": 7,
+      "usable": true
+    }
+  ]
+}

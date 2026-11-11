@@ -1,0 +1,103 @@
+{
+  "event_id": "log-check|2026-11-09|2",
+  "heartbeat_received": "2026-11-09T12:03:24.799Z",
+  "pointer_issued": "2026-11-09T12:03:56.853Z",
+  "show_id": 200000078,
+  "task_exit": 0,
+  "task_result": {
+    "run_id": 1794225867776,
+    "event_id": "log-check|2026-11-09|2",
+    "trigger": "log-check",
+    "started": "2026-11-09T12:04:27.776Z",
+    "actions": [
+      {
+        "table": "err-logs",
+        "deleted": 0,
+        "started": "2026-11-09T12:04:29.091Z",
+        "completed": "2026-11-09T12:04:29.091Z",
+        "result": "Success"
+      },
+      {
+        "table": "heartbeat",
+        "deleted": 0,
+        "started": "2026-11-09T12:04:29.440Z",
+        "completed": "2026-11-09T12:04:29.440Z",
+        "result": "Success"
+      },
+      {
+        "table": "run-logs",
+        "deleted": 0,
+        "started": "2026-11-09T12:04:29.700Z",
+        "completed": "2026-11-09T12:04:29.700Z",
+        "result": "Success"
+      },
+      {
+        "table": "runs",
+        "deleted": 0,
+        "started": "2026-11-09T12:04:29.956Z",
+        "completed": "2026-11-09T12:04:30.136Z",
+        "result": "Success"
+      }
+    ],
+    "errors": [],
+    "local": {
+      "runs": 0,
+      "errors": 0,
+      "acks": 0
+    },
+    "completed": "2026-11-09T12:04:30.733Z",
+    "result": "Success"
+  },
+  "cleanupV2": [
+    {
+      "table": "runs",
+      "run": 1794225867776,
+      "result": "Success",
+      "deleted": 0
+    },
+    {
+      "table": "run-logs",
+      "run": 1794225867776,
+      "result": "Success",
+      "deleted": 0
+    },
+    {
+      "table": "err-logs",
+      "run": 1794225867776,
+      "result": "Success",
+      "deleted": 0
+    },
+    {
+      "table": "heartbeat",
+      "run": 1794225867776,
+      "result": "Success",
+      "deleted": 0
+    }
+  ],
+  "native_readback": [
+    {
+      "table": "runs",
+      "before": 25,
+      "after": 25,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "run-logs",
+      "before": 21,
+      "after": 21,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "err-logs",
+      "before": 65,
+      "after": 65,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "heartbeat",
+      "before": 2,
+      "after": 2,
+      "priorIDsMissing": 0
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "authorization": "Owner requested: create some example in the results snapshot table",
+  "scope": "Two explicitly labeled example rows, real source values and exact links; no automation execution or activation; no workflow proof",
+  "baseId": "appK9IX59jFwUkB2u",
+  "creation": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "recla4HQFHj7NpZid",
+          "createdTime": "2026-11-08T03:28:08.000Z",
+          "cellValuesByFieldId": {
+            "fldHtFXdUkhE1i9ip": "EXAMPLE|Y|15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF",
+            "fldQ7keT0IKbOJeTo": 15,
+            "fldiywszJ6dHFFqim": 200000077,
+            "fldknAK1CdjNqxYvF": "2026-11-07",
+            "fld0PCKe9ZVC3T7CG": 1,
+            "fld28Vy5pBbUVODt1": 200031204,
+            "fldS5awNkfmIXQzWp": "Y",
+            "fldY5OfsOjHTQsCJz": "Example",
+            "fldEgZpzxkZgGVVJa": "EXAMPLE ONLY — source-backed display row; no automation executed. Illustrates first-change values; no live first-change event was observed.",
+            "fldbzBH8tQlWPe90k": "2026-11-08T03:28:00Z",
+            "fldhwxN6RwZIYh1Ud": "2026-11-08T00:03:56.022Z",
+            "fldp14mkaqrYBmJKA": 1,
+            "fldWh7v1pZffL68Ci": "{\"identity\":{\"tripKey\":\"15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF\",\"tripRecord\":\"rechRNDCY0iYV7Eau\",\"entry\":{\"key\":\"200000077|200248671\",\"id\":\"200248671\"},\"horse\":{\"id\":\"200005404\",\"name\":\"DANNY DAZZLER\"},\"rider\":{\"id\":\"48775\",\"name\":\"STEPHEN MOORE\"}},\"instances\":[{\"record\":\"rec0CIGrNrRUWv70d\",\"key\":\"15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF\",\"values\":{\"time-one\":\"71.824\",\"faults-one\":\"4\"},\"observedAt\":\"2026-11-08T00:03:56.022Z\"}]}",
+            "fld4naLYWtrVX8qOt": "{\"recordType\":\"example\",\"trigger\":\"Y\"}",
+            "fldduIqyRBrF05YFb": "{\"example\":true,\"source\":\"wef-data.results\",\"recordId\":\"rec0CIGrNrRUWv70d\",\"resultRecords\":[\"rec0CIGrNrRUWv70d\"],\"note\":\"Owner-requested example; no trigger or workflow proof.\"}",
+            "fldp0TW3tistwHMoo": [
+              "recXPCAWdICtShOQy"
+            ],
+            "fldU2cOuevVRPJZiY": [
+              "rec6DKQ1q0sLIx17B"
+            ],
+            "fldrSaCxUOLxN5qYe": [
+              "rec0CIGrNrRUWv70d"
+            ],
+            "flda1hItwASqJb2kw": [
+              "recqSK9XOx1WzEgQ3"
+            ],
+            "fldhjVlosSKZPkOBA": [
+              "recaJKJs0ZTAYSAYa"
+            ]
+          }
+        },
+        {
+          "id": "recOkEoNBIi2CwBGh",
+          "createdTime": "2026-11-08T03:28:08.000Z",
+          "cellValuesByFieldId": {
+            "fldHtFXdUkhE1i9ip": "EXAMPLE|X|15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF",
+            "fldQ7keT0IKbOJeTo": 15,
+            "fldiywszJ6dHFFqim": 200000077,
+            "fldknAK1CdjNqxYvF": "2026-11-07",
+            "fld0PCKe9ZVC3T7CG": 1,
+            "fld28Vy5pBbUVODt1": 200031204,
+            "fldS5awNkfmIXQzWp": "X",
+            "fldY5OfsOjHTQsCJz": "Example",
+            "fldEgZpzxkZgGVVJa": "EXAMPLE ONLY — source-backed display row; no automation executed. Copies the available nonzero source results.",
+            "fldbzBH8tQlWPe90k": "2026-11-08T03:28:00Z",
+            "fldhwxN6RwZIYh1Ud": "2026-11-08T00:03:56.022Z",
+            "fldSXOAOQt703j6Ms": true,
+            "fldp14mkaqrYBmJKA": 1,
+            "fldWh7v1pZffL68Ci": "{\"identity\":{\"tripKey\":\"15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF\",\"tripRecord\":\"rechRNDCY0iYV7Eau\",\"entry\":{\"key\":\"200000077|200248671\",\"id\":\"200248671\"},\"horse\":{\"id\":\"200005404\",\"name\":\"DANNY DAZZLER\"},\"rider\":{\"id\":\"48775\",\"name\":\"STEPHEN MOORE\"}},\"instances\":[{\"record\":\"rec0CIGrNrRUWv70d\",\"key\":\"15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF\",\"values\":{\"time-one\":\"71.824\",\"faults-one\":\"4\",\"placing\":\"100000\",\"position\":\"16\"},\"observedAt\":\"2026-11-08T00:03:56.022Z\"}]}",
+            "fld4naLYWtrVX8qOt": "{\"recordType\":\"example\",\"trigger\":\"X\"}",
+            "fldduIqyRBrF05YFb": "{\"example\":true,\"source\":\"wef-data.results\",\"recordId\":\"rec0CIGrNrRUWv70d\",\"resultRecords\":[\"rec0CIGrNrRUWv70d\"],\"note\":\"Owner-requested example; no trigger or workflow proof.\"}",
+            "fldp0TW3tistwHMoo": [
+              "recXPCAWdICtShOQy"
+            ],
+            "fldU2cOuevVRPJZiY": [
+              "rec6DKQ1q0sLIx17B"
+            ],
+            "fldrSaCxUOLxN5qYe": [
+              "rec0CIGrNrRUWv70d"
+            ],
+            "flda1hItwASqJb2kw": [
+              "recqSK9XOx1WzEgQ3"
+            ],
+            "fldhjVlosSKZPkOBA": [
+              "recaJKJs0ZTAYSAYa"
+            ]
+          }
+        }
+      ],
+      "actionId": "actluAq9xummzgFld",
+      "hint": "Next, ask the user if they want to display the created records in an interactive view."
+    },
+    "isError": false
+  },
+  "readback": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "recla4HQFHj7NpZid",
+          "createdTime": "2026-11-08T03:28:08.000Z",
+          "cellValuesByFieldId": {
+            "fld0PCKe9ZVC3T7CG": 1,
+            "fld28Vy5pBbUVODt1": 200031204,
+            "fld4naLYWtrVX8qOt": "{\"recordType\":\"example\",\"trigger\":\"Y\"}",
+            "fldEgZpzxkZgGVVJa": "EXAMPLE ONLY — source-backed display row; no automation executed. Illustrates first-change values; no live first-change event was observed.",
+            "fldHtFXdUkhE1i9ip": "EXAMPLE|Y|15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF",
+            "fldQ7keT0IKbOJeTo": 15,
+            "fldS5awNkfmIXQzWp": "Y",
+            "fldU2cOuevVRPJZiY": [
+              {
+                "id": "rec6DKQ1q0sLIx17B",
+                "name": "15|200000077|2026-11-07"
+              }
+            ],
+            "fldWh7v1pZffL68Ci": "{\"identity\":{\"tripKey\":\"15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF\",\"tripRecord\":\"rechRNDCY0iYV7Eau\",\"entry\":{\"key\":\"200000077|200248671\",\"id\":\"200248671\"},\"horse\":{\"id\":\"200005404\",\"name\":\"DANNY DAZZLER\"},\"rider\":{\"id\":\"48775\",\"name\":\"STEPHEN MOORE\"}},\"instances\":[{\"record\":\"rec0CIGrNrRUWv70d\",\"key\":\"15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF\",\"values\":{\"time-one\":\"71.824\",\"faults-one\":\"4\"},\"observedAt\":\"2026-11-08T00:03:56.022Z\"}]}",
+            "fldY5OfsOjHTQsCJz": "Example",
+            "flda1hItwASqJb2kw": [
+              {
+                "id": "recqSK9XOx1WzEgQ3",
+                "name": "200005404"
+              }
+            ],
+            "fldbzBH8tQlWPe90k": "2026-11-08T03:28:00Z",
+            "fldduIqyRBrF05YFb": "{\"example\":true,\"source\":\"wef-data.results\",\"recordId\":\"rec0CIGrNrRUWv70d\",\"resultRecords\":[\"rec0CIGrNrRUWv70d\"],\"note\":\"Owner-requested example; no trigger or workflow proof.\"}",
+            "fldhjVlosSKZPkOBA": [
+              {
+                "id": "recaJKJs0ZTAYSAYa",
+                "name": "48775"
+              }
+            ],
+            "fldhwxN6RwZIYh1Ud": "2026-11-08T00:03:56.022Z",
+            "fldiywszJ6dHFFqim": 200000077,
+            "fldknAK1CdjNqxYvF": "2026-11-07",
+            "fldp0TW3tistwHMoo": [
+              {
+                "id": "recXPCAWdICtShOQy",
+                "name": "15|200000077"
+              }
+            ],
+            "fldp14mkaqrYBmJKA": 1,
+            "fldrSaCxUOLxN5qYe": [
+              {
+                "id": "rec0CIGrNrRUWv70d",
+                "name": "15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF"
+              }
+            ]
+          }
+        },
+        {
+          "id": "recOkEoNBIi2CwBGh",
+          "createdTime": "2026-11-08T03:28:08.000Z",
+          "cellValuesByFieldId": {
+            "fld0PCKe9ZVC3T7CG": 1,
+            "fld28Vy5pBbUVODt1": 200031204,
+            "fld4naLYWtrVX8qOt": "{\"recordType\":\"example\",\"trigger\":\"X\"}",
+            "fldEgZpzxkZgGVVJa": "EXAMPLE ONLY — source-backed display row; no automation executed. Copies the available nonzero source results.",
+            "fldHtFXdUkhE1i9ip": "EXAMPLE|X|15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF",
+            "fldQ7keT0IKbOJeTo": 15,
+            "fldS5awNkfmIXQzWp": "X",
+            "fldSXOAOQt703j6Ms": true,
+            "fldU2cOuevVRPJZiY": [
+              {
+                "id": "rec6DKQ1q0sLIx17B",
+                "name": "15|200000077|2026-11-07"
+              }
+            ],
+            "fldWh7v1pZffL68Ci": "{\"identity\":{\"tripKey\":\"15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF\",\"tripRecord\":\"rechRNDCY0iYV7Eau\",\"entry\":{\"key\":\"200000077|200248671\",\"id\":\"200248671\"},\"horse\":{\"id\":\"200005404\",\"name\":\"DANNY DAZZLER\"},\"rider\":{\"id\":\"48775\",\"name\":\"STEPHEN MOORE\"}},\"instances\":[{\"record\":\"rec0CIGrNrRUWv70d\",\"key\":\"15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF\",\"values\":{\"time-one\":\"71.824\",\"faults-one\":\"4\",\"placing\":\"100000\",\"position\":\"16\"},\"observedAt\":\"2026-11-08T00:03:56.022Z\"}]}",
+            "fldY5OfsOjHTQsCJz": "Example",
+            "flda1hItwASqJb2kw": [
+              {
+                "id": "recqSK9XOx1WzEgQ3",
+                "name": "200005404"
+              }
+            ],
+            "fldbzBH8tQlWPe90k": "2026-11-08T03:28:00Z",
+            "fldduIqyRBrF05YFb": "{\"example\":true,\"source\":\"wef-data.results\",\"recordId\":\"rec0CIGrNrRUWv70d\",\"resultRecords\":[\"rec0CIGrNrRUWv70d\"],\"note\":\"Owner-requested example; no trigger or workflow proof.\"}",
+            "fldhjVlosSKZPkOBA": [
+              {
+                "id": "recaJKJs0ZTAYSAYa",
+                "name": "48775"
+              }
+            ],
+            "fldhwxN6RwZIYh1Ud": "2026-11-08T00:03:56.022Z",
+            "fldiywszJ6dHFFqim": 200000077,
+            "fldknAK1CdjNqxYvF": "2026-11-07",
+            "fldp0TW3tistwHMoo": [
+              {
+                "id": "recXPCAWdICtShOQy",
+                "name": "15|200000077"
+              }
+            ],
+            "fldp14mkaqrYBmJKA": 1,
+            "fldrSaCxUOLxN5qYe": [
+              {
+                "id": "rec0CIGrNrRUWv70d",
+                "name": "15|200000077|2026-11-07|1|200031204|200248671|7A63AC2358B34EC7907B3C59804FA1BF"
+              }
+            ]
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 2
+      }
+    },
+    "isError": false
+  },
+  "verified": true
+}

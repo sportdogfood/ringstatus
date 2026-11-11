@@ -1,0 +1,10 @@
+{
+  "first_error": "offline summary write failed",
+  "deleted_first": 500,
+  "deleted_after_next_cycle": 500,
+  "second": {
+    "ok": false,
+    "reason": "Unfinished cleanup event requires reconciliation",
+    "deleted": 0
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "command": "Wrangler 4.82.1 deploy --config workers/wef-schedules-decoded/wrangler.jsonc",
+  "started": "2026-11-10T22:39:58.1903670Z",
+  "ended": "2026-11-10T22:40:04.5153430Z",
+  "exitCode": 0,
+  "stdout": "\n ⛅️ wrangler 4.82.1 (update available 4.160.0)\n──────────────────────────────────────────────\nTotal Upload: 38.69 KiB / gzip: 10.45 KiB\nWorker Startup Time: 3 ms\nYour Worker has access to the following bindings:\nBinding                                                             Resource                  \nenv.SGL_PACER (SglPacer)                                            Durable Object            \nenv.RUNNER_ORIGIN (\"https://wef-decoder-runner.ringstatus...\")      Environment Variable      \n\nUploaded wef-schedules-decoded (3.33 sec)\nDeployed wef-schedules-decoded triggers (1.25 sec)\n  https://wef-schedules-decoded.gombcg.workers.dev\nCurrent Version ID: 1c176106-d141-487c-a762-fd3ea765f2a6",
+  "stderr": null
+}

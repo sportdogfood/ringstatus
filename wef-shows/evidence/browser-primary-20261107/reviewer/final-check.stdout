@@ -1,0 +1,1 @@
+PASS: late authenticated response decoded in actual capture; wrong auth withheld; browser closed; no auth in returned evidence; exact Worker decoder; actual normalizer preserves87class IDs and one legitimate break.

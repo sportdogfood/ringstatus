@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict');
+const path=require('node:path');
+const root=path.resolve(__dirname,'../../../staged/browser-primary-20261107/wef-shows');
+const {capture,PAGE}=require(path.join(root,'browser-discovery'));
+const payload=require(path.join(root,'tests/fixtures/browser-schedule.json'));
+let handler,closed=false,late=false;
+const emit=(endpoint,body)=>handler({url:()=>`https://sglapi.wellingtoninternational.com/${endpoint}?customer_id=15`,status:()=>200,json:async()=>body});
+const page={on:(n,h)=>handler=h,goto:async()=>emit('shows',{default_show:200000077}),waitForURL:async()=>{setTimeout(()=>{late=true;emit('schedule',payload)},20)},url:()=>PAGE+'?sid=200000077&date=2026-11-07'};
+const chromium={launch:async()=>({newContext:async()=>({newPage:async()=>page}),close:async()=>{closed=true}})};
+(async()=>{await assert.rejects(capture({chromium,timeoutMs:200}),/Browser default responses missing/);assert(closed);assert(!late);await new Promise(r=>setTimeout(r,30));assert(late);console.log('CONFIRMED: capture rejected and closed before valid schedule response arriving 20ms after matching URL; 200ms budget unused.');})().catch(e=>{console.error(e);process.exitCode=1});

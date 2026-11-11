@@ -1,0 +1,135 @@
+{
+  "base": "appeqxxJyPGS1iqdm",
+  "readback_at": "2026-11-08T23:36:13.889Z",
+  "fields": [
+    {
+      "table": "tblUgcgOMvfjbEthx",
+      "id": "fldOiyXGqD2lPqxVV",
+      "name": "class-status-as-of",
+      "type": "multilineText",
+      "description": "Local Class-owned timing summary. Does not alter synced acquisition fields.",
+      "actionId": "act7ydYSo1kJrwbRj"
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "id": "fld827x57q2nEWCbE",
+      "name": "estimated-start",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso",
+          "format": "YYYY-MM-DD"
+        },
+        "timeFormat": {
+          "name": "24hour",
+          "format": "HH:mm"
+        },
+        "timeZone": "America/New_York"
+      },
+      "actionId": "actS3mwTQ54Du4NGl"
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "id": "fldJyC9As6FOqCqeJ",
+      "name": "estimated-starts-in",
+      "type": "number",
+      "options": {
+        "precision": 4
+      },
+      "actionId": "actaSPF0by0UeGVax"
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "id": "fldOIc69uuSfj7oAp",
+      "name": "estimated-end",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso",
+          "format": "YYYY-MM-DD"
+        },
+        "timeFormat": {
+          "name": "24hour",
+          "format": "HH:mm"
+        },
+        "timeZone": "America/New_York"
+      },
+      "actionId": "actrNQYcmQQlwFRuy"
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "id": "fldf6rWIGZxLwmb2U",
+      "name": "estimated-ends-in",
+      "type": "number",
+      "options": {
+        "precision": 4
+      },
+      "actionId": "actx3bsUbgUQ64NCm"
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "id": "fldkXh0IdRizi7hfK",
+      "name": "current-trips",
+      "type": "multilineText",
+      "actionId": "actdMrwfzkdtjxsBO"
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "id": "fldZ3ishW7z3dIa3D",
+      "name": "next-trips",
+      "type": "multilineText",
+      "actionId": "actm4jSQZpv4tt9Wq"
+    }
+  ],
+  "checks": [
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "name": "estimated-start",
+      "id": "fld827x57q2nEWCbE",
+      "type": "dateTime",
+      "pass": true
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "name": "estimated-starts-in",
+      "id": "fldJyC9As6FOqCqeJ",
+      "type": "number",
+      "pass": true
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "name": "estimated-end",
+      "id": "fldOIc69uuSfj7oAp",
+      "type": "dateTime",
+      "pass": true
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "name": "estimated-ends-in",
+      "id": "fldf6rWIGZxLwmb2U",
+      "type": "number",
+      "pass": true
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "name": "current-trips",
+      "id": "fldkXh0IdRizi7hfK",
+      "type": "multilineText",
+      "pass": true
+    },
+    {
+      "table": "tblxhS1xWpfHKTd6l",
+      "name": "next-trips",
+      "id": "fldZ3ishW7z3dIa3D",
+      "type": "multilineText",
+      "pass": true
+    },
+    {
+      "table": "tblUgcgOMvfjbEthx",
+      "name": "class-status-as-of",
+      "id": "fldOiyXGqD2lPqxVV",
+      "type": "multilineText",
+      "pass": true
+    }
+  ]
+}

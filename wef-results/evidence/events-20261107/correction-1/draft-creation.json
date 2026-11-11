@@ -1,0 +1,119 @@
+[
+  {
+    "name": "Results events — wef-data.trips created",
+    "response": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wflOFAja0i8ShBVeQ",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wflOFAja0i8ShBVeQ",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "Results events — wef-data.trips changed",
+    "response": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wfleHE4BSvsqFsG64",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wfleHE4BSvsqFsG64",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "Results events — wef-data.results created",
+    "response": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wflCBa1cK8EyqkCBz",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wflCBa1cK8EyqkCBz",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "Results events — wef-data.results changed",
+    "response": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wflUMOcFB8B3Qqtuc",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wflUMOcFB8B3Qqtuc",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "Results events — reconcile and empty links",
+    "response": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wfldx7lPNyHt1ZJ6z",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wfldx7lPNyHt1ZJ6z",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "Results events — log cap every three hours",
+    "response": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wflw2JEI2FLbLhB52",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wflw2JEI2FLbLhB52",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "Results events — completed logs 7pm Eastern",
+    "response": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wflfYo9GeBO4wE0YF",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wflfYo9GeBO4wE0YF",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "Results events — default show created",
+    "response": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wfl7ompDrRRnx7EUR",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wfl7ompDrRRnx7EUR",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "name": "Results events — default show changed",
+    "response": {
+      "content": [],
+      "structuredContent": {
+        "automationId": "wflrl9c6qwVTYX4Yh",
+        "automationUrl": "https://airtable.com/appK9IX59jFwUkB2u/wflrl9c6qwVTYX4Yh",
+        "isValid": true,
+        "errors": []
+      },
+      "isError": false
+    }
+  }
+]

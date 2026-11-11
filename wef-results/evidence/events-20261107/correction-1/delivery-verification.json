@@ -1,0 +1,138 @@
+{
+  "verified_at_utc": "2026-11-08T03:17:40.451454+00:00",
+  "status": "PASS",
+  "scope": "Approved cleaner corrections, focused offline checks and independent review, native draft source/config/disabled readback, cleanup inventory and original baseline preservation; not live execution",
+  "candidate_hashes": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\event-core.js",
+      "sha256": "05726d3943bc5963844521d3b5b3c2f475f9794ec5ea20a92d325f83efaec26e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\events.js",
+      "sha256": "5ee989d5dce37e5d78293d99d81a5c8b5c29dcc7018c0670f006ef63e9228d6a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\linker.js",
+      "sha256": "b9c4bfbbf69c17ebfa2c7f92642ba10b112223d4b06b1cd704762798723e31a1"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\cleaner.js",
+      "sha256": "fa53e0c5b4c36a306d40330d0143552c6d1f18e16ff55f481bfafb875849b883"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\build-events.js",
+      "sha256": "9071f15a263a4890de5b9563502aeecfcf0d12360fb3b7d0cc5303f0e64cf167"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-results\\test\\events.test.js",
+      "sha256": "7d0bb5a14a79e951a1138f97c25d4f22bd20d2d25e3a407a3692f8feb8ded677"
+    }
+  ],
+  "offline_checks": 24,
+  "independent_review": "COMPLETE / candidate PASS",
+  "review_packet_integrity": "PASS",
+  "native_drafts": [
+    {
+      "name": "Results events \u00e2\u20ac\u201d wef-data.trips created",
+      "id": "wflOFAja0i8ShBVeQ",
+      "status": "undeployed",
+      "configuration": "valid",
+      "deployedVersion": null,
+      "scriptMatch": true,
+      "inputsMatch": true,
+      "triggerMatch": true
+    },
+    {
+      "name": "Results events \u00e2\u20ac\u201d default show created",
+      "id": "wfl7ompDrRRnx7EUR",
+      "status": "undeployed",
+      "configuration": "valid",
+      "deployedVersion": null,
+      "scriptMatch": true,
+      "inputsMatch": true,
+      "triggerMatch": true
+    },
+    {
+      "name": "Results events \u00e2\u20ac\u201d wef-data.results created",
+      "id": "wflCBa1cK8EyqkCBz",
+      "status": "undeployed",
+      "configuration": "valid",
+      "deployedVersion": null,
+      "scriptMatch": true,
+      "inputsMatch": true,
+      "triggerMatch": true
+    },
+    {
+      "name": "Results events \u00e2\u20ac\u201d wef-data.results changed",
+      "id": "wflUMOcFB8B3Qqtuc",
+      "status": "undeployed",
+      "configuration": "valid",
+      "deployedVersion": null,
+      "scriptMatch": true,
+      "inputsMatch": true,
+      "triggerMatch": true
+    },
+    {
+      "name": "Results events \u00e2\u20ac\u201d completed logs 7pm Eastern",
+      "id": "wflfYo9GeBO4wE0YF",
+      "status": "undeployed",
+      "configuration": "valid",
+      "deployedVersion": null,
+      "scriptMatch": true,
+      "inputsMatch": true,
+      "triggerMatch": true
+    },
+    {
+      "name": "Results events \u00e2\u20ac\u201d wef-data.trips changed",
+      "id": "wfleHE4BSvsqFsG64",
+      "status": "undeployed",
+      "configuration": "valid",
+      "deployedVersion": null,
+      "scriptMatch": true,
+      "inputsMatch": true,
+      "triggerMatch": true
+    },
+    {
+      "name": "Results events \u00e2\u20ac\u201d reconcile and empty links",
+      "id": "wfldx7lPNyHt1ZJ6z",
+      "status": "undeployed",
+      "configuration": "valid",
+      "deployedVersion": null,
+      "scriptMatch": true,
+      "inputsMatch": true,
+      "triggerMatch": true
+    },
+    {
+      "name": "Results events \u00e2\u20ac\u201d default show changed",
+      "id": "wflrl9c6qwVTYX4Yh",
+      "status": "undeployed",
+      "configuration": "valid",
+      "deployedVersion": null,
+      "scriptMatch": true,
+      "inputsMatch": true,
+      "triggerMatch": true
+    },
+    {
+      "name": "Results events \u00e2\u20ac\u201d log cap every three hours",
+      "id": "wflw2JEI2FLbLhB52",
+      "status": "undeployed",
+      "configuration": "valid",
+      "deployedVersion": null,
+      "scriptMatch": true,
+      "inputsMatch": true,
+      "triggerMatch": true
+    }
+  ],
+  "protected_original_hashes_match": true,
+  "business_tables_empty": [
+    "snapshot",
+    "run-logs",
+    "heartbeat",
+    "errs-log"
+  ],
+  "cleanup_inventory_tables": 20,
+  "readmes_version": "1.8",
+  "activation": "NONE",
+  "manual_business_runs": "NONE",
+  "live_execution": "UNVERIFIED"
+}

@@ -5,7 +5,6 @@ import {fileURLToPath} from 'node:url';
 export const BASE = 'appCaSmL819KK7UFJ';
 export const TABLES = Object.freeze({shows:'tblJA5CUon5s1sWib', days:'tbl14MaCCDw6dAywH', times:'tblBJ8DwRklrmDNb5', health:'tblcYgKFwKtILSdU8'});
 export const CLOCK_URL = 'https://sglapp.showgroundslive.com/version.json';
-export const HEALTH_URL = 'https://wef-schedules-decoded.gombcg.workers.dev/health';
 const timezone = 'America/New_York';
 const formatter = new Intl.DateTimeFormat('en-CA', {timeZone:timezone, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hourCycle:'h23'});
 
@@ -82,22 +81,22 @@ export function airtable({token, request=fetch, pause=ms=>new Promise(r=>setTime
 
 export async function observe({now, request=fetch}) {
   const results={};
-  // Independent reads: a failed proxy must not suppress a valid clock observation.
-  for(const [key,base] of [['clock',CLOCK_URL],['decoder',HEALTH_URL]]) {
+  // Clock only; decoder health is monitored separately.
+  for(const [key,base] of [['clock',CLOCK_URL]]) {
     try {
       const url=new URL(base); if(key==='clock')url.searchParams.set('_',String(Date.parse(now)));
       const headers={Accept:'application/json'};
       if(key==='clock')headers['User-Agent']='Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1';
+      if(key==='clock')headers['Sec-Fetch-Site']='cross-site';
       const r=await request(url.toString(), {method:'GET',cache:'no-store',redirect:'error',headers,signal:AbortSignal.timeout(30000)});
       if(key==='clock') {
         const header=r.headers.get('date'), parsed=Date.parse(header||'');
         const age=r.headers.get('age');
-        results.clock={ok:r.ok&&Number.isFinite(parsed),status:r.status,header,sourceTime:Number.isFinite(parsed)?new Date(parsed).toISOString():null,
+        const payload=await r.json().catch(()=>null);
+        const version=typeof payload?.version==='string'?payload.version:null;
+        results.clock={ok:r.ok&&Number.isFinite(parsed),version,status:r.status,header,sourceTime:Number.isFinite(parsed)?new Date(parsed).toISOString():null,
           freshness:age!==null&&Number(age)>0?'Stale':'Unverified',
-          detail:`HTTP ${r.status}; Date ${header||'missing'}; Age ${age??'absent'}. Response-header clock only; cache freshness is not yet independently verified.`};
-      } else {
-        const p=await r.json().catch(()=>null);
-        results.decoder={ok:r.status===200&&p?.ok===true,status:r.status,detail:`HTTP ${r.status}; ok=${String(p?.ok)}; rings=${String(p?.rings)}; schedule_status=${String(p?.schedule_status)}`};
+          detail:`HTTP ${r.status}; version ${version??'missing'}; Date ${header||'missing'}; Age ${age??'absent'}. Response-header clock only; cache freshness is not yet independently verified.`};
       }
     } catch {results[key]={ok:false,status:null,detail:`${key} request failed or timed out`};}
   }
@@ -117,20 +116,26 @@ export async function run({now=new Date().toISOString(), api, request=fetch, sta
     // Reserve before network access. Do not retry an uncertain write within this slot.
     await filesystem.writeFile(statePath,JSON.stringify({slot,attemptedAt:now})+'\n');
     const [shows,days,health]=await Promise.all([api.list(TABLES.shows),api.list(TABLES.days),api.list(TABLES.health)]);
-    const show=defaultShow(shows), day=showDay(days,show.id,localTime(now).date);
+    const show=defaultShow(shows);
+    const day=showDay(days,show.id,localTime(now).date)??showDay(days,show.id,show.fields.selected_date);
     const links={show:[show.id],'show-day':day?[day.id]:[]};
     const results=await observe({now,request}), failures=[];
     if(results.clock.ok) {
-      const sourceDay=showDay(days,show.id,localTime(results.clock.sourceTime).date);
-      try {await api.upsert(TABLES.times,'show-time-key',{'show-time-key':`15|${show.fields.show_id}|${localTime(results.clock.sourceTime).date}`,show:[show.id],'show-day':sourceDay?[sourceDay.id]:[], 'source-url':CLOCK_URL,'source-date-header':results.clock.header,'source-time':results.clock.sourceTime,'checked-at':now,freshness:results.clock.freshness,notes:results.clock.detail});}catch{failures.push('Clock observation save failed');}
+      const sourceDate=localTime(results.clock.sourceTime).date;
+      const sourceDay=showDay(days,show.id,sourceDate)??day;
+      try {
+        if(!sourceDay)throw Error('Matching source or selected show-day required');
+        const notes=results.clock.detail+(sourceDay.fields.date===sourceDate?'':` Linked to selected show-day ${sourceDay.fields.date}; source clock date remains ${sourceDate}.`);
+        await api.upsert(TABLES.times,'show-time-key',{'show-time-key':`15|${show.fields.show_id}|${sourceDate}`,show:[show.id],'show-day':[sourceDay.id], 'source-url':CLOCK_URL,'source-date-header':results.clock.header,'source-time':results.clock.sourceTime,'checked-at':now,freshness:results.clock.freshness,notes});
+      }catch{failures.push('Clock observation save failed');}
     }
-    for(const [key,endpoint] of [['clock',CLOCK_URL],['decoder',HEALTH_URL]]) {
+    for(const [key,endpoint] of [['clock',CLOCK_URL]]) {
       const prior=health.filter(r=>r.fields['health-key']===key);
       if(prior.length>1){failures.push(`Duplicate ${key} health record`);continue;}
       try{await api.upsert(TABLES.health,'health-key',healthFields(key,endpoint,results[key],prior[0]?.fields,links,now));}catch{failures.push(`${key} health save failed`);}
     }
     // Recording an upstream outage is a completed monitoring run, not healthy data.
-    return {status:failures.length?'Failed':'Recorded',showId:show.fields.show_id,slot,clock:results.clock.ok,decoder:results.decoder.ok,errors:failures};
+    return {status:failures.length?'Failed':'Recorded',showId:show.fields.show_id,slot,clock:results.clock.ok,clockVersion:results.clock.version,errors:failures};
   } finally {await lock.close();await filesystem.unlink(statePath+'.lock');}
 }
 

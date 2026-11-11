@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-07T21:36:45.646Z",
+  "results": [
+    {
+      "kind": "schedule",
+      "status": 502,
+      "lane": "cloudflare-fallback",
+      "queueStart": "1794087412302",
+      "queueEnd": "1794087412655",
+      "ok": false
+    }
+  ]
+}

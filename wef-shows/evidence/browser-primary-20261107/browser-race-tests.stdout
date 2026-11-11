@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: captured browser metadata validates without either proxy endpoint
+ok 1 - captured browser metadata validates without either proxy endpoint
+  ---
+  duration_ms: 3.6073
+  type: 'test'
+  ...
+# Subtest: browser evidence rejects mismatched default, URL, day, incomplete metadata and encoded payload
+ok 2 - browser evidence rejects mismatched default, URL, day, incomplete metadata and encoded payload
+  ---
+  duration_ms: 6.7199
+  type: 'test'
+  ...
+# Subtest: browser launch is headless with new context, clean page URL and cleanup; response-only acquisition
+ok 3 - browser launch is headless with new context, clean page URL and cleanup; response-only acquisition
+  ---
+  duration_ms: 2.087
+  type: 'test'
+  ...
+# Subtest: missing browser response and whole-attempt timeout close the browser and fail for fallback
+ok 4 - missing browser response and whole-attempt timeout close the browser and fail for fallback
+  ---
+  duration_ms: 51.1731
+  type: 'test'
+  ...
+# Subtest: browser discovery updates focus evidence and preserves scoped overrides
+ok 5 - browser discovery updates focus evidence and preserves scoped overrides
+  ---
+  duration_ms: 49.5217
+  type: 'test'
+  ...
+# Subtest: response parsing after URL update still supplies primary evidence instead of falling back
+ok 6 - response parsing after URL update still supplies primary evidence instead of falling back
+  ---
+  duration_ms: 23.6801
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 238.0285

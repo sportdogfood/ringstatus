@@ -1,0 +1,27 @@
+[
+  {
+    "id": "recyDF0NX2VI5tSZl",
+    "name": "runs",
+    "purpose": "LOGGING CLEANUP - runs: clear completed eligible records at7p.m.America/New_York each day; every3hours at1,000+ records delete oldest eligible until500totalremain; also clear completed eligible records on new show. Protect active/current and pending logs. Delete only; no archives/backups or separate cleanup schedule. Collection run evidence and counts; included in BOTH daily and1,000/500 logging cleanup, not new-show-only. Target is500totalremaining, not500deletions; active/current/pending logging stays protected."
+  },
+  {
+    "id": "recy2uO09iogJYaSu",
+    "name": "run-logs",
+    "purpose": "LOGGING CLEANUP - run-logs: clear completed eligible records at7p.m.America/New_York each day; every3hours at1,000+ records delete oldest eligible until500totalremain; also clear completed eligible records on new show. Protect active/current and pending logs. Delete only; no archives/backups or separate cleanup schedule. The same independent lane cleans delivered local run/error logs; preserve pending/current files and delivery acknowledgments. Local counts are in the saved action history; numeric records-deleted is Airtable-only. Target is500totalremaining, not500deletions; active/current/pending logging stays protected."
+  },
+  {
+    "id": "recm1It0cR6TNQtqS",
+    "name": "err-logs",
+    "purpose": "LOGGING CLEANUP - err-logs: clear completed eligible records at7p.m.America/New_York each day; every3hours at1,000+ records delete oldest eligible until500totalremain; also clear completed eligible records on new show. Protect active/current and pending logs. Delete only; no archives/backups or separate cleanup schedule. The same independent lane cleans delivered local run/error logs; preserve pending/current files and delivery acknowledgments. Local counts are in the saved action history; numeric records-deleted is Airtable-only. Target is500totalremaining, not500deletions; active/current/pending logging stays protected."
+  },
+  {
+    "id": "rectdoiWd4z9gCKdU",
+    "name": "heartbeat",
+    "purpose": "LOGGING CLEANUP - heartbeat: clear completed eligible records at7p.m.America/New_York each day; every3hours at1,000+ records delete oldest eligible until500totalremain; also clear completed eligible records on new show. Protect active/current and pending logs. Delete only; no archives/backups or separate cleanup schedule. Current mutable collector/linker singleton heartbeats have no completion field and remain protected. Target is500totalremaining, not500deletions; active/current/pending logging stays protected."
+  },
+  {
+    "id": "recDexXW9Nl1glQvT",
+    "name": "cleanupV2",
+    "purpose": "SOLE CLEANUP CONTROL AND LATEST OUTCOME - Checked owned tables participate. Completed logging including runs clears daily7p.m.Eastern; every3hours1,000+total/keep500total; newshow clears owned show records/completed logs. Preserve current/pending logs,references and history. Counts/timestamps/result/error/run-id change only for actual actions, not documentation. Delete only; no new schedule or backups. Target is500totalremaining, not500deletions; active/current/pending logging stays protected."
+  }
+]

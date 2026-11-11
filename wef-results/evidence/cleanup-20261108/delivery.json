@@ -1,0 +1,54 @@
+{
+  "authority": "November 8 Eastern, user approved adding and running one-time X backfill and separate cleanup contract and workflow.",
+  "baselineHead": "73699ab4cd2801b8642cc1ff25b8f4290e0b4330",
+  "offlineChecks": 24,
+  "backfillPriorSchedule": {
+    "triggerAt": "2026-11-09T00:41:15.000Z",
+    "status": "undeployed",
+    "runs": []
+  },
+  "backfillBlocker": "Computer Use stopped because it could not verify the browser URL on Windows. User activation handoff pending.",
+  "backfill": {
+    "id": "wfllhnv14Gm2MOjGc",
+    "status": "undeployed",
+    "configuration": "valid",
+    "trigger": {
+      "type": "cron",
+      "inputs": {
+        "type": "oneTime",
+        "config": {
+          "obj": {
+            "triggerDateTime": "2026-11-09T01:00:00.000Z"
+          }
+        }
+      }
+    },
+    "inputs": {
+      "obj": {
+        "date": "2026-11-08"
+      }
+    },
+    "exactScript": true
+  },
+  "cleanup": {
+    "id": "wflw2JEI2FLbLhB52",
+    "status": "undeployed",
+    "configuration": "valid",
+    "trigger": {
+      "type": "cron",
+      "inputs": {
+        "type": "minutely",
+        "config": {
+          "obj": {
+            "width": 10
+          }
+        },
+        "start": "2026-11-09T00:42:14.686Z"
+      }
+    },
+    "inputs": {
+      "obj": {}
+    },
+    "exactScript": true
+  }
+}

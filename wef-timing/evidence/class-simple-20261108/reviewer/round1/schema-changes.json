@@ -1,0 +1,13 @@
+{
+  "base": "appeqxxJyPGS1iqdm",
+  "status": "prepared_not_applied",
+  "additions": [
+    {"table":"tblxhS1xWpfHKTd6l","name":"estimated-start","type":"dateTime","options":{"dateFormat":{"name":"iso"},"timeFormat":{"name":"24hour"},"timeZone":"America/New_York"}},
+    {"table":"tblxhS1xWpfHKTd6l","name":"estimated-starts-in","type":"number","options":{"precision":4}},
+    {"table":"tblxhS1xWpfHKTd6l","name":"estimated-end","type":"dateTime","options":{"dateFormat":{"name":"iso"},"timeFormat":{"name":"24hour"},"timeZone":"America/New_York"}},
+    {"table":"tblxhS1xWpfHKTd6l","name":"estimated-ends-in","type":"number","options":{"precision":4}},
+    {"table":"tblxhS1xWpfHKTd6l","name":"current-trips","type":"multilineText"},
+    {"table":"tblxhS1xWpfHKTd6l","name":"next-trips","type":"multilineText"},
+    {"table":"tblUgcgOMvfjbEthx","name":"class-status-as-of","type":"multilineText","description":"Local Class-owned timing summary. Does not alter synced acquisition fields."}
+  ]
+}

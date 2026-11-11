@@ -8,7 +8,7 @@ const classRoute='/classes/200031233?show_id=200000077&customer_id=15&cgid=-1';
 const env={RUNNER_ORIGIN:'https://runner.example',RUNNER_KEY:'offline-verification-key',SGL_COOKIE:'offline-cookie'};
 const decoded=p=>Response.json(p,{headers:{'X-RS-Decoded':'1'}});
 const request=(path=route,key)=>new Request('https://worker.example'+path,{headers:key?{'X-RS-Fallback-Test':key}:{}});
-function load(primary,fallback,classify=()=>null){return new Function('fetch','fetchFallback','publicRoute',shared.replace('export const sourceHandler =','return'))(primary,fallback,classify);}
+function load(primary,fallback,classify=()=>null,renew=async()=>{},sleep=fn=>{fn();return 0;}){return new Function('fetch','fetchFallback','publicRoute','scheduleHealth','renewFallbackToken','setTimeout',shared.replace('export const sourceHandler =','return'))(primary,fallback,classify,async()=>{throw Error('Health requires its separate integration fixture');},renew,sleep);}
 
 test('healthy local response is returned without invoking fallback',async()=>{
  let primary=0,backup=0;const p={show:{show_id:200000077},rings:[]};
@@ -27,14 +27,54 @@ test('secret-authorized verification bypasses local for both routes; invalid key
 });
 test('fallback failure remains an error and invalid routes do not enter fallback',async()=>{
  let backup=0;const app=load(async()=>new Response('unavailable',{status:502}),async()=>{backup++;return Response.json({message:'failed'},{status:502});});
- const r=await app.fetch(request(),env);assert.equal(r.status,502);assert.equal(r.headers.has('x-rs-decoded'),false);assert.equal(backup,1);
- assert.equal((await app.fetch(request('/people/1?pid=1&show_id=1&customer_id=15',env.RUNNER_KEY),env)).status,502);assert.equal(backup,2);
- assert.equal((await app.fetch(request(route+'&extra=1',env.RUNNER_KEY),env)).status,400);assert.equal(backup,2);
+ const r=await app.fetch(request(),env);assert.equal(r.status,502);assert.equal(r.headers.has('x-rs-decoded'),false);assert.equal(backup,10);
+ assert.equal((await app.fetch(request('/people/1?pid=1&show_id=1&customer_id=15',env.RUNNER_KEY),env)).status,502);assert.equal(backup,11);
+ assert.equal((await app.fetch(request(route+'&extra=1',env.RUNNER_KEY),env)).status,400);assert.equal(backup,11);
 });
-function loadFallback(tcp,decoder,classify=()=>null,publicFetch){return new Function('tcpFetch','decoder','setTimeout','publicRoute','fetchPublic',fallbackSource.replace('export async function fetchFallback','async function fetchFallback')+';return fetchFallback;')(tcp,decoder,fn=>{fn();return 0;},classify,publicFetch);}
+function loadFallback(tcp,decoder,classify=()=>null,publicFetch){return new Function('tcpFetch','decoder','setTimeout','publicRoute','fetchPublic','recordRenewal',fallbackSource.replaceAll('export async function ','async function ')+';return fetchFallback;')(tcp,decoder,fn=>{fn();return 0;},classify,publicFetch,async()=>true);}
+test('actual dated schedule and class routes recover with header2 inside the same queue operation',async()=>{
+ for(const path of [route,classRoute]){
+  const profiles=[],pauses=[];let primary=0,renewals=0;
+  const app=load(async()=>{primary++;return new Response('',{status:502});},async(req,config,options)=>{
+   const profile=options?.profile||'original-header';profiles.push(profile);
+   return profile==='profile-fb-header2'?decoded({result:'usable'}):new Response('',{status:502});
+  },()=>null,async()=>{renewals++;},(fn,ms)=>{pauses.push(ms);fn();});
+  const r=await app.fetch(request(path),env);assert.equal(r.status,200);assert.equal(r.headers.get('x-rs-header-profile'),'profile-fb-header2');assert.equal(primary,1);assert.equal(renewals,0);assert.deepEqual(profiles,['original-header','profile-fb-header1','profile-fb-header2']);assert.deepEqual(pauses,[1000,1000]);
+ }
+});
+test('all profiles fail: renew once, repeat the five once, then return the failure',async()=>{
+ const profiles=[];let renewals=0;
+ const app=load(async()=>new Response('',{status:502}),async(req,config,options)=>{profiles.push(options?.profile||'original-header');return new Response('',{status:502});},()=>null,async()=>{renewals++;});
+ const r=await app.fetch(request(),env);assert.equal(r.status,502);assert.equal(renewals,1);assert.deepEqual(profiles,['original-header','profile-fb-header1','profile-fb-header2','windows-clean','android-clean','original-header','profile-fb-header1','profile-fb-header2','windows-clean','android-clean']);
+});
+test('each added profile can recover either route and stops before renewal',async()=>{
+ for(const path of [route,classRoute]){
+  for(const winner of ['windows-clean','android-clean']){
+   const profiles=[],pauses=[];
+   let renewals=0;
+   const app=load(async()=>new Response('',{status:502}),async(req,config,options)=>{
+    const profile=options?.profile||'original-header';
+    profiles.push(profile);
+    return profile===winner?decoded({result:'usable'}):new Response('',{status:502});
+   },()=>null,async()=>{renewals++;},(fn,ms)=>{pauses.push(ms);fn();});
+   const response=await app.fetch(request(path),env);
+   assert.equal(response.status,200);
+   assert.equal(response.headers.get('x-rs-header-profile'),winner);
+   const expected=['original-header','profile-fb-header1','profile-fb-header2','windows-clean','android-clean'];
+   assert.deepEqual(profiles,expected.slice(0,expected.indexOf(winner)+1));
+   assert.equal(renewals,0);
+   assert.ok(pauses.every(ms=>ms>=1000));
+  }
+ }
+});
+test('health probes retain their separate recovery owner; empty 200 never becomes collection success',async()=>{
+ let calls=0;const app=load(async()=>new Response('',{status:502}),async()=>{calls++;return decoded({});});
+ assert.equal((await app.fetch(request(),{...env,SGL_HEALTH_PROBE:true})).status,200);assert.equal(calls,1);
+ assert.equal((await app.fetch(request(),env)).status,502);assert.equal(calls,11);
+});
 const anonymous=exp=>'header.'+btoa(JSON.stringify({anon:true,exp})) +'.signature';
 test('fallback renews anonymously inside Cloudflare and reuses token without runner calls',async()=>{
- let renewals=0,reads=0;const tcp=async(url,options)=>{assert.equal(url,'https://sglapi.wellingtoninternational.com/utilities/get-config');assert.equal(options.headers.Cookie,env.SGL_COOKIE);renewals++;return Response.json({_t:anonymous(Math.floor(Date.now()/1000)+2592000)});};
+ let renewals=0,reads=0;const tcp=async(url,options)=>{assert.equal(url,'https://sglapi.wellingtoninternational.com/utilities/get-config');assert.equal(options.headers.Cookie,env.SGL_COOKIE);assert.equal(options.headers['Sec-Fetch-Site'],'same-site');renewals++;return Response.json({_t:anonymous(Math.floor(Date.now()/1000)+2592000)});};
  const fallback=loadFallback(tcp,{fetch:async(req,config)=>{reads++;assert.equal(config.SGL_FETCH,tcp);assert.equal(config.SGL_COOKIE,env.SGL_COOKIE);assert.ok(config.SGL_TOKEN.startsWith('header.'));return decoded({class:{class_id:1}});}});
  assert.equal((await fallback(request(),env)).status,200);assert.equal((await fallback(request(classRoute),env)).status,200);assert.equal(renewals,1);assert.equal(reads,2);
 });
@@ -42,6 +82,16 @@ test('renewal failures and expired tokens cannot become decoded success',async()
  for(const tokenResponse of [()=>new Response('secret upstream body',{status:403}),()=>Response.json({_t:anonymous(1)}),()=>Response.json({})]){
   let reads=0;const fallback=loadFallback(async()=>tokenResponse(),{fetch:async()=>{reads++;return decoded({ok:true});}});const r=await fallback(request(),env);assert.equal(r.status,502);assert.equal(r.headers.has('x-rs-decoded'),false);assert.equal(reads,0);assert.doesNotMatch(await r.text(),/offline-cookie|secret upstream body/);
  }
+});
+
+test('data-response token replaces the existing fallback cache even when that response fails',async()=>{
+ const first=anonymous(Math.floor(Date.now()/1000)+2592000),next=anonymous(Math.floor(Date.now()/1000)+2592010);
+ let renewals=0,reads=0;
+ const fallback=loadFallback(async()=>{renewals++;return Response.json({_t:first});},{fetch:async(req,config)=>{
+  if(!reads++){assert.equal(config.SGL_TOKEN,first);await config.SGL_ON_TOKEN(next,(Math.floor(Date.now()/1000)+2592010)*1000);return new Response('',{status:502});}
+  assert.equal(config.SGL_TOKEN,next);return decoded({class:{class_id:123},trips:[]});
+ }});
+ assert.equal((await fallback(request(classRoute),env)).status,502);assert.equal((await fallback(request(classRoute),env)).status,200);assert.equal(renewals,1);assert.equal(reads,2);
 });
 test('public false and empty arrays remain valid without a decoded marker',async()=>{
  for(const payload of [false,[]]){let backups=0;const app=load(async()=>Response.json(payload),async()=>{backups++;},()=>({valid:true,origin:'https://sglapi.wellingtoninternational.com'}));const r=await app.fetch(request('/homepage/getLiveClassStatus?customer_id=15&datetimestamp=1'),env);assert.equal(r.status,200);assert.equal(r.headers.get('x-rs-source-lane'),'runner');assert.deepEqual(await r.json(),payload);assert.equal(backups,0);}

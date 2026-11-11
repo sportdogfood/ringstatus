@@ -1,0 +1,72 @@
+{
+  "nativeRunLog": {
+    "id": "recv09MzUcVHhQKmf",
+    "status": "Succeeded",
+    "completed": "2026-11-08T19:25:35.040Z",
+    "requested": 9,
+    "skipped": 58,
+    "saved": 419,
+    "errors": 0
+  },
+  "skippedClasses": [
+    {
+      "id": "recFEbhvVyF922XpW",
+      "classId": 200030967,
+      "status": "Completed",
+      "verified": 1,
+      "lastSuccess": "2026-11-08T19:22:25.385Z",
+      "lastSuccessUnchanged": true,
+      "sourceJsonUnchanged": true
+    },
+    {
+      "id": "rectrC2G0ZewZwGQY",
+      "classId": 200030966,
+      "status": "Completed",
+      "verified": 1,
+      "lastSuccess": "2026-11-08T19:22:22.053Z",
+      "lastSuccessUnchanged": true,
+      "sourceJsonUnchanged": true
+    }
+  ],
+  "eligibleClasses": [
+    {
+      "id": "recjRqLdxZTzFaQLN",
+      "fields": {
+        "fld4Wu41txPlyA0JU": "Not Started",
+        "fldO6Duw7yrbEgN4i": 0,
+        "fldR7NUeybAevAjSV": 200031280,
+        "fldS0HKKkbVdu0mIm": "15|200000077|2026-11-08|7|200031280",
+        "fldTEAWNt7Z1hlwH9": "2026-11-08T19:25:09.220Z",
+        "fldoCZT91yybRjlQy": "Active — no entries"
+      }
+    },
+    {
+      "id": "recppVMTV5jM27q0v",
+      "fields": {
+        "fld4Wu41txPlyA0JU": "Not Started",
+        "fldO6Duw7yrbEgN4i": 0,
+        "fldR7NUeybAevAjSV": 200031282,
+        "fldS0HKKkbVdu0mIm": "15|200000077|2026-11-08|6|200031282",
+        "fldTEAWNt7Z1hlwH9": "2026-11-08T19:25:05.992Z",
+        "fldoCZT91yybRjlQy": "Active — no entries"
+      }
+    }
+  ],
+  "schedules": [
+    {
+      "id": "rec2lCLdPoupwd2Fh",
+      "fields": {
+        "fldMMzKmYZWiBndos": "2026-11-08T19:24:21.694Z",
+        "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|1|200043285"
+      }
+    },
+    {
+      "id": "recEZsmqiBVA1E4Ik",
+      "fields": {
+        "fldMMzKmYZWiBndos": "2026-11-08T19:24:21.694Z",
+        "fldrhvJlApiWiO9dk": "15|200000077|2026-11-08|1|200043288"
+      }
+    }
+  ],
+  "scope": "Existing scheduled run and read-only Airtable evidence only; no manual source calls, proxy changes or schema field creation"
+}

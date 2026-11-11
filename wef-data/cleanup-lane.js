@@ -1,5 +1,5 @@
 'use strict';
-// Independent, delete-only lane. Records supplies the event; this file has no timer.
+// Independent, delete-only lane. The existing Windows task also starts daily at 19:00 Eastern.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const BASE='appdl16HJ5ETm8N69',CONTROL='tblIhyIiYgvHHeChy';
 const SHOW=new Set(['schedules','rings','groups','classes','trips','entries','results','horses','riders','trainers','owners']);
@@ -7,11 +7,28 @@ const LOGS=new Set(['runs','run-logs','err-logs','heartbeat']);
 const read=(file,fallback)=>fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):fallback;
 const digest=value=>crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const alive=pid=>{try{if(!pid)return false;process.kill(pid,0);return true;}catch(e){return e.code==='EPERM';}};
+function eastern(at){
+ return {day:new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(at),hour:Number(new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',hourCycle:'h23'}).format(at))};
+}
+function logSlot(at){
+ const {day,hour}=eastern(new Date(at));
+ const slotDay=hour===0?new Date(Date.parse(day+'T00:00:00Z')-86400000).toISOString().slice(0,10):day;
+ return slotDay+'|'+Math.floor(((hour+23)%24)/3);
+}
+function alertFor(state,show,now=new Date()){
+ const at=new Date(now),{day,hour}=eastern(at);
+ let trigger,event_id;
+ if(show!==state.show){trigger='new-show';event_id='new-show|'+state.show+'|'+show+'|'+day;}
+ else if(hour>=19&&state.daily_clear_date!==day){trigger='calendar-day';event_id='daily-19|'+day;}
+ else if(logSlot(at)!==logSlot(state.last_log_check||state.completed||0)){trigger='log-check';event_id='log-check|'+logSlot(at);}
+ else return null;
+ return {event_id,trigger,show_id:show,calendar_day:day,issued_at:at.toISOString()};
+}
 function completed(row){return Boolean(row.fields.completed)&&!['Started','Running'].includes(row.fields.status);}
 function choose(rows,eligible,trigger){
  if(trigger==='log-check'&&rows.length<1000)return [];
  const selected=rows.filter(eligible).sort((a,b)=>Date.parse(a.createdTime)-Date.parse(b.createdTime));
- return trigger==='log-check'?selected.slice(0,500):selected;
+ return trigger==='log-check'?selected.slice(0,rows.length-500):selected;
 }
 function localLogs(runtime){
  const families=[],pending=new Set();
@@ -43,9 +60,9 @@ function pruneLocal(families,trigger){
   let nr=0,ne=0;
   for(const f of list){
    if(!f.delivered||f.current||!f.run.data.completed||['Started','Running'].includes(f.run.data.status))continue;
-   const removeRun=trigger!=='log-check'||(f.runCount>=1000&&nr<500);
+   const removeRun=trigger!=='log-check'||(f.runCount>=1000&&nr<f.runCount-500);
    for(const e of f.children){
-    if(trigger==='log-check'&&(f.errorCount<1000||ne>=500))continue;
+    if(trigger==='log-check'&&(f.errorCount<1000||ne>=f.errorCount-500))continue;
     fs.unlinkSync(e.file);out.errors++;ne++;
    }
    if(removeRun&&f.children.every(e=>!fs.existsSync(e.file))){
@@ -71,7 +88,7 @@ function airtable(token){
  };
 }
 async function cleanup(event,{api=airtable(process.env.AIRTABLE_TOKEN),runtime=path.join(__dirname,'runtime')}={}){
- if(!['new-show','calendar-day','log-check'].includes(event.trigger))return {result:'Skipped',actions:[]};
+ if(!['new-show','calendar-day','log-check'].includes(event?.trigger))return {result:'Skipped',actions:[]};
  const stateDir=path.join(runtime,'cleanup'),stateFile=path.join(stateDir,'cleanup-state.json');
  fs.mkdirSync(stateDir,{recursive:true});
  const state=read(stateFile,{});
@@ -126,12 +143,19 @@ async function cleanup(event,{api=airtable(process.env.AIRTABLE_TOKEN),runtime=p
  run.completed=new Date().toISOString();run.result=run.errors.length?'Error':'Success';
  fs.appendFileSync(path.join(stateDir,'history.jsonl'),JSON.stringify(run)+'\n');
  fs.writeFileSync(path.join(stateDir,'simple-last-run.json'),JSON.stringify(run,null,2));
- if(run.result==='Success')fs.writeFileSync(stateFile,JSON.stringify({...state,event_id:event.event_id,show:event.show_id,calendar_day:event.calendar_day,completed:run.completed,run_id:run.run_id,last_log_check:event.issued_at}));
+ if(run.result==='Success')fs.writeFileSync(stateFile,JSON.stringify({...state,event_id:event.event_id,show:event.show_id,calendar_day:event.calendar_day,completed:run.completed,run_id:run.run_id,last_log_check:event.issued_at,...(event.trigger==='calendar-day'?{daily_clear_date:event.calendar_day}:{})}));
  return run;
 }
 async function main(){
- const state=read(path.join(__dirname,'..','.git','ringstatus-control','wef-records-shows-transition-alert-state.json'));
- const result=await cleanup(state.cleanup_alert);console.log(JSON.stringify(result));if(result.result==='Error')process.exitCode=1;
+ const records=read(path.join(__dirname,'..','.git','ringstatus-control','wef-records-shows-transition-alert-state.json'),{});
+ const state=read(path.join(__dirname,'runtime','cleanup','cleanup-state.json'),{});
+ const daily=alertFor(state,state.show);
+ const alert=records.cleanup_alert;
+ const pending=Date.parse(alert?.issued_at)>Date.parse(state.last_log_check||state.completed||0)?alert:undefined;
+ // Preserve a pending new-show alert; it already clears completed logs as well.
+ const event=pending?.trigger==='new-show'&&pending.show_id!==state.show
+  ?pending:daily?.trigger==='calendar-day'?daily:pending;
+ const result=await cleanup(event);console.log(JSON.stringify(result));if(result.result==='Error')process.exitCode=1;
 }
 if(require.main===module)main().catch(e=>{console.error(e.message);process.exitCode=1;});
-module.exports={cleanup,choose,localLogs,pruneLocal,completed,main};
+module.exports={cleanup,choose,localLogs,pruneLocal,completed,main,alertFor};

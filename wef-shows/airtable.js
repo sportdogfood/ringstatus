@@ -1,13 +1,14 @@
 "use strict";
-// Adapted from wef-tenants/airtable.js. Destination-only writes; no record deletes.
+// Destination-only writes. Cleanup deletion is available only through removeCleanup.
 const settings=require('./settings');
 const {same,unique}=require('../wef-tenants/airtable');
 function airtable({token=settings.AIRTABLE_TOKEN,request=globalThis.fetch,pause=ms=>new Promise(r=>setTimeout(r,ms))}={}){
- const writable=new Set(['shows','run-logs','heartbeat','show-days','sources','err-logs']),unresolved=new Set();
+ const writable=new Set(['shows','run-logs','heartbeat','show-days','sources','err-logs','cleanup','cleanup-logs']),unresolved=new Set();
  const readable=new Map([[settings.BASE_ID,new Set([...writable])],['appdl16HJ5ETm8N69',new Set(['runs','collections'])]]);
  async function call(base,table,method='GET',body,query=''){
   if(!readable.get(base)?.has(table))throw Error('Unapproved read target');
   if(method!=='GET'&&(base!==settings.BASE_ID||!writable.has(table)||!['POST','PATCH'].includes(method)))throw Error('Read-only source or forbidden mutation');
+  if(table==='cleanup'&&body)body={...body,typecast:true};
   await pause(250);const r=await request(`https://api.airtable.com/v0/${base}/${encodeURIComponent(table)}${query}`,{method,headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(30000)});
   if(!r.ok)throw Error(`Airtable ${method} ${table} HTTP ${r.status}`);return r.json();
  }
@@ -21,6 +22,46 @@ function airtable({token=settings.AIRTABLE_TOKEN,request=globalThis.fetch,pause=
   for(let i=0;i<creates.length;i+=10){const batch=creates.slice(i,i+10);try{await call(settings.BASE_ID,table,'POST',{records:batch});}catch(error){try{await verify(table,key,batch.map(r=>r.fields));}catch{for(const r of batch)unresolved.add(table+'|'+r.fields[key]);throw Error('Creation outcome unresolved: '+error.message);}}await verify(table,key,batch.map(r=>r.fields));}
   return verify(table,key,fields);
  }
- return{list,upsert,call};
+
+ async function removeCleanup(table, rows, {showId, trigger, authorize, beforeDelete = async () => {}, onDeleted, shouldPause = () => false, deletedIds = new Set()} = {}) {
+  const {TABLES} = require('./cleanup');
+  const {isDeepStrictEqual} = require('node:util');
+  if (!TABLES.includes(table) || !Number.isSafeInteger(showId) || showId <= 0 ||
+      !['new-show', 'daily-clear', 'quick-cleanup'].includes(trigger) ||
+      (trigger !== 'new-show' && ['shows', 'show-days'].includes(table)) ||
+      typeof authorize !== 'function' || typeof onDeleted !== 'function') {
+    throw Error('Forbidden cleanup deletion');
+  }
+  const normalized = fields => Object.fromEntries(Object.entries(fields).map(([key, value]) => [
+    key, Array.isArray(value) ? value.filter(id => !deletedIds.has(id)).sort() : value
+  ]).filter(([, value]) => !Array.isArray(value) || value.length));
+  for (let i = 0; i < rows.length; i += 10) {
+    if (shouldPause()) return {paused: true};
+    const batch = rows.slice(i, i + 10);
+    if (batch.some(r => !/^rec[a-zA-Z0-9]+$/.test(r.id))) throw Error('Invalid cleanup record ID');
+    const filter = 'OR(' + batch.map(r => 'RECORD_ID()="' + r.id + '"').join(',') + ')';
+    const current = await list(table, settings.BASE_ID, filter);
+    if (current.length !== batch.length || batch.some(row => {
+      const live = current.find(r => r.id === row.id);
+      return !live || !isDeepStrictEqual(normalized(live.fields), normalized(row.fields));
+    })) throw Error('Cleanup record changed before deletion');
+    await authorize(current);
+    const query = new URLSearchParams();
+    for (const row of batch) query.append('records[]', row.id);
+    await beforeDelete(batch.map(r => r.id));
+    await pause(250);
+    const response = await request('https://api.airtable.com/v0/' + settings.BASE_ID + '/' +
+      encodeURIComponent(table) + '?' + query, {method: 'DELETE',
+      headers: {Authorization: 'Bearer ' + token}, signal: AbortSignal.timeout(30000)});
+    if (!response.ok) throw Error('Cleanup deletion HTTP ' + response.status);
+    const body = await response.json();
+    const confirmed = (body.records || []).filter(r => r.deleted).map(r => r.id).sort();
+    if (!isDeepStrictEqual(confirmed, batch.map(r => r.id).sort())) throw Error('Uncertain cleanup deletion');
+    await onDeleted(confirmed);
+    if ((await list(table, settings.BASE_ID, filter)).length) throw Error('Cleanup deleted record still present');
+  }
+ }
+
+ return{list,upsert,call,removeCleanup};
 }
 module.exports={airtable};

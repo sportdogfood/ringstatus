@@ -1,0 +1,516 @@
+[
+  {
+    "id": "recImguVA1kkoz0pO",
+    "route": "https://sglapi.wellingtoninternational.com/shows",
+    "label": "old:shows-no-auth",
+    "url": "https://sglapi.wellingtoninternational.com/shows?customer_id=15",
+    "sourceFile": "retained-shows-no-auth.json",
+    "format": "json",
+    "rawSHA256": "d6021a78d87e37bc26b0cf891cd688823fd3c0e693a342947ee2d8b32618ab0e",
+    "bodyHash": "f85a3df61bd235e75177524fdeb2e4ef503cfe07e497c78ac1dadff57b993d88",
+    "supplements": []
+  },
+  {
+    "id": "recY8qXkCgVfhqfRL",
+    "route": "https://sglapi.wellingtoninternational.com/schedule",
+    "label": "remain-schedule-export-pair",
+    "url": "https://sglapi.wellingtoninternational.com/schedule?date=2026-11-08&show_id=200000077&customer_id=15",
+    "sourceFile": "remain-schedule-export-pair.json",
+    "format": "json",
+    "rawSHA256": "d06bc6482f7803538b24fae62873e43f67e7a02897bd7b6226151f165cb204c0",
+    "bodyHash": "970d2916630b3e54f7ad6f845d6911506f5b8e71d5003d5aeddff57c110411f4",
+    "supplements": [
+      {
+        "label": "remain-schedule-no-auth-replay",
+        "url": "https://sglapi.wellingtoninternational.com/schedule?date=2026-11-11&show_id=200000078&customer_id=15",
+        "sourceFile": "remain-schedule-no-auth-replay.json",
+        "format": "json",
+        "rawSHA256": "2c9942eed95eb51506acfda16505faafd2848aacef7efb59861e4dde89893cc0"
+      }
+    ]
+  },
+  {
+    "id": "recU5ksKnrx1oMQps",
+    "route": "https://sglapi.wellingtoninternational.com/ring",
+    "label": "remain-ring-no-auth-replay",
+    "url": "https://sglapi.wellingtoninternational.com/ring?show_date=2026-11-11&show_id=200000078&customer_id=15",
+    "sourceFile": "remain-ring-no-auth-replay.json",
+    "format": "json",
+    "rawSHA256": "76f9bb9cc50cff376d801e07364bbe9f7778a33a4cd238e81f545fa18850b4ab",
+    "bodyHash": "13d123122e51bdd0fc0cad6a6ed2ea3a57413518f8bbcbb211df9dff9a4a8955",
+    "supplements": []
+  },
+  {
+    "id": "recxFtMWwbc6b7XXl",
+    "route": "https://sglapi.wellingtoninternational.com/ring/{id}",
+    "label": "remain-ring-detail-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/ring/51?show_date=2026-11-11&show_id=200000078&customer_id=15",
+    "sourceFile": "remain-ring-detail-decoded.json",
+    "format": "json",
+    "rawSHA256": "06b091d8bfc2fd3dd2c50132095b1162b2a7bb73a2acd66bb91c8c947d20e388",
+    "bodyHash": "06b091d8bfc2fd3dd2c50132095b1162b2a7bb73a2acd66bb91c8c947d20e388",
+    "supplements": [
+      {
+        "label": "remain-ring-populated-decoded",
+        "url": "https://sglapi.wellingtoninternational.com/ring/37?show_date=2026-11-08&show_id=200000077&customer_id=15",
+        "sourceFile": "remain-ring-populated-decoded.json",
+        "format": "json",
+        "rawSHA256": "07762e0f77afa5b9f1bf6d10e02c4a62a7b6a1777a7487665c31b7886cc97d58"
+      }
+    ]
+  },
+  {
+    "id": "recbVDLOMGpCpd4kW",
+    "route": "https://sglapi.wellingtoninternational.com/classes",
+    "label": "remain-jumper-directory-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/classes?show_id=200000077&customer_id=15&sort_on=number&sort_type=asc&page=1&search_text=Jumper",
+    "sourceFile": "remain-jumper-directory-decoded.json",
+    "format": "json",
+    "rawSHA256": "ef66e2e8d1ec24f59ddf6419808b434f6ca25da5c0d355169c80c0aab913482b",
+    "bodyHash": "ef66e2e8d1ec24f59ddf6419808b434f6ca25da5c0d355169c80c0aab913482b",
+    "supplements": [
+      {
+        "label": "remain-classes-page2",
+        "url": "https://sglapi.wellingtoninternational.com/classes?show_id=200000077&customer_id=15&sort_on=number&sort_type=asc&page=2&search_text=Jumper",
+        "sourceFile": "remain-classes-page2.json",
+        "format": "json",
+        "rawSHA256": "311bba8ba853a31f514d604ea4c8c9c7cc22dc93b79912892999eef860ebbcc0"
+      },
+      {
+        "label": "remain-hunter-directory-decoded",
+        "url": "https://sglapi.wellingtoninternational.com/classes?show_id=200000077&customer_id=15&sort_on=number&sort_type=asc&page=1&search_text=Hunter",
+        "sourceFile": "remain-hunter-directory-decoded.json",
+        "format": "json",
+        "rawSHA256": "ea5da209af3b3e2e065321a9beed0e2b3e0b9f95dcbd496264b926f4b4848cb3"
+      }
+    ]
+  },
+  {
+    "id": "recNh4aFkVudHSpko",
+    "route": "https://sglapi.wellingtoninternational.com/classes/{id}",
+    "label": "remain-hunter-api-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/classes/200031026?show_id=200000077&customer_id=15&cgid=-1",
+    "sourceFile": "remain-hunter-api-decoded.json",
+    "format": "json",
+    "rawSHA256": "6ede1370eb06bdd427ccfaf66d204418cfa9d9610ad2ce1e7a11385c4e855bbf",
+    "bodyHash": "05018f839852e2f111985f98694a468d39ae6d3e7160f4c446b0e4e2d862f0bc",
+    "supplements": [
+      {
+        "label": "remain-jumper-api-decoded",
+        "url": "https://sglapi.wellingtoninternational.com/classes/200031235?show_id=200000077&customer_id=15&cgid=-1",
+        "sourceFile": "remain-jumper-api-decoded.json",
+        "format": "json",
+        "rawSHA256": "25a3ec07923353adeff63a2c3bf6ad48efc041ffd0c26a29a69cea8493a30656"
+      }
+    ]
+  },
+  {
+    "id": "recOD7Jklq0RbyWQ2",
+    "route": "https://sglapi.wellingtoninternational.com/entries",
+    "label": "remain-entries-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/entries?show_id=200000077&customer_id=15&sort_on=number&sort_type=asc&page=1&search_text=",
+    "sourceFile": "remain-entries-decoded.json",
+    "format": "json",
+    "rawSHA256": "0002f0df0533710f414787f4610f44b9d490f2c7a7d5f9c13d77803db10ba345",
+    "bodyHash": "0002f0df0533710f414787f4610f44b9d490f2c7a7d5f9c13d77803db10ba345",
+    "supplements": [
+      {
+        "label": "remain-entries-page2",
+        "url": "https://sglapi.wellingtoninternational.com/entries?show_id=200000077&customer_id=15&sort_on=number&sort_type=asc&page=2&search_text=",
+        "sourceFile": "remain-entries-page2.json",
+        "format": "json",
+        "rawSHA256": "d8c846b354fe781f183e8791640b96bb86ee3863bfbfda5246feaf66c851c0f9"
+      }
+    ]
+  },
+  {
+    "id": "recniuSqCaIHIx9O1",
+    "route": "https://sglapi.wellingtoninternational.com/entries/{id}",
+    "label": "remain-entry-populated",
+    "url": "https://sglapi.wellingtoninternational.com/entries/200248889?eid=200248889&show_id=200000077&customer_id=15&team_id=0",
+    "sourceFile": "remain-entry-populated.json",
+    "format": "json",
+    "rawSHA256": "0fb89d7eeeac6e5028cb44199a8c96343305bb413032456829d2715780e3211a",
+    "bodyHash": "3fbc5527f7f16454fe6feab511aa3f999f38d30972c60e756fb1ec12378e3259",
+    "supplements": [
+      {
+        "label": "remain-entry-detail-decoded",
+        "url": "https://sglapi.wellingtoninternational.com/entries/200249641?eid=200249641&show_id=200000077&customer_id=15&team_id=0",
+        "sourceFile": "remain-entry-detail-decoded.json",
+        "format": "json",
+        "rawSHA256": "5e57d68ba0008014634b8409deab13122760ea1c70ffc3f779aa71f2054a286d"
+      }
+    ]
+  },
+  {
+    "id": "rec2PMvQqelTRZWsg",
+    "route": "https://sglapi.wellingtoninternational.com/people",
+    "label": "remain-people-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/people?show_id=200000077&customer_id=15&page=1&term=",
+    "sourceFile": "remain-people-decoded.json",
+    "format": "json",
+    "rawSHA256": "febf22cff9e90bb64b9c66c366900f8817ec2061228797e57e93b03b9b95c3a3",
+    "bodyHash": "febf22cff9e90bb64b9c66c366900f8817ec2061228797e57e93b03b9b95c3a3",
+    "supplements": [
+      {
+        "label": "remain-people-page2",
+        "url": "https://sglapi.wellingtoninternational.com/people?show_id=200000077&customer_id=15&page=2&term=",
+        "sourceFile": "remain-people-page2.json",
+        "format": "json",
+        "rawSHA256": "836b5de3f7492ee4e57ff0f0413f5624ad8adae87d764917f5d2ad181d84d850"
+      }
+    ]
+  },
+  {
+    "id": "recdt0Z6KWCRORd0L",
+    "route": "https://sglapi.wellingtoninternational.com/people/{id}",
+    "label": "remain-person-populated",
+    "url": "https://sglapi.wellingtoninternational.com/people/88485?pid=88485&show_id=200000077&customer_id=15",
+    "sourceFile": "remain-person-populated.json",
+    "format": "json",
+    "rawSHA256": "4427eef7240ae9c0ba9f4051f012e74e10ed0ddd92933e64b19209c4d8450bbc",
+    "bodyHash": "981769c91231e8736489b9954e0fb30611eec4be7aad6ed375eb8456785955e7",
+    "supplements": [
+      {
+        "label": "remain-person-detail-decoded",
+        "url": "https://sglapi.wellingtoninternational.com/people/1000003367?pid=1000003367&show_id=200000077&customer_id=15",
+        "sourceFile": "remain-person-detail-decoded.json",
+        "format": "json",
+        "rawSHA256": "80c0d67edba00fe448ef36c9e2ec0e53b78a0fa415bec60e4aa3f6c2346e1600"
+      }
+    ]
+  },
+  {
+    "id": "reci2pvj8925n6V7B",
+    "route": "https://sglapi.wellingtoninternational.com/entries/getPeopleLinkedToHorse",
+    "label": "remain-linked-people-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/entries/getPeopleLinkedToHorse?horse_id=147368&customer_id=15",
+    "sourceFile": "remain-linked-people-decoded.json",
+    "format": "json",
+    "rawSHA256": "71fb05056996ecd79ecedc573eef61738f7decd86235b4e98db0094497ceee32",
+    "bodyHash": "71fb05056996ecd79ecedc573eef61738f7decd86235b4e98db0094497ceee32",
+    "supplements": []
+  },
+  {
+    "id": "recuMRGkyQhUsb2zm",
+    "route": "https://sglapi.wellingtoninternational.com/results/daily",
+    "label": "remain-daily-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/results/daily?date=2026-11-08&show_id=200000077&customer_id=15",
+    "sourceFile": "remain-daily-decoded.json",
+    "format": "json",
+    "rawSHA256": "33e07ef3ed2a69c28f60e8195eb04bfdfefbe728f6f72df79602bed79041fa78",
+    "bodyHash": "33e07ef3ed2a69c28f60e8195eb04bfdfefbe728f6f72df79602bed79041fa78",
+    "supplements": []
+  },
+  {
+    "id": "recm5EB2L88Bxxsv9",
+    "route": "https://sglapi.wellingtoninternational.com/results/showChamps",
+    "label": "remain-showChamps-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/results/showChamps?show_id=200000077&customer_id=15",
+    "sourceFile": "remain-showChamps-decoded.json",
+    "format": "json",
+    "rawSHA256": "dea2acb7192b4776614cb0ad748a38aac5a5fccf320125e2c25ddd349a080ef9",
+    "bodyHash": "dea2acb7192b4776614cb0ad748a38aac5a5fccf320125e2c25ddd349a080ef9",
+    "supplements": []
+  },
+  {
+    "id": "recTkK3Fo4SgsRObI",
+    "route": "https://sglapi.wellingtoninternational.com/results/championships",
+    "label": "remain-championships-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/results/championships?show_id=200000077&customer_id=15",
+    "sourceFile": "remain-championships-decoded.json",
+    "format": "json",
+    "rawSHA256": "7a2b7f70479d312c29b702c8cd16e001c1c20a923f1f9e6512d0d5e82c4e156e",
+    "bodyHash": "7a2b7f70479d312c29b702c8cd16e001c1c20a923f1f9e6512d0d5e82c4e156e",
+    "supplements": [
+      {
+        "label": "remain-championships-regional-decoded",
+        "url": "https://sglapi.wellingtoninternational.com/results/championships?show_id=200000070&customer_id=15",
+        "sourceFile": "remain-championships-regional-decoded.json",
+        "format": "json",
+        "rawSHA256": "fe3c6614b7ae3b40b925e31891e09f4bbebb597f42cff5c207dd6432df2ae4eb"
+      },
+      {
+        "label": "remain-championships-wef12-decoded",
+        "url": "https://sglapi.wellingtoninternational.com/results/championships?show_id=200000056&customer_id=15",
+        "sourceFile": "remain-championships-wef12-decoded.json",
+        "format": "json",
+        "rawSHA256": "81444d57c6c5834df424c193a39d45f084b15c7f141c65789d27764d546a54bd"
+      }
+    ]
+  },
+  {
+    "id": "reczMwg3Kl8BUWUpm",
+    "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding",
+    "label": "remain-circuit-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/results/circuitStanding?circuit_id=0&show_id=200000077&customer_id=15",
+    "sourceFile": "remain-circuit-decoded.json",
+    "format": "json",
+    "rawSHA256": "809059f63acbeb428ef0184f482e214e0cdd062cdfb4f90c720f0205fbcb77f0",
+    "bodyHash": "809059f63acbeb428ef0184f482e214e0cdd062cdfb4f90c720f0205fbcb77f0",
+    "supplements": []
+  },
+  {
+    "id": "rec4lPF3pi9FS4OyD",
+    "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding/{division_id}",
+    "label": "remain-circuit-division-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/results/circuitStanding/200000510?circuit_id=200000014&show_id=200000077&customer_id=15",
+    "sourceFile": "remain-circuit-division-decoded.json",
+    "format": "json",
+    "rawSHA256": "174fd96bcec796286b077bd793b3831428b4736f911412b7bb234637e72447c0",
+    "bodyHash": "174fd96bcec796286b077bd793b3831428b4736f911412b7bb234637e72447c0",
+    "supplements": []
+  },
+  {
+    "id": "reccfAPx1EQ1FREZV",
+    "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding/{id}/person/{id}/horse/{id}",
+    "label": "remain-circuit-points-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/results/circuitStanding/200000510/person/66758/horse/200004081?circuit_id=200000014&show_id=200000077&customer_id=15",
+    "sourceFile": "remain-circuit-points-decoded.json",
+    "format": "json",
+    "rawSHA256": "37eb46d66546762143c3695b7b30dd3ad7833bae3a2631e1e885d1918af67505",
+    "bodyHash": "37eb46d66546762143c3695b7b30dd3ad7833bae3a2631e1e885d1918af67505",
+    "supplements": []
+  },
+  {
+    "id": "recj4fpOJ67YNmaiK",
+    "route": "https://sglapi.wellingtoninternational.com/results/{id}",
+    "label": "remain-division-results-decoded",
+    "url": "https://sglapi.wellingtoninternational.com/results/200005953?channel=1&show_id=200000077&customer_id=15",
+    "sourceFile": "remain-division-results-decoded.json",
+    "format": "json",
+    "rawSHA256": "cbf24c55c5dc08784fd47d1f2925ca8ac6cb885056f2bf3b8f5eebf009b9a80e",
+    "bodyHash": "628605e5080364d5c2e362bc053fd1b4ae390f37dd9cdd636b01d301d9777a70",
+    "supplements": []
+  },
+  {
+    "id": "recUdONqeZYhx4Y8y",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData",
+    "label": "remain-hunter-phone",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id=200000077&cid=200031026&t=1794419304853",
+    "sourceFile": "remain-hunter-phone.json",
+    "format": "json",
+    "rawSHA256": "14db94ea49207635e3b1c7628b9cf941983377415f3a8cc61e303c42cbcf423b",
+    "bodyHash": "14db94ea49207635e3b1c7628b9cf941983377415f3a8cc61e303c42cbcf423b",
+    "supplements": [
+      {
+        "label": "remain-jumper-phone",
+        "url": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id=200000077&cid=200031235&t=1794419304853",
+        "sourceFile": "remain-jumper-phone.json",
+        "format": "json",
+        "rawSHA256": "f16c580cd9cce2367febd724e357ce3ce4777cbdbb309dfa402611843ba61304"
+      }
+    ]
+  },
+  {
+    "id": "recnEGzoQFZ8wSZyV",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus",
+    "label": "remain-class-status-completed",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus?from_wp_api=true&class_id=200031235&show_id=200000077&from_live_class=0",
+    "sourceFile": "remain-class-status-completed.json",
+    "format": "json",
+    "rawSHA256": "3f71d283a065498b40d65ec5ec07588dbcf80d34593b3d0dc327d6e2a69ce73c",
+    "bodyHash": "3f71d283a065498b40d65ec5ec07588dbcf80d34593b3d0dc327d6e2a69ce73c",
+    "supplements": []
+  },
+  {
+    "id": "rechFzfafHWM6yWOe",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/Detail",
+    "label": "remain-class-detail-html",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/Detail?cid=200031235&class_group_id=200028543",
+    "sourceFile": "remain-class-detail-html.txt",
+    "format": "text",
+    "rawSHA256": "e954116dd73db314111dd360d232ae4c44fe004fdaed0d8f1d6484d9f3ebb6f1",
+    "bodyHash": "b2ccaa5c3fbf6b18c2071814e6b33892900dd324ea7dc891fb46b4e9e2d826e4",
+    "supplements": []
+  },
+  {
+    "id": "reczseBuKcsDIBt1l",
+    "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+    "label": "remain-widget-post",
+    "url": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+    "sourceFile": "remain-widget-post.json",
+    "format": "json",
+    "rawSHA256": "862d91ea98ec0d69e89702b652fce98b4a628fd9a39da87ca3a5a7a532070044",
+    "bodyHash": "dd538279cee4465ed4adc4fbb8e8d84248dd171e641320eaa8e502eadf39b52f",
+    "supplements": [
+      {
+        "label": "old:legacy-widget-no-auth",
+        "url": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+        "sourceFile": "retained-legacy-widget-no-auth.json",
+        "format": "json",
+        "rawSHA256": "862d91ea98ec0d69e89702b652fce98b4a628fd9a39da87ca3a5a7a532070044"
+      }
+    ]
+  },
+  {
+    "id": "recXkXjODik2i8ymU",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax",
+    "label": "old:legacy-groups-no-auth",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax?from_wp_api=true",
+    "sourceFile": "retained-legacy-groups-no-auth.json",
+    "format": "json",
+    "rawSHA256": "7def75830756b9332935d963626459f321be95e8a9d0e4803bb2aa430056876f",
+    "bodyHash": "41b7e1129e58b09eece4764d493ba35d59b396dc699d2ab3ebe6584ffab2f0f9",
+    "supplements": []
+  },
+  {
+    "id": "recJypFhrmMJYE1QN",
+    "route": "https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus",
+    "label": "old:live-status-no-auth",
+    "url": "https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus?customer_id=15&datetimestamp=1794411302248",
+    "sourceFile": "retained-live-status-no-auth.json",
+    "format": "json",
+    "rawSHA256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "bodyHash": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "supplements": []
+  },
+  {
+    "id": "recLWu76THBf5rCiF",
+    "route": "https://sglapi.wellingtoninternational.com/classsignup",
+    "label": "remain-class-signups-no-auth-replay",
+    "url": "https://sglapi.wellingtoninternational.com/classsignup?show_date=2026-11-11&show_id=200000078&customer_id=15&team_id=0",
+    "sourceFile": "remain-class-signups-no-auth-replay.json",
+    "format": "json",
+    "rawSHA256": "6abaa693abbbbbec1ed926f5ef7a17ed1bf391671cab4018033111827f589590",
+    "bodyHash": "0a80b0d83f6c6dd26b3342910b178d7ed950244508d69da6fe0c2e23257c7a5a",
+    "supplements": []
+  },
+  {
+    "id": "recEx4vhOF7z6Ds47",
+    "route": "https://sglapi.wellingtoninternational.com/classsignup/{id}",
+    "label": "remain-completed-signups",
+    "url": "https://sglapi.wellingtoninternational.com/classsignup/200028543?eid=200028543&show_id=200000077&customer_id=15",
+    "sourceFile": "remain-completed-signups.json",
+    "format": "json",
+    "rawSHA256": "966640986fa2d76f71f372ccb4e070e227530fd845192f6aae66c376eddbc77c",
+    "bodyHash": "bf7feb7e8763763db159c90e6705b26ff51e64753fe4465874fa93618146ddc0",
+    "supplements": [
+      {
+        "label": "remain-class-signup-detail-no-auth-replay",
+        "url": "https://sglapi.wellingtoninternational.com/classsignup/200028831?eid=200028831&show_id=200000078&customer_id=15",
+        "sourceFile": "remain-class-signup-detail-no-auth-replay.json",
+        "format": "json",
+        "rawSHA256": "d9d403d9f7aaeede042aae9636145d8cbaf4683f33a48e29c268a579f910db4d"
+      }
+    ]
+  },
+  {
+    "id": "recoMwDkZM6TijqI1",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchHorse",
+    "label": "remain-horse-search-browser",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchHorse?search_by=by_name&search_term=KADANS&search_org=by_usef&company_id=15&check_duplicates=true&show_id=200000078&entry_id=0",
+    "sourceFile": "remain-horse-search-browser.json",
+    "format": "json",
+    "rawSHA256": "575f6cf36a92f003e25c8c0c46966af49aec36cc2c95dfb9529a56d7a8e2bc5c",
+    "bodyHash": "575f6cf36a92f003e25c8c0c46966af49aec36cc2c95dfb9529a56d7a8e2bc5c",
+    "supplements": []
+  },
+  {
+    "id": "recD0UUmrjmpg5FnD",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchPerson",
+    "label": "remain-people-search-browser",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchPerson?search_by=by_name&search_term=Catherine%20Tyree&search_for=rider&search_org=by_usef&company_id=15",
+    "sourceFile": "remain-people-search-browser.json",
+    "format": "json",
+    "rawSHA256": "8bfbf563687e258d0a54fdf8c7c228c86bd717ab623a20225d1ceb1c8a5211a8",
+    "bodyHash": "8bfbf563687e258d0a54fdf8c7c228c86bd717ab623a20225d1ceb1c8a5211a8",
+    "supplements": []
+  },
+  {
+    "id": "recEIJOGTgdRBG077",
+    "route": "https://sglapi.wellingtoninternational.com/horses/search",
+    "label": "remain-horse-search-api-anon",
+    "url": "https://sglapi.wellingtoninternational.com/horses/search?search_by=by_name&search_term=KADANS&search_org=by_usef&company_id=15&check_duplicates=true&show_id=200000078&entry_id=0",
+    "sourceFile": "remain-horse-search-api-anon.json",
+    "format": "json",
+    "rawSHA256": "32460949c58d8afc72c9d51a7b345c6d963249d5b1e49d14c5da4f796ab6696f",
+    "bodyHash": "32460949c58d8afc72c9d51a7b345c6d963249d5b1e49d14c5da4f796ab6696f",
+    "supplements": []
+  },
+  {
+    "id": "recljeAWV21i38e8s",
+    "route": "https://sglapi.wellingtoninternational.com/people/search",
+    "label": "remain-people-search-api-anon",
+    "url": "https://sglapi.wellingtoninternational.com/people/search?search_by=by_name&search_term=Catherine%20Tyree&search_for=rider&search_org=by_usef&company_id=15",
+    "sourceFile": "remain-people-search-api-anon.json",
+    "format": "json",
+    "rawSHA256": "32460949c58d8afc72c9d51a7b345c6d963249d5b1e49d14c5da4f796ab6696f",
+    "bodyHash": "32460949c58d8afc72c9d51a7b345c6d963249d5b1e49d14c5da4f796ab6696f",
+    "supplements": []
+  },
+  {
+    "id": "rechn4u5To3NkTcON",
+    "route": "https://sglapp.showgroundslive.com/version.json",
+    "label": "remain-version-fresh",
+    "url": "https://sglapp.showgroundslive.com/version.json",
+    "sourceFile": "remain-version-fresh.json",
+    "format": "json",
+    "rawSHA256": "b0a4b1e6c8d74a2eeed49441cd5531d75823e2e7015a078bbd796a13061e1ea1",
+    "bodyHash": "4a5809f4d81471105633ebf57f1f67b80383a0429a5b925660a384263136d3a0",
+    "supplements": []
+  },
+  {
+    "id": "recnp6eKHari0q3mr",
+    "route": "https://sglapi.wellingtoninternational.com/utilities/get-config",
+    "label": "old:config-no-auth",
+    "url": "https://sglapi.wellingtoninternational.com/utilities/get-config",
+    "sourceFile": "retained-config-no-auth.json",
+    "format": "json",
+    "rawSHA256": "af839c5cd7702bf8660c7717fc9074ed80f3f6560a2eb9497d333b0bec01a2d3",
+    "bodyHash": "710ffe62bd5e0537c4de31b97c4c77c34d990a90233e0415d0a517e8fcd67d70",
+    "supplements": []
+  },
+  {
+    "id": "recPn6VqQm6iDOtVu",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData",
+    "label": "retained-session-showdata",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData?show_id=200000078&company_id=15",
+    "sourceFile": "retained-session-showdata.json",
+    "format": "json",
+    "rawSHA256": "d38a7afbcfcc52554c123f1fd48160a3800fd86aa81b73e63a6df32e4a7d4d00",
+    "bodyHash": "de5d4b93a58e0d673f612a42790d5feab09a03447990515c398f63fcbbe16f33",
+    "supplements": []
+  },
+  {
+    "id": "recQHLJLRk0kQX84N",
+    "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/ExportToExcel/showid/{show_id}/date/{date}/excel_export/1",
+    "label": "remain-export",
+    "url": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/ExportToExcel/showid/200000077/date/2026-11-08/excel_export/1",
+    "sourceFile": "remain-export-cells.json",
+    "format": "excel-cells",
+    "rawSHA256": "115b428f27d3ddd9f871b551df2865318469bcbd04ea63513189bb16cbcadbde",
+    "bodyHash": "8121fab155cc3434f234f316066b21d2f5548191b9620bd44ac91714daf92e74",
+    "supplements": [
+      {
+        "label": "original-xls-bytes",
+        "url": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/ExportToExcel/showid/200000077/date/2026-11-08/excel_export/1",
+        "sourceFile": "remain-export.xls",
+        "format": "binary",
+        "rawSHA256": "115b428f27d3ddd9f871b551df2865318469bcbd04ea63513189bb16cbcadbde"
+      }
+    ]
+  },
+  {
+    "id": "recEBR7FF2sJI8nlY",
+    "route": "https://sglapi.wellingtoninternational.com/add-entry/getShowData",
+    "label": "old:api-showdata-config-token",
+    "url": "https://sglapi.wellingtoninternational.com/add-entry/getShowData?show_id=200000078&company_id=15",
+    "sourceFile": "retained-api-showdata-config-token.json",
+    "format": "json",
+    "rawSHA256": "32460949c58d8afc72c9d51a7b345c6d963249d5b1e49d14c5da4f796ab6696f",
+    "bodyHash": "32460949c58d8afc72c9d51a7b345c6d963249d5b1e49d14c5da4f796ab6696f",
+    "supplements": []
+  },
+  {
+    "id": "recSJsaptBpG5q7QI",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/Index",
+    "label": "old:legacy-signup-index-no-auth",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/Index?cgid=200028831&show_id=200000078&customer_id=15&team_id=0",
+    "sourceFile": "retained-legacy-signup-index-no-auth.txt",
+    "format": "text",
+    "rawSHA256": "785d6cf6d3e037b09105d34c85f9cdf5798d2fa28c2f70a01277a1f98bd95293",
+    "bodyHash": "e21a81e9b1e38aa4a98ee33f753efe830919e469951732ba84ef2b9b35971b32",
+    "supplements": []
+  }
+]

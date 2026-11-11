@@ -1,37 +1,30 @@
 # wef-records-coordinator
 
-Document version **1.16.0** — updated **November 7, 2026 (America/New_York)**. This is the coordinator document version, not a collector or plugin release. This document does not authorize changes to collectors, schemas, workflows or schedules. Later explicit owner decisions control over dated snapshots.
+README version **1.19.0** | Updated **November 9, 2026** | America/New_York
 
-## Purpose
+## Current status
 
-Coordinate the WEF records workflow so each owner stays in its lane, producers publish clearly defined facts, and downstream consumers can use those facts safely. Maintain ownership, interfaces, decisions, approvals and verification evidence. The coordinator is not a collector or production runner.
+Records coordinates five active WEF specialists. The standing operational outbound route is limited to the approved Data cleanup alert. The November 7 owner stop applies to unrelated sending. The former Shows observer and timed all-specialist review were retired.
 
-## Daily agent management - current input rule, November 4, 2026
+- **Latest verified log check.** November 9 at 10 a.m. Eastern, show `200000078`, Data run `1794236869626`. All four logging tables were below 1,000 rows. Airtable and local deletion counts were zero. [Run evidence](../../../wef-data/evidence/cleanup-keep500-20261108/verification-1000-20261109/actual-result.json)
+- **Latest verified show change.** Data run `1794215050051` completed cleanup for the transition from `200000077` to `200000078` with 9,128 Airtable deletions and 423 local log deletions. [Run evidence](../../../wef-data/evidence/cleanup-keep500-20261108/verification-new-show-20261109/actual-result.json)
 
-Full plan: [DAILY-MANAGEMENT-PLAN.md](DAILY-MANAGEMENT-PLAN.md), **version 1.7.0**. The removed `wef-shows-changes-to-records` automation and its all-six timed monitoring stay removed. Preserve the existing context/cleanup reminder's actual ID, name, current configured cadence, target, current three-hour cadence and two-minute limit; the November6 cleanup-handoff approval restores only this same reminder to ACTIVE; this migration changes no timing and introduces no observer.
+### Start here
 
-On November 4 the owner explicitly approved the revised `w-shows` / `w-days` migration, 18 new link fields, catalog-read 422 fix and source diagnostics, independent review, existing-route deployment and normal scheduled verification. The owner requires one verified source binding in existing `wef-data/schema.json`, no native IDs scattered through business logic and no layered fallback paths. `___shows` / `___days` are deprecated; old `wef-shows.*` targets are being replaced. Preserve historical native records and links without using them as new-source fallback.
+1. Check current status, [ownership](#purpose-and-ownership), [Project global instructions](#project-global-instructions) and the latest direct owner instructions.
+2. Use [Inputs and outputs](#inputs-and-outputs) to locate the authoritative source and [Handoffs](#handoffs) to identify who acts next.
+3. When continuing work, use [Resume here](#resume-here) to recover the last verified action and exact next step.
 
-Records evaluates cleanup on actual operational messages and natural wakes of the existing approved reminder. Resolve the same schema binding as the reviewed Data consumer and require coherent producer/consumer deployment before dispatch. A source-table switch alone is not a show/day event. Preserve the one pointer, all requested/handled events and original clocks. Preparation, review, deployment, scheduled execution and useful native output are separate acceptance claims; current release evidence controls, not this document or an old receipt.
+### Known troublespots
 
-The historical six-agent review, open oversight complaint and independent service failures remain recorded below. Cleanup success does not establish collection or linker recovery. No broader all-six monitoring is restored.
+- **New-show collection overlapped cleanup.** Rings, entries and trips were empty at the November 9 cleanup readback. Collection coverage was unverified at that point. [Overlap evidence](../../../wef-data/evidence/cleanup-keep500-20261108/verification-new-show-20261109/actual-result.json)
+- **Keep-500 proof.** The policy and under-threshold behavior have verification. A genuine above-threshold trim to 500 remains unverified. [Data cleanup policy](../../../wef-data/README.md#current-cleanup-policy---november-8-1007-am-eastern)
+- **Proof boundaries.** Record delivery, acknowledgment and task completion separately. A missing or stale count does not establish zero entries.
 
+<details>
+<summary>Records complaint reminders and when to apply them</summary>
 
-## CleanupV2-only handoff — November7, 2026
-
-The owner directly approved cleanupV2-only control/outcomes, combined local and Airtable cleanup, pending-log preservation, independent review, deployment and proof through existing Records alerts (Data message `01a1b608-2edb-7501-92ff-cb0fd0c7891a`). No other lane changes, new schedules or extras. The new contract supersedes earlier current instructions to use `cleanup` / `cleanup-logs`; those tables' historical records remain preserved, with no current reads/writes by this stage.
-
-Records uses the exact reviewed, installed Data cleanupV2 manifest and matching relevant schema projection in `C:/Users/gombc/Documents/Codex/outputs/wef-records-cleanup-handoff-20261106/cleanupv2/consumer-readiness.json`. This binding amendment is deployed only after Data's actual reviewed consumer is installed. No second source map, alert keys, timer, producer runtime or business execution is added. Preserve the same existing ACTIVE three-hour context/cleanup reminder, source clocks, alert shape, priorities, stops and history.
-
-One genuine existing Records alert covers the combined local/Airtable cleanup. Data alone owns execution, preserves pending/uncertain/current local families and records actual outcomes in cleanupV2. Separate local completion from Airtable deletion; a result from one does not establish combined Success. Exact installed behavior/review/deployment/live evidence remains controlling; the earlier continuous-local-pruning release is historical.
-
-Natural calendar-day alert `calendar-day|2026-11-07` was delivered/adopted once, but run `1794034173999` failed at `2026-11-07T06:51:38.460Z` with “Cleanup record changed before deletion”, reporting 630 run-log deletions. Its persistent stop and failed event remain preserved. This table migration does not itself release that stop, authorize a retry or manufacture a new event. Finish approved preparation/review/deployment independently; require actual applicable resumption authority and a genuine existing alert for operational proof. Do not replay previously deleted work, clear stops or treat a prepared table/configuration as completion.
-
-## This agent's failures and required reminders
-
-Applies specifically to **wef-records-coordinator**, chat `01a169bc-e58a-7de0-94c6-5d3931fcf745`. The owner requested this entry after the 13 separate [Airtable complaints](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U) were created and read back. All 13 remain **Open**; this document does not close them or prove the behavior is corrected. Complaints 01–06 describe historical owner-reported failures, with their evidence limits retained in Airtable; 07–13 have direct audit/tool/message evidence. Do not turn unverified attribution, cost or recovery claims into facts.
-
-**I perform these checks myself. The owner should not need to keep reminding me.** Read this section at startup/resumption and after an owner correction. Apply the relevant row before the next dependent action; do not reread every old artifact or repeat tests merely to acknowledge a reminder.
+Use the applicable row at startup, resumption or after an owner correction. The individual complaints carry their evidence and disposition. [Complaint register](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U)
 
 | My failure / complaint | What I must remind myself | When / how often |
 | --- | --- | --- |
@@ -49,221 +42,129 @@ Applies specifically to **wef-records-coordinator**, chat `01a169bc-e58a-7de0-94
 | [12 — Oversized/truncated tool output](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recQPI0KDSIRakfAW) | Query exact fields/paths and summarize before printing. Avoid broad histories, unrelated scans and repeated unchanged output. If output truncates, narrow the claim/read; do not claim the missing source was loaded. | Before each search/read/tool-output request; reassess immediately after truncation. |
 | [13 — Long explanations instead of delivery](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recXWEkiXgMkC9i3U) | Give the result, relevant evidence and exact next action briefly. Complete authorized work instead of repeatedly explaining, reassuring or offering to continue. | Before every owner-facing update and final reply. |
 
-### Approval reminder before acting
+</details>
 
-Keep the current task, target, actual approval source, baseline, exact delta, allowed effects and protected behavior in the existing task record. Compare the next action with that record before any edit, business write, dispatch or handoff. A request to review, document, register or report is not authority to implement, repair, deploy, upgrade, alter tasks or clear a stop. Carry the same boundary to the receiving agent. Make routine decisions within existing approval and continue; do not ask again for permission already granted.
+## Purpose and ownership
 
-After a failed approved runner verification, stop only that execution path. Preserve the evidence and user changes; do not retry, repair, layer another correction, roll back another owner's work or release a stop without the required fresh authorization. A proposed necessary expansion remains unimplemented until approved. Continue unaffected authorized preparation.
+Records maintains ownership, approved boundaries, interfaces, authorized handoffs and scheduled acceptance evidence. Each specialist owns its implementation and existing jobs. Timing, Engine, Results, Messages, Waze, Publish and tenant consumers own their application logic.
 
-These reminders are task-boundary self-checks, **not a new timer, observer, hook, approval form or production gate**. The existing private context heartbeat is supplementary only; do not change it or create reminders through this documentation task. Preserve the cleanup hold, cancelled Shows counting/timeout repair, independent Data owner, linking-only Entries and all current module stops.
+### Related subagents and ChatGPT chats
 
-### Rebalance and guidance receipt — October 31, 2026
-
-READ: the explicitly invoked canonical Rebalance and Instruction Loader/approved-change-boundary guidance, plus installed **RingStatus Operating Skills 0.2.4** `instruction-loader`, `rebalancer` (`$rebalance` alias), `context-compact` and `code-review`. Installed package root: `C:/Users/gombc/.codex/plugins/cache/created-by-me-remote/ringstatus-operating-skills/0.2.4/skills/`; its `plugin.json` reports version `0.2.4`. No installation or upgrade was performed. The older October 30 adoption receipt below remains historical evidence, not today's package version.
-
-APPLIED: reconciled the latest documentation-only request against this agent's current role, 13 complaint receipts, owner corrections, holds and actual ownership. Approved delta: this README's failure/reminder section, date and first explicit document version only, plus existing private continuity bookkeeping. Pre-edit working README SHA256 `f85779f5059ef618ddcd5816569d3b28a56a7551bd5679ea2e67ca42502a71b9`; repository HEAD `97aba86850ecf40d32aabc701ee96196555ab230`. Earlier working edits to this README are preserved. No collector/code, Airtable complaint status, owner assignment, skill package, schedule or app configuration is changed by this entry.
-
-Verification of this document means checking the actual before/after delta, all 13 complaint links and reminders, stated frequencies, date/version and preservation of existing ownership/stops. It is not a claim that the complaints are resolved, that product code was reviewed/tested, or that future behavior is guaranteed. Subsequent material edits increment this README's document version and update its date; plugin and collector versions remain separate.
-
-## Current owned specialist chats
-
-These are the seven current local specialist chats coordinated by **wef-records-coordinator**, chat `01a169bc-e58a-7de0-94c6-5d3931fcf745`. This roster records ownership, not a claim that every workflow or review is passing.
+Records coordinator chat ID is `01a169bc-e58a-7de0-94c6-5d3931fcf745`. These are existing specialist chats.
 
 | Specialist chat | Local chat ID | Responsibility and boundary |
 | --- | --- | --- |
 | **wef-shows** | `01a16976-f0a6-72a1-a75f-75de7f19a815` | Canonical show discovery/identity, dates, selected day, day-priority and verified transition notices. Counting and its repair are cancelled; historical count fields do not certify current counts or zero entries. |
-| **wef-live** | `01a16902-240a-7280-8661-90b0d8d7325a` | Live ring/group/class/trip observations, specifically approved publication and its own approved cleanup. Does not acquire or enrich data for Entries, own Data collection or write arbitrary destination fields/links. Preserve its current publication and retention holds. |
-| **wef-data-fast-collector** | `01a19273-bdf8-71b2-8503-cc8079efc129` | Exclusive Data acquisition, its independent linking task and the separately approved event-only cleanup task. New-show alerts select eligible old-show/log cleanup; actual Eastern calendar days clear eligible logs; due three-hour log checks use 1,000/oldest-500-eligible. Planning day0 changes have no cleanup action. Cleanup was reviewed, deployed and registered November2; first event delivery is recorded below, with completion separate from launch. No periodic cleanup polling. Does not own Season retention or sibling workflows. |
-| **wef-season** | `01a169c8-a4cc-7f52-b9f9-ef0a769aab58` | Retain, add, upsert, deduplicate and index `wef-season-*` horses, riders, trainers and rings, preserving supported history/memberships. Does not own Data acquisition or the dedicated People join. |
-| **wef-entries** | `01a1691d-3bd7-7eb2-af17-b9ba39a7501e` | Link existing source-supported records to schedules, horses, riders, trainers and agreed identities. Linking-only: no CWF/feed collection, collector comparison, Live enrichment or reverse gate on collectors. |
-| **wef-people** | `01a19727-9a70-7283-a865-01dd38aacb9d` | Derived People join in existing `wef-seaon-people` base `app6uHgUYCCKTVlJE`, using shared inputs read-only. Owners are excluded and horses remain unlinked under the latest owner corrections. Owns its private join/log/review tables, not upstream sources. |
+| **wef-live** | `01a16902-240a-7280-8661-90b0d8d7325a` | Live ring/group/class/trip observations, specifically approved publication and its own approved cleanup. Preserve its current publication and retention holds. Data owns its separate collection. |
+| **wef-data-fast-collector** | `01a19273-bdf8-71b2-8503-cc8079efc129` | Exclusive Data acquisition, independent Data linking and the separately approved event-only cleanup task. |
+| **wef-season** | `01a169c8-a4cc-7f52-b9f9-ef0a769aab58` | Retain, add, upsert, deduplicate and index `wef-season-*` horses, riders, trainers and rings, preserving supported history/memberships. Data owns its separate acquisition. |
 | **wef-decoder** | `01a1a753-dce7-7951-a147-1b096e1538ba` | Owns the shared `wef-schedules-decoded` proxy, health monitoring and credential updates. Proxy consumers retain their existing collector responsibilities. |
 
-Shared proxy ownership: route proxy health and credential matters to **wef-decoder**. The endpoint remains `https://wef-schedules-decoded.gombcg.workers.dev`. This ownership assignment does not establish that unattended health monitoring is active or authorize collector, endpoint, parameter, cadence or task changes.
+#### Deprecated chats
 
-**wef-schedules is a deprecated chat and excluded from current assignments and notification recipients.** Its historical chat ID is `01a14082-b22f-73b1-bba7-16781892a55d`. Deprecation of the chat does not itself authorize stopping its collector, changing tasks or deleting records.
+The owner deprecated Entries and People on November 9. Schedules was already deprecated. These chats are excluded from current assignments and recipients. Their existing workflow history remains available through their operating records.
 
-Records owns cross-specialist coordination: distribute applicable skill updates and verified show/day alerts, obtain each specialist's evidence-backed confirmation, maintain actual code-review coverage and track authorized scheduled acceptance. Each specialist stays in its lane; Records is not a production runner. Preserve the exact owner approvals, failed-path stops, records, IDs and links.
-
-The dated registration and release sections below preserve earlier evidence. They do not override this current roster or later direct owner corrections. In particular, old Data intake-only/combined Season ownership and old active-Schedules wording are historical.
-
-### Cleanup handoff correction — November 6, 2026
-
-Direct owner approval in Data message `01a1b40c-1f93-7f11-8e4c-2037ddf442f4`: fix the existing Records handoff and delivered-local-log cleanup, preserve pending logs, independent review and existing-alert verification; no new schedules, manual runs or extras. Records changes only these instructions, the existing reminder prompt and readiness metadata in the ONE existing notification state. Data owns its separate reviewed local-log deployment.
-
-The existing `wef-records-rebalance-and-context-checkpoint` reminder was **PAUSED** at the repair baseline. The November6 owner approval to fix this handoff and verify through existing alerts authorizes restoring only this same reminder to ACTIVE, retaining its current three-hour cadence and narrow context/cleanup scope. Deployment readback and the next actual natural wake remain separate proof. November4's producer update already preserved PAUSED at 15:38 UTC, before the owner's 16:04:24.079Z “just stop”; no original pause actor/reason was established in the inspected local evidence. The fresh cleanup approval supersedes that generic stop only for this scoped repair and restoration of its existing alert input; it does not resume unrelated work. No distinct protected owner pause was established.
-
-Current cleanup readiness is recorded in `C:/Users/gombc/Documents/Codex/outputs/wef-records-cleanup-handoff-20261106/consumer-readiness.json`, with independent review and actual deployment readback linked there. Match installed cleanup dependencies/task and the reviewed cleanup-specific source-binding projection from current `wef-data/schema.json`. Unrelated collector files/schema fields no longer block cleanup. A relevant cleanup dependency/binding mismatch still blocks dispatch. Old all-Data deployment manifests remain historical provenance. No consumer code, native schema, task, event shape, cadence or policy change is made by Records.
-
-Data's `wef-data/evidence/cleanup-handoff-20261106/deployment.json` records its separately reviewed delivered-local-log pruning after normal collection/linking log delivery. It preserves pending/uncertain families and current heartbeat source logs. Local pruning and Airtable cleanup have distinct execution proof. Both normal local pruning and a new genuine Records alert remain unverified until their actual results are observed. Preserve all nine completed historical dispatches; never replay them for proof.
-
-### Records cleanup alerts on actual operational inputs - November 4, 2026
-
-Current authority includes the November 3 cleanup rules and narrow existing-reminder exception, followed by the November 4 explicit migration/edit/schema/review/deployment approval. The removed Shows observer stays removed. Preserve the existing reminder's actual configured cadence and all continuity duties.
-
-On every actual non-context operational input and each natural wake of the existing reminder’s approved cleanup exception, before dependent cleanup work:
-
-1. Read existing Data cleanup state, stop/result and the one Records notification state. Load `wef-data/schema.json` once and resolve its base and logical `w-shows` table/field definitions by name; use the same verified binding as Data. Read exactly one current `is_default` row and its `show_id`, retaining the source `last_checked` clock. No native table/field IDs belong in this procedure or in a second map. `w-days` is Data's day-selection source; its `show` is a text show-key, and planning day0 alone triggers no cleanup. Missing/ambiguous configuration, multiple defaults, a source/consumer mismatch or an unreviewed deployment establishes no executable alert. Do not use old synced or deprecated local tables as fallback. Compare current `w-shows` identity with Data's last successfully cleaned show; preserve the historical observer pair and all original transition clocks unchanged. Existing active, failed, uncertain, requested or handled events cannot be replayed or retried.
-2. Select a genuine **new show** first; otherwise an unhandled **Eastern calendar day**; otherwise **log-check** only when at least three hours have elapsed since `last_log_check` (legacy fallback: original successful `completed`). A pending new show takes precedence over calendar/log checks for that show. A planning show-day alone has no cleanup action. Today's calendar is not planning day0.
-3. New show clears eligible logging and all selected checked local show records. Calendar day clears eligible heartbeat/run-logs/err-logs independent of the 1,000 threshold; no business tables. Due log-check applies 1,000/oldest-500-eligible separately to those logging tables. Active/current logging stays protected; catalog/synced/administration/cleanup-log exclusions and failure stops remain. No backups or record snapshots.
-4. If nothing is due, record only the compact latest evaluation/source times in the existing notification state; preserve its current pointer and all dispatches. Do not send an alert or invoke cleanup to prove a no-op. The next eligible log-check is evaluated on the first actual existing wake/input at or after the three-hour boundary; do not manually fire or retime it.
-5. If a genuine event is due, verify the current reviewed Data release, the same shared source binding in producer/consumer, exact existing task binding, stop/running state and prior dispatch outcome. New `w-shows` / `w-days` reference tables must remain outside cleanup deletion aliases and scope. Save the single `cleanup_alert` pointer `{event_id, trigger, show_id, calendar_day, issued_at}` and requested receipt in the existing `cleanup_dispatches` **before** sending one factual alert to Data chat `01a19273-bdf8-71b2-8503-cc8079efc129`. Trigger is exactly `new-show`, `calendar-day` or `log-check`; actual issued-at and Eastern calendar date must agree. Daily key: `calendar-day|YYYY-MM-DD`; other keys retain the real input/event identity.
-6. **Data alone** starts the existing triggerless `\wef-data-cleanup` task for that alert. Records does not start a task or delete records. Record actual delivery, individual acknowledgment, run/actions and completion separately; require exact deletion/absence readback before Success. No repeated sends for pending replies, automatic retry, stop clear or manual source/collector/function run.
-
-Historical producer readback before the November 4 migration: Approved hourly input readback: supported `automation_update` saved the narrow exception at `2026-11-03T14:18:28.418810Z`; ID/name/hourly timing/target/status, two-minute limit and context/archive/post-compaction duties matched the approved candidate. The initial exception prompt SHA256 was `28764ef384b50bacff2228ae140a855afd7d4454034c1dd544928549a9d1d452`; the cleanup-only Data-canonical wording update was saved/read back at `2026-11-03T14:25:42.545952Z`, current SHA256 `d251a6fee8e53bba1a871632f9ffd5851d84056ad427f631980debdfb8cc8a1c`. Only due Data alerts and existing pointer/dedup bookkeeping are added; Records starts no task, and the removed Shows schedule stays absent. Preserve the notification state’s original `automation_id` value `wef-shows-changes-to-records` because the unchanged consumer validates it; it is a receipt namespace, not a claim the deleted automation is active.
-
-Consumer compatibility: `wef-data/cleanup-run.js` consumes the same pointer and validates the trigger, actual Eastern date and canonical published show. Current three-file manifest `C:/Users/gombc/Documents/Codex/outputs/wef-data-cleanup-rules-20261103/deployment.json` records `2026-11-03T14:27:27.161Z`; the initial `13:52:57.198Z` release is preserved in `initial-deployment.json`; `RECORDS-HANDOFF.md` defines this contract. No consumer, schema, task, cadence or source change is included here. Data independently reviewed and deployed the one-line removal of the obsolete entry comparison against `last_reported_pair`. Records read the amendment report/receipt/verifier and deployment, and all three actual runtime hashes match the current manifest; `cleanup-run.js` is `de43a587d0ec2ebfacc253d780264f14888b6a15899b9f9115563dd5ff357ee2`. Evidence is in `canonical-alert-amendment/`. A future genuine new-show/native deletion outcome remains naturally unexercised; no replay or extra run is required for this receipt. The runner’s current Data-synced canonical safety check remains controlling.
-
-Actual calendar-day delivery `calendar-day|2026-11-03` / run `1793714140373` completed Success at `2026-11-03T14:01:05.540Z`: 530 run logs and 1,327 errors deleted, two current run logs/four protected errors/two heartbeats retained; no business actions or archives. Records verified all three native cleanup actions and Data's saved exact-readback/protection proof. Evidence: `native-verification.json` in the packet above. This proves that one real alert/consumer execution, not unattended cadence. It and original show-event run `1793641167487` are handled; never replay them.
-
-Historical November 2 delivery and archive proof below remain dated history; they do not reinstate the old Records-start/planning-day rule or require future backups.
-
-**Actual first delivery, now complete:** the previously verified and already-forwarded transition `200000076/2026-11-01` → `200000077/2026-11-05`, source normal run `b9bc9d5c-2f1d-48e0-ad4a-9d72b7e3504a`, was requested once at `2026-11-02T17:39:27.0546843Z`. Cleanup run `1793641167487` started at `17:39:27.487Z` and completed Success at `18:03:38.894Z`. Records inspected the final local receipt and all 19 native `cleanup-logs` actions: 17 Success, two Skipped, 6,841 deleted, no Error; task exit0 and cleanup stop absent. Seventeen historical archives containing those 6,841 original records had passed Records' hash/decompression/count readback checks. No fake alert, repeated specialist broadcast, collector run or second cleanup start was used. Completion evidence: `delivery-completion.json` and `delivery-native-cleanup-final.json` in the Data packet above.
-
-The November 2 delete-only amendment was independently reviewed and deployed at `18:05:58.683825Z`; its two-file receipt remains in `outputs/wef-data-cleanup-20261102/delete-only/`. The newer November 3 three-policy deployment governs current events. Original archive-era evidence is historical; later explicit owner decisions govern those files. No archive creation is permitted by the current rule.
-
-The retained Season families are riders, horses, trainers and rings. The October 30 People cancellation remains historical. On November 1 the owner explicitly requested a new dedicated local `wef-people` chat for a derived People join in the existing People base. This new scope belongs only to that chat; it does not restore People collection duties to Season, Data or Entries. Existing bases and historical evidence remain preserved.
-
-
-## Dedicated People chat registration - November 1, 2026
-
-Created local chat `wef-people`, `01a19727-9a70-7283-a865-01dd38aacb9d`, in the existing RingStatus project on the owner's direct request. Its first response confirmed exclusive scope in `app6uHgUYCCKTVlJE` and preservation of shared inputs and sibling workflows. Parent supplied the actual schema and source limitations; creation/intake is not deployment or scheduled-run proof.
-
-- Verified existing base: [wef-seaon-people](https://airtable.com/app6uHgUYCCKTVlJE). Preserve its current name; no replacement base.
-- Verified inputs: `w-riders` (`tblGjqYudtbGD3dsY`), `w-trainers` (`tblnA6yeQtZhKYkQ5`), `w-horses` (`tblbRctpu5tpvJYdg`), `w-shows` (`tblXZGPbcoz4gbfwq`), `w-days` (`tblyANazuTky0Yy31`). `w-rings` and `meta` already exist and are outside the requested join.
-- Gap: `w-owners` is absent. The inspected shared Horse schema contains no person-to-horse relationship. Show/day membership fields are text keys, not native links. The new owner must establish the real owner input and relationship evidence; co-attendance and names alone cannot establish identity or horse associations.
-- Requested private outputs: `people`, `run-logs`, `err-logs`, `heartbeat`, `code-review`. Log each scheduled join, mismatches and unmatched inputs; continue valid work and preserve source provenance. No log purge or shared-source modifications.
-- Requested execution: a local runner every **4 hours**, scoped code review every **5 days**. Only the new module's cadences are authorized; existing collectors/tasks remain protected. No manual production runs or record repairs. Runtime/schedule creation and natural-run readback remain the new owner's work, not a completed claim here.
-
-## Independent Data chat registration — October 31, 2026
-
-Registered for requirements intake: independent local chat **wef-data-fast-collector**, thread `01a19273-bdf8-71b2-8503-cc8079efc129`, in the existing RingStatus checkout. Its existence, title, local host and received intake instruction were inspected directly. It replaces `/root/wef_data_exclusive`; it is outside the Season chat and is not a Season subagent. No additional chat or agent is created by this registration update.
-
-Direct human authority was read in that parent chat: turn `01a19270-29c6-7961-b661-73fde5a14033` requests the new agent's instruction and registration with Records; preceding turns `01a1926e-dbe8-7672-8655-f289606cf1f5` and `01a1926e-5d92-7652-91c0-33fced5228bb` specify fast collection only and sequential discovery. Requirements are still being defined.
-
-**Latest ownership correction:** direct human turn `01a19271-e4b6-7d31-aefe-6945732a1192` assigns Season-only responsibility after Data handoff. Direct human turn `01a19273-83cc-77d1-b881-fc340d3fa619` then requires Data outside that chat. The separately created `wef-data-fast-collector` is therefore the registered exclusive Data owner, and `wef-season-coordinator` owns only `wef-season-*`. This supersedes the earlier child-agent destination and combined-ownership wording. No collector, deployment, task change, Data repair, stop clearing or failed-checkpoint resumption follows from the intake/documentation handoff.
-
-- **Owns:** fast-collection requirements only: read synced canonical Shows context, collect/save qualifying day data, and necessary heartbeat/run/error logging. Preserve existing keys, native IDs, records, links and original source timestamps; no inferred identities.
-- **Initial discovery:** one initial pass establishes the current show and completes/saves day 0 first, then completes/saves each remaining qualifying day sequentially. This does not transfer canonical show discovery from Shows.
-- **Recurring requirements:** priority 0 every 3 minutes; 1 every hour; 2 every 2 hours; 3 every 3 hours. Skip negative/past days. These are requirements, not activated task changes. No new one-minute polling requirement, arbitrary collection limits or extra routing is introduced.
-- **Failure behavior:** log item errors and continue unaffected work; report partial outcomes honestly. Never bypass an existing production stop or resume a failed checkpoint by inference.
-- **Excluded:** archiving, retention, cleanup, Season transfers, downstream handoff implementation, sibling-module changes and new identities. Additional mechanics await the owner. The separate cleanup proposal remains on hold.
-- **Airtable awareness:** existing `wef-data` base `appdl16HJ5ETm8N69`; synced `wef-shows.show-days` table `tbl2iAfdZagycQkBp`; numeric `day-priority` field `fldP1IRkAD0E2HIND`. These destination-local sync IDs differ from the canonical Shows source IDs. Saved schema confirms identity/type, not live values, freshness or collection success.
-
-Instruction: [exclusive Data agent scope](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/wef-data-exclusive-agent.md>); its earlier assigned-child/parent wording is superseded by the independent chat's inspected intake instruction and this registration. Evidence: [saved Airtable schema](<C:/Users/gombc/Documents/Codex/2026-10-23/find-all-docs-discussing-wef-people-4/outputs/wef-data-airtable-schema-20261031.json>).
-
-**Registration/documentation only.** No code, tests, deployment, source calls, manual collectors, schema/record/task/cadence changes or stop clearing. Existing Data stop, records and links remain protected. Registration is not implementation, operational acceptance or verification of production readiness.
-
-## Shows transition alerts to Records — requirement recorded October 31, 2026
-
-Direct human authority inspected in Shows turn `01a193f3-028b-7f12-b367-3d9f22fb08ee`: "add to alert wef-records-coordinator", following the explanation that discoveries currently publish Airtable/logs without chat alerts.
-
-- **Recipient:** this Records chat, `01a169bc-e58a-7de0-94c6-5d3931fcf745`.
-- **Trigger:** a verified default show ID change or selected show-day advance during an existing normal Shows run. Send one alert for that transition; unchanged checks produce no alert. An alert does not trigger downstream collectors.
-- **Content:** old/new show ID and selected date, normal-run ID/timestamp, and exact saved evidence location. Preserve transition identity for duplicate-delivery checking; one-alert behavior is a requirement, not an installed guarantee.
-- **Owner-approved forwarding:** when Records receives a verified Shows new-show or selected-day-advance alert, relay the same factual alert and evidence to every other Records module owner: `wef-data-fast-collector` (`01a19273-bdf8-71b2-8503-cc8079efc129`), `wef-live` (`01a16902-240a-7280-8661-90b0d8d7325a`), `wef-season` (`01a169c8-a4cc-7f52-b9f9-ef0a769aab58`), `wef-entries` (`01a1691d-3bd7-7eb2-af17-b9ba39a7501e`) and `wef-schedules` (`01a14082-b22f-73b1-bba7-16781892a55d`). This standing authorization comes directly from the owner in Records: "when alerted of a new show discovery or new day discovery by wef-shows you will send the same to each subagent". Shows is the originating owner; do not echo the alert back or create a forwarding loop.
-- **Forwarding boundaries:** preserve the original show/day identity, timestamp and evidence without inventing missing facts. Track delivery by transition and recipient; do not report delivery until the messaging tool succeeds. An alert conveys information only: no collector run, task restart/cadence change, record repair, stop clearing, scope transfer or code change is authorized. Recipients retain their own approved scope and normal workflows. No alert was received or forwarded by recording this rule, and it does not install the missing automatic Shows-to-Records transport.
-- **Current result:** no existing unattended Shows event-to-chat delivery route was found in the inspected collector/entry code, coordination/scripts/configuration or available app tools. The collector explicitly reports "No downstream jobs triggered." The available `send_message_to_thread` tool can deliver an authorized message from an active agent turn; its presence does not expose an authenticated notification ingress to the scheduled collector.
-- **Supported building block, not an installed route:** [Codex App Server](https://learn.chatgpt.com/docs/app-server) documents `thread/resume` and `turn/start` for continuing an existing chat. No deployed Shows client, authenticated ingress, delivery acknowledgement or transition deduplication for this Records chat was found. Do not start a new App Server or repurpose credentials to demonstrate it.
-- **Ownership:** Shows remains the event producer and owns any separately approved producer delta. Records owns this alert contract and coordinates delivery. No existing implementation chat for an event-to-chat bridge was identified; assigning/building that integration remains a separate decision, not a new Shows collection responsibility.
-
-**Status: requirement recorded; automatic chat delivery is not installed or verified.** No implementation, monitoring automation, polling observer, manual run, repair, task/cadence change, deployment or unrelated code change follows from this investigation. Preserve Shows' current discovery, date/day-priority, logging workflow and five-minute cadence; counting was cancelled by the later scope reduction below.
-
-**First received transition forwarded:** normal October 31 run `e8e2a050-cf53-4827-92fa-3779c2b4695f` at 19:04 Eastern advanced show `200000076` from selected date October 31 to November 1; all four day-priority updates were reported/readback verified by Shows and the saved phase report independently inspected by Records. Records also verified the compressed pre-change show snapshot and its content hash. The same factual alert/evidence was sent to Data, Live, Season, Entries and Schedules; all five messaging tool calls succeeded. This proves chat submission, not recipient execution or downstream acceptance. Count publication was separately stopped at delivery time; the owner subsequently cancelled counting and its repair, so this is not an active Shows recovery task. Missing automatic alert transport remains open. This was a manual chat handoff of normal-run evidence, not a manual collector run; no business changes followed.
-
-## Shows scope reduction — owner-approved October 31, 2026
-
-Direct owner scope in Shows turn `01a1947f-626a-7800-8ea8-14e6df2d9e36`: manage only shows, dates, day-priority and alert Records. Turn `01a19480-3a0f-76e2-9984-76fdfd461f3b` approves that exact edit and explicitly prohibits additions or complexity. **Entry/trip counting and the proposed timeout repair are cancelled and removed from Shows' active backlog**, not awaiting recovery approval.
-
-The scope-only release was deployed October 31 at 20:29:18 Eastern. Records inspected its manifest, deployment receipt, independent review/report/verifier and current file hashes. Review evidence reports 24 offline checks and COMPLETE/PASS; Records did not rerun them. Current collection manages canonical dates/native links and day-priority without invoking direct counts, Data/replay or count-stop checks. Historical count values/statuses, helpers, evidence and the count-stop file remain preserved; preservation is not current-count certification or a request to repair/clear them.
-
-Discovery remains Sunday 22:00 Eastern with three-hour retries until a new show; day 0 advances after 19:00 only when the next eligible day exists. The existing five-minute task, heartbeat/logs, records/links, schema and downstream scope remain unchanged. Alerts remain required for verified new-show/day-0 transitions only; no service/framework/outbox/observer was added, and automatic collector-to-chat transport remains uninstalled.
-
-**Acceptance: counting removal verified through one normal scheduled run.** Records inspected saved run `343cdab8-1245-46d9-9e47-4808c4ccfede`, October 31 at 20:34 Eastern (00:34:03.289Z–00:34:10.995Z November 1): Success, task exit 0, no errors/telemetry errors or direct counting. All four canonical dates/native links verified; November 1 selection retained. Saved Airtable heartbeat/run-log readback is Success; all four show-day keys/links/priorities and historical count values/attempt statuses were preserved. All five current deployed hashes still match the manifest; verification receipt records historical count-stop preservation. Counting and timeout repair are cancelled/closed, not recovery work. This is scoped run evidence, not proof of automatic alerts or a claim of additional scheduled runs. Evidence: [scope-only release](<C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-shows/evidence/scope-only-20261031/README.md>), including `verification.json`, `readback.json`, `normal-343cdab8-1245-46d9-9e47-4808c4ccfede.json`, deployment and independent review receipts. Automatic alert transport remains unimplemented. This coordination update authorizes no further collector edit, trigger, repair, task change, stop release or downstream scope change.
-
-## My responsibilities
-
-- Keep one clear ownership and dependency map. Record who produces each fact, who consumes it, permitted fields, keys, links, freshness, coverage and failure behavior.
-- Reconcile owner instructions and corrections before dispatching work. Preserve the proven implementation, explicit stops, approved fixes and data/link protections.
-- Coordinate authorized work with existing owner chats. Give exact scope, exclusions, acceptance criteria and evidence requirements; read the returned evidence and resolve contradictory claims. Sending an instruction is not proof it was accepted or implemented.
-- Notify every current owned specialist of new or updated applicable skills. Verify the installed version, changed files actually read or verified reuse of unchanged reads, and application to current work. Installation, dispatch and a generic READ acknowledgment are not completion.
-- Forward verified new-show and new-show-day information from Shows to every current consuming Records specialist, once per event and recipient, preserving source facts and evidence. Obtain each specialist's confirmation and inspect actual adoption within its lane. Receipt in this Records chat does not complete the downstream handoff.
-- Maintain the source-to-destination sharing review. Distinguish source tables, Data Library publications, destination imports and actual runtime readers. Do not declare proposed imports required dependencies.
-- Track new-show/default/day transitions and their factual alerts. Shows does not own entry/trip counting or zero-entry certification under its current scope. Consumers must not treat preserved historical count fields or an absent/stale count as a newly verified zero.
-- Track the existing business triggers, archive triggers and review heartbeats with their actual owner, target, cadence, last evidence, failures and next action. A configured heartbeat is not continuous supervision or proof a future run occurred.
-- Require archive readback/verification before approved retirement; protect historical identities, native links and existing consumers.
-- Ensure every current owned specialist performs actual Code Review for applicable authorized changes and its owner-approved periodic reviews. Keep the review owner assigned through ownership transfers; moving Data out of Season must not leave Data without review coverage. Require independent review where the accepted change requires it, and never label the writer's self-review independent. Inspect actual reports, reviewed hashes, findings and verification gaps; a timer, README or passing tests do not establish review or scheduled success.
-- Obtain and inspect a separate confirmation from every specialist for skill adoption, show/day receipt and applicable review completion. Keep missing, failed and unverified confirmations visible until supported by evidence; never report all agents done while one is outstanding. Do not add full-test churn, new observers or arbitrary review intervals to obtain confirmations.
-- Verify the accepted outcome through the established deployment and scheduled paths, including repeat runs and downstream compatibility when required. Report PASS, FAIL, PARTIAL or BLOCKED for the exact scope verified.
-- Keep durable documentation and handoffs containing the objective, decisions, authorization, versions, evidence, protected changes, failures and exact next action. Keep owner updates brief and factual.
-
-### Required confirmations — owner correction, November 2, 2026
-
-Current owned specialists: **Shows, Live, Data (`wef-data-fast-collector`), Season, Entries and People**. The owner subsequently deprecated the Schedules chat: the earlier Schedules row and forwarding list are historical and must not revive that chat. Chat deprecation does not itself stop its collector. Shows originates show/day events; do not echo the same event back as a new discovery. Include Shows in skills, review and responsibility confirmations.
-
-| Subject | Required specialist confirmation | What Records verifies |
-| --- | --- | --- |
-| Skills | Version/files, actual read or unchanged-read reuse, how guidance applies to the current task, preserved scope/stops | Read evidence and task-specific application; loading is not future-compliance proof |
-| New show or day | Exact show/date received, expected behavior of its own existing job, any stop or missing input | Recipient response and existing normal-run evidence where adoption requires it; a successful send proves delivery only |
-| Code review | Reviewer, reviewed version/hashes, date, report, findings, remaining checks and actual owner/trigger/cadence | Actual report and underlying evidence; independent authorship when required; existing authorized base record/readback |
-
-Planning day0 is distinct from calendar TODAY. Missing/stale data is not a verified zero-entry day. Notifications do not clear stops or authorize manual runs, repairs, code/schema changes, deployments or business-task changes. Unchanged code does not need a new review or full tests on every notification or collector invocation. Review completion may include findings and does not mean the implementation passed.
-
-**Review ownership gap confirmed:** Season's November 2 `wef-data-monday-code-review` wake reported deleting that review after Data ownership moved, without performing or recording a review. The inspected local automation inventory includes Shows, Live, Season and People review routines; no Data or Entries review routine was found. This is a missing periodic route, not proof that Data or Entries never received a release review. Preserve Data's established Monday09:00 Eastern review requirement and existing Data review record while reconciling the route with its current owner. Entries retains change-triggered review obligations; no periodic interval is invented here. See the [review standard](../wef-code-review-standard.md).
-
-All six owners returned their own confirmations of these duties, show200000077/day0 November5 receipt, and applicable Operating Skills **0.2.9** reads/reuse. These confirmations do not mean every review or scheduled adoption is complete. Records inspected the following evidence and gaps; no tests were rerun for acknowledgment.
-
-| Owner | Confirmed review coverage and remaining gap, November 2 |
+| Chat | Historical chat ID |
 | --- | --- |
-| Shows | Independent `day-state-20261102` review and saved normal-run verification inspected; Monday09:30 routine exists and owner reports today's review recorded. [Review report](../../../wef-shows/evidence/day-state-20261102/review-report.md). |
-| Live | Monday10:00 routine exists. Latest cleanup release review is explicitly author self-review, not independent; its local confirmation identifies exact hashes and missing release-specific Airtable entry. [Confirmation](../../../wef-live/evidence/cleanup-20261102/records-confirmation-20261102.md). |
-| Data | November1 independent membership release review exists; Records checked current `data_runner.py` matches reviewed SHA256 `ab243e946be911adb0ebff0a2da5b08bba2bd6fba7077bdb3def3c69b2cd19db`. The November2 catch-up periodic review is now COMPLETE with findings, with report/receipt/verifier and unchanged candidate hashes inspected by Records. Linking integration is FAIL with saved HTTP422; collector saving continues. The Monday09:00 route remains missing. [Catch-up review](<C:/Users/gombc/Documents/Codex/outputs/wef-data-states-20261101/periodic-review-20261102/REVIEW.md>). |
-| Season | Owner confirms Monday10:30 routine and November1 independent association release review. New-show adoption remains unverified; reported ring-membership stop remains protected. |
-| Entries | Independent linking-restoration review exists; owner identifies a later companion change with limited Entries-specific acceptance evidence. No approved periodic route was verified; change-triggered review remains required. |
-| People | Existing five-day review routine; latest implementation review is author self-review, with nine source hashes checked unchanged by Records. Independent review, executed periodic review and base review-record evidence remain unverified. [Confirmation](../../../wef-people/evidence/guidance-status-20261102.json). |
+| [Entries](../../../wef-entries/README.md) | `01a1691d-3bd7-7eb2-af17-b9ba39a7501e` |
+| [People](../../../wef-people/README.md) | `01a19727-9a70-7283-a865-01dd38aacb9d` |
+| Schedules | `01a14082-b22f-73b1-bba7-16781892a55d` |
 
-This document does not create a timer, execute a review or certify collector adoption. Preserve missing-route and independent-review gaps until the corresponding actual evidence exists.
+Specialist operating references: [Shows](../../../wef-shows/README.md), [Live](../../../wef-live/README.md), [Data](../../../wef-data/README.md), [Season](../../../wef-season/README.md), [Decoder](../../../workers/wef-schedules-decoded/README.md).
 
-The missed show handoff and misleading explanation remain an Open [EPIC FAIL complaint](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U/recicGqPdd8c7ih25). Six later successful sends prove delivery, not application or complaint closure.
+## Inputs and outputs
 
-## Downstream coordination
+Records reads direct owner instructions, existing operational evidence and genuine scheduled wakes. The cleanup handoff reads Data's saved cleanup state and the current canonical default show. Records publishes the existing cleanup pointer, keeps delivery and result receipts, and reports verified outcomes.
 
-Timing, Engine, Results, Messages, Waze, Publish and tenant consumers use only their agreed inputs. Records coordinates interface compatibility when requested; it does not assume ownership of their application logic, tenant settings, messaging or publishing.
+### Airtable
 
-Entries consumes evidence to create links. Shows, Data and Live do not acquire data on behalf of Entries or wait for Entries to continue. Live's specifically approved publication is an explicit interface, not permission for modules to cross lanes or write arbitrary fields.
+| Interface | Authority and use |
+| --- | --- |
+| `w-shows` | Resolve the existing binding in [Data's schema](../../../wef-data/schema.json). Read exactly one canonical default and preserve its original source timestamp. |
+| `w-days` | Data's show-day input. A planning day change alone creates no cleanup event. Planning day 0 and the Eastern calendar date are distinct. |
+| `cleanupV2` | Data owns cleanup selection and outcome rows. Reference tables and historical cleanup records stay protected. |
+| Agent complaints | The [Airtable complaint register](https://airtable.com/appZahVgD156cMAe3/tblPRAjSK54F8VA8U) records evidence and disposition. |
 
-The Season Data Library names are `w-riders`, `w-horses` and `w-trainers` (published according to the owner), with `w-rings` planned. The new dedicated People module is authorized to derive its local `people` table; publication of a `w-people` library is not requested or verified. Publication settings and destination imports require separate verification. These historical references are optional by consumer need, not new prerequisites for current collection. Keep private operational logs/control state, raw payloads, credentials, tenant choices, permissions, consent and contact details out of general library views.
+In a sharing review, distinguish the source, Data Library publication, destination import and actual runtime reader. [Sharing review](../wef-sync-sharing-review-20261030.md)
 
-## Execution and approval rules
+### Integrations and add-ons
 
-Codex inspects, documents, coordinates and performs explicitly authorized repeatable changes. Scheduled tasks/workflows execute the business process.
+- **Airtable and Data Library.** Specialists own their published tables and destination imports. Use the source and runtime-reader checks above when assessing a shared interface.
+- **Codex chat handoff.** Records delivers an eligible cleanup alert to the existing Data chat. Windows Task Scheduler executes Data's registered task.
+- **Shared Decoder.** Decoder owns runner-first proxy routing, the independent fallback and credential renewal. Consumers retain their own operating rules. [Decoder operating reference](../../../workers/wef-schedules-decoded/README.md)
+- **RingStatus Operating Skills.** See [Skills used](#skills-used) for the procedures Records uses in this workspace.
 
-- No manual collector runs, substitute direct source calls, record repairs or task/cadence changes without the exact applicable authorization.
-- An approved workflow failure stops that execution path. Report the evidence and continue independent authorized work; do not retry, repair or patch that failed path without required fresh approval.
-- Read-only/planning requests do not authorize implementation, schema changes, imports, retirement, deployment or publication. Documentation updates do not activate historical assignments.
-- Preserve locked releases and approved fixes. Do not transfer responsibilities, retire Schedules, merge lanes or create a replacement collector through coordination wording.
-- Message existing chats only within explicit owner authorization. Do not create chats, recurring monitors or background agents by inference. This README installs none.
-- Recheck applicable instructions at resume, direction change and handoff. Apply the invoked Instruction Loader, Rebalance, Code Review and Context Compact guidance; do not claim a skill, review or compaction executed without evidence.
+## How it works
 
-## Working records and verification
+### Resume here
 
-### Guidance adoption receipt — October 30, 2026
+- Reconcile the latest owner objective, approvals, stops and exact next action against the private `resume.md`, `state.json` and relevant saved evidence for this chat.
+- Check actual context telemetry at task boundaries and the first tool boundary after 30 active minutes. At 65% estimated context, prepare and verify a private checkpoint and archive. After observed compaction, reconcile and verify continuity before dependent work. [Context procedure](../context-check-procedure.md)
+- Keep approved, prepared, reviewed, deployed, delivered and verified outcomes separate. Preserve the proven baseline and the exact evidence for any failed path.
 
-RingStatus Operating Skills **0.2.1** was read from the installed plugin and compared byte-for-byte with the canonical Code Review, Context Compact and context helper sources. Use the stable canonical procedures on future invocation: [Code Review](C:/Users/gombc/.agents/skills/code-review/SKILL.md) and [Context Compact](C:/Users/gombc/.codex/skills/context-compact/SKILL.md). This README does not automatically load a skill or schedule work.
+### Collection cadence and fallback contract
 
-For delegated/release reviews, save independently authored findings and exact command/runtime/time/exit/stdout/stderr evidence in the authorized review directory; read back and hash the report and frozen inputs. Separate inspected, executed, deployed and normally scheduled proof. Review findings authorize no repair.
+Records checks cadence and fallback evidence for the specialist that owns the workflow. Its own scheduled wake evaluates cleanup alerts.
 
-At resume, observed compaction and material scope/approval/review handoff, reconcile the full continuing role and current owner boundaries, preserve the prior private checkpoint, refresh the current resume/archive and readback/hash receipt, and run the context helper's `--verify-checkpoint`. The owner's **65%** estimated-context preparation threshold overrides the skill default. No new compaction, observer, timer or production action is implied. Existing cadences, role ownership and explicit stops remain controlling.
+| Owner | Collection cadence and fallback reference |
+| --- | --- |
+| Shows | The existing five-minute wake supplies validation, heartbeat and due discovery. Browser-first discovery uses the approved proxy fallback when the browser path is unusable. [Shows operating reference](../../../wef-shows/README.md) |
+| Data | The documented day-0 policy is three minutes when the selected day is today and hourly otherwise. Priorities 1–3 run in order on the documented 30-minute cycle. Decoder owns the approved schedule/class fallback, which stops at the first usable response. [Data operating reference](../../../wef-data/README.md) · [Decoder fallback](../../../workers/wef-schedules-decoded/README.md) |
+| Live | Use Live's own active lane, cadence and source boundaries. Its documented day-0 name fallback applies to eligible empty trip links with a blank source ID and a unique name match. [Live operating reference](../../../wef-live/README.md) |
+| Season | The existing hourly job owns Season retention and supported associations. Use Season's own workflow and conflict handling for acceptance. [Season operating reference](../../../wef-season/README.md) |
 
-The bounded offline adoption proof and receipt are private workspace evidence under `.git/ringstatus-control/skill-proof-20261030/coordinator-rollout/records/`; raw transcripts remain only in the existing private context-recovery directory. Adoption proof does not establish collector reliability or universal future compliance.
+### Cleanup contract
 
-- [Owner operating instructions](../wef-owner-operating-instructions.md)
-- [Owner workspace, authority and cadence index](../wef-agent-operating-index-20261030.md)
-- [Sharing review and pending decisions](../wef-sync-sharing-review-20261030.md)
-- [Code-review standard and registered review routines](../wef-code-review-standard.md)
-- [Data-only readiness plan — preparation, not retirement approval](../../superpowers/plans/2026-10-30-wef-data-only-readiness.md)
-- Module evidence and implementation details: [Shows](../../../wef-shows/README.md), [Data](../../../wef-data/README.md), [Live](../../../wef-live/README.md), [Entries](../../../wef-entries/README.md), [Season](../../../wef-season/README.md), [Schedules](../../../wef-schedules/README.md).
+The existing Records reminder checks at 1, 4, 7 and 10 a.m. and p.m. Eastern, with a two-minute check limit. On a genuine wake, read `wef-data/runtime/cleanup/cleanup-state.json` and the existing Records notification ledger. Use the deployed pure `alertFor` selector with the single canonical default and actual time. The selector prioritizes a changed show, then the daily clear at or after 7 p.m. if due, then an eligible log-check slot. [Deployed selector](../../../wef-data/cleanup-lane.js)
 
-Use dated receipts and actual deployed/scheduled evidence for operational status. The October 30 index records open Live publication findings, Data current-membership/archive limitations and pending migration work; this README does not resolve those gaps. Final library destinations and field scopes remain proposals until agreed.
+Data owns eligible tables, record protections and retention. At 1,000 or more rows in a checked logging table, delete oldest eligible records until 500 total remain, subject to protection of active, current and pending records. The former readiness manifest, schema projection and cleanup stop-release checks are retired. [Data cleanup policy](../../../wef-data/README.md#current-cleanup-policy---november-8-1007-am-eastern)
 
-This documentation task is complete when this role matches the owner's lane corrections, links resolve, and only the authorized documentation is changed. It does not certify current collector health.
+### Linker contract
+
+Data and Live own their independent linkers. Season owns its supported trip-based associations. Each owner defines the eligible input, target links, match evidence, preservation rules and conflict handling in its own operating reference. Records verifies the authorized handoff and the existing job's evidence. Entries and People remain historical references under [Deprecated chats](#deprecated-chats).
+
+## Handoffs
+
+1. **Records to Data.** Save the selector's exact `event_id`, `trigger`, `show_id`, `calendar_day` and `issued_at` in `.git/ringstatus-control/wef-records-shows-transition-alert-state.json`. Save the Requested receipt before sending one factual alert to the existing Data chat. Deduplicate by event ID and preserve history and original clocks.
+2. **Data to Records.** Data alone starts its existing triggerless cleanup task. Record delivery, acknowledgment and completion separately. Verify the saved result, native readback, `cleanupV2` and local counts. Retain the exact failure reason and evaluate later genuine events on their own evidence.
+3. **Other specialist coordination.** Use the owner-approved recipient and scope for the specific request. Retain source clocks and facts from Shows notices. Verify adoption through the specialist's existing workflow. The standing stop on unrelated sending remains in effect.
+
+## Future
+
+- Verify keep-500 deletion behavior when an existing log check naturally reaches the threshold.
+- Verify new-show collection coverage against its own evidence before reporting completeness.
+- The shared README format is a proposal for the specialist documents. Each role retains its own rules and evidence.
+
+- **After the owner locks the Records README**, send this documentation instruction to the existing Shows chat:
+
+  > Simplify README around these main categories. Keep browser discovery and show-day priorities easy to find. Move superseded material into history. Documentation only.
+
+## Development
+
+### Project global instructions
+
+Read the repository [AGENTS.md](../../../AGENTS.md), the [local Codex global instructions](<C:/Users/gombc/.codex/AGENTS.md>) and any applicable instructions closer to the files in scope. Reconcile them with the latest direct owner decision before acting. The project instructions require preserving proven implementations, keeping approved changes narrow and checking context at the stated boundaries. The global instructions govern owner handoffs, approval and delivery, and session resumption.
+
+The brief sits alongside the global `AGENTS.md`. It summarizes the standing rules and organizes 32 checked source links by task, covering approvals, runner boundaries, verification, handoffs, Webflow and skill maintenance. [Global Instructions Brief](</C:/Users/gombc/.codex/GLOBAL-INSTRUCTIONS-BRIEF.md>)
+
+### Skills used
+
+- [Context Compact](<C:/Users/gombc/.codex/skills/context-compact/SKILL.md>) prepares and verifies private continuity checkpoints around observed compaction.
+- [Rebalance](<C:/Users/gombc/.agents/skills/rebalance/SKILL.md>) reconciles scope, owner decisions, stops and the next executable action.
+- [Code Review](../wef-code-review-standard.md) governs applicable implementation reviews and their evidence.
+
+### Script files and locations
+
+| Workspace location | Role |
+| --- | --- |
+| `C:/Users/gombc/.codex/skills/context-compact/scripts/inspect_context.py` | Records continuity telemetry, private archive and checkpoint verification. |
+| [wef-data/cleanup-hidden.vbs](../../../wef-data/cleanup-hidden.vbs) → [wef-data/cleanup-run.js](../../../wef-data/cleanup-run.js) → [wef-data/cleanup-lane.js](../../../wef-data/cleanup-lane.js) | Data's existing cleanup task chain. Records uses the pure selector exported by the lane. |
+| [wef-data/fast_collector.py](../../../wef-data/fast_collector.py) and [wef-data/linking-scheduled.py](../../../wef-data/linking-scheduled.py) | Data collection and scheduled linker references. |
+| [wef-shows/collector.js](../../../wef-shows/collector.js), [wef-live/collector.js](../../../wef-live/collector.js) and [wef-live/linker.js](../../../wef-live/linker.js) | Shows and Live collection, and Live linking. |
+| [wef-season/season.py](../../../wef-season/season.py) and [workers/wef-schedules-decoded/worker.js](../../../workers/wef-schedules-decoded/worker.js) | Season workflow and shared Decoder implementation. |
+
+### Review and verification
+
+Establish the exact approved change and protected behavior before work. For applicable implementation reviews, retain the reviewer, reviewed version or hashes, findings and verification evidence. Keep independent reviews distinct from author reviews and verify the established scheduled path where required. [Owner instructions](../wef-owner-operating-instructions.md) · [Operating index](../wef-agent-operating-index-20261030.md) · [Code review standard](../wef-code-review-standard.md)
+
+The [Daily Management Plan](DAILY-MANAGEMENT-PLAN.md) holds the planning record. Latest direct owner decisions and deployed evidence control over dated snapshots. The previous README, including its historical approvals, run receipts and superseded procedures, remains in Git at `73699ab4:docs/coordination/wef-records-coordinator/README.md`.

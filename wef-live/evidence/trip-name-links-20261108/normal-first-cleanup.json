@@ -1,0 +1,26 @@
+{
+  "run_id": "23c7861d-eec8-438d-a02e-7f875a54e4f0",
+  "started": "2026-11-08T18:43:41.941Z",
+  "actions": [
+    {
+      "id": "23c7861d-eec8-438d-a02e-7f875a54e4f0|quick-cleanup|run-logs",
+      "table": "run-logs",
+      "trigger": "quick-cleanup",
+      "before": 1291,
+      "old_show": null,
+      "deleted": 791,
+      "started": "2026-11-08T18:43:51.949Z",
+      "result": "Success",
+      "completed": "2026-11-08T18:45:57.332Z",
+      "target_count": 791
+    }
+  ],
+  "result": "Success",
+  "day": "2026-11-08",
+  "daily_clear_day": "2026-11-07",
+  "daily_due": false,
+  "quick_due": true,
+  "show": 200000077,
+  "new_show": false,
+  "completed": "2026-11-08T18:45:59.550Z"
+}

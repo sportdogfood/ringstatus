@@ -1,0 +1,27 @@
+{
+  "reviewer": "/root/class_status_review",
+  "commands": [
+    {
+      "id": "independent-suite",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-status-20261107\\reviewer\\suite-wrapper.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T02:47:29.477912+00:00",
+      "ended_at": "2026-11-08T02:47:29.694290+00:00",
+      "exit_code": 0,
+      "stdout": "PASS all saved Active November 6 classes evaluated\nPASS fixed pace; unknown actual start is never invented\nPASS unchanged input produces new snapshots with explicit unchanged diff\nPASS original observation times survive repeat snapshots\nPASS shared groups do not claim individual finish\nPASS completed classes do not acquire a new predicted finish\nPASS count diff preserves previous/current values and measured class pace\nPASS 999 logs: none; 1000 logs: oldest 500\nPASS active, pending and unchecked work protected\nPASS 19:00 Eastern daily event; earlier time has no daily deletion\nPASS new show comes from ID change; day-0 is irrelevant\nPASS synced, class history and reference tables cannot be deleted\nPASS future/current timing answers protected on show change\nPASS offline deletion requires intent, exact readback and absence proof\nPASS changed rows block deletion\n{\"passed\":15,\"snapshots\":43,\"day\":\"2026-11-06\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "independent-counterexamples",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-status-20261107\\reviewer\\counterexamples.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T02:47:29.694290+00:00",
+      "ended_at": "2026-11-08T02:47:29.803181+00:00",
+      "exit_code": 1,
+      "stdout": "{\"name\":\"unknown finish of active jump-off prevents a guessed downstream expected start\",\"result\":\"FAIL\",\"message\":\"Active preceding jump-off has unknown remaining total, but next expected start is 2026-11-06T14:30:00.000Z\\n+ actual - expected\\n\\n+ '2026-11-06T14:30:00.000Z'\\n- null\\n\"}\n{\"name\":\"invalid source clock is local to its class, preserving other class snapshots\",\"result\":\"FAIL\",\"message\":\"Got unwanted exception: One bad class clock aborts all class evaluation\\nActual message: \\\"Missing or future original observation\\\"\"}\n{\"name\":\"missing answer date/identity is protected during new-show cleanup\",\"result\":\"FAIL\",\"message\":\"Answer without date/validated identity is selected for deletion\\n\\n1 !== 0\\n\"}\n{\"name\":\"13-hour-old answer lacking archive/catalog verification is excluded\",\"result\":\"FAIL\",\"message\":\"13-hour-old answer is selected with no archive/catalog evidence\\n\\n1 !== 0\\n\"}\n",
+      "stderr": ""
+    }
+  ]
+}

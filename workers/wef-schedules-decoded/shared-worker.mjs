@@ -1,5 +1,6 @@
+import {scheduleHealth} from './schedule-health.mjs';
 import { publicRoute } from './public-live.mjs';
-import { fetchFallback } from './fallback.mjs';
+import { fetchFallback, renewFallbackToken } from './fallback.mjs';
 import { DurableObject } from 'cloudflare:workers';
 import { createPacer } from './sgl-pacing.mjs';
 const reply = (data, status=200, extra={}) => new Response(JSON.stringify(data), {
@@ -10,18 +11,12 @@ export const sourceHandler = {
     const url=new URL(request.url), pathname=url.pathname.replace(/\/+$/, "") || "/";
     if(request.method!=="GET") return reply({message:"GET only"},405);
     if(pathname==="/health"){
-      const show = env.HEALTH_SHOW_ID;
-      if (!/^\d+$/.test(show || ""))
-        return reply({ok:false,worker:"wef-schedules-decoded",message:"Health check is not configured"},503);
-      const ping = new URL("/schedule", url);
-      ping.search = "?date=00/00/00&show_id=" + show + "&customer_id=15";
-      const result = await this.fetch(new Request(ping),env);
-      const data = await result.json().catch(() => null);
-      const hasRings = Array.isArray(data?.rings);
-      const ok = result.ok && result.headers.get("x-rs-decoded") === "1" &&
-        String(data?.show?.show_id) === show && Boolean(data?.show_date) && hasRings;
-      return reply({ok,worker:"wef-schedules-decoded",show_id:show,rings:hasRings ? data.rings.length : 0,
-        schedule_status:result.status},ok ? 200 : 503);
+      const result=await scheduleHealth(request,env,{
+        original:(ping,report)=>this.fetch(ping,{...env,SGL_HEALTH_PROBE:true,SGL_HEALTH_REPORT:report}),
+        alternate:(ping,profile,report)=>fetchFallback(ping,env,{profile,report}),
+        renew:(reason,report)=>renewFallbackToken(env,reason,report)
+      });
+      return reply(result,result.ok?200:503);
     }
     const publicFeed = publicRoute(url);
     if (publicFeed && !publicFeed.valid) return reply({message:"Invalid source parameters"},400);
@@ -48,8 +43,31 @@ export const sourceHandler = {
     const fallbackEligible=true; // All source routes have already passed validation.
     const fallback=async reason=>{
       console.error(JSON.stringify({message:'Using direct source fallback',path:pathname,reason}));
-      const response=await fetchFallback(request,env);
-      const headers=new Headers(response.headers);headers.set('X-RS-Source-Lane','cloudflare-fallback');
+      env.SGL_HEALTH_REPORT?.({runner_fallback_reason:reason});
+      const recover=!env.SGL_HEALTH_PROBE&&(pathname==='/schedule'||/^\/classes\/[1-9]\d*$/.test(pathname));
+      const profiles=recover?['original-header','profile-fb-header1','profile-fb-header2','windows-clean','android-clean']:['original-header'];
+      let response,profile;
+      for(let round=0;round<(recover?2:1);round++){
+        if(round){
+          await new Promise(resolve=>setTimeout(resolve,1000));
+          try{await renewFallbackToken(env,'source-header-recovery');}catch{break;}
+        }
+        for(let index=0;index<profiles.length;index++){
+          profile=profiles[index];
+          if(index||round)await new Promise(resolve=>setTimeout(resolve,1000));
+          response=await fetchFallback(request,env,{profile:index||round?profile:undefined,report:env.SGL_HEALTH_REPORT});
+          const payload=response.ok?await response.clone().json().catch(()=>null):null;
+          const usable=response.ok&&(publicFeed||response.headers.get('x-rs-decoded')==='1'&&payload&&typeof payload==='object'&&!Array.isArray(payload)&&Object.keys(payload).length>0);
+          if(usable||!recover){
+            const headers=new Headers(response.headers);headers.set('X-RS-Source-Lane','cloudflare-fallback');
+            if(recover)headers.set('X-RS-Header-Profile',profile);
+            return new Response(response.body,{status:response.status,headers});
+          }
+          if(index<profiles.length-1)await response.body?.cancel();
+        }
+      }
+      if(response.ok)return reply({message:'Source fallback returned unusable data',statusCode:502},502,{'X-RS-Source-Lane':'cloudflare-fallback','X-RS-Header-Profile':profile});
+      const headers=new Headers(response.headers);headers.set('X-RS-Source-Lane','cloudflare-fallback');headers.set('X-RS-Header-Profile',profile);
       return new Response(response.body,{status:response.status,headers});
     };
     if(fallbackEligible&&env.RUNNER_KEY&&request.headers.get('X-RS-Fallback-Test')===env.RUNNER_KEY)return fallback('authorized-verification');
@@ -62,6 +80,7 @@ export const sourceHandler = {
         headers: {Authorization: "Bearer " + env.RUNNER_KEY},
         redirect: "manual", cache: "no-store", signal: AbortSignal.timeout(30000)
       });
+      env.SGL_HEALTH_REPORT?.({runner_http_status:response.status});
       if(fallbackEligible){
         if(!response.ok){await response.body?.cancel();return fallback('runner-http-'+response.status);}
         if(!publicFeed){

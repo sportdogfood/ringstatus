@@ -1,0 +1,32 @@
+{
+  "started_at": "2026-11-08T23:36:02.157470+00:00",
+  "deployed_at": "2026-11-08T23:36:02.207472+00:00",
+  "task": "wef-timing-data",
+  "prior_run_id": "2cd67b49-d51f-40ac-9a35-6c9869298a9c",
+  "prior_run_started": "2026-11-08T23:34:05.063Z",
+  "files": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-snapshot.js",
+      "sha256": "b8e7ffc509b8a9796e168507ef4338e21b5114391129ab1dd514feb7299d2000",
+      "replaced": false
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-cleanup.js",
+      "sha256": "e13a4963f8f870fd3ce7e0cd3c6879946fc7cc2c4e69ac74f080daf9e0444fef",
+      "replaced": false
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.js",
+      "sha256": "f31e9eddffd8512dcb3c0deccca1eb76b029cdabd14718d5ef12db5f7c8640f0",
+      "replaced": true
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\entry-data.js",
+      "sha256": "106f8131132209e9cf5735b315425e38c029e604670856c270db85a6a7f66d40",
+      "replaced": true
+    }
+  ],
+  "manual_runs": 0,
+  "schedule_changed": false,
+  "backup": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\deployment-backup"
+}

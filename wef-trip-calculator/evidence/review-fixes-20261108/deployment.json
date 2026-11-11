@@ -1,0 +1,16 @@
+{
+  "started_at": "2026-11-09T02:15:18.1082417Z",
+  "deployed_at": "2026-11-09T02:15:18.1498276Z",
+  "task": "wef-timing-data",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\entry-data.js",
+  "staged": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\review-fixes-20261108\\candidate\\entry-data.js",
+  "backup": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\review-fixes-20261108\\entry-data.before-deploy.js",
+  "sha256": "b22bed9701697be825c1a5e69880fac76a13ba868c84408ae6138bd2c1f1c080",
+  "expected_sha256": "b22bed9701697be825c1a5e69880fac76a13ba868c84408ae6138bd2c1f1c080",
+  "baseline_sha256": "106f8131132209e9cf5735b315425e38c029e604670856c270db85a6a7f66d40",
+  "task_sha256": "66befc4cfd999ca45d227ebb58b9d37b347f2937cf9ff6f49fe58d902a19f480",
+  "schedule_unchanged": true,
+  "prior_run_id": "5fd7a378-1e25-4a87-963b-67468bbd08e7",
+  "prior_started": "2026-11-09T02:13:04.095Z",
+  "manual_runs": 0
+}

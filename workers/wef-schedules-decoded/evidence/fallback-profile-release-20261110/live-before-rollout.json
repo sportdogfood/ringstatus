@@ -1,0 +1,28 @@
+{
+  "results": [
+    {
+      "kind": "runner-schedule",
+      "at": "2026-11-10T22:40:47.275Z",
+      "http": 200,
+      "lane": "runner",
+      "profile": null,
+      "queueStart": "1794350454760",
+      "queueEnd": "1794350455357",
+      "show": 200000078,
+      "date": "2026-11-14",
+      "rings": 9,
+      "trips": null
+    },
+    {
+      "kind": "fallback-schedule14",
+      "at": "2026-11-10T22:41:15.629Z",
+      "http": 502,
+      "lane": "cloudflare-fallback",
+      "profile": "profile-fb-header2",
+      "queueStart": "1794350479168",
+      "queueEnd": "1794350483735",
+      "rings": null,
+      "trips": null
+    }
+  ]
+}

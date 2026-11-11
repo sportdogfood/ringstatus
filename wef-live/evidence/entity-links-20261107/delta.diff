@@ -1,0 +1,55 @@
+--- baseline/airtable.js
++++ candidate/airtable.js
+@@ -12,7 +12,7 @@
+   const readable = new Map([
+     [
+       settings.BASE_ID,
+-      new Set([...writable, "w-shows", "w-days", "wef-data.schedules"]),
++      new Set([...writable, "w-shows", "w-days", "wef-data.schedules", "w-horses", "w-riders", "w-trainers"]),
+     ],
+     [settings.SHOWS_BASE, new Set(["shows", "show-days"])],
+     [settings.SCHEDULES_BASE, new Set(['schedules','show-collection'])],
+--- baseline/linker.js
++++ candidate/linker.js
+@@ -3,7 +3,7 @@
+ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+ const settings=require('./settings');
+ const TABLES=['live-rings','live-groups','live-classes','live-trips','live-entries'];
+-const REFS=['w-shows','w-days','wef-data.schedules'];
++const REFS=['w-shows','w-days','wef-data.schedules','w-horses','w-riders','w-trainers'];
+ const empty=v=>v==null||(Array.isArray(v)&&v.length===0);
+ const num=v=>v!==null&&v!==undefined&&v!==''&&Number.isSafeInteger(Number(v))&&Number(v)>0?Number(v):null;
+ const key=(...v)=>v.join('|');
+@@ -37,11 +37,11 @@
+  const plans=[];
+  for(const table of TABLES)for(const row of rows(table)){
+   const f=row.fields,fields={};
+-  const fill=(field,resolve)=>{
++  const fill=(field,resolve,identity)=>{
+    if(!empty(f[field]))return;
+    const matches=resolve();
+    if(matches?.length)fields[field]=[...new Set(matches.map(x=>x.id))];
+-   else onIssue('No unique exact match for '+table+'.'+field+'. No retry recommended until source data changes.',{table,id:row.id,class_id:num(f['class-id']),trip_id:num(f['trip-id']),group_id:num(f['class-group-id'])});
++   else onIssue('No unique exact match for '+table+'.'+field+(identity?' ('+identity+')':'')+'. No retry recommended until source data changes.',{table,id:row.id,class_id:num(f['class-id']),trip_id:num(f['trip-id']),group_id:num(f['class-group-id'])});
+   };
+   fill('w-shows',()=>{const r=one(data[REFS[0]]||[],'show-key',key(scope.customer,scope.show));return r?[r]:[];});
+   fill('w-days',()=>{const r=one(data[REFS[1]]||[],'show-day-key',key(scope.customer,scope.show,scope.date));return r?[r]:[];});
+@@ -60,6 +60,10 @@
+    fill('groups',()=>{const ring=ringOf(table,row);return ring?groups.filter(g=>num(raw(g).ring_id)===num(ring.fields['ring-id'])&&Array.isArray(raw(g).classes)&&raw(g).classes.some(id=>Number(id)===num(f['class-id']))):[];});
+   }
+   if(table==='live-trips'||table==='live-entries')fill('class',()=>{const r=classOf(table,row);return r?[r]:[];});
++  if(table==='live-trips'||table==='live-entries')for(const [field,idField]of [['w-horses','horse-id'],['w-riders','rider-id'],['w-trainers','trainer-id']]){
++   const id=num(f[idField]);
++   fill(field,()=>{if(!id)return[];const matches=(data[field]||[]).filter(r=>num(r.fields[idField])===id);return matches.length===1?matches:[];},idField+'='+(id||'missing'));
++  }
+   if(table==='live-trips')fill('legacy-live-entry',()=>{
+    const cid=num(f['class-id']),tid=num(f['trip-id']);if(!cid||!tid)return[];
+    const r=one(entries,'live-entry-key',key(scope.show,scope.date,cid,tid));
+--- baseline/schema.js
++++ candidate/schema.js
+@@ -204,4 +204,5 @@
+   },
+ };
+ for(const table of ['live-rings','live-groups','live-classes','live-trips','live-entries'])Object.assign(links[table],{'w-shows':'w-shows','w-days':'w-days','data-schedules':'wef-data.schedules'});
++for(const table of ['live-trips','live-entries'])Object.assign(links[table],{'w-horses':'w-horses','w-riders':'w-riders','w-trainers':'w-trainers'});
+ module.exports = { tables, field, links };

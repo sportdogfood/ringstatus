@@ -1,0 +1,34 @@
+{
+  "result": "PASS code/independentoffline/dailycatchup/repeat",
+  "records_alert_proof": "OWNER-CANCELLED by later remove recordalerts;not verified",
+  "normal_daily": {
+    "run_id": "8a8936bf-f87e-46b4-bbf5-8428ca4fb168",
+    "started": "2026-11-08T02:03:03.511Z",
+    "completed": "2026-11-08T02:08:46.410Z",
+    "deleted": {
+      "heartbeat": 655,
+      "run-logs": 500,
+      "errs-log": 889
+    }
+  },
+  "native": "cleanup+cleanup-logs all3Success;655heartbeat/500runlogs/889errsdeleted;2Runningheartbeatpreserved",
+  "normal_repeat_before_removal": "9:09quietreport recoveredfromsavedlog,cleanupSkipped",
+  "normal_repeat_after_removal": {
+    "run_id": "f84f1ca6-20ad-4560-b72e-6278f5aae453",
+    "started": "2026-11-08T02:15:06.736Z",
+    "actions": [],
+    "result": "Skipped",
+    "day": "2026-11-07",
+    "daily_clear_day": "2026-11-07",
+    "daily_due": false,
+    "quick_due": false,
+    "show": 200000077,
+    "new_show": false,
+    "reason": "No new show or daily clear; three-hour log check not due",
+    "completed": "2026-11-08T02:15:07.087Z"
+  },
+  "independent_offline": "24PASS;reviewdatedpacketkeepsoriginalunverifiedproofstateasdatedhistory",
+  "threehour_clock": "2026-11-08T02:00:03.863Z preserved afterdailyclear",
+  "newshow_and_next3h_natural_event": "not manufactured;source/independentcases verified",
+  "current_release": "../remove-records-alerts-20261107/acceptance.json"
+}

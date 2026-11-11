@@ -1,0 +1,5 @@
+{
+  "case": "record changes to future scope during archive/catalog readback",
+  "protected_record_survives": true,
+  "error": "Cleanup records changed during archive verification"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "wef-schedules-decoded",
+  "main": "shared-worker.mjs",
+  "vars": {
+    "RUNNER_ORIGIN": "https://wef-decoder-runner.ringstatus.com",
+    "HEALTH_SHOW_ID": "200000077"
+  },
+  "compatibility_date": "2026-10-21",
+  "workers_dev": true,
+  "preview_urls": false,
+  "durable_objects": {
+    "bindings": [{"name":"SGL_PACER","class_name":"SglPacer"}]
+  },
+  "migrations": [{"tag":"sgl-pacing-v1","new_sqlite_classes":["SglPacer"]}],
+  "observability": { "enabled": true }
+}

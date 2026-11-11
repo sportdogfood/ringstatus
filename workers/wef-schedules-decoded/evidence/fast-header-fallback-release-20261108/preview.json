@@ -1,0 +1,26 @@
+{
+  "at": "2026-11-08T14:31:00.724Z",
+  "results": [
+    {
+      "kind": "schedule",
+      "route": "/schedule?show_id=200000077&customer_id=15&date=2026-11-08",
+      "status": 200,
+      "lane": "cloudflare-fallback",
+      "profile": "profile-fb-header2",
+      "show": 200000077,
+      "date": "2026-11-08",
+      "rings": 7,
+      "usable": true
+    },
+    {
+      "kind": "class",
+      "route": "/classes/200031205?show_id=200000077&customer_id=15",
+      "status": 200,
+      "lane": "cloudflare-fallback",
+      "profile": "profile-fb-header2",
+      "class": 200031205,
+      "trips": 27,
+      "usable": true
+    }
+  ]
+}

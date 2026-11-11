@@ -1,0 +1,2 @@
+# Verification stopped
+First writer execution: node wef-trip-calculator/test.js, exit1, 2026-11-08T02:51:27.607019+00:00 through02:51:28.330292+00:00. First assertion592!==656; later tests not reached. Source has656total captured trip rows; candidate intentionally selectsActive rows. Approval needed for smallest test expectation correction against actualActive subset; do not alter fixture/source eligibility or rerun failed calculator verification. Independently continue authorized read-only review and separate cleanup checking only. No deployment or source changes.

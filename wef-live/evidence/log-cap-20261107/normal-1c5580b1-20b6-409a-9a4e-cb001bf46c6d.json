@@ -1,0 +1,13 @@
+{
+  "run_id": "1c5580b1-20b6-409a-9a4e-cb001bf46c6d",
+  "started": "2026-11-08T01:51:03.431Z",
+  "actions": [],
+  "result": "Skipped",
+  "day": "2026-11-07",
+  "new_day": false,
+  "quick_due": true,
+  "show": 200000077,
+  "new_show": false,
+  "reason": "Log counts below trigger/target or no eligible records",
+  "completed": "2026-11-08T01:51:11.977Z"
+}

@@ -1,0 +1,6 @@
+{
+  "status": "Failed",
+  "stage": "preview-token-setup",
+  "reason": "Preview diagnostic omitted existing runner token renewal headers and received JSON without _t. No schedule profiles executed, no installation/deployment/restart.",
+  "approvalRequired": "Correct preview setup only; use exact existing renewal headers."
+}

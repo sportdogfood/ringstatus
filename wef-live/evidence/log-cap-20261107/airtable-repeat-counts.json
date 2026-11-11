@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-11-08T01:52:01.299Z",
+  "counts": [
+    {
+      "name": "run-logs",
+      "count": 500
+    },
+    {
+      "name": "heartbeat",
+      "count": 657
+    },
+    {
+      "name": "errs-log",
+      "count": 889
+    }
+  ]
+}

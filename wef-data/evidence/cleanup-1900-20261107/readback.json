@@ -1,0 +1,21 @@
+{
+  "verified_at": "2026-11-08T01:25:26.157371+00:00",
+  "automation": {
+    "version": 1,
+    "id": "wef-records-rebalance-and-context-checkpoint",
+    "kind": "heartbeat",
+    "name": "WEF Records rebalance and context checkpoint",
+    "status": "ACTIVE",
+    "rrule": "FREQ=DAILY;BYHOUR=1,4,7,10,13,16,19,22;BYMINUTE=0;BYSECOND=0",
+    "target_thread_id": "01a169bc-e58a-7de0-94c6-5d3931fcf745",
+    "created_at": 1793368642365,
+    "updated_at": 1794101108120
+  },
+  "prompt_match": "exact after API trims final newline",
+  "prompt_sha256": "886e0ca85b999d3075469de3c8f3bdeb6b68cb39596393fd2eebadf61b43d295",
+  "lane_match": true,
+  "cleanupV2_purpose_readbacks": 18,
+  "purpose_only_write": true,
+  "new_schedule": false,
+  "genuine_alert_verified": false
+}

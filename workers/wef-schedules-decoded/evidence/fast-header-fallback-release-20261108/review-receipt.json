@@ -1,0 +1,66 @@
+{
+  "reviewer": "01a1a753-dce7-7951-a147-1b096e1538ba",
+  "reviewed_at": "2026-11-08T14:31:29.769853+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Review approved existing header recovery on actual Fast schedule/class routes before deploy.",
+  "target": "Existing shared Worker fallback branch; two-file delta only.",
+  "integration_coverage": "Real dated schedule/class Cloudflare preview and 47 focused execution checks; unchanged protected hashes. Scheduled proof follows deployment.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-header-fallback-release-20261108\\0-shared-worker.mjs.before",
+      "sha256": "6daa86ae2428d8681b1bdddbfcbfedf6744caaa95995d7f90017b343d71a05a9"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-header-fallback-release-20261108\\1-fallback.test.mjs.before",
+      "sha256": "38c0f3a7add83a190b2d13e4857be0d12a0b0203348c56b838ecae92e91016f9"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+      "sha256": "89ab06ffd04fe2a6f36324d2d792246ed99ccbbc6bd6c3b347296e48d2536894"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\fallback.test.mjs",
+      "sha256": "13883f8fcbd2d438976b6aaef6a32dd1cecf2ae8ac076972a9bc61738379f5c5"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-header-fallback-release-20261108\\review-report.md",
+    "sha256": "bf2a30d59193442bd8a4724b2855e59bfa68fe9abac1632d8810ae0d84f23ebf"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-header-fallback-release-20261108\\execution-log.json",
+      "sha256": "253ba6e42c36e1d66969cd9207d8b7a59063bbec7bcb6eb002acba3373368a4c"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "focused checks",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "focused"
+      ]
+    },
+    {
+      "name": "preview and preservation evidence",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Reviewed current-chat actual preview responses and protected source hashes; not a delegated independent execution.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-header-fallback-release-20261108\\preview.json",
+          "sha256": "eeba8be6387855903fbd232827b472ac717c87a72128ae5ad104e6641ee3c052"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-header-fallback-release-20261108\\protected.json",
+          "sha256": "c79abb2352b3b948401e0b6e2cfb51ef498f68981759b4b6e022c7009e379020"
+        }
+      ]
+    }
+  ]
+}

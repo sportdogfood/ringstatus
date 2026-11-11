@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-11-11T15:47:05.725Z",
+  "originalResponseHasAnonymousToken": true,
+  "existingDecoderOutcome": "Upstream token refresh required",
+  "afterSourceStyleTokenAdoption": {
+    "trips": 2,
+    "classId": 200031333
+  },
+  "protectedRetryDecodedTrips": 2,
+  "limit": "Local isolated response handling proof only; not proof of the cause or recovery of every production class failure."
+}

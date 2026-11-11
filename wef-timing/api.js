@@ -7,13 +7,13 @@ const CLASS_TIMING='appeqxxJyPGS1iqdm',CLASS_ANSWERS='tblmoBFySYW2TkDHf';
 const CLEANUP_TABLES={answers:DATA_TABLES.answers,checkpoint:DATA_TABLES.checkpoint,'run-logs':'tblpWjnTv7S0CBKLV',heartbeat:'tblOeNxsfjCawlEmu','errs-log':'tbliHowblBdSL51ov',cleanup:'tblWluOJP3X1NNhTO'};
 const CLEANUP_DELETABLE=[DATA_TABLES.answers,CLEANUP_TABLES['run-logs'],CLEANUP_TABLES.heartbeat,CLEANUP_TABLES['errs-log']];
 const allowed=new Map([[ENGINE,new Set(Object.values(TABLES))],[SCHEDULES,new Set(['shows','rings','schedules','show-collection'])],[LIVE,new Set(['collections','live-classes','live-groups'])]]);
-function api({token,deadline,request=fetch,lane='schedules_live'}) {
-  if(!['schedules_live','data_live','class_live','ring_cleanup'].includes(lane))throw Error('Unsupported API lane');
-  const destination=lane==='ring_cleanup'?TIMING:lane==='class_live'?CLASS_TIMING:lane==='data_live'?TIMING:ENGINE,tables=lane==='class_live'?{answers:CLASS_ANSWERS}:lane==='data_live'?DATA_TABLES:TABLES;
-  const targets=lane==='ring_cleanup'?new Map([[TIMING,new Set(Object.values(CLEANUP_TABLES))],[SHOWS,new Set(['shows'])],[CLASS_TIMING,new Set([CLASS_ANSWERS])]]):lane==='class_live'?new Map([[CLASS_TIMING,new Set([CLASS_ANSWERS])]]):lane==='data_live'?new Map([[TIMING,new Set([...Object.values(DATA_TABLES),SYNC_GROUPS,SYNC_RINGS])],[SHOWS,new Set(['shows'])],[LIVE,new Set(['collections','live-classes','live-groups'])]]):allowed;
+function api({token,deadline,request=fetch,lane='schedules_live',onClockIssue=()=>{}}) {
+  if(!['schedules_live','data_live','class_live','ring_cleanup','ring_state'].includes(lane))throw Error('Unsupported API lane');
+  const destination=['ring_cleanup','ring_state'].includes(lane)?TIMING:lane==='class_live'?CLASS_TIMING:lane==='data_live'?TIMING:ENGINE,tables=lane==='class_live'?{answers:CLASS_ANSWERS}:['data_live','ring_state'].includes(lane)?DATA_TABLES:TABLES;
+  const targets=lane==='ring_state'?new Map([[TIMING,new Set([...Object.values(DATA_TABLES),'tblbIE6RygVMtiEmS','tblgRdGfOmwLRUlrT','tbl02nCQk1caPoeO2',SYNC_RINGS,SYNC_GROUPS,'tblREU7auaqFoeKZ8','tblPUJ9teCL1LL0V6','tbliHowblBdSL51ov'])]]):lane==='ring_cleanup'?new Map([[TIMING,new Set(Object.values(CLEANUP_TABLES))],[SHOWS,new Set(['shows'])],[CLASS_TIMING,new Set([CLASS_ANSWERS])]]):lane==='class_live'?new Map([[CLASS_TIMING,new Set([CLASS_ANSWERS])]]):lane==='data_live'?new Map([[TIMING,new Set([...Object.values(DATA_TABLES),SYNC_GROUPS,SYNC_RINGS])],[SHOWS,new Set(['shows'])],[LIVE,new Set(['collections','live-classes','live-groups'])]]):allowed;
   let clockVerified=false;
   async function call(base,table,method='GET',body,query='') {
-    const writable=lane==='ring_cleanup'?(base===TIMING&&((method==='PATCH'&&table===CLEANUP_TABLES.cleanup)||(method==='DELETE'&&CLEANUP_DELETABLE.includes(table)))):base===destination&&((method==='PATCH'&&Object.values(tables).includes(table))||(lane!=='class_live'&&method==='DELETE'&&table===tables.answers));
+    const writable=lane==='ring_state'?(base===TIMING&&method==='PATCH'&&[DATA_TABLES.answers,'tbliHowblBdSL51ov'].includes(table)):lane==='ring_cleanup'?(base===TIMING&&((method==='PATCH'&&table===CLEANUP_TABLES.cleanup)||(method==='DELETE'&&CLEANUP_DELETABLE.includes(table)))):base===destination&&((method==='PATCH'&&Object.values(tables).includes(table))||(lane!=='class_live'&&method==='DELETE'&&table===tables.answers));
     if (!targets.get(base)?.has(table) || (method!=='GET'&&!writable)) throw Error('Forbidden Airtable target/method');
     const remaining=deadline-Date.now();if(remaining<1500)throw Error('Deadline exhausted before request');
     await new Promise(r=>setTimeout(r,210));
@@ -21,8 +21,9 @@ function api({token,deadline,request=fetch,lane='schedules_live'}) {
       headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(Math.min(8000,remaining-400))});
     if(!response.ok){let detail='';try{const e=await response.json();detail=JSON.stringify(e.error??e).slice(0,1200);}catch{}throw Error(`Airtable ${method} ${table} HTTP ${response.status}${detail?' '+detail:''}`);}
     const server=Date.parse(response.headers.get('date'));
-    if(!Number.isFinite(server)||Math.abs(server-(before+Date.now())/2)>5000)throw Error('Host clock not verified against Airtable Date');
-    clockVerified=true;return response.json();
+    const validClock=Number.isFinite(server)&&Math.abs(server-(before+Date.now())/2)<=5000;
+    if(!validClock){if(['ring_cleanup','ring_state'].includes(lane))onClockIssue('Host clock not verified against Airtable Date');else throw Error('Host clock not verified against Airtable Date');}
+    clockVerified=validClock;return response.json();
   }
   async function list(base,table,formula) {
     const rows=[];let offset;

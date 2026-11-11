@@ -1,0 +1,228 @@
+{
+  "cleanup": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec3Z26CG6iEfvuLN",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "meta",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INTERNAL — Existing metadata; retained."
+          }
+        },
+        {
+          "id": "rec431zENoBRm8i5z",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "w-days",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recBAVLZ459Fncklz",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "w-shows",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recJ8ND6OV17FBee5",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "cleanup",
+            "fldLM7qvDLcBku7Yj": "CONTROL AND LATEST STATUS — Actual Results table inventory. Only checked owned tables participate. Action fields remain blank until an authorized normal workflow runs."
+          }
+        },
+        {
+          "id": "recNfSvqN7lmyg3o2",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "heartbeat",
+            "fldLM7qvDLcBku7Yj": "PROTECTED CURRENT HEALTH — One mutable latest heartbeat per operation; retained."
+          }
+        },
+        {
+          "id": "recO3xQYe2NsoXLWy",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "run-logs",
+            "fldLM7qvDLcBku7Yj": "RESULTS LOG — Daily 7 p.m. Eastern clears eligible completed prior-day logs. Every three hours, above 1,000 records removes oldest up-to-500 eligible. Active/current retained.",
+            "fldv4FhgzsNUYOqn9": {
+              "id": "selJFYKrFkc7seZW0",
+              "name": "checked",
+              "color": "blueLight2"
+            }
+          }
+        },
+        {
+          "id": "recORFgxAGtosWIit",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "wef-data.results",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recOm3J7XerZScNlr",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "wef-data.classes",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recQPQbwaoB5JhsWq",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "snapshot",
+            "fldLM7qvDLcBku7Yj": "RESULTS OUTPUT — Separate X/Y receipts and Expected/Complete/Conflict rows. New default show removes only eligible completed old-show rows; active/current, Expected and Conflict remain.",
+            "fldv4FhgzsNUYOqn9": {
+              "id": "selJFYKrFkc7seZW0",
+              "name": "checked",
+              "color": "blueLight2"
+            }
+          }
+        },
+        {
+          "id": "recR7GdQHTETFBdHo",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "wef-data.trips",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recWo7VsGIKtIWibb",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "wef-data.schedules",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recWzjaOA2mDuPnsD",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "wef-live.groups",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recZhkmlOSzNM8Der",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "errs-log",
+            "fldLM7qvDLcBku7Yj": "RESULTS ERRORS — Same daily and 1,000/oldest-500 logging cleanup, only when matching run is completed and both records are prior-day. Unmatched/current errors retained.",
+            "fldv4FhgzsNUYOqn9": {
+              "id": "selJFYKrFkc7seZW0",
+              "name": "checked",
+              "color": "blueLight2"
+            }
+          }
+        },
+        {
+          "id": "reca3XwvIYHHRhAar",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "wef-live.rings",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recaIseswtoCVqK4V",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "wef-live.classes",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recasprUqcN8SYHXA",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "wef-live.entries",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "reciZuBnjuCnCAvpp",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "table-index",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INTERNAL — Existing table catalog; retained."
+          }
+        },
+        {
+          "id": "recjIqDGxmvYHoh3A",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "code-reviews",
+            "fldLM7qvDLcBku7Yj": "PROTECTED ADMINISTRATIVE — Code review evidence; retained."
+          }
+        },
+        {
+          "id": "recrZj35roozsCkuk",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "w-riders",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        },
+        {
+          "id": "recs4X4wCCWklNsMI",
+          "createdTime": "2026-11-08T03:12:49.000Z",
+          "cellValuesByFieldId": {
+            "fldAHF5SuvOhhp62R": "w-horses",
+            "fldLM7qvDLcBku7Yj": "PROTECTED INPUT / REFERENCE — Shared local table. No Results source writes, cleanup or deletion."
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 20
+      }
+    },
+    "isError": false
+  },
+  "run-logs": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "heartbeat": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "snapshot": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "errs-log": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  }
+}

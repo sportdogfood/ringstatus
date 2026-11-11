@@ -1,0 +1,11 @@
+{
+  "show": 200000077,
+  "date": "2026-11-08",
+  "excelRows": 95,
+  "excelClassRows": 67,
+  "apiRings": 7,
+  "apiClassRows": 67,
+  "missingInAPI": [],
+  "missingInExcel": [],
+  "allClassNumbersMatch": true
+}

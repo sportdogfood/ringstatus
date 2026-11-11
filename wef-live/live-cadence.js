@@ -57,12 +57,12 @@ async function check({api=require('./airtable').airtable(),getStatus=activity.re
  }
  if(!r.collect){
   const summary=JSON.stringify({lane:'live-check',live_status:r.live_status??null,today:r.today,priority_0_date:r.scope?.date,reason:r.reason,next_check_at:r.next_check_at,collection:'Skipped'});
-  const common={'run-id':r.run_id,started:r.started,completed:r.completed,result:'Skipped',summary,...(r.scope?{'show-id':r.scope.show,date:r.scope.date}:{})};
+  const common={'run-id':r.run_id,started:r.started,completed:r.completed,result:'Skipped',summary,errors:[...new Set(issues.map(e=>e.message))].join('\n').slice(0,60000),...(r.scope?{'show-id':r.scope.show,date:r.scope.date}:{})};
   await log('heartbeat','heartbeat-key',[{...common,'heartbeat-key':r.run_id,'checked-at':r.completed}]);
   await log('run-logs','run-id',[common]);
  }
  const errors=[...issues,...r.logging_errors.map(message=>({message:'Live check logging: '+message}))];
- await log('errs-log','error-key',errors.map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,...(r.scope?{'show-id':r.scope.show,date:r.scope.date}:{}),message:e.message})));
+ try{await require('./error-log').report({api,runtime,lane:'live-check',rows:errors.map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,...(r.scope?{'show-id':r.scope.show,date:r.scope.date}:{}),message:e.message}))});}catch(e){r.logging_errors.push('errs-log: '+e.message);}
  try{write(path.join(runtime,'live-check-'+r.run_id+'.json'),r);write(path.join(runtime,'live-check-last-run.json'),r);}catch(e){r.logging_errors.push('Local check receipt: '+e.message);}
  return r;
 }

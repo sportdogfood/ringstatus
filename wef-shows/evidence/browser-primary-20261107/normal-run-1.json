@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "run_id": "c8026fe1-91cf-45b0-9180-08c9a5ff93c3",
+  "started": "2026-11-07T23:49:11.692Z",
+  "rows": 1,
+  "errors": [],
+  "archives": [],
+  "telemetry_errors": [],
+  "discovery": {
+    "timezone": "America/New_York",
+    "show": "Skipped",
+    "show_day": "Retained"
+  },
+  "discovery_ok": true,
+  "show_id": 200000077,
+  "selected_date": "2026-11-07",
+  "source_selected_date": "2026-11-05",
+  "next_show_check": "2026-11-09T03:00:00.000Z",
+  "summary": "Show 200000077; selected 2026-11-07 (calendar); source date 2026-11-05, last checked 2026-11-02T06:04:12.307Z. New-show check Skipped; next 2026-11-09T03:00:00.000Z. Calendar day Retained. No downstream jobs triggered. Day-priority: Skipped. Show-days: 2026-11-05 Verified, 2026-11-06 Verified, 2026-11-07 Verified, 2026-11-08 Verified.",
+  "day_priority": {
+    "status": "Skipped",
+    "anchor": "2026-11-07"
+  },
+  "show_days": {
+    "ok": true,
+    "rows": 4,
+    "created": 0,
+    "days": [
+      {
+        "date": "2026-11-05",
+        "status": "Verified"
+      },
+      {
+        "date": "2026-11-06",
+        "status": "Verified"
+      },
+      {
+        "date": "2026-11-07",
+        "status": "Verified"
+      },
+      {
+        "date": "2026-11-08",
+        "status": "Verified"
+      }
+    ],
+    "errors": []
+  },
+  "error_records": [],
+  "observability": {
+    "sources": [],
+    "errors": [],
+    "ok": true,
+    "logging_errors": []
+  },
+  "completed": "2026-11-07T23:49:24.093Z"
+}

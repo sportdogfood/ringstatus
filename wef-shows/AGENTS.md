@@ -1,5 +1,60 @@
 # Shows workspace instructions
 
+## Cleanup approval - November 11, 2026
+
+Owner approved CLEANUP-CONTRACT.md v1.5 implementation, tests and normal scheduled
+verification. The cleanup release uses the existing Shows task and only the five
+selected owned tables. Apply new-show cleanup, 7 p.m. Eastern completed-log clear,
+and oldest-eligible deletion from 1,000+ toward 500 total. Protect active/pending,
+reference and permanent cleanup-history records. No new cleanup archives or manual
+runs. Confirmed batches can continue on later normal wakes within the existing
+task budget; failed/uncertain deletion stays held. Discovery, source archives,
+count cancellation, other owners and task cadence remain outside this change.
+Read README v1.9.3 and the cleanup contract for current evidence and open proof.
+
+## Browser-primary discovery - approved November 7, 2026
+
+Current release: **browser-primary-20261107**, README **v1.9.0**, lock **v1.2**
+([dated lock](evidence/browser-primary-20261107/lock.json)).
+This approved change reopens only the discovery-method boundary of the Shows lock.
+At the existing due slot, Shows launches a fresh isolated **headless** Edge process
+and opens the clean Wellington Show Schedule page. It validates the page-selected
+show ID/date against the page's own default-show response and schedule metadata.
+The name, facility, start/end dates and selected date come from those responses.
+No owner browser profile, window, stored selection or logged-in session is reused.
+
+Primary discovery makes no direct proxy `/ring` or `/schedule` calls. The page
+makes its own normal authenticated requests. The existing proven decoder processes
+its schedule response with that request's authentication **in memory only**, retaining
+the decoded payload/IDs and archive contract used by downstream readers. Authentication
+headers are never saved in archives, focus state or logs. Browser failure/timeout or
+unusable decoded evidence invokes the original proxy `/ring` then `/schedule` pair.
+Archive/publication failures do not trigger fallback. Browser failures remain linked
+in sources/err-logs even if fallback succeeds. Browser work is bounded to 20 seconds
+before the unchanged fallback, preserving the existing four-minute task limit.
+
+Cadence remains Sunday **10 p.m. Eastern**, retrying every three hours until the
+show ID changes; existing five-minute validation/heartbeat/logs and after-7 p.m.
+calendar day selection remain unchanged. No counts, downstream jobs, manual collector
+runs, repairs, task edits, schema changes or dependency upgrades are introduced.
+
+Release evidence: [browser-primary-20261107](evidence/browser-primary-20261107/task.md).
+Offline tests: 48 passed, including decoded downstream fallback, native links,
+repeat-run deduplication, browser timing and failure/fallback behavior. Separate
+headless diagnostic recovered 87 class IDs and one legitimate non-class break.
+Deployment and normal-run acceptance must be read from the dated deployment evidence;
+this paragraph does not establish scheduled source-discovery proof. The next existing
+source slot is **November 8, 2026 at 10 p.m. Eastern**.
+
+Normal retained-state acceptance: **November 7, 6:49 and 6:54 p.m. Eastern PASS**;
+matching Airtable heartbeat/run-logs and saved task exit 0 verified. Both runs
+correctly skipped source discovery. **The scheduled browser/fallback source branch
+remains unverified until the existing November 8, 10 p.m. Eastern slot.**
+
+This section supersedes older descriptions of `/ring` as the primary discovery
+method. All other locked scope and the four current notice recipients remain.
+
+
 ## Current recipients - owner update November 7, 2026
 
 Contact only **wef-records-coordinator, wef-timing-coordinator,

@@ -1,0 +1,60 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "commands": [
+    {
+      "id": "test.js",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-1900-20261107\\test.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T01:23:24.992481+00:00",
+      "ended_at": "2026-11-08T01:23:25.117400+00:00",
+      "exit_code": 0,
+      "stdout": "PASS calendar day deletes completed logs, protects current/active, references and show rows\nPASS new show clears owned tables but not references/history\nPASS new show-day does nothing without API calls\nPASS threshold 999 none, 1000 oldest 500 eligible; same rule applies to runs\nPASS batch error records exact cause and continues tables and later batches\nPASS same successful Records event cannot delete another 500\nPASS logging read error does not stop new-show cleanup or hide its cause\nPASS successful event updates existing Records show/day/three-hour checkpoint\nPASS local deletes delivered completed family; keeps pending and current\n9 checks passed; no live calls\n",
+      "stderr": ""
+    },
+    {
+      "id": "test-policy.js",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-1900-20261107\\test-policy.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T01:23:25.117400+00:00",
+      "ended_at": "2026-11-08T01:23:25.209654+00:00",
+      "exit_code": 0,
+      "stdout": "PASS before19 Eastern no daily clear\nPASS 19 Eastern daily clear includes existing runs and has distinct event id\nPASS summer19 Eastern uses daylight time\nPASS same date daily clear not repeated\nPASS midnight does not trigger daily clear\nPASS 3h threshold before19 is still log-check\nPASS before3h is not due\nPASS newshow clears owned records before19\nPASS newshow takes priority at19\nPASS no mutation of supplied saved state\n10 policy checks passed; no network or production execution\n",
+      "stderr": ""
+    },
+    {
+      "id": "edge-policy",
+      "command": "node --test \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-1900-20261107\\review\\edges.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T01:23:37.491603+00:00",
+      "ended_at": "2026-11-08T01:23:37.807055+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: issued-at processing jitter skips next fixed three-hour slot: reproduced\nok 1 - issued-at processing jitter skips next fixed three-hour slot: reproduced\n  ---\n  duration_ms: 29.0533\n  type: 'test'\n  ...\n# Subtest: successful19 action saves daily marker while preserving existing state\nok 2 - successful19 action saves daily marker while preserving existing state\n  ---\n  duration_ms: 12.5351\n  type: 'test'\n  ...\n1..2\n# tests 2\n# suites 0\n# pass 2\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 178.7415\n",
+      "stderr": ""
+    },
+    {
+      "id": "policy-final",
+      "command": "\"node\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-1900-20261107\\test-policy.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T01:24:20.673421+00:00",
+      "ended_at": "2026-11-08T01:24:20.911610+00:00",
+      "exit_code": 0,
+      "stdout": "PASS before19 Eastern no daily clear\nPASS 19 Eastern daily clear includes existing runs and has distinct event id\nPASS summer19 Eastern uses daylight time\nPASS same date daily clear not repeated\nPASS midnight does not trigger daily clear\nPASS 3h threshold before19 is still log-check\nPASS same scheduled slot is not due\nPASS newshow clears owned records before19\nPASS newshow takes priority at19\nPASS no mutation of supplied saved state\nPASS delivery jitter does not skip next3h slot\n11 policy checks passed; no network or production execution\n",
+      "stderr": ""
+    },
+    {
+      "id": "edges-final",
+      "command": "\"node\" \"--test\" \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\cleanup-1900-20261107\\review\\edges.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T01:24:20.911610+00:00",
+      "ended_at": "2026-11-08T01:24:21.235338+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: issued-at processing jitter preserves next fixed three-hour slot\nok 1 - issued-at processing jitter preserves next fixed three-hour slot\n  ---\n  duration_ms: 33.4227\n  type: 'test'\n  ...\n# Subtest: successful19 action saves daily marker while preserving existing state\nok 2 - successful19 action saves daily marker while preserving existing state\n  ---\n  duration_ms: 12.8005\n  type: 'test'\n  ...\n1..2\n# tests 2\n# suites 0\n# pass 2\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 180.1439\n",
+      "stderr": ""
+    }
+  ]
+}

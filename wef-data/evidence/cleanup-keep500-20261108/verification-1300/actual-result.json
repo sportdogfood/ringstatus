@@ -1,0 +1,90 @@
+{
+  "event_id": "log-check|2026-11-08|4",
+  "run_id": 1794161047662,
+  "source": "Genuine existing Records heartbeat arrived 2026-11-08T18:02:40.239Z; saved pointer issued18:03:17.314Z; Data invoked same registered task once",
+  "started": "2026-11-08T18:04:07.662Z",
+  "completed": "2026-11-08T18:04:17.031Z",
+  "result": "Success",
+  "errors": [],
+  "task_exit": 0,
+  "source_sha256": "161feaf0f4dd2364c412537a7a001d6c2225df028e1bf990c4b31fe0eb77b9dd",
+  "native_tables": [
+    {
+      "table": "runs",
+      "before": 28,
+      "after": 28,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "run-logs",
+      "before": 66,
+      "after": 66,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "err-logs",
+      "before": 47,
+      "after": 47,
+      "priorIDsMissing": 0
+    }
+  ],
+  "cleanupV2": [
+    {
+      "id": "recyDF0NX2VI5tSZl",
+      "createdTime": "2026-11-07T12:40:56.000Z",
+      "cellValuesByFieldId": {
+        "fld4jnmzwJkKTe8wJ": 0,
+        "fldHr91pmw8EBCT37": {
+          "id": "sel6F8g21VdmcuYme",
+          "name": "Success",
+          "color": "blueLight2"
+        },
+        "fldKjmFaaBt3yTuGF": "runs",
+        "fldoBlDL8V0qpLwqO": 1794161047662,
+        "fldtfYtd0dZXppisd": "2026-11-08T18:04:13.851Z"
+      }
+    },
+    {
+      "id": "recy2uO09iogJYaSu",
+      "createdTime": "2026-11-07T12:40:56.000Z",
+      "cellValuesByFieldId": {
+        "fld4jnmzwJkKTe8wJ": 0,
+        "fldHr91pmw8EBCT37": {
+          "id": "sel6F8g21VdmcuYme",
+          "name": "Success",
+          "color": "blueLight2"
+        },
+        "fldKjmFaaBt3yTuGF": "run-logs",
+        "fldoBlDL8V0qpLwqO": 1794161047662,
+        "fldtfYtd0dZXppisd": "2026-11-08T18:04:13.345Z"
+      }
+    },
+    {
+      "id": "recm1It0cR6TNQtqS",
+      "createdTime": "2026-11-07T12:40:56.000Z",
+      "cellValuesByFieldId": {
+        "fld4jnmzwJkKTe8wJ": 0,
+        "fldHr91pmw8EBCT37": {
+          "id": "sel6F8g21VdmcuYme",
+          "name": "Success",
+          "color": "blueLight2"
+        },
+        "fldKjmFaaBt3yTuGF": "err-logs",
+        "fldoBlDL8V0qpLwqO": 1794161047662,
+        "fldtfYtd0dZXppisd": "2026-11-08T18:04:12.773Z"
+      }
+    }
+  ],
+  "local": {
+    "runs": 0,
+    "errors": 0,
+    "acks": 0
+  },
+  "acceptance": {
+    "genuine_alert_route": "PASS",
+    "under_threshold_no_deletion": "PASS",
+    "over_1000_keep500_branch": "UNVERIFIED: all three native logging tables below1000; no data seeded or forced event"
+  },
+  "manual_collection": false,
+  "new_schedule": false
+}

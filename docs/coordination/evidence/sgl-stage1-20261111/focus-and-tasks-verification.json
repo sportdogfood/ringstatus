@@ -1,0 +1,135 @@
+{
+  "checkedAt": "2026-11-11 15:16:33 UTC",
+  "endpointCount": 229,
+  "labelDifferences": 0,
+  "ownerExcludedRoutes": 92,
+  "focusCounts": {
+    "Not now": 179,
+    "Supporting": 39,
+    "Critical now": 11
+  },
+  "sourcePatterns": {
+    "https://sgl.wellingtoninternational.com/iphonev2": 39,
+    "https://sglapi.wellingtoninternational.com": 166,
+    "https://sgl.wellingtoninternational.com/iphone.php": 18,
+    "https://sgl.wellingtoninternational.com/iphone.php/esp/": 4,
+    "https://sgl.wellingtoninternational.com/webservice": 1,
+    "https://sglapp.showgroundslive.com": 1
+  },
+  "taskCount": 18,
+  "openTasks": 16,
+  "completedTasks": 2,
+  "taskDifferences": 0,
+  "taskTableId": "tblq8gMKEWjAYL1SS",
+  "taskRecords": [
+    {
+      "id": "rec5hLxlXXEaTv6vv",
+      "taskId": "OPP-010",
+      "task": "Evaluate GetShowData for whole-show basic inventory",
+      "status": "Open"
+    },
+    {
+      "id": "rec75k0wTlIyiLI3h",
+      "taskId": "OPP-009",
+      "task": "Verify failure notice delivery and coordinator handoffs",
+      "status": "Open"
+    },
+    {
+      "id": "rec8NraICRCRTHWhI",
+      "taskId": "OPP-006",
+      "task": "Separate Fast stages and remove four-way class requests",
+      "status": "Paused — plan required"
+    },
+    {
+      "id": "recETD6BmB3DZXAuH",
+      "taskId": "OPP-015",
+      "task": "Resolve show-time day-link matching and freshness",
+      "status": "Paused — plan required"
+    },
+    {
+      "id": "recEs7GWEEHBhf2Tc",
+      "taskId": "OPP-001",
+      "task": "Build the complete endpoint inventory",
+      "status": "Done"
+    },
+    {
+      "id": "recLpmxcfMdLIEgPZ",
+      "taskId": "OPP-008",
+      "task": "Include class-request failures in Fast alerts",
+      "status": "Paused — plan required"
+    },
+    {
+      "id": "recQW1BHFD1KHzpkE",
+      "taskId": "OPP-014",
+      "task": "Verify what is built versus what normally runs",
+      "status": "Unverified"
+    },
+    {
+      "id": "recW7MBMJ49i3HpKD",
+      "taskId": "OPP-012",
+      "task": "Evaluate only supporting read routes that fill a data gap",
+      "status": "Open"
+    },
+    {
+      "id": "recXYI9UCIkacVCwW",
+      "taskId": "OPP-002",
+      "task": "Label every endpoint for filtering",
+      "status": "Done"
+    },
+    {
+      "id": "recb4U9ozOkT0fDW9",
+      "taskId": "OPP-018",
+      "task": "Verify approved fixes through normal scheduled collections",
+      "status": "Unverified"
+    },
+    {
+      "id": "reccRiC1Tip89eGIh",
+      "taskId": "OPP-005",
+      "task": "Finish valid schedule and class health checks",
+      "status": "Awaiting edit approval"
+    },
+    {
+      "id": "recgvC1dQ64MzJqYi",
+      "taskId": "OPP-003",
+      "task": "Find anonymous authentication and token refresh opportunities",
+      "status": "Open"
+    },
+    {
+      "id": "reclBkFSZWg0ILNH6",
+      "taskId": "OPP-017",
+      "task": "Reconcile README and the shared Fast collection contract",
+      "status": "Open"
+    },
+    {
+      "id": "reclGqm8IxDyK7jXt",
+      "taskId": "OPP-004",
+      "task": "Resolve Fast class-detail failures",
+      "status": "Paused — plan required"
+    },
+    {
+      "id": "recly1TtZQUneBzfz",
+      "taskId": "OPP-016",
+      "task": "Identify why the runner or tunnel tasks stop",
+      "status": "Open"
+    },
+    {
+      "id": "recmyj7YJTa9ycl1z",
+      "taskId": "OPP-007",
+      "task": "Resolve the data-response token recovery difference",
+      "status": "Paused — plan required"
+    },
+    {
+      "id": "recrLlQt5P17yJLP8",
+      "taskId": "OPP-011",
+      "task": "Evaluate legacy live data as a class-detail fallback",
+      "status": "Open"
+    },
+    {
+      "id": "rectVGWcFhP3LKAlk",
+      "taskId": "OPP-013",
+      "task": "Assess update triggers only if they reduce a current polling need",
+      "status": "Open"
+    }
+  ],
+  "scope": "Metadata and task records only. No source endpoint requests, collectors, code/deployment/credentials or business-record repairs."
+}

@@ -1,0 +1,517 @@
+{
+  "checkedAt": "2026-11-11T16:34:21.458Z",
+  "showId": "200000078",
+  "classId": 200031716,
+  "classDate": "2026-11-13T00:00:00.000Z",
+  "status": "Not Started",
+  "apiTrips": 23,
+  "phoneRows": 23,
+  "matchedByTripId": 23,
+  "unmatched": [],
+  "identityMappings": [
+    {
+      "trip_id": 200402400,
+      "entry_id": 200246499,
+      "number": 389,
+      "legacyNumber": "389"
+    },
+    {
+      "trip_id": 200402366,
+      "entry_id": 200249138,
+      "number": 793,
+      "legacyNumber": "793"
+    },
+    {
+      "trip_id": 200402051,
+      "entry_id": 200246900,
+      "number": 847,
+      "legacyNumber": "847"
+    },
+    {
+      "trip_id": 200401872,
+      "entry_id": 200246870,
+      "number": 910,
+      "legacyNumber": "910"
+    },
+    {
+      "trip_id": 200401977,
+      "entry_id": 200249656,
+      "number": 917,
+      "legacyNumber": "917"
+    },
+    {
+      "trip_id": 200402132,
+      "entry_id": 200250725,
+      "number": 948,
+      "legacyNumber": "948"
+    },
+    {
+      "trip_id": 200401795,
+      "entry_id": 200247419,
+      "number": 1017,
+      "legacyNumber": "1017"
+    },
+    {
+      "trip_id": 200402339,
+      "entry_id": 200247779,
+      "number": 1190,
+      "legacyNumber": "1190"
+    },
+    {
+      "trip_id": 200401814,
+      "entry_id": 200247237,
+      "number": 1213,
+      "legacyNumber": "1213"
+    },
+    {
+      "trip_id": 200402067,
+      "entry_id": 200249666,
+      "number": 1296,
+      "legacyNumber": "1296"
+    },
+    {
+      "trip_id": 200402031,
+      "entry_id": 200247064,
+      "number": 1347,
+      "legacyNumber": "1347"
+    },
+    {
+      "trip_id": 200401975,
+      "entry_id": 200245997,
+      "number": 1385,
+      "legacyNumber": "1385"
+    },
+    {
+      "trip_id": 200402531,
+      "entry_id": 200246903,
+      "number": 1460,
+      "legacyNumber": "1460"
+    },
+    {
+      "trip_id": 200402619,
+      "entry_id": 200249076,
+      "number": 1467,
+      "legacyNumber": "1467"
+    },
+    {
+      "trip_id": 200401909,
+      "entry_id": 200249264,
+      "number": 1491,
+      "legacyNumber": "1491"
+    },
+    {
+      "trip_id": 200401898,
+      "entry_id": 200248906,
+      "number": 1498,
+      "legacyNumber": "1498"
+    },
+    {
+      "trip_id": 200402088,
+      "entry_id": 200250555,
+      "number": 1538,
+      "legacyNumber": "1538"
+    },
+    {
+      "trip_id": 200401684,
+      "entry_id": 200250094,
+      "number": 1633,
+      "legacyNumber": "1633"
+    },
+    {
+      "trip_id": 200402404,
+      "entry_id": 200249525,
+      "number": 1634,
+      "legacyNumber": "1634"
+    },
+    {
+      "trip_id": 200402520,
+      "entry_id": 200246058,
+      "number": 1638,
+      "legacyNumber": "1638"
+    },
+    {
+      "trip_id": 200401919,
+      "entry_id": 200247364,
+      "number": 1640,
+      "legacyNumber": "1640"
+    },
+    {
+      "trip_id": 200402355,
+      "entry_id": 200249784,
+      "number": 1643,
+      "legacyNumber": "1643"
+    },
+    {
+      "trip_id": 200402628,
+      "entry_id": 200245845,
+      "number": 1660,
+      "legacyNumber": "1660"
+    }
+  ],
+  "fieldCounts": {
+    "number": {
+      "legacy": "ENo",
+      "apiNonblank": 23,
+      "phoneNonblank": 23,
+      "equal": 23,
+      "different": 0,
+      "apiNonzero": 23,
+      "phoneNonzero": 23
+    },
+    "horse": {
+      "legacy": "Hor",
+      "apiNonblank": 23,
+      "phoneNonblank": 23,
+      "equal": 23,
+      "different": 0,
+      "apiNonzero": 23,
+      "phoneNonzero": 23
+    },
+    "rider_name": {
+      "legacy": "Rid",
+      "apiNonblank": 23,
+      "phoneNonblank": 23,
+      "equal": 23,
+      "different": 0,
+      "apiNonzero": 23,
+      "phoneNonzero": 23
+    },
+    "trainer": {
+      "legacy": "Tra",
+      "apiNonblank": 23,
+      "phoneNonblank": 23,
+      "equal": 23,
+      "different": 0,
+      "apiNonzero": 23,
+      "phoneNonzero": 23
+    },
+    "Owner": {
+      "legacy": "Own",
+      "apiNonblank": 23,
+      "phoneNonblank": 23,
+      "equal": 23,
+      "different": 0,
+      "apiNonzero": 23,
+      "phoneNonzero": 23
+    },
+    "order_of_go": {
+      "legacy": "OOG",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 23,
+      "phoneNonzero": 0
+    },
+    "actual_order": {
+      "legacy": "Actual_OOG",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "scratch_trip": {
+      "legacy": "Scr",
+      "apiNonblank": 23,
+      "phoneNonblank": 23,
+      "equal": 23,
+      "different": 0,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "gone_in": {
+      "legacy": "Gone",
+      "apiNonblank": 23,
+      "phoneNonblank": 23,
+      "equal": 23,
+      "different": 0,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "score": {
+      "legacy": "Score",
+      "apiNonblank": 0,
+      "phoneNonblank": 0,
+      "equal": 23,
+      "different": 0,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "score1": {
+      "legacy": "J1",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "score2": {
+      "legacy": "J2",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "score3": {
+      "legacy": "J3",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "score4": {
+      "legacy": "J4",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "score5": {
+      "legacy": "J5",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "score6": {
+      "legacy": "J6",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "time_one": {
+      "legacy": "R1T",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "faults_one": {
+      "legacy": "R1JF",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "time_fault_one": {
+      "legacy": "R1TF",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "time_two": {
+      "legacy": "JOT",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "faults_two": {
+      "legacy": "JOJF",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "time_fault_two": {
+      "legacy": "JOTF",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "time_three": {
+      "legacy": "R3T",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "faults_three": {
+      "legacy": "R3JF",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    },
+    "time_fault_three": {
+      "legacy": "R3TF",
+      "apiNonblank": 23,
+      "phoneNonblank": 0,
+      "equal": 0,
+      "different": 23,
+      "apiNonzero": 0,
+      "phoneNonzero": 0
+    }
+  },
+  "phoneFirstRowKeys": [
+    "id",
+    "Scr",
+    "Gone",
+    "OOG",
+    "R2_OOG",
+    "R2_Qualified",
+    "R2_Upcoming",
+    "Actual_OOG",
+    "Actual_OOG_R2",
+    "Eli",
+    "Pos",
+    "OldPos",
+    "ENo",
+    "Hor",
+    "HFEI",
+    "Rid",
+    "RFEI",
+    "RCntry",
+    "Tra",
+    "Own",
+    "OCty",
+    "OSt",
+    "R1JF",
+    "R1TF",
+    "R1F",
+    "R1T",
+    "JOJF",
+    "JOTF",
+    "JOF",
+    "JOT",
+    "R3JF",
+    "R3TF",
+    "R3F",
+    "R3T",
+    "J1",
+    "J2",
+    "J3",
+    "J4",
+    "J5",
+    "J6",
+    "Score",
+    "JAPI",
+    "JAPI1",
+    "JAPI2",
+    "pt",
+    "r1_cd",
+    "r1_start",
+    "r1_done",
+    "jo_cd",
+    "jo_start",
+    "jo_done",
+    "TID",
+    "TName",
+    "TAbbr",
+    "TType",
+    "TScr",
+    "TScr1",
+    "TScr2",
+    "TR1T",
+    "TR2T",
+    "TR1Drop",
+    "TR2Drop",
+    "TR1F",
+    "TR2F",
+    "class_id",
+    "ActualPos"
+  ],
+  "apiClassKeys": [
+    "class_id",
+    "number",
+    "name",
+    "sponsor",
+    "order_of_go_set",
+    "order_set_date",
+    "order_set_time",
+    "class_type",
+    "verification_detail",
+    "results_verified",
+    "schedule_sequencetype",
+    "show_id",
+    "combined_class_id",
+    "jumper_table",
+    "schedule_ring_id",
+    "customer_id",
+    "fei_event_type_code",
+    "multiphase_rule",
+    "is_team_event",
+    "is_under_saddle_class",
+    "oog_status_text",
+    "has_splits"
+  ],
+  "apiRelatedKeys": [
+    "status",
+    "unscratched_count",
+    "show_results",
+    "has_prize_money",
+    "grouped_class",
+    "show_ring_info",
+    "actual_time",
+    "estimated_time",
+    "default_time",
+    "date",
+    "class_group_id",
+    "ring",
+    "total_trips",
+    "completed_trips",
+    "remaining_trips",
+    "order_check_in",
+    "hunter_scoreby",
+    "hunter_type",
+    "type",
+    "ring_name",
+    "judges",
+    "judges_count",
+    "class_split_codes",
+    "current_split_code",
+    "class_prizes",
+    "score_fields",
+    "show_est_time",
+    "show_planned_time",
+    "is_videos_enabled"
+  ],
+  "timestamps": {
+    "phoneCaptured": "2026-11-11T16:34:21.454Z",
+    "apiCaptured": "2026-11-11T16:33:51.402Z"
+  },
+  "limit": "Upcoming Not Started class: populated scores, active ordering and completed finality not proven; capture timestamps retained.",
+  "previousPhoneCount": 21,
+  "previousCapture": "2026-11-11T15:40:15.250Z",
+  "identityFieldsForOwnerReview": [
+    "entry_id",
+    "horse_id",
+    "rider_id",
+    "trainer_id",
+    "owner_id",
+    "entryxclasses_uuid"
+  ],
+  "identityCoverageStatus": "Unconfirmed pending owner review; field names and captured payloads do not establish an accepted identity limitation."
+}

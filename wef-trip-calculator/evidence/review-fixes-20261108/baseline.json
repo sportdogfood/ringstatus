@@ -1,0 +1,9 @@
+{
+  "wef-trip-calculator/runner.js": "f80682bc78ec186d7bede9ae919de2510d857617b46a40a2c7e78a70fdd909b8",
+  "wef-trip-calculator/test.js": "e24083a900d8d88cf9e97431b21bcb64a05f9ae46f3a7706394556265940847d",
+  "wef-trip-calculator/evidence/end-to-end-20261108/candidate/entry-data.js": "0179fb4280d66a37788ccc1d70523b0b8e45896f1f406068664060107b73e5c9",
+  "wef-timing/entry-data.js": "106f8131132209e9cf5735b315425e38c029e604670856c270db85a6a7f66d40",
+  "wef-timing/data-runner.js": "f31e9eddffd8512dcb3c0deccca1eb76b029cdabd14718d5ef12db5f7c8640f0",
+  "wef-timing/ring-cleanup.js": "3401d8b35e9657bad0cf8ca4d2d9b12a359a53822af28283fe516f3b9b749df2",
+  "wef-timing/class-cleanup.js": "e13a4963f8f870fd3ce7e0cd3c6879946fc7cc2c4e69ac74f080daf9e0444fef"
+}

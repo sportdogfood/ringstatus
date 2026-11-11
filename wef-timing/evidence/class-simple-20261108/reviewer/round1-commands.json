@@ -1,0 +1,27 @@
+{
+  "reviewer": "/root/class_status_review",
+  "commands": [
+    {
+      "id": "round1-independent-suite",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\round1-suite-wrapper.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T20:07:23.503268+00:00",
+      "ended_at": "2026-11-08T20:07:25.111230+00:00",
+      "exit_code": 0,
+      "stdout": "PASS owner math: actual1:59, observed2:28,30total10gone =>2.9pace,3:26finish,58minutes\nPASS next scheduled3:00 is projected3:26 with26-minute late warning\nPASS trip context uses source current ID and saved next roster\nPASS schedule-only upcoming3:00 is32minutes from2:28\nPASS measured class count intervals outrank default without inventing actual start\nPASS missing observations use labeled default, not a false measured pace\nPASS bad clock affects its fields, not other classes or snapshot creation\nPASS unknown preceding round does not invent next start\nPASS upcoming Data class still gets snapshot when Live detail is absent\nPASS repeat cycle preserves source time, adds new key and exact count diff\nPASS complete offline reader->save->readback->Class print->logs/heartbeat\nPASS same cycle deduplicates snapshots; next cycle appends even unchanged source\nPASS failed snapshot readback stops publication before summary update\nPASS real HTTP adapter paginates, preserves Date formula, and restricts source writes\nPASS cleanup19:00Eastern; new-show priority; three-hour due; day0 irrelevant\nPASS cleanup999none/1000oldest500 and active/pending protections\nPASS old answers: unknown date, young, current/future or referenced remain protected\nPASS full archive file/hash/catalog independent readback required\nPASS prepared shared entry invokes fresh Class directly, independent of old handoff/clock gate\nPASS saved current/next classes produce observations and timing using real history\n{\"passed\":20,\"observations\":438,\"snapshots\":4,\"measured\":1,\"as_of\":\"2026-11-08T19:52:09.175Z\"}\n",
+      "stderr": ""
+    },
+    {
+      "id": "round1-independent-counterexamples",
+      "command": "node \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\round1-checks.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T20:07:25.111230+00:00",
+      "ended_at": "2026-11-08T20:07:25.224334+00:00",
+      "exit_code": 1,
+      "stdout": "{\"name\":\"empty current Ring pointer must not revive old group backlink\",\"result\":\"FAIL\",\"error\":\"Expected values to be strictly equal:\\n\\n1 !== 0\\n\"}\n{\"name\":\"per-class phase-only counts must not mark every group member live\",\"result\":\"FAIL\",\"error\":\"Expected values to be strictly equal:\\n\\n'true' !== 'false'\\n\"}\n{\"name\":\"count decrease cannot produce negative measured pace from old actual start\",\"result\":\"PASS\"}\n{\"name\":\"unknown current class observation cannot borrow an older phase actual start as fresh evidence\",\"result\":\"PASS\"}\n{\"name\":\"new-show cleanup can identify Class run logs and heartbeat by show ID\",\"result\":\"FAIL\",\"error\":\"Expected values to be strictly equal:\\n+ actual - expected\\n\\n+ undefined\\n- 200000077\\n\"}\n{\"name\":\"explicit retired checkpoint can be cleaned on verified default-show change\",\"result\":\"FAIL\",\"error\":\"Expected values to be strictly equal:\\n\\n0 !== 1\\n\"}\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "verified_at": "2026-11-08T19:27:22.411963+00:00",
+  "run_id": "2ce3cb0e-d12e-4478-b5dc-239e0d5d8e28",
+  "started": "2026-11-08T19:24:16.086Z",
+  "completed": "2026-11-08T19:25:35.040Z",
+  "saved": 419,
+  "class_detail_requested": 9,
+  "class_detail_skipped": 58,
+  "collection_errors": 0,
+  "normal_run_seconds": 78.954,
+  "code_hashes": {
+    "fast_collector.py": "b3881265235b79bdd8bda0f0c160dbffa8a5f0939287c051c1485b0fb9d9a04c",
+    "schema.json": "09d22e7bc92a44d55cea89c2d23ef2ee7871939759099d2f393bc8491b0258cc"
+  },
+  "manual_collection": false,
+  "native_readback": "scheduled-readback.json",
+  "review": "review/review-receipt.json"
+}

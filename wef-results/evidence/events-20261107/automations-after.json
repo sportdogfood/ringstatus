@@ -1,0 +1,164 @@
+{
+  "content": [],
+  "structuredContent": {
+    "automations": [
+      {
+        "id": "wflwxdcMXfkhNnQyT",
+        "name": "Results — trips created",
+        "description": "Source alert: create qualifying X/Y results in snapshot and mark their expectation Complete; flag conflicts. No source changes.",
+        "deploymentStatus": "undeployed",
+        "trigger": {
+          "id": "wtrrpeL8Jb1XKwMyY",
+          "type": "recordCreated",
+          "inputExpressions": {
+            "tableId": "tbldT7olKPcKlIIWx"
+          }
+        },
+        "nodes": [
+          {
+            "key": "wacjgq7B0wTeJmc36",
+            "type": "customScript",
+            "description": "Reads the changed local trip/result, matching priority-zero show-day and local horse/rider identities. Creates a new X or Y snapshot only if its flag is 1 and at least one applicable value is nonzero. Reads back saved records, marks expectations Complete, flags conflicts without overwriting original results, and records run/heartbeat/error evidence. Does not change source records or delete data."
+          }
+        ],
+        "deployedVersion": null,
+        "configurationStatus": "valid"
+      },
+      {
+        "id": "wfl8tZCyB83OBtpDr",
+        "name": "Results — trips changed",
+        "description": "Source alert: create qualifying X/Y results in snapshot and mark their expectation Complete; flag conflicts. No source changes.",
+        "deploymentStatus": "undeployed",
+        "trigger": {
+          "id": "wtrbsfNSUq24jUz4U",
+          "type": "recordUpdated",
+          "inputExpressions": {
+            "tableId": "tbldT7olKPcKlIIWx",
+            "watchFields": [
+              "fldsecCydYT3VXask",
+              "fldAX6qnRVS9eqPHX",
+              "fldbZt784U1kUC3C9",
+              "fldLcX5h985NUxZ5R",
+              "fld0TV8EVZ5SM6S11",
+              "fldLB8jampv0L6PXC",
+              "fldI9Cd98bSDH35pG",
+              "fldxRO6fxlwf1SIm5",
+              "fldStkm0OO860jI22"
+            ]
+          }
+        },
+        "nodes": [
+          {
+            "key": "wacoNiuygRNKVUb60",
+            "type": "customScript",
+            "description": "Reads the changed local trip/result and matching priority-zero show-day and horse/rider identities. Creates qualifying X/Y result records only on source alerts; reads back writes and marks expectations Complete. Flags duplicates or changed evidence without overwriting original results, source writes, deletion or blind retries. Records run, heartbeat and error evidence."
+          }
+        ],
+        "deployedVersion": null,
+        "configurationStatus": "valid"
+      },
+      {
+        "id": "wfltMpaxfnlR2AMUB",
+        "name": "Results — results created",
+        "description": "Source alert: create qualifying X/Y results in snapshot and mark their expectation Complete; flag conflicts. No source changes.",
+        "deploymentStatus": "undeployed",
+        "trigger": {
+          "id": "wtrFqRZlFSxJ0tQFJ",
+          "type": "recordCreated",
+          "inputExpressions": {
+            "tableId": "tbljKNTCoDG7Z3q6O"
+          }
+        },
+        "nodes": [
+          {
+            "key": "wacDEA1e6q35FhOBh",
+            "type": "customScript",
+            "description": "Reads the changed local trip/result and matching priority-zero show-day and horse/rider identities. Creates qualifying X/Y result records only on source alerts; reads back writes and marks expectations Complete. Flags duplicates or changed evidence without overwriting original results, source writes, deletion or blind retries. Records run, heartbeat and error evidence."
+          }
+        ],
+        "deployedVersion": null,
+        "configurationStatus": "valid"
+      },
+      {
+        "id": "wflrVQtNEheJV3McU",
+        "name": "Results — results changed",
+        "description": "Source alert: create qualifying X/Y results in snapshot and mark their expectation Complete; flag conflicts. No source changes.",
+        "deploymentStatus": "undeployed",
+        "trigger": {
+          "id": "wtrCMujqo8WLGzMTs",
+          "type": "recordUpdated",
+          "inputExpressions": {
+            "tableId": "tbljKNTCoDG7Z3q6O",
+            "watchFields": [
+              "fldtbvwbv25xO4dus",
+              "fld4K3pC1N1WHMmX3",
+              "fldJTvbHl1Uz2w4jz",
+              "fldeZBJ7cF13RTUNf",
+              "fldADqgze3gmjh39X",
+              "fldIDSpwfAY40TFud",
+              "fld7dE878hT0lNRRq",
+              "fld6yce5foXYxZ52u",
+              "fldouhPyTO4vEMWMt",
+              "fld0GBeEzamg09NIL",
+              "fldZqxfLFrSQcH2xJ",
+              "fldClXu7zQhKTOa15",
+              "flduTcMeeIgU7Z7BX",
+              "fldLscB1n7suViLyX",
+              "fld606UBtBSTbHeNz",
+              "fldonI95bUfNmmRfP",
+              "fldx1BjW9vZrriU7y",
+              "fldiYSsehU1DOniUL",
+              "fldsQ3uFW43aBAFWg",
+              "fldDoYlcBDRG3iwPL",
+              "fldPLcfLRvmFr5ool",
+              "fldxRIEVl2mzhSjmy",
+              "flds4ijRfUGOMiHyy",
+              "fldSCaj4Pt94NcJH7",
+              "fldbAg5NfUZpfERol",
+              "fld93yJHViyAvukTO",
+              "fldPg81w3DHo4nXzx"
+            ]
+          }
+        },
+        "nodes": [
+          {
+            "key": "wacxj8qmmWwXFMA7z",
+            "type": "customScript",
+            "description": "Reads the changed local trip/result and matching priority-zero show-day and horse/rider identities. Creates qualifying X/Y result records only on source alerts; reads back writes and marks expectations Complete. Flags duplicates or changed evidence without overwriting original results, source writes, deletion or blind retries. Records run, heartbeat and error evidence."
+          }
+        ],
+        "deployedVersion": null,
+        "configurationStatus": "valid"
+      },
+      {
+        "id": "wflqhnoFBMPmbRRyI",
+        "name": "Results — reconcile Expected / Complete / Conflict",
+        "description": "Every ten minutes, organize priority-zero expectations and identify duplicates/inconsistencies. Never create X/Y result records, delete records or repair source data.",
+        "deploymentStatus": "undeployed",
+        "trigger": {
+          "id": "wtrVarOzeOKDEDKdv",
+          "type": "cron",
+          "inputExpressions": {
+            "type": "minutely",
+            "config": {
+              "obj": {
+                "width": 10
+              }
+            },
+            "start": "2026-11-01T18:00:18Z"
+          }
+        },
+        "nodes": [
+          {
+            "key": "wacywdusXWo0sh5WQ",
+            "type": "customScript",
+            "description": "Reads local trips, results, priority-zero show-days, horse/rider identities and saved snapshots. Creates or updates expectation rows only, marks Complete after an actual triggered result exists, and flags duplicates, changed evidence or missing source trips as Conflict. Never creates X/Y result records, deletes records or repairs source data. Records run, heartbeat and error evidence."
+          }
+        ],
+        "deployedVersion": null,
+        "configurationStatus": "valid"
+      }
+    ]
+  },
+  "isError": false
+}

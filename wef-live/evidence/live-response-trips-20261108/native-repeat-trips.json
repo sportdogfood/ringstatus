@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-08T16:13:18.440Z",
+  "count": 304,
+  "unique_keys": 304,
+  "prior_record_ids_and_keys_preserved": true,
+  "links": {
+    "class": 304,
+    "groups": 304,
+    "ring": 304,
+    "w-shows": 304,
+    "w-days": 304,
+    "data-schedules": 304,
+    "legacy-live-entry": 304
+  },
+  "links_preserved": true
+}

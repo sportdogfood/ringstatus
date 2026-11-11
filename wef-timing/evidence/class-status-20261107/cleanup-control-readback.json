@@ -1,0 +1,416 @@
+{
+  "at": "2026-11-08T02:47:47.353Z",
+  "before": {
+    "records": [
+      {
+        "id": "rec4l2yC5GQhjkCFY",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "errs-log",
+          "fldBIU6Zk5fGuyGck": "CLASS ERROR LOG — Records Class input, calculation, decision and save errors. Clear eligible completed logs on a new Eastern calendar day. Every three hours, at 1,000+ records, delete the oldest 500 eligible records; below 1,000, delete none. On a new show, clear eligible old-show logs. Protect active/current records.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "rec6o8KmkFTTM7xUX",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "engine-checkpoints",
+          "fldBIU6Zk5fGuyGck": "CLASS CONTROL STATE — Keeps the calculator's saved progress and cleanup change-detection state. Only eligible completed or superseded records may be removed. Protect active/current checkpoints and unresolved operations.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recDb5HlP3HiZ43y2",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "___archive-catalog",
+          "fldBIU6Zk5fGuyGck": "PROTECTED CATALOG — Existing archive references and evidence. Never a cleanup target."
+        }
+      },
+      {
+        "id": "recNnWkDd5CS6xuPc",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-data.schedules",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-data.schedules. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "recQF4Utjiamw1g5X",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-live.entries",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-live.entries. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "recSv3E16URJ72S7x",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "heartbeat",
+          "fldBIU6Zk5fGuyGck": "CLASS HEARTBEAT — Records calculator activity and outcomes. Clear eligible completed logs on a new Eastern calendar day. Every three hours, at 1,000+ records, delete the oldest 500 eligible records; below 1,000, delete none. On a new show, clear eligible old-show logs. Protect active/current records.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recW6lPZkpOPHEhFv",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "run-logs",
+          "fldBIU6Zk5fGuyGck": "CLASS RUN LOG — Records each calculator cycle, outcome, counts and errors. Clear eligible completed logs on a new Eastern calendar day. Every three hours, at 1,000+ records, delete the oldest 500 eligible records; below 1,000, delete none. On a new show, clear eligible old-show logs. Protect active/current records.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recb7nd5sDDHSBR4c",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "code-reviews",
+          "fldBIU6Zk5fGuyGck": "PROTECTED ADMINISTRATION — Class code-review dates, findings and evidence. Never a cleanup target."
+        }
+      },
+      {
+        "id": "receBZaP2c3keqGvd",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "cleanup",
+          "fldBIU6Zk5fGuyGck": "CLASS CLEANUP CONTROL AND LATEST STATUS — One row per actual base table. 'checked' identifies the five approved owned cleanup targets; it does not itself run cleanup. Detect a new default show ID using w-shows. Detect midnight/new Eastern calendar day using the Eastern clock with w-days as the calendar reference; a planning day-0 change is not a calendar-day event. New show: clear eligible old-show records and logs from approved tables. New Eastern day: clear eligible completed logs. Every three hours: for each logging table at 1,000+ records delete its oldest 500 eligible records; below 1,000 delete none. A new show-day/day-0 change has no separate action. The 7 p.m. notice is a reminder only. Protect active/current records, all synced inputs and reference/catalog tables. Record counts at action start, actual started/completed times, old/new show IDs, result, deleted count and errors only when a real action occurs. This control table is protected."
+        }
+      },
+      {
+        "id": "recelZdy5yDM8DcBl",
+        "createdTime": "2026-11-06T01:37:22.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-live.rings",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-live.rings. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "recivmeUzFxcaajRc",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-live.classes",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-live.classes. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "recjM9j7OpAjLJ65n",
+        "createdTime": "2026-11-06T01:37:22.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "timing-answers",
+          "fldBIU6Zk5fGuyGck": "CLASS SNAPSHOTS — One snapshot of what is known about a class on each cycle, including calculations, decisions and data changes. Eligible historical records participate in the agreed cleanup rules. Protect active/current records.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "reckuIdPrXCCqb5lL",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-live.groups",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-live.groups. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "reclYkfOneCX0ZfEL",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "w-days",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — Canonical show-day and day-priority reference for calendar checks. New-day cleanup follows a new Eastern calendar date at midnight. A change in planning day-0 alone has no separate cleanup action. Never delete or modify synced source records during Class cleanup."
+        }
+      },
+      {
+        "id": "recrXkVkFPYChOlnT",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "w-shows",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — Canonical show reference. A different show ID becoming the checked default identifies a new-show cleanup event. Never delete or modify synced source records during Class cleanup."
+        }
+      },
+      {
+        "id": "recwKcWyCkJX5kXrG",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "meta",
+          "fldBIU6Zk5fGuyGck": "PROTECTED REFERENCE — Existing base metadata. Never a cleanup target."
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 16
+    }
+  },
+  "updates": [
+    {
+      "id": "rec4l2yC5GQhjkCFY",
+      "fields": {
+        "fldBIU6Zk5fGuyGck": "CLASS ERRS-LOG — At 7 p.m. Eastern, clear eligible completed logs, including completed runs in run-logs. Every three hours: at 1,000+ total records, delete oldest 500 eligible; below 1,000 delete none. New default show ID: clear eligible old-show logs. Protect active/current runs, unresolved errors, dependencies and pending intents."
+      }
+    },
+    {
+      "id": "recSv3E16URJ72S7x",
+      "fields": {
+        "fldBIU6Zk5fGuyGck": "CLASS HEARTBEAT — At 7 p.m. Eastern, clear eligible completed logs, including completed runs in run-logs. Every three hours: at 1,000+ total records, delete oldest 500 eligible; below 1,000 delete none. New default show ID: clear eligible old-show logs. Protect active/current runs, unresolved errors, dependencies and pending intents."
+      }
+    },
+    {
+      "id": "recW6lPZkpOPHEhFv",
+      "fields": {
+        "fldBIU6Zk5fGuyGck": "CLASS RUN-LOGS — At 7 p.m. Eastern, clear eligible completed logs, including completed runs in run-logs. Every three hours: at 1,000+ total records, delete oldest 500 eligible; below 1,000 delete none. New default show ID: clear eligible old-show logs. Protect active/current runs, unresolved errors, dependencies and pending intents."
+      }
+    },
+    {
+      "id": "receBZaP2c3keqGvd",
+      "fields": {
+        "fldBIU6Zk5fGuyGck": "CLASS CLEANUP CONTROL — Separate lane; checked identifies the five approved owned tables, not execution. At 7 p.m. Eastern clear eligible completed operational logs, including completed runs in run-logs. Every three hours, per logging table at 1,000+ total records delete oldest 500 eligible; below 1,000 delete none. Detect a changed default show ID using w-shows; clear eligible previous-show owned records. w-days provides calendar context. No separate day-0 cleanup. Protect active/current work, pending intents, all synced inputs and references/catalogs. Class-status snapshot history stays protected pending its retention window. No new schedules. Record outcomes only after actual actions. No cleanup action is performed by this control update."
+      }
+    },
+    {
+      "id": "recjM9j7OpAjLJ65n",
+      "fields": {
+        "fldBIU6Zk5fGuyGck": "EXISTING CLASS ANSWERS — Existing implementation remains unchanged. On verified default-show ID change, only eligible old-show, unreferenced answers may be cleared after required archive/protection proof. Protect current/future answers, unresolved dependencies and pending intents. New snapshots use separate class-status; this is not a nightly operational-log target."
+      }
+    },
+    {
+      "id": "reclYkfOneCX0ZfEL",
+      "fields": {
+        "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — Calendar/day reference. Daily completed-log cleanup is at 7 p.m. Eastern; a planning day-0 change has no separate cleanup action. Never delete or modify synced records during Class cleanup."
+      }
+    }
+  ],
+  "created": {
+    "records": [
+      {
+        "id": "recitrL76PEFLl27U",
+        "createdTime": "2026-11-08T02:47:45.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-data.classes",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-data.classes. Read-only Class input. Never delete or modify during Class cleanup."
+        }
+      },
+      {
+        "id": "rec2vMuIkqUlZanZv",
+        "createdTime": "2026-11-08T02:47:45.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "ring-status",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — ring-status. Read-only Class input. Never delete or modify during Class cleanup."
+        }
+      },
+      {
+        "id": "recK1X8wO0ZeJJ7ad",
+        "createdTime": "2026-11-08T02:47:45.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "class-status",
+          "fldBIU6Zk5fGuyGck": "PROTECTED CLASS SNAPSHOT HISTORY — One as-of snapshot per class per cycle. Retain history for diffs and assessment. Not an operational completed log; no cleanup until an explicit history retention window is agreed."
+        }
+      }
+    ],
+    "actionId": "actqhQiLBL5ZvRw5p",
+    "hint": "Next, ask the user if they want to display the created records in an interactive view."
+  },
+  "after": {
+    "records": [
+      {
+        "id": "rec2vMuIkqUlZanZv",
+        "createdTime": "2026-11-08T02:47:45.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "ring-status",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — ring-status. Read-only Class input. Never delete or modify during Class cleanup."
+        }
+      },
+      {
+        "id": "rec4l2yC5GQhjkCFY",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "errs-log",
+          "fldBIU6Zk5fGuyGck": "CLASS ERRS-LOG — At 7 p.m. Eastern, clear eligible completed logs, including completed runs in run-logs. Every three hours: at 1,000+ total records, delete oldest 500 eligible; below 1,000 delete none. New default show ID: clear eligible old-show logs. Protect active/current runs, unresolved errors, dependencies and pending intents.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "rec6o8KmkFTTM7xUX",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "engine-checkpoints",
+          "fldBIU6Zk5fGuyGck": "CLASS CONTROL STATE — Keeps the calculator's saved progress and cleanup change-detection state. Only eligible completed or superseded records may be removed. Protect active/current checkpoints and unresolved operations.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recDb5HlP3HiZ43y2",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "___archive-catalog",
+          "fldBIU6Zk5fGuyGck": "PROTECTED CATALOG — Existing archive references and evidence. Never a cleanup target."
+        }
+      },
+      {
+        "id": "recK1X8wO0ZeJJ7ad",
+        "createdTime": "2026-11-08T02:47:45.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "class-status",
+          "fldBIU6Zk5fGuyGck": "PROTECTED CLASS SNAPSHOT HISTORY — One as-of snapshot per class per cycle. Retain history for diffs and assessment. Not an operational completed log; no cleanup until an explicit history retention window is agreed."
+        }
+      },
+      {
+        "id": "recNnWkDd5CS6xuPc",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-data.schedules",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-data.schedules. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "recQF4Utjiamw1g5X",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-live.entries",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-live.entries. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "recSv3E16URJ72S7x",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "heartbeat",
+          "fldBIU6Zk5fGuyGck": "CLASS HEARTBEAT — At 7 p.m. Eastern, clear eligible completed logs, including completed runs in run-logs. Every three hours: at 1,000+ total records, delete oldest 500 eligible; below 1,000 delete none. New default show ID: clear eligible old-show logs. Protect active/current runs, unresolved errors, dependencies and pending intents.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recW6lPZkpOPHEhFv",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "run-logs",
+          "fldBIU6Zk5fGuyGck": "CLASS RUN-LOGS — At 7 p.m. Eastern, clear eligible completed logs, including completed runs in run-logs. Every three hours: at 1,000+ total records, delete oldest 500 eligible; below 1,000 delete none. New default show ID: clear eligible old-show logs. Protect active/current runs, unresolved errors, dependencies and pending intents.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "recb7nd5sDDHSBR4c",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "code-reviews",
+          "fldBIU6Zk5fGuyGck": "PROTECTED ADMINISTRATION — Class code-review dates, findings and evidence. Never a cleanup target."
+        }
+      },
+      {
+        "id": "receBZaP2c3keqGvd",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "cleanup",
+          "fldBIU6Zk5fGuyGck": "CLASS CLEANUP CONTROL — Separate lane; checked identifies the five approved owned tables, not execution. At 7 p.m. Eastern clear eligible completed operational logs, including completed runs in run-logs. Every three hours, per logging table at 1,000+ total records delete oldest 500 eligible; below 1,000 delete none. Detect a changed default show ID using w-shows; clear eligible previous-show owned records. w-days provides calendar context. No separate day-0 cleanup. Protect active/current work, pending intents, all synced inputs and references/catalogs. Class-status snapshot history stays protected pending its retention window. No new schedules. Record outcomes only after actual actions. No cleanup action is performed by this control update."
+        }
+      },
+      {
+        "id": "recelZdy5yDM8DcBl",
+        "createdTime": "2026-11-06T01:37:22.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-live.rings",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-live.rings. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "recitrL76PEFLl27U",
+        "createdTime": "2026-11-08T02:47:45.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-data.classes",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-data.classes. Read-only Class input. Never delete or modify during Class cleanup."
+        }
+      },
+      {
+        "id": "recivmeUzFxcaajRc",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-live.classes",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-live.classes. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "recjM9j7OpAjLJ65n",
+        "createdTime": "2026-11-06T01:37:22.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "timing-answers",
+          "fldBIU6Zk5fGuyGck": "EXISTING CLASS ANSWERS — Existing implementation remains unchanged. On verified default-show ID change, only eligible old-show, unreferenced answers may be cleared after required archive/protection proof. Protect current/future answers, unresolved dependencies and pending intents. New snapshots use separate class-status; this is not a nightly operational-log target.",
+          "fldrkkR1wZYDYlWB9": {
+            "id": "selwRvr1QUhdT7ZSy",
+            "name": "checked",
+            "color": "blueLight2"
+          }
+        }
+      },
+      {
+        "id": "reckuIdPrXCCqb5lL",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "wef-live.groups",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — wef-live.groups. Read-only input to Class. Never delete or modify these shared/synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "reclYkfOneCX0ZfEL",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "w-days",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — Calendar/day reference. Daily completed-log cleanup is at 7 p.m. Eastern; a planning day-0 change has no separate cleanup action. Never delete or modify synced records during Class cleanup."
+        }
+      },
+      {
+        "id": "recrXkVkFPYChOlnT",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "w-shows",
+          "fldBIU6Zk5fGuyGck": "PROTECTED SHARED SYNC — Canonical show reference. A different show ID becoming the checked default identifies a new-show cleanup event. Never delete or modify synced source records during Class cleanup."
+        }
+      },
+      {
+        "id": "recwKcWyCkJX5kXrG",
+        "createdTime": "2026-11-02T16:30:12.000Z",
+        "cellValuesByFieldId": {
+          "fld3SoPH7y9wy2yGN": "meta",
+          "fldBIU6Zk5fGuyGck": "PROTECTED REFERENCE — Existing base metadata. Never a cleanup target."
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 19
+    }
+  },
+  "errors": []
+}

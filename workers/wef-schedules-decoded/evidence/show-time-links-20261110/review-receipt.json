@@ -1,0 +1,46 @@
+{
+  "reviewer": "wef-decoder",
+  "reviewed_at": "2026-11-10T23:02:14.400Z",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Scheduled show-time records must link to the default show and its matching or selected day without changing the actual clock time.",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\show-time-health.mjs",
+  "integration_coverage": "Inspected producer, schema, scheduled receipt and native-link readback; executed date/selection/replay and error tests. No runner or proxy changes.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\show-time-links-20261110\\show-time-health.mjs.before",
+      "sha256": "0596a90d0c6b4b57efdf664d9741b41a76e5880133461e36410e3b1e7d58516e"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\show-time-health.mjs",
+      "sha256": "b76b399edac690b7a0568d1234bf6607b0c48e7e992008eac84ae940dd17e0ee"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\show-time-health.test.mjs",
+      "sha256": "814bb946d2b2f4b202915d3262a26cdb2a90b1f1c594fa0aa0dc65afde39a542"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\show-time-links-20261110\\review-report.md",
+    "sha256": "be27bd1c187ba3c84c1bfd9a93967fe725c91a03b94c6f77cd5adc3d47b18254"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\show-time-links-20261110\\execution-log.json",
+      "sha256": "47325b7eacdb3b0cb723334574a1b1e847f634676ae1b3fc8b0e2c057f55bdaa"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "show-time link regressions",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "show-time-links"
+      ]
+    }
+  ]
+}

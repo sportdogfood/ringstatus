@@ -1,6 +1,6 @@
 # Controlling approved repair — November 7, 2026
 
-Season remains owner-locked to four entity transfers, supported trip/show/day/person links, hourly operation and accurate silent error logging. The approved three-file repair is deployed.57 tests and independent review passed; normal hourly recovery remains unverified until the November7 8:51a.m.Eastern run. Further code/schema/task/scope changes still require explicit approval; the existing approved read-only hourly verification continues. No business-error persistent stops or added readiness gates; uncertain native writes retain their existing reconciliation protection. Historical lock details follow and are superseded where different.
+Season remains owner-locked to four entity transfers, supported trip/show/day/person links, hourly operation and accurate silent error logging. The approved three-file repair is deployed.57 tests and independent review passed; normal hourly recovery was verified after the November7 8:51a.m.Eastern run; the7:51p.m.repeat also succeeded with6record-specific Ring skips. Further code/schema/task/scope changes still require explicit approval; the existing approved read-only hourly verification continues. No business-error persistent stops or added readiness gates; uncertain native writes retain their existing reconciliation protection. Historical lock details follow and are superseded where different.
 
 Current SHA256:
 - season.py: `6f91f80f150a5e1b3fa89bec606862228d0ec98f9aa198fff865838d7c55f404`

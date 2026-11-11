@@ -1,0 +1,194 @@
+{
+  "reviewer": "/root/trip_review",
+  "reviewed_at": "2026-11-09T00:34:31.596907+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Independent review of the approved frozen Trip linker, cleaner and calculator end-to-end candidate",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator",
+  "integration_coverage": "Independent offline suite and actual saved replay, static shared entry through Ring/Class, Trip input, snapshot/link, five local fields, audit, cleanup and deadlines. Production release outside scope.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\entry-data.js",
+      "sha256": "106f8131132209e9cf5735b315425e38c029e604670856c270db85a6a7f66d40"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\data-runner.js",
+      "sha256": "f31e9eddffd8512dcb3c0deccca1eb76b029cdabd14718d5ef12db5f7c8640f0"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-snapshot.js",
+      "sha256": "b8e7ffc509b8a9796e168507ef4338e21b5114391129ab1dd514feb7299d2000"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\ring-snapshot.js",
+      "sha256": "6b00215bf788806a297c44272c88dccfcdbf7f39f8d2147c0a51da26dac2baac"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\before-cleanup.js",
+      "sha256": "eec3b79f136d809d98a02a44b84c4812d58c94349389cd7e44d6aa1c5ff6158a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\before-README.md",
+      "sha256": "d02f883fa41ad8da69d3d841f83f20038169f64cf392acc5014da94c971c18ce"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\before-test.js",
+      "sha256": "c2110d5d671696a7f9f9da0df4d98b1e41f50a01f0e52333a75bd7eafc016551"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\before-trip-status.js",
+      "sha256": "206f683aecb9ad1b19ded3d77c987e0b1daeeea29fc85ec4cb2c100080e5e910"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\cleanup.js",
+      "sha256": "46098f34ddfd6e043f4e6a8c4466b4812d31d1eaab8d7ebac459e70b40e581e7"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\cleanup.test.js",
+      "sha256": "03e7650045ab874ba17830926b20658484a0a8b46145d2e3a139fe330f8f7138"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\linker.js",
+      "sha256": "57e9bdef31dbcd86f9c7754d22208a0471b7d60ea7a989291cacf859a228a1a0"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\README.md",
+      "sha256": "8d808ab9f669d253681cb470fee7daff402f9391a0ebea875364d4766409ff82"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\runner.js",
+      "sha256": "f80682bc78ec186d7bede9ae919de2510d857617b46a40a2c7e78a70fdd909b8"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\schema.json",
+      "sha256": "25b632a976b1ee3f89eb94ccf0561edd1df5d0f3c5ffae7f0396e7dcc59f50c2"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\test.js",
+      "sha256": "e24083a900d8d88cf9e97431b21bcb64a05f9ae46f3a7706394556265940847d"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\trip-status.js",
+      "sha256": "df75a33f6411915e90403af6bb0336addd9a79936df3cff8cae7bf4792e7f9c6"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\saved-inputs.jsonl",
+      "sha256": "f5d58a0eb3ff151bed7f63303046887c3d84e36cf74aba1bae1cda48fad3638f"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\candidate\\entry-data.js",
+      "sha256": "0179fb4280d66a37788ccc1d70523b0b8e45896f1f406068664060107b73e5c9"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\schema-changes.json",
+      "sha256": "c34b5a290382e122a4312802f6deae7887fd58b2cad084bcd7fdb9154ec82503"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\scope.md",
+      "sha256": "a4feef869f74c5e427eaacfe1e2de77213731db764b1c42b7d2859906a0f0f07"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\reviewer\\review.md",
+    "sha256": "3efcd5132960d5636ec5e5c59c71dfbd40ad3e756531bb4d90f09b1456ad1019"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\reviewer\\command-log.json",
+      "sha256": "3e64b7976b9afce795fa60cb1daaad43b7b904622c1428c360b109ce1447ffc0"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "FAIL",
+  "required_checks": [
+    {
+      "name": "Independent frozen Trip calculator, runner and cleanup suites",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "trip-frozen-offline-1"
+      ]
+    },
+    {
+      "name": "Approval boundary and frozen comparison",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected scoped approval and actual candidate files, archived prior source and protected shared dependencies. Schema and shared hook are staged only.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\scope.md",
+          "sha256": "a4feef869f74c5e427eaacfe1e2de77213731db764b1c42b7d2859906a0f0f07"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\manifest.json",
+          "sha256": "0be495daffddca14d4c27dc88657e887e00360c873ce40f38a9eb5ed7e2bd182"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\reviewer\\before-hashes.json",
+          "sha256": "bcf0f50fb3def4b5abde06883d92ce9c5ee92ca84375bc586d2a15c93fbbe24b"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\reviewer\\after-hashes.json",
+          "sha256": "bcf0f50fb3def4b5abde06883d92ce9c5ee92ca84375bc586d2a15c93fbbe24b"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\schema-changes.json",
+          "sha256": "c34b5a290382e122a4312802f6deae7887fd58b2cad084bcd7fdb9154ec82503"
+        }
+      ]
+    },
+    {
+      "name": "Saved source usefulness, exact fields and linkage",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected retained source order and state counts, calculation and exact field reads/writes. Writer command log is inspected, distinct from independent replay.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\reviewer\\saved-source-inspection.json",
+          "sha256": "73e1cf07ad4c01df67d20fbe42b71aea94ca77cc922f5a9fde2586b0d039fdab"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\writer-command-log.json",
+          "sha256": "018c0ea228c17a224a3eb63092a481eaa82556bdc0efb8e023e02cc669c652d9"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\trip-status.js",
+          "sha256": "df75a33f6411915e90403af6bb0336addd9a79936df3cff8cae7bf4792e7f9c6"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\runner.js",
+          "sha256": "f80682bc78ec186d7bede9ae919de2510d857617b46a40a2c7e78a70fdd909b8"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\linker.js",
+          "sha256": "57e9bdef31dbcd86f9c7754d22208a0471b7d60ea7a989291cacf859a228a1a0"
+        }
+      ]
+    },
+    {
+      "name": "Shared entry, audit and cleanup failure paths",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Compared shared staged and baseline entry, absolute deadline, issue-log path and cleanup caller. Production scheduled execution is outside the assigned review.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\evidence\\end-to-end-20261108\\candidate\\entry-data.js",
+          "sha256": "0179fb4280d66a37788ccc1d70523b0b8e45896f1f406068664060107b73e5c9"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\entry-data.js",
+          "sha256": "106f8131132209e9cf5735b315425e38c029e604670856c270db85a6a7f66d40"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\runner.js",
+          "sha256": "f80682bc78ec186d7bede9ae919de2510d857617b46a40a2c7e78a70fdd909b8"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-trip-calculator\\cleanup.js",
+          "sha256": "46098f34ddfd6e043f4e6a8c4466b4812d31d1eaab8d7ebac459e70b40e581e7"
+        }
+      ]
+    }
+  ]
+}

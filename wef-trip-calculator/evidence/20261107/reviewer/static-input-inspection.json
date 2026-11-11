@@ -1,0 +1,29 @@
+{
+  "scope": "Static fixture/schema inspection only; no snapshots() call or stopped suite execution",
+  "trip_status_counts": {
+    "active": 592,
+    "dropped": 64
+  },
+  "class_status_rows": 0,
+  "ring_status_rows": 0,
+  "class_sync_fields": [
+    "answer-key",
+    "scope-key",
+    "answer-kind",
+    "source-lane",
+    "show-id",
+    "date",
+    "ring-number",
+    "group-id",
+    "phase",
+    "availability",
+    "pace-method",
+    "pace-minutes-per-trip",
+    "evaluated-at",
+    "observed-at",
+    "reason-codes-json",
+    "input-refs-json",
+    "payload-json",
+    "content-hash"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-11-07T21:46:14.731Z",
+  "normalLaneAcceptance": "Existing approved behavior: runner first, automatic fallback may provide normal usable result; forced verification requires fallback. Earlier normal-runner-only criterion was stricter than approved behavior; implementation unchanged.",
+  "results": [
+    {
+      "mode": "normal",
+      "kind": "schedule",
+      "status": 200,
+      "lane": "runner",
+      "count": 7,
+      "queueStart": 1794087963584,
+      "queueEnd": 1794087963829,
+      "ok": true
+    },
+    {
+      "mode": "normal",
+      "kind": "class",
+      "status": 200,
+      "lane": "cloudflare-fallback",
+      "count": 8,
+      "queueStart": 1794087969864,
+      "queueEnd": 1794087970058,
+      "ok": true
+    },
+    {
+      "mode": "forced-fallback",
+      "kind": "schedule",
+      "status": 200,
+      "lane": "cloudflare-fallback",
+      "count": 7,
+      "queueStart": 1794087975930,
+      "queueEnd": 1794087976117,
+      "ok": true
+    },
+    {
+      "mode": "forced-fallback",
+      "kind": "class",
+      "status": 200,
+      "lane": "cloudflare-fallback",
+      "count": 8,
+      "queueStart": 1794087981631,
+      "queueEnd": 1794087981770,
+      "ok": true
+    }
+  ],
+  "pauseGaps": [
+    6035,
+    5872,
+    5514
+  ],
+  "pausePass": true,
+  "allPassed": true,
+  "remainingLimitation": "Installed runner directly returned {} for sample class after header correction; normal shared class response succeeds through automatic fallback. Do not claim primary class recovery."
+}

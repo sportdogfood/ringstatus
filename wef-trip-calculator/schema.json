@@ -1,0 +1,167 @@
+{
+  "base": "appyoLTcNmLrgpHcg",
+  "table": {
+    "id": "tblYZ4aRBuRVmp4OA",
+    "name": "trip-status",
+    "description": "Owned Trip snapshots: trip status/order, supported trips ahead and estimated go time using synced Ring/Class evidence. Fixed default pace 2.5746 min/trip. Original source clocks preserved; provider estimates separate. Offline candidate only; no deployed writer yet.",
+    "primaryFieldId": "fldimAQUY6MQ9yW4b",
+    "fields": [
+      {
+        "id": "fldimAQUY6MQ9yW4b",
+        "name": "snapshot-key",
+        "type": "singleLineText"
+      },
+      {
+        "id": "flddD4E4udZGJS3az",
+        "name": "trip-key",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldn4YsiriFjTdlmW",
+        "name": "trip-id",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldpR4hgMvzFVDRBK",
+        "name": "snapshot-at",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldUSQx3SXIkgjlMa",
+        "name": "observed-at",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldMSGUiZiY1C4cgR",
+        "name": "source",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldvn1TaSH7ubFMpp",
+        "name": "status",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldd5AsiKFkwagDIW",
+        "name": "pace-method",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldR9X2DKYtsooTgM",
+        "name": "class-start",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fld6p1gY4FmGvNTAl",
+        "name": "preceding-class-end",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldG7VgEOSH0P0GDH",
+        "name": "estimated-go-time",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldxReCTMj0RFKfRw",
+        "name": "estimate-basis",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldfO3hRnzzNbqAwi",
+        "name": "provider-go-time",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldunbivVztalKaPo",
+        "name": "provider-observed-at",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldswEqXIZCUBKEEq",
+        "name": "previous-snapshot",
+        "type": "singleLineText"
+      },
+      {
+        "id": "fldZDCECFIW6a0JXd",
+        "name": "date",
+        "type": "date"
+      },
+      {
+        "id": "fldHGkfAabz5RAaox",
+        "name": "show-id",
+        "type": "number"
+      },
+      {
+        "id": "fldB2MjHpMpTVYUPa",
+        "name": "ring-number",
+        "type": "number"
+      },
+      {
+        "id": "fldrB39JCCV4COEMy",
+        "name": "class-id",
+        "type": "number"
+      },
+      {
+        "id": "fldPLwWY7lZB6WSTa",
+        "name": "group-id",
+        "type": "number"
+      },
+      {
+        "id": "fldLXvCncJTzcWuOZ",
+        "name": "order-of-go",
+        "type": "number"
+      },
+      {
+        "id": "fldJD4NmEzL4ilx50",
+        "name": "actual-order",
+        "type": "number"
+      },
+      {
+        "id": "fldme01pmUnQfOsLh",
+        "name": "trips-ahead",
+        "type": "number"
+      },
+      {
+        "id": "fldsWnPW6GUGXd0LU",
+        "name": "pace-used",
+        "type": "number"
+      },
+      {
+        "id": "fld7xVfjDAuayfHbk",
+        "name": "trip",
+        "type": "url"
+      },
+      {
+        "id": "fldoKyEyHVvrDkxTF",
+        "name": "class",
+        "type": "url"
+      },
+      {
+        "id": "fldGP4pg92e8FY6mk",
+        "name": "schedule",
+        "type": "url"
+      },
+      {
+        "id": "fldtUmyV9sQiTqXEE",
+        "name": "ring-status",
+        "type": "url"
+      },
+      {
+        "id": "fldryoFIuZFDLKUEJ",
+        "name": "class-status",
+        "type": "url"
+      },
+      {
+        "id": "fldo7iJKR86G5avOQ",
+        "name": "unavailable-reasons",
+        "type": "multilineText"
+      },
+      {
+        "id": "fld3Rrdw8qMXU8pb7",
+        "name": "changes",
+        "type": "multilineText"
+      }
+    ]
+  },
+  "schema_readback_pass": true
+}

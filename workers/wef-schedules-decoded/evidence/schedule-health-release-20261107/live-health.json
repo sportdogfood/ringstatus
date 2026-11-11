@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-07T23:35:09.903Z",
+  "status": 200,
+  "payload": {
+    "ok": true,
+    "worker": "wef-schedules-decoded",
+    "show_id": "200000077",
+    "rings": 7,
+    "schedule_status": 200
+  }
+}

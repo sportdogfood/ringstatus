@@ -1,0 +1,23 @@
+{
+  "schedule": {
+    "configTokenRings": 9,
+    "classCount": 0
+  },
+  "class": {
+    "showId": 200000078,
+    "classId": 200031333,
+    "source": "GET /classes list for current default show; first entry_count > 0",
+    "trips": 2,
+    "reissuedTokenDecodedTrips": 2
+  },
+  "invalidSignature": {
+    "decodedBytesDiffer": true,
+    "returnedNewAnonymousToken": true,
+    "decodedRings": 9
+  },
+  "division": {
+    "id": 200006030,
+    "source": "source default div_type=jumper results list",
+    "channel": 1
+  }
+}

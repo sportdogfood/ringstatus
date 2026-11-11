@@ -1,0 +1,27 @@
+[
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\round1\\class-snapshot.js",
+    "sha256": "bdbd061994820d7a83342374607d7d57452866a6e3616ce8602a9353286c736d",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-snapshot.js"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\round1\\class-cleanup.js",
+    "sha256": "a98e8981cd4d67a8400d966420af160b11e019882ab2e78b71f620eba68442ae",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\class-cleanup.js"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\round1\\data-runner.js",
+    "sha256": "eda69ac0660bde49b08cfa0a2ec6ac47c001c87416e853a7285fbc2ccdf2d857",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\candidate\\data-runner.js"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\round1\\schema-changes.json",
+    "sha256": "66c9570263733e30b05eca592a116c0ed0363ad76d76286cb9c2d48357dec451",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\schema-changes.json"
+  },
+  {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\reviewer\\round1\\test.js",
+    "sha256": "2a9da7dd7f558f67aabf46f401dfd49d11683fd1a65a9c8b7ba12ddeab9525dd",
+    "original_path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-timing\\evidence\\class-simple-20261108\\test.js"
+  }
+]

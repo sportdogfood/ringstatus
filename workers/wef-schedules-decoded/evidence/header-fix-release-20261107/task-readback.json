@@ -1,0 +1,27 @@
+[
+  {
+    "Task": "wef-decoder-runner-relay",
+    "DefinitionUnchanged": true,
+    "Enabled": true
+  },
+  {
+    "Task": "wef-decoder-named-tunnel",
+    "DefinitionUnchanged": true,
+    "Enabled": true
+  },
+  {
+    "Task": "epoch-tagger-local",
+    "DefinitionUnchanged": true,
+    "Enabled": false
+  },
+  {
+    "Task": "ringstatus-heartbeat",
+    "DefinitionUnchanged": true,
+    "Enabled": false
+  },
+  {
+    "Task": "ringstatus-pipeline-local",
+    "DefinitionUnchanged": true,
+    "Enabled": false
+  }
+]

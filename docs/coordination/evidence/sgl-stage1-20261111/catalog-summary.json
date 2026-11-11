@@ -1,0 +1,1159 @@
+{
+  "records": 229,
+  "new": 191,
+  "existing": 38,
+  "missingMethods": [],
+  "priorityCounts": {
+    "1 — Critical data and recovery": 12,
+    "2 — Supporting data": 56,
+    "3 — Account or action scope": 161
+  },
+  "routes": [
+    {
+      "route": "https://sglapi.wellingtoninternational.com/utilities/get-config",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapp.showgroundslive.com/version.json",
+      "method": "GET",
+      "query": "GET: query [_]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/utilities/log-protection-error",
+      "method": "POST",
+      "query": "POST: query []; body [(dynamic fields), url, message, item_keys, blob_minute, blob_length, bundle_salt_fp, token_fp, has_token, server_minute_skew_sec, subtle_crypto_present, react_version]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results",
+      "method": "GET",
+      "query": "GET: query [div_type, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/users/getUser",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/createActionStepData",
+      "method": "POST",
+      "query": "POST: query []; body [action, data, loginId, companyId, desc]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/PreAuthorizeCreditCard",
+      "method": "GET",
+      "query": "GET: query [secured_payment_method_fingerprint_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/completeActionStepData",
+      "method": "POST",
+      "query": "POST: query []; body [actionStepId, status, desc, error]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/updateDefaultCreditCard",
+      "method": "POST",
+      "query": "POST: query []; body [user_id, payment_method_id, company_id, barn_master_id, payment_method_type, (dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/RemoveCard",
+      "method": "GET",
+      "query": "GET: query [fingerprint_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/removeCard",
+      "method": "GET",
+      "query": "GET: query [fingerprint_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/updateEntriesPlatformFeeCard",
+      "method": "POST",
+      "query": "POST: query []; body [login_id, old_finger_print_id, new_payment_method_id, company_id]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SaveCreditCard",
+      "method": "GET",
+      "query": "GET: query [card_data, company_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/saveCreditCard",
+      "method": "GET",
+      "query": "GET: query [card_data, company_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/getAccountPaymentMethod",
+      "method": "GET",
+      "query": "GET: query [user_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetPaymentMethods",
+      "method": "GET",
+      "query": "GET: query [company_id, (dynamic fields)]; body []. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/users/getLoggedInUser",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/utilities/log-client-error",
+      "method": "POST",
+      "query": "POST: query []; body [customer_id, lineno, colno, message, user_info, filename, url]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/PreAuthorizeCreditCard",
+      "method": "GET",
+      "query": "GET: query [secured_payment_method_fingerprint_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/PostSendVerificationEmail",
+      "method": "POST",
+      "query": "POST: query [email, pass, current_login_email, new_login_email, confirm_email, form_action, loginid, secret, customer_id, site_url]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/SendVerificationEmail",
+      "method": "GET",
+      "query": "GET: query [customer_id, loginid, secret]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/ProcessEmailVerification",
+      "method": "GET",
+      "query": "GET: query [customer_id, be_key, be_id, be_hash]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus",
+      "method": "GET",
+      "query": "GET: query [from_wp_api, class_id, show_id, ring, from_live_class, class_group_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/classes/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query [show_id, customer_id, cgid]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/classes",
+      "method": "GET",
+      "query": "GET: query [sort_on, sort_type, page, search_text, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/invoice-summary",
+      "method": "GET",
+      "query": "GET: query [user_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/logout",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/LogoutSGLAPIUser",
+      "method": "POST",
+      "query": "POST: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/shows",
+      "method": "GET",
+      "query": "GET: query [customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/login",
+      "method": "POST",
+      "query": "POST: query []; body [username, password, remember_me, company_id]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/LoginErrorLog",
+      "method": "POST",
+      "query": "POST: query []; body [username, unhash_pass, customer_id, from_wp_api]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/registration/resendConfirmation",
+      "method": "GET",
+      "query": "GET: query [email, customer_id, site_url]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/my",
+      "method": "GET",
+      "query": "GET: query [show_id, customer_id, login_user_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+      "method": "POST / GET",
+      "query": "POST: query []; body [datetimestamp, customer_id, from_wp_api]. \nGET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/championships",
+      "method": "GET",
+      "query": "GET: query [show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries",
+      "method": "GET",
+      "query": "GET: query [sort_on, sort_type, page, search_text, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/stripeSetupIntent",
+      "method": "GET",
+      "query": "GET: query [company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/stripeRetrieveBankDetail",
+      "method": "GET",
+      "query": "GET: query [company_id, payment_method]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/stripeSaveBankAccount",
+      "method": "POST",
+      "query": "POST: query []; body [company_id, payment_method, setup_intent_id, setup_intent_status]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/checkoutv2/CheckPaymentMethod",
+      "method": "POST",
+      "query": "POST: query [payment_method_id, customer_id, cvv, team_id, (dynamic fields)]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/checkout/checkPaymentMethod",
+      "method": "POST",
+      "query": "POST: query [payment_method_id, customer_id, cvv, team_id]; body [(dynamic fields), cvv]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/checkoutv2/SubmitPayment",
+      "method": "POST",
+      "query": "POST: query [txtPaymentMethods, selected_payment_method_type, hdnTotalAmount, hdnDescription, hdnEntryIDs, hdnEntryBalances, txtCVV, show_id, customer_id, sgl_plugin, team_id]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/checkout/submitPayment",
+      "method": "POST",
+      "query": "POST: query [txtPaymentMethods, selected_payment_method_type, hdnTotalAmount, hdnDescription, hdnEntryIDs, hdnEntryBalances, txtCVV, show_id, customer_id, sgl_plugin, team_id]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query [eid, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/accountDetail",
+      "method": "GET",
+      "query": "GET: query [customer_id, aid]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getPaymentMethods",
+      "method": "GET",
+      "query": "GET: query [(dynamic fields), company_id, return_all_bank_accounts]; body []. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/checkout/getCheckoutData",
+      "method": "GET",
+      "query": "GET: query [includeAll, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/my/list",
+      "method": "GET",
+      "query": "GET: query [sort_on, sort_type, page, search_text, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/forgot-password",
+      "method": "POST",
+      "query": "POST: query []; body [email, customer_id, site_url]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/verify-reset-token",
+      "method": "GET",
+      "query": "GET: query [key]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/password-policy",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/reset-password",
+      "method": "POST",
+      "query": "POST: query []; body [token, pass, conf_pass, customer_id]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/SkipUpdatePassword",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/process-update-password",
+      "method": "POST",
+      "query": "POST: query []; body [pass, conf_pass, customer_id]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/people/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query [pid, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/people",
+      "method": "GET",
+      "query": "GET: query [sort_on, sort_type, page, term, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/daily",
+      "method": "GET",
+      "query": "GET: query [date, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/showChamps",
+      "method": "GET",
+      "query": "GET: query [show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/championships/class/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query [customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/ring/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query [show_date, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/ring",
+      "method": "GET",
+      "query": "GET: query [show_date, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/schedule/my",
+      "method": "GET",
+      "query": "GET: query [date, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/schedule",
+      "method": "GET",
+      "query": "GET: query [date, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/ExportToExcel/showid/{show_id}/date/{date}/excel_export/1",
+      "method": "GET",
+      "query": "Path parameters: {show_id}, {date}; original expressions in source-call-evidence.\nGET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/class-add-drop/getShowEntriesForAddDrop",
+      "method": "GET",
+      "query": "GET: query [show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData",
+      "method": "GET",
+      "query": "GET: query [show_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getShowData",
+      "method": "GET",
+      "query": "GET: query [show_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/class-add-drop/getClassListForAddDrop",
+      "method": "GET",
+      "query": "GET: query [show_id, customer_id, entry_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/classadddropv2/ClassAdd",
+      "method": "GET",
+      "query": "GET: query [show_id, class_numbers, entry_id, rider_id, horse_id, company_id, classes_to_add]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/class-add-drop/checkClassAddForAddDrop",
+      "method": "GET",
+      "query": "GET: query [show_id, class_numbers, entry_id, rider_id, horse_id, customer_id, classes_to_add]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/classadddropv2/ClassDrop",
+      "method": "GET",
+      "query": "GET: query [show_id, class_numbers, entry_id, rider_id, horse_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/class-add-drop/checkClassDropForAddDrop",
+      "method": "GET",
+      "query": "GET: query [show_id, class_numbers, entry_id, rider_id, horse_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SelectDivision",
+      "method": "GET",
+      "query": "GET: query [show_id, division_id, rider_id, horse_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/selectDivision",
+      "method": "POST",
+      "query": "POST: query []; body [customer_id, show_id, division_id, rider_id, horse_id, classes_to_add, other_riders_classes_to_add, horse_data, rider_data, owner_data]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/class-add-drop/saveClassAddDropForAddDrop",
+      "method": "GET",
+      "query": "GET: query [show_id, entry_id, horse_id, add_drop_class_data, customer_id, sgl_plugin, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getLinkedParentsFromCloud",
+      "method": "GET",
+      "query": "GET: query [people_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/class-add-drop/getTrainerClassAddDrop",
+      "method": "GET",
+      "query": "GET: query [show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/class-add-drop/saveTrainerEntriesAddDrop",
+      "method": "GET",
+      "query": "GET: query [show_id, add_drop_entries_data, customer_id, sgl_plugin, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/getSglCompanyDetails",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/createBankAccountAuthorization",
+      "method": "POST",
+      "query": "POST: query []; body [bank_account_id, company_id, user_id]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/getAddEntryPersonSecureDetails",
+      "method": "GET",
+      "query": "GET: query [customer_id, people_id, master_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/validateShowCode",
+      "method": "POST",
+      "query": "POST: query []; body [customer_id, show_id, entry_code]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getPersonElectronicDocument",
+      "method": "GET",
+      "query": "GET: query [people_id, user_form_id, show_id, customer_id, name]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/createAccountForLogin",
+      "method": "GET",
+      "query": "GET: query [user_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/checkPersonOnboarded",
+      "method": "GET",
+      "query": "GET: query [customer_id, people_id, master_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/exhibitorBillingEnabledForShow",
+      "method": "GET",
+      "query": "GET: query [show_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/getAccountForCurrentUser",
+      "method": "GET",
+      "query": "GET: query [user_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/Index",
+      "method": "GET",
+      "query": "GET: query [company_id, from_plugin_api, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/getAddEntryDetails",
+      "method": "GET",
+      "query": "GET: query [customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchHorse",
+      "method": "GET",
+      "query": "GET: query [search_by, search_term, search_org, company_id, check_duplicates, show_id, entry_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/horses/search",
+      "method": "GET",
+      "query": "GET: query [search_by, search_term, search_org, company_id, check_duplicates, show_id, entry_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/ValidateHorse",
+      "method": "GET",
+      "query": "GET: query [horse, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/horses/validate",
+      "method": "GET",
+      "query": "GET: query [horse, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/ValidatePerson",
+      "method": "GET",
+      "query": "GET: query [person, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/people/validate",
+      "method": "GET",
+      "query": "GET: query [person, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchPerson",
+      "method": "GET",
+      "query": "GET: query [search_by, search_term, search_for, search_org, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/people/search",
+      "method": "GET",
+      "query": "GET: query [search_by, search_term, search_for, search_org, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/CheckRiderStatus",
+      "method": "GET",
+      "query": "GET: query [show_id, rider_id, horse_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/CheckRiderStatus",
+      "method": "GET",
+      "query": "GET: query [show_id, rider_id, horse_id, horse_name, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/getExhibitorPlatformFeeAmountForShow",
+      "method": "GET",
+      "query": "GET: query [show_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SelectClass",
+      "method": "GET",
+      "query": "GET: query [company_id, show_id, class_ids, rider_id, horse_id, classes_to_add]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/selectClass",
+      "method": "POST",
+      "query": "POST: query []; body [customer_id, show_id, class_ids, rider_id, horse_id, classes_to_add, other_riders_classes_to_add, horse_data, rider_data, owner_data]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/DeleteClass",
+      "method": "GET",
+      "query": "GET: query [show_id, classes_list, class_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/deleteClass",
+      "method": "GET",
+      "query": "GET: query [show_id, classes_list, class_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SelectShowFee",
+      "method": "GET",
+      "query": "GET: query [show_id, showfees_id, quantity, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/selectShowFee",
+      "method": "GET",
+      "query": "GET: query [show_id, showfees_id, quantity, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetFeeForEntry",
+      "method": "GET",
+      "query": "GET: query [(dynamic fields)]; body []. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getFeeForEntry",
+      "method": "GET",
+      "query": "GET: query [(dynamic fields)]; body []. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getDigitalSignatureVerification",
+      "method": "POST",
+      "query": "POST: query []; body [entry_data, customer_id]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/RefreshACHBalance",
+      "method": "POST",
+      "query": "POST: query [XDEBUG_SESSION_START]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/refreshACHBalance",
+      "method": "POST",
+      "query": "POST: query []; body [payment_method_id, company_id, sgl_plugin, team_id]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SaveNewEntry",
+      "method": "POST",
+      "query": "POST: query [XDEBUG_SESSION_START]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/SaveNewEntry",
+      "method": "POST",
+      "query": "POST: query []; body [entry_data, company_id, sgl_plugin, team_id]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/CheckHorseForDuplicateEntries",
+      "method": "GET",
+      "query": "GET: query [show_id, horse_id, company_id, entry_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/horses/checkDuplicateEntries",
+      "method": "GET",
+      "query": "GET: query [show_id, horse_id, company_id, entry_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/LookupHorseMembership",
+      "method": "GET",
+      "query": "GET: query [horse_id, membership_no, organization_code, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/horses/lookupMembership",
+      "method": "GET",
+      "query": "GET: query [horse_id, membership_no, organization_code, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/LookupMembership",
+      "method": "GET",
+      "query": "GET: query [people_id, membership_no, organization_code, type, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/people/lookupMembership",
+      "method": "GET",
+      "query": "GET: query [people_id, membership_no, organization_code, type, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/getPeopleLinkedToHorse",
+      "method": "GET",
+      "query": "GET: query [horse_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getElectronicDocuments",
+      "method": "POST",
+      "query": "POST: query []; body [show_id, persons, horse, customer_id]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/ordersuppliesv2/GetEntriesSupplies",
+      "method": "GET",
+      "query": "GET: query [show_id, company_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getEntriesSupplies",
+      "method": "GET",
+      "query": "GET: query [show_id, company_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/ordersuppliesv2/SaveOrderSupplies",
+      "method": "GET",
+      "query": "GET: query [(dynamic fields)]; body []. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/saveOrderSupplies",
+      "method": "GET",
+      "query": "GET: query [(dynamic fields)]; body []. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/checkoutv2/Index",
+      "method": "GET",
+      "query": "GET: query [includeAll, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/getEditEntry",
+      "method": "GET",
+      "query": "GET: query [show_id, customer_id, entry_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/saveEditEntry",
+      "method": "POST",
+      "query": "POST: query []; body [entry_data]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/validateHorseChange",
+      "method": "POST",
+      "query": "POST: query []; body [entry_id, show_id, horse_id, horse_data, customer_id]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/validateRemoveRider",
+      "method": "GET",
+      "query": "GET: query [show_id, entry_id, rider_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/entries/validateSaveEntry",
+      "method": "POST",
+      "query": "POST: query []; body [entry_data, entry_id, show_id, company_id, customer_id]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/DigitalSignatureVerification",
+      "method": "POST",
+      "query": "POST: query []; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/digital-signatures/submit",
+      "method": "POST",
+      "query": "POST: query [customer_id]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/digital-signatures/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/digital-signatures",
+      "method": "GET",
+      "query": "GET: query [customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/digital-signatures/agent",
+      "method": "GET",
+      "query": "GET: query [customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/trainer-teams/user-teams",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/trainer-teams/roles",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/trainer-teams",
+      "method": "POST",
+      "query": "POST: query []; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/trainer-teams/invite",
+      "method": "POST",
+      "query": "POST: query []; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/trainer-teams/member/{id}",
+      "method": "PUT / DELETE",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nPUT: query []; body [roleId, status, email_notification]. \nDELETE: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/trainer-teams/invitation/{id}",
+      "method": "DELETE",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nDELETE: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/trainer-teams/delete-team/{id}",
+      "method": "DELETE",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nDELETE: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/pending",
+      "method": "GET",
+      "query": "GET: query [company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/accept",
+      "method": "POST",
+      "query": "POST: query []; body [requestId]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/decline",
+      "method": "POST",
+      "query": "POST: query []; body [requestId]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/signAgreement",
+      "method": "POST",
+      "query": "POST: query []; body [application_id, agreement_id, user_id, company_id]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/milestone-actions/updateRequiredActionStatus",
+      "method": "GET",
+      "query": "GET: query [action_id, status]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/getSignedAgreements",
+      "method": "GET",
+      "query": "GET: query [user_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/getUnsignAgreementsForUser",
+      "method": "GET",
+      "query": "GET: query [login_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/webservice/isLoggedIn",
+      "method": "GET",
+      "query": "GET: query [dt]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/my-invoices",
+      "method": "GET",
+      "query": "GET: query [user_id, company_id, offset, payment_status, invoice_type]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/generate-invoice-pdf",
+      "method": "POST",
+      "query": "POST: query []; body [invoice_id, invoice_type_id, company_id]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/invoice-charges",
+      "method": "GET",
+      "query": "GET: query [invoice_id, account_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/invoice-types",
+      "method": "GET",
+      "query": "GET: query [user_id, company_id, payment_status]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/associated-people/get-people",
+      "method": "GET",
+      "query": "GET: query [customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/associated-people/remove-people",
+      "method": "DELETE",
+      "query": "DELETE: query [master_id, people_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/associated-people/search",
+      "method": "GET",
+      "query": "GET: query [searchType, firstName, lastName, membershipType, membershipNumber]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/associated-people/add-people",
+      "method": "POST",
+      "query": "POST: query [master_id, membership_type, membership_number, type]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/associated-horses/get-horses",
+      "method": "GET",
+      "query": "GET: query [customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/associated-horses/remove-horses",
+      "method": "DELETE",
+      "query": "DELETE: query [master_id, horse_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/associated-horses/search",
+      "method": "GET",
+      "query": "GET: query [searchType, name, membershipType, membershipNumber]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/associated-horses/add-horses",
+      "method": "POST",
+      "query": "POST: query [master_id, membership_type, membership_number, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/getUserOwnedBarns",
+      "method": "GET",
+      "query": "GET: query [user_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/EditAccount",
+      "method": "GET",
+      "query": "GET: query [customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/account/editAccount",
+      "method": "GET",
+      "query": "GET: query [customer_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/GetAssocaitedHorsesAndPeople",
+      "method": "GET",
+      "query": "GET: query [company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/RemoveBankAccount",
+      "method": "GET",
+      "query": "GET: query [bank_account_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/mobile-verification/verify-mobile-phone",
+      "method": "GET",
+      "query": "GET: query [mobile_phone, session_token, dial_code, user_id, urt]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/VerifyMobilePhone",
+      "method": "GET",
+      "query": "GET: query [mobile_phone, session_token, dial_code, user_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/mobile-verification/verify-otp",
+      "method": "GET",
+      "query": "GET: query [otp, session_token, urt]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/ChangeUserEmail",
+      "method": "GET",
+      "query": "GET: query [customer_id, site_url, new_email, confirm_email]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/change-user-password",
+      "method": "POST",
+      "query": "POST: query []; body [current_password, new_password, confirm_password]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/SaveAccount",
+      "method": "POST",
+      "query": "POST: query [first_name, last_name, hAddress, hCity, hState, hPostalCode, email_notifications_data, customer_id]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/account/saveAccount",
+      "method": "POST",
+      "query": "POST: query [first_name, last_name, hAddress, hCity, hState, hPostalCode, email_notifications_data, customer_id]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/classsignup/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query [eid, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/Index",
+      "method": "GET",
+      "query": "GET: query [cgid, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/ReserveSignup",
+      "method": "GET",
+      "query": "GET: query [from_wp_api, slot_id, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/CancelSignup",
+      "method": "GET",
+      "query": "GET: query [from_wp_api, slot_id, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/SaveSignup",
+      "method": "GET",
+      "query": "GET: query [from_wp_api, slot_id, entryxclass_id, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/CheckClassSignUpsExpire",
+      "method": "GET",
+      "query": "GET: query [from_wp_api]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/classsignup",
+      "method": "GET",
+      "query": "GET: query [show_date, show_id, customer_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/milestone-actions/getPendingVerifyUserAction",
+      "method": "GET",
+      "query": "GET: query [user_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/registration/getRegRestrictedCountries",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/milestone-actions/createAndComplete",
+      "method": "POST",
+      "query": "POST: query []; body [user_id, customer_id, step_type, description, status, result]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/utilities/verifyLoginMembership",
+      "method": "POST / GET",
+      "query": "POST: query []; body [loginId, customer_id, lookupData]. \nGET: query [membershipType, membershipNumber, customer_id, userData, memberships]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/utilities/verifyLoginMembershipProvisional",
+      "method": "POST",
+      "query": "POST: query []; body [loginId, customer_id, data]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax",
+      "method": "GET",
+      "query": "GET: query [from_wp_api]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/ConfirmEmailChange",
+      "method": "GET",
+      "query": "GET: query [customer_id, cec_key, cec_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/VerifyOTP",
+      "method": "GET",
+      "query": "GET: query [otp, session_token]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/SkipVerifyMobile",
+      "method": "GET",
+      "query": "GET: query [session_token]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/mobile-verification/skip-verify-mobile",
+      "method": "GET",
+      "query": "GET: query [session_token]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/VerifyMobile",
+      "method": "GET",
+      "query": "GET: query [flid, session_token]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/mobile-verification/verify-mobile",
+      "method": "GET",
+      "query": "GET: query [flid, session_token]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/ClearSessionValues",
+      "method": "GET",
+      "query": "GET: query [customer_id, session_token]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/mobile-verification/clear-session-values",
+      "method": "GET",
+      "query": "GET: query [customer_id, session_token]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/registration/regConfirmation",
+      "method": "GET",
+      "query": "GET: query [customer_id, key]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/checkCompanyMilestone",
+      "method": "GET",
+      "query": "GET: query [company_id, milestone_code]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/user-onboarding-content",
+      "method": "GET",
+      "query": "GET: query [customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/getTermsOfServiceAgreement",
+      "method": "GET",
+      "query": "GET: query [company_id, user_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/sendOnboardingConfirmationEmail",
+      "method": "POST",
+      "query": "POST: query []; body [user_id, email_data]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/registration/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/registration/getTermsOfServiceForRegistration",
+      "method": "GET",
+      "query": "GET: query [customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/registration/processRegistration",
+      "method": "POST",
+      "query": "POST: query []; body [email, pass, conf_pass, first, last, address, city, state, postalcode, telephone, customer_id, urt, site_url, rated_shows, session_token]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/milestone-actions/getPendingOnBoardUserAction",
+      "method": "GET",
+      "query": "GET: query [user_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding/{id}/person/{id}/horse/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}, {id}, {id}; original expressions in source-call-evidence.\nGET: query [circuit_id, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding",
+      "method": "GET",
+      "query": "GET: query [circuit_id, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding/{division_id}",
+      "method": "GET",
+      "query": "Path parameters: {division_id}; original expressions in source-call-evidence.\nGET: query [circuit_id, show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/my",
+      "method": "GET",
+      "query": "GET: query [show_id, customer_id, login_user_id, team_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/results/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query [show_id, customer_id, channel]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/supply-products/getList",
+      "method": "GET",
+      "query": "GET: query [show_id, customer_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/token/{id}",
+      "method": "GET",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nGET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/accept-by-token/{id}",
+      "method": "POST",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nPOST: query []; body [guardian_name, agreement_id, version_id, customer_id, is_guardian]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/user-requests/decline-by-token/{id}",
+      "method": "POST",
+      "query": "Path parameters: {id}; original expressions in source-call-evidence.\nPOST: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/getUnpaidAmountForLogin",
+      "method": "GET",
+      "query": "GET: query [(dynamic fields)]; body []. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/checkoutv2/PlatformFeePayment",
+      "method": "POST",
+      "query": "POST: query [txtPaymentMethods, hdnTotalAmount, hdnDescription, customer_id]; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/createPlatformFeePayment",
+      "method": "POST",
+      "query": "POST: query []; body [(dynamic fields)]. Dynamic object expression retained in source evidence; runtime keys are not invented."
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/users/isSglOnHold",
+      "method": "GET",
+      "query": "GET: query []; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/public-terms-of-service",
+      "method": "GET",
+      "query": "GET: query [company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/billing/public-agreement",
+      "method": "GET",
+      "query": "GET: query [id, company_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/AuthenticateUserViaJWT",
+      "method": "POST",
+      "query": "POST: query []; body [token, datetimestamp, hash, from_wp_api, check_already_logged_in, customer_id, remember_me]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/content/CheckUserAccessForAdminFunction",
+      "method": "GET",
+      "query": "GET: query [customer_id, user_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/auth/flogin",
+      "method": "POST",
+      "query": "POST: query []; body [username, password]. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/wp-license/verifyWPLicense",
+      "method": "GET",
+      "query": "GET: query [company_id, license_key, from_wp_api]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/homepage/getCompanySwitches",
+      "method": "GET",
+      "query": "GET: query [customer_id, company_id]; body []. "
+    },
+    {
+      "route": "https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus",
+      "method": "GET",
+      "query": "GET: query [datetimestamp, customer_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/webservice/IsLoggedIn",
+      "method": "POST",
+      "query": "POST: query []; body [from_wp_api]. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/Detail",
+      "method": "GET",
+      "query": "GET: query [cid, class_group_id]; body []. "
+    },
+    {
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData",
+      "method": "GET",
+      "query": "GET: query [show_id, cid, t]. Legacy inline GetData constructs the URL; timestamp t is generated by Date.getTime()."
+    }
+  ],
+  "excludedVideoRoutes": 53
+}

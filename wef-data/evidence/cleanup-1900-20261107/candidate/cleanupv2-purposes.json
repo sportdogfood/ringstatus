@@ -1,0 +1,92 @@
+[
+  {
+    "id": "recyDF0NX2VI5tSZl",
+    "name": "runs",
+    "purpose": "LOGGING CLEANUP - runs: clear completed eligible records at7p.m.America/New_York each day; every3hours at1,000+ records delete oldest500eligible; also clear completed eligible records on new show. Protect active/current and pending logs. Delete only; no archives/backups or separate cleanup schedule. Collection run evidence and counts; included in BOTH daily and1,000/500 logging cleanup, not new-show-only."
+  },
+  {
+    "id": "recy2uO09iogJYaSu",
+    "name": "run-logs",
+    "purpose": "LOGGING CLEANUP - run-logs: clear completed eligible records at7p.m.America/New_York each day; every3hours at1,000+ records delete oldest500eligible; also clear completed eligible records on new show. Protect active/current and pending logs. Delete only; no archives/backups or separate cleanup schedule. The same independent lane cleans delivered local run/error logs; preserve pending/current files and delivery acknowledgments. Local counts are in the saved action history; numeric records-deleted is Airtable-only."
+  },
+  {
+    "id": "recm1It0cR6TNQtqS",
+    "name": "err-logs",
+    "purpose": "LOGGING CLEANUP - err-logs: clear completed eligible records at7p.m.America/New_York each day; every3hours at1,000+ records delete oldest500eligible; also clear completed eligible records on new show. Protect active/current and pending logs. Delete only; no archives/backups or separate cleanup schedule. The same independent lane cleans delivered local run/error logs; preserve pending/current files and delivery acknowledgments. Local counts are in the saved action history; numeric records-deleted is Airtable-only."
+  },
+  {
+    "id": "rectdoiWd4z9gCKdU",
+    "name": "heartbeat",
+    "purpose": "LOGGING CLEANUP - heartbeat: clear completed eligible records at7p.m.America/New_York each day; every3hours at1,000+ records delete oldest500eligible; also clear completed eligible records on new show. Protect active/current and pending logs. Delete only; no archives/backups or separate cleanup schedule. Current mutable collector/linker singleton heartbeats have no completion field and remain protected."
+  },
+  {
+    "id": "rec9cA2iMkQmiHQFd",
+    "name": "schedules",
+    "purpose": "NEW-SHOW CLEANUP - schedules: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "recnTZPsDjKxwYLmH",
+    "name": "rings",
+    "purpose": "NEW-SHOW CLEANUP - rings: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "recE7ais0111HyKFr",
+    "name": "groups",
+    "purpose": "NEW-SHOW CLEANUP - groups: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "recj6TXnvK1FYK1PY",
+    "name": "classes",
+    "purpose": "NEW-SHOW CLEANUP - classes: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "recmNpkfItqMpGLnt",
+    "name": "trips",
+    "purpose": "NEW-SHOW CLEANUP - trips: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "rectnU9RJMV0KanlG",
+    "name": "entries",
+    "purpose": "NEW-SHOW CLEANUP - entries: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "recPRM5SepknibFbW",
+    "name": "results",
+    "purpose": "NEW-SHOW CLEANUP - results: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "recF9R30fEj2O4rxp",
+    "name": "horses",
+    "purpose": "NEW-SHOW CLEANUP - horses: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "recOxccIiNZAdwOWE",
+    "name": "riders",
+    "purpose": "NEW-SHOW CLEANUP - riders: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "recUo5v24gZVSlRgx",
+    "name": "trainers",
+    "purpose": "NEW-SHOW CLEANUP - trainers: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "recOlJXcPkFeC2Z3W",
+    "name": "owners",
+    "purpose": "NEW-SHOW CLEANUP - owners: owned show records; clear this checked table on a verified new-show alert only. No daily7p.m.,1,000/500 or new-show-day cleanup of show records. Delete only; no backup/archive. Keep reference tables and cleanup history. Current counts/results/timestamps describe the last actual action, not this rule update."
+  },
+  {
+    "id": "rec6qp2RVtwU0M0j8",
+    "name": "cleanup",
+    "purpose": "DEPRECATED - No runtime reads/writes. cleanupV2 is the active cleanup control and latest outcome destination. Preserve existing historical records."
+  },
+  {
+    "id": "recBUx21SISKXTgJt",
+    "name": "cleanup-logs",
+    "purpose": "DEPRECATED - No new runtime reads/writes. Preserve historical cleanup records. Current outcomes go to cleanupV2; no new history table or record archives."
+  },
+  {
+    "id": "recDexXW9Nl1glQvT",
+    "name": "cleanupV2",
+    "purpose": "SOLE CLEANUP CONTROL AND LATEST OUTCOME - Checked owned tables participate. Completed logging including runs clears daily7p.m.Eastern; every3hours1,000/oldest500eligible; newshow clears owned show records/completed logs. Preserve current/pending logs,references and history. Counts/timestamps/result/error/run-id change only for actual actions, not documentation. Delete only; no new schedule or backups."
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "alert_id": "65a538cc-d259-4571-aa21-2079db3205af",
+  "target": "01a169bc-e58a-7de0-94c6-5d3931fcf745",
+  "started": "2026-11-08T01:00:03.756Z",
+  "kind": "Connection check",
+  "errors": [],
+  "result": "Failed",
+  "error": "Records delivery exited 1 without acknowledgement",
+  "completed": "2026-11-08T01:00:11.289Z"
+}

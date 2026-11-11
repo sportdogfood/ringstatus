@@ -1,0 +1,42 @@
+{
+  "verified_at": "2026-11-08T23:42:01.715457+00:00",
+  "result": "PASS",
+  "task": "wef-timing-data",
+  "manual_runs": 0,
+  "schedule_changed": false,
+  "verified_field_count": 7,
+  "deployed_hashes_match": true,
+  "normal_runs": [
+    {
+      "scheduled_eastern": "2026-11-08 18:37",
+      "run_id": "f130d096-0bbb-4e3d-bfee-9d38e75697ff",
+      "started": "2026-11-08T23:37:03.515Z",
+      "completed": "2026-11-08T23:37:30.040Z",
+      "new_snapshots": 3,
+      "summary_updates": 3,
+      "snapshot_ids": [
+        "recm9JoWJ8kB1VCGa",
+        "recmzaTPfyzDRoSsS",
+        "recvUQAjOZnclQ7vH"
+      ],
+      "readback": "scheduled-run-1-readback.json"
+    },
+    {
+      "scheduled_eastern": "2026-11-08 18:40",
+      "run_id": "7d0b3a07-e099-4517-8547-89b5d596373e",
+      "started": "2026-11-08T23:40:04.330Z",
+      "completed": "2026-11-08T23:40:30.322Z",
+      "new_snapshots": 3,
+      "summary_updates": 3,
+      "snapshot_ids": [
+        "recJ5LyU9aEnFCEq4",
+        "recL6oT2UlNHzPtmU",
+        "recccDDtm4ITu85Cf"
+      ],
+      "readback": "scheduled-run-2-readback.json"
+    }
+  ],
+  "prior_snapshots_preserved": true,
+  "second_snapshots_link_to_first": true,
+  "scope": "Three Upcoming Ring 6 classes each cycle. Past scheduled starts flagged unconfirmed. No underway Class or Trip consumer verification."
+}

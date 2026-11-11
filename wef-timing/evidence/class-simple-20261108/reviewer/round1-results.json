@@ -1,0 +1,30 @@
+[
+  {
+    "name": "empty current Ring pointer must not revive old group backlink",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n1 !== 0\n"
+  },
+  {
+    "name": "per-class phase-only counts must not mark every group member live",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n'true' !== 'false'\n"
+  },
+  {
+    "name": "count decrease cannot produce negative measured pace from old actual start",
+    "result": "PASS"
+  },
+  {
+    "name": "unknown current class observation cannot borrow an older phase actual start as fresh evidence",
+    "result": "PASS"
+  },
+  {
+    "name": "new-show cleanup can identify Class run logs and heartbeat by show ID",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 200000077\n"
+  },
+  {
+    "name": "explicit retired checkpoint can be cleaned on verified default-show change",
+    "result": "FAIL",
+    "error": "Expected values to be strictly equal:\n\n0 !== 1\n"
+  }
+]

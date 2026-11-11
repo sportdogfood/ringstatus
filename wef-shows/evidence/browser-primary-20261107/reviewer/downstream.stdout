@@ -1,0 +1,1 @@
+{"selected":"empty_ping_schedule","rows":88,"null_class_ids":88,"consequence":"Existing default fallback accepts raw browser rows without decoded class identity; catalog failure is caught in prepareScheduleDay."}

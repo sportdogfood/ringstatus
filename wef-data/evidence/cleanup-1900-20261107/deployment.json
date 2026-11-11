@@ -1,0 +1,8 @@
+{
+  "deployed_at": "2026-11-08T01:25:08.011297+00:00",
+  "lane_sha256": "2a0db19d7e846f7f5e8bec1c8aab7e9452c5bf556ec231042cb3f269fbc9384d",
+  "review": "review/review-receipt.json",
+  "manual_run": false,
+  "new_schedule": false,
+  "genuine_alert_verified": false
+}

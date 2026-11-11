@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-11-08T01:04:36.352910+00:00",
+  "old_cli": "C:/Users/gombc/AppData/Local/Programs/OpenAI/Codex/bin/codex.exe",
+  "old_version": "0.145.0",
+  "app_cli": "C:\\Users\\gombc\\AppData\\Local\\OpenAI\\Codex\\bin\\f71a721e0e6193a9\\codex.exe",
+  "app_version": "0.167.0-alpha.3.2",
+  "target_session_cli_version": "0.163.0-alpha.11.2",
+  "auth_status": "Logged in using ChatGPT",
+  "original_error": "exit1;stderr unavailable",
+  "manual_delivery": false
+}

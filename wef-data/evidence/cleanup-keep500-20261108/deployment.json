@@ -1,0 +1,9 @@
+{
+  "deployed_at": "2026-11-08T15:06:28.883999+00:00",
+  "lane_sha256": "161feaf0f4dd2364c412537a7a001d6c2225df028e1bf990c4b31fe0eb77b9dd",
+  "delta": "At1000+ total logging records delete oldest eligible total-minus500, preservingprotectedlogs; allotherpolicyunchanged",
+  "review": "review/review-receipt.json",
+  "new_schedule": false,
+  "manual_run": false,
+  "keep500_genuine_alert_verified": false
+}

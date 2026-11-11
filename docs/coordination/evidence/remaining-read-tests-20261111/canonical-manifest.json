@@ -1,0 +1,290 @@
+[
+  {
+    "id": "recImguVA1kkoz0pO",
+    "route": "https://sglapi.wellingtoninternational.com/shows",
+    "label": "old:shows-no-auth",
+    "bodyHash": "f85a3df61bd235e75177524fdeb2e4ef503cfe07e497c78ac1dadff57b993d88",
+    "splitKey": "shows",
+    "partCount": 3
+  },
+  {
+    "id": "recY8qXkCgVfhqfRL",
+    "route": "https://sglapi.wellingtoninternational.com/schedule",
+    "label": "remain-schedule-export-pair",
+    "bodyHash": "970d2916630b3e54f7ad6f845d6911506f5b8e71d5003d5aeddff57c110411f4",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recU5ksKnrx1oMQps",
+    "route": "https://sglapi.wellingtoninternational.com/ring",
+    "label": "remain-ring-no-auth-replay",
+    "bodyHash": "13d123122e51bdd0fc0cad6a6ed2ea3a57413518f8bbcbb211df9dff9a4a8955",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recxFtMWwbc6b7XXl",
+    "route": "https://sglapi.wellingtoninternational.com/ring/{id}",
+    "label": "remain-ring-detail-decoded",
+    "bodyHash": "06b091d8bfc2fd3dd2c50132095b1162b2a7bb73a2acd66bb91c8c947d20e388",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recbVDLOMGpCpd4kW",
+    "route": "https://sglapi.wellingtoninternational.com/classes",
+    "label": "remain-jumper-directory-decoded",
+    "bodyHash": "ef66e2e8d1ec24f59ddf6419808b434f6ca25da5c0d355169c80c0aab913482b",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recNh4aFkVudHSpko",
+    "route": "https://sglapi.wellingtoninternational.com/classes/{id}",
+    "label": "remain-hunter-api-decoded",
+    "bodyHash": "05018f839852e2f111985f98694a468d39ae6d3e7160f4c446b0e4e2d862f0bc",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recOD7Jklq0RbyWQ2",
+    "route": "https://sglapi.wellingtoninternational.com/entries",
+    "label": "remain-entries-decoded",
+    "bodyHash": "0002f0df0533710f414787f4610f44b9d490f2c7a7d5f9c13d77803db10ba345",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recniuSqCaIHIx9O1",
+    "route": "https://sglapi.wellingtoninternational.com/entries/{id}",
+    "label": "remain-entry-populated",
+    "bodyHash": "3fbc5527f7f16454fe6feab511aa3f999f38d30972c60e756fb1ec12378e3259",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "rec2PMvQqelTRZWsg",
+    "route": "https://sglapi.wellingtoninternational.com/people",
+    "label": "remain-people-decoded",
+    "bodyHash": "febf22cff9e90bb64b9c66c366900f8817ec2061228797e57e93b03b9b95c3a3",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recdt0Z6KWCRORd0L",
+    "route": "https://sglapi.wellingtoninternational.com/people/{id}",
+    "label": "remain-person-populated",
+    "bodyHash": "981769c91231e8736489b9954e0fb30611eec4be7aad6ed375eb8456785955e7",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "reci2pvj8925n6V7B",
+    "route": "https://sglapi.wellingtoninternational.com/entries/getPeopleLinkedToHorse",
+    "label": "remain-linked-people-decoded",
+    "bodyHash": "71fb05056996ecd79ecedc573eef61738f7decd86235b4e98db0094497ceee32",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recuMRGkyQhUsb2zm",
+    "route": "https://sglapi.wellingtoninternational.com/results/daily",
+    "label": "remain-daily-decoded",
+    "bodyHash": "33e07ef3ed2a69c28f60e8195eb04bfdfefbe728f6f72df79602bed79041fa78",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recm5EB2L88Bxxsv9",
+    "route": "https://sglapi.wellingtoninternational.com/results/showChamps",
+    "label": "remain-showChamps-decoded",
+    "bodyHash": "dea2acb7192b4776614cb0ad748a38aac5a5fccf320125e2c25ddd349a080ef9",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recTkK3Fo4SgsRObI",
+    "route": "https://sglapi.wellingtoninternational.com/results/championships",
+    "label": "remain-championships-decoded",
+    "bodyHash": "7a2b7f70479d312c29b702c8cd16e001c1c20a923f1f9e6512d0d5e82c4e156e",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "reczMwg3Kl8BUWUpm",
+    "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding",
+    "label": "remain-circuit-decoded",
+    "bodyHash": "809059f63acbeb428ef0184f482e214e0cdd062cdfb4f90c720f0205fbcb77f0",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "rec4lPF3pi9FS4OyD",
+    "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding/{division_id}",
+    "label": "remain-circuit-division-decoded",
+    "bodyHash": "174fd96bcec796286b077bd793b3831428b4736f911412b7bb234637e72447c0",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "reccfAPx1EQ1FREZV",
+    "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding/{id}/person/{id}/horse/{id}",
+    "label": "remain-circuit-points-decoded",
+    "bodyHash": "37eb46d66546762143c3695b7b30dd3ad7833bae3a2631e1e885d1918af67505",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recj4fpOJ67YNmaiK",
+    "route": "https://sglapi.wellingtoninternational.com/results/{id}",
+    "label": "remain-division-results-decoded",
+    "bodyHash": "628605e5080364d5c2e362bc053fd1b4ae390f37dd9cdd636b01d301d9777a70",
+    "splitKey": "classes",
+    "partCount": 2
+  },
+  {
+    "id": "recUdONqeZYhx4Y8y",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData",
+    "label": "remain-hunter-phone",
+    "bodyHash": "14db94ea49207635e3b1c7628b9cf941983377415f3a8cc61e303c42cbcf423b",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recnEGzoQFZ8wSZyV",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus",
+    "label": "remain-class-status-completed",
+    "bodyHash": "3f71d283a065498b40d65ec5ec07588dbcf80d34593b3d0dc327d6e2a69ce73c",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "rechFzfafHWM6yWOe",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/Detail",
+    "label": "remain-class-detail-html",
+    "bodyHash": "b2ccaa5c3fbf6b18c2071814e6b33892900dd324ea7dc891fb46b4e9e2d826e4",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "reczseBuKcsDIBt1l",
+    "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+    "label": "remain-widget-post",
+    "bodyHash": "dd538279cee4465ed4adc4fbb8e8d84248dd171e641320eaa8e502eadf39b52f",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recXkXjODik2i8ymU",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax",
+    "label": "old:legacy-groups-no-auth",
+    "bodyHash": "41b7e1129e58b09eece4764d493ba35d59b396dc699d2ab3ebe6584ffab2f0f9",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recJypFhrmMJYE1QN",
+    "route": "https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus",
+    "label": "old:live-status-no-auth",
+    "bodyHash": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recLWu76THBf5rCiF",
+    "route": "https://sglapi.wellingtoninternational.com/classsignup",
+    "label": "remain-class-signups-no-auth-replay",
+    "bodyHash": "0a80b0d83f6c6dd26b3342910b178d7ed950244508d69da6fe0c2e23257c7a5a",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recEx4vhOF7z6Ds47",
+    "route": "https://sglapi.wellingtoninternational.com/classsignup/{id}",
+    "label": "remain-completed-signups",
+    "bodyHash": "bf7feb7e8763763db159c90e6705b26ff51e64753fe4465874fa93618146ddc0",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recoMwDkZM6TijqI1",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchHorse",
+    "label": "remain-horse-search-browser",
+    "bodyHash": "575f6cf36a92f003e25c8c0c46966af49aec36cc2c95dfb9529a56d7a8e2bc5c",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recD0UUmrjmpg5FnD",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchPerson",
+    "label": "remain-people-search-browser",
+    "bodyHash": "8bfbf563687e258d0a54fdf8c7c228c86bd717ab623a20225d1ceb1c8a5211a8",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recEIJOGTgdRBG077",
+    "route": "https://sglapi.wellingtoninternational.com/horses/search",
+    "label": "remain-horse-search-api-anon",
+    "bodyHash": "32460949c58d8afc72c9d51a7b345c6d963249d5b1e49d14c5da4f796ab6696f",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recljeAWV21i38e8s",
+    "route": "https://sglapi.wellingtoninternational.com/people/search",
+    "label": "remain-people-search-api-anon",
+    "bodyHash": "32460949c58d8afc72c9d51a7b345c6d963249d5b1e49d14c5da4f796ab6696f",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "rechn4u5To3NkTcON",
+    "route": "https://sglapp.showgroundslive.com/version.json",
+    "label": "remain-version-fresh",
+    "bodyHash": "4a5809f4d81471105633ebf57f1f67b80383a0429a5b925660a384263136d3a0",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recnp6eKHari0q3mr",
+    "route": "https://sglapi.wellingtoninternational.com/utilities/get-config",
+    "label": "old:config-no-auth",
+    "bodyHash": "710ffe62bd5e0537c4de31b97c4c77c34d990a90233e0415d0a517e8fcd67d70",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recPn6VqQm6iDOtVu",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData",
+    "label": "retained-session-showdata",
+    "bodyHash": "de5d4b93a58e0d673f612a42790d5feab09a03447990515c398f63fcbbe16f33",
+    "splitKey": "classes",
+    "partCount": 2
+  },
+  {
+    "id": "recQHLJLRk0kQX84N",
+    "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/ExportToExcel/showid/{show_id}/date/{date}/excel_export/1",
+    "label": "remain-export",
+    "bodyHash": "8121fab155cc3434f234f316066b21d2f5548191b9620bd44ac91714daf92e74",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recEBR7FF2sJI8nlY",
+    "route": "https://sglapi.wellingtoninternational.com/add-entry/getShowData",
+    "label": "old:api-showdata-config-token",
+    "bodyHash": "32460949c58d8afc72c9d51a7b345c6d963249d5b1e49d14c5da4f796ab6696f",
+    "splitKey": null,
+    "partCount": 1
+  },
+  {
+    "id": "recSJsaptBpG5q7QI",
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/Index",
+    "label": "old:legacy-signup-index-no-auth",
+    "bodyHash": "e21a81e9b1e38aa4a98ee33f753efe830919e469951732ba84ef2b9b35971b32",
+    "splitKey": null,
+    "partCount": 1
+  }
+]

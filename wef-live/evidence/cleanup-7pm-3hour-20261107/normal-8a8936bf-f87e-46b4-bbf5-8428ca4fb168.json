@@ -1,0 +1,50 @@
+{
+  "run_id": "8a8936bf-f87e-46b4-bbf5-8428ca4fb168",
+  "started": "2026-11-08T02:03:03.511Z",
+  "actions": [
+    {
+      "id": "8a8936bf-f87e-46b4-bbf5-8428ca4fb168|daily-clear|heartbeat",
+      "table": "heartbeat",
+      "trigger": "daily-clear",
+      "before": 657,
+      "old_show": null,
+      "deleted": 655,
+      "started": "2026-11-08T02:03:12.350Z",
+      "result": "Success",
+      "completed": "2026-11-08T02:05:06.793Z",
+      "target_count": 655
+    },
+    {
+      "id": "8a8936bf-f87e-46b4-bbf5-8428ca4fb168|daily-clear|run-logs",
+      "table": "run-logs",
+      "trigger": "daily-clear",
+      "before": 500,
+      "old_show": null,
+      "deleted": 500,
+      "started": "2026-11-08T02:03:15.801Z",
+      "result": "Success",
+      "completed": "2026-11-08T02:06:24.499Z",
+      "target_count": 500
+    },
+    {
+      "id": "8a8936bf-f87e-46b4-bbf5-8428ca4fb168|daily-clear|errs-log",
+      "table": "errs-log",
+      "trigger": "daily-clear",
+      "before": 889,
+      "old_show": null,
+      "deleted": 889,
+      "started": "2026-11-08T02:03:18.840Z",
+      "result": "Success",
+      "completed": "2026-11-08T02:08:44.168Z",
+      "target_count": 889
+    }
+  ],
+  "result": "Success",
+  "day": "2026-11-07",
+  "daily_clear_day": "2026-11-07",
+  "daily_due": true,
+  "quick_due": false,
+  "show": 200000077,
+  "new_show": false,
+  "completed": "2026-11-08T02:08:46.410Z"
+}

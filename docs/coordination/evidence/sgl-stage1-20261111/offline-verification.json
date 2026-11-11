@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-11-11T14:57:53.845Z",
+  "result": "PASS",
+  "source": {
+    "url": "https://sglapp.showgroundslive.com/static/js/main.js",
+    "sha256": "e301d60132ec9ac306224b464b6e3116834c686675ae46e9a2b150c56d9bb382",
+    "characters": 5472085,
+    "normalizedCharacters": 5472083
+  },
+  "records": 229,
+  "existingPreserved": 38,
+  "newRecords": 191,
+  "sourceRequests": 533,
+  "excludedVideoRoutes": 53,
+  "classifiedDynamicCalls": [
+    {
+      "offset": 3398348,
+      "disposition": "Download of runtime video comparison asset, excluded by owner scope"
+    },
+    {
+      "offset": 4678939,
+      "disposition": "Subscriptions wrapper expanded from literal /web/* call sites; video subscription excluded by owner scope"
+    },
+    {
+      "offset": 4862941,
+      "disposition": "Download of runtime video comparison asset, excluded by owner scope"
+    },
+    {
+      "offset": 5450488,
+      "disposition": "Existing GET retry with original request config; no new route"
+    }
+  ],
+  "firstSourceReferences": {
+    "sglapi.wellingtoninternational.com": 3075525,
+    "sgl.wellingtoninternational.com": 3075588,
+    "/utilities/get-config": 3069756,
+    "nestApiUrl": 3095101,
+    "sglApiUrl": 3095115
+  },
+  "scanBoundary": 3050000,
+  "priorityCounts": {
+    "1 — Critical data and recovery": 12,
+    "2 — Supporting data": 56,
+    "3 — Account or action scope": 161
+  },
+  "builtSourceRows": 14
+}

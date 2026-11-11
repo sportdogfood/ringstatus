@@ -1,5 +1,6 @@
 "use strict";
 const definitions={
+ 'default-browser':{name:'Browser default show discovery',kind:'Endpoint',location:'https://www.wellingtoninternational.com/showgrounds/show-schedule/',purpose:'Fresh isolated headless discovery from the page own default-show and schedule responses; proxy pair is fallback only.',owner:'wef-shows'},
  'direct-day-counts':{name:'Direct proxy entry/trip counts',kind:'Endpoint',location:'https://wef-schedules-decoded.gombcg.workers.dev/schedule and /classes/{class_id}',purpose:'Count dated source entries/trips in memory; save totals and logs only.',owner:'wef-shows'},
  'default-ring':{name:'Default show discovery',kind:'Endpoint',location:'https://wef-schedules-decoded.gombcg.workers.dev/ring?customer_id=15',purpose:'Identify the source default show.',owner:'wef-shows'},
  'default-schedule':{name:'Default show dates',kind:'Endpoint',location:'https://wef-schedules-decoded.gombcg.workers.dev/schedule?date=00/00/00&show_id={show_id}&customer_id=15',purpose:'Validate show metadata, dates and source-selected date.',owner:'wef-shows'},

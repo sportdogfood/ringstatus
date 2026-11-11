@@ -1,0 +1,356 @@
+[
+  {
+    "sample": "hunter",
+    "classId": 200031026,
+    "apiTrips": 8,
+    "phoneTrips": 8,
+    "differences": [
+      {
+        "trip": 200400849,
+        "apiField": "order_of_go",
+        "legacyField": "OOG",
+        "api": 100000,
+        "legacy": ""
+      },
+      {
+        "trip": 200400849,
+        "apiField": "time_one",
+        "legacyField": "R1T",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400849,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400849,
+        "apiField": "time_two",
+        "legacyField": "JOT",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400849,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401472,
+        "apiField": "order_of_go",
+        "legacyField": "OOG",
+        "api": 100000,
+        "legacy": ""
+      },
+      {
+        "trip": 200401472,
+        "apiField": "time_one",
+        "legacyField": "R1T",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401472,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401472,
+        "apiField": "time_two",
+        "legacyField": "JOT",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401472,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400291,
+        "apiField": "order_of_go",
+        "legacyField": "OOG",
+        "api": 100000,
+        "legacy": ""
+      },
+      {
+        "trip": 200400291,
+        "apiField": "time_one",
+        "legacyField": "R1T",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400291,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400291,
+        "apiField": "time_two",
+        "legacyField": "JOT",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400291,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401336,
+        "apiField": "order_of_go",
+        "legacyField": "OOG",
+        "api": 100000,
+        "legacy": ""
+      },
+      {
+        "trip": 200401336,
+        "apiField": "time_one",
+        "legacyField": "R1T",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401336,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401336,
+        "apiField": "time_two",
+        "legacyField": "JOT",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401336,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399991,
+        "apiField": "order_of_go",
+        "legacyField": "OOG",
+        "api": 100000,
+        "legacy": ""
+      },
+      {
+        "trip": 200399991,
+        "apiField": "time_one",
+        "legacyField": "R1T",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399991,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399991,
+        "apiField": "time_two",
+        "legacyField": "JOT",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399991,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400383,
+        "apiField": "order_of_go",
+        "legacyField": "OOG",
+        "api": 100000,
+        "legacy": ""
+      },
+      {
+        "trip": 200400383,
+        "apiField": "time_one",
+        "legacyField": "R1T",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400383,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400383,
+        "apiField": "time_two",
+        "legacyField": "JOT",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400383,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399985,
+        "apiField": "order_of_go",
+        "legacyField": "OOG",
+        "api": 100000,
+        "legacy": ""
+      },
+      {
+        "trip": 200399985,
+        "apiField": "time_one",
+        "legacyField": "R1T",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399985,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399985,
+        "apiField": "time_two",
+        "legacyField": "JOT",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399985,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399979,
+        "apiField": "order_of_go",
+        "legacyField": "OOG",
+        "api": 100000,
+        "legacy": ""
+      },
+      {
+        "trip": 200399979,
+        "apiField": "time_one",
+        "legacyField": "R1T",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399979,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399979,
+        "apiField": "time_two",
+        "legacyField": "JOT",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399979,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      }
+    ],
+    "verification": 1
+  },
+  {
+    "sample": "jumper",
+    "classId": 200031235,
+    "apiTrips": 4,
+    "phoneTrips": 4,
+    "differences": [
+      {
+        "trip": 200400025,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400025,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399020,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200399020,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400238,
+        "apiField": "faults_one",
+        "legacyField": "R1F",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200400238,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401159,
+        "apiField": "time_two",
+        "legacyField": "JOT",
+        "api": 0,
+        "legacy": ""
+      },
+      {
+        "trip": 200401159,
+        "apiField": "faults_two",
+        "legacyField": "JOF",
+        "api": 0,
+        "legacy": ""
+      }
+    ],
+    "verification": 1
+  }
+]

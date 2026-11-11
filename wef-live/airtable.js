@@ -12,7 +12,7 @@ function airtable({
   const readable = new Map([
     [
       settings.BASE_ID,
-      new Set([...writable, "w-shows", "w-days", "wef-data.schedules"]),
+      new Set([...writable, "w-shows", "w-days", "wef-data.schedules", "w-horses", "w-riders", "w-trainers"]),
     ],
     [settings.SHOWS_BASE, new Set(["shows", "show-days"])],
     [settings.SCHEDULES_BASE, new Set(['schedules','show-collection'])],
@@ -204,9 +204,9 @@ function airtable({
   async function retireCleanup(table,rows,policy,onDeleted=()=>{}) {
     const cleanup=require('./cleanup'),util=require('node:util');
     if(!cleanup.TABLES.includes(table)||!Number.isSafeInteger(policy.show)||policy.show<=0||
-      !['new-show','calendar-day','quick-cleanup'].includes(policy.trigger)||
+      !['new-show','daily-clear','quick-cleanup'].includes(policy.trigger)||
       rows.some(r=>!cleanup.eligible(table,r,policy.trigger,policy.show)||cleanup.protectedRun(r,policy.protectedRuns||new Set())))throw Error('Forbidden cleanup scope');
-    if(policy.trigger==='quick-cleanup'&&rows.length!==500)throw Error('Quick cleanup requires exactly 500 records');
+    if(policy.trigger==='quick-cleanup'&&(rows.length<1||rows.length>500))throw Error('Quick cleanup requires 1 to 500 records');
     const afterDeleted=fields=>Object.fromEntries(Object.entries(fields).map(([k,v])=>[k,
       Array.isArray(v)&&v.every(id=>typeof id==='string'&&/^rec[a-zA-Z0-9]+$/.test(id))?v.filter(id=>!policy.deletedIds.has(id)):v
     ]).filter(([,v])=>!Array.isArray(v)||v.length));

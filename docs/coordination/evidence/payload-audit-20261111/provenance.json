@@ -1,0 +1,320 @@
+[
+  {
+    "route": "https://sglapi.wellingtoninternational.com/associated-horses/get-horses",
+    "url": "https://sglapi.wellingtoninternational.com/associated-horses/get-horses?customer_id=15",
+    "label": "associated-horses-no-auth",
+    "sourceHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": "array",
+    "excerptRows": [],
+    "redactedFields": []
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/classsignup/{id}",
+    "url": "https://sglapi.wellingtoninternational.com/classsignup/200028831?eid=200028831&show_id=200000078&customer_id=15",
+    "label": "class-signup-detail-no-auth",
+    "sourceHash": "a5b8da39beecb4ae2cbd3ad8fc06f3f52cf0c6f23b5934a2bc1724391c7721c0",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": [
+      "show",
+      "class_group",
+      "show_id",
+      "class_data",
+      "order_of_go_set_count",
+      "entry_x_classes",
+      "show_est_time",
+      "_t"
+    ],
+    "excerptRows": [
+      {
+        "path": "entry_x_classes",
+        "originalRows": 2,
+        "shownRows": 1
+      }
+    ],
+    "redactedFields": [
+      "_t"
+    ]
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus",
+    "url": "https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus?customer_id=15&datetimestamp=1794411302248",
+    "label": "live-status-no-auth",
+    "sourceHash": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": "boolean",
+    "excerptRows": [],
+    "redactedFields": []
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/classsignup",
+    "url": "https://sglapi.wellingtoninternational.com/classsignup?show_date=2026-11-11&show_id=200000078&customer_id=15&team_id=0",
+    "label": "class-signups-no-auth",
+    "sourceHash": "f522c00944801b6e50352d42c96446b86962dc3aa589d4f1d341468450c099c1",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": [
+      "show",
+      "show_days_list",
+      "show_id",
+      "rings",
+      "show_date",
+      "display_date",
+      "show_est_time",
+      "show_planned_time",
+      "show_est_end_time",
+      "_t"
+    ],
+    "excerptRows": [
+      {
+        "path": "show_days_list",
+        "originalRows": 5,
+        "shownRows": 1
+      },
+      {
+        "path": "rings",
+        "originalRows": 9,
+        "shownRows": 1
+      },
+      {
+        "path": "rings[0].upcoming_classes",
+        "originalRows": 7,
+        "shownRows": 1
+      }
+    ],
+    "redactedFields": [
+      "_t"
+    ]
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/ring",
+    "url": "https://sglapi.wellingtoninternational.com/ring?show_date=2026-11-11&show_id=200000078&customer_id=15",
+    "label": "ring-no-auth",
+    "sourceHash": "663116503ed04076f3384ddb96da5ee82e228d32032e60d594aed02d0c9bb502",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": [
+      "show",
+      "show_days_list",
+      "show_id",
+      "rings",
+      "show_date",
+      "display_date",
+      "time_zone_date_time",
+      "show_planned_time",
+      "show_est_end_time",
+      "_t"
+    ],
+    "excerptRows": [
+      {
+        "path": "show_days_list",
+        "originalRows": 5,
+        "shownRows": 1
+      },
+      {
+        "path": "rings",
+        "originalRows": 9,
+        "shownRows": 1
+      },
+      {
+        "path": "rings[0].upcoming_ring_classes_list",
+        "originalRows": 7,
+        "shownRows": 1
+      }
+    ],
+    "redactedFields": [
+      "_t"
+    ]
+  },
+  {
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax?from_wp_api=true",
+    "label": "legacy-groups-no-auth",
+    "sourceHash": "7def75830756b9332935d963626459f321be95e8a9d0e4803bb2aa430056876f",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": "array",
+    "excerptRows": [],
+    "redactedFields": []
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/users/getUser",
+    "url": "https://sglapi.wellingtoninternational.com/users/getUser",
+    "label": "api-user-no-auth",
+    "sourceHash": "dcc28bee81bc874426e2273ca42ef8bb9230ee989f5e1a77856c8e7f9e84fb63",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": [
+      "user",
+      "_t"
+    ],
+    "excerptRows": [],
+    "redactedFields": [
+      "_t"
+    ]
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/classes",
+    "url": "https://sglapi.wellingtoninternational.com/classes?show_id=200000078&customer_id=15&sort_on=number&sort_type=asc&page=1&search_text=",
+    "label": "classes-list-no-auth",
+    "sourceHash": "890d5f4cb162a87f79dc8dd0a19ff2200eba83b4f1f277f918651113e9de9bbc",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": [
+      "classes",
+      "total_classes",
+      "records_per_page",
+      "page",
+      "sort",
+      "term",
+      "show_id",
+      "show_name",
+      "_t"
+    ],
+    "excerptRows": [
+      {
+        "path": "classes",
+        "originalRows": 10,
+        "shownRows": 1
+      }
+    ],
+    "redactedFields": [
+      "_t"
+    ]
+  },
+  {
+    "route": "https://sglapp.showgroundslive.com/version.json",
+    "url": "https://sglapp.showgroundslive.com/version.json",
+    "label": "version-no-auth",
+    "sourceHash": "b0a4b1e6c8d74a2eeed49441cd5531d75823e2e7015a078bbd796a13061e1ea1",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": [
+      "version",
+      "builtAt"
+    ],
+    "excerptRows": [],
+    "redactedFields": []
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/results/{id}",
+    "url": "https://sglapi.wellingtoninternational.com/results/200006030?show_id=200000078&customer_id=15&channel=1",
+    "label": "division-results-no-auth",
+    "sourceHash": "e5aff17cd0412156996ebaf94d3a203acca733027c719021e74f1edff78a442e",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": [
+      "division",
+      "standings_basis",
+      "entries",
+      "classes",
+      "show_id",
+      "show_name",
+      "channel",
+      "points_data",
+      "is_videos_enabled",
+      "_t"
+    ],
+    "excerptRows": [
+      {
+        "path": "classes",
+        "originalRows": 3,
+        "shownRows": 1
+      },
+      {
+        "path": "classes[0].class_related_data.judges",
+        "originalRows": 3,
+        "shownRows": 1
+      },
+      {
+        "path": "classes[0].class_related_data.class_prizes",
+        "originalRows": 8,
+        "shownRows": 1
+      },
+      {
+        "path": "classes[0].trips",
+        "originalRows": 5,
+        "shownRows": 1
+      },
+      {
+        "path": "classes[0].class_group_order_of_go.entries",
+        "originalRows": 5,
+        "shownRows": 1
+      },
+      {
+        "path": "points_data.over_fences_classes",
+        "originalRows": 3,
+        "shownRows": 1
+      }
+    ],
+    "redactedFields": [
+      "_t"
+    ]
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/results",
+    "url": "https://sglapi.wellingtoninternational.com/results?div_type=jumper&show_id=200000078&customer_id=15",
+    "label": "results-list-jumper-no-auth",
+    "sourceHash": "185bbdf89e029d27d251f5742f929eb3671eefc1063c81a9f1d70dc75b62923b",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": [
+      "divisions",
+      "total_divisions",
+      "classes",
+      "total_classes",
+      "loose_class_heading",
+      "show_id",
+      "show_name",
+      "div_type",
+      "class_type",
+      "_t"
+    ],
+    "excerptRows": [
+      {
+        "path": "divisions",
+        "originalRows": 24,
+        "shownRows": 1
+      },
+      {
+        "path": "classes",
+        "originalRows": 20,
+        "shownRows": 1
+      }
+    ],
+    "redactedFields": [
+      "_t"
+    ]
+  },
+  {
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus",
+    "url": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus?from_wp_api=true&class_id=200031333&show_id=200000078&from_live_class=0",
+    "label": "legacy-class-status-no-auth",
+    "sourceHash": "163da033812dc136bf22d8457e1243313873b2f4e75a4267f8932f8ebbf0e03b",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": [
+      "is_live",
+      "class_id",
+      "class_group_id",
+      "ring_no",
+      "live_classGroup"
+    ],
+    "excerptRows": [],
+    "redactedFields": []
+  },
+  {
+    "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+    "url": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+    "label": "legacy-widget-no-auth",
+    "sourceHash": "862d91ea98ec0d69e89702b652fce98b4a628fd9a39da87ca3a5a7a532070044",
+    "sourceHashMatches": true,
+    "status": 200,
+    "topLevel": "array",
+    "excerptRows": [],
+    "redactedFields": []
+  }
+]

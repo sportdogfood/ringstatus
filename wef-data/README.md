@@ -1,6 +1,64 @@
-# wef-data - November 7, README version 2026.11.07.3
+# wef-data - November 11, README version 2026.11.11.1
 
-Updated November 7, 2026 (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+Updated November 11, 2026, 8:35 a.m. Eastern (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
+
+## Full collection, fallback and alerts — November 11
+
+Documentation update requested by Decoder in the existing Data chat. Decoder owns the shared proxy, recovery and health checks. Its requested addition of class-detail health checks is pending at this readback.
+
+**Last completed collection result.** Normal attempt `0eae2379-45de-471b-a65c-915032e6493f` collected from 6:48 to 8:18 a.m. Eastern. All five schedule requests succeeded and schedule/basic inventory saves continued. Full collection failed with `ok=false`, `state=Partial`, 1,962 acknowledged saves and 392 class-detail failures. The source class IDs and exact errors are retained in [the saved report](runtime/last-run.json).
+
+| Source date | Detail requests | Succeeded | HTTP 502 failures |
+| --- | ---: | ---: | ---: |
+| November 11 | 0 | 0 | 0 |
+| November 12 | 8 | 8 | 0 |
+| November 13 | 108 | 9 | 99 |
+| November 14 | 167 | 0 | 167 |
+| November 15 | 126 | 0 | 126 |
+
+The failed November 15 example is `https://wef-schedules-decoded.gombcg.workers.dev/classes/200031722?customer_id=15&show_id=200000078`. Data received HTTP 502 with `Source fetch or protected response decoding failed`. November 15 has 155 saved schedule rows, 126 basic classes and zero trips at the 8:26 a.m. readback. November 14's 184 saved trips have November 10 success timestamps. Their retention does not establish today's detail success. Decoder separately documented upstream HTTP 200 with an empty class payload in its November 10 diagnostic. That diagnostic does not establish the upstream cause of every Data failure. [Decoder evidence](../workers/wef-schedules-decoded/README.md#november-10-approved-fallback-profile-release)
+
+**Existing execution.** Data saves schedules and priorities before class detail. Detail collection remains active, using four concurrent requests for eligible classes. Saved Dropped classes and Completed classes with numeric results_verified equal to 1 retain the existing skip rule. Class requests have no additional Data retry loop. The existing collector task wakes every three minutes. Priority 0 uses three minutes when its date is today and hourly otherwise. Future priorities 1 through 4 share the existing 30-minute cycle, completing each day in order. Current run duration can exceed that interval. Live matching and the narrower payload proposal remain on hold.
+
+**Shared fallback contract.** The proxy owns runner-first routing, then original-header, header1, header2, windows-clean and android-clean fallback attempts. If those fail, it renews once and repeats once with the existing pauses. Data uses the same shared URLs. Data's saved error lacks the proxy lane/profile headers, so per-profile execution for these particular 392 failures is unverified in Data's report. [Shared implementation](../workers/wef-schedules-decoded/shared-worker.mjs)
+
+**Alert evidence and mismatches.** Data's alert filter recognizes day-inventory failures and Airtable class source-json rejections. It excludes class-endpoint request failures. These failures therefore have no matching class incident in the existing alert state. The latest saved Records delivery receipt is a failed older attempt at 5:02 a.m., with `Codex Records delivery exited 1`. The saved desktop receipt from November 10 at 5:34 p.m. confirms `Submitted to Windows`. It does not establish display or acknowledgment of this morning's class failures. A pending Records item for the current attempt concerns an older November 6 write rejection. At the 8:34 a.m. inspection, the current local attempt log still said Started with no completion timestamp, while its saved collection report already contained the failures. Delivery of the completed error report remains unverified. [Alert filter](collection-alerts.js) · [Records receipt](runtime/collection-notice-records.json) · [Desktop receipt](runtime/collection-notice-desktop.json) · [Attempt](runtime/logging/wef-data/run-logs/0eae2379-45de-471b-a65c-915032e6493f.json)
+
+The next owner decisions concern class-failure alert coverage and failed Records delivery. Decoder's class recovery and health checks remain with Decoder. This inspection changed this README only.
+
+## Class-detail request filter - November 8, 2:27 p.m. Eastern
+
+Owner-approved filter is independently reviewed, deployed and verified through the existing schedule. Skip a class-detail request when saved record-status is Dropped, or when saved status is Completed AND the existing class_related_data.results_verified numeric formula equals 1. New, blank, unverified or not-Completed classes still collect. Schedule/basic inventory, membership and priority updates continue; skipped detail source JSON, detail-success timestamps, trips and results stay saved. No new Airtable field, collector schedule, proxy/recovery/retry change, or manual collection.
+
+Only fast_collector.py and the local schema binding for ONE existing native formula changed. The existing cached class inventory supplies flags before basic inventory writes; no extra endpoint lookup. Two integers in existing counts-json report class-detail-requested and class-detail-skipped. An unknown/read-failed flag does not exclude a class: record the read error and continue unaffected schedule/detail work.
+
+The normal scheduled run 2ce3cb0e-d12e-4478-b5dc-239e0d5d8e28 ran from 2:24:16 to 2:25:35 p.m. Eastern: 9 class-detail requests, 58 skipped, 419 records saved, zero errors, 78.954 seconds. The 419 value is this run's saved work, not a remaining-table count. Native run-log readback matched. Completed/verified classes 200030967 and 200030966 retained their exact prior source JSON and last-success values. Schedule timestamps advanced at 2:24 p.m.; eligible Not Started/unverified classes refreshed at 2:25 p.m. Existing IDs, keys and data remain; no records were deleted.
+
+Eight offline regression tests and three independent cases passed; existing native formula identity/type verified. Evidence: evidence/class-detail-filter-20261108/{task.md,live-field-schema.json,review/,deployment.json,normal-run.json,scheduled-readback.json,acceptance.json}. Earlier dated descriptions saying all scheduled classes receive detail requests are superseded by this section.
+
+## Automatic daily cleanup — November 11, 2026
+
+The existing wef-data-cleanup Windows task starts daily at 7 p.m. Eastern. The cleanup code creates the daily event without a chat message. Records alerts continue to handle new-show and three-hour logging checks. Pending/current logs and the existing cleanupV2 selections and deletion rules are unchanged. No collector or linker changes.
+
+Independent review and installed task readback are recorded in C:/Users/gombc/Documents/Codex/outputs/wef-data-cleanup-auto-20261111/. The first automatic 7 p.m. execution is unverified until it occurs. Earlier triggerless-task descriptions below are historical.
+
+## Current cleanup policy - November 8, 10:07 a.m. Eastern
+
+At 1,000+ total records in a checked logging table, delete the oldest eligible records until 500 total remain. This replaces deleting only 500 records. Active/current and pending logs remain protected; cleanup may leave more than 500 when too few records are eligible. Daily at 7 p.m. Eastern, clear all completed eligible logs, including runs. On a new show, clear checked owned show records and completed eligible logs. Midnight and new show-day changes do not trigger cleanup. Keep reference tables and cleanup history. Delete only; no archives or backups.
+
+The selector and local-log targets were independently reviewed, deployed and read back. Existing Records checks remain at 1/4/7/10 a.m. and 1/4/7/10 p.m. Eastern, using the same triggerless cleanup task. Five cleanupV2 purpose fields now match the rule; selections and actual outcomes are preserved. Collector, linker, logger, launcher and cadences are unchanged. Evidence: evidence/cleanup-keep500-20261108/{task.md,deployment.json,readback.json,review/}. The genuine 1 p.m. Records alert executed successfully at 1:04 p.m. Eastern, run1794161047662, task exit0, no errors. Native counts were unchanged: runs28, run-logs66, err-logs47; cleanupV2 confirmed0deletions for allthree. All were below1,000. The alert route and under-threshold behavior are verified; the above1,000 keep-500 deletion branch remains naturally unverified. Actual proof: evidence/cleanup-keep500-20261108/verification-1300/actual-result.json. No manual run or completed-event replay.
+
+Records cleanup alerts resumed under the owner's direct corrective instruction; unrelated sending remains stopped. The genuine 10 a.m. Records event log-check|2026-11-08|3 completed successfully at 10:01:56.999 a.m. Eastern, run 1794150091230, task exit 0, no errors. Under the previous delete-500 rule it removed 500 runs: 1,921 before, 1,421 after. Native ID comparison confirmed 500 absences. Run-logs and err-logs had no deletions because they were below the threshold. cleanupV2 counts, run ID and timestamps matched. No local logs were deleted. This verifies the alert/task route and the prior deletion quantity, not the new keep-500 quantity.
+
+The 500 deleted native IDs and keys are in evidence/cleanup-1900-20261107/verification-20261108/deleted-record-ids.csv, with actual-result.json. No record payload backups were created. This section supersedes older cleanup descriptions below.
+
+## Latest verified fast-collector status - November 7, 7:56 p.m. Eastern
+
+Latest completed scheduled collection: November 7 at 7:48:12 p.m. Eastern, attempt `32dc5d91-cee0-4ac1-8a8d-70c3c258c7f4`. It collected the source-assigned priority-0 day November 8, saved 1,944 records and reported zero collection errors. Eastern calendar date at this check is still November 7; source day priority and calendar date are distinct.
+
+Earlier recovery: the November 7 day collection completed at 7:07:46 p.m. Eastern with 2,236 records saved and zero collection errors. The 7:09 p.m. invocation selected no days and saved zero; that invocation is not collection proof. Earlier HTTP 502 source failures remain historical failures, not successful collections.
+
+Evidence: existing `runtime/logging/wef-data/run-logs/32dc5d91-cee0-4ac1-8a8d-70c3c258c7f4.json` and `runtime/last-run.json`. This README update changes documentation only; no code, data records, tasks, cadences or manual collection.
 
 ## Current cleanup replacement - November 7, 9:15 a.m. Eastern
 

@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <!-- UBN 12/04/2012 -->
+        <meta name = "format-detection" content = "telephone=no" />
+        <link rel="apple-touch-startup-image" href="startup.png"/>
+        <link rel="apple-touch-icon" href="chocolatechip-icon.png"/>
+        <title>ShowGroundsLive</title>
+                                
+                <link rel="stylesheet" href="/wp_master/wp-content/plugins/menu-icons/css/font-awesome.css"/>
+                
+                        
+                                                        
+        <link rel="stylesheet" type="text/css" media="screen" href="/iphonev2/jquerymobile1.4/jquery.mobile-1.4.0.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="/iphonev2/jquerymobile1.4/jquery.mobile.structure-1.4.0.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="/iphonev2/jquerymobile1.4/upgraded/upgraded.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="/iphonev2/css/iphoneoverride.css?updated" />
+        <script type="text/javascript" src="/iphonev2/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/iphonev2/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="/iphonev2/js/pusher.min.js"></script>
+<script type="text/javascript" src="/iphonev2/jquerymobile1.4/jquery.mobile-1.4.0.js"></script>
+<script type="text/javascript" src="/iphonev2/jquerymobile/fastclick.js"></script>
+        <script type="text/javascript">
+                        window.addEventListener('load', function() {
+                    new FastClick(document.body);
+            }, false);
+                        function showBackButton(){
+                                                                 
+                    return "false";
+                            }
+            
+            function showRefreshButton(){
+                 
+                return "true";
+                            }
+            
+            function IsBacktoBaseURL(){
+                 
+                    return "false";
+                            }
+        </script>
+        <script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-676768-5']);
+_gaq.push(['_setDomainName', '.showgroundslive.com']);
+_gaq.push(['_setAllowHash', false]);
+_gaq.push(['_trackPageview']);
+
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+<script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ 
+   ga('create', 'UA-6857054-1','none');
+   ga('send', 'pageview');
+ 
+ </script>            </head>
+    <body>
+        
+<script src="/js/php.js"></script>
+
+
+
+<script type="text/javascript">
+if(typeof vb_pusher_initialized === 'undefined'){ //Fix issue to do not initialize pusher multiple times causing invalid deltas
+    var vb_pusher_initialized = true;
+    
+    // Enable pusher logging - don't include this in production
+    Pusher.log = function(message) {
+        if (window.console && window.console.log) window.console.log(message);
+    };
+
+    // Flash fallback logging - don't include this in production
+    WEB_SOCKET_DEBUG = true;
+
+    //Subscribe to pusher channels for this class group
+    var pusher = new Pusher('b6232310f51498462640');
+    var class_ids = new Array();
+
+            class_ids.push("200031234"); //Get class ids for this group
+
+        //Scubscribe to pusher channel
+        var channel_200031234 = pusher.subscribe("200031234");
+        channel_200031234.bind('updateavailable', function(data) {
+            GetData();
+            SendDataToParent();
+        });
+            class_ids.push("200031235"); //Get class ids for this group
+
+        //Scubscribe to pusher channel
+        var channel_200031235 = pusher.subscribe("200031235");
+        channel_200031235.bind('updateavailable', function(data) {
+            GetData();
+            SendDataToParent();
+        });
+    }
+</script>
+
+    
+        <script type="text/javascript">  
+    
+    function PopulateDataInGrid(response, status, class_id)
+    {
+        if(status=='success')
+        {
+            var response_header = response.getAllResponseHeaders().toLowerCase();
+            var curr_date_time_valid = false;
+            var time_elapsed = 1000000;
+            date_pos = response_header.indexOf("date: ");
+            response_header = response_header.substring(date_pos+6);
+            date_pos = response_header.indexOf("\n");
+            response_header = response_header.substring(0,date_pos); //Do not change this value as this datetime string is used
+            date_array = response_header.split(" ");
+            server_date_now = date_array[1]+date_array[2]+date_array[3];
+            server_time_now = timeToSeconds(date_array[4]);
+            
+            var obj = jQuery.parseJSON(response.responseText);
+            var class_index = GetClassIndex(class_id);
+       
+            var linedUpRowID = 0;
+            var delRows = new Array();
+            var LBoardIDs = new Array();
+            var LBoardArrayIndex = 0;
+
+            var vb_hasNoTimeData = true;
+            var vb_hasJO, vb_newDataHasTimeInfo;
+            var live_trip_id = 0;
+            var vb_r1_time_eliminated = false, vb_r1_faults_eliminated = false;
+            
+            var vb_round1_clear = false;
+            var vb_JOQualified, vb_hasJOQualifiedRows = false, vb_JOGone = false;
+            var leaderboard_JO_Rows = new Array();
+            var leaderboard_JO_Row_IDs = new Array();
+            var leaderboard_JO_Rows_ActOOG = new Array();
+            var leaderboard_JO_Rows_Pos = new Array();
+            var leaderboard_JO_Gone = new Array();
+            var leaderboard_JO_Row_Index = new Array();
+            
+            var leaderboard_UpcomingJO_Rows = new Array();
+            var leaderboard_UpcomingJO_Row_IDs = new Array();
+            var leaderboard_UpcomingJO_Rows_ActOOG = new Array();
+            var leaderboard_UpcomingJO_Rows_R1Faults = new Array();
+            var leaderboard_UpcomingJO_Rows_R1Time = new Array();
+            var leaderboard_UpcomingJO_Rows_Index = new Array();
+            var inCountdownTrip = -989898;
+            
+            //After parsing filter the records in leader board and lined up grids
+            for(var index=0;index<Number(obj.recs);index++)
+            {
+                //Set current trip if trip is gone or it is in countdown
+                if(obj.curr == obj.rows[index].id && (obj.rows[index].Gone == "1" || !isEmptyValue(obj.rows[index].r1_cd))){
+                    inCountdownTrip = !isEmptyValue(obj.rows[index].r1_cd) ? obj.rows[index].id : inCountdownTrip;
+                    last_updated_at = obj.curr_updated_at;
+                    if(last_updated_at != ""){
+                        last_updated_at = last_updated_at.split(" ");
+                        last_updated_date = last_updated_at[0];
+                        last_updated_time = timeToSeconds(last_updated_at[1]);
+                        time_elapsed = server_time_now-last_updated_time;
+                        time_in_miliseconds = ((new Date())-(time_elapsed*1000));
+                        dateObj = new Date(time_in_miliseconds);
+                        if((last_updated_date == server_date_now) && ((time_elapsed)<(300))){ //Last update is within last 5 minutes
+                            curr_date_time_valid = true;
+                        }
+                        
+                        //Check that current trip has time and has no update for 20 secs after time populated >>>
+                        if(curr_date_time_valid){
+                            vb_newDataHasTimeInfo = (!isEmptyValue(obj.rows[index].R1T) || !isEmptyValue(obj.rows[index].JOT));;
+                            vb_hasJO = true;
+                            if(vb_newDataHasTimeInfo){ //Existing data has time
+                                switch(table_type){
+                                    //No Jump-off/Jump-off after delay
+                                    case 0: 
+                                    case 1:
+                                    case 5:
+                                        vb_hasJO = true;
+                                        break;
+                                        
+                                    //Wait for Jump-Off Time
+                                    case 2:
+                                        vb_hasJO = true;
+                                        if(isEmptyValue(obj.rows[index].R1F)){ //If clean Round 1
+                                            vb_hasJO = !isEmptyValue(obj.rows[index].JOT);
+                                        }
+                                        break;
+                                        
+                                    //Wait for JO even if R1F > 0    
+                                    case 4:
+                                        vb_hasJO = !isEmptyValue(obj.rows[index].JOT);
+                                        break;
+                                }
+                                
+                                //No update after time was added for 20 seconds
+                                if((last_updated_date == server_date_now) && ((time_elapsed)>(20)) && vb_hasJO){ 
+                                    curr_date_time_valid = false; //Do not add in live class trips
+                                }
+                                else{
+                                    vb_timeoutSet = true;//Set timeout to refresh data
+                                }
+                            }
+                        }
+                        //Check that current trip has time and has no update for 20 secs after time populated <<<
+                    }
+                    
+                    if(curr_date_time_valid){
+                        //Class has live trip condition = true
+                    }
+                    
+                    //Append live now arrays and get their trip status
+                    LiveTripRows.push(obj.rows[index]);
+                    LiveTripRows_elapsedtime.push(time_elapsed);
+                    LiveTripRows_validtime.push(curr_date_time_valid);
+                    LiveTripRows_classID.push(class_id);
+                    LiveTripRows_UpdateTime.push(response_header);
+                }
+
+                //Add row in leaderboard
+                live_class_obj.class_trips[class_index].leaderboard.push(obj.rows[index]);
+                
+                /* Class with Seperate JO round */
+                vb_JOQualified = false;
+                if(obj.rows[index].Gone == "1" && after_delay_jo){
+                    vb_round1_clear = isEmptyValue(obj.rows[index].R1F);
+                    if(table_type == 5){ //R2 trips are decided based on callbacks if callbacks are set in jumper table type = 5
+                        var tripPosition = parseInt(obj.rows[index].Pos);
+                        if(JOGRowsCount > 0 && tripPosition > 0 && tripPosition <= JOGRowsCount){
+                            vb_round1_clear = true;
+                        }
+                        else {
+                            vb_round1_clear = false;
+                        }
+                    }
+                    vb_round1_clear = vb_round1_clear && !isEmptyValue(obj.rows[index].R1T);
+                    vb_round1_clear = vb_round1_clear && !isEliminatedValue(obj.rows[index].R1T) && !isEliminatedValue(obj.rows[index].R1F); //Not eliminated value
+
+                    //check Round is clean OR JO data entered then Trip is JO Qualified
+                    vb_JOQualified = vb_round1_clear || !isEmptyValue(obj.rows[index].JOF) || !isEmptyValue(obj.rows[index].JOT);
+                    vb_JOQualified = vb_JOQualified && !isEliminatedValue(obj.rows[index].R1T) && !isEliminatedValue(obj.rows[index].R1F); //Not eliminated value in R1
+                    if(vb_JOQualified){
+                        vb_hasJOQualifiedRows = true;
+                        vb_JOGone = !isEmptyValue(obj.rows[index].JOT) || isEliminatedValue(obj.rows[index].JOF);
+                        
+                        leaderboard_JO_Rows.push(obj.rows[index]);
+                        leaderboard_JO_Row_IDs.push(obj.rows[index].id);
+                        leaderboard_JO_Rows_ActOOG.push(obj.rows[index].Actual_OOG);
+                        leaderboard_JO_Rows_Pos.push(obj.rows[index].Pos);
+                        leaderboard_JO_Gone.push(vb_JOGone);
+                        leaderboard_JO_Row_Index.push(index);
+                        
+                        if(vb_JOGone == false){
+                            leaderboard_UpcomingJO_Rows.push(obj.rows[index]);
+                            leaderboard_UpcomingJO_Row_IDs.push(obj.rows[index].id);
+                            leaderboard_UpcomingJO_Rows_ActOOG.push(obj.rows[index].Actual_OOG);
+                            leaderboard_UpcomingJO_Rows_R1Faults.push(obj.rows[index].R1F);
+                            leaderboard_UpcomingJO_Rows_R1Time.push(obj.rows[index].R1T);
+                            leaderboard_UpcomingJO_Rows_Index.push(index);
+                            
+                            //Append to group arrays
+                            UpcomingJO_Rows.push(obj.rows[index]);
+                            UpcomingJO_Row_IDs.push(obj.rows[index].id);
+                            UpcomingJO_Rows_ActOOG.push(obj.rows[index].Actual_OOG);
+                            UpcomingJO_Rows_R1Faults.push(obj.rows[index].R1F);
+                            UpcomingJO_Rows_R1Time.push(obj.rows[index].R1T);
+                        }
+                        else{
+                            vb_hasJOGoneTrips = true;
+                        }
+                    }
+                }
+                /* Class with Seperate JO round */
+                
+                //Set ELiminated status for Position column or eliminated trips
+                vb_r1_time_eliminated = isEliminatedValue(obj.rows[index].R1T);
+                vb_r1_faults_eliminated = isEliminatedValue(obj.rows[index].R1F);
+                if(vb_r1_time_eliminated || vb_r1_faults_eliminated){
+                    live_class_obj.class_trips[class_index].leaderboard[index].Pos = (vb_r1_time_eliminated ? obj.rows[index].R1T : obj.rows[index].R1F);
+                }
+                
+                vb_hasNoTimeData = (isEmptyValue(obj.rows[index].R1T) && isEmptyValue(obj.rows[index].JOT)); //Check trip has time data 
+                live_trip_id = 0;
+                if ((obj.rows[index].Gone == "0") || (obj.rows[index].Scr == "1") || (vb_hasNoTimeData && live_trip_id == obj.rows[index].id))               
+                    delRows[linedUpRowID++] = index; //delete rows from leaderboard
+                else                    
+                    LBoardIDs[LBoardArrayIndex++] = index;
+            }
+           
+            //delete from leader board and add in lined up board
+            for(var linedUpRowID=(delRows.length-1); linedUpRowID>=0; linedUpRowID--)
+            {
+                index = delRows[linedUpRowID];
+                live_class_obj.class_trips[class_index].leaderboard.splice(index, 1);
+		 
+                //Ignore already gone trip from lined-up, this trip will not show untill time is entered
+                if(obj.rows[index].Gone == "1" || obj.rows[index].id == inCountdownTrip){
+                    continue;
+                }
+                
+                //Populate Lined up arrays
+                LinedUpRows.push(obj.rows[index]); 
+                LinedUpRows_Scr.push(obj.rows[index].Scr);
+                LinedUpRows_OOG.push(obj.rows[index].OOG);
+                LinedUpRows_ENo.push(obj.rows[index].ENo);
+                LinedUpRows_ClassID.push(class_id);
+            }
+            
+            /* Sort based on JO status if class is of Seperate Jump-off and has JO Qualified Trips */
+            if(after_delay_jo && vb_hasJOQualifiedRows){
+                //Delete JO Qualified Rows
+                for(var index=(leaderboard_JO_Rows.length-1); index>=0; index--){
+                    // live_class_obj.class_trips[class_index].leaderboard.splice(leaderboard_JO_Row_Index[index], 1);
+                    let matchingLeaderboardIndex = live_class_obj.class_trips[class_index].leaderboard.findIndex(x => x.id == leaderboard_JO_Rows[index].id);
+                    if(matchingLeaderboardIndex >= 0){
+                        live_class_obj.class_trips[class_index].leaderboard.splice(matchingLeaderboardIndex, 1);
+                    }
+                }
+                
+                if(table_type == 0){
+                    //Sort on Actual Order for JO Qualified trips BUT Jump-Off not gone           
+                    array_multisort(leaderboard_UpcomingJO_Rows_ActOOG, 'SORT_ASC', 'SORT_NUMERIC', 
+                                leaderboard_UpcomingJO_Rows, 'SORT_ASC', 
+                                leaderboard_UpcomingJO_Rows_Index, 'SORT_ASC', 'SORT_NUMERIC',
+                                leaderboard_UpcomingJO_Row_IDs, 'SORT_ASC', 'SORT_NUMERIC');
+                }
+                else if(table_type == 5){
+                    //Sort on Reverse order of R1 faults and time for R2 Qualified trips BUT R2 not gone
+                    array_multisort(leaderboard_UpcomingJO_Rows_R1Faults, 'SORT_DESC', 'SORT_NUMERIC',
+                                leaderboard_UpcomingJO_Rows_R1Time, 'SORT_DESC', 'SORT_NUMERIC', 
+                                leaderboard_UpcomingJO_Rows_ActOOG, 'SORT_ASC', 'SORT_NUMERIC',
+                                leaderboard_UpcomingJO_Rows, 'SORT_ASC', 
+                                leaderboard_UpcomingJO_Rows_Index, 'SORT_ASC', 'SORT_NUMERIC',
+                                leaderboard_UpcomingJO_Row_IDs, 'SORT_ASC', 'SORT_NUMERIC');
+                }
+
+                //Set upcoming R2 rows in leaderboard
+                for(var index = (leaderboard_UpcomingJO_Rows.length-1); index >= 0; index--){
+                    leaderboard_UpcomingJO_Rows[index].Pos = "JO";
+                    leaderboard_UpcomingJO_Rows[index].UpcomingJO = true;
+                    leaderboard_UpcomingJO_Rows[index].JOQualified = true;
+                    live_class_obj.class_trips[class_index].leaderboard.splice(0, 0, leaderboard_UpcomingJO_Rows[index]);
+                }
+
+                //Sort JO Round Gone trips based on their positions >>>               
+                array_multisort(leaderboard_JO_Rows_Pos, 'SORT_ASC', 'SORT_NUMERIC', 
+                            leaderboard_JO_Rows_ActOOG, 'SORT_ASC', 'SORT_NUMERIC', 
+                            leaderboard_JO_Rows, 'SORT_ASC', 
+                            leaderboard_JO_Row_Index, 'SORT_ASC', 'SORT_NUMERIC',
+                            leaderboard_JO_Gone, 'SORT_ASC', 'SORT_NUMERIC',
+                            leaderboard_JO_Row_IDs, 'SORT_ASC', 'SORT_NUMERIC');
+            
+                for(var index = (leaderboard_JO_Rows.length-1); index >= 0; index--){
+                    if(leaderboard_JO_Gone[index]){    
+                        leaderboard_JO_Rows[index].Pos = "JO";
+                        leaderboard_JO_Rows[index].JOGone = true;
+                        leaderboard_JO_Rows[index].JOQualified = true;
+                        live_class_obj.class_trips[class_index].leaderboard.splice(0, 0, leaderboard_JO_Rows[index]);
+                    }
+                }
+                //Sort JO Round Gone trips based on their positions <<<
+                
+            }
+            /* Sort based on JO status if class is of Seperate Jump-off and has JO Qualified Trips */
+
+            setPositions(class_id); //Set Valid positions
+            
+        }
+    }
+    
+    function setPositions(class_id){
+        //Set Valid positions
+        var class_index = GetClassIndex(class_id);
+        var copy_obj = live_class_obj.class_trips[class_index].leaderboard;
+        var listData = JSON.parse(JSON.stringify(copy_obj)); //copy_obj.slice();
+        var vl_position = 0;
+        var last_position = -88; //invalid value
+        for(var NewRowCount=0; NewRowCount<listData.length;NewRowCount++){
+
+            //Trip is not eliminated trip
+            if(!isEliminatedValue(listData[NewRowCount].Pos)){
+                if(listData[NewRowCount].Pos != last_position){ //Check same position for last row
+                    vl_position++;
+                }
+
+                if(after_delay_jo && listData[NewRowCount].Pos.toString().indexOf("JO")>=0 && isEmptyValue(listData[NewRowCount].JOT) && !isEliminatedValue(listData[NewRowCount].JOF)){
+                    live_class_obj.class_trips[class_index].leaderboard[NewRowCount].Pos = "JO-" + vl_position; //Set position for trips not gone in JO Round
+                }
+                else{
+                    live_class_obj.class_trips[class_index].leaderboard[NewRowCount].Pos = vl_position.toString();
+                }
+                
+                //Update Position for JO Rows to ensure Position counter change
+                if(listData[NewRowCount].Pos.toString().indexOf("JO")>=0){
+                    listData[NewRowCount].Pos = listData[NewRowCount].Pos + "-" + NewRowCount; 
+                }
+                last_position = listData[NewRowCount].Pos;
+            }
+        }
+    }
+    
+    function PopulateLinedUp(class_id){
+        var trips_to_go = 0; 
+        var class_index = GetClassIndex(class_id);
+        live_class_obj.class_trips[class_index].lined_up = [];
+        live_class_obj.next_trip = {};
+        vb_upNextRowAdded = false;
+        
+        var lined_in_pos = 0;
+        var lined_up_rows = 1;
+        var lined_up_entries = new Array();
+        var class_lined_up_entries = new Array();
+        
+        //Sort Lined up rows on OOG and Entry No.
+        array_multisort(LinedUpRows_Scr, 'SORT_ASC', 'SORT_NUMERIC',
+                            LinedUpRows_OOG, 'SORT_ASC', 'SORT_NUMERIC', 
+                            LinedUpRows_ENo, 'SORT_ASC', 'SORT_NUMERIC',
+                            LinedUpRows, 'SORT_ASC',
+                            LinedUpRows_ClassID, 'SORT_ASC');
+                
+        
+        for(var counter=0; counter < LinedUpRows.length; counter++){
+            if(lined_up_entries.indexOf(LinedUpRows[counter].ENo) < 0){ //Show One trip of Multiple trips of same entry once
+                lined_up_entries.push(LinedUpRows[counter].ENo);
+                lined_in_pos = order_of_go_set ? lined_up_rows : "";
+                lined_up_rows++;
+
+                if (LinedUpRows[counter].Scr == "0"){
+                    trips_to_go++;
+                    
+                    if(!vb_upNextRowAdded && order_of_go_set){ //Set UP NEXT ROW
+                        live_class_obj.next_trip = LinedUpRows[counter];
+                        vb_upNextRowAdded = true;
+                    }
+                }
+            }
+            
+            if(LinedUpRows_ClassID[counter] == class_id && class_lined_up_entries.indexOf(LinedUpRows[counter].ENo) < 0){ //Push lined up trips of current class
+                live_class_obj.class_trips[class_index].lined_up.push(LinedUpRows[counter]);
+                class_lined_up_entries.push(LinedUpRows[counter].ENo);
+            }
+        }
+        
+        //If JUMP-OFF is after some delay and Some Trips JO is gone
+        if(after_delay_jo && vb_hasJOGoneTrips){
+            live_class_obj.next_trip = {};
+            vb_upNextRowAdded = false;
+        }
+        
+        //Set Up Next Horse for rounds whose JUMP-OFF is after some delay of 1st round
+        if(table_type == 0){///Sort on Actual Order for JO Qualified trips BUT Jump-Off not gone
+            array_multisort(UpcomingJO_Rows_ActOOG, 'SORT_ASC', 'SORT_NUMERIC', 
+                                UpcomingJO_Rows, 'SORT_ASC', 
+                                UpcomingJO_Row_IDs, 'SORT_ASC', 'SORT_NUMERIC');
+        }
+        else if(table_type == 5){
+            array_multisort(UpcomingJO_Rows_R1Faults, 'SORT_DESC', 'SORT_NUMERIC',
+                                UpcomingJO_Rows_R1Time, 'SORT_DESC', 'SORT_NUMERIC',
+                                UpcomingJO_Rows_ActOOG, 'SORT_ASC', 'SORT_NUMERIC', 
+                                UpcomingJO_Rows, 'SORT_ASC', 
+                                UpcomingJO_Row_IDs, 'SORT_ASC', 'SORT_NUMERIC');
+        }
+        
+        for(vl_upcomingJo_counter=0; vl_upcomingJo_counter<UpcomingJO_Rows.length; vl_upcomingJo_counter++){
+            if(LiveTripID != UpcomingJO_Rows[vl_upcomingJo_counter].id){ //ignore live trip from up next if its not yet have JO Data
+                if(after_delay_jo && UpcomingJO_Rows.length>0 && (trips_to_go==0 || vb_hasJOGoneTrips)){
+                    live_class_obj.next_trip = UpcomingJO_Rows[vl_upcomingJo_counter];
+                    vb_upNextRowAdded = true;
+                    break;
+                }
+            }
+        }
+        
+        
+        if(!vb_upNextRowAdded){
+            live_class_obj.next_trip = {};
+            vb_upNextRowAdded = true;
+        }
+    }
+    function PopulateLiveNow(){
+        live_class_obj.live_trip = {};
+        
+        if(LiveTripRows.length > 0){
+            //Sort Live Now on basis of time
+            array_multisort(
+                    LiveTripRows_elapsedtime, 'SORT_ASC', 'SORT_NUMERIC',
+                    LiveTripRows_validtime, 'SORT_DESC',
+                    LiveTripRows_classID, 'SORT_ASC',
+                    LiveTripRows, 'SORT_ASC',
+                    LiveTripRows_UpdateTime, 'SORT_ASC');
+                  
+            if(LiveTripRows_validtime[0] == true){ //Most recent trip is live
+                live_class_obj.live_trip = LiveTripRows[0];
+                LiveTripID = LiveTripRows[0].id;
+                
+                //Pyramid timing fields (pt, r1_cd, r1_start, r1_start_time, r1_done, jo_cd, jo_start, jo_start_time, jo_done, time_4d)
+                curr_status = "";
+                if(LiveTripRows[0].pt == true || LiveTripRows[0].pt == "1"){ //Handle Pyramid timing data
+                    fromPyramid = true;
+                    //Get current GMT time from JSON reponse header instead of client time
+                    var current_time = getGMTDateTime(new Date(LiveTripRows_UpdateTime[0]));
+                    var json_time = ""; 
+                    var countdown_limit = 0;
+                    //var now = new Date(); 
+                    //current_time = getGMTDateTime(now);
+                    
+                    //Check JO Round info first
+                    if(isEmptyValue(LiveTripRows[0].JOT)){
+                        which_round = "JO";
+                        
+                        if(!isEmptyValue(LiveTripRows[0].jo_done)){
+                            curr_status = "TS"; //Stop JO timer
+                        }
+                        else if(!isEmptyValue(LiveTripRows[0].jo_start)){ //Show Round 1 Timer
+                            curr_status = "TA"; //JO timer active 
+                            json_time = getGMTDateTime(new Date(LiveTripRows[0].jo_start)); 
+                        }
+                        else if(!isEmptyValue(LiveTripRows[0].jo_cd) && isEmptyValue(LiveTripRows[0].JOF)){ 
+                            curr_status = "CDA"; //JO countdown timer active
+                            json_time = getGMTDateTime(new Date(LiveTripRows[0].jo_cd));
+                            countdown_limit = jo_countdown_limit;
+                        }
+                    }
+                    
+                    //Check Round 1 only if trip has No JO round info
+                    if(isEmptyValue(LiveTripRows[0].R1T) && isEmptyValue(curr_status) && isEmptyValue(LiveTripRows[0].JOT)){
+                        which_round = "R1";
+                        if(!isEmptyValue(LiveTripRows[0].r1_done)){
+                            curr_status = "TS"; //Stop Round 1 timer
+                        }
+                        else if(!isEmptyValue(LiveTripRows[0].r1_start)){ //Show Round 1 Timer
+                            curr_status = "TA"; //Round 1 timer active  
+                            json_time = getGMTDateTime(new Date(LiveTripRows[0].r1_start));
+                           
+                        }
+                        else if(!isEmptyValue(LiveTripRows[0].r1_cd) && isEmptyValue(LiveTripRows[0].R1F)){ 
+                            curr_status = "CDA"; //Round 1 countdown timer active
+                            json_time = getGMTDateTime(new Date(LiveTripRows[0].r1_cd)); //Date function converts date to localized datetime, we must re extract GMT date time
+                            countdown_limit = r1_countdown_limit;
+                        }
+                    }
+                    
+                    //Set Current running time
+                    switch(curr_status){
+                        case "TS":
+                            break;
+
+                        case "TA":
+                            curr_running_time = current_time.getTime() - json_time.getTime(); //Get difference between two times
+                            curr_running_time = Math.round(curr_running_time/1000); //Get no. of seconds
+                            curr_running_time -= pyramid_timer_offset;
+                            curr_running_time = curr_running_time <= 0 ? 0 : curr_running_time;
+                            break;
+
+                        case "CDA":
+                            curr_running_time = current_time.getTime() - json_time.getTime(); //Get difference between two times
+                            curr_running_time = curr_running_time <= 0 ? 0 : curr_running_time;
+                            curr_running_time = countdown_limit - Math.round(curr_running_time/1000); //Get no. of seconds
+                            curr_running_time += pyramid_timer_offset;
+                            break;
+                    }
+
+                    if(!isEmptyValue(curr_status)){ //Round 1 and Jump-off time is empty'
+                        show=true;
+                        startTIME();
+                    }
+                }
+                else{
+                   clearALL();
+                }
+                
+                
+                //Delete Live Trip with No Score from Leaderboard
+                var class_index = GetClassIndex(LiveTripRows_classID[0]);
+                var copy_obj = live_class_obj.class_trips[class_index].leaderboard;
+                var listData = JSON.parse(JSON.stringify(copy_obj)); //copy_obj.slice();
+                for(var NewRowCount=0; NewRowCount<listData.length;NewRowCount++){
+                    if(listData[NewRowCount].id == LiveTripID){
+                        if((isEmptyValue(listData[NewRowCount].R1T) && isEmptyValue(listData[NewRowCount].JOT))){ //Trip has no time data
+                            live_class_obj.class_trips[class_index].leaderboard.splice(NewRowCount, 1);
+                            setPositions(LiveTripRows_classID[0]);
+                            break;
+                        }
+                    }
+                }
+
+            }
+            else{
+                //Most recent trip not live
+            }
+        }
+    }
+    
+</script>
+
+<script type="text/javascript">
+    var vb_hasJOGoneTrips;
+    var UpcomingJO_Rows, UpcomingJO_Row_IDs, UpcomingJO_Rows_ActOOG, UpcomingJO_Rows_R1Faults, UpcomingJO_Rows_R1Time;
+     
+    function initJumperClassInfo(){
+        vb_hasJOGoneTrips = false;
+        
+        UpcomingJO_Rows = new Array();
+        UpcomingJO_Row_IDs = new Array();
+        UpcomingJO_Rows_ActOOG = new Array();
+        UpcomingJO_Rows_R1Faults = new Array();
+        UpcomingJO_Rows_R1Time = new Array();
+    }
+</script>
+
+<script type="text/javascript"> 
+    function getJumperTableInfo(){
+        //Get Latest Jumper Table information
+        var d=new Date();
+        $.post("/iphonev2/index.php/esp/liveclass/GetJumperTableInfo", { id: "200031235", d:d.getTime() }, function(data){
+            var obj = jQuery.parseJSON(data);
+            table_type = getJumperTableType(obj.jumper_table);
+            JOGRowsCount = parseInt(obj.jogordertrips);
+            after_delay_jo = table_type == 0 || table_type == 5;
+            JOGRowsCount = parseInt(obj.jogordertrips);
+            
+            live_class_obj.table_type = table_type;
+            live_class_obj.jumper_table = obj.jumper_table;
+            live_class_obj.JOGRowsCount = JOGRowsCount;
+            live_class_obj.is_live = obj.is_live;
+            live_class_obj.timeallowed_tripone = obj.timeallowed_tripone;
+            live_class_obj.timeallowed_jo = obj.timeallowed_jo;
+            live_class_obj.after_delay_jo = after_delay_jo;
+            live_class_obj.has_aggregate_faults = classGroupHasAggregateFaults(obj);
+
+            pyramid_timer_enabled = obj.pyramid_timer_enabled; //Set pyramid timer flag
+            pyramid_timer_offset = parseInt(obj.pyramid_timer_offset); //Set Pyramid timer offset
+        });
+    }
+    
+    function getJumperTableType(table_name){
+        var type = 1;
+        switch(table_name){
+
+            //Jump-Off after delay, Remove after 20 seconds for Round 1 Time
+            case "USEF Table II.2.a":
+            case "FEI Rule 220.2.1.2":
+            case "FEI Rule 238.2.2":
+                type = 0; 
+                break;
+
+            //No Jump-Off Round, remove after 20 seconds of R1T and no update
+            case "USEF Table II":
+            case "USEF Table II.1":
+            case "USEF Table II.2.1":
+            case "USEF Table III":
+            case "USEF Table IV":
+            case "FEI Rule 220.2.1.1":
+            case "FEI Rule 225":
+            case "FEI Rule 238.2.1":
+            case "FEI Rule 239":
+                type = 1; 
+                break;
+
+            //Wait for Jump off time
+            case "USEF Table II.2.b":
+            case "USEF Table II.2.ab":
+            case "USEF Table II.2.c":
+            case "USEF Table IV.2.b":
+            case "FEI Rule 222.1.4.2":
+            case "FEI Rule 222.1.4.3":
+            case "FEI Rule 274.1.5.2":
+            case "FEI Rule 274.1.5.3":
+            case "FEI Rule 274.5.3":
+                type = 2; 
+                break;
+                
+            //Always have JO even if R1 not clean
+            case 'FEI Rule 222.2.3':
+            case "FEI Rule 274.5.6":
+            case "FEI Rule 274.2.5":
+            case "USEF Table II.2.d":
+                type = 4; 
+                break;
+            
+            // Jump-Off after delay but but Round 2 goes in reverse order of score (faults + time)
+            case 'FEI Rule 221.4.3(i)':
+            case 'FEI Rule 223.1':
+            case 'FEI Rule 223.2':
+            case "FEI Rule 276.1":
+            case "FEI Rule 276.2":
+                type = 5;
+                break;
+
+        } 
+        return type;
+    }
+
+    function classGroupHasAggregateFaults(classGroup){
+        if(classGroup.table_type == 4){ //mandatory JO Jumper table have aggregate faults
+            return true;
+        }
+        else if(['FEI Rule 221.4.3(i)'].includes(classGroup.jumper_table)){ //list of jumper tables which need aggregate faults
+            return true;
+        }
+
+        return false;
+    }
+    
+    //Get Table type
+    var jumper_table = "USEF Table II.2.b";
+    var table_type = getJumperTableType(jumper_table);
+    var after_delay_jo = table_type == 0 || table_type == 5;
+    
+</script>
+<script language="javascript"> 
+    var base = 60;
+    var pyramid_timer_enabled = true;
+    var pyramid_timer_offset = 0;
+    var start = new Date().getTime(),last_time = 0, last_curr_status = "", last_which_round = "", last_current_trip = -1;
+    var r1_countdown_limit = 45, jo_countdown_limit = 45;
+    var clocktimer,dateObj,dh,dm,ds,ms;
+    var readout='';
+    var h=1;
+    var m=1;
+    var tm=1;
+    var s=0;
+    var ts=0;
+    var ms=0;
+    var show=true;
+    var init=0;
+    var curr_running_time=0;
+    var curr_status=null;
+    var which_round=null;
+    var fromPyramid=false;
+    var mPLUS=new Array(
+        'm0',
+        'm1',
+        'm2',
+        'm3',
+        'm4',
+        'm5',
+        'm6',
+        'm7',
+        'm8',
+        'm9'
+    );
+    
+    function clearALL() {
+        fromPyramid = false;
+        which_round = "";
+        curr_status = "";
+	clearTimeout(clocktimer);
+	h=1;m=1;tm=1;s=0;ts=0;ms=0;
+	init=0;show=true;
+	readout='';
+        curr_running_time=0;
+        start = new Date().getTime();
+        last_time = 0;
+        elapsed = '0.0';
+    }
+    
+    function startTIME() {
+        live_class_obj.live_trip.timer = {};
+        clearTimeout(clocktimer); //clear timeout
+        if(pyramid_timer_enabled == false){ //Pref to disable pyramid offset timers
+            return false;
+        }
+            
+        if(fromPyramid==true){
+            if	(curr_status ==	'CDX'){  // countdown stopped
+                readout = 'CD: ' + curr_running_time;
+            }
+            else if(curr_status == 'CDA') {  // countdown active
+                curr_running_time=((curr_running_time*1000)-100)/1000;
+                if(curr_running_time <= 0){
+                    //show = false;
+                    readout = "";
+                }
+                else{
+                    readout = 'CD: ' + (Math.floor(curr_running_time * 1001) / 1000).toFixed(0);
+                }
+            }
+            else if(curr_status == 'TS'){  // time stopped
+                readout = curr_running_time > 0 ? (Math.floor(curr_running_time * 1001) /1000).toFixed(2) : "";
+            }
+            else if (curr_status == 'TA') {  // time active
+                curr_running_time=((curr_running_time*1000)+100)/1000;
+                //readout= (Math.floor(curr_running_time * 1001) /1000).toFixed(1) + "" + Math.floor((Math.random()*10)+0); //Randomize second decimal
+                readout= (Math.floor(curr_running_time * 1001) /1000).toFixed(0); //Show seconds only not microseconds
+            }
+        }
+        else{
+            var cdateObj = new Date();
+            var t = (cdateObj.getTime() - dateObj.getTime())-(s*1000);
+
+            while(t>999){
+                t-=1000;
+                s++;
+            }
+            ts=parseInt((ms/100)+s);
+            if(ts>=base) { ts=ts-((m-1)*base); }
+        
+            ms = Math.round(t/10);
+            if (ms>99) {ms=0;}
+            if (ms==0) {ms='00';}
+            if (ms>0&&ms<=9) { ms = '0'+ms; }
+
+            if (ts>0) { ds = ts; if (ts<10) { ds = '0'+ts; }} else { ds = '00'; }
+            readout = ds + '.' + ms;
+            var timehtml = "";
+        }
+        
+        if(isEmptyValue(curr_status) || isNaN(curr_running_time)){
+            curr_running_time = 0;
+            curr_status = "";
+            readout = "";
+        }
+        
+        //Check if Round has time data
+        if(isEmptyValue(curr_status)){
+            clearTimeout(clocktimer); //clear timeout
+        }
+        else{
+            if(show){
+                if(curr_status == 'CDX' || curr_status == 'CDA'){
+                    live_class_obj.live_trip.timer = {
+                        countdown: true,
+                        value: readout,
+                        round: which_round
+                    };
+                } else {
+                    live_class_obj.live_trip.timer = {
+                        countdown: false,
+                        value: readout,
+                        round: which_round
+                    };  
+                }
+                live_class_obj.has_update = true;
+            }
+
+            if(readout>=200){
+                show = false;
+                live_class_obj.live_trip.timer.value = {};
+            }
+            else{
+                //Trip/Round/Status changed then reset time offset to build accurate timer
+                var diff = 0;
+                var interval = 100;
+                if(LiveTripID != last_current_trip || last_curr_status != curr_status || last_which_round != which_round){
+                    start = new Date().getTime();
+                    last_time = 0;
+                }
+                else{
+                    last_time += interval;
+                    diff = (new Date().getTime() - start) - last_time;
+                }
+                clocktimer = setTimeout("startTIME()", (interval-diff));
+
+                //Update variables
+                last_current_trip = LiveTripID;
+                last_curr_status = curr_status;
+                last_which_round = which_round;
+
+            }
+        }
+    }
+    
+    function findTIME() {
+        if (init==0) {
+            dateObj = new Date();
+            startTIME();
+            init=1;
+	} else {
+            if(show==true) {
+		show=false;
+            } else {
+		show=true;
+            }
+	}
+    }
+
+</script>
+    
+<script type="text/javascript">
+    var class_group_id = "200028543";
+    var JOGRowsCount = parseInt("0");
+    var class_type = "Jumpers";
+
+    var vb_timeoutSet = false;
+    var vl_timeOutInterval;
+
+    //Get Order of Go set status
+    var order_of_go_set = false;
+            order_of_go_set = true;
+    
+    //Get Grouped class status
+    var grouped_class = false;
+            grouped_class = true;
+     </script>
+ 
+<script type="text/javascript">
+
+        //Initialize JSON object for class group state
+    var live_class_obj = {};
+    live_class_obj.class_group_id = "200028543";
+    live_class_obj.class_group_name = "Pony Jumper Table II & WIHS Pony Jumper II2b";
+    live_class_obj.class_type = "Jumpers";
+    live_class_obj.ring = "4";
+    live_class_obj.ring_name = "Mogavero";
+    live_class_obj.class_ids = [];
+    live_class_obj.class_trips = []; 
+    live_class_obj.live_trip = {};
+    live_class_obj.next_trip = {};
+    live_class_obj.special_event_url = "";
+    live_class_obj.has_update = true;
+    live_class_obj.order_of_go_set = false;
+    live_class_obj.hunter_scoring_type = "";
+    live_class_obj.hunter_scoreby = "";
+    live_class_obj.JOGRowsCount = parseInt("0");
+    live_class_obj.jumper_table = "USEF Table II.2.b";
+    live_class_obj.timeallowed_tripone = parseFloat("85.00");
+    live_class_obj.timeallowed_jo = parseFloat("50.00");
+    live_class_obj.has_aggregate_faults = false;
+
+            live_class_obj.class_ids.push("200031234"); //Get class ids for this group
+        live_class_obj.class_trips.push({
+            class_id: "200031234",
+            number: "680",
+            name: "Pony Jumper Table II",
+            sponsor: "",
+            lined_up: [],
+            leaderboard: [],
+        });
+            live_class_obj.class_ids.push("200031235"); //Get class ids for this group
+        live_class_obj.class_trips.push({
+            class_id: "200031235",
+            number: "681",
+            name: "WIHS Pony Jumper II2b",
+            sponsor: "",
+            lined_up: [],
+            leaderboard: [],
+        });
+            
+    function GetClassIndex(class_id){
+        return live_class_obj.class_ids.indexOf(class_id);
+    }
+    
+    function SendDataToParent() {
+        if(window.self !== window.top) {
+            setTimeout(function(){ 
+                window.parent.postMessage({event: "getliveclass",data:live_class_obj},"*");
+            }, 1000);
+        }        
+    }
+    
+    function GetLiveClassData(){
+        var vt_json_data = JSON.stringify(live_class_obj);
+        live_class_obj.has_update = false; //Clear has_update flag after sending data
+        return vt_json_data;
+    }
+    
+
+    //     // $(function(){
+    //     var d=new Date();
+    //     $.post("/iphonev2/index.php/esp/liveclassv2/GetSpecialEventEmbedURL/ID//d/"+d.getTime(), function(data){
+    //         live_class_obj.special_event_url = data;
+    //     });
+    // });
+    //     
+</script>
+ 
+<script type="text/javascript">
+    var LinedUpRows, LinedUpRows_OOG, LinedUpRows_ENo, LinedUpRows_Scr, LinedUpRows_ClassID;
+
+    var LiveTripRows, LiveTripRows_elapsedtime, LiveTripRows_validtime, LiveTripRows_classID, LiveTripRows_UpdateTime;
+    var liveTripRow_id = 1;
+    var LiveTripID = 0;
+
+    var upNextRow_id = 2;
+    var vb_upNextRowAdded = false;
+        
+
+    $(function(){
+        if(window.self !== window.top) {
+            window.addEventListener( "message",
+                function (e) {
+                    if(e.data.event && e.data.event == 'sendliveclass') {
+                        SendDataToParent();
+                    }
+                },
+                false
+            );
+        }
+        GetData(); //Populate Data for all classes in their stagger areas
+        SendDataToParent();
+
+        /* Refresh Jumper table/Hunter scoring info after a interval instead of on each refresh */
+        var timeout_interval = setInterval(function(){ 
+            refreshLiveClassInfo();
+        }, 60000*5);
+        
+        function refreshLiveClassInfo(){
+                            getJumperTableInfo();
+                    }
+        refreshLiveClassInfo();
+        /* Refresh Jumper table/Hunter scoring info after a interval instead of on each refresh */
+        
+    });
+    
+    function GetData()
+    {
+        //update live class json node
+        live_class_obj.order_of_go_set = order_of_go_set;
+        
+                    initJumperClassInfo();
+        
+        clearData(); //Clear Data
+        var d=new Date();
+        var newData = "", row_ids = "";
+        
+                jQuery.getJSON('/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id=200000077&cid=200031234&t='+d.getTime(), function(data, status, jqXHR) {
+            var class_index = GetClassIndex("200031234");
+            
+            var oldData = live_class_obj.class_trips[class_index].leaderboard;  //Get Old row data
+            live_class_obj.class_trips[class_index].leaderboard = []; //clear existing data
+            live_class_obj.class_trips[class_index].lined_up = [];
+
+            live_class_obj.live_trip = {};
+
+            //set variable to default value
+            vb_upNextRowAdded = false;
+
+            PopulateDataInGrid(jqXHR, status, "200031234"); //Populate Class leaderboard rows
+            PopulateLiveNow(); //Set Live trip
+            PopulateLinedUp("200031234"); //Set Lined up rows
+            DataPopulatedInGrids();
+
+            HighlightUpdates(oldData, "200031234"); //Highlight update in leaderboard
+            live_class_obj.has_update = true;
+        });
+                jQuery.getJSON('/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id=200000077&cid=200031235&t='+d.getTime(), function(data, status, jqXHR) {
+            var class_index = GetClassIndex("200031235");
+            
+            var oldData = live_class_obj.class_trips[class_index].leaderboard;  //Get Old row data
+            live_class_obj.class_trips[class_index].leaderboard = []; //clear existing data
+            live_class_obj.class_trips[class_index].lined_up = [];
+
+            live_class_obj.live_trip = {};
+
+            //set variable to default value
+            vb_upNextRowAdded = false;
+
+            PopulateDataInGrid(jqXHR, status, "200031235"); //Populate Class leaderboard rows
+            PopulateLiveNow(); //Set Live trip
+            PopulateLinedUp("200031235"); //Set Lined up rows
+            DataPopulatedInGrids();
+
+            HighlightUpdates(oldData, "200031235"); //Highlight update in leaderboard
+            live_class_obj.has_update = true;
+        });
+            }
+    
+    //Call code after JSON data is loaded and populated in Grids
+    function DataPopulatedInGrids(){
+        //Timeout set for any class then check for update in it
+        clearTimeout(vl_timeOutInterval); //clear existing timeout if already
+        if(vb_timeoutSet){ //Set timeout to refresh data
+            vl_timeOutInterval = setTimeout(function(){ GetData();SendDataToParent(); }, 20000); //Set update data after 20 seconds
+            vb_timeoutSet = true;
+        }
+    }
+
+    function clearData(){
+        //clear live trip arrays
+        LiveTripRows = new Array();
+        LiveTripRows_elapsedtime = new Array();
+        LiveTripRows_validtime = new Array();
+        LiveTripRows_classID = new Array();
+        LiveTripRows_UpdateTime = new Array();
+        //LiveTripID = 0;
+
+        //Clear Lined up arrays
+        LinedUpRows = new Array();
+        LinedUpRows_Scr = new Array();
+        LinedUpRows_OOG = new Array();
+        LinedUpRows_ENo = new Array();
+        LinedUpRows_ClassID = new Array();
+
+        //set variable to default state
+        vb_timeoutSet = false;
+    }
+
+    function HighlightUpdates(oldData, class_id){
+        var new_pos, old_pos;
+        var class_index = GetClassIndex(class_id);
+        var copy_obj = live_class_obj.class_trips[class_index].leaderboard;
+        var newData = JSON.parse(JSON.stringify(copy_obj)); //copy_obj.slice();
+        for(var NewRowCount=0; NewRowCount<newData.length;NewRowCount++){
+
+            //Ignore Delta for eliminated trips
+            if(isEliminatedValue(newData[NewRowCount].Pos)){
+                continue;
+            }
+
+            var foundinold = false;
+            var hasupdate = false;
+            var delta = "";
+            newid = newData[NewRowCount].id;
+            for(var OldRowCount=0; OldRowCount<oldData.length;OldRowCount++){
+                oldid = oldData[OldRowCount].id;
+                if(newid == oldid){
+                    foundinold = true;
+                    if(newData[NewRowCount].Pos != oldData[OldRowCount].Pos){
+                        delta = oldData[OldRowCount].Pos - newData[NewRowCount].Pos;
+                        if(isNaN(delta)){ //Calculate delta when NaN
+                            new_pos = parseInt(newData[NewRowCount].Pos.match(/\d/g).join(""));
+                            old_pos = parseInt(oldData[OldRowCount].Pos.match(/\d/g).join(""));
+                            delta = old_pos - new_pos;
+                        }
+                    }
+
+
+                    if(class_type == "Jumpers"){ //Check jumper class fields (R1T, R1F, J0T, JOF)
+                        if((newData[NewRowCount].R1F != oldData[OldRowCount].R1F)||(newData[NewRowCount].R1T != oldData[OldRowCount].R1T)||(newData[NewRowCount].JOF != oldData[OldRowCount].JOF)||(newData[NewRowCount].JOT != oldData[OldRowCount].JOT)){
+                            hasupdate = true;
+                        }
+                    }
+                    else{ //Check J1, J2, J3, .. J6
+                        if((newData[NewRowCount].J1 != oldData[OldRowCount].J1)||(newData[NewRowCount].J2 != oldData[OldRowCount].J2)||(newData[NewRowCount].J3 != oldData[OldRowCount].J3)
+                                || (newData[NewRowCount].J4 != oldData[OldRowCount].J4)||(newData[NewRowCount].J5 != oldData[OldRowCount].J5)||(newData[NewRowCount].J6 != oldData[OldRowCount].J6)){
+                            hasupdate = true;
+                        }
+                    }
+                    break;
+                }
+            }
+
+            if(!foundinold){
+                delta = newData.length-newData[NewRowCount].Pos+1;
+                continue; //Do not show delta for row just slotted-in
+            }
+            else if(isNaN(delta)){
+                delta = newData.length-newData[NewRowCount].Pos;
+            }
+
+            //Safety check to bypass invalid value
+            if(isNaN(delta)){
+                delta = newData.length - NewRowCount;
+            }
+
+            //Set delta
+            live_class_obj.class_trips[class_index].leaderboard[NewRowCount].delta = (delta != "") ? delta.toString() : "0";
+        }
+    }
+</script>
+
+<!-- Utility Functions -->
+<script type="text/javascript">
+    function timeToSeconds(time) {
+        time = time.split(/:/);
+        return time[0] * 3600 + time[1] * 60 + parseInt(time[2]);
+    }
+
+    function getNonEmptyValue(value){
+        if(value=="" || value=="0" || value=="0.0" || value=="0.00"){
+            return "";
+        }
+        return value;
+    }
+    function isEmptyValue(value){
+        if(value=="" || value=="0" || value=="0.0" || value=="0.00"){
+            return true;
+        }
+        return false;
+    }
+    var disqualification_statuses = ["CR","DNC","DNP","DNS","DSQ","EL","EX","FTC","FTQ","FTQ-CI","FTQ-GA","FTQ-ME","FTQ-O","FTQ-OT","FNR","HC","HF","MR","NS","OC","RT","RF","S","TE","UNJUDGED","VF","VW","WD"];
+    function isEliminatedValue(value){
+        if(disqualification_statuses.indexOf(value) >= 0 || value=="WD" || value=="DNS" || value=="RT" || value=="EL"){
+            return true;
+        }
+        return false;
+    }
+    function getGMTDateTime(d){
+        return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(),  d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds());
+
+    }
+    
+    function RemoveElement(array, element){
+        var vl_find = jQuery.inArray(element, array);
+        if(vl_find != -1){
+            array.splice(vl_find,1);
+        }
+        return array;
+    }
+
+    function multiSort(array, sortObject) {
+        const sortKeys = Object.keys(sortObject);
+        
+        // Return array if no sort object is supplied.
+        if (!sortKeys.length) {
+            return array;
+        }
+        
+        // Change the values of the sortObject keys to -1, 0, or 1.
+        for (let key in sortObject) {
+            sortObject[key] = sortObject[key] === 'desc' || sortObject[key] === -1 ? -1
+                            : (sortObject[key] === 'skip' || sortObject[key] === 0 ? 0 : 1);
+        }
+        
+        const keySort = (a, b, direction) => {
+            direction = direction !== null ? direction : 1;
+            
+            if (a === b) { // If the values are the same, do not switch positions.
+                return 0;
+            }
+            
+            // If b > a, multiply by -1 to get the reverse direction.
+            return a > b ? direction : -1 * direction;
+        };
+        
+        return array.sort((a, b) => {
+            let sorted = 0;
+            let index = 0;
+            
+            // Loop until sorted (-1 or 1) or until the sort keys have been processed.
+            while (sorted === 0 && index < sortKeys.length) {
+                const key = sortKeys[index];
+                
+                if (key) {
+                    const direction = sortObject[key];
+                    
+                    sorted = keySort(a[key], b[key], direction);
+                    index++;
+                }
+            }
+        
+            return sorted;
+        });
+    }
+
+    window.onblur = function() {window.blurred = true;};
+    window.onfocus = function() {window.blurred = false;};
+</script>
+
+
+
+    </body>
+</html>

@@ -1,0 +1,79 @@
+{
+  "reviewer": "/root/schedule_stage_review",
+  "reviewed_at": "2026-11-08T19:23:24.013028+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Independent exact saved-class detail predicate review preserving schedule and saved detail data",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\candidate",
+  "integration_coverage": "Actual collector fixtures, before-write saved-state selection, counters/membership, DataStore/linker/schema binding and native metadata evidence; no live proof",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\baseline\\fast_collector.py",
+      "sha256": "70ca4b29d3f2aeff79b0dac9c8998e0d0b981ff324111ae600c65f0b0178f054"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\baseline\\schema.json",
+      "sha256": "db8d9f3b31d473951cddd3f0697fa37baf8dbbb815310675e107e488f95e3398"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\candidate\\fast_collector.py",
+      "sha256": "b3881265235b79bdd8bda0f0c160dbffa8a5f0939287c051c1485b0fb9d9a04c"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\candidate\\schema.json",
+      "sha256": "09d22e7bc92a44d55cea89c2d23ef2ee7871939759099d2f393bc8491b0258cc"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\review\\report.md",
+    "sha256": "9d3159f58d17abb05d5d50c7ae2ce9df6213d1f93cc691638623061bcc55761f"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\review\\commands.json",
+      "sha256": "51fc41d2ff757c487d0a5c11fb5d3ab570b9c333a33c363368a590fa8fda7152"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "Independent eight collector and three targeted cases",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "filter-eight",
+        "edges"
+      ]
+    },
+    {
+      "name": "Approval boundary, formula identity and actual downstream consumers",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Read exact approved predicate/delta and actual store/linker; existing native field proven from parent-saved read-only evidence, not reviewer live query",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\task.md",
+          "sha256": "288fa239ec3ea2163f1be24cd6ab383e198758c35a2c6f1644ab1cadb77577a7"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\live-field-schema.json",
+          "sha256": "727142bab5672daea2831f063b6831d5d4eb29e90f549de846e9351b149138b0"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\wef_data_store.py",
+          "sha256": "465bc5fd78bff26f0c4ad710b0fac45a14c814aa2cd3674395da7b2296388e59"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\linking.py",
+          "sha256": "334443d25edd8e3fdb8f9b326fd0add3f253044807d8cc72948012acd2df37e9"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\class-detail-filter-20261108\\review\\edges.py",
+          "sha256": "c0f21db70fbde777d9af2475c848989b1b7ed46bf78963c8c768453e8d9b8d9d"
+        }
+      ]
+    }
+  ]
+}

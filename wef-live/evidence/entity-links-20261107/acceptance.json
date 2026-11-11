@@ -1,0 +1,31 @@
+{
+  "verified_at": "2026-11-08T03:40:14.006062+00:00",
+  "code_review": "PASS author,not independent",
+  "offline": "25PASS",
+  "native_schema": "6fields verified correct targets/inverses",
+  "deployed_hashes": "26JSverified;23unchanged",
+  "normal_dispatcher": {
+    "last_run": "2026-11-07T22:39:01.0000000-05:00",
+    "next_run": "2026-11-07T22:42:00.0000000-05:00",
+    "name": "wef-live-collector",
+    "state": "Ready",
+    "last_result": 0,
+    "observed_at": "2026-11-08T03:40:13.8442781Z"
+  },
+  "populated_entity_linking": "UNVERIFIED:nextnaturallyeligibleday0linkerpassrequired;currentwindowclosed/prioritydate mismatch",
+  "latest_status": {
+    "run_id": "2651187e-e4fa-4563-888d-64d0decdaf84",
+    "reason": "priority-date-mismatch",
+    "collect": false,
+    "date": "2026-11-08"
+  },
+  "latest_linker_run_before_deploy": {
+    "run_id": "e8572a6b-0b67-4a69-82e6-45a669596d64",
+    "started": "2026-11-07T19:20:08.728Z"
+  },
+  "protected": "existingfilledlinks,helperbusinessdata,collectionstages,sourceheaders,status,cadence,decodedpause,cleanup,Recordsremoval",
+  "manual_run": false,
+  "record_repairs": false,
+  "field_rule": "___presumedretired/wrong;verifyreplacement,preservehistory;exactowner show/day aliases documented",
+  "remaining": "Observe next eligible normal entity-link pass and native reciprocal readback;no observer,manual linker/backfill or forced date. MissingstoredsourceIDsremainemptywhiledecodedpaused."
+}

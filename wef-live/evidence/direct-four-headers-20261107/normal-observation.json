@@ -1,0 +1,130 @@
+{
+  "observed_at": "2026-11-08T00:15:49.314181+00:00",
+  "deployed_at": "2026-11-08T00:13:10.0170498Z",
+  "manual_runs": false,
+  "receipts": {
+    "live-check-last-run.json": {
+      "run_id": "d602e778-0b69-45fb-b867-e41990d67d2d",
+      "started": "2026-11-08T00:15:15.196Z",
+      "completed": "2026-11-08T00:15:16.476Z",
+      "ok": true,
+      "issues": [
+        {
+          "message": "Warning: live status is true but today 2026-11-07 differs from Shows priority-0 date 2026-11-08 for show 200000077"
+        }
+      ],
+      "stage_errors": [],
+      "logging_errors": [],
+      "scope": {
+        "show": 200000077,
+        "customer": 15,
+        "date": "2026-11-08",
+        "authority": "rec8GtJJ7eSjY3Nd3",
+        "checked_at": "2026-11-02T06:04:12.307Z",
+        "active": true
+      },
+      "live_status": true,
+      "collect": false,
+      "reason": "priority-date-mismatch",
+      "minutes": 60,
+      "next_check_at": "2026-11-08T01:15:00.000Z",
+      "counts": null
+    },
+    "lane-groups-last-run.json": {
+      "run_id": "6474aba9-5fe2-4637-beae-3adbf8ca5b73",
+      "started": "2026-11-07T19:18:06.179Z",
+      "completed": "2026-11-07T19:18:12.921Z",
+      "ok": true,
+      "issues": [],
+      "stage_errors": [],
+      "logging_errors": [],
+      "scope": {
+        "show": 200000077,
+        "customer": 15,
+        "date": "2026-11-07",
+        "authority": "rec8GtJJ7eSjY3Nd3",
+        "checked_at": "2026-11-02T06:04:12.307Z",
+        "active": true,
+        "eastern_time": "2026-11-07 14:15:12"
+      },
+      "live_status": true,
+      "collect": null,
+      "reason": null,
+      "minutes": null,
+      "next_check_at": null,
+      "counts": {
+        "live-groups": 34,
+        "live-class-appearances": 72
+      }
+    },
+    "lane-rings-last-run.json": {
+      "run_id": "3d7924b9-d7d7-4d53-9cd8-040043022724",
+      "started": "2026-11-07T19:18:06.183Z",
+      "completed": "2026-11-07T19:18:11.528Z",
+      "ok": true,
+      "issues": [],
+      "stage_errors": [],
+      "logging_errors": [],
+      "scope": {
+        "show": 200000077,
+        "customer": 15,
+        "date": "2026-11-07",
+        "authority": "rec8GtJJ7eSjY3Nd3",
+        "checked_at": "2026-11-02T06:04:12.307Z",
+        "active": true,
+        "eastern_time": "2026-11-07 14:15:12"
+      },
+      "live_status": true,
+      "collect": null,
+      "reason": null,
+      "minutes": null,
+      "next_check_at": null,
+      "counts": {
+        "live-rings": 7
+      }
+    },
+    "lane-classes-last-run.json": {
+      "run_id": "a08e689c-2024-4f03-b7fa-b017e00c0ab2",
+      "started": "2026-11-07T19:18:06.186Z",
+      "completed": "2026-11-07T19:20:06.789Z",
+      "ok": true,
+      "issues": [],
+      "stage_errors": [],
+      "logging_errors": [],
+      "scope": {
+        "show": 200000077,
+        "customer": 15,
+        "date": "2026-11-07",
+        "authority": "rec8GtJJ7eSjY3Nd3",
+        "checked_at": "2026-11-02T06:04:12.307Z",
+        "active": true,
+        "eastern_time": "2026-11-07 14:15:12"
+      },
+      "live_status": true,
+      "collect": null,
+      "reason": null,
+      "minutes": null,
+      "next_check_at": null,
+      "counts": {
+        "live-classes": 67,
+        "live-entries": 409
+      }
+    },
+    "cleanup-last-run.json": {
+      "run_id": "d9dea75e-9113-484a-aa55-34da1b1a5f98",
+      "started": "2026-11-08T00:15:20.787Z",
+      "completed": "2026-11-08T00:15:22.143Z",
+      "ok": null,
+      "issues": null,
+      "stage_errors": null,
+      "logging_errors": null,
+      "scope": null,
+      "live_status": null,
+      "collect": null,
+      "reason": "No show/day change; three-hour log check not due",
+      "minutes": null,
+      "next_check_at": null,
+      "counts": null
+    }
+  }
+}

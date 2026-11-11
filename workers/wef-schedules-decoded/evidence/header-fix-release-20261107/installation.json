@@ -1,0 +1,20 @@
+{
+  "installedAt": "2026-11-07T21:36:17.105Z",
+  "files": [
+    {
+      "path": "workers/wef-schedules-decoded/worker.js",
+      "sha256": "e6b2c505a163e9956c7ee23a552ca5b204e313f0bd71506f2cc4c471a4e237e4",
+      "candidateMatch": true
+    },
+    {
+      "path": "wef-data/runtime/wef-decoder-runner/worker.js",
+      "sha256": "eff1667fe6598ebb8054e53259654e3d1ed7a5e140331fb8b28a74aefd946f62",
+      "candidateMatch": true
+    },
+    {
+      "path": "workers/wef-schedules-decoded/tests/worker.test.js",
+      "sha256": "b5b2622e28ac79296e22c449e6d83480428c79327d32692b9945f654d951ba4c",
+      "candidateMatch": true
+    }
+  ]
+}

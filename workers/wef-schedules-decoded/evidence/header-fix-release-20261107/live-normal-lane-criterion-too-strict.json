@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-07T21:41:55.036Z",
+  "results": [
+    {
+      "mode": "normal",
+      "kind": "schedule",
+      "status": 200,
+      "lane": "cloudflare-fallback",
+      "count": 7,
+      "queueStart": 1794087721796,
+      "queueEnd": 1794087722053,
+      "ok": false
+    }
+  ],
+  "pauseGaps": [],
+  "pausePass": true,
+  "allPassed": false
+}

@@ -1,0 +1,463 @@
+# Current release — four direct Wellington feeds
+
+**Version 2026.11.07.6 · Deployed November 7, 2026 at 7:13 p.m. Eastern.** Owner-approved narrow request correction. Status verified by one normal scheduled run; groups/rings/class-details scheduled verification remains pending.
+
+The four active public feeds now use direct Wellington URLs and exactly these explicit headers: `Accept: application/json`, `Cache-Control: no-cache`, the approved iPhone Safari User-Agent, and `Sec-Fetch-Site: cross-site`. Status uses `sglapi.wellingtoninternational.com/homepage/getLiveClassStatus`; groups, rings and live-class-details use `sgl.wellingtoninternational.com` at their existing paths/query parameters. This supersedes older all-four-proxy descriptions below. No cookie/token or extra browser headers are supplied by Live. Node may supply normal transport defaults.
+
+Decoded `/classes/{id}` remains proxy-defined and **paused**. Only `activity.js` and `source.js` changed; the other24JS, shared source reader, registered task, cadence, status decisions/parsing, stage4–6 collection/save logic, empty-only linker, relationships and delete-only cleanup remain unchanged. No manual runs, record repairs or new observers.
+
+Nine focused offline checks passed; author review passed (not independent). Exact baseline/candidate/diff, review receipt and installed26JS hashes are in [direct-four-headers evidence](evidence/direct-four-headers-20261107/). Normal scheduled acceptance remains separate from Decoder diagnostic proof. Existing known trouble/alert gaps remain unchanged.
+
+**Normal-run proof:** November7 **7:15 p.m. Eastern**, status run `d602e778-0b69-45fb-b867-e41990d67d2d` returned **true**, with zero stage/logging errors. Existing date-mismatch warning recorded: Shows priority0 isNovember8, today isNovember7. Existing rule kept detailed collection idle and next status due8:15p.m. Three direct detail feeds remain **unverified through scheduled collection** until a naturally eligible day0 window. No forced runs/date changes. [Acceptance](evidence/direct-four-headers-20261107/acceptance.json).
+
+# Current release — corrected w-shows / w-days references
+
+**Version 2026.11.07.5 · Locked 2026-11-07T10:26:13-05:00 · America/New_York.** Narrow owner correction deployed and verified; no extra workflow changes.
+
+- Linker now uses the existing synced **w-shows**, **w-days** and unchanged **wef-data.schedules**. The new `w-shows`/`w-days` fields on five Live tables point to those exact native targets. Former filled `show`/`show-day` fields remain intact as historical references; no destructive retargeting or record migration.
+- **Class↔group is confirmed:** active native relationship is **live-classes.groups ↔ live-groups.live-classes**. Both directions are populated (sampleclass200031204/group200028523). No new relationship, duplicated field or class/group code change was needed.
+- Empty links remain empty when there is no exact eligible match. Their individual logs now recommend **“No retry recommended until source data changes.”** This is an informational recommendation, not a new retry cache or eligibility gate. Misses use already loaded data; no individual source/network retries are attempted for them. Existing empty-only and Dropped-schedule rules remain unchanged.
+- **Stages4–6, Data schedules, source requests, cadence and cleanup are unchanged. Decoded requests remain paused.** Existing null-as-empty handling remains unchanged. Only three existing configuration/advisory files changed;23otherJS/task preserved.10necessary correctly targeted fields were added without manual record writes.
+
+**Verification:**17offlinechecks and author code review passed (not independent review). Normal **10:15 and10:21 Eastern** collection/link passes completed without stage/logging failures and with0decodedrequests. The first filled **1,936 w-reference fields** across968existing records;the second changed0records. All968records and5,197priorpopulatedforwardfields were retained;423trip business rows stayed frozen. Data links stayed961. Seven existing Dropped-only Data misses remained empty and individually logged. Class/group native backlinks verified before and after. No extra checks, tasks, source probes, manual runs or record repairs.
+
+Evidence: [acceptance](evidence/w-shares-20261107/acceptance.json), [review](evidence/w-shares-20261107/review.md), [17checks](evidence/w-shares-20261107/offline.json), [deployed26JS](evidence/w-shares-20261107/deployed.json), [w-field targets](evidence/w-shares-20261107/schema-readback.json), [class/group pair](evidence/w-shares-20261107/class-group-schema.json), [locked baseline](evidence/w-shares-20261107/locked-baseline.json). Existing known-trouble/holds below remain. Older sections describe dated history where superseded. No revert was needed;the reviewed [code-only revert](evidence/w-shares-20261107/revert.ps1) retains all schema/data/validlinks.
+
+# Current release — empty-only linker
+
+**Version 2026.11.07.4 · Locked 2026-11-07T10:06:03-05:00 · America/New_York.** Owner-approved linker deployed and verified; unrelated work stays locked.
+
+- **Stages 4–6 stay unchanged.** Groups, rings and live class details collect/save as before. Status uses Shows' published Eastern time and priority-0 date. Source URLs, headers, three-minute/hourly rules, task and cleanup remain unchanged.
+- **Stage 7: `linker.js` runs after collection finishes.** It fills empty native fields only: `show` → synced **wef-shows.show**, `show-day` → synced **wef-shows.show-days**, and `data-schedules` → synced **wef-data.schedules** on all five Live tables. Fifteen missing fields were added; no records were manually written. Existing internal forward links are reused. Airtable maintains reciprocal links automatically. Populated forward fields are not audited, corrected or rebuilt. Old WEF Schedules links stay retained; the linker never reads/writes that target.
+- **Exact saved keys only.** Use show/day/ring/group/class/trip IDs and Data's explicit ring/group/class keys, with source ring-ID mapped to ring-number. No names, invented IDs or forced joins. Existing Dropped-schedule exclusion stays. Missing/ambiguous matches remain empty and are individually logged; other links/collection continue. No new readiness gates, tasks or schedules.
+- **Decoded-trip requests remain paused.** Empty native links on existing trips can be filled by the approved linker, but decoded identities, results, membership states and other business values remain frozen. No new decoded runner or automatic resume.
+- **`completed:null` is handled as an empty list.** Original source evidence, ring record and other links remain. No null-format error, payload correction or waiting condition. Natural null occurrence is not claimed.
+
+**Normal verification:** November 7 **09:51 and 09:57 Eastern** runs passed without stage/logging failures. Both collected35groups/71appearances,7rings,66classes and408live-detail rows; decoded requests0. First linker filled **2,897 empty fields on968 existing records**:968show,968day and961Data-schedule fields. All968priorrecords and2,300populatedforwardfields were retained. All423pausedtrip business records remained unchanged. The second linker wrote **zero fields/records**. Native heartbeat/run-log and one-per-skip errs-log readback confirmed both runs.17offlinechecks and author code review passed (not independent review).
+
+**Seven known skips:** only Dropped Data schedule occurrences match retained groups **200028530 /200028533**, class **200031158**, and its two trips/twoentries. Seven `data-schedules` fields remain empty; show/day and existing native links remain. Each skip is logged, not guessed or repaired. These are not collection stops.
+
+**Revert:** no rollout failure occurred. Reviewed [revert.ps1](evidence/linker-20261107/revert.ps1) restores only the three prior changed JS files and removes the new linker after the normal task finishes; intervening owner edits are protected. Retain added schema/data/valid links, never repair records or manually rerun. No new cleanup archives, observers, dependencies or runtime upgrades.
+
+Evidence: [acceptance](evidence/linker-20261107/acceptance.json), [review](evidence/linker-20261107/review.md), [17offlinechecks](evidence/linker-20261107/offline.json), [deployed26JS](evidence/linker-20261107/deployed.json), [native field targets](evidence/linker-20261107/schema-readback.json), [locked baseline](evidence/linker-20261107/locked-baseline.json). Existing known-trouble/hold notes below remain; older releases are historical where superseded here.
+
+# Current release — independent live details; decoded trips paused
+
+**Version 2026.11.07.2 · Updated November 7, 2026.** Owner-approved pause and Shows-time reuse are deployed. General lock remains outside these completed changes.
+
+- **Groups, rings and class-live-details continue independently.** Class details no longer call or wait for decoded `/classes/{id}`. Existing four-class concurrency, source snapshots, changed-only saves, logs, canonical day-0 and cadence remain.
+- **Decoded-trip requests and live-trips collection/state updates are paused.** All 423 existing day-0 trip records, read-back fields and native links remained unchanged through two normal runs. Existing legacy live-entries continue receiving live observations on their existing trip-based keys; known entry/entity identity columns and native links are retained. New observations do not invent missing entity IDs. A future separate decoded lane is discussion only; no new worker/task or automatic resume was introduced. Existing approved cleanup remains active.
+- **Status uses existing Shows data:** canonical show-days priority-0 date and `eastern-time (from show-times)` supply the date/window decision. No new table/field/request/freshness gate. Missing lookup retains the existing Eastern-clock fallback. Actual invocation timestamps/next-check scheduling still use the host clock. The live-status endpoint still supplies true/false; true/today inside05:00-19:00 collects3minutes, failedstatus retries3minutes, confirmedfalse/mismatcheddate/outsidewindow checks hourly.
+- **`completed:null` is handled:** treat it as an empty completed-group list, save that empty value, preserve the ring record and its other links, and continue without an error. Keep the original null in source evidence. The deployed implementation matches the passing source-shaped offline test. No payload correction or wait for a natural null is required; this is not an open fix. A natural null occurrence is not claimed as observed.
+- All four active feeds use the existing shared `wef-schedules-decoded.gombcg.workers.dev` proxy: homepage/getLiveClassStatus, ListAjax, LiveScoreWidget and getLiveClassData. Routes/headers/proxy and all other collectors were untouched by this release. `/classes/{id}` remains defined for reference, with no active caller in Live's class lane.
+
+**Verification:** Six focused pause/live-only/null/link checks and nine Shows-time/retry checks passed; author review, not independent review. Normal **07:36 and07:39 Eastern** runs completed without collection/logging errors:36groups,74class appearances,7rings,69class detail requests per run,405then407live-entry rows,**zero decoded requests**.423trip IDs/selected fields/native links remained unchanged by Airtable GET comparison. Normal **07:42 Status** used published `2026-11-07 07:39:13`, canonicalNovember7 and livetrue to collect at3minutes. Current25JS/task readback matches. No manual collector/provider calls, record repairs or observers.
+
+Evidence: [pause acceptance](evidence/pause-decoded-20261107/acceptance.json), [pause review](evidence/pause-decoded-20261107/review.md), [Shows-time acceptance](evidence/shows-time-20261107/acceptance.json), [current deployed hashes](evidence/shows-time-20261107/deployed.json). Older dated sections below are historical where superseded. Stage8publication and old24h retention holds, delete-only cleanup rules and known reporting limitations remain unchanged.
+
+# Current release — live-trips only
+
+**Version 2026.11.03.4 · Updated 2026-11-03T15:20:58-05:00.** Owner correction removes unnecessary separate trip-result/message/comment tables. The simplified collector is deployed. General lock remains; scheduled operation continues.
+
+- **live-trips** (`tblhUd5DucnpkEall`) remains the sole new trip table. Day-0 decoded class-source collection, keys, identities and existing native class/ring/group/schedule/legacy links are preserved.
+- Results now stay **directly on each trip**: placing, position, results-verified, class-status and results-json. Original source-json retains all source facts. Changed-only saves continue.
+- Separate **live-trip-results, live-trip-messages and live-trip-comments were empty and deleted**, with their three obsolete cleanup controls removed. Collector has no reads/writes/dependency on those tables. Airtable converted their former reciprocal columns to empty plain text; no broken table links remain.
+- Downstream results/messages/comments can reference the source trip-key. No new local child tables or messaging/comment workflow. Existing live-entries remains untouched and continues its existing collection.
+- **Cleanup:** live-trips stays in new-show deletion. New calendar day clears eligible completed heartbeat/run-logs/errs-log; every3hours checks1000/500; no separate show-day action. Active/current/diff logs, action history and references stay protected. Delete only, no new schedule/observer. Records supplies alerts.
+
+**85 offline checks passed; author review completed, not independent review.**25installed runtime hashes match candidate;21other JS and Windows task unchanged. Direct result fields and empty table/config removal were GET-read back. No manual collector/provider runs, business-record repairs or backfill. Source currentlyfalse, canonical day0November5; populated verification remains natural, not forced.
+
+[Review](evidence/live-trips-simple-20261103/review.md) · [Deployment](evidence/live-trips-simple-20261103/deployed.json) · [Schema readback](evidence/live-trips-simple-20261103/schema-readback.json). Normal scheduled proof recorded separately. Stage8/old24hourholds and known conditional cleanup-reporting P2s remain unchanged.
+
+**Normal scheduled verification:** November3 **3:21 and3:24p.m.Eastern** wakes completed exit0. Quiet collection/cleanup correctly skipped; exactly one live-trips cleanup control remains.25runtime hashes and task match. New class-source population remains naturally pending while live=false;85offline checks passed. [Acceptance](evidence/live-trips-simple-20261103/acceptance.json).
+
+## Earlier dated documentation — historical where superseded above
+
+# Current release — day-0 live-trips
+
+**Version 2026.11.03.3 · Updated 2026-11-03T14:57:59-05:00.** Owner-approved addition deployed within wef-live. General lock remains; this approval changes only the documented trips/result/message/comment structure and its existing new-show cleanup integration.
+
+## Collection
+
+The existing classes lane projects **live-trips** from the decoded `/classes/{class-id}?show_id=...&customer_id=15&cgid=-1` response already fetched through `wef-schedules-decoded.gombcg.workers.dev`. No new endpoints, tasks, helpers, count/status/age gates or reverse Entries reads. UI live details supplement matching trips; unavailable/empty UI details do not suppress decoded source trips. Individual errors are logged and valid trips continue. Empty collections succeed. Existing Shows day-priority **0**, live-status/date cadence, three independent lanes and logging remain.
+
+Each trip records show/day/class/ring and source trip ID/UUID, show-level entry-key, horse/rider/trainer/owner IDs and names, order/actual order, scratch/gone and source evidence. Missing source identities stay missing. Composite `trip-key` follows `customer|show|date|ring|class|entry|UUID` with numeric trip-ID fallback. `entry-key` is `show|entry`, allowing many class trips/riders across one horse's show entry. Existing **live-entries** records, keys, links and collection writes remain; retirement is not part of this release.
+
+## Tables and links
+
+| Table | Airtable table ID | Purpose |
+| --- | --- | --- |
+| live-trips | tblhUd5DucnpkEall | Individual day-0 source trips; native class/ring/group/available schedule and exact legacy-record links |
+| live-trip-results | tblPIZYbHp8850uoA | Each trip's source result facts, scores/times/faults/placing and verification state |
+| live-trip-messages | tblUbF9tygLGChbM4 | Messages directly related to an individual trip |
+| live-trip-comments | tblg29QWHi5GB8p4X | Comments directly related to an individual trip |
+
+Child tables link directly to their trip; parent reciprocal fields are **results, messages, comments**. Message/comment authoring and delivery belong to downstream owners; this collector does not invent or send them. Entity/show-entry source IDs/keys allow downstream linking without a new Live dependency on helper/Entries bases. Source show/date are direct fields; existing class/schedule links provide related context.
+
+## Cleanup and protection
+
+The four new tables are checked in existing **cleanup** controls and included in new-show deletion, child tables before trips. **New show clears all checked owned show records.** New calendar day clears eligible completed heartbeat/run-logs/errs-log; every 3 hours checks those log tables and deletes oldest500eligible at1000+. No separate new-show-day cleanup. Active/current/diff logs, permanent action history and reference/catalog tables remain protected. Delete only; no cleanup archives, new schedule or observer. Records supplies alerts. Existing source-evidence storage is unchanged.
+
+## Verification
+
+**85 offline checks PASS; author review PASS, not independent review.** Four table schemas,8trip links/reciprocals and4cleanup control rows were GET-read back. Installed25JS hashes match candidate;21existing JS and the entire scheduled task are unchanged. [Review](evidence/live-trips-20261103/review.md) · [Schema readback](evidence/live-trips-20261103/schema-readback.json) · [Deployment](evidence/live-trips-20261103/deployed.json).
+
+Normal scheduled proof is recorded separately as available. Source currently reports live=false and Shows day0isNovember5; idle checks do **not** prove populated trip/result/link coverage. No manual runs, forced source/date, historical backfill or record repairs. New-show cleanup with populated new tables also awaits a natural event. Stage8publication and old24hretention remain held; existing two conditional cleanup-reporting P2s remain separate.
+
+**Normal scheduled verification:** November3 **3:00 and3:03p.m.Eastern** completed exit0. Actual status check returnedfalse, no errors; heartbeat/run-log Skipped/completed read back. Following quiet wake and cleanup correctly skipped; four cleanup controls confirmed. New tables are empty pending natural day0activity; populated trip/result/native-link and new-show deletion coverage remain unverified. [Exact acceptance](evidence/live-trips-20261103/acceptance.json).
+
+## Earlier dated documentation — historical where superseded above
+
+**RELOCKED — November 3, 2026 · Version 2026.11.03.2.** The approved cleanup change is deployed and its edit exception is closed. Further code/workflow changes require explicit owner approval. Scheduled operations continue. Current rules, verification and limits: [README](README.md), [LOCK.md](LOCK.md); exact baseline: evidence/lock-20261103/baseline.json.
+
+# Current approved cleanup revision
+
+**Version2026.11.03.1 · Updated2026-11-03T09:05:12-05:00.** Owner-approved cleanup exception to the November2lock is deployed. Installed24JS hashes read back; only cleanup.js, airtable.js/retireCleanup and lanes.js's local cleanup-due evaluation changed. Existing Windows task, source polling cadence, schemas and other collectors are unchanged. Baseline and review: [release](evidence/cleanup-revision-20261103/TASK.md), [readback](evidence/cleanup-revision-20261103/deployed.json), [review](evidence/cleanup-revision-20261103/review.md).75offline checks PASS; author review, not independent.
+
+- **New Eastern calendar day:** clear all completed eligible records from heartbeat/run-logs/errs-log at any count.
+- **Every3hours:** inspect those three tables; at1000+ total records delete oldest500eligible completed records. Full calendar/show clears restart the3hour interval.
+- **New show:** clear all records in checked owned live-entries/live-class-appearances/live-classes/live-groups/live-rings, regardless of show-id, and eligible completed records in the three logging tables.
+- **New planning show-day:** no separate cleanup action.
+- Protect incomplete/Running logs, current invocation and its diff children. Preserve checked-table controls, permanent cleanup-logs/action history, catalogs and references. **Delete only; no new cleanup archives or deleted-field backups.** Existing archives remain untouched.
+- Same registered task evaluates local cleanup due state on quiet three-minute wakes. It does no provider/Airtable work or cleanup receipt write until due. No separate task/schedule/observer. Records supplies alerts; existing errs-log and local failure/stop evidence remain.
+
+The general lock stays in force. Stage8publication and old24hretention remain disabled. Known two conditional cleanup-reporting P2s are unchanged. Normal scheduled proof and naturally occurring deletion branches are recorded separately; no manual runs, forced events or record repairs.
+
+**Normal scheduled verification:** November3 **9:06 and9:09a.m.Eastern** completed exit0. Due three-hour check logged three below-threshold Skips (heartbeat231/run-logs498/errs-log1), zero deletions/archives/errors; repeat wake skipped cleanup without changing its checkpoint or action IDs. [Acceptance](evidence/cleanup-revision-20261103/acceptance.json). Natural new-calendar/new-show full clears and actual500deletion remain unverified operational branches, covered offline.
+
+## Earlier dated documentation — historical where superseded above
+
+**LOCKED — November 2, 2026 · documentation version 2026.11.02.13.** Further code/workflow changes require explicit owner approval. Normal scheduled collection, logs and delete-only cleanup continue. This is a documented freeze; no file permissions or Airtable permissions changed. See [LOCK.md](LOCK.md) for the exact baseline and remaining verification gaps.
+
+# Current Live release — delete only
+
+Version **2026.11.02.12** · Updated **2026-11-02T12:58:44-05:00**.
+
+The owner explicitly approved corrections and redeployment. Installed source hashes and existing task definition were read back successfully. This supersedes prior archive-era cleanup and pending-deployment statements below; old dated evidence remains history.
+
+- **New show:** delete nonmatching-show records in checked owned tables. No new cleanup archives or deleted-field backups.
+- **New Eastern calendar day only:** check heartbeat/run-logs/errs-log. At1,000+ records delete the oldest500 completed eligible rows; protect active/current invocation rows. Same show/day performs no cleanup table inventory or deletion.
+- **Logs:** cleanup-logs records table/action, start, completion, result, show IDs, deleted count and error. Old archive fields remain unused/zero for new actions. Local cleanup receipts contain action/count metadata only. Existing historical archives/catalogs are left untouched.
+- **Cadence:** actual live-status checks and registered runs are hourly around the clock when live=false, priority-0 date differs from today, or outside05:00–19:00Eastern. True/date mismatch adds an errs-log warning. True/today inside that window collects every3minutes. The existing hidden task wakes every3minutes24h as a local dispatcher; not-due wakes do not call providers or Airtable and do not create collection logs.
+- **Protected behavior:** independent lanes, IDs/links, changed-only saves, exact pre-delete target/value checks, canonical-show recheck, DELETE response/absence readback, active records and permanent catalogs. Stage8 publication and old24h retention remain disabled. Other collectors untouched.
+
+**Verification:**81 offline checks PASS; author review and review-packet verification PASS, not independent review. All24 installed JS hashes match the reviewed candidate;20 existing JS files unchanged. Windows normalized task duration PT24H toP1D and omitted default StopAtDurationEnd=false; semantic readback matches. No manual run, record repair or observer. Scheduled proof is recorded separately in evidence/delete-only-20261102/acceptance.json when available. No claim that future new-show/new-day deletion or populated activity has already occurred. Two known conditional cleanup-reporting P2 findings remain documented in the review.
+
+Evidence: [release task](evidence/delete-only-20261102/TASK.md), [review](evidence/delete-only-20261102/review.md), [installed readback](evidence/delete-only-20261102/deployed.json), [tests](evidence/delete-only-20261102/offline-final.json).
+
+**Scheduled readback:** November2,1:00p.m.Eastern check `0de37502-dff3-4d90-8d06-66c4e487c709` completed with task exit0. Source live=false; heartbeat/run-log both Skipped/completed, no errors. Cleanup correctly Skipped with zero actions on unchanged show/day. Next actual hourly check is2:00p.m.; second hourly check and future event deletion remain unverified. See [acceptance](evidence/delete-only-20261102/acceptance.json).
+
+## Prior dated documentation — historical only
+
+# Current cadence preparation — November 2, 2026
+
+Owner approved editing/testing the live-status/date rules and hourly checks overnight. Candidate and prepared existing-task XML are in evidence/live-cadence-20261102;71 offline checks passed. Not deployed: production files/task remain unchanged. No new task, schema, dependency, manual run or record repair. Deployment and normal scheduled verification require approval. Preserve cleanup's current implementation, two existing conditional reporting findings and the separately pending new-show/new-day trigger revision. See README version2026.11.02.10 for current versus prepared behavior.
+
+# wef-live — cleanup release
+
+**Version: 2026.11.02.7**  
+**Updated: November 2, 2026, 9:34 a.m. Eastern.**
+
+New-show cleanup and log-only quick cleanup are deployed in the existing hidden three-minute task, after the three collection lanes finish. Stage 8 publication stays on hold. The previous blanket stage-9 hold is superseded only for the two cleanup actions below; the old 24-hour retention path is not re-enabled.
+
+- **New show:** read canonical default show ID directly from wef-shows. When it differs from cleanup's last handled show, archive and delete records not matching that new show in checked owned tables. First adoption reconciles existing old-show rows. A different day in the same show does not trigger this action.
+- **Quick cleanup:** only checked heartbeat, run-logs and errs-log. At 1,000+ records, archive and delete the oldest 500 completed eligible records by Airtable creation time. Active/current invocation logs are protected. This is separate from the new-show rule, which may remove more than 500 old-show logs.
+- **Control/latest state:** cleanup / tblZOqOQmpy0VgbUM. Records is the table count at action start; timestamps, result, old/new show IDs, archive/delete counts, archive file, error and run ID show the latest action.
+- **Permanent action history:** cleanup-logs / tblnMYLtIBvObY1xQ, one record per table action. Archive path and SHA-256 are recorded and verified before deletion. All new-show snapshots preserve original fields/native links before any deletion. Catalogs, references, code-reviews, meta and cleanup-logs are never deletion targets.
+- **Failure:** errs-log plus local cleanup-stop.json; collection continues, cleanup does not retry until owner decision. No observer or new scheduled task.
+
+**Normal-run verification:** November 2 at 9:27 and 9:33 a.m. Eastern. All three lanes completed with zero stage/logging errors. First cleanup run 10dccc0a-592d-48e1-8556-814cb651ab0d archived/deleted **989 records** in eight successful table actions for new show **200000077**. Repeat cleanup 414fb3e2-10bb-44d8-99d7-e8debdd61dae made **zero actions/deletions**, preserving the eight catalogs, archive hashes and retained current-show logs. Collection's existing priority-0 date remains November 5; this release does not change the date rule. Source returned no current live rows in these runs.
+
+Initial bulk cleanup took **207.402 seconds**, spanning the 9:30 tick; there was no 9:30 collection invocation. Repeat cleanup took **2.504 seconds**. Task definition is unchanged. **49 offline checks PASS**; review is author review, not independent. Natural 1,000/500 threshold behavior and a future newly occurring canonical show transition remain unverified operational branches. No manual run, record repair, source/provider call or forced show change was used.
+
+[Acceptance and exact six lane run IDs](evidence/cleanup-20261102/acceptance.json) · [Release](evidence/cleanup-20261102/release.md) · [Author review](evidence/cleanup-20261102/review.md).
+
+## Previous dated documentation
+
+The material below is preserved history; conflicting hold/retention/status claims are superseded by this release for its stated scope.
+
+## Day-0 membership release — November 1, 2026, 12:22 Eastern
+
+Documentation version: **2026.11.01.5**. Deployed through the unchanged hidden three-minute task, 05:00–19:00 America/New_York. Normal **12:24 and 12:27 Eastern** invocations verified: 25 Active groups / 43 Active class appearances, with both retained groups progressing Absent to Dropped. All 267 existing records and 987 checked durable links were preserved; 43 appearance IDs stayed stable and 86 reciprocal links passed. No stage/logging failures; five unresolved source identities remain individually logged. Offline author checks: 31 PASS; review is author review, not independent review. [Exact acceptance](evidence/day0-membership-20261101/acceptance.json).
+
+Live reads the default show and its `wef-shows.show-days.day-priority = 0`. `live-groups.record-status` and the new `live-class-appearances` table label source presence: Active; Absent after one complete missing observation; Dropped after the next; Active on return. Failed/incomplete inventories do not advance absence. Competition status, including Completed, remains separate. False/failed live status, Completed groups, detail-availability, membership state, entry totals and source age do not gate collection. Missing/ambiguous show/day identity is logged rather than invented.
+
+The inspected payload contains 25 groups and 43 group-class appearances (41 unique class details). Counts are dynamic, not limits. Appearance key is show|date|group|class; links point to existing groups/details. Existing class/entry keys and records are not rekeyed, duplicated or removed. Historical links are retained. States apply only to day 0; other days are untouched.
+
+Stages 8 publication and 9 archiving/cleanup remain **ON HOLD**. Logs, per-lane timings, changed-only saves and errs-log-only reporting remain. No manual collector/provider run, record repair, task/cadence/dependency change or observer. Earlier conflicting design/status sections below are historical. [Release evidence](evidence/day 0-membership-20261101/TASK.md), [author review](evidence/day 0-membership-20261101/review.md), [deployment](evidence/day 0-membership-20261101/deployed.json).
+
+## Current release - November 1, 2026, 09:54 Eastern
+
+Three-lane collection is deployed through the existing hidden task, every three minutes from 05:00 to 19:00 America/New_York. Owner explicitly permits errs-log-only failures for now; immediate Records-chat delivery remains deferred. Stages 8 (cross-base publication) and 9 (retirement/cleanup, including log cleanup) are ON HOLD and are not invoked by the new entry path. No prior stop/evidence file was cleared; no records were repaired or removed. Older publication/retirement sections below are historical and do not authorize resuming those paths.
+
+Two populated normal invocations at **09:51 and 09:54 Eastern** completed all three lanes without stage or logging failures. Latest coverage: 25 groups, 5 rings, 41 class records and 145 entries. Six unresolved trip identities are recorded individually in errs-log; valid records continue. Source identity completeness is therefore Partial, not a claim those six identities were resolved. Normal source collection/save times at 09:54: Groups 0.65s/2.36s, Rings 0.12s/0.80s, Class details 3.68s/3.70s; core lane totals 3.27-11.14s. These totals end before final log writes; Windows task completion/result separately confirms the full invocation finished before the next trigger.
+
+Changed-only repeat proof: 22 group records, 3 ring records and 165 class/entry records were successfully recollected without business writes; last-success coverage advanced and last-changed was preserved. All changed-field reports remain in run-logs and the lane receipt. Heartbeat/run-logs and six individual errs-log rows were read back for both populated invocations. Exact IDs, scopes, receipt hashes and limits: [normal-run acceptance](evidence/three-lanes-20261101/normal-run-acceptance.json); [release](evidence/three-lanes-20261101/release.md). No manual runs, source calls, forced failure, observers or record repairs. Rollback was not needed; saved baseline and rollback script remain available. Natural whole-stage failure and future day rollover under this release were not forced or claimed verified.
+
+## Day-priority and overlap validation — October 31, 2026
+
+Data publication requires the exact canonical `show-days.day-priority = 0` before inventory and dispatch; Live collection remains TODAY. Existing approved `live-observation-json` mapping preserves verified zero/false and leaves Data acquisition fields/native links intact as fallback. No runtime replacement was needed: installed guard reviewed, 43 targeted publication checks passed. Two existing normal runs at 07:56 and 08:02 Eastern verified 57 Data overlay writes with links/logs preserved. Operational result remains Partial due publication budget/identity issues and the separate blocked log-retention stop; no repairs or stops cleared. External consumer effective selection is not proved by overlay writes. [Exact evidence and limits](evidence/day-priority-precedence-20261031/release.md).
+
+## Current Live status — 30 October 2026, 13:03 Eastern
+
+The approved journal/count, cursor and exact-group corrections are implemented, reviewed and deployed. [Release and task evidence](evidence/publication-continuation-20261030/release.md), [independent review](evidence/publication-continuation-20261030/review.md), [deployed hash](evidence/publication-continuation-20261030/deployed.json), [first normal receipt](evidence/publication-continuation-20261030/first-normal-skip.json).112 offline tests pass; independent review includes real-journal restart/failure and deadline cases. Only publication.js changed;18 other runtime files are preserved.
+
+- **Completed:** journal-save failures are logged with accurate remaining counts; unsafe writes without durable intent are deferred, not dispatched. Other safe records/lanes, collection and future invocations continue. Pending intents survive failures and reconcile before retry. Outcome/log failures do not create a global halt. No immediate retry loops.
+- **Completed:** first budget-deferred item remains the next cursor; attempted writes including uncertain responses respect the unchanged cap. Exact known show/date/ring/group/native links are filtered before uniqueness, resolving the six false ambiguities. Actual multi-group or duplicate exact matches remain logged and withheld. No new matching rules, fallbacks, fields or budget/freshness relaxation.
+- **Normal execution verified:** run6a729be2-fbb4-481b-803b-b6a70f197e6b at13:02Eastern completed safely,0 publication writes,0 errors, retention Success. All18 source groups were completed; both publication lanes correctly Skipped.
+- **Only remaining acceptance blocker:** no current populated activity. Two populated postdeployment runs plus ring6 and the six exact class-occurrence writes cannot be proved from skipped runs. Existing collector checks continue every3minutes; inspect saved evidence within authorized work/on request. No manual source runs, repairs, forced joins or observers. Offline injected failures are not claimed as production events.
+- **Preserved:** prior24-hour log-retention acceptance, archive catalogs and links, source authority, independent lanes, Entries linking-only, existing Monday review. All business observers remain removed. Scope/code may be locked to this reviewed release; populated operational acceptance remains pending without adding new work.
+
+Earlier checkpoints below are historical where superseded. The prior failed-gate approval request was superseded by the owner's explicit direction to correct these paths.
+
+## Current publication blocker — 30 October 2026, 12:45 Eastern
+
+Publication is not complete. The has_JSON and concurrent-acquisition corrections now have normal-run proof. Deferred counts still underreport when journal-save EPERM escapes the item loop. One eligible Data ring remains70m16s behind its fresh source because an unprocessed budget-boundary item advances the cursor. Six occurrence errors are false ambiguities: each has one exact source-group match; class200030671 remains genuinely multi-group. Prior missing trip200399568 is resolved. See [exact evidence and smallest corrections](evidence/publication-fixes-20261030/current-blocker-20261030.md). This failed verification gate permits no further code patch/retry without separate approval. No observers or workflow changes.
+
+## Current release and scope-lock status — 30 October 2026
+
+Owner approved exactly three publication corrections in Records. They are implemented, independently reviewed, offline-tested (99 PASS) and deployed at 11:42:28 Eastern. [Release/task evidence](evidence/publication-fixes-20261030/release.md), [review](evidence/publication-fixes-20261030/review.md), [exact runtime hashes](evidence/publication-fixes-20261030/deployed.json), [two-run acceptance summary](evidence/publication-fixes-20261030/acceptance-summary.json). Only publication.js and the collector summary changed;17 other Live runtime JS files remain at the protected baseline, including retention and class-error/audit behavior.
+
+- **Completed corrections:** actual has_JSON spelling with true/false/missing preserved; accurate deferred and separate uncertain counts with readback-before-retry; stable identity/matching/link/overlay validation that permits unrelated acquisition metadata updates. Full row audits, one-field external PATCH, original freshness and budgets remain intact.
+- **Verified normal runs:** 3d7a24cd-ed6d-4c5f-b0ba-e1ec503c0dbe at11:44 and c8d1fe08-1c80-4097-a1f5-79120c1d258b at11:47 Eastern each collected196 entries. Schedules35+35 writes; Data37+38;145 archived/current readbacks preserve identity/native links and original freshness. Data deferred230 in each; uncertain1 then0 with NotApplied reconciliation before continuation. Both business outcomes remain Partial, not full coverage.
+- **Pending acceptance:** natural has_JSON publication into a Data group and positive concurrent-metadata exercise were not encountered in this two-run pair; both behaviors have independent offline regression proof. Full timely publication remains unproved due existing budgets/withheld matches. Same-date rollover and multi-group natural proof remain separate. Inspect saved evidence during authorized work/on request; no forced runs or guessed joins.
+- **Complete and protected:** completed-log24-hour retention accepted separately on b7a9e822-461a-42e2-bf25-dd601a268b1e and853114e5-fe5b-4c97-8999-ba0133a0a38c (1,424 archived/deleted, seven show catalogs and protected baseline retained). This is not publication proof.
+- **Continuing scope:** independent TODAY Live observations using canonical Shows and current Schedules references; Live tables plus approved single-field Schedules/Data overlays. No reverse Entries dependency or acquisition ownership transfer. Existing three-minute collector, recurring archives, logs and Monday review continue.
+- **Removed:** all business observers; do not recreate/replace hourly verify-live-natural-same-date-rollover, daily watch-wef-default-show-changes or wef-running-lanes-october-15-observation. Records context bookkeeping is separate. No task/cadence changes or record repairs.
+- **Lock readiness / next action:** reviewed scope/code baseline can be locked with pending acceptance explicitly recorded; full operational lock/acceptance cannot yet be claimed. A scope/code lock never disables collectors or independently approved work. No new corrections are authorized by verification; actual new failed gates retain the owner approval boundary. Existing Airtable review record is dated pre-fix evidence owned administratively by Records; this release receipt is local and no tracker was created.
+
+Earlier status below is historical wherever superseded by this checkpoint.
+
+## Approved 24-hour log retention — 30 October 2026
+
+Owner approved recurring archival/removal of completed heartbeat, run-logs and errs-log records older than24hours. This narrow release does not fix publication defects or change cadence/source collection. Existing normal entry workflow calls retention only after collection ok=true (Partial class/publication outcomes can still be ok=true); failed collection skips it. No manual runs/record repairs.
+
+Retention accepts terminal Success/Skipped/Partial/Failed completion older than24hours; active/incomplete/current invocation and non-run control rows are preserved. Error rows additionally require older completed parent evidence from existing run-logs or saved local receipts. At most250 rows per table per invocation, with four-minute request deadline and a60-second reserve before starting another table; initial backlog drains across normal runs.
+
+Exact immutable gzip batches are verified before deletion. Three fixed collections rows (`log-archive|heartbeat`, `log-archive|run-logs`, `log-archive|errs-log`, source-kind log-archive-catalog) point to immutable chained manifests, retaining previous references/hashes and full original row IDs/fields. Existing seven show archive catalogs and business collections are untouched. Manifest row-count counts archived records. No local archive TTL/purge is introduced.
+
+Every deletion batch rereads unchanged eligible rows, validates exact DELETE acknowledgements and verifies absence. Durable runtime/log-retention-stop.json is created before work, removed only on successful completion or safe deferral before a new table, and retained on failure/interruption. That marker blocks retention without stopping independent collection; no automatic retry/repair of uncertain deletion. Failure requires owner review/approval. Current run logs/heartbeat summarize retention and retain archive descriptions. Local receipts/logs and publication journals/control state are never deleted.
+
+Evidence: evidence/log-retention-20261030/{baseline.json,review.md,tests.txt,deployed.json}.91offline tests passed; independent11retention tests passed. Normal-run acceptance BLOCKED: first postdeployment10:41run failed with source ListAjax HTTP504; retention correctly skipped, no log deletion. Two successful normal retention runs remain unverified (evidence/log-retention-20261030/release.md). Existing3P2publication findings and populatedPartial acceptance remain separate.
+
+## Current operating checkpoint — 30 October 2026
+
+Read [module AGENTS](AGENTS.md), [current README](README.md) and [canonical owner block](../docs/coordination/wef-owner-operating-instructions.md) first. README's current operating reference supersedes conflicting historical paragraphs below. Live owns independent TODAY observations and approved one-field overlays only; Shows is canonical, Data acquisition/Season retention remain with LOCAL Season coordinator, Entries linking-only, Schedules still running. Three-minute collection and per-run recurring archive safeguards are unchanged.
+
+Documentation-only task: canonical block and four installed Operating Skills0.2.0 files actually read; no runtime changes/fixes. Review remains FAIL3P2 / tests80PASS / populatedPARTIAL; record rec5fLj3xEqkYBpxA in tbl1jEtJusopJGC6O/appgzosUcVqA4vZdf readback confirmed by Records. Records confirmed automation `wef-live-monday-code-review` ACTIVE/readback verified, targeting this chat, Mondays 10:00 America/New_York, first November 2, 2026, bounded to 20 minutes. Routine record `recYUERW7D8RF2OXS` in the same code-reviews table remains Pending first review; prior release review stays distinct. Next action: the configured periodic review, not an early/manual collector run. No independent automation creation. Preserve all failure/approval boundaries. No compaction executed or claimed.
+
+## Code-review procedure — 30 October 2026
+
+Review material Live changes before deployment and review observed behavior/verification failures against the exact deployed baseline. Use the explicitly requested code-review skill at C:/Users/gombc/.agents/skills/code-review/SKILL.md. Record release/hash manifest, reviewer/date/scope, actionable severity/file/symbol/trigger/consequence/smallest correction, tests actually inspected/run, scheduled evidence separately, gate-specific PASS/FAIL/PARTIAL/BLOCKED and exact next authorized action. Offline PASS never establishes scheduled acceptance.
+
+Do not rerun an unchanged release review on every invocation or create review timers/monitors. Reviews authorize no fixes, deployment, schema/business-data/task/cadence/source requests, manual collection or repairs. Applicable explicit approval is required for corrective work. Preserve module ownership and existing failure boundaries. For the October 30 review request, Records alone owns Airtable review schema/record writes and readback; Live supplies its report for base appgzosUcVqA4vZdf. This procedure does not reopen migration, retirement or ownership.
+
+## Approved Live publication v1 — 29 October 2026 (scope v1.7)
+
+Live independently collects TODAY observations. Entries is linking-only and is neither read nor written by Live; CWF has no role. Shows remains canonical show/day authority. Source collection, schedule links, logs, three-minute cadence and recurring verified archive-before-delete retirement are preserved.
+
+The narrow approved exception lets Live GET existing destinations and PATCH only `live-observation-json` on Schedules rings/schedules and Data rings/groups/classes/schedules/trips. Seven multiline fields were created and read back. Live owns this overlay, exact matching and its durable audit. Schedules and Data retain their independent collection, fields, keys, records, native links and lifecycle. No sibling runtime, sync, task or record repairs are included.
+
+Only validated observations within six minutes of their original receipt (one minute future tolerance) may publish. Empty/missing/stale detail does not clear or renew overlays. Class counters require successful class detail; ambiguous multi-group occurrences are withheld. Trips require exact dated identity and supported source provenance. Lanes run independently with bounded requests; uncertain writes retain durable intent and require readback on a later normal invocation. Source/retirement safety stops remain unchanged.
+
+Publication audit files retain full source evidence, destination before/proposed-after, intent, outcome and readback. Existing logs also report lane results and separate publication errors. Original acquisition fields and links are never publication writes. Entries has no new enrichment assignment.
+
+Deployment and review evidence: `evidence/publication-v1-20261029/deployed.json`, `review.md`, `tests.txt` (80 passing offline tests). Two NEW normal runs at 20:29 and 20:32 Eastern passed with empty activity, both lanes Skipped, matching logs and no errors. All baseline destination IDs/keys/native links and seven archive catalogs/hashes are preserved; only Data-owned last-success timestamps advanced. Acceptance remains PARTIAL: two naturally populated runs with PATCH/readback and repeat behavior are still required. Old v1.6 runs do not count. No manual runs or seeded proof.
+
+Earlier locks and descriptions below remain historical except for this explicitly approved publication addition.
+
+## LOCKED - wef-live approved scope v1.6 - 29 October 2026
+
+Owner directs this module to remain locked to its latest approved implementation. This scope lock does not stop the three-minute collector. Preserve independent TODAY source collection and identity validation, Shows/Schedules reference reads, logging, existing links/timestamps, verified recurring archive/catalog retirement and current/future protections.
+
+CURRENT dependency correction: Live does not read, qualify or wait for Entries. Its v1.6 reverse-read removal was separately approved, deployed19:33:37Eastern and verified by normal19:35/19:38runs (evidence/no-entries-read-20261029/release.md). Entries' separately approved linking-only restoration also removed its added Live reader and enrichment. Therefore neither current collector reads the other. Keep existing sync tables/native links/historical evidence intact; their presence does not create an active dependency. No Live preparation, enrichment reader, comparison work or new cross-module contract is pending.
+
+Both v1.6 normal Live runs were empty activity; populated link preservation is offline-tested, not naturally proved. Preserve this limit; do not reopen work or manufacture activity to fill it. Separately approved v1.4 recurring retirement remains: verified archives/catalogs before eligible removal on successful valid empty/skipped runs; failed/partial/unresolved inputs do not authorize cleanup; current/future protected.
+
+Reopen only for a verified defect or explicitly approved requirement. Defect investigation does not itself authorize fixes/deployment/task/schema/sync changes or record repairs. Consumer owners own their future reads; no future Entries input is implicitly assigned here. Older v1.5/Entries-read wording below is historical, superseded and not an active assignment. No runtime changes are made by this documentation lock.
+
+## Reverse dependency removed - 29 October 2026 (v1.6)
+
+Live independently collects observations; the current restored Entries collector does not read Live. Live no longer reads the Entries reference, inspects its publication, or qualifies its schedule/participation results. The Airtable adapter rejects Entries reads and metadata discovery; the unused Entries base setting is removed. The existing sync/table/link fields remain intact to preserve native links and history, not as a collection dependency.
+
+For collected observations, existing native entry links and original verification/check timestamps are omitted from writes and preserved. Previously current participation qualification is marked historical because Live no longer validates it. New observations do not create Entries links. Source identity validation, class/ring/group schedule links, class-error logging and recurring verified archive retirement are unchanged. Entries owns current downstream qualification. No manual runs, record repairs or source sync changes.
+
+58 offline tests passed, including populated repeat collection with Entries reads forbidden, exact link/timestamp preservation, unresolved classes, logging and archive/retirement safeguards. Deployment: 19:33:37 Eastern through the existing scheduled task path. Two normal runs at 19:35 and 19:38 Eastern passed: matching Success logs, no errors, unchanged archive catalog and verified file hashes. Evidence: evidence/no-entries-read-20261029/release.md. Both were empty activity; populated behavior remains offline-tested.
+
+## Prior v1.5 inspection - superseded by v1.6 above
+
+**Entries reads wef-live for downstream linking. Live owns independent observation collection.** Entries is linking-only, not a collector, lane-comparison or tenant-selection engine. CWF is not a core input, dependency or acceptance requirement. Season is retention-only and never a current collection gate.
+
+Implementation distinction: Entries collector.js now invokes live-input.js and allows GETs of Live live-entries, live-classes and collections. Live collector.js still reads the older wef-entries.entries reference and calls participation.resolve. This remaining reverse dependency is existing compatibility behavior, not the intended ownership direction. It was not removed by this documentation update; removing it requires separately approved code work preserving links. No populated downstream acceptance is claimed here.
+
+Health checked 29 October at 19:30 Eastern: normal 19:26 and 19:29 runs completed Success, with matching heartbeat/run-logs and no error rows or logging errors. Three-minute cadence remains. All seven old-show archive catalogs are Retired; hashes and exact fields/links verified for 550 archived records. No show 200000075 observations remain active. Current activity is empty; no duplicate retirement occurred.
+
+## 29 October 2026 - v1.4: old-data retirement on successful empty/skipped runs
+
+Owner explicitly approved removing the populated-activity prerequisite. After a valid canonical scope and successful collection outcome (including empty or skipped activity), Live archives and retires eligible older owned observations and operational collections. Partial/unresolved/failed runs still do not authorize retirement. Current scope and future dates remain protected; an upcoming selected date cannot retire today. All snapshots and permanent archive-catalog rows are verified before deletion; entries precede classes/groups/rings and operational collections are last. Catalog rows remain in collections with old show/date, counts, file path, hash and cleanup result. Exact delete acknowledgment IDs are required. Failures stop the retirement attempt without alternate/manual retries.
+
+This supersedes earlier statements that empty or skipped runs always retain old rows. Existing native link values and record IDs are retained in exact archives; removing active records necessarily removes their active reciprocal links. Synced source references are not edited or deleted. Cadence and source collection remain unchanged. 62 offline tests passed; deployed through the existing scheduled-task file path. Two normal runs at 19:08 and 19:11 Eastern passed: 550 older records archived/retired, seven catalogs retained, exact archive fields/links verified, then no repeat deletion. See evidence/retirement-20261029/release.md.
+
+# wef-live scope
+
+Version: 1.6
+Date: 29 October 2026 (America/New_York)
+
+Updated 29 October 2026. This document describes this chat's responsibilities and the existing collector. Proposed work is explicitly marked; documenting it does not authorize implementation. Status evidence is dated, not a continuous health guarantee.
+
+## Existing reverse reference - prior implementation evidence — 29 October 2026
+
+Approved simplification: the existing read-only Entries reference now syncs schedule-link-status, schedule-link-basis, group-link-status, link-issues and source-json. Automatic sync and editing restrictions are unchanged. Source reference view exposes only the existing twelve plus these five fields; no records were repaired or collectors manually invoked.
+
+Live consumes the producer's accepted mapping rather than rereading source schedules/show-collection or comparing the entire source/synced dataset. It retains exact scoped identity, uniqueness, active/successful status, local schedule-key availability and prior-link preservation. Both original sourceAsOf and last-seen must agree and be within 30 minutes, retaining the existing one-minute future-clock tolerance. Publication/heartbeat times cannot renew freshness. Missing evidence or any newer applicable unfinished/failed attempt prevents current qualification. Ordinary class-date mapping requires one schedule; observed-group mapping additionally requires linked group status, matching group ID and same-revision evidence. Live does not infer group eligibility from class-date association.
+
+Live ring/group/class schedule links, collection, archive protection and all three logging tables are unchanged. Missing/stale/unresolved references preserve prior links as historical and record issues while observations continue. The checks described in older release sections below are historical where superseded by this consumer contract.
+
+Verification: 54 tests passed. Normal 13:50 and 13:53 Eastern runs completed Success with matching heartbeat/run-logs, no errors, verified archives and all 397 records/links unchanged. Both had empty live activity; fresh populated qualification remains offline-tested rather than naturally demonstrated. See evidence/entries-contract-20261029/release.md.
+
+## Tenant-code removal — 29 October 2026
+
+Approved Live-only implementation: runtime comparison, uniqueness and overlap-lock helpers now live in `runtime-utils.js`; verified archive creation now lives in `archive.js`. Their behavior is preserved from the deployed baseline, with tenant lock-error labels renamed for Live. Runtime and verification imports no longer load tenant modules. The unmatched-participation explanation now says “No available validated entry reference.” Existing identity matching, links, archive protection, cadence and upstream collectors are unchanged.
+
+All 49 existing tests and three focused dependency/utility tests passed. Two normal scheduled runs at 13:11 and 13:14 Eastern completed successfully; heartbeat/run-logs agreed, errors were absent, verified archives were readable, and all 397 business records and links were unchanged. Both were no-live-activity outcomes; populated collection behavior is covered offline, not newly demonstrated by these runs. See `evidence/tenant-decoupling-20261029.md` for exact acceptance. Earlier documentation-only statements below describe the prior correction, not this separately approved implementation.
+
+## Workflow correction â€” 29 October 2026
+
+CWF is removed from all workflow responsibilities, collection parameters, dependencies, linking requirements and acceptance checks. Core collection is tenant independent; tenant filtering is downstream and does not control collection. Entries is linking-only, reading accepted participation/schedule evidence and Live observations. Season is optional retained context, never a current collection gate. The local Season coordinator owns Data collection/retention and Season stewardship. This is a documentation correction, not proof that deployed code has been changed or audited for remaining references. Code, Airtable and scheduled tasks remain unchanged.
+
+## Purpose
+
+Collect today's live ring, group, class and trip observations independently, connect them to schedules and eligible entries, and provide traceable observations for downstream Entries linking and Timing calculations.
+
+## Ownership
+
+| Owner | Responsibility |
+|---|---|
+| This wef-live chat | Inspect and maintain approved wef-live code/schema, test changes, verify normal scheduled behavior, document evidence/gaps and coordinate authorized handoffs. |
+| Windows task `wef-live-collector` | Execute the production collection every three minutes. Codex does not act as the runner. |
+| wef-shows | Sole new/default show discovery and canonical show/date authority; proposed canonical daily readiness publication. |
+| wef-schedules | Operational dated schedules, rings, source keys and dated collection health. |
+| wef-entries | Linking only: reads accepted participation/schedule evidence and wef-live observations; validates supported associations and preserves identities, provenance and source times. No acquisition, comparison or tenant selection. |
+| Downstream tenant consumers | Slice independently collected data by their parameters; no tenant controls core collection. |
+| Data | Complete per-show acquisition, retention, completeness/count evidence and accepted revisions. |
+| Season | Cross-show stewardship, history and indexes from verified Data; a distinct writer from Data. |
+| LOCAL wef-season-coordinator | Coordinates both Data and Season responsibilities. Former cloud wef-data-coordinator is historical evidence/reference only. |
+| wef-records-coordinator | Cross-owner contracts and rollover acceptance. |
+| wef-timing | Continuous calculations from qualified observations. Live does not calculate predictions. |
+| Results / messaging / publish / waze | Official results management, alerts/two-way messages, Webflow/Astro/API publication, and user interaction respectively; outside Live ownership. |
+
+## Bases and tables
+
+Owned destination: **wef-live â€” `appgzosUcVqA4vZdf`**.
+
+| Table | Purpose |
+|---|---|
+| live-rings | Ring identities and observed current/next/completed group references. |
+| live-groups | Dated group state, source counts and class/ring/schedule links. |
+| live-classes | Dated class observations, counts, current trip and related group/ring/schedule links. |
+| live-entries | Live trips with recovered entry/horse/rider identities and validated participation links. |
+| collections | Source collection outcome, fingerprint and archive reference. |
+| heartbeat | One row per collector invocation, keyed by run ID; start and final outcome. |
+| run-logs | Run result, scope, counts, errors and archive details. |
+| errs-log | One error per record; err-class, err-trip and err-group only when known. |
+| wef-schedules.schedules | Read-only synced schedule references. |
+| wef-entries.entries | Retained existing sync/link target only; not read by Live. |
+
+Runtime reads canonical wef-shows shows and local synced schedules. No Entries read or external schedule completeness replay. Existing reference syncs remain untouched; no upstream writes.
+
+## Recurring workflow â€” implemented
+
+1. Hidden launcher runs `run-hidden.vbs` â†’ `run.ps1` â†’ `entry.js`. Acquire the existing overlap lock, then stamp the invocation heartbeat Running.
+2. Read wef-shows. Require exactly one default for customer 15, valid show key/date/range and authority checked within 30 minutes. Reject missing, stale or ambiguous authority.
+3. Archive and label retained observations outside the canonical show/date historical. Preserve IDs, raw evidence and native links. Previously current participation labels become historical. Repeated labeling makes no further changes.
+4. Require selected date to match today in America/New_York before live acquisition. An upcoming selected day is a successful no-collection outcome, not a replacement date chosen by Live.
+5. Read the explicit live-status boolean. False skips detailed collection; later scheduled checks continue. True is permission to inspect availability, not proof of live rings or entries.
+6. Read the live group list for the canonical show/day. If every nonempty group is completed, skip detailed work. Empty groups are not treated as all-completed.
+7. Read local synced schedules only; read ring widget state. A validated empty group/widget response succeeds, preserves current observations and allows eligible older-data retirement. Malformed responses or missing expected rings remain errors.
+8. For available classes, collect live details and decoded identities. Match trip/entry/horse/rider identities; retain source evidence. The existing runner allows a bounded second snapshot read for a live identity mismatch. Persistent class errors are logged while other classes continue.
+9. Archive prior state, normalize and upsert Live's observations and links. Fresh observations receive scope-status current. This scope label alone does not prove fresh, resolved participation or timing readiness.
+10. After a successful outcome, including empty/skipped activity, archive and retire eligible older observations and operational collections. Partial/unresolved/failed runs do not authorize retirement. Verify all archives/catalogs before deletion; protect current scope and future dates. Keep archive catalogs in collections.
+11. Finish run-logs, then heartbeat; a brief Success/Running difference can occur between those writes. Persist receipts and separate error rows. Logging failures are isolated from collection. A failed run remains failed but does not permanently halt the next scheduled invocation.
+
+## Source endpoints
+
+These are scheduled runner inputs, not instructions to call them manually.
+
+| Input | Endpoint |
+|---|---|
+| Live true/false | `https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus?customer_id={customer}&datetimestamp={timestamp}` |
+| Group list/status | `https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax?from_wp_api=true` |
+| Ring widget | `https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget` |
+| Live class details | `https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id={show}&cid={class}&t={timestamp}` |
+| Decoded class identities | `https://wef-schedules-decoded.gombcg.workers.dev/classes/{class}?show_id={show}&customer_id={customer}&cgid=-1` |
+
+LiveScoreWidget returns ring data, not the boolean status. ClassStatus and `/ring/...` were discussed as reference endpoints; they are not additional current collection steps. Do not alter shared source/decoder modules or legacy routes under this scope.
+
+## Prior participation qualification rules - superseded by v1.6; source identity rules remain
+
+- Keep source show, group, class, entry, trip, horse and rider IDs distinct. Do not infer missing IDs from names.
+- Schedule links require exact active show/date/class/group matches; dropped rows are excluded. Classes may link to multiple groups without assigning every group to every participation.
+- Participation key is `show|date|entry|class`. Match the full identity, active status and a successful observation within 30 minutes.
+- Consume the producer's accepted schedule association and original-source evidence using the contract above; validate referenced local keys without replaying upstream completeness/parity checks. Do not invent group eligibility.
+- Valid participation links are current; failed validation preserves prior links as historical. Unlinked failures are unresolved. Live trips without an available validated entry reference are unmatched and may still be collected.
+- Retained old observations are not evidence of current activity. Consumers must use canonical show/date, observation freshness and participation qualification together.
+
+## Errors, records and archives
+
+Preserve proven keys, helpers, native links and source evidence. Log each class/trip/group issue separately, without guessed identifiers. A class error should not stop unrelated classes. Invalid authority, mandatory archive failure or other collection-level integrity failures may fail that run; never claim empty success from those failures.
+
+Existing local receipts and hashed archives live in `runtime/`; `runtime/collector.env` is private and must never be copied into documents. Local archives are the existing implementation and evidence, not authorization for a new durable local storage design. Any migration to the broader Airtable business-storage contract is separate scope. Archive-before-delete remains mandatory.
+
+## Daily readiness gate â€” proposed, not implemented in Live
+
+Live should consume verified daily totals/readiness published by Shows alongside its existing live-status check. It must not recreate Data counting or Show discovery.
+
+Latest owner-chat reports on 29 October: Data has begun producing daily summaries with normal-run verification; Shows reports the show-days schema created and publication work in progress. These reports do not prove completed publication or Live integration. Exact consumer fields and accepted publication evidence must be confirmed before implementation.
+
+Prerequisites:
+
+- Exact customer/show/date, count policy, coverage, accepted complete evidence, source timestamp and valid revision.
+- Only an explicit verified zero may suppress the acquisition covered by that evidence. Missing/stale/partial/error counts remain unknown.
+- Filtered downstream counts, zero trips or no competition classes cannot suppress all Live activity. Schooling/classless coverage remains unproved; uncovered ring/group activity must not be suppressed.
+- Planning policy reported by the local coordinator: scratches count; verified drops are excluded but retained historically; undated evidence is show-only; a zero lease is five minutes from accepted source time. Confirm the published contract rather than hard-coding this planning statement prematurely.
+- Continue lightweight authority/readiness rechecks. Revised counts, added entries, corrected evidence, expiration or default/day changes must release suppression under the approved policy. No permanent day shutdown.
+- Preserve heartbeat/run-log evidence of each skip, including scope/revision/reason. Skips do not authorize deletion or establish fresh observations.
+- Separate approval, offline coverage and normal Data â†’ Shows â†’ Live skip/resumption verification are required before claiming this gate operational. Three-minute cadence remains unchanged.
+
+## Downstream timing boundary
+
+Supply raw observations and qualification, not predicted start times, inferred results readiness or certified event clocks. Distinguish last-seen observation time, source-provided time labels and downstream calculation time. Saved `estimated_go_time` is time-only, can change and may be zero. Saved `jo_start` is a source-reported candidate, not a proven actual phase anchor. Phase flags/counts are not interchangeable. Results publication and notifications belong to their respective owners. See the saved findings in HANDOFF.md.
+
+## Verification and handoff responsibilities
+
+For approved changes: inspect the existing implementation and deployment route, make the smallest in-scope repeatable change, run relevant offline checks, and verify accepted outcomes through normal scheduled runs. Separate offline proof, observed production behavior and unproven cases. Keep a concise evidence record and handoff with exact files, run IDs/times, protected behavior, failures and next dependency.
+
+No manual collector runs, forced syncs, seeded production proof, record repairs or substitute source calls. A failed approved runner path requires separate authorization before another patch/retry of that path. Coordinate with other owner chats only when the user authorizes messaging. Do not modify other collectors, cadence, shared modules or publication routes without applicable approval.
+
+Current open acceptance items:
+
+| Item | State |
+|---|---|
+| Empty-response handling | Implemented; two normal October 29 runs verified. |
+| Historical rollover labeling | Implemented; two normal runs plus later read-only repeat checks verified record/link preservation. |
+| Same-date old-show deletion | Implemented and tested offline; **actual natural deletion proof still pending**. No qualifying production case was manufactured. |
+| Populated new-show links and sync-lag behavior | Natural rollover acceptance remains open. |
+| Full cross-owner rollover | Not established by Live's empty runs or labeling proof. |
+| Participation-specific multi-group eligibility | Reader support exists; natural producer proof remains open. |
+| Class 200030429 / trip 200398240 | Historical unresolved identity evidence; separate from rollover/readiness, not asserted to be a current-show problem. |
+| Shows readiness consumer | Not implemented in Live; publication and coverage dependencies above. |
+
+## Files and evidence
+
+- `collector.js`, `model.js`, `rollover.js`, `participation.js`: orchestration, normalization, rollover and link validation.
+- `activity.js`, `source.js`: source routes and activity gates.
+- `airtable.js`, `schema.js`: owned writes, read-only dependencies and archive-protected retirement.
+- `entry.js`, `run.ps1`, `run-hidden.vbs`: scheduled execution and receipts.
+- `test/`: offline verification; no production collector invocation.
+- [HANDOFF.md](HANDOFF.md): detailed dated contract, history and timing findings. Older sections may be superseded by its top updates.
+- [Empty-response evidence](evidence/empty-response-20261029.md).
+- [Rollover labeling evidence](evidence/rollover-labeling-20261029.md).
+- [Participation-link release](evidence/participation-link-release.md).
+- [Per-invocation heartbeat evidence](evidence/heartbeat-per-invocation-20261025.md).
+
+This scope document does not change code, Airtable, task configuration or workflow authorization.

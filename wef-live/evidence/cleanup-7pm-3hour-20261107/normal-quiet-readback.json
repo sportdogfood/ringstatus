@@ -1,0 +1,25 @@
+{
+  "read_at": "2026-11-08T02:10:26.935616+00:00",
+  "source": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\collector-2026-11-07.log",
+  "byte_start": 85127579,
+  "byte_length": 16384,
+  "window_sha256": "d7ba9872a893824b4c75579db5f96d845fccbf95ba31ded85e4df9f90d3f1deb",
+  "recovered_quiet_reports": [
+    {
+      "skipped": "next-check-not-due",
+      "next_check_at": "2026-11-08T02:15:00.000Z",
+      "cleanup": {
+        "run_id": "8a8936bf-f87e-46b4-bbf5-8428ca4fb168",
+        "result": "Success"
+      }
+    },
+    {
+      "skipped": "next-check-not-due",
+      "next_check_at": "2026-11-08T02:15:00.000Z",
+      "cleanup": {
+        "run_id": "488a51e2-374f-4750-8ba6-8890d8236d84",
+        "result": "Skipped"
+      }
+    }
+  ]
+}

@@ -44,9 +44,9 @@ function collectionKeys(runtime){
  zero||=Object.entries(state).filter(([,r])=>r.priority===0).sort((a,b)=>b[1].attempted-a[1].attempted)[0];
  if(!zero)return {keys:[],zero:null};
  show=zero[0].split('|').slice(0,-1).join('|');
- const days=scope?Object.entries(scope).filter(([,priority])=>[0,1,2,3].includes(priority)).map(([day,priority])=>
+ const days=scope?Object.entries(scope).filter(([,priority])=>[0,1,2,3,4].includes(priority)).map(([day,priority])=>
   [show+'|'+day,{...(state[show+'|'+day]||{attempted:0}),priority}]):
-  Object.entries(state).filter(([k,r])=>k.startsWith(show+'|')&&k.split('|').at(-1)>=zero[0].split('|').at(-1)&&[0,1,2,3].includes(r.priority));
+  Object.entries(state).filter(([k,r])=>k.startsWith(show+'|')&&k.split('|').at(-1)>=zero[0].split('|').at(-1)&&[0,1,2,3,4].includes(r.priority));
  const keys=days.filter(([,r])=>r['run-key'])
   .map(([k,r])=>[k,r['run-key']]).sort((a,b)=>a[0].localeCompare(b[0]));
  return {keys,zero,days};

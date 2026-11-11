@@ -1,0 +1,40 @@
+{
+  "base": "appdl16HJ5ETm8N69",
+  "table": {
+    "id": "tbl0IFf067w4wUBj5",
+    "name": "classes"
+  },
+  "field": {
+    "id": "fldO6Duw7yrbEgN4i",
+    "name": "class_related_data.results_verified",
+    "type": "formula",
+    "description": "Complete class_related_data.class_split_codes array from saved source-json. Keeps all items and empty arrays; does not control collection."
+  },
+  "config": {
+    "tables": [
+      {
+        "tableId": "tbl0IFf067w4wUBj5",
+        "fields": [
+          {
+            "id": "fldO6Duw7yrbEgN4i",
+            "type": "formula",
+            "config": {
+              "isValid": true,
+              "formula": "IF(\r\n  REGEX_MATCH({fldEtUIdS7OGIjToj}, '\"results_verified\":([0-9]+)'),\r\n  VALUE(REGEX_EXTRACT({fldEtUIdS7OGIjToj}, '\"results_verified\":([0-9]+)'))\r\n)",
+              "referencedFieldIds": [
+                "fldEtUIdS7OGIjToj"
+              ],
+              "result": {
+                "type": "number",
+                "options": {
+                  "precision": 0
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "source": "Actual read-only Airtable metadata tools, not a field creation/schema write"
+}

@@ -1,0 +1,70 @@
+{
+  "checkedAt": "2026-11-07T21:28:55.092Z",
+  "transition": {
+    "lastSuccessBeforeFirstFailure": {
+      "status": "Recorded",
+      "showId": 200000077,
+      "slot": "2026-11-07|11:39",
+      "clock": true,
+      "decoder": true,
+      "errors": []
+    },
+    "firstFailure": {
+      "status": "Recorded",
+      "showId": 200000077,
+      "slot": "2026-11-07|11:42",
+      "clock": true,
+      "decoder": false,
+      "errors": []
+    },
+    "observations": 192,
+    "failedObservations": 44,
+    "recoveryAfterFirstFailure": true
+  },
+  "hashes": [
+    {
+      "path": "wef-data/runtime/wef-decoder-runner/worker.js",
+      "matchesRecordedNov6Hash": true
+    },
+    {
+      "path": "wef-data/runtime/wef-decoder-runner/runner-relay.mjs",
+      "matchesRecordedNov6Hash": true
+    },
+    {
+      "path": "wef-data/runtime/wef-decoder-runner/public-live.mjs",
+      "matchesRecordedNov6Hash": true
+    }
+  ],
+  "nodeVersion": "v22.22.2",
+  "cloudflareDeploymentHistory": "Access denied by current app permissions; no login/refresh performed.",
+  "observationRuns": [
+    {
+      "healthy": true,
+      "start": "2026-11-07|01:00",
+      "end": "2026-11-07|11:39",
+      "count": 96
+    },
+    {
+      "healthy": false,
+      "start": "2026-11-07|11:42",
+      "end": "2026-11-07|11:42",
+      "count": 1
+    },
+    {
+      "healthy": true,
+      "start": "2026-11-07|11:45",
+      "end": "2026-11-07|14:18",
+      "count": 52
+    },
+    {
+      "healthy": false,
+      "start": "2026-11-07|14:21",
+      "end": "2026-11-07|16:27",
+      "count": 43
+    }
+  ],
+  "sustainedOutage": {
+    "lastHealthy": "2026-11-07|14:18",
+    "firstFailed": "2026-11-07|14:21"
+  }
+}

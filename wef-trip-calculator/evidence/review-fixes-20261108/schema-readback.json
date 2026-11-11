@@ -1,0 +1,149 @@
+{
+  "base": "appyoLTcNmLrgpHcg",
+  "verified_at": "2026-11-09T02:15:15.709Z",
+  "fields": [
+    {
+      "table": "wef-live.trips",
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "id": "fld00wwayEtucHyco",
+      "name": "calculated-order-of-go",
+      "type": "number"
+    },
+    {
+      "table": "wef-live.trips",
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "id": "fldF91Xc9KEb95Jyj",
+      "name": "calculated-estimated-go-time",
+      "type": "dateTime"
+    },
+    {
+      "table": "wef-live.trips",
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "id": "fldxjpBhMVuHUSGjq",
+      "name": "calculated-at-time",
+      "type": "dateTime"
+    },
+    {
+      "table": "wef-live.trips",
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "id": "fldxtRcqr8Y3f1HqU",
+      "name": "go-time-start-in",
+      "type": "number"
+    },
+    {
+      "table": "wef-live.trips",
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "id": "fldv3p14goD44o5wf",
+      "name": "go-time-end-in",
+      "type": "number"
+    },
+    {
+      "table": "trip-status",
+      "tableId": "tblYZ4aRBuRVmp4OA",
+      "id": "fldlQazMFaqmsGXuF",
+      "name": "trip-context",
+      "type": "multilineText",
+      "description": "Saved next trip, scoped progress, countdown and lateness evidence."
+    }
+  ],
+  "created": [
+    {
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "name": "calculated-order-of-go",
+      "result": {
+        "id": "fld00wwayEtucHyco",
+        "name": "calculated-order-of-go",
+        "type": "number",
+        "options": {
+          "precision": 0
+        },
+        "actionId": "act5eDhq8IW6gpegA"
+      },
+      "error": false
+    },
+    {
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "name": "calculated-estimated-go-time",
+      "result": {
+        "id": "fldF91Xc9KEb95Jyj",
+        "name": "calculated-estimated-go-time",
+        "type": "dateTime",
+        "options": {
+          "dateFormat": {
+            "name": "iso",
+            "format": "YYYY-MM-DD"
+          },
+          "timeFormat": {
+            "name": "24hour",
+            "format": "HH:mm"
+          },
+          "timeZone": "America/New_York"
+        },
+        "actionId": "actU3Dk1ZrepJwoJp"
+      },
+      "error": false
+    },
+    {
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "name": "calculated-at-time",
+      "result": {
+        "id": "fldxjpBhMVuHUSGjq",
+        "name": "calculated-at-time",
+        "type": "dateTime",
+        "options": {
+          "dateFormat": {
+            "name": "iso",
+            "format": "YYYY-MM-DD"
+          },
+          "timeFormat": {
+            "name": "24hour",
+            "format": "HH:mm"
+          },
+          "timeZone": "America/New_York"
+        },
+        "actionId": "acteR6IKhczVsjTB1"
+      },
+      "error": false
+    },
+    {
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "name": "go-time-start-in",
+      "result": {
+        "id": "fldxtRcqr8Y3f1HqU",
+        "name": "go-time-start-in",
+        "type": "number",
+        "options": {
+          "precision": 4
+        },
+        "actionId": "actee6LFFw5RJ1Z2s"
+      },
+      "error": false
+    },
+    {
+      "tableId": "tblUBWZnHbhDyxjwG",
+      "name": "go-time-end-in",
+      "result": {
+        "id": "fldv3p14goD44o5wf",
+        "name": "go-time-end-in",
+        "type": "number",
+        "options": {
+          "precision": 4
+        },
+        "actionId": "actuzDBBug0P1UfIJ"
+      },
+      "error": false
+    },
+    {
+      "tableId": "tblYZ4aRBuRVmp4OA",
+      "name": "trip-context",
+      "result": {
+        "id": "fldlQazMFaqmsGXuF",
+        "name": "trip-context",
+        "type": "multilineText",
+        "description": "Saved next trip, scoped progress, countdown and lateness evidence.",
+        "actionId": "actTeg11DzORjJxys"
+      },
+      "error": false
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+TAP version 13
+# Subtest: one-time backfill creates only verified X rows, skips conflicts and preserves existing snapshots
+ok 1 - one-time backfill creates only verified X rows, skips conflicts and preserves existing snapshots
+  ---
+  duration_ms: 6.6732
+  type: 'test'
+  ...
+# Subtest: gone-in arms listening without requiring existing nonzero results
+ok 2 - gone-in arms listening without requiring existing nonzero results
+  ---
+  duration_ms: 1.5708
+  type: 'test'
+  ...
+# Subtest: first subsequent nonzero result change creates Y once with identities and source time
+ok 3 - first subsequent nonzero result change creates Y once with identities and source time
+  ---
+  duration_ms: 1.4101
+  type: 'test'
+  ...
+# Subtest: old nonzero values at gone-in are only a baseline; receipt clocks never trigger Y
+ok 4 - old nonzero values at gone-in are only a baseline; receipt clocks never trigger Y
+  ---
+  duration_ms: 0.9739
+  type: 'test'
+  ...
+# Subtest: result alerts before gone-in cannot arm or create Y
+ok 5 - result alerts before gone-in cannot arm or create Y
+  ---
+  duration_ms: 0.7154
+  type: 'test'
+  ...
+# Subtest: X captures every nonzero field and result instance with one nonzero sufficient
+ok 6 - X captures every nonzero field and result instance with one nonzero sufficient
+  ---
+  duration_ms: 13.6144
+  type: 'test'
+  ...
+# Subtest: X waits for nonzero result arrival and later source alert, never a poll
+ok 7 - X waits for nonzero result arrival and later source alert, never a poll
+  ---
+  duration_ms: 1.5698
+  type: 'test'
+  ...
+# Subtest: polling never arms Y or creates X/Y even when both source flags qualify
+ok 8 - polling never arms Y or creates X/Y even when both source flags qualify
+  ---
+  duration_ms: 0.6275
+  type: 'test'
+  ...
+# Subtest: only exact dynamic priority-zero scopes qualify; null is not zero
+ok 9 - only exact dynamic priority-zero scopes qualify; null is not zero
+  ---
+  duration_ms: 1.1325
+  type: 'test'
+  ...
+# Subtest: nonzero ignores blanks null booleans and nonnumeric text, retains numeric nonzero
+ok 10 - nonzero ignores blanks null booleans and nonnumeric text, retains numeric nonzero
+  ---
+  duration_ms: 0.725
+  type: 'test'
+  ...
+# Subtest: changed verified X becomes Conflict and preserves original result values
+ok 11 - changed verified X becomes Conflict and preserves original result values
+  ---
+  duration_ms: 0.8608
+  type: 'test'
+  ...
+# Subtest: missing source trip and duplicate saved keys are visible conflicts
+ok 12 - missing source trip and duplicate saved keys are visible conflicts
+  ---
+  duration_ms: 1.4885
+  type: 'test'
+  ...
+# Subtest: linker fills all five empty links, preserves nonempty links and repeats quietly
+ok 13 - linker fills all five empty links, preserves nonempty links and repeats quietly
+  ---
+  duration_ms: 2.3242
+  type: 'test'
+  ...
+# Subtest: missing reference links do not gate result creation; linker fills them when available
+ok 14 - missing reference links do not gate result creation; linker fills them when available
+  ---
+  duration_ms: 1.5692
+  type: 'test'
+  ...
+# Subtest: first normal run at 7 Eastern clears eligible rows in all three checked log tables once
+ok 15 - first normal run at 7 Eastern clears eligible rows in all three checked log tables once
+  ---
+  duration_ms: 12.2926
+  type: 'test'
+  ...
+# Subtest: cap at exactly 1,000 deletes oldest eligible rows to 500
+ok 16 - cap at exactly 1,000 deletes oldest eligible rows to 500
+  ---
+  duration_ms: 16.3745
+  type: 'test'
+  ...
+# Subtest: a cap drain continues below 1,000 when protected rows become eligible
+ok 17 - a cap drain continues below 1,000 when protected rows become eligible
+  ---
+  duration_ms: 11.3616
+  type: 'test'
+  ...
+# Subtest: cap drain uses readback count when another run adds a log during deletion
+ok 18 - cap drain uses readback count when another run adds a log during deletion
+  ---
+  duration_ms: 25.3435
+  type: 'test'
+  ...
+# Subtest: new default show clears the full checked snapshot once, including new-show rows
+ok 19 - new default show clears the full checked snapshot once, including new-show rows
+  ---
+  duration_ms: 3.5927
+  type: 'test'
+  ...
+# Subtest: cleanup uses Eastern DST and protects priority-zero and unchecked logs
+ok 20 - cleanup uses Eastern DST and protects priority-zero and unchecked logs
+  ---
+  duration_ms: 2.5193
+  type: 'test'
+  ...
+# Subtest: unknown cleanup delete outcome stops without retry and records error
+ok 21 - unknown cleanup delete outcome stops without retry and records error
+  ---
+  duration_ms: 2.4293
+  type: 'test'
+  ...
+# Subtest: runner wrapper logs actual failure and leaves source tables untouched
+ok 22 - runner wrapper logs actual failure and leaves source tables untouched
+  ---
+  duration_ms: 0.9487
+  type: 'test'
+  ...
+# Subtest: wrong base rejects before any writes
+ok 23 - wrong base rejects before any writes
+  ---
+  duration_ms: 0.5541
+  type: 'test'
+  ...
+# Subtest: native packaging keeps one separate cleanup schedule and no cleanup in events
+ok 24 - native packaging keeps one separate cleanup schedule and no cleanup in events
+  ---
+  duration_ms: 9.4022
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 248.5103

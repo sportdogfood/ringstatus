@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "state": "Saved",
+  "show-key": "15|200000077",
+  "day": "2026-11-08",
+  "run-key": "collection-18a518eb-c275-4049-be62-c2126c56d4c0",
+  "counts": {
+    "saved": 1898,
+    "day-priorities": {
+      "2026-11-08": 0
+    },
+    "stage-seconds": {
+      "select-show-and-day": 0.525443,
+      "save-run-start": 6.712771,
+      "fetch-rings-groups-classes": 2.807284,
+      "prepare-rings-groups-classes": 0.001637,
+      "save-inventory-rings": 0.584865,
+      "save-inventory-groups": 2.991201,
+      "save-inventory-classes": 8.001009,
+      "save-schedules": 4.916652,
+      "save-schedule-priorities": 2.229048,
+      "fetch-and-prepare-entries-trips": 222.031159,
+      "save-class-details": 6.273591,
+      "save-entries": 41.900885,
+      "save-trips": 23.638714,
+      "save-results": 21.487622,
+      "save-run-summary": 0.272899
+    },
+    "days": [
+      {
+        "day": "2026-11-08",
+        "priority": 0,
+        "lane": "fast-collector",
+        "started": "2026-11-08T14:39:17.440122+00:00",
+        "completed": "2026-11-08T14:45:01.302077+00:00",
+        "state": "Saved",
+        "run-key": "collection-18a518eb-c275-4049-be62-c2126c56d4c0",
+        "counts": {
+          "saved": 1898,
+          "stage-seconds": {
+            "select-show-and-day": 0.00105,
+            "save-run-start": 6.712771,
+            "fetch-rings-groups-classes": 2.807284,
+            "prepare-rings-groups-classes": 0.001637,
+            "save-inventory-rings": 0.584865,
+            "save-inventory-groups": 2.991201,
+            "save-inventory-classes": 8.001009,
+            "save-schedules": 4.916652,
+            "save-schedule-priorities": 2.229048,
+            "fetch-and-prepare-entries-trips": 222.031159,
+            "save-class-details": 6.273591,
+            "save-entries": 41.900885,
+            "save-trips": 23.638714,
+            "save-results": 21.487622,
+            "save-run-summary": 0.272899
+          },
+          "total-seconds": 343.850409
+        },
+        "errors": 0
+      }
+    ],
+    "total-seconds": 344.432779
+  },
+  "item-errors": []
+}

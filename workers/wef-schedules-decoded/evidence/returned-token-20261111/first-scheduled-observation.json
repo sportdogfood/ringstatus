@@ -1,0 +1,51 @@
+[
+  {
+    "at": 1794421987164,
+    "version": "1c176106-d141-487c-a762-fd3ea765f2a6",
+    "path": "/classes/200031618",
+    "entrypoint": "SglPacer",
+    "message": "Source fetch or protected response decoding failed"
+  },
+  {
+    "at": 1794421986098,
+    "version": "1c176106-d141-487c-a762-fd3ea765f2a6",
+    "path": "/classes/200031618",
+    "entrypoint": "SglPacer",
+    "message": "Source fetch or protected response decoding failed"
+  },
+  {
+    "at": 1794421982542,
+    "version": "1c176106-d141-487c-a762-fd3ea765f2a6",
+    "path": "/classes/200031618",
+    "entrypoint": "SglPacer",
+    "message": "Source fetch or protected response decoding failed"
+  },
+  {
+    "at": 1794421981466,
+    "version": "1c176106-d141-487c-a762-fd3ea765f2a6",
+    "path": "/classes/200031618",
+    "entrypoint": "SglPacer",
+    "message": "Source fetch or protected response decoding failed"
+  },
+  {
+    "at": 1794421980397,
+    "version": "1c176106-d141-487c-a762-fd3ea765f2a6",
+    "path": "/classes/200031618",
+    "entrypoint": "SglPacer",
+    "message": "Source fetch or protected response decoding failed"
+  },
+  {
+    "at": 1794421977103,
+    "version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+    "path": null,
+    "entrypoint": null,
+    "message": "GET https://wef-schedules-decoded.gombcg.workers.dev/classes/200031461?customer_id=15&show_id=200000078"
+  },
+  {
+    "at": null,
+    "version": null,
+    "path": null,
+    "entrypoint": null,
+    "message": null
+  }
+]

@@ -1,0 +1,1920 @@
+# Actual captured payload examples
+
+Captured during AUTH-20261111-A; no new SGL requests were made to produce these examples. Tokens and auth fields are redacted. JSON keys, remaining values and value types come from actual responses; arrays show their first row with original counts stated. Source-contract-only records have no invented server response.
+
+The API class sample is 200031333 and the working iphone trip sample is 200031716; they are different classes, so these examples show available fields rather than prove same-class equivalence.
+
+## Observed field availability
+
+These are different classes: API 200031333 and iphone 200031716. This is not same-class validation.
+
+| Data | Decoded API sample | iphone row sample |
+| --- | --- | --- |
+| Entry identifier | entry_id = 200250354 | No entry_id field in captured row |
+| Entry number | number = 11001 | ENo = 847 |
+| Trip/row identifier | trip_id = 200401910 | id = 200402051; equivalence not yet verified |
+| Horse identifier | horse_id = 200005576 | HFEI = 107BV33 is a FEI identifier, not demonstrated as horse_id |
+| Rider identifier | rider_id = 54224 | RFEI = 10068986 is a FEI identifier, not demonstrated as rider_id |
+| Names | horse, rider_name, trainer, Owner | Hor, Rid, Tra, Own |
+| Scores | score, score1... and round fields | Score, J1... and round fields |
+
+The actual null/empty score and order values are retained. These examples do not establish populated live-score behavior or complete replacement coverage.
+
+The first API anonymous response had null entry/trip/horse/rider IDs; the decoded normal-reader response contains the actual IDs shown above. Both actual responses appear below, clearly labeled.
+
+## https://sglapi.wellingtoninternational.com/utilities/get-config
+
+**Actual raw response**
+
+GET https://sglapi.wellingtoninternational.com/utilities/get-config
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:31:33.171Z.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "protection": {
+    "enabled": true,
+    "recaptcha_enabled": false,
+    "recaptcha_site_key": "",
+    "recaptcha_path_prefixes": []
+  },
+  "mobile_app": {
+    "banner_enabled": false
+  },
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/shows
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/shows?customer_id=15
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:31:49.713Z.
+
+Array excerpts: shows 1/802.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "shows": [
+    {
+      "show_id": 200000085,
+      "show_name": "2027 ESP Holiday Finale (#340201)",
+      "show_address": "",
+      "city": "",
+      "state": "",
+      "start_date": "2026-12-29T00:00:00.000Z",
+      "end_date": "2027-01-03T00:00:00.000Z",
+      "display_date": "Dec 29, 2026 - Jan 3, 2027"
+    }
+  ],
+  "total_shows": 802,
+  "default_show": 200000078,
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/schedule
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/schedule?date=2026-11-11&show_id=200000078&customer_id=15
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:32:18.708Z.
+
+Array excerpts: show_days_list 1/5; rings 1/9; rings[0].classes 1/7.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "show": {
+    "show_id": 200000078,
+    "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+    "facility_id": 500,
+    "start_date": "2026-11-11T00:00:00.000Z",
+    "end_date": "2026-11-15T00:00:00.000Z"
+  },
+  "show_date": "2026-11-11",
+  "show_display_date": "11/11/26",
+  "show_display_date_day": "Wednesday, Nov 11, 2026",
+  "show_planned_time": false,
+  "show_est_time": true,
+  "show_days_list": [
+    {
+      "date": "2026-11-11",
+      "day": "Wednesday",
+      "display_date": "Wednesday, Nov 11, 2026"
+    }
+  ],
+  "total_trips_count": 14,
+  "rings": [
+    {
+      "ring_name": "International Ring",
+      "ring_number": 1,
+      "ring_id": 51,
+      "classes": [
+        {
+          "sync_id": "00001535846383004989",
+          "class_group_id": 200028715,
+          "group_name": "1.40-1.45m Fall Back # Schooling 9-10:30am",
+          "day": "2026-11-11T00:00:00.000Z",
+          "day_number": 1,
+          "estimated_start_time": null,
+          "estimated_end_time": null,
+          "actual_start_time": "00:00:00",
+          "actual_end_time": "00:00:00",
+          "ring": 1,
+          "group_sequence": 1,
+          "last_schedule_date": "0000-00-00",
+          "last_schedule_time": "00:00:00",
+          "class_list": "",
+          "orderofgotype": 0,
+          "rotateingroupingsof": 0,
+          "total_trips": null,
+          "completed_trips": 0,
+          "start_time_default": null,
+          "show_id": 200000078,
+          "remaining_trips": 0,
+          "class_setup_prep_time": 0,
+          "class_time_per_trip": 0,
+          "tripgoatonce": 0,
+          "customer_id": 15,
+          "sgl_id": 855766,
+          "history": "",
+          "cancelled": 0,
+          "start_classsignup_date": "0000-00-00",
+          "start_classsignup_time": "00:00:00",
+          "stop_classsignup_date": "0000-00-00",
+          "stop_classsignup_time": "00:00:00",
+          "signup_publish": 0,
+          "set_order_by": "",
+          "trips_in_between": null,
+          "order_tool": "",
+          "web_order_user_name": "",
+          "web_order_user_email": "",
+          "jumper_table": "",
+          "timeallowed_tripone": 0,
+          "timeallowed_jo": 0,
+          "reset_order": 0,
+          "hunter_type": "",
+          "check_in": 0,
+          "jogordertrips": 0,
+          "hunter_scoreby": "",
+          "class_group_uuid": "F883E9842F304B03809EB6BA1CF3BBFA",
+          "set_order": 0,
+          "derbytiebreakerone": 0,
+          "derbytiebreakertwo": 0,
+          "schedule_break": 1,
+          "break_duration": 0,
+          "ring_id": 51,
+          "ring_name": "International Ring",
+          "judgeid_list": "",
+          "coursedesignerid_list": "",
+          "timeallowed_r3": 0,
+          "enable_r3": 0,
+          "optimum_timeallowed_tripone": 0,
+          "optimum_timeallowed_jo": 0,
+          "number_of_scores": 0,
+          "sponsor": "",
+          "show_total_trips": true,
+          "group_has_warmup": false,
+          "is_open_card_warmup": false
+        }
+      ],
+      "total_trips": 0,
+      "ring_status": ""
+    }
+  ],
+  "show_est_end_time": false,
+  "_t": "[redacted]"
+}
+```
+
+**Actual response decoded with the unchanged existing reader; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/schedule?date=2026-11-11&show_id=200000078&customer_id=15
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:32:19.870Z.
+
+Array excerpts: show_days_list 1/5; rings 1/9; rings[0].classes 1/7.
+
+```json
+{
+  "show": {
+    "show_id": 200000078,
+    "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+    "facility_id": 500,
+    "start_date": "2026-11-11T00:00:00.000Z",
+    "end_date": "2026-11-15T00:00:00.000Z"
+  },
+  "show_date": "2026-11-11",
+  "show_display_date": "11/11/26",
+  "show_display_date_day": "Wednesday, Nov 11, 2026",
+  "show_planned_time": false,
+  "show_est_time": true,
+  "show_days_list": [
+    {
+      "date": "2026-11-11",
+      "day": "Wednesday",
+      "display_date": "Wednesday, Nov 11, 2026"
+    }
+  ],
+  "total_trips_count": 14,
+  "rings": [
+    {
+      "ring_name": "International Ring",
+      "ring_number": 1,
+      "ring_id": 51,
+      "classes": [
+        {
+          "sync_id": "00001535846383004989",
+          "class_group_id": 200028715,
+          "group_name": "1.40-1.45m Fall Back # Schooling 9-10:30am",
+          "day": "2026-11-11T00:00:00.000Z",
+          "day_number": 1,
+          "estimated_start_time": "09:00:00",
+          "estimated_end_time": "09:00:00",
+          "actual_start_time": "00:00:00",
+          "actual_end_time": "00:00:00",
+          "ring": 1,
+          "group_sequence": 1,
+          "last_schedule_date": "0000-00-00",
+          "last_schedule_time": "00:00:00",
+          "class_list": "",
+          "orderofgotype": 0,
+          "rotateingroupingsof": 0,
+          "total_trips": 0,
+          "completed_trips": 0,
+          "start_time_default": "09:00:00",
+          "show_id": 200000078,
+          "remaining_trips": 0,
+          "class_setup_prep_time": 0,
+          "class_time_per_trip": 0,
+          "tripgoatonce": 0,
+          "customer_id": 15,
+          "sgl_id": 855766,
+          "history": "",
+          "cancelled": 0,
+          "start_classsignup_date": "0000-00-00",
+          "start_classsignup_time": "00:00:00",
+          "stop_classsignup_date": "0000-00-00",
+          "stop_classsignup_time": "00:00:00",
+          "signup_publish": 0,
+          "set_order_by": "",
+          "trips_in_between": null,
+          "order_tool": "",
+          "web_order_user_name": "",
+          "web_order_user_email": "",
+          "jumper_table": "",
+          "timeallowed_tripone": 0,
+          "timeallowed_jo": 0,
+          "reset_order": 0,
+          "hunter_type": "",
+          "check_in": 0,
+          "jogordertrips": 0,
+          "hunter_scoreby": "",
+          "class_group_uuid": "F883E9842F304B03809EB6BA1CF3BBFA",
+          "set_order": 0,
+          "derbytiebreakerone": 0,
+          "derbytiebreakertwo": 0,
+          "schedule_break": 1,
+          "break_duration": 0,
+          "ring_id": 51,
+          "ring_name": "International Ring",
+          "judgeid_list": "",
+          "coursedesignerid_list": "",
+          "timeallowed_r3": 0,
+          "enable_r3": 0,
+          "optimum_timeallowed_tripone": 0,
+          "optimum_timeallowed_jo": 0,
+          "number_of_scores": 0,
+          "sponsor": "",
+          "show_total_trips": true,
+          "group_has_warmup": false,
+          "is_open_card_warmup": false
+        }
+      ],
+      "total_trips": 0,
+      "ring_status": ""
+    }
+  ],
+  "show_est_end_time": false
+}
+```
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/schedule?date=2026-11-11&show_id=200000078&customer_id=15
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:37:52.997Z.
+
+Array excerpts: show_days_list 1/5; rings 1/9; rings[0].classes 1/7.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "show": {
+    "show_id": 200000078,
+    "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+    "facility_id": 500,
+    "start_date": "2026-11-11T00:00:00.000Z",
+    "end_date": "2026-11-15T00:00:00.000Z"
+  },
+  "show_date": "2026-11-11",
+  "show_display_date": "11/11/26",
+  "show_display_date_day": "Wednesday, Nov 11, 2026",
+  "show_planned_time": false,
+  "show_est_time": true,
+  "show_days_list": [
+    {
+      "date": "2026-11-11",
+      "day": "Wednesday",
+      "display_date": "Wednesday, Nov 11, 2026"
+    }
+  ],
+  "total_trips_count": 14,
+  "rings": [
+    {
+      "ring_name": "International Ring",
+      "ring_number": 1,
+      "ring_id": 51,
+      "classes": [
+        {
+          "sync_id": "00001535846383004989",
+          "class_group_id": 200028715,
+          "group_name": "1.40-1.45m Fall Back # Schooling 9-10:30am",
+          "day": "2026-11-11T00:00:00.000Z",
+          "day_number": 1,
+          "estimated_start_time": null,
+          "estimated_end_time": null,
+          "actual_start_time": "00:00:00",
+          "actual_end_time": "00:00:00",
+          "ring": 1,
+          "group_sequence": 1,
+          "last_schedule_date": "0000-00-00",
+          "last_schedule_time": "00:00:00",
+          "class_list": "",
+          "orderofgotype": 0,
+          "rotateingroupingsof": 0,
+          "total_trips": null,
+          "completed_trips": 0,
+          "start_time_default": null,
+          "show_id": 200000078,
+          "remaining_trips": 0,
+          "class_setup_prep_time": 0,
+          "class_time_per_trip": 0,
+          "tripgoatonce": 0,
+          "customer_id": 15,
+          "sgl_id": 855766,
+          "history": "",
+          "cancelled": 0,
+          "start_classsignup_date": "0000-00-00",
+          "start_classsignup_time": "00:00:00",
+          "stop_classsignup_date": "0000-00-00",
+          "stop_classsignup_time": "00:00:00",
+          "signup_publish": 0,
+          "set_order_by": "",
+          "trips_in_between": null,
+          "order_tool": "",
+          "web_order_user_name": "",
+          "web_order_user_email": "",
+          "jumper_table": "",
+          "timeallowed_tripone": 0,
+          "timeallowed_jo": 0,
+          "reset_order": 0,
+          "hunter_type": "",
+          "check_in": 0,
+          "jogordertrips": 0,
+          "hunter_scoreby": "",
+          "class_group_uuid": "F883E9842F304B03809EB6BA1CF3BBFA",
+          "set_order": 0,
+          "derbytiebreakerone": 0,
+          "derbytiebreakertwo": 0,
+          "schedule_break": 1,
+          "break_duration": 0,
+          "ring_id": 51,
+          "ring_name": "International Ring",
+          "judgeid_list": "",
+          "coursedesignerid_list": "",
+          "timeallowed_r3": 0,
+          "enable_r3": 0,
+          "optimum_timeallowed_tripone": 0,
+          "optimum_timeallowed_jo": 0,
+          "number_of_scores": 0,
+          "sponsor": "",
+          "show_total_trips": true,
+          "group_has_warmup": false,
+          "is_open_card_warmup": false
+        }
+      ],
+      "total_trips": 0,
+      "ring_status": ""
+    }
+  ],
+  "show_est_end_time": false,
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/classes/{id}
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/classes/200031333?show_id=200000078&customer_id=15&cgid=-1
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:36:14.558Z.
+
+Array excerpts: class_related_data.judges 1/4; class_related_data.class_prizes 1/8; trips 1/2; class_group_order_of_go.entries 1/2.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "cdm_data": [],
+  "class": {
+    "class_id": 200031333,
+    "number": 104,
+    "name": "Best Young Pony",
+    "sponsor": "",
+    "order_of_go_set": null,
+    "order_set_date": null,
+    "order_set_time": null,
+    "class_type": "Hunters",
+    "verification_detail": null,
+    "results_verified": null,
+    "schedule_sequencetype": "Model",
+    "show_id": 200000078,
+    "combined_class_id": 0,
+    "jumper_table": "",
+    "schedule_ring_id": 37,
+    "customer_id": 15,
+    "fei_event_type_code": "",
+    "multiphase_rule": "",
+    "is_team_event": false,
+    "is_under_saddle_class": true,
+    "oog_status_text": "Class is Model",
+    "has_splits": false
+  },
+  "class_related_data": {
+    "status": null,
+    "unscratched_count": null,
+    "show_results": false,
+    "has_prize_money": false,
+    "grouped_class": false,
+    "show_ring_info": true,
+    "actual_time": null,
+    "estimated_time": null,
+    "default_time": null,
+    "date": null,
+    "class_group_id": 200028831,
+    "ring": 3,
+    "total_trips": null,
+    "completed_trips": null,
+    "remaining_trips": null,
+    "order_check_in": 0,
+    "hunter_scoreby": "",
+    "hunter_type": "",
+    "type": "",
+    "ring_name": "Rost Arena",
+    "judges": [
+      {
+        "name": "DANNY MOORE",
+        "position": "",
+        "isjudge": 0,
+        "iscoursedesigner": 1
+      }
+    ],
+    "judges_count": 4,
+    "class_split_codes": [
+      "A"
+    ],
+    "current_split_code": "A",
+    "class_prizes": [
+      {
+        "sync_id": "00001597486357004709",
+        "class_id": 200031333,
+        "place": null,
+        "prize_money": null,
+        "addbackpercent": 0,
+        "winningnums": null,
+        "checkprinted": 0,
+        "splitcode": "A",
+        "prize_money_spent": 0,
+        "points": null,
+        "customer_id": 15,
+        "sgl_id": 13028826,
+        "class_prizes_uuid": "D03ED0062D564D97B8C116BBB74456CC"
+      }
+    ],
+    "score_fields": [],
+    "show_est_time": null,
+    "show_planned_time": null,
+    "is_videos_enabled": true
+  },
+  "jumper_table_info": {
+    "class_jumper_table": "",
+    "class_group_jumper_table": "",
+    "show_id": 200000078,
+    "timeallowed_tripone": 0,
+    "timeallowed_jo": 0,
+    "ring": 3,
+    "hasR3Data": false,
+    "table_type": 1,
+    "jumper_table": "",
+    "hasJO": false,
+    "after_delay_JO": false,
+    "MandatoryJO": false,
+    "has_aggregate_faults": false,
+    "fei_rule": false,
+    "separateJOVideo": false,
+    "roundLabels": {
+      "r1": {
+        "name": "Round 1",
+        "abbr": "R1"
+      },
+      "r2": {
+        "name": "Round 2",
+        "abbr": "R2"
+      },
+      "r3": {
+        "name": "Round 3",
+        "abbr": "R3"
+      }
+    }
+  },
+  "total_entry_trips": 2,
+  "trips": [
+    {
+      "entry_id": null,
+      "number": 11001,
+      "horse": "TWIN OAKS FARM BELLINI",
+      "horse_id": null,
+      "rider": "",
+      "Owner": "JILL AURELIANO",
+      "trainer": "RHETT DE STEFANO",
+      "owner_id": null,
+      "trainer_id": null,
+      "trip_id": null,
+      "total_prize_money": null,
+      "estimated_go_time": null,
+      "rider_name": "RHETT DE STEFANO",
+      "rider_id": null,
+      "points_earned": null,
+      "time_one": null,
+      "time_fault_one": null,
+      "faults_one": null,
+      "time_two": null,
+      "time_fault_two": null,
+      "faults_two": null,
+      "time_three": null,
+      "time_fault_three": null,
+      "faults_three": null,
+      "scratch_trip": null,
+      "actual_order": null,
+      "placing": null,
+      "position": null,
+      "order_of_go": null,
+      "score1": null,
+      "score2": null,
+      "score3": null,
+      "score4": null,
+      "score5": null,
+      "score6": null,
+      "disqualify_status_one": null,
+      "disqualify_status_two": null,
+      "disqualify_status_three": null,
+      "entryxclasses_uuid": null,
+      "gone_in": null,
+      "team_id": null,
+      "r3_trip": 0,
+      "team_name": null,
+      "team_type": null,
+      "team_abbr": null,
+      "rank_placing": null,
+      "rank": null,
+      "place": null,
+      "split_section": "A",
+      "score": null,
+      "competing_country": "USA"
+    }
+  ],
+  "my_entry_ids": [],
+  "class_phase_nav": null,
+  "championship_class_id": null,
+  "phase_columns": [],
+  "phase_rows": [],
+  "phase_order_of_go": [],
+  "show_id": "200000078",
+  "team_scoring_result": [],
+  "class_group_order_of_go": {
+    "entries": [
+      {
+        "class_id": 200031333,
+        "entry_id": 200250354,
+        "number": 11001,
+        "horse": "TWIN OAKS FARM BELLINI",
+        "horse_id": 200005576,
+        "rider": "",
+        "Owner": "JILL AURELIANO",
+        "trainer": "RHETT DE STEFANO",
+        "owner_id": 2787,
+        "trainer_id": 54224,
+        "trip_id": 200401910,
+        "total_prize_money": 0,
+        "estimated_go_time": "00:00:00",
+        "rider_name": "RHETT DE STEFANO",
+        "rider_id": 54224,
+        "points_earned": 0,
+        "time_one": 0,
+        "time_fault_one": 0,
+        "faults_one": 0,
+        "time_two": 0,
+        "time_fault_two": 0,
+        "faults_two": 0,
+        "scratch_trip": 0,
+        "placing": 100000,
+        "position": 100000,
+        "order_of_go": 100000,
+        "score1": 0,
+        "score2": 0,
+        "score3": 0,
+        "score4": 0,
+        "score5": 0,
+        "score6": 0,
+        "disqualify_status_one": "",
+        "disqualify_status_two": "",
+        "entryxclasses_uuid": "EAD8E19C3ACF4DBE812B72C5CF67B0C4",
+        "gone_in": 0,
+        "team_id": 0,
+        "team_name": null,
+        "team_type": null,
+        "team_abbr": null,
+        "competing_country": "USA",
+        "score": 0
+      }
+    ]
+  },
+  "_t": "[redacted]"
+}
+```
+
+**Actual response decoded with the unchanged existing reader; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/classes/200031333?show_id=200000078&customer_id=15&cgid=-1
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:36:15.646Z.
+
+Array excerpts: class_related_data.judges 1/4; class_related_data.class_prizes 1/8; trips 1/2; class_group_order_of_go.entries 1/2.
+
+```json
+{
+  "cdm_data": [],
+  "class": {
+    "class_id": 200031333,
+    "number": 104,
+    "name": "Best Young Pony",
+    "sponsor": "",
+    "order_of_go_set": 0,
+    "order_set_date": "0000-00-00",
+    "order_set_time": "00:00:00",
+    "class_type": "Hunters",
+    "verification_detail": "",
+    "results_verified": 0,
+    "schedule_sequencetype": "Model",
+    "show_id": 200000078,
+    "combined_class_id": 0,
+    "jumper_table": "",
+    "schedule_ring_id": 37,
+    "customer_id": 15,
+    "fei_event_type_code": "",
+    "multiphase_rule": "",
+    "is_team_event": false,
+    "is_under_saddle_class": true,
+    "oog_status_text": "Class is Model",
+    "has_splits": false
+  },
+  "class_related_data": {
+    "status": "Not Started",
+    "unscratched_count": 2,
+    "show_results": false,
+    "has_prize_money": false,
+    "grouped_class": false,
+    "show_ring_info": true,
+    "actual_time": "00:00:00",
+    "estimated_time": "10:30:00",
+    "default_time": "00:00:00",
+    "date": "2026-11-13T00:00:00.000Z",
+    "class_group_id": 200028831,
+    "ring": 3,
+    "total_trips": 2,
+    "completed_trips": 0,
+    "remaining_trips": 2,
+    "order_check_in": 0,
+    "hunter_scoreby": "",
+    "hunter_type": "",
+    "type": "",
+    "ring_name": "Rost Arena",
+    "judges": [
+      {
+        "name": "DANNY MOORE",
+        "position": "",
+        "isjudge": 0,
+        "iscoursedesigner": 1
+      }
+    ],
+    "judges_count": 4,
+    "class_split_codes": [
+      "A"
+    ],
+    "current_split_code": "A",
+    "class_prizes": [
+      {
+        "sync_id": "00001597486357004709",
+        "class_id": 200031333,
+        "place": 1,
+        "prize_money": 0,
+        "addbackpercent": 0,
+        "winningnums": "",
+        "checkprinted": 0,
+        "splitcode": "A",
+        "prize_money_spent": 0,
+        "points": 0,
+        "customer_id": 15,
+        "sgl_id": 13028826,
+        "class_prizes_uuid": "D03ED0062D564D97B8C116BBB74456CC"
+      }
+    ],
+    "score_fields": [],
+    "show_est_time": true,
+    "show_planned_time": false,
+    "is_videos_enabled": true
+  },
+  "jumper_table_info": {
+    "class_jumper_table": "",
+    "class_group_jumper_table": "",
+    "show_id": 200000078,
+    "timeallowed_tripone": 0,
+    "timeallowed_jo": 0,
+    "ring": 3,
+    "hasR3Data": false,
+    "table_type": 1,
+    "jumper_table": "",
+    "hasJO": false,
+    "after_delay_JO": false,
+    "MandatoryJO": false,
+    "has_aggregate_faults": false,
+    "fei_rule": false,
+    "separateJOVideo": false,
+    "roundLabels": {
+      "r1": {
+        "name": "Round 1",
+        "abbr": "R1"
+      },
+      "r2": {
+        "name": "Round 2",
+        "abbr": "R2"
+      },
+      "r3": {
+        "name": "Round 3",
+        "abbr": "R3"
+      }
+    }
+  },
+  "total_entry_trips": 2,
+  "trips": [
+    {
+      "entry_id": 200250354,
+      "number": 11001,
+      "horse": "TWIN OAKS FARM BELLINI",
+      "horse_id": 200005576,
+      "rider": "",
+      "Owner": "JILL AURELIANO",
+      "trainer": "RHETT DE STEFANO",
+      "owner_id": 2787,
+      "trainer_id": 54224,
+      "trip_id": 200401910,
+      "total_prize_money": 0,
+      "estimated_go_time": "00:00:00",
+      "rider_name": "RHETT DE STEFANO",
+      "rider_id": 54224,
+      "points_earned": 0,
+      "time_one": 0,
+      "time_fault_one": 0,
+      "faults_one": 0,
+      "time_two": 0,
+      "time_fault_two": 0,
+      "faults_two": 0,
+      "time_three": 0,
+      "time_fault_three": 0,
+      "faults_three": 0,
+      "scratch_trip": 0,
+      "actual_order": 0,
+      "placing": 100000,
+      "position": 100000,
+      "order_of_go": 100000,
+      "score1": 0,
+      "score2": 0,
+      "score3": 0,
+      "score4": 0,
+      "score5": 0,
+      "score6": 0,
+      "disqualify_status_one": "",
+      "disqualify_status_two": "",
+      "disqualify_status_three": "",
+      "entryxclasses_uuid": "EAD8E19C3ACF4DBE812B72C5CF67B0C4",
+      "gone_in": 0,
+      "team_id": 0,
+      "r3_trip": 0,
+      "team_name": null,
+      "team_type": null,
+      "team_abbr": null,
+      "rank_placing": "",
+      "rank": 0,
+      "place": 1,
+      "split_section": "A",
+      "score": 0,
+      "competing_country": "USA"
+    }
+  ],
+  "my_entry_ids": [],
+  "class_phase_nav": null,
+  "championship_class_id": null,
+  "phase_columns": [],
+  "phase_rows": [],
+  "phase_order_of_go": [],
+  "show_id": "200000078",
+  "team_scoring_result": [],
+  "class_group_order_of_go": {
+    "entries": [
+      {
+        "class_id": 200031333,
+        "entry_id": 200250354,
+        "number": 11001,
+        "horse": "TWIN OAKS FARM BELLINI",
+        "horse_id": 200005576,
+        "rider": "",
+        "Owner": "JILL AURELIANO",
+        "trainer": "RHETT DE STEFANO",
+        "owner_id": 2787,
+        "trainer_id": 54224,
+        "trip_id": 200401910,
+        "total_prize_money": 0,
+        "estimated_go_time": "00:00:00",
+        "rider_name": "RHETT DE STEFANO",
+        "rider_id": 54224,
+        "points_earned": 0,
+        "time_one": 0,
+        "time_fault_one": 0,
+        "faults_one": 0,
+        "time_two": 0,
+        "time_fault_two": 0,
+        "faults_two": 0,
+        "scratch_trip": 0,
+        "placing": 100000,
+        "position": 100000,
+        "order_of_go": 100000,
+        "score1": 0,
+        "score2": 0,
+        "score3": 0,
+        "score4": 0,
+        "score5": 0,
+        "score6": 0,
+        "disqualify_status_one": "",
+        "disqualify_status_two": "",
+        "entryxclasses_uuid": "EAD8E19C3ACF4DBE812B72C5CF67B0C4",
+        "gone_in": 0,
+        "team_id": 0,
+        "team_name": null,
+        "team_type": null,
+        "team_abbr": null,
+        "competing_country": "USA",
+        "score": 0
+      }
+    ]
+  }
+}
+```
+
+## https://sglapi.wellingtoninternational.com/classes
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/classes?show_id=200000078&customer_id=15&sort_on=number&sort_type=asc&page=1&search_text=
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:35:23.434Z.
+
+Array excerpts: classes 1/10.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "classes": [
+    {
+      "class_id": 200031329,
+      "number": 100,
+      "name": "Best Young Horse",
+      "entry_count": 0,
+      "sponsor": ""
+    }
+  ],
+  "total_classes": 429,
+  "records_per_page": 10,
+  "page": 1,
+  "sort": {
+    "sort_on": "number",
+    "sort_type": "asc"
+  },
+  "term": "",
+  "show_id": "200000078",
+  "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/ring
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/ring?show_date=2026-11-11&show_id=200000078&customer_id=15
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:35:02.247Z.
+
+Array excerpts: show_days_list 1/5; rings 1/9; rings[0].upcoming_ring_classes_list 1/7.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "show": {
+    "show_id": 200000078,
+    "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+    "facility_id": 500,
+    "start_date": "2026-11-11T00:00:00.000Z",
+    "end_date": "2026-11-15T00:00:00.000Z"
+  },
+  "show_days_list": [
+    {
+      "date": "2026-11-11",
+      "day": "Wednesday",
+      "display_date": "Wednesday, Nov 11, 2026"
+    }
+  ],
+  "show_id": "200000078",
+  "rings": [
+    {
+      "ring_name": "International Ring",
+      "ring_number": 1,
+      "ring_id": 51,
+      "header_classes_text": null,
+      "header_classes": null,
+      "show_header_message": false,
+      "active_ring_classes": null,
+      "upcoming_ring_classes_list": [
+        {
+          "class_group_id": 200028715,
+          "group_name": "1.40-1.45m Fall Back # Schooling 9-10:30am",
+          "actual_start_time": null,
+          "estimated_start_time": null,
+          "start_time_default": null,
+          "estimated_end_time": null,
+          "total_trips": null,
+          "completed_trips": null,
+          "group_sequence": 1,
+          "cancelled": 0,
+          "schedule_break": 1,
+          "classes": []
+        }
+      ],
+      "group_started": false,
+      "show_message": true
+    }
+  ],
+  "show_date": "2026-11-11",
+  "display_date": "11/11/26",
+  "time_zone_date_time": {
+    "date": "11/11/26",
+    "sql_date": "2026-11-11",
+    "time": "10:35 AM",
+    "time_zone_offset": -300,
+    "company_timezoneoffset": 0,
+    "date_obj": "2026-11-11T15:35:10.762Z",
+    "time_obj": "2026-11-11T15:35:10.762Z"
+  },
+  "show_planned_time": false,
+  "show_est_end_time": false,
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/classsignup
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/classsignup?show_date=2026-11-11&show_id=200000078&customer_id=15&team_id=0
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:36:39.987Z.
+
+Array excerpts: show_days_list 1/5; rings 1/9; rings[0].upcoming_classes 1/7.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "show": {
+    "show_id": 200000078,
+    "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+    "facility_id": 500,
+    "start_date": "2026-11-11T00:00:00.000Z",
+    "end_date": "2026-11-15T00:00:00.000Z"
+  },
+  "show_days_list": [
+    {
+      "date": "2026-11-11",
+      "day": "Wednesday",
+      "display_date": "Wednesday, Nov 11, 2026"
+    }
+  ],
+  "show_id": "200000078",
+  "rings": [
+    {
+      "ring_name": "International Ring",
+      "ring_number": 1,
+      "ring_id": 51,
+      "upcoming_classes": [
+        {
+          "class_group_id": null,
+          "estimated_start_time": null,
+          "start_time_default": null,
+          "estimated_end_time": null,
+          "start_classsignup_date": "0000-00-00",
+          "stop_classsignup_date": "0000-00-00",
+          "start_classsignup_time": "00:00:00",
+          "stop_classsignup_time": "00:00:00",
+          "group_name": "1.40-1.45m Fall Back # Schooling 9-10:30am",
+          "total_trips": null,
+          "check_in": null,
+          "signup_publish": null,
+          "schedule_break": 1,
+          "classes": [],
+          "all_orders_set": true,
+          "under_saddle_class": false,
+          "model_class": false,
+          "trips": 0,
+          "your_trips": [],
+          "order_of_go_trips": [],
+          "not_started": false,
+          "ended": false
+        }
+      ]
+    }
+  ],
+  "show_date": "2026-11-11",
+  "display_date": "11/11/26",
+  "show_est_time": true,
+  "show_planned_time": false,
+  "show_est_end_time": false,
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/classsignup/{id}
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/classsignup/200028831?eid=200028831&show_id=200000078&customer_id=15
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:36:41.044Z.
+
+Array excerpts: entry_x_classes 1/2.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "show": {
+    "show_id": 200000078,
+    "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+    "facility_id": 500,
+    "start_date": "2026-11-11T00:00:00.000Z",
+    "end_date": "2026-11-15T00:00:00.000Z"
+  },
+  "class_group": {
+    "class_group_id": null,
+    "day": "2026-11-13T00:00:00.000Z",
+    "hunter_type": "",
+    "jumper_table": "",
+    "group_name": "Best Young Pony",
+    "total_trips": null,
+    "class_list": null,
+    "ring_name": "Rost Arena",
+    "show_id": 200000078
+  },
+  "show_id": "200000078",
+  "class_data": {
+    "class_id": null,
+    "class_number": null,
+    "name": "Best Young Pony",
+    "sponsor": "",
+    "class_type": "Hunters",
+    "jumper_table": "",
+    "class_group_id": null
+  },
+  "order_of_go_set_count": 0,
+  "entry_x_classes": [
+    {
+      "class_id": null,
+      "class_number": null,
+      "entry_id": null,
+      "entry_number": null,
+      "trainer_id": null,
+      "trainer": null,
+      "horse": null,
+      "rider_id": null,
+      "rider_name": null,
+      "order_of_go": null
+    }
+  ],
+  "show_est_time": 1,
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/results
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/results?div_type=jumper&show_id=200000078&customer_id=15
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:38:39.266Z.
+
+Array excerpts: divisions 1/24; classes 1/20.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "divisions": [
+    {
+      "division_id": 200006030,
+      "name": "1.10m Open Jumper"
+    }
+  ],
+  "total_divisions": 24,
+  "classes": [
+    {
+      "class_id": 200031726,
+      "show_id": 200000078,
+      "division_id": 0,
+      "class_type": "Jumpers",
+      "no_results": 0,
+      "number": 802,
+      "name": "$1,580 NAL/WIHS 1.10m Junior/Amateur Jumper Classic II2b",
+      "sponsor": "",
+      "scheduled_date": "2026-11-14T00:00:00.000Z",
+      "schedule_ring_name": "Mogavero",
+      "entry_count": 1
+    }
+  ],
+  "total_classes": 20,
+  "loose_class_heading": "Individual jumper classes - Not part of any division",
+  "show_id": "200000078",
+  "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+  "div_type": "jumper",
+  "class_type": "Jumpers",
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/results/{id}
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sglapi.wellingtoninternational.com/results/200006030?show_id=200000078&customer_id=15&channel=1
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:39:06.913Z.
+
+Array excerpts: classes 1/3; classes[0].class_related_data.judges 1/3; classes[0].class_related_data.class_prizes 1/8; classes[0].trips 1/5; classes[0].class_group_order_of_go.entries 1/5; points_data.over_fences_classes 1/3.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "division": {
+    "division_id": 200006030,
+    "name": "1.10m Open Jumper",
+    "show_id": 200000078,
+    "type": "Jumper",
+    "standings_based_on_rider": 0
+  },
+  "standings_basis": "entry",
+  "entries": [],
+  "classes": [
+    {
+      "cdm_data": [],
+      "class": {
+        "class_id": null,
+        "number": null,
+        "name": "1.10m Open Jumper II2d",
+        "sponsor": "",
+        "order_of_go_set": null,
+        "order_set_date": null,
+        "order_set_time": null,
+        "class_type": "Jumpers",
+        "verification_detail": null,
+        "results_verified": null,
+        "schedule_sequencetype": "Over Fences",
+        "show_id": 200000078,
+        "combined_class_id": null,
+        "jumper_table": "USEF Table II.2.d",
+        "schedule_ring_id": null,
+        "customer_id": 15,
+        "fei_event_type_code": "",
+        "multiphase_rule": "",
+        "is_team_event": false,
+        "is_under_saddle_class": false,
+        "oog_status_text": "Order of Go not set",
+        "has_splits": false
+      },
+      "class_related_data": {
+        "status": null,
+        "unscratched_count": null,
+        "show_results": false,
+        "has_prize_money": false,
+        "grouped_class": false,
+        "show_ring_info": true,
+        "actual_time": null,
+        "estimated_time": null,
+        "default_time": null,
+        "date": null,
+        "class_group_id": null,
+        "ring": 4,
+        "total_trips": null,
+        "completed_trips": null,
+        "remaining_trips": null,
+        "order_check_in": 0,
+        "hunter_scoreby": "",
+        "hunter_type": "",
+        "type": "results",
+        "ring_name": "Mogavero",
+        "judges": [
+          {
+            "name": "JASEN SHELLEY",
+            "position": "",
+            "isjudge": 0,
+            "iscoursedesigner": 1
+          }
+        ],
+        "judges_count": 3,
+        "class_split_codes": [
+          "A"
+        ],
+        "current_split_code": "A",
+        "class_prizes": [
+          {
+            "sync_id": "00001551186994606479",
+            "class_id": 200031619,
+            "place": null,
+            "prize_money": null,
+            "addbackpercent": 0,
+            "winningnums": null,
+            "checkprinted": 0,
+            "splitcode": "A",
+            "prize_money_spent": 0,
+            "points": null,
+            "customer_id": 15,
+            "sgl_id": 13031106,
+            "class_prizes_uuid": "D54D99100E4E40D7856DB869E3C77257"
+          }
+        ],
+        "score_fields": [],
+        "show_est_time": null,
+        "show_planned_time": null,
+        "is_videos_enabled": true
+      },
+      "jumper_table_info": {
+        "class_jumper_table": "USEF Table II.2.d",
+        "class_group_jumper_table": "USEF Table II.2.d",
+        "show_id": 200000078,
+        "timeallowed_tripone": 0,
+        "timeallowed_jo": 0,
+        "ring": 4,
+        "hasR3Data": false,
+        "table_type": 4,
+        "jumper_table": "USEF Table II.2.d",
+        "hasJO": true,
+        "after_delay_JO": false,
+        "MandatoryJO": true,
+        "has_aggregate_faults": true,
+        "fei_rule": false,
+        "separateJOVideo": false,
+        "roundLabels": {
+          "r1": {
+            "name": "Round 1",
+            "abbr": "R1"
+          },
+          "r2": {
+            "name": "Jump Off",
+            "abbr": "JO"
+          },
+          "r3": {
+            "name": "Round 3",
+            "abbr": "R3"
+          }
+        }
+      },
+      "total_entry_trips": 5,
+      "trips": [
+        {
+          "entry_id": null,
+          "number": null,
+          "horse": null,
+          "horse_id": null,
+          "rider": null,
+          "Owner": null,
+          "trainer": null,
+          "owner_id": null,
+          "trainer_id": null,
+          "trip_id": null,
+          "total_prize_money": null,
+          "estimated_go_time": null,
+          "rider_name": null,
+          "rider_id": null,
+          "points_earned": null,
+          "time_one": null,
+          "time_fault_one": null,
+          "faults_one": null,
+          "time_two": null,
+          "time_fault_two": null,
+          "faults_two": null,
+          "time_three": null,
+          "time_fault_three": null,
+          "faults_three": null,
+          "scratch_trip": null,
+          "actual_order": null,
+          "placing": null,
+          "position": null,
+          "order_of_go": null,
+          "score1": null,
+          "score2": null,
+          "score3": null,
+          "score4": null,
+          "score5": null,
+          "score6": null,
+          "disqualify_status_one": null,
+          "disqualify_status_two": null,
+          "disqualify_status_three": null,
+          "entryxclasses_uuid": null,
+          "gone_in": null,
+          "team_id": null,
+          "r3_trip": null,
+          "team_name": null,
+          "team_type": null,
+          "team_abbr": null,
+          "rank_placing": null,
+          "rank": null,
+          "place": null,
+          "split_section": null,
+          "competing_country": null
+        }
+      ],
+      "my_entry_ids": [],
+      "class_phase_nav": null,
+      "championship_class_id": null,
+      "phase_columns": [],
+      "phase_rows": [],
+      "phase_order_of_go": [],
+      "show_id": "200000078",
+      "team_scoring_result": [],
+      "class_group_order_of_go": {
+        "entries": [
+          {
+            "class_id": null,
+            "entry_id": null,
+            "number": null,
+            "horse": null,
+            "horse_id": 200005248,
+            "rider": null,
+            "Owner": null,
+            "trainer": null,
+            "owner_id": null,
+            "trainer_id": null,
+            "trip_id": null,
+            "total_prize_money": null,
+            "estimated_go_time": null,
+            "rider_name": null,
+            "rider_id": null,
+            "points_earned": null,
+            "time_one": null,
+            "time_fault_one": null,
+            "faults_one": null,
+            "time_two": null,
+            "time_fault_two": null,
+            "faults_two": null,
+            "scratch_trip": null,
+            "placing": null,
+            "position": null,
+            "order_of_go": null,
+            "score1": null,
+            "score2": null,
+            "score3": null,
+            "score4": null,
+            "score5": null,
+            "score6": null,
+            "disqualify_status_one": null,
+            "disqualify_status_two": null,
+            "entryxclasses_uuid": null,
+            "gone_in": null,
+            "team_id": null,
+            "team_name": null,
+            "team_type": null,
+            "team_abbr": null,
+            "competing_country": null,
+            "score": null
+          }
+        ]
+      }
+    }
+  ],
+  "show_id": "200000078",
+  "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+  "channel": "1",
+  "points_data": {
+    "entry_array": [],
+    "over_fences_classes": [
+      {
+        "class_id": null,
+        "number": null,
+        "name": "1.10m Open Jumper II2d"
+      }
+    ],
+    "size": 3,
+    "entry_classes": [],
+    "us_classes_count": 0,
+    "entry_points_array": [],
+    "us_flag": false
+  },
+  "is_videos_enabled": true,
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/users/getUser
+
+**Actual raw response**
+
+GET https://sglapi.wellingtoninternational.com/users/getUser
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:42:12.068Z.
+
+Redacted/omitted fields: _t.
+
+```json
+{
+  "user": null,
+  "_t": "[redacted]"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/users/getLoggedInUser
+
+**Actual raw response**
+
+GET https://sglapi.wellingtoninternational.com/users/getLoggedInUser
+
+HTTP 401; application/json; charset=utf-8; captured 2026-11-11T15:34:29.148Z.
+
+```json
+{
+  "statusCode": 401,
+  "message": "Unauthorized"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/add-entry/getShowData
+
+**Actual raw response**
+
+GET https://sglapi.wellingtoninternational.com/add-entry/getShowData?show_id=200000078&company_id=15
+
+HTTP 401; application/json; charset=utf-8; captured 2026-11-11T15:33:57.243Z.
+
+```json
+{
+  "statusCode": 401,
+  "message": "Unauthorized"
+}
+```
+
+## https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData
+
+**Actual raw response**
+
+GET https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData?show_id=200000078&company_id=15
+
+HTTP 200; text/html; charset=utf-8; captured 2026-11-11T15:33:56.128Z.
+
+```text
+DoLogin
+```
+
+## https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/Index
+
+**Actual raw response**
+
+GET https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/Index?cgid=200028831&show_id=200000078&customer_id=15&team_id=0
+
+HTTP 200; text/html; charset=utf-8; captured 2026-11-11T15:36:42.200Z.
+
+```text
+DoLogin
+```
+
+## https://sglapi.wellingtoninternational.com/associated-horses/get-horses
+
+**Actual raw response**
+
+GET https://sglapi.wellingtoninternational.com/associated-horses/get-horses?customer_id=15
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:35:01.099Z.
+
+```json
+[]
+```
+
+## https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus
+
+**Actual raw response**
+
+GET https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus?customer_id=15&datetimestamp=1794411302248
+
+HTTP 200; text/html; charset=utf-8; captured 2026-11-11T15:35:03.294Z.
+
+```json
+true
+```
+
+## https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax
+
+**Actual raw response**
+
+GET https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax?from_wp_api=true
+
+HTTP 200; text/html; charset=utf-8; captured 2026-11-11T15:35:04.432Z.
+
+```json
+[
+  {
+    "show_id": "200000078",
+    "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+    "json_data": []
+  }
+]
+```
+
+## https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget
+
+**Actual raw response**
+
+POST https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget
+
+HTTP 200; text/html; charset=utf-8; captured 2026-11-11T15:35:24.561Z.
+
+```json
+[
+  {
+    "show_id": "200000078",
+    "show_name": "2026 ESP Pre-Charity (#316789/343747)",
+    "live_data": []
+  }
+]
+```
+
+## https://sglapp.showgroundslive.com/version.json
+
+**Actual raw response**
+
+GET https://sglapp.showgroundslive.com/version.json
+
+HTTP 200; application/json; captured 2026-11-11T15:35:25.686Z.
+
+```json
+{
+  "version": "0.1.45",
+  "builtAt": "2026-11-10T05:35:32.560Z"
+}
+```
+
+## https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus
+
+**Actual raw response**
+
+GET https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus?from_wp_api=true&class_id=200031333&show_id=200000078&from_live_class=0
+
+HTTP 200; text/html; charset=utf-8; captured 2026-11-11T15:36:17.869Z.
+
+```json
+{
+  "is_live": false,
+  "class_id": "200031333",
+  "class_group_id": 0,
+  "ring_no": null,
+  "live_classGroup": null
+}
+```
+
+## https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/Detail
+
+**Actual HTML excerpt; rest of page omitted**
+
+GET https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/Detail?cid=200031333&class_group_id=0
+
+HTTP 200; text/html; charset=utf-8; captured 2026-11-11T15:36:18.978Z.
+
+```text
+function GetData()
+    {
+        //update live class json node
+        live_class_obj.order_of_go_set = order_of_go_set;
+        
+                    initHunterClassInfo();
+        
+        clearData(); //Clear Data
+        var d=new Date();
+        var newData = "", row_ids = "";
+        
+                jQuery.getJSON('/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id=200000078&cid=200031333&t='+d.getTime(), function(data, status, jqXHR) {
+            var class_index = GetClassIndex("200031333");
+            
+            var oldData = live_class_obj.class_trips[class_index].leaderboard;  //Get Old row data
+            live_class_obj.class_trips[class_index].leaderboard = []; //clear existing data
+            live_class_obj.class_trips[class_index].lined_up = [];
+
+            live_class_obj.live_trip = {};
+
+            //set variable to default value
+            vb_upNextRowAdded = false;
+
+            PopulateDataInGrid(jqXHR, status, "200031333"); //Populate Class leaderboard rows
+            PopulateLiveNow(); //Set Live trip
+            PopulateLinedUp("200031333"); //Set Lined up rows
+            DataPopulatedInGrids();
+
+            HighlightUpdates(oldData, "200031333"); //Highlight update in leaderboard
+            live_class_obj.has_update = true;
+        });
+            }
+    
+    //Call code after JSON data is loaded and populated in Grids
+    function Data
+```
+
+## https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData
+
+**Actual raw response JSON; arrays show first row only**
+
+GET https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id=200000078&cid=200031716&t=1794411375651
+
+HTTP 200; application/json; captured 2026-11-11T15:40:15.250Z.
+
+Array excerpts: rows 1/21.
+
+```json
+{
+  "ID": "200031716",
+  "recs": 21,
+  "rows": [
+    {
+      "id": "200402051",
+      "Scr": "0",
+      "Gone": "0",
+      "OOG": "",
+      "R2_OOG": "",
+      "R2_Qualified": "",
+      "R2_Upcoming": "",
+      "Actual_OOG": "",
+      "Actual_OOG_R2": "",
+      "Eli": "0",
+      "Pos": "0",
+      "OldPos": "0",
+      "ENo": "847",
+      "Hor": "KADANS",
+      "HFEI": "107BV33",
+      "Rid": "CATHERINE TYREE FLORES",
+      "RFEI": "10068986",
+      "RCntry": "USA",
+      "Tra": "CATHERINE TYREE FLORES",
+      "Own": "CATHERINE TYREE LLC",
+      "OCty": "WELLINGTON",
+      "OSt": "FL",
+      "R1JF": "",
+      "R1TF": "",
+      "R1F": "",
+      "R1T": "",
+      "JOJF": "",
+      "JOTF": "",
+      "JOF": "",
+      "JOT": "",
+      "R3JF": "",
+      "R3TF": "",
+      "R3F": "",
+      "R3T": "",
+      "J1": "",
+      "J2": "",
+      "J3": "",
+      "J4": "",
+      "J5": "",
+      "J6": "",
+      "Score": "",
+      "JAPI": "0",
+      "JAPI1": "",
+      "JAPI2": "",
+      "pt": "",
+      "r1_cd": "",
+      "r1_start": "",
+      "r1_done": "",
+      "jo_cd": "",
+      "jo_start": "",
+      "jo_done": "",
+      "TID": "",
+      "TName": "",
+      "TAbbr": "",
+      "TType": "",
+      "TScr": "0",
+      "TScr1": "0",
+      "TScr2": "0",
+      "TR1T": 0,
+      "TR2T": 0,
+      "TR1Drop": false,
+      "TR2Drop": false,
+      "TR1F": 0,
+      "TR2F": 0,
+      "class_id": "200031716",
+      "ActualPos": "0"
+    }
+  ],
+  "ring_name": "INTERNATIONAL RING",
+  "ring_number": "1",
+  "pt": true,
+  "JAPI": true,
+  "gone_trips": "",
+  "jo_gone_trips": "",
+  "r2_gone_trips": "",
+  "curr": "",
+  "curr_updated_at": "08nov2026 19:38:21"
+}
+```
+
+**Actual raw response**
+
+GET https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData?show_id=200000078&cid=200031333&t=1794411375651
+
+HTTP 404; application/json; captured 2026-11-11T15:36:16.804Z.
+
+```json
+{}
+```
+
+## https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/ExportToExcel/showid/{show_id}/date/{date}/excel_export/1
+
+**Binary Excel response; raw bytes were not retained for an example**
+
+GET https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/ExportToExcel/showid/200000078/date/2026-11-11/excel_export/1
+
+HTTP 200; application/vnd.ms-excel; captured 2026-11-11T15:39:08.196Z.
+
+{
+  "originalBodyBytes": 7169,
+  "responseHeaders": {
+    "contentType": "application/vnd.ms-excel",
+    "contentDisposition": "attachment; filename=schedule_200000078_2026_11_11.xls"
+  },
+  "bodySha256": "ca8d658ea8f3214f0af66990cb8e07693510c0e0b6c49637af69e0a95f0faf01",
+  "note": "No JSON payload; contents were not parsed; no new request made."
+}
+
+## https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/GetAssocaitedHorsesAndPeople
+
+**No HTTP response; actual local error**
+
+GET https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/GetAssocaitedHorsesAndPeople?company_id=15
+
+HTTP no response; no content type; captured 2026-11-11T15:35:51.711Z.
+
+Actual local error (not a server payload):
+
+```json
+{
+  "name": "TimeoutError",
+  "message": "The operation was aborted due to timeout",
+  "causeCode": null
+}
+```
+
+## https://sgl.wellingtoninternational.com/iphone.php/webservice/IsLoggedIn
+
+**Actual raw response**
+
+POST https://sgl.wellingtoninternational.com/iphone.php/webservice/IsLoggedIn
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:34:31.358Z.
+
+```json
+{
+  "success": false
+}
+```
+
+## https://sgl.wellingtoninternational.com/webservice/isLoggedIn
+
+**Actual raw response**
+
+GET https://sgl.wellingtoninternational.com/webservice/isLoggedIn?dt=1794411269149
+
+HTTP 302; text/html; charset=utf-8; captured 2026-11-11T15:34:30.297Z.
+
+```text
+<html><head><meta http-equiv="refresh" content="0;url=http://www.showgroundslive.com/sgl"/></head></html>{"success":false}<html><head><meta http-equiv="refresh" content="0;url=http://www.showgroundslive.com/sgl"/></head></html>
+```
+
+## https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/AuthenticateUserViaJWT
+
+**Actual raw response**
+
+POST https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/AuthenticateUserViaJWT
+
+HTTP 200; text/html; charset=utf-8; captured 2026-11-11T15:34:32.450Z.
+
+```json
+{
+  "verify_mobile_url": "",
+  "success": false,
+  "message": "Invalid Token"
+}
+```
+
+## https://sglapi.wellingtoninternational.com/auth/password-policy
+
+**Actual raw response**
+
+GET https://sglapi.wellingtoninternational.com/auth/password-policy
+
+HTTP 200; application/json; charset=utf-8; captured 2026-11-11T15:38:13.953Z.
+
+```json
+{
+  "min": 12,
+  "max": 128
+}
+```
+
+## https://sglapi.wellingtoninternational.com/auth/login
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sglapi.wellingtoninternational.com/auth/flogin
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sgl.wellingtoninternational.com/iphone.php/webservice/VerifyOTP
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sglapi.wellingtoninternational.com/auth/verify-reset-token
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sglapi.wellingtoninternational.com/mobile-verification/clear-session-values
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sglapi.wellingtoninternational.com/user-requests/accept-by-token/{id}
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sglapi.wellingtoninternational.com/user-requests/decline-by-token/{id}
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sglapi.wellingtoninternational.com/add-entry/refreshACHBalance
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sglapi.wellingtoninternational.com/user-requests/token/{id}
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sgl.wellingtoninternational.com/iphone.php/webservice/ClearSessionValues
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.
+
+## https://sgl.wellingtoninternational.com/iphonev2/addentryv2/RefreshACHBalance
+
+Source contract inspected only; no server response captured because real account/link/OTP inputs were absent or the route changes business/session state; see observed-result.

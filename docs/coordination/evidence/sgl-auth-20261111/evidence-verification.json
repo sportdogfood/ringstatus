@@ -1,0 +1,33 @@
+{
+  "at": "2026-11-11T15:49:33.920Z",
+  "decoderLogicUnchanged": true,
+  "secretScan": [
+    {
+      "file": "probes-redacted.json",
+      "noJwtLiteral": true
+    },
+    {
+      "file": "request-profiles.json",
+      "noJwtLiteral": true
+    },
+    {
+      "file": "findings.json",
+      "noJwtLiteral": true
+    },
+    {
+      "file": "decoded-summary.json",
+      "noJwtLiteral": true
+    },
+    {
+      "file": "token-handling-proof.json",
+      "noJwtLiteral": true
+    }
+  ],
+  "requestCount": 43,
+  "minimumObservedGapMs": 1000,
+  "invalidProbeLabels": [
+    "class-results-no-auth",
+    "results-list-no-auth"
+  ],
+  "timeoutCount": 1
+}

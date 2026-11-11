@@ -1,0 +1,22 @@
+[
+  {
+    "name": "unknown finish of active jump-off prevents a guessed downstream expected start",
+    "result": "FAIL",
+    "message": "Active preceding jump-off has unknown remaining total, but next expected start is 2026-11-06T14:30:00.000Z\n+ actual - expected\n\n+ '2026-11-06T14:30:00.000Z'\n- null\n"
+  },
+  {
+    "name": "invalid source clock is local to its class, preserving other class snapshots",
+    "result": "FAIL",
+    "message": "Got unwanted exception: One bad class clock aborts all class evaluation\nActual message: \"Missing or future original observation\""
+  },
+  {
+    "name": "missing answer date/identity is protected during new-show cleanup",
+    "result": "FAIL",
+    "message": "Answer without date/validated identity is selected for deletion\n\n1 !== 0\n"
+  },
+  {
+    "name": "13-hour-old answer lacking archive/catalog verification is excluded",
+    "result": "FAIL",
+    "message": "13-hour-old answer is selected with no archive/catalog evidence\n\n1 !== 0\n"
+  }
+]

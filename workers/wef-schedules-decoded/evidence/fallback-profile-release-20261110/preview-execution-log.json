@@ -1,0 +1,16 @@
+{
+  "reviewer": "wef-decoder",
+  "commands": [
+    {
+      "id": "preview",
+      "command": "curl.exe -sS --max-time 120 http://127.0.0.1:18764/",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "Cloudflare remote preview through Wrangler 4.82.1",
+      "started_at": "2026-11-10T22:37:12.2648709Z",
+      "ended_at": "2026-11-10T22:37:43.3105854Z",
+      "exit_code": 0,
+      "stdout": "{\"renewed\":true,\"results\":[{\"profile\":\"windows-clean\",\"date\":\"2026-11-14\",\"show\":\"200000078\",\"status\":200,\"lane\":\"cloudflare-fallback\",\"selected\":\"windows-clean\",\"rings\":9,\"returnedShow\":200000078,\"returnedDate\":\"2026-11-14\"},{\"profile\":\"windows-clean\",\"date\":\"2026-11-25\",\"show\":\"200000081\",\"status\":200,\"lane\":\"cloudflare-fallback\",\"selected\":\"windows-clean\",\"rings\":9,\"returnedShow\":200000081,\"returnedDate\":\"2026-11-25\"},{\"profile\":\"windows-clean\",\"classId\":200031724,\"status\":200,\"lane\":\"cloudflare-fallback\",\"selected\":\"windows-clean\",\"returnedClass\":200031724,\"trips\":9},{\"profile\":\"android-clean\",\"date\":\"2026-11-14\",\"show\":\"200000078\",\"status\":200,\"lane\":\"cloudflare-fallback\",\"selected\":\"android-clean\",\"rings\":9,\"returnedShow\":200000078,\"returnedDate\":\"2026-11-14\"},{\"profile\":\"android-clean\",\"date\":\"2026-11-25\",\"show\":\"200000081\",\"status\":200,\"lane\":\"cloudflare-fallback\",\"selected\":\"android-clean\",\"rings\":9,\"returnedShow\":200000081,\"returnedDate\":\"2026-11-25\"},{\"profile\":\"android-clean\",\"classId\":200031724,\"status\":200,\"lane\":\"cloudflare-fallback\",\"selected\":\"android-clean\",\"returnedClass\":200031724,\"trips\":9}]}",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "run_id": "f84f1ca6-20ad-4560-b72e-6278f5aae453",
+  "started": "2026-11-08T02:15:06.736Z",
+  "actions": [],
+  "result": "Skipped",
+  "day": "2026-11-07",
+  "daily_clear_day": "2026-11-07",
+  "daily_due": false,
+  "quick_due": false,
+  "show": 200000077,
+  "new_show": false,
+  "reason": "No new show or daily clear; three-hour log check not due",
+  "completed": "2026-11-08T02:15:07.087Z"
+}

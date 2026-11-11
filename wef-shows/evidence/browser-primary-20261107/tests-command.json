@@ -1,0 +1,18 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\browser-discovery.test.js",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\shows.test.js",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\day-priority.test.js",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\direct-integration.test.js",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\audit.test.js",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\adapter.test.js",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\authority-age.test.js",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\show-days.test.js"
+  ],
+  "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107",
+  "started": "2026-11-07T23:41:33.031179+00:00",
+  "completed": "2026-11-07T23:41:35.272304+00:00",
+  "exit_code": 1
+}

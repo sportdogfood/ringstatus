@@ -1,5 +1,11 @@
 # Automatic schedule and class-detail fallback — 6 November 2026
 
+## November 10 profile extension
+
+Deployed version `1c176106-d141-487c-a762-fd3ea765f2a6` adds `windows-clean` and `android-clean` after original/header1/header2 for schedule and class-ID fallback requests and schedule health. It stops on first usable data. After five failures, it renews the token once and repeats the five once. The token request adds `Sec-Fetch-Site: same-site`. Live schedules passed through runner and forced fallback. The sampled live class returned an empty source payload and remains unresolved. Full acceptance is recorded in the [current README](README.md). Runner, pause, URLs, and credentials remain protected. [Test runbook](FALLBACK-RUNBOOK.md)
+
+The November 6 description below is the original release record.
+
 Owner authorized deployment after the independent preview passed. Main connection settings and agent URLs are unchanged. Changes remain subject to explicit owner approval and preview/live verification.
 
 Current pacing addition: [shared one-second proxy queue](SHARED-PACING.md) now serializes requests across agents and both paths, with separate owner approval and preview/live proof.

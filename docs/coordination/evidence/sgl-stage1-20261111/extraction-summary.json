@@ -1,0 +1,29 @@
+{
+  "resolvedCalls": 533,
+  "unresolvedCalls": 4,
+  "otherCalls": 154,
+  "rawCalls": 631,
+  "urls": 287,
+  "unresolved": [
+    {
+      "method": "GET",
+      "url": "t",
+      "caller": "e"
+    },
+    {
+      "method": "POST",
+      "url": "\"\".concat(this.apiBase).concat(e)",
+      "caller": "post"
+    },
+    {
+      "method": "GET",
+      "url": "e",
+      "caller": "a"
+    },
+    {
+      "method": "REQUEST",
+      "url": "t.config",
+      "caller": "e"
+    }
+  ]
+}

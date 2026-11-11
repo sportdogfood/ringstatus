@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-11T16:26:48.680Z",
+  "records": 40,
+  "checkedSamples": 33,
+  "sourceContracts": 11,
+  "newSglRequests": 0,
+  "secretScan": [
+    {
+      "file": "payload-examples.json",
+      "noJwtLiteral": true
+    },
+    {
+      "file": "payload-examples.md",
+      "noJwtLiteral": true
+    }
+  ]
+}

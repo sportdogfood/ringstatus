@@ -1,0 +1,64 @@
+{
+  "base": "appyoLTcNmLrgpHcg",
+  "status": "prepared",
+  "additions": [
+    {
+      "table": "tblUBWZnHbhDyxjwG",
+      "name": "calculated-order-of-go",
+      "type": "number",
+      "options": {
+        "precision": 0
+      }
+    },
+    {
+      "table": "tblUBWZnHbhDyxjwG",
+      "name": "calculated-estimated-go-time",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso"
+        },
+        "timeFormat": {
+          "name": "24hour"
+        },
+        "timeZone": "America/New_York"
+      }
+    },
+    {
+      "table": "tblUBWZnHbhDyxjwG",
+      "name": "calculated-at-time",
+      "type": "dateTime",
+      "options": {
+        "dateFormat": {
+          "name": "iso"
+        },
+        "timeFormat": {
+          "name": "24hour"
+        },
+        "timeZone": "America/New_York"
+      }
+    },
+    {
+      "table": "tblUBWZnHbhDyxjwG",
+      "name": "go-time-start-in",
+      "type": "number",
+      "options": {
+        "precision": 4
+      }
+    },
+    {
+      "table": "tblUBWZnHbhDyxjwG",
+      "name": "go-time-end-in",
+      "type": "number",
+      "options": {
+        "precision": 4
+      }
+    },
+    {
+      "table": "tblYZ4aRBuRVmp4OA",
+      "name": "trip-context",
+      "type": "multilineText",
+      "description": "Saved next trip, scoped progress, countdown and lateness evidence."
+    }
+  ]
+}

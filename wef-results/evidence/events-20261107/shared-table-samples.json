@@ -1,0 +1,696 @@
+{
+  "w-shows": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec7yWUSXVV0rpVEg",
+          "createdTime": "2026-11-08T02:47:03.000Z",
+          "cellValuesByFieldId": {
+            "fldCiM2iqLXAFPCX5": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\ae4612b2b7019da6a70683283fdf6f94a15c547c11cd3915e80a47c508c369a5.json.gz",
+            "fldEhBB0ZPXhD34qx": "ae4612b2b7019da6a70683283fdf6f94a15c547c11cd3915e80a47c508c369a5",
+            "fldGHrJaLRdqYVRsf": "15|200000076"
+          }
+        },
+        {
+          "id": "recT4Tv9qZBuEjSSu",
+          "createdTime": "2026-11-08T02:47:03.000Z",
+          "cellValuesByFieldId": {
+            "fldCiM2iqLXAFPCX5": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\f6d007126bf0c01caa1d7d2f6010e21c271867deb6f3d9ca5f43b060fc8697d0.json.gz",
+            "fldEhBB0ZPXhD34qx": "f6d007126bf0c01caa1d7d2f6010e21c271867deb6f3d9ca5f43b060fc8697d0",
+            "fldGHrJaLRdqYVRsf": "15|200000075"
+          }
+        },
+        {
+          "id": "recXPCAWdICtShOQy",
+          "createdTime": "2026-11-08T02:47:03.000Z",
+          "cellValuesByFieldId": {
+            "fldCiM2iqLXAFPCX5": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\runtime\\history\\default-schedule\\2c644933d98a115617249f8a573bfb1f85146d76ad5be4a6a126a86c8a41f859.json.gz",
+            "fldEhBB0ZPXhD34qx": "2c644933d98a115617249f8a573bfb1f85146d76ad5be4a6a126a86c8a41f859",
+            "fldGHrJaLRdqYVRsf": "15|200000077",
+            "fldstHt6W2UAaJkav": true
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 3
+      }
+    },
+    "isError": false
+  },
+  "w-days": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec4Ukrj9ZxX0Ms54",
+          "createdTime": "2026-11-08T02:46:55.000Z",
+          "cellValuesByFieldId": {
+            "fldhSgvb81Gvdlv7v": "15|200000076|2026-10-30",
+            "fldr899xZYmPaK9qv": "0 checked out of 1",
+            "flduZeeUU1S07igsm": 999
+          }
+        },
+        {
+          "id": "rec6DKQ1q0sLIx17B",
+          "createdTime": "2026-11-08T02:46:55.000Z",
+          "cellValuesByFieldId": {
+            "fldhSgvb81Gvdlv7v": "15|200000077|2026-11-07",
+            "fldr899xZYmPaK9qv": "1 checked out of 1",
+            "flduZeeUU1S07igsm": -1
+          }
+        },
+        {
+          "id": "recBBNJubIzIh4arz",
+          "createdTime": "2026-11-08T02:46:55.000Z",
+          "cellValuesByFieldId": {
+            "fldhSgvb81Gvdlv7v": "15|200000076|2026-11-01",
+            "fldr899xZYmPaK9qv": "0 checked out of 1",
+            "flduZeeUU1S07igsm": 999
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 8
+      },
+      "nextCursor": "itr7xH06IiUtjCHS6/recBBNJubIzIh4arz"
+    },
+    "isError": false
+  },
+  "wef-data.schedules": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec00bYVBEJALi773",
+          "createdTime": "2026-11-08T02:48:49.000Z",
+          "cellValuesByFieldId": {
+            "fld6ddPnl3N3F6Cto": "15|200000077|2026-11-07|7|200030960",
+            "fldFovMuwWFBXfUZQ": "[]",
+            "fldNzpdxsNsBQwjY9": 0,
+            "fldOZI3cHIfFtrjX0": "{\"cdm_data\":[],\"championship_class_id\":null,\"class\":{\"class_id\":200030960,\"class_type\":\"Hunters\",\"combined_class_id\":0,\"customer_id\":15,\"fei_event_type_code\":\"\",\"has_splits\":false,\"is_team_event\":false,\"is_under_saddle_class\":false,\"jumper_table\":\"\",\"multiphase_rule\":\"\",\"name\":\"Junior Hunter 3'3\\\" 15 & Under\",\"number\":338,\"oog_status_text\":\"Order of Go not set\",\"order_of_go_set\":0,\"order_set_date\":\"0000-00-00\",\"order_set_time\":\"00:00:00\",\"results_verified\":0,\"schedule_ring_id\":56,\"schedule_sequencetype\":\"Over Fences\",\"show_id\":200000077,\"sponsor\":\"Stephanie Schwed, Corcoran Group\",\"verification_detail\":\"\"},\"class_group_order_of_go\":{\"entries\":[{\"Owner\":\"LEAGUE OF CHAMPIONS LLC\",\"class_id\":200030959,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200245043,\"entryxclasses_uuid\":\"0D79B5FF9D5B44C9BF1D7E912EAC0976\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"FASHION STAR\",\"horse_id\":146635,\"number\":223,\"order_of_go\":100000,\"owner_id\":89844,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"rider\":\"\",\"rider_id\":73982,\"rider_name\":\"LILA DUBIN\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_two\":0,\"time_one\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"HAYLEY IANNOTTI\",\"trainer_id\":8736,\"trip_id\":200400532},{\"Owner\":\"LEAGUE OF CHAMPIONS LLC\",\"class_id\":200030960,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200245043,\"entryxclasses_uuid\":\"67D7252CFD7149DF890064A34D6DF7D3\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"FASHION STAR\",\"horse_id\":146635,\"number\":223,\"order_of_go\":100000,\"owner_id\":89844,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"rider\":\"\",\"rider_id\":73982,\"rider_name\":\"LILA DUBIN\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_two\":0,\"time_one\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"HAYLEY IANNOTTI\",\"trainer_id\":8736,\"trip_id\":200400533},{\"Owner\":\"JORGE VERSWYVEL\",\"class_id\":200031100,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200249763,\"entryxclasses_uuid\":\"BF3485864E7C4A00BE93055EFA4F0623\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"MANDARINO\",\"horse_id\":200005504,\"number\":1328,\"order_of_go\":100000,\"owner_id\":34509,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"rider\":\"\",\"rider_id\":81675,\"rider_name\":\"LIBBY WEHLING\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_two\":0,\"time_one\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"JORGE VERSWYVEL\",\"trainer_id\":34509,\"trip_id\":200400556},{\"Owner\":\"MAGGIE ALEXANDER\",\"class_id\":200031100,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200242941,\"entryxclasses_uuid\":\"4377AFE99F99490BB5D1F3AC60B8EE24\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"BOHEMIAN HERO DHS\",\"horse_id\":200003902,\"number\":243,\"order_of_go\":100000,\"owner_id\":46182,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"rider\":\"\",\"rider_id\":83721,\"rider_name\":\"AUDREY SCHAFER\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_two\":0,\"time_one\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"MAGGIE ALEXANDER\",\"trainer_id\":46182,\"trip_id\":200400567},{\"Owner\":\"MAARTEN HUYGENS\",\"class_id\":200031100,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200249632,\"entryxclasses_uuid\":\"464513029EF3425CA885F145BBA35A8F\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"CORNETUS OL\",\"horse_id\":200004845,\"number\":941,\"order_of_go\":100000,\"owner_id\":13493,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"rider\":\"\",\"rider_id\":13550,\"rider_name\":\"LAINIE WIMBERLY\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_two\":0,\"time_one\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"LAINIE WIMBERLY\",\"trainer_id\":13550,\"trip_id\":200400667},{\"Owner\":\"ADDISON ROSENQUEST\",\"class_id\":200031100,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200247654,\"entryxclasses_uuid\":\"533FBA19CD8747B49FCFFA43CCF2D684\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"CASSIOPEIA 145\",\"horse_id\":200005359,\"number\":940,\"order_of_go\":100000,\"owner_id\":86888,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"rider\":\"\",\"rider_id\":86888,\"rider_name\":\"ADDISON ROSENQUEST\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_two\":0,\"time_one\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"LAINIE WIMBERLY\",\"trainer_id\":13550,\"trip_id\":200400669},{\"Owner\":\"MADISON RAUSCHENBACH\",\"class_id\":200031100,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200247140,\"entryxclasses_uuid\":\"2C61475D5A90489B87BF25B4FE9F6E0D\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"CHOOSIN TEXAS\",\"horse_id\":200005304,\"number\":650,\"order_of_go\":100000,\"owner_id\":54071,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"rider\":\"\",\"rider_id\":70539,\"rider_name\":\"RILEY DELBECQ\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_two\":0,\"time_one\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"TODD MINIKUS\",\"trainer_id\":6074,\"trip_id\":200400798},{\"Owner\":\"JULIA FRISCHLING\",\"class_id\":200031100,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200243664,\"entryxclasses_uuid\":\"5FE57908AC4B43CCAD451EBC580901EF\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"MOSCHINO DE REVE\",\"horse_id\":200005210,\"number\":1423,\"order_of_go\":100000,\"owner_id\":86302,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"rider\":\"\",\"rider_id\":41237,\"rider_name\":\"CHEYENNE SICKLE\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_two\":0,\"time_one\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"CHEYENNE SICKLE\",\"trainer_id\":41237,\"trip_id\":200401197}]},\"class_phase_nav\":null,\"class_related_data\":{\"actual_time\":\"00:00:00\",\"class_group_id\":200028572,\"class_prizes\":[{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030960,\"class_prizes_uuid\":\"9C6F2083F7034565A79371C1E955B418\",\"customer_id\":15,\"place\":1,\"points\":10,\"prize_money\":20,\"prize_money_spent\":0,\"sgl_id\":13026484,\"splitcode\":\"A\",\"sync_id\":\"00001578031252471498\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030960,\"class_prizes_uuid\":\"E2A1881490C8416A9E15347931B5C4F4\",\"customer_id\":15,\"place\":2,\"points\":6,\"prize_money\":10,\"prize_money_spent\":0,\"sgl_id\":13026485,\"splitcode\":\"A\",\"sync_id\":\"00001525154274601256\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030960,\"class_prizes_uuid\":\"13BFD0EE91984BFBB990A4D02636CE1F\",\"customer_id\":15,\"place\":3,\"points\":4,\"prize_money\":5,\"prize_money_spent\":0,\"sgl_id\":13026486,\"splitcode\":\"A\",\"sync_id\":\"00001523570646184245\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030960,\"class_prizes_uuid\":\"B0BF589113034B839E15B6DB5CB04082\",\"customer_id\":15,\"place\":4,\"points\":2,\"prize_money\":5,\"prize_money_spent\":0,\"sgl_id\":13026487,\"splitcode\":\"A\",\"sync_id\":\"00001589001447129411\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030960,\"class_prizes_uuid\":\"DEF39C1143DD489CBE22321C6DFDDE1D\",\"customer_id\":15,\"place\":5,\"points\":1,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13026488,\"splitcode\":\"A\",\"sync_id\":\"00001573796243489580\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030960,\"class_prizes_uuid\":\"DF0774879F4D49D5AE529A9B754F586A\",\"customer_id\":15,\"place\":6,\"points\":0.5,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13026489,\"splitcode\":\"A\",\"sync_id\":\"00001502351804481911\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030960,\"class_prizes_uuid\":\"692CAD2142794860974ED2E921E10FAC\",\"customer_id\":15,\"place\":7,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13026490,\"splitcode\":\"A\",\"sync_id\":\"00001517631874667880\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030960,\"class_prizes_uuid\":\"9365B063356240738EB08E8D88D95411\",\"customer_id\":15,\"place\":8,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13026491,\"splitcode\":\"A\",\"sync_id\":\"00001504899506154568\",\"winningnums\":\"\"}],\"class_split_codes\":[\"A\"],\"completed_trips\":0,\"current_split_code\":\"A\",\"date\":\"2026-11-07T00:00:00.000Z\",\"default_time\":\"00:00:00\",\"estimated_time\":\"08:12:00\",\"grouped_class\":true,\"has_prize_money\":false,\"hunter_scoreby\":\"\",\"hunter_type\":\"\",\"is_videos_enabled\":true,\"judges\":[{\"iscoursedesigner\":1,\"isjudge\":0,\"name\":\"TOM CASON II\",\"position\":\"\"},{\"iscoursedesigner\":0,\"isjudge\":1,\"name\":\"J C ENGEL\",\"position\":\"\"}],\"judges_count\":2,\"order_check_in\":0,\"remaining_trips\":2,\"ring\":7,\"ring_name\":\"Ring 8\",\"score_fields\":[],\"show_est_time\":true,\"show_planned_time\":false,\"show_results\":false,\"show_ring_info\":true,\"status\":\"Not Started\",\"total_trips\":2,\"type\":\"\",\"unscratched_count\":1},\"jumper_table_info\":{\"MandatoryJO\":false,\"after_delay_JO\":false,\"class_group_jumper_table\":\"\",\"class_jumper_table\":\"\",\"fei_rule\":false,\"hasJO\":false,\"hasR3Data\":false,\"has_aggregate_faults\":false,\"jumper_table\":\"\",\"ring\":7,\"roundLabels\":{\"r1\":{\"abbr\":\"R1\",\"name\":\"Round 1\"},\"r2\":{\"abbr\":\"R2\",\"name\":\"Round 2\"},\"r3\":{\"abbr\":\"R3\",\"name\":\"Round 3\"}},\"separateJOVideo\":false,\"show_id\":200000077,\"table_type\":1,\"timeallowed_jo\":0,\"timeallowed_tripone\":0},\"my_entry_ids\":[],\"phase_columns\":[],\"phase_order_of_go\":[],\"phase_rows\":[],\"show_id\":\"200000077\",\"team_scoring_result\":[],\"total_entry_trips\":1,\"trips\":[{\"Owner\":\"LEAGUE OF CHAMPIONS LLC\",\"actual_order\":0,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_three\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200245043,\"entryxclasses_uuid\":\"67D7252CFD7149DF890064A34D6DF7D3\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_three\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"FASHION STAR\",\"horse_id\":146635,\"number\":223,\"order_of_go\":100000,\"owner_id\":89844,\"place\":1,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"r3_trip\":0,\"rank\":0,\"rank_placing\":\"\",\"rider\":\"\",\"rider_id\":73982,\"rider_name\":\"LILA DUBIN\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"split_section\":\"A\",\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_three\":0,\"time_fault_two\":0,\"time_one\":0,\"time_three\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"HAYLEY IANNOTTI\",\"trainer_id\":8736,\"trip_id\":200400533}]}",
+            "fldWRHdfO86zTFrYv": "-1"
+          }
+        },
+        {
+          "id": "rec0CvsEk9aPRSttd",
+          "createdTime": "2026-11-08T02:48:49.000Z",
+          "cellValuesByFieldId": {
+            "fld6ddPnl3N3F6Cto": "15|200000077|2026-11-08|3|200031017",
+            "fldFovMuwWFBXfUZQ": "[]",
+            "fldNzpdxsNsBQwjY9": 0,
+            "fldOZI3cHIfFtrjX0": "{\"cdm_data\":[],\"championship_class_id\":null,\"class\":{\"class_id\":200031017,\"class_type\":\"Hunters\",\"combined_class_id\":0,\"customer_id\":15,\"fei_event_type_code\":\"\",\"has_splits\":false,\"is_team_event\":false,\"is_under_saddle_class\":false,\"jumper_table\":\"\",\"multiphase_rule\":\"\",\"name\":\"Adult Amateur Hunter\",\"number\":285,\"oog_status_text\":\"Order of Go not set\",\"order_of_go_set\":0,\"order_set_date\":\"0000-00-00\",\"order_set_time\":\"00:00:00\",\"results_verified\":0,\"schedule_ring_id\":37,\"schedule_sequencetype\":\"Over Fences\",\"show_id\":200000077,\"sponsor\":\"\",\"verification_detail\":\"\"},\"class_group_order_of_go\":{\"entries\":[{\"Owner\":\"REAGAN ALBRECHT\",\"class_id\":200031107,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200249851,\"entryxclasses_uuid\":\"A11256A284584852A593BA297093F86C\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"WOODLANDS GOLD LOCKET\",\"horse_id\":200005379,\"number\":1059,\"order_of_go\":100000,\"owner_id\":1000003561,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"rider\":\"\",\"rider_id\":83444,\"rider_name\":\"CHANTEL THYNG\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_two\":0,\"time_one\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"CHANTEL THYNG\",\"trainer_id\":83444,\"trip_id\":200400933}]},\"class_phase_nav\":null,\"class_related_data\":{\"actual_time\":\"00:00:00\",\"class_group_id\":200028678,\"class_prizes\":[{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031017,\"class_prizes_uuid\":\"379938BC9FC147CBAA0125DD076BB782\",\"customer_id\":15,\"place\":1,\"points\":10,\"prize_money\":20,\"prize_money_spent\":0,\"sgl_id\":13026932,\"splitcode\":\"A\",\"sync_id\":\"00001519639736154878\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031017,\"class_prizes_uuid\":\"B00E1EF2DBA745ABAA3BE2C44849B4F0\",\"customer_id\":15,\"place\":2,\"points\":6,\"prize_money\":10,\"prize_money_spent\":0,\"sgl_id\":13026933,\"splitcode\":\"A\",\"sync_id\":\"00001554383049058544\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031017,\"class_prizes_uuid\":\"A4F6CC2340934302AD3FD4BF8BE028AC\",\"customer_id\":15,\"place\":3,\"points\":4,\"prize_money\":5,\"prize_money_spent\":0,\"sgl_id\":13026934,\"splitcode\":\"A\",\"sync_id\":\"00001579914012450997\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031017,\"class_prizes_uuid\":\"5C365174CF174D9BAD777982F5F8B849\",\"customer_id\":15,\"place\":4,\"points\":2,\"prize_money\":5,\"prize_money_spent\":0,\"sgl_id\":13026935,\"splitcode\":\"A\",\"sync_id\":\"00001596356654559993\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031017,\"class_prizes_uuid\":\"695CA497908B4D5091AA5E9B435ECD5E\",\"customer_id\":15,\"place\":5,\"points\":1,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13026936,\"splitcode\":\"A\",\"sync_id\":\"00001512565112846398\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031017,\"class_prizes_uuid\":\"6EC23DDB1BA842FAB87D44D85931DC41\",\"customer_id\":15,\"place\":6,\"points\":0.5,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13026937,\"splitcode\":\"A\",\"sync_id\":\"00001579925904409210\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031017,\"class_prizes_uuid\":\"B12A36546C1845D19E078F1401DA1380\",\"customer_id\":15,\"place\":7,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13026938,\"splitcode\":\"A\",\"sync_id\":\"00001500316547554026\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031017,\"class_prizes_uuid\":\"7842A9DABA694CA093B79D1CD90A5DBD\",\"customer_id\":15,\"place\":8,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13026939,\"splitcode\":\"A\",\"sync_id\":\"00001519272050094393\",\"winningnums\":\"\"}],\"class_split_codes\":[\"A\"],\"completed_trips\":0,\"current_split_code\":\"A\",\"date\":\"2026-11-08T00:00:00.000Z\",\"default_time\":\"00:00:00\",\"estimated_time\":\"08:00:00\",\"grouped_class\":true,\"has_prize_money\":false,\"hunter_scoreby\":\"\",\"hunter_type\":\"\",\"is_videos_enabled\":true,\"judges\":[{\"iscoursedesigner\":0,\"isjudge\":1,\"name\":\"DANIELLE MENKER\",\"position\":\"\"},{\"iscoursedesigner\":0,\"isjudge\":1,\"name\":\"ALEXANDRA TALMAGE\",\"position\":\"\"},{\"iscoursedesigner\":1,\"isjudge\":0,\"name\":\"ROBERT MCGREGOR\",\"position\":\"\"}],\"judges_count\":3,\"order_check_in\":0,\"remaining_trips\":0,\"ring\":3,\"ring_name\":\"Rost Arena\",\"score_fields\":[],\"show_est_time\":true,\"show_planned_time\":false,\"show_results\":false,\"show_ring_info\":true,\"status\":\"Not Started\",\"total_trips\":0,\"type\":\"\",\"unscratched_count\":0},\"jumper_table_info\":{\"MandatoryJO\":false,\"after_delay_JO\":false,\"class_group_jumper_table\":\"\",\"class_jumper_table\":\"\",\"fei_rule\":false,\"hasJO\":false,\"hasR3Data\":false,\"has_aggregate_faults\":false,\"jumper_table\":\"\",\"ring\":3,\"roundLabels\":{\"r1\":{\"abbr\":\"R1\",\"name\":\"Round 1\"},\"r2\":{\"abbr\":\"R2\",\"name\":\"Round 2\"},\"r3\":{\"abbr\":\"R3\",\"name\":\"Round 3\"}},\"separateJOVideo\":false,\"show_id\":200000077,\"table_type\":1,\"timeallowed_jo\":0,\"timeallowed_tripone\":0},\"my_entry_ids\":[],\"phase_columns\":[],\"phase_order_of_go\":[],\"phase_rows\":[],\"show_id\":\"200000077\",\"team_scoring_result\":[],\"total_entry_trips\":0,\"trips\":[]}",
+            "fldWRHdfO86zTFrYv": "0"
+          }
+        },
+        {
+          "id": "rec0Gdw4TwTCdLCGK",
+          "createdTime": "2026-11-08T02:48:48.000Z",
+          "cellValuesByFieldId": {
+            "fld6ddPnl3N3F6Cto": "15|200000077|2026-11-07|6|200031038",
+            "fldFovMuwWFBXfUZQ": "[]",
+            "fldNzpdxsNsBQwjY9": 0,
+            "fldOZI3cHIfFtrjX0": "{\"cdm_data\":[],\"championship_class_id\":null,\"class\":{\"class_id\":200031038,\"class_type\":\"Hunters\",\"combined_class_id\":0,\"customer_id\":15,\"fei_event_type_code\":\"\",\"has_splits\":false,\"is_team_event\":false,\"is_under_saddle_class\":true,\"jumper_table\":\"\",\"multiphase_rule\":\"\",\"name\":\"Small Pony Hunter U/S\",\"number\":411,\"oog_status_text\":\"Class is Under Saddle\",\"order_of_go_set\":0,\"order_set_date\":\"0000-00-00\",\"order_set_time\":\"00:00:00\",\"results_verified\":0,\"schedule_ring_id\":25,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_id\":200000077,\"sponsor\":\"Corro\",\"verification_detail\":\"\"},\"class_group_order_of_go\":{\"entries\":[]},\"class_phase_nav\":null,\"class_related_data\":{\"actual_time\":\"00:00:00\",\"class_group_id\":200028613,\"class_prizes\":[{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031038,\"class_prizes_uuid\":\"5DD4929F89CF42A69D496BA42A30B48C\",\"customer_id\":15,\"place\":1,\"points\":10,\"prize_money\":20,\"prize_money_spent\":0,\"sgl_id\":13027100,\"splitcode\":\"A\",\"sync_id\":\"00001531362296434844\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031038,\"class_prizes_uuid\":\"FE401570AB834B01A4C7DA93816E458F\",\"customer_id\":15,\"place\":2,\"points\":6,\"prize_money\":10,\"prize_money_spent\":0,\"sgl_id\":13027101,\"splitcode\":\"A\",\"sync_id\":\"00001592382130407925\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031038,\"class_prizes_uuid\":\"CCADCEC7627B44AE8904BFFFBB13F0F5\",\"customer_id\":15,\"place\":3,\"points\":4,\"prize_money\":5,\"prize_money_spent\":0,\"sgl_id\":13027102,\"splitcode\":\"A\",\"sync_id\":\"00001574678091400785\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031038,\"class_prizes_uuid\":\"EAB73EDB55BA4639BABD25F6ACB85E4D\",\"customer_id\":15,\"place\":4,\"points\":2,\"prize_money\":5,\"prize_money_spent\":0,\"sgl_id\":13027103,\"splitcode\":\"A\",\"sync_id\":\"00001517476245679988\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031038,\"class_prizes_uuid\":\"ABC0650216DB457BBD2BB0089C67ACC1\",\"customer_id\":15,\"place\":5,\"points\":1,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13027104,\"splitcode\":\"A\",\"sync_id\":\"00001518411264443845\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031038,\"class_prizes_uuid\":\"E157B12B8CFF4FDA90CE047F927A4294\",\"customer_id\":15,\"place\":6,\"points\":0.5,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13027105,\"splitcode\":\"A\",\"sync_id\":\"00001505808914167874\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031038,\"class_prizes_uuid\":\"241D991354664900BF124E4081C0B9CC\",\"customer_id\":15,\"place\":7,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13027106,\"splitcode\":\"A\",\"sync_id\":\"00001594765639244097\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031038,\"class_prizes_uuid\":\"4245BB4A05C048ED8DC1B4FA8219575E\",\"customer_id\":15,\"place\":8,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13027107,\"splitcode\":\"A\",\"sync_id\":\"00001542084145631138\",\"winningnums\":\"\"}],\"class_split_codes\":[\"A\"],\"completed_trips\":0,\"current_split_code\":\"A\",\"date\":\"2026-11-07T00:00:00.000Z\",\"default_time\":\"00:00:00\",\"estimated_time\":\"08:00:00\",\"grouped_class\":false,\"has_prize_money\":false,\"hunter_scoreby\":\"\",\"hunter_type\":\"\",\"is_videos_enabled\":true,\"judges\":[{\"iscoursedesigner\":0,\"isjudge\":1,\"name\":\"DANIELLE MENKER\",\"position\":\"\"}],\"judges_count\":1,\"order_check_in\":0,\"remaining_trips\":0,\"ring\":6,\"ring_name\":\"Ring 6\",\"score_fields\":[],\"show_est_time\":true,\"show_planned_time\":false,\"show_results\":false,\"show_ring_info\":true,\"status\":\"Not Started\",\"total_trips\":0,\"type\":\"\",\"unscratched_count\":0},\"jumper_table_info\":{\"MandatoryJO\":false,\"after_delay_JO\":false,\"class_group_jumper_table\":\"\",\"class_jumper_table\":\"\",\"fei_rule\":false,\"hasJO\":false,\"hasR3Data\":false,\"has_aggregate_faults\":false,\"jumper_table\":\"\",\"ring\":6,\"roundLabels\":{\"r1\":{\"abbr\":\"R1\",\"name\":\"Round 1\"},\"r2\":{\"abbr\":\"R2\",\"name\":\"Round 2\"},\"r3\":{\"abbr\":\"R3\",\"name\":\"Round 3\"}},\"separateJOVideo\":false,\"show_id\":200000077,\"table_type\":1,\"timeallowed_jo\":0,\"timeallowed_tripone\":0},\"my_entry_ids\":[],\"phase_columns\":[],\"phase_order_of_go\":[],\"phase_rows\":[],\"show_id\":\"200000077\",\"team_scoring_result\":[],\"total_entry_trips\":0,\"trips\":[]}",
+            "fldWRHdfO86zTFrYv": "-1"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 489
+      },
+      "nextCursor": "itrSjauOboA3slQOp/rec0Gdw4TwTCdLCGK"
+    },
+    "isError": false
+  },
+  "wef-data.classes": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec0BrVBdvD0XECMe",
+          "createdTime": "2026-11-08T02:49:33.000Z",
+          "cellValuesByFieldId": {
+            "fld3fVX4DuLtPOvBA": "0",
+            "fld84BLyjal3f1x1P": "{\"cdm_data\":[],\"championship_class_id\":null,\"class\":{\"class_id\":200031053,\"class_type\":\"Hunters\",\"combined_class_id\":0,\"customer_id\":15,\"fei_event_type_code\":\"\",\"has_splits\":false,\"is_team_event\":false,\"is_under_saddle_class\":true,\"jumper_table\":\"\",\"multiphase_rule\":\"\",\"name\":\"Green Pony Hunter U/S\",\"number\":441,\"oog_status_text\":\"Class is Under Saddle\",\"order_of_go_set\":0,\"order_set_date\":\"0000-00-00\",\"order_set_time\":\"00:00:00\",\"results_verified\":0,\"schedule_ring_id\":25,\"schedule_sequencetype\":\"Under Saddle/Flat\",\"show_id\":200000077,\"sponsor\":\"\",\"verification_detail\":\"\"},\"class_group_order_of_go\":{\"entries\":[]},\"class_phase_nav\":null,\"class_related_data\":{\"actual_time\":\"00:00:00\",\"class_group_id\":200028708,\"class_prizes\":[{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031053,\"class_prizes_uuid\":\"F9E439FE1FD84ABAA713ABC855C3A325\",\"customer_id\":15,\"place\":1,\"points\":10,\"prize_money\":20,\"prize_money_spent\":0,\"sgl_id\":13027220,\"splitcode\":\"A\",\"sync_id\":\"00001579858498197354\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031053,\"class_prizes_uuid\":\"95622FDEBFE74403BEEA55FD0DF9E535\",\"customer_id\":15,\"place\":2,\"points\":6,\"prize_money\":10,\"prize_money_spent\":0,\"sgl_id\":13027221,\"splitcode\":\"A\",\"sync_id\":\"00001505779855441093\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031053,\"class_prizes_uuid\":\"40DD56DC8D9B4A53878845C02E192A0E\",\"customer_id\":15,\"place\":3,\"points\":4,\"prize_money\":5,\"prize_money_spent\":0,\"sgl_id\":13027222,\"splitcode\":\"A\",\"sync_id\":\"00001508447678347835\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031053,\"class_prizes_uuid\":\"885AE447212347E3A6A299199E493B2A\",\"customer_id\":15,\"place\":4,\"points\":2,\"prize_money\":5,\"prize_money_spent\":0,\"sgl_id\":13027223,\"splitcode\":\"A\",\"sync_id\":\"00001549023934960494\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031053,\"class_prizes_uuid\":\"E3D0681064A54681917666B86EA4C9C8\",\"customer_id\":15,\"place\":5,\"points\":1,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13027224,\"splitcode\":\"A\",\"sync_id\":\"00001552661220784096\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031053,\"class_prizes_uuid\":\"63E90448700540D5AA38C420C330C610\",\"customer_id\":15,\"place\":6,\"points\":0.5,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13027225,\"splitcode\":\"A\",\"sync_id\":\"00001599546045497084\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031053,\"class_prizes_uuid\":\"5A43B83484F24CC58B665B61744B8D89\",\"customer_id\":15,\"place\":7,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13027226,\"splitcode\":\"A\",\"sync_id\":\"00001566367314991955\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200031053,\"class_prizes_uuid\":\"7F527ECE24B14A60921AC92C94CDFBCA\",\"customer_id\":15,\"place\":8,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13027227,\"splitcode\":\"A\",\"sync_id\":\"00001537672474304519\",\"winningnums\":\"\"}],\"class_split_codes\":[\"A\"],\"completed_trips\":0,\"current_split_code\":\"A\",\"date\":\"2026-11-08T00:00:00.000Z\",\"default_time\":\"00:00:00\",\"estimated_time\":\"10:47:00\",\"grouped_class\":false,\"has_prize_money\":false,\"hunter_scoreby\":\"\",\"hunter_type\":\"\",\"is_videos_enabled\":true,\"judges\":[{\"iscoursedesigner\":1,\"isjudge\":0,\"name\":\"ROBERT MCGREGOR\",\"position\":\"\"},{\"iscoursedesigner\":0,\"isjudge\":1,\"name\":\"J C ENGEL\",\"position\":\"\"}],\"judges_count\":2,\"order_check_in\":0,\"remaining_trips\":0,\"ring\":6,\"ring_name\":\"Ring 6\",\"score_fields\":[],\"show_est_time\":true,\"show_planned_time\":false,\"show_results\":false,\"show_ring_info\":true,\"status\":\"Not Started\",\"total_trips\":0,\"type\":\"\",\"unscratched_count\":0},\"jumper_table_info\":{\"MandatoryJO\":false,\"after_delay_JO\":false,\"class_group_jumper_table\":\"\",\"class_jumper_table\":\"\",\"fei_rule\":false,\"hasJO\":false,\"hasR3Data\":false,\"has_aggregate_faults\":false,\"jumper_table\":\"\",\"ring\":6,\"roundLabels\":{\"r1\":{\"abbr\":\"R1\",\"name\":\"Round 1\"},\"r2\":{\"abbr\":\"R2\",\"name\":\"Round 2\"},\"r3\":{\"abbr\":\"R3\",\"name\":\"Round 3\"}},\"separateJOVideo\":false,\"show_id\":200000077,\"table_type\":1,\"timeallowed_jo\":0,\"timeallowed_tripone\":0},\"my_entry_ids\":[],\"phase_columns\":[],\"phase_order_of_go\":[],\"phase_rows\":[],\"show_id\":\"200000077\",\"team_scoring_result\":[],\"total_entry_trips\":0,\"trips\":[]}",
+            "fld9isSgD5Xj2gKJ5": 0,
+            "fldFUYlRvZHx974vL": "15|200000077|2026-11-08|6|200031053",
+            "fldTlDs9TdK5Mj66g": "[]"
+          }
+        },
+        {
+          "id": "rec0Hvl4m4GOshm4L",
+          "createdTime": "2026-11-08T02:49:30.000Z",
+          "cellValuesByFieldId": {
+            "fld3fVX4DuLtPOvBA": "-2",
+            "fld84BLyjal3f1x1P": "{\"cdm_data\":[],\"championship_class_id\":null,\"class\":{\"class_id\":200030905,\"class_type\":\"Hunters\",\"combined_class_id\":0,\"customer_id\":15,\"fei_event_type_code\":\"\",\"has_splits\":false,\"is_team_event\":false,\"is_under_saddle_class\":true,\"jumper_table\":\"\",\"multiphase_rule\":\"\",\"name\":\"Yearling Pony Breeding\",\"number\":105,\"oog_status_text\":\"Class is Model\",\"order_of_go_set\":0,\"order_set_date\":\"0000-00-00\",\"order_set_time\":\"00:00:00\",\"results_verified\":0,\"schedule_ring_id\":56,\"schedule_sequencetype\":\"Model\",\"show_id\":200000077,\"sponsor\":\"\",\"verification_detail\":\"\"},\"class_group_order_of_go\":{\"entries\":[]},\"class_phase_nav\":null,\"class_related_data\":{\"actual_time\":\"00:00:00\",\"class_group_id\":200028515,\"class_prizes\":[{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030905,\"class_prizes_uuid\":\"0892EDF6EEB641EF846775054A366EA3\",\"customer_id\":15,\"place\":1,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13022702,\"splitcode\":\"A\",\"sync_id\":\"00001564345394403470\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030905,\"class_prizes_uuid\":\"BFD8B5F71B9E4671B2E4AD44C1CB2F2D\",\"customer_id\":15,\"place\":2,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13022703,\"splitcode\":\"A\",\"sync_id\":\"00001547484764585283\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030905,\"class_prizes_uuid\":\"0D48B98A3BD84B11A00C448E072E633C\",\"customer_id\":15,\"place\":3,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13022704,\"splitcode\":\"A\",\"sync_id\":\"00001515231786648087\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030905,\"class_prizes_uuid\":\"CF70CBAE19D2420AB0CF233E4A6456BE\",\"customer_id\":15,\"place\":4,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13022705,\"splitcode\":\"A\",\"sync_id\":\"00001545597064670874\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030905,\"class_prizes_uuid\":\"4E14DA01B4AE41478CB3868384319644\",\"customer_id\":15,\"place\":5,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13022706,\"splitcode\":\"A\",\"sync_id\":\"00001549714985648252\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030905,\"class_prizes_uuid\":\"D34606727B60435AAC1818CC1BD9FA0F\",\"customer_id\":15,\"place\":6,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13022707,\"splitcode\":\"A\",\"sync_id\":\"00001589413704885755\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030905,\"class_prizes_uuid\":\"095790BA8E9D4AE6936CF60F4D1BC5DA\",\"customer_id\":15,\"place\":7,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13022708,\"splitcode\":\"A\",\"sync_id\":\"00001525958101428449\",\"winningnums\":\"\"},{\"addbackpercent\":0,\"checkprinted\":0,\"class_id\":200030905,\"class_prizes_uuid\":\"FFFB51001E774BBDA1C01B1F9E6B9053\",\"customer_id\":15,\"place\":8,\"points\":0,\"prize_money\":0,\"prize_money_spent\":0,\"sgl_id\":13022709,\"splitcode\":\"A\",\"sync_id\":\"00001579105480447595\",\"winningnums\":\"\"}],\"class_split_codes\":[\"A\"],\"completed_trips\":0,\"current_split_code\":\"A\",\"date\":\"2026-11-06T00:00:00.000Z\",\"default_time\":\"00:00:00\",\"estimated_time\":\"09:36:00\",\"grouped_class\":false,\"has_prize_money\":false,\"hunter_scoreby\":\"\",\"hunter_type\":\"\",\"is_videos_enabled\":true,\"judges\":[{\"iscoursedesigner\":1,\"isjudge\":0,\"name\":\"TOM CASON II\",\"position\":\"\"},{\"iscoursedesigner\":0,\"isjudge\":1,\"name\":\"ALEXANDRA TALMAGE\",\"position\":\"\"},{\"iscoursedesigner\":0,\"isjudge\":1,\"name\":\"J C ENGEL\",\"position\":\"\"}],\"judges_count\":3,\"order_check_in\":0,\"remaining_trips\":0,\"ring\":7,\"ring_name\":\"Ring 8\",\"score_fields\":[],\"show_est_time\":true,\"show_planned_time\":false,\"show_results\":false,\"show_ring_info\":true,\"status\":\"Not Started\",\"total_trips\":0,\"type\":\"\",\"unscratched_count\":0},\"jumper_table_info\":{\"MandatoryJO\":false,\"after_delay_JO\":false,\"class_group_jumper_table\":\"\",\"class_jumper_table\":\"\",\"fei_rule\":false,\"hasJO\":false,\"hasR3Data\":false,\"has_aggregate_faults\":false,\"jumper_table\":\"\",\"ring\":7,\"roundLabels\":{\"r1\":{\"abbr\":\"R1\",\"name\":\"Round 1\"},\"r2\":{\"abbr\":\"R2\",\"name\":\"Round 2\"},\"r3\":{\"abbr\":\"R3\",\"name\":\"Round 3\"}},\"separateJOVideo\":false,\"show_id\":200000077,\"table_type\":1,\"timeallowed_jo\":0,\"timeallowed_tripone\":0},\"my_entry_ids\":[],\"phase_columns\":[],\"phase_order_of_go\":[],\"phase_rows\":[],\"show_id\":\"200000077\",\"team_scoring_result\":[],\"total_entry_trips\":0,\"trips\":[]}",
+            "fld9isSgD5Xj2gKJ5": 0,
+            "fldFUYlRvZHx974vL": "15|200000077|2026-11-06|7|200030905",
+            "fldTlDs9TdK5Mj66g": "[]"
+          }
+        },
+        {
+          "id": "rec0WiJAssjpSLWhA",
+          "createdTime": "2026-11-08T02:49:29.000Z",
+          "cellValuesByFieldId": {
+            "fld3fVX4DuLtPOvBA": "-2",
+            "fld84BLyjal3f1x1P": "{\"cdm_data\":[],\"championship_class_id\":null,\"class\":{\"class_id\":200031271,\"class_type\":\"Hunters\",\"combined_class_id\":0,\"customer_id\":15,\"fei_event_type_code\":\"\",\"has_splits\":false,\"is_team_event\":false,\"is_under_saddle_class\":false,\"jumper_table\":\"\",\"multiphase_rule\":\"\",\"name\":\"Mulligan Class\",\"number\":992,\"oog_status_text\":\"Order of Go not set\",\"order_of_go_set\":0,\"order_set_date\":\"0000-00-00\",\"order_set_time\":\"00:00:00\",\"results_verified\":0,\"schedule_ring_id\":37,\"schedule_sequencetype\":\"Over Fences\",\"show_id\":200000077,\"sponsor\":\"\",\"verification_detail\":\"\"},\"class_group_order_of_go\":{\"entries\":[]},\"class_phase_nav\":null,\"class_related_data\":{\"actual_time\":\"00:00:00\",\"class_group_id\":200028482,\"class_prizes\":[],\"class_split_codes\":[\"A\"],\"completed_trips\":0,\"current_split_code\":\"A\",\"date\":\"2026-11-06T00:00:00.000Z\",\"default_time\":\"12:00:00\",\"estimated_time\":\"12:00:00\",\"grouped_class\":false,\"has_prize_money\":false,\"hunter_scoreby\":\"\",\"hunter_type\":\"\",\"is_videos_enabled\":true,\"judges\":[{\"iscoursedesigner\":0,\"isjudge\":1,\"name\":\"DANIELLE MENKER\",\"position\":\"\"},{\"iscoursedesigner\":1,\"isjudge\":0,\"name\":\"ROBERT MCGREGOR\",\"position\":\"\"}],\"judges_count\":2,\"order_check_in\":0,\"remaining_trips\":0,\"ring\":3,\"ring_name\":\"Rost Arena\",\"score_fields\":[],\"show_est_time\":true,\"show_planned_time\":false,\"show_results\":false,\"show_ring_info\":true,\"status\":\"Not Started\",\"total_trips\":0,\"type\":\"\",\"unscratched_count\":0},\"jumper_table_info\":{\"MandatoryJO\":false,\"after_delay_JO\":false,\"class_group_jumper_table\":\"\",\"class_jumper_table\":\"\",\"fei_rule\":false,\"hasJO\":false,\"hasR3Data\":false,\"has_aggregate_faults\":false,\"jumper_table\":\"\",\"ring\":3,\"roundLabels\":{\"r1\":{\"abbr\":\"R1\",\"name\":\"Round 1\"},\"r2\":{\"abbr\":\"R2\",\"name\":\"Round 2\"},\"r3\":{\"abbr\":\"R3\",\"name\":\"Round 3\"}},\"separateJOVideo\":false,\"show_id\":200000077,\"table_type\":1,\"timeallowed_jo\":0,\"timeallowed_tripone\":0},\"my_entry_ids\":[],\"phase_columns\":[],\"phase_order_of_go\":[],\"phase_rows\":[],\"show_id\":\"200000077\",\"team_scoring_result\":[],\"total_entry_trips\":0,\"trips\":[]}",
+            "fld9isSgD5Xj2gKJ5": 0,
+            "fldFUYlRvZHx974vL": "15|200000077|2026-11-06|3|200031271",
+            "fldTlDs9TdK5Mj66g": "[]"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 489
+      },
+      "nextCursor": "itr2PFiu6WaqbCSHX/rec0WiJAssjpSLWhA"
+    },
+    "isError": false
+  },
+  "wef-data.trips": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec001k1xijgS8cDc",
+          "createdTime": "2026-11-08T02:46:53.000Z",
+          "cellValuesByFieldId": {
+            "fld0TV8EVZ5SM6S11": "14401",
+            "fldI9Cd98bSDH35pG": "1",
+            "fldLcX5h985NUxZ5R": "200003019",
+            "fldStkm0OO860jI22": "1",
+            "fldbZt784U1kUC3C9": "200000077|200244820",
+            "fldsecCydYT3VXask": "15|200000077|2026-11-06|5|200031246|200244820|BBE6F6659A9B4D29B8E49059DA931025",
+            "fldxRO6fxlwf1SIm5": "{\"Owner\":\"BLUE HILL FARM, LLC\",\"actual_order\":5,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_three\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200244820,\"entryxclasses_uuid\":\"BBE6F6659A9B4D29B8E49059DA931025\",\"estimated_go_time\":\"12:08:00\",\"faults_one\":0,\"faults_three\":0,\"faults_two\":0,\"gone_in\":1,\"horse\":\"CONTHARGOS GOLD\",\"horse_id\":200003019,\"number\":285,\"order_of_go\":5,\"owner_id\":20041,\"place\":7,\"placing\":7,\"points_earned\":0,\"position\":7,\"r3_trip\":0,\"rank\":7,\"rank_placing\":\"7<sup>th</sup>\",\"rider\":\"\",\"rider_id\":14401,\"rider_name\":\"REBECCA CONWAY\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"split_section\":\"A\",\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_three\":0,\"time_fault_two\":0,\"time_one\":38.235,\"time_three\":0,\"time_two\":41.799,\"total_prize_money\":0,\"trainer\":\"CONAN CONWAY\",\"trainer_id\":11516,\"trip_id\":200400611}"
+          }
+        },
+        {
+          "id": "rec00jXuZ9LjqxpQv",
+          "createdTime": "2026-11-06T11:59:12.000Z",
+          "cellValuesByFieldId": {
+            "fld0TV8EVZ5SM6S11": "27662",
+            "fldI9Cd98bSDH35pG": "0",
+            "fldLcX5h985NUxZ5R": "200005170",
+            "fldStkm0OO860jI22": "0",
+            "fldbZt784U1kUC3C9": "200000077|200249356",
+            "fldsecCydYT3VXask": "15|200000077|2026-11-06|5|200031181|200249356|7771E02E8E7047789A22E34BB0F78891",
+            "fldxRO6fxlwf1SIm5": "{\"Owner\":\"BLAIRE POSTON\",\"actual_order\":0,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_three\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200249356,\"entryxclasses_uuid\":\"7771E02E8E7047789A22E34BB0F78891\",\"estimated_go_time\":\"08:42:00\",\"faults_one\":0,\"faults_three\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"VELMA DE LETINCELLE Z\",\"horse_id\":200005170,\"number\":1305,\"order_of_go\":3,\"owner_id\":5421,\"place\":7,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"r3_trip\":0,\"rank\":0,\"rank_placing\":\"\",\"rider\":\"\",\"rider_id\":27662,\"rider_name\":\"ALEXANDRA VANDERREST-HAYES\",\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"split_section\":\"A\",\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_three\":0,\"time_fault_two\":0,\"time_one\":0,\"time_three\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"ALEXANDRA VANDERREST-HAYES\",\"trainer_id\":27662,\"trip_id\":200400785}"
+          }
+        },
+        {
+          "id": "rec03iZRAlnYBxRmD",
+          "createdTime": "2026-11-08T02:46:57.000Z",
+          "cellValuesByFieldId": {
+            "fld0TV8EVZ5SM6S11": "70801",
+            "fldI9Cd98bSDH35pG": "0",
+            "fldLcX5h985NUxZ5R": "200002801",
+            "fldStkm0OO860jI22": "0",
+            "fldbZt784U1kUC3C9": "200000077|200245407",
+            "fldsecCydYT3VXask": "15|200000077|2026-11-08|3|200031022|200245407|79A9D6D880D44A33A65D0BDB06605F9B",
+            "fldxRO6fxlwf1SIm5": "{\"Owner\":\"ZARA HUMAYUN\",\"actual_order\":0,\"competing_country\":\"USA\",\"disqualify_status_one\":\"\",\"disqualify_status_three\":\"\",\"disqualify_status_two\":\"\",\"entry_id\":200245407,\"entryxclasses_uuid\":\"79A9D6D880D44A33A65D0BDB06605F9B\",\"estimated_go_time\":\"00:00:00\",\"faults_one\":0,\"faults_three\":0,\"faults_two\":0,\"gone_in\":0,\"horse\":\"IN PRIVATE\",\"horse_id\":200002801,\"number\":403,\"order_of_go\":100000,\"owner_id\":70801,\"place\":1,\"placing\":100000,\"points_earned\":0,\"position\":100000,\"r3_trip\":0,\"rank\":0,\"rank_placing\":\"\",\"rider\":\"\",\"rider_id\":70801,\"rider_name\":\"ZARA HUMAYUN\",\"score\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch_trip\":0,\"split_section\":\"A\",\"team_abbr\":null,\"team_id\":0,\"team_name\":null,\"team_type\":null,\"time_fault_one\":0,\"time_fault_three\":0,\"time_fault_two\":0,\"time_one\":0,\"time_three\":0,\"time_two\":0,\"total_prize_money\":0,\"trainer\":\"MAILIN DELIA BECKMAN\",\"trainer_id\":2915,\"trip_id\":200401033}"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 1902
+      },
+      "nextCursor": "itrH46lilJjpIkYTU/rec03iZRAlnYBxRmD"
+    },
+    "isError": false
+  },
+  "wef-data.results": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec00xEg7oLNVHRxI",
+          "createdTime": "2026-11-03T02:32:49.000Z",
+          "cellValuesByFieldId": {
+            "fld4K3pC1N1WHMmX3": [
+              {
+                "id": "recV3ZS0ZZ9Ln5cLp",
+                "name": "15|200000077|2026-11-08|3|200031027|200248823|65EB80E2FC434D67BFE2E0F2391FAB9B"
+              }
+            ],
+            "fldPg81w3DHo4nXzx": "{\"faults-one\":0,\"faults-three\":0,\"faults-two\":0,\"gone-in\":0,\"placing\":100000,\"points-earned\":0,\"position\":100000,\"prize-money\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch\":0,\"time-fault-one\":0,\"time-fault-three\":0,\"time-fault-two\":0,\"time-one\":0,\"time-three\":0,\"time-two\":0}",
+            "fldbAg5NfUZpfERol": "0",
+            "fldeZBJ7cF13RTUNf": "200000077|200248823",
+            "fldtbvwbv25xO4dus": "15|200000077|2026-11-08|3|200031027|200248823|65EB80E2FC434D67BFE2E0F2391FAB9B"
+          }
+        },
+        {
+          "id": "rec02iN60Xd1CGOpJ",
+          "createdTime": "2026-11-06T11:59:08.000Z",
+          "cellValuesByFieldId": {
+            "fld4K3pC1N1WHMmX3": [
+              {
+                "id": "recEnXCEDUKP0BZDl",
+                "name": "15|200000077|2026-11-06|4|200031191|200247792|5784F64378434ACFA234729B96F15874"
+              }
+            ],
+            "fldPg81w3DHo4nXzx": "{\"faults-one\":0,\"faults-three\":0,\"faults-two\":0,\"gone-in\":0,\"placing\":100000,\"points-earned\":0,\"position\":100000,\"prize-money\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch\":0,\"time-fault-one\":0,\"time-fault-three\":0,\"time-fault-two\":0,\"time-one\":0,\"time-three\":0,\"time-two\":0}",
+            "fldbAg5NfUZpfERol": "0",
+            "fldeZBJ7cF13RTUNf": "200000077|200247792",
+            "fldtbvwbv25xO4dus": "15|200000077|2026-11-06|4|200031191|200247792|5784F64378434ACFA234729B96F15874"
+          }
+        },
+        {
+          "id": "rec069VBMbIV80667",
+          "createdTime": "2026-11-05T08:31:52.000Z",
+          "cellValuesByFieldId": {
+            "fld4K3pC1N1WHMmX3": [
+              {
+                "id": "receJYCjSk9oA2lS7",
+                "name": "15|200000077|2026-11-07|5|200031232|200249230|E5FA573F6B264A36AB916D86AB5BED7B"
+              }
+            ],
+            "fldPg81w3DHo4nXzx": "{\"faults-one\":0,\"faults-three\":0,\"faults-two\":0,\"gone-in\":0,\"placing\":100000,\"points-earned\":0,\"position\":100000,\"prize-money\":0,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"scratch\":0,\"time-fault-one\":0,\"time-fault-three\":0,\"time-fault-two\":0,\"time-one\":0,\"time-three\":0,\"time-two\":0}",
+            "fldbAg5NfUZpfERol": "0",
+            "fldeZBJ7cF13RTUNf": "200000077|200249230",
+            "fldtbvwbv25xO4dus": "15|200000077|2026-11-07|5|200031232|200249230|E5FA573F6B264A36AB916D86AB5BED7B"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 1902
+      },
+      "nextCursor": "itrwmqshJ4AOhLfkQ/rec069VBMbIV80667"
+    },
+    "isError": false
+  },
+  "wef-live.rings": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec1yYqKIQ2YR5y0s",
+          "createdTime": "2026-11-08T02:46:35.000Z",
+          "cellValuesByFieldId": {
+            "fldQVNA3n9gH3stwb": "200000077|2026-11-07|9",
+            "fldcVfaaFY9PAFuXP": "{\"name\":\"E.R. Mische Grand Hunter\",\"upcoming\":[],\"livenow\":[],\"completed\":[{\"class_group_id\":\"200028556\",\"group_name\":\"$1,000 USHJA Junior/Amateur 2'6\\\"/2'9\\\" Hunter Derby\",\"day\":\"2026-11-07\",\"group_sequence\":\"2\",\"estimated_start_time\":\"12:00:02\",\"jumper_table\":\"\",\"hunter_type\":\"Hunter Derby - National Hunt & Go\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"2\",\"classes\":[\"200031263\"],\"classNumbers\":[\"925\"],\"classNames\":[\"$1,000 USHJA Junior/Amateur 2'6\\\"/2'9\\\" Hunter Derby\"],\"class_numbers\":\"925\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":5,\"total\":5,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1794089966,\"last_updated_class\":\"200031263\",\"recent_updated_classes\":[\"200031263\"],\"ring_id\":\"9\",\"ring\":\"E.R. Mische Grand Hunter\",\"link\":\"/liveclass/detail?cid=200031263&class_group_id=200028556\",\"trips\":5}]}",
+            "fldoltPrWHkEaeH7z": [
+              {
+                "id": "recPdETzYNJpy5uYf",
+                "name": "200000077|2026-11-07|200028556"
+              }
+            ]
+          }
+        },
+        {
+          "id": "recCgdrsdFiz3w5AW",
+          "createdTime": "2026-11-08T02:46:35.000Z",
+          "cellValuesByFieldId": {
+            "fldQVNA3n9gH3stwb": "200000077|2026-11-06|49",
+            "fldcVfaaFY9PAFuXP": "{\"name\":\"Denemethy\",\"upcoming\":[],\"livenow\":[],\"completed\":[{\"class_group_id\":\"200028464\",\"group_name\":\"1.10m Open Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"1\",\"estimated_start_time\":\"08:00:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031191\"],\"classNumbers\":[\"715\"],\"classNames\":[\"1.10m Open Jumper II2d\"],\"class_numbers\":\"715\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":14,\"total\":14,\"jo_gone\":13,\"jo_total\":13,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793993591,\"last_updated_class\":\"200031191\",\"recent_updated_classes\":[\"200031191\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031191&class_group_id=200028464\",\"trips\":14},{\"class_group_id\":\"200028465\",\"group_name\":\"1.10m Young Jumper Table II\",\"day\":\"2026-11-06\",\"group_sequence\":\"2\",\"estimated_start_time\":\"08:40:00\",\"jumper_table\":\"USEF Table II\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031243\"],\"classNumbers\":[\"830\"],\"classNames\":[\"1.10m Young Jumper Table II\"],\"class_numbers\":\"830\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":7,\"total\":7,\"jo_gone\":0,\"jo_total\":4,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793991770,\"last_updated_class\":\"200031243\",\"recent_updated_classes\":[\"200031243\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031243&class_group_id=200028465\",\"trips\":7},{\"class_group_id\":\"200028466\",\"group_name\":\"1.15m Open Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"3\",\"estimated_start_time\":\"09:20:01\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031194\"],\"classNumbers\":[\"744\"],\"classNames\":[\"1.15m Open Jumper II2d\"],\"class_numbers\":\"744\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":12,\"total\":12,\"jo_gone\":12,\"jo_total\":12,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793994627,\"last_updated_class\":\"200031194\",\"recent_updated_classes\":[\"200031194\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031194&class_group_id=200028466\",\"trips\":12},{\"class_group_id\":\"200028467\",\"group_name\":\"1.25m Open Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"4\",\"estimated_start_time\":\"10:15:01\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031200\"],\"classNumbers\":[\"710\"],\"classNames\":[\"1.25m Open Jumper II2d\"],\"class_numbers\":\"710\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":7,\"total\":7,\"jo_gone\":7,\"jo_total\":7,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793997342,\"last_updated_class\":\"200031200\",\"recent_updated_classes\":[\"200031200\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031200&class_group_id=200028467\",\"trips\":7},{\"class_group_id\":\"200028468\",\"group_name\":\"1.20m Open Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"5\",\"estimated_start_time\":\"11:00:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031197\"],\"classNumbers\":[\"787\"],\"classNames\":[\"1.20m Open Jumper II2d\"],\"class_numbers\":\"787\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":16,\"total\":16,\"jo_gone\":16,\"jo_total\":16,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1794001270,\"last_updated_class\":\"200031197\",\"recent_updated_classes\":[\"200031197\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031197&class_group_id=200028468\",\"trips\":16},{\"class_group_id\":\"200028469\",\"group_name\":\"1.20m Young Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"6\",\"estimated_start_time\":\"12:00:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031246\"],\"classNumbers\":[\"835\"],\"classNames\":[\"1.20m Young Jumper II2d\"],\"class_numbers\":\"835\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":11,\"total\":11,\"jo_gone\":11,\"jo_total\":11,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1794003766,\"last_updated_class\":\"200031246\",\"recent_updated_classes\":[\"200031246\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031246&class_group_id=200028469\",\"trips\":11},{\"class_group_id\":\"200028470\",\"group_name\":\"1.20m Junior/Amateur Jumper II2d\",\"day\":\"2026-11-06\",\"group_sequence\":\"7\",\"estimated_start_time\":\"12:30:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031214\"],\"classNumbers\":[\"720\"],\"classNames\":[\"1.20m Junior/Amateur Jumper II2d\"],\"class_numbers\":\"720\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":14,\"total\":14,\"jo_gone\":14,\"jo_total\":14,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1794007310,\"last_updated_class\":\"200031214\",\"recent_updated_classes\":[\"200031214\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031214&class_group_id=200028470\",\"trips\":14},{\"class_group_id\":\"200028471\",\"group_name\":\"Mulligan Class\",\"day\":\"2026-11-06\",\"group_sequence\":\"8\",\"estimated_start_time\":\"13:18:01\",\"jumper_table\":\"\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031270\"],\"classNumbers\":[\"991\"],\"classNames\":[\"Mulligan Class\"],\"class_numbers\":\"991\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":1,\"total\":1,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1793962803,\"last_updated_class\":\"200031270\",\"recent_updated_classes\":[\"200031270\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031270&class_group_id=200028471\",\"trips\":1}]}",
+            "fldoltPrWHkEaeH7z": [
+              {
+                "id": "recFzQ6BgouW5QPvv",
+                "name": "200000077|2026-11-06|200028464"
+              },
+              {
+                "id": "recUVB5YEaRKyceTU",
+                "name": "200000077|2026-11-06|200028465"
+              },
+              {
+                "id": "recIDMAEUhNtmsaD4",
+                "name": "200000077|2026-11-06|200028466"
+              },
+              {
+                "id": "reclvRlNJ0LkOXFs0",
+                "name": "200000077|2026-11-06|200028467"
+              },
+              {
+                "id": "rech8Hgtl4mhDpiYD",
+                "name": "200000077|2026-11-06|200028468"
+              },
+              {
+                "id": "recaIDkbSUxDEp0NQ",
+                "name": "200000077|2026-11-06|200028469"
+              },
+              {
+                "id": "recohHjrKsvcJXwaq",
+                "name": "200000077|2026-11-06|200028470"
+              },
+              {
+                "id": "rec3gzXyWCNH4FWbc",
+                "name": "200000077|2026-11-06|200028471"
+              }
+            ]
+          }
+        },
+        {
+          "id": "recD6wAhVNDk9sjS5",
+          "createdTime": "2026-11-08T02:46:35.000Z",
+          "cellValuesByFieldId": {
+            "fldQVNA3n9gH3stwb": "200000077|2026-11-06|9",
+            "fldcVfaaFY9PAFuXP": "{\"name\":\"E.R. Mische Grand Hunter\",\"upcoming\":[],\"livenow\":[],\"completed\":[{\"class_group_id\":\"200028522\",\"group_name\":\"$1,500 USHJA National Hunter Derby\",\"day\":\"2026-11-06\",\"group_sequence\":\"2\",\"estimated_start_time\":\"11:15:01\",\"jumper_table\":\"\",\"hunter_type\":\"Hunter Derby - National Hunt & Go\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"2\",\"classes\":[\"200031266\"],\"classNumbers\":[\"920\"],\"classNames\":[\"$1,500 USHJA National Hunter Derby\"],\"class_numbers\":\"920\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":5,\"total\":5,\"jo_gone\":0,\"jo_total\":0,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":1794001070,\"last_updated_class\":\"200031266\",\"recent_updated_classes\":[\"200031266\"],\"ring_id\":\"9\",\"ring\":\"E.R. Mische Grand Hunter\",\"link\":\"/liveclass/detail?cid=200031266&class_group_id=200028522\",\"trips\":5}]}",
+            "fldoltPrWHkEaeH7z": [
+              {
+                "id": "recqy2DCyptfhpfzA",
+                "name": "200000077|2026-11-06|200028522"
+              }
+            ]
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 13
+      },
+      "nextCursor": "itrDdRKehTxbuIXN8/recD6wAhVNDk9sjS5"
+    },
+    "isError": false
+  },
+  "wef-live.groups": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec1GqqPv7VF99dQ3",
+          "createdTime": "2026-11-08T02:46:35.000Z",
+          "cellValuesByFieldId": {
+            "fldJxk25bjEPFHiOz": "200000077|2026-11-06|200028473",
+            "fldKBfIokpD9gFyyZ": "{\"class_group_id\":\"200028473\",\"group_name\":\"USHJA Hunter 2'3\\\"\",\"day\":\"2026-11-06\",\"group_sequence\":\"2\",\"estimated_start_time\":\"09:14:20\",\"jumper_table\":\"\",\"hunter_type\":\"Score Without Jog\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"3\",\"classes\":[\"200030984\",\"200030985\",\"200031110\"],\"classNumbers\":[\"182\",\"183\",\"656\"],\"classNames\":[\"USHJA Hunter 2'3\\\"\",\"USHJA Hunter 2'3\\\"\",\"Warm Up Hunter\"],\"class_numbers\":\"182, 183, 656\",\"status\":\"Underway\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":\"11\",\"total\":\"15\",\"jo_gone\":\"0\",\"jo_total\":\"0\",\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":\"0\",\"r2_total\":\"0\",\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":\"1794001725\",\"last_updated_class\":\"200031110\",\"recent_updated_classes\":[\"200031110\",\"200030984\",\"200030985\"],\"ring_id\":\"37\",\"ring\":\"Rost Arena\",\"class_numbers_list\":\"182, 183, 656\",\"grid\":\"#Completed\",\"trips\":\"15\"}",
+            "fldVpHrNBcEwBHcHI": [
+              {
+                "id": "recNR8jCXyY8xhfvA",
+                "name": "200000077|2026-11-06|37"
+              }
+            ]
+          }
+        },
+        {
+          "id": "rec3351gsL7EeNhkk",
+          "createdTime": "2026-11-08T02:46:35.000Z",
+          "cellValuesByFieldId": {
+            "fldJxk25bjEPFHiOz": "200000077|2026-11-06|200028477",
+            "fldKBfIokpD9gFyyZ": "{\"class_group_id\":\"200028477\",\"group_name\":\"USHJA Hunter 2'9\\\"\",\"day\":\"2026-11-06\",\"group_sequence\":\"5\",\"estimated_start_time\":\"10:35:01\",\"jumper_table\":\"\",\"hunter_type\":\"Score Without Jog\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"3\",\"classes\":[\"200031004\",\"200031005\",\"200031110\"],\"classNumbers\":[\"187\",\"188\",\"656\"],\"classNames\":[\"USHJA Hunter 2'9\\\"\",\"USHJA Hunter 2'9\\\"\",\"Warm Up Hunter\"],\"class_numbers\":\"187, 188, 656\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":\"15\",\"total\":\"15\",\"jo_gone\":\"0\",\"jo_total\":\"0\",\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":\"0\",\"r2_total\":\"0\",\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":\"1794001725\",\"last_updated_class\":\"200031110\",\"recent_updated_classes\":[\"200031110\",\"200031005\",\"200031004\"],\"ring_id\":\"37\",\"ring\":\"Rost Arena\",\"class_numbers_list\":\"187, 188, 656\",\"grid\":\"#Completed\",\"trips\":\"15\"}",
+            "fldVpHrNBcEwBHcHI": [
+              {
+                "id": "recNR8jCXyY8xhfvA",
+                "name": "200000077|2026-11-06|37"
+              }
+            ]
+          }
+        },
+        {
+          "id": "rec3csZDQGZNGnzoN",
+          "createdTime": "2026-11-08T02:46:35.000Z",
+          "cellValuesByFieldId": {
+            "fldJxk25bjEPFHiOz": "200000077|2026-11-06|200028458",
+            "fldKBfIokpD9gFyyZ": "{\"class_group_id\":\"200028458\",\"group_name\":\"Training Jumper (1.0m) II2d and 1.0 YJ\",\"day\":\"2026-11-06\",\"group_sequence\":\"4\",\"estimated_start_time\":\"11:15:01\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"4\",\"classes\":[\"200031188\",\"200031240\"],\"classNumbers\":[\"780\",\"825\"],\"classNames\":[\"Training Jumper (1.0m) II2d\",\"1.0m Young Jumper Table II\"],\"class_numbers\":\"780, 825\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":\"11\",\"total\":\"11\",\"jo_gone\":\"8\",\"jo_total\":\"11\",\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":\"0\",\"r2_total\":\"0\",\"is_live\":false,\"has_JSON\":true,\"curr_updated_at\":\"1794001579\",\"last_updated_class\":\"200031188\",\"recent_updated_classes\":[\"200031188\",\"200031240\"],\"ring_id\":\"52\",\"ring\":\"Mogavero\",\"class_numbers_list\":\"780, 825\",\"grid\":\"#Completed\",\"trips\":\"11\"}",
+            "fldVpHrNBcEwBHcHI": [
+              {
+                "id": "recPpUZO2V8ChzfJe",
+                "name": "200000077|2026-11-06|52"
+              }
+            ]
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 66
+      },
+      "nextCursor": "itrFKd9N0xlMp8W5G/rec3csZDQGZNGnzoN"
+    },
+    "isError": false
+  },
+  "wef-live.classes": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec0h8TAGAL08yKOZ",
+          "createdTime": "2026-11-08T02:46:34.000Z",
+          "cellValuesByFieldId": {
+            "fldL4XYFEaY34YtuU": "{\"ID\":\"200031034\",\"recs\":0,\"ring_name\":\"RING 6\",\"ring_number\":\"6\",\"pt\":false,\"JAPI\":false,\"gone_trips\":\"\",\"jo_gone_trips\":\"\",\"r2_gone_trips\":\"\",\"curr\":\"\",\"curr_updated_at\":\"05nov2026 16:30:25\"}",
+            "fldb56ISoXfktKpu4": "200000077|2026-11-07|200031034"
+          }
+        },
+        {
+          "id": "rec14FDUmb5BIEckj",
+          "createdTime": "2026-11-08T02:46:34.000Z",
+          "cellValuesByFieldId": {
+            "fldL4XYFEaY34YtuU": "{\"ID\":\"200031099\",\"recs\":6,\"ring_name\":\"RING 8\",\"ring_number\":\"7\",\"pt\":true,\"JAPI\":true,\"gone_trips\":\"200400797,200400820,200400555,200400666,200400963,200400690\",\"jo_gone_trips\":\"\",\"r2_gone_trips\":\"\",\"curr\":\"200400963\",\"curr_updated_at\":\"06nov2026 14:38:12\"}",
+            "fldb56ISoXfktKpu4": "200000077|2026-11-06|200031099"
+          }
+        },
+        {
+          "id": "rec2YFRAjkCqV71A8",
+          "createdTime": "2026-11-08T02:46:34.000Z",
+          "cellValuesByFieldId": {
+            "fldL4XYFEaY34YtuU": "{\"ID\":\"200030990\",\"recs\":6,\"ring_name\":\"ROST ARENA\",\"ring_number\":\"3\",\"pt\":true,\"JAPI\":true,\"gone_trips\":\"200400168,200400447,200400775,200400930,200400163\",\"jo_gone_trips\":\"\",\"r2_gone_trips\":\"\",\"curr\":\"200400775\",\"curr_updated_at\":\"06nov2026 15:10:21\"}",
+            "fldb56ISoXfktKpu4": "200000077|2026-11-06|200030990"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 111
+      },
+      "nextCursor": "itrETpRka13U0ktJS/rec2YFRAjkCqV71A8"
+    },
+    "isError": false
+  },
+  "wef-live.entries": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec02en74QLqSKeWe",
+          "createdTime": "2026-11-08T02:47:01.000Z",
+          "cellValuesByFieldId": {
+            "fld4E3TaXEBtaBCR9": "{\"live\":{\"id\":\"200400296\",\"Scr\":\"0\",\"Gone\":\"0\",\"OOG\":\"6\",\"R2_OOG\":\"\",\"R2_Qualified\":\"\",\"R2_Upcoming\":\"\",\"Actual_OOG\":\"\",\"Actual_OOG_R2\":\"\",\"Eli\":\"0\",\"Pos\":\"0\",\"OldPos\":\"0\",\"ENo\":\"259\",\"Hor\":\"OH MY\",\"HFEI\":\"\",\"Rid\":\"SELAH SHARP\",\"RFEI\":\"\",\"RCntry\":\"USA\",\"Tra\":\"J P ROUKIS\",\"Own\":\"CHRISTIAN COYLE\",\"OCty\":\"WELLINGTON\",\"OSt\":\"FL\",\"R1JF\":\"\",\"R1TF\":\"\",\"R1F\":\"\",\"R1T\":\"\",\"JOJF\":\"\",\"JOTF\":\"\",\"JOF\":\"\",\"JOT\":\"\",\"R3JF\":\"\",\"R3TF\":\"\",\"R3F\":\"\",\"R3T\":\"\",\"J1\":\"\",\"J2\":\"\",\"J3\":\"\",\"J4\":\"\",\"J5\":\"\",\"J6\":\"\",\"Score\":\"\",\"JAPI\":\"0\",\"JAPI1\":\"\",\"JAPI2\":\"\",\"pt\":\"\",\"r1_cd\":\"\",\"r1_start\":\"\",\"r1_done\":\"\",\"jo_cd\":\"\",\"jo_start\":\"\",\"jo_done\":\"\",\"TID\":\"\",\"TName\":\"\",\"TAbbr\":\"\",\"TType\":\"\",\"TScr\":\"0\",\"TScr1\":\"0\",\"TScr2\":\"0\",\"TR1T\":0,\"TR2T\":0,\"TR1Drop\":false,\"TR2Drop\":false,\"TR1F\":0,\"TR2F\":0,\"class_id\":\"200031232\",\"ActualPos\":\"0\"}}",
+            "fldDWfmbXXRXJFIYl": "200000077|2026-11-07|200031232|200400296"
+          }
+        },
+        {
+          "id": "rec07Z2UqXr1x18Ek",
+          "createdTime": "2026-11-08T02:46:33.000Z",
+          "cellValuesByFieldId": {
+            "fld4E3TaXEBtaBCR9": "{\"live\":{\"id\":\"200400469\",\"Scr\":\"0\",\"Gone\":\"1\",\"OOG\":\"24\",\"R2_OOG\":\"28\",\"R2_Qualified\":\"1\",\"R2_Upcoming\":\"1\",\"Actual_OOG\":\"24\",\"Actual_OOG_R2\":\"24\",\"Eli\":\"0\",\"Pos\":\"28\",\"OldPos\":\"27\",\"ENo\":\"1350\",\"Hor\":\"DOROTHEA MYSTIC ROSE\",\"HFEI\":\"\",\"Rid\":\"ROBERTO TERAN TAFUR\",\"RFEI\":\"10002656\",\"RCntry\":\"COL\",\"Tra\":\"ROBERTO TERAN TAFUR\",\"Own\":\"BZB BARN LLC\",\"OCty\":\"LOXAHATCHEE\",\"OSt\":\"FL\",\"R1JF\":\"8\",\"R1TF\":\"\",\"R1F\":\"8\",\"R1T\":\"38.203\",\"JOJF\":\"\",\"JOTF\":\"\",\"JOF\":\"\",\"JOT\":\"45.118\",\"R3JF\":\"\",\"R3TF\":\"\",\"R3F\":\"\",\"R3T\":\"\",\"J1\":\"\",\"J2\":\"\",\"J3\":\"\",\"J4\":\"\",\"J5\":\"\",\"J6\":\"\",\"Score\":\"\",\"JAPI\":\"0\",\"JAPI1\":\"\",\"JAPI2\":\"\",\"pt\":\"\",\"r1_cd\":\"\",\"r1_start\":\"\",\"r1_done\":\"\",\"jo_cd\":\"\",\"jo_start\":\"Fri, 06 Nov 2026 18:18:33 GMT\",\"jo_done\":\"\",\"TID\":\"\",\"TName\":\"\",\"TAbbr\":\"\",\"TType\":\"\",\"TScr\":\"0\",\"TScr1\":\"0\",\"TScr2\":\"0\",\"TR1T\":0,\"TR2T\":0,\"TR1Drop\":false,\"TR2Drop\":false,\"TR1F\":0,\"TR2F\":0,\"class_id\":\"200031209\",\"ActualPos\":\"28\"},\"identity\":{\"entry_id\":200249475,\"number\":1350,\"horse\":\"DOROTHEA MYSTIC ROSE\",\"horse_id\":200005474,\"rider\":\"\",\"Owner\":\"BZB BARN LLC\",\"trainer\":\"ROBERTO TERAN TAFUR\",\"owner_id\":66868,\"trainer_id\":83864,\"trip_id\":200400469,\"total_prize_money\":0,\"estimated_go_time\":\"12:48:00\",\"rider_name\":\"ROBERTO TERAN TAFUR\",\"rider_id\":83864,\"points_earned\":0,\"time_one\":38.203,\"time_fault_one\":0,\"faults_one\":8,\"time_two\":45.118,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"scratch_trip\":0,\"actual_order\":24,\"placing\":100000,\"position\":28,\"order_of_go\":24,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"entryxclasses_uuid\":\"6544434129AD4B569937CAE218EC3098\",\"gone_in\":1,\"team_id\":0,\"r3_trip\":0,\"team_name\":null,\"team_type\":null,\"team_abbr\":null,\"rank_placing\":\"\",\"rank\":0,\"place\":28,\"split_section\":\"A\",\"competing_country\":\"COL\"}}",
+            "fldDWfmbXXRXJFIYl": "200000077|2026-11-06|200031209|200400469"
+          }
+        },
+        {
+          "id": "rec0BkuG7ni73mCBL",
+          "createdTime": "2026-11-08T02:46:52.000Z",
+          "cellValuesByFieldId": {
+            "fld4E3TaXEBtaBCR9": "{\"live\":{\"id\":\"200400783\",\"Scr\":\"0\",\"Gone\":\"1\",\"OOG\":\"1\",\"R2_OOG\":\"4\",\"R2_Qualified\":\"1\",\"R2_Upcoming\":\"1\",\"Actual_OOG\":\"1\",\"Actual_OOG_R2\":\"1\",\"Eli\":\"0\",\"Pos\":\"4\",\"OldPos\":\"5\",\"ENo\":\"1326\",\"Hor\":\"NULAVSCA FORTUNA\",\"HFEI\":\"108HO06\",\"Rid\":\"TINA YATES\",\"RFEI\":\"10080537\",\"RCntry\":\"USA\",\"Tra\":\"TINA YATES\",\"Own\":\"LYNN PARKER\",\"OCty\":\"OCALA\",\"OSt\":\"FL\",\"R1JF\":\"\",\"R1TF\":\"\",\"R1F\":\"\",\"R1T\":\"34.795\",\"JOJF\":\"\",\"JOTF\":\"\",\"JOF\":\"\",\"JOT\":\"42.426\",\"R3JF\":\"\",\"R3TF\":\"\",\"R3F\":\"\",\"R3T\":\"\",\"J1\":\"\",\"J2\":\"\",\"J3\":\"\",\"J4\":\"\",\"J5\":\"\",\"J6\":\"\",\"Score\":\"\",\"JAPI\":\"0\",\"JAPI1\":\"\",\"JAPI2\":\"\",\"pt\":\"\",\"r1_cd\":\"\",\"r1_start\":\"\",\"r1_done\":\"\",\"jo_cd\":\"\",\"jo_start\":\"Fri, 06 Nov 2026 15:19:04 GMT\",\"jo_done\":\"\",\"TID\":\"\",\"TName\":\"\",\"TAbbr\":\"\",\"TType\":\"\",\"TScr\":\"0\",\"TScr1\":\"0\",\"TScr2\":\"0\",\"TR1T\":0,\"TR2T\":0,\"TR1Drop\":false,\"TR2Drop\":false,\"TR1F\":0,\"TR2F\":0,\"class_id\":\"200031200\",\"ActualPos\":\"4\"},\"identity\":{\"entry_id\":200248095,\"number\":1326,\"horse\":\"NULAVSCA FORTUNA\",\"horse_id\":153216,\"rider\":\"\",\"Owner\":\"LYNN PARKER\",\"trainer\":\"TINA YATES\",\"owner_id\":27531,\"trainer_id\":57364,\"trip_id\":200400783,\"total_prize_money\":0,\"estimated_go_time\":\"10:10:00\",\"rider_name\":\"TINA YATES\",\"rider_id\":57364,\"points_earned\":2,\"time_one\":34.795,\"time_fault_one\":0,\"faults_one\":0,\"time_two\":42.426,\"time_fault_two\":0,\"faults_two\":0,\"time_three\":0,\"time_fault_three\":0,\"faults_three\":0,\"scratch_trip\":0,\"actual_order\":1,\"placing\":4,\"position\":4,\"order_of_go\":1,\"score1\":0,\"score2\":0,\"score3\":0,\"score4\":0,\"score5\":0,\"score6\":0,\"disqualify_status_one\":\"\",\"disqualify_status_two\":\"\",\"disqualify_status_three\":\"\",\"entryxclasses_uuid\":\"1B69EF38222645B1A5C7188BF6C23019\",\"gone_in\":1,\"team_id\":0,\"r3_trip\":0,\"team_name\":null,\"team_type\":null,\"team_abbr\":null,\"rank_placing\":\"4<sup>th</sup>\",\"rank\":4,\"place\":4,\"split_section\":\"A\",\"competing_country\":\"USA\"}}",
+            "fldDWfmbXXRXJFIYl": "200000077|2026-11-06|200031200|200400783"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 845
+      },
+      "nextCursor": "itrtZX4uQFvAXyEF9/rec0BkuG7ni73mCBL"
+    },
+    "isError": false
+  },
+  "w-horses": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec000Hf8QFbhrmm9",
+          "createdTime": "2026-11-01T01:37:13.000Z",
+          "cellValuesByFieldId": {
+            "fldBxVloCdHzALgPH": "200001834"
+          }
+        },
+        {
+          "id": "rec07ntvROqgANBQ5",
+          "createdTime": "2026-11-06T11:59:02.000Z",
+          "cellValuesByFieldId": {
+            "fldBxVloCdHzALgPH": "200005423"
+          }
+        },
+        {
+          "id": "rec0AarENzML2Jv8g",
+          "createdTime": "2026-11-06T11:59:02.000Z",
+          "cellValuesByFieldId": {
+            "fldBxVloCdHzALgPH": "200000669"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 1250
+      },
+      "nextCursor": "itrAojm2klswGi4BU/rec0AarENzML2Jv8g"
+    },
+    "isError": false
+  },
+  "w-riders": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec00UnXw1crIHCM9",
+          "createdTime": "2026-11-06T11:59:02.000Z",
+          "cellValuesByFieldId": {
+            "fldhztPQDJm1vAp7b": "70974"
+          }
+        },
+        {
+          "id": "rec04zU6xLIZzTa4R",
+          "createdTime": "2026-11-03T02:32:51.000Z",
+          "cellValuesByFieldId": {
+            "fldhztPQDJm1vAp7b": "53614"
+          }
+        },
+        {
+          "id": "rec0AdtAyVgIsEMMZ",
+          "createdTime": "2026-11-01T01:37:29.000Z",
+          "cellValuesByFieldId": {
+            "fldhztPQDJm1vAp7b": "37937"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 790
+      },
+      "nextCursor": "itrHUyDDtmFo3Q0Od/rec0AdtAyVgIsEMMZ"
+    },
+    "isError": false
+  },
+  "snapshot": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "run-logs": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "heartbeat": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "errs-log": {
+    "content": [],
+    "structuredContent": {
+      "records": [],
+      "metadata": {
+        "totalRecordCount": 0
+      }
+    },
+    "isError": false
+  },
+  "code-reviews": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "recFuD6Uxk6fWhv3l",
+          "createdTime": "2026-10-31T00:18:30.000Z",
+          "cellValuesByFieldId": {
+            "fldaC7vAvVhFg88Qs": "wef-results-build-20261030-correction1",
+            "fldbW4DjvSOg3rKST": "Code review PASS; 54 offline tests PASS; task inactive"
+          }
+        },
+        {
+          "id": "recbwuyKwIn8bfwqY",
+          "createdTime": "2026-10-30T23:21:50.000Z",
+          "cellValuesByFieldId": {
+            "fldaC7vAvVhFg88Qs": "wef-results-build-20261030",
+            "fldbW4DjvSOg3rKST": "Review FAIL: 2 P2; offline PASS; task inactive"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 2
+      }
+    },
+    "isError": false
+  },
+  "table-index": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "rec2TCtvk6cFTavGK",
+          "createdTime": "2026-11-01T01:41:06.000Z",
+          "cellValuesByFieldId": {
+            "fldd2cHqIMIhXsYlv": {
+              "id": "selcmMs6o9YkysG7z",
+              "name": "sync",
+              "color": "purpleDark1"
+            },
+            "fldwI2Mh5dDJMKwjA": "wef-live.classes"
+          }
+        },
+        {
+          "id": "rec6BDSZ3Z2B0l10R",
+          "createdTime": "2026-11-01T01:41:06.000Z",
+          "cellValuesByFieldId": {
+            "fldd2cHqIMIhXsYlv": {
+              "id": "selF6PLwMpU4Vbomg",
+              "name": "internal",
+              "color": "yellowLight2"
+            },
+            "fldwI2Mh5dDJMKwjA": "table-index"
+          }
+        },
+        {
+          "id": "recEUz0M0MSaytIrv",
+          "createdTime": "2026-11-01T01:41:06.000Z",
+          "cellValuesByFieldId": {
+            "fldd2cHqIMIhXsYlv": {
+              "id": "selTP1Z8qgxfOCdMq",
+              "name": "data",
+              "color": "greenDark1"
+            },
+            "fldwI2Mh5dDJMKwjA": "w-riders"
+          }
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 17
+      },
+      "nextCursor": "itr3NMX287WwX5Um1/recEUz0M0MSaytIrv"
+    },
+    "isError": false
+  },
+  "meta": {
+    "content": [],
+    "structuredContent": {
+      "records": [
+        {
+          "id": "recGYeGPsbhLaKQUF",
+          "createdTime": "2026-10-15T14:49:43.000Z",
+          "cellValuesByFieldId": {}
+        },
+        {
+          "id": "recYbnlOhiOvgqX3U",
+          "createdTime": "2026-10-15T14:49:43.000Z",
+          "cellValuesByFieldId": {}
+        },
+        {
+          "id": "recbdztyTugQPktPK",
+          "createdTime": "2026-10-15T14:49:43.000Z",
+          "cellValuesByFieldId": {}
+        }
+      ],
+      "metadata": {
+        "totalRecordCount": 3
+      }
+    },
+    "isError": false
+  }
+}

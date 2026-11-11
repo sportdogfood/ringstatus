@@ -1,0 +1,260 @@
+{
+  "result": "PASS",
+  "records": 36,
+  "supplements": 15,
+  "saved_readback_verified": false,
+  "details": [
+    {
+      "id": "recImguVA1kkoz0pO",
+      "route": "https://sglapi.wellingtoninternational.com/shows",
+      "parts": 3,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recY8qXkCgVfhqfRL",
+      "route": "https://sglapi.wellingtoninternational.com/schedule",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recU5ksKnrx1oMQps",
+      "route": "https://sglapi.wellingtoninternational.com/ring",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recxFtMWwbc6b7XXl",
+      "route": "https://sglapi.wellingtoninternational.com/ring/{id}",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recbVDLOMGpCpd4kW",
+      "route": "https://sglapi.wellingtoninternational.com/classes",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recNh4aFkVudHSpko",
+      "route": "https://sglapi.wellingtoninternational.com/classes/{id}",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recOD7Jklq0RbyWQ2",
+      "route": "https://sglapi.wellingtoninternational.com/entries",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recniuSqCaIHIx9O1",
+      "route": "https://sglapi.wellingtoninternational.com/entries/{id}",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "rec2PMvQqelTRZWsg",
+      "route": "https://sglapi.wellingtoninternational.com/people",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recdt0Z6KWCRORd0L",
+      "route": "https://sglapi.wellingtoninternational.com/people/{id}",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "reci2pvj8925n6V7B",
+      "route": "https://sglapi.wellingtoninternational.com/entries/getPeopleLinkedToHorse",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recuMRGkyQhUsb2zm",
+      "route": "https://sglapi.wellingtoninternational.com/results/daily",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recm5EB2L88Bxxsv9",
+      "route": "https://sglapi.wellingtoninternational.com/results/showChamps",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recTkK3Fo4SgsRObI",
+      "route": "https://sglapi.wellingtoninternational.com/results/championships",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "reczMwg3Kl8BUWUpm",
+      "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "rec4lPF3pi9FS4OyD",
+      "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding/{division_id}",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "reccfAPx1EQ1FREZV",
+      "route": "https://sglapi.wellingtoninternational.com/results/circuitStanding/{id}/person/{id}/horse/{id}",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recj4fpOJ67YNmaiK",
+      "route": "https://sglapi.wellingtoninternational.com/results/{id}",
+      "parts": 2,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recUdONqeZYhx4Y8y",
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/getLiveClassData",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recnEGzoQFZ8wSZyV",
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "rechFzfafHWM6yWOe",
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/Detail",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "reczseBuKcsDIBt1l",
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recXkXjODik2i8ymU",
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recJypFhrmMJYE1QN",
+      "route": "https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recLWu76THBf5rCiF",
+      "route": "https://sglapi.wellingtoninternational.com/classsignup",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recEx4vhOF7z6Ds47",
+      "route": "https://sglapi.wellingtoninternational.com/classsignup/{id}",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recoMwDkZM6TijqI1",
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchHorse",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recD0UUmrjmpg5FnD",
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/SearchPerson",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recEIJOGTgdRBG077",
+      "route": "https://sglapi.wellingtoninternational.com/horses/search",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recljeAWV21i38e8s",
+      "route": "https://sglapi.wellingtoninternational.com/people/search",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "rechn4u5To3NkTcON",
+      "route": "https://sglapp.showgroundslive.com/version.json",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recnp6eKHari0q3mr",
+      "route": "https://sglapi.wellingtoninternational.com/utilities/get-config",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recPn6VqQm6iDOtVu",
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/addentryv2/GetShowData",
+      "parts": 2,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recQHLJLRk0kQX84N",
+      "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/ExportToExcel/showid/{show_id}/date/{date}/excel_export/1",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recEBR7FF2sJI8nlY",
+      "route": "https://sglapi.wellingtoninternational.com/add-entry/getShowData",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    },
+    {
+      "id": "recSJsaptBpG5q7QI",
+      "route": "https://sgl.wellingtoninternational.com/iphonev2/classsignupv2/Index",
+      "parts": 1,
+      "source_match": true,
+      "saved_match": false
+    }
+  ]
+}

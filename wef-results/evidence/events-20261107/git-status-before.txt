@@ -1,0 +1,69 @@
+ M docs/coordination/wef-class-calculator/README.md
+ M docs/coordination/wef-ring-pace/README.md
+ M wef-data/README.md
+ M wef-data/cleanup-lane.js
+ M wef-live/HANDOFF.md
+ M wef-live/LOCK.md
+ M wef-live/README.md
+ M wef-live/activity.js
+ M wef-live/airtable.js
+ M wef-live/cleanup.js
+ M wef-live/scope.md
+ M wef-live/source.js
+ M wef-season/LOCK.md
+ M wef-season/README.md
+ M wef-shows/AGENTS.md
+ M wef-shows/README.md
+ M wef-shows/audit.js
+ M wef-shows/collector.js
+ M wef-shows/scope.md
+ M wef-shows/tests/day-priority.test.js
+ M wef-shows/tests/shows.test.js
+ M wef-timing/api.js
+ M wef-timing/data-runner.js
+ M wef-timing/entry-data.js
+ M wef-timing/ring-cleanup-plan.js
+ M wef-timing/ring-cleanup.js
+ M wef-timing/ring-workflow.js
+ M workers/wef-schedules-decoded/README.md
+ M workers/wef-schedules-decoded/VERIFIED-BASELINE.md
+ M workers/wef-schedules-decoded/fallback.mjs
+ M workers/wef-schedules-decoded/runner-relay.mjs
+ M workers/wef-schedules-decoded/shared-worker.mjs
+ M workers/wef-schedules-decoded/show-time-health.mjs
+ M workers/wef-schedules-decoded/tests/fallback.test.mjs
+ M workers/wef-schedules-decoded/tests/show-time-health.test.mjs
+ M workers/wef-schedules-decoded/tests/worker.test.js
+ M workers/wef-schedules-decoded/worker.js
+ M workers/wef-schedules-decoded/wrangler.jsonc
+?? docs/coordination/evidence/legacy-local-task-pause-20261107/
+?? docs/coordination/legacy-local-tasks-pause-and-restore-20261107.md
+?? docs/coordination/wef-decoder-fast-fallback-and-failure-plan-20261107.md
+?? wef-data/evidence/cleanup-1900-20261107/
+?? wef-live/evidence/cleanup-7pm-3hour-20261107/
+?? wef-live/evidence/direct-four-headers-20261107/
+?? wef-live/evidence/log-cap-20261107/
+?? wef-live/evidence/records-alert-route-fix-20261107/
+?? wef-live/evidence/records-alerts-20261107/
+?? wef-live/evidence/remove-records-alerts-20261107/
+?? wef-results/evidence/events-20261107/
+?? wef-shows/browser-decode.js
+?? wef-shows/browser-discovery.js
+?? wef-shows/evidence/browser-discovery-test-20261107/
+?? wef-shows/evidence/browser-primary-20261107/
+?? wef-shows/tests/browser-decode.test.js
+?? wef-shows/tests/browser-discovery.test.js
+?? wef-shows/tests/fixtures/browser-schedule.json
+?? wef-timing/CLASS-STATUS.md
+?? wef-timing/class-status-cleanup.js
+?? wef-timing/class-status.js
+?? wef-timing/evidence/class-status-20261107/
+?? wef-trip-calculator/
+?? workers/wef-schedules-decoded/evidence/default-date-schedule-20261107.json
+?? workers/wef-schedules-decoded/evidence/header-fix-release-20261107/
+?? workers/wef-schedules-decoded/evidence/request-header-isolation-20261107/
+?? workers/wef-schedules-decoded/evidence/runner-startup-20261107/
+?? workers/wef-schedules-decoded/evidence/schedule-health-release-20261107/
+?? workers/wef-schedules-decoded/health-records.mjs
+?? workers/wef-schedules-decoded/schedule-health.mjs
+?? workers/wef-schedules-decoded/tests/schedule-health.test.mjs

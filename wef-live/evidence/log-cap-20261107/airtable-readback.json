@@ -1,0 +1,185 @@
+{
+  "checked_at": "2026-11-08T01:50:13.903Z",
+  "run_logs_count": {
+    "checked_at": "2026-11-08T01:49:54.292Z",
+    "count": 500
+  },
+  "cleanup_logs": [
+    {
+      "id": "recPuJMqGyXfqiRVx",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:48:14.268Z",
+        "completed": "2026-11-08T01:49:19.448Z",
+        "records-deleted": 408,
+        "run-id": "402eff3a-b2d2-49d8-94c7-2c050fd37db5",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "recvyknGdjuG9CL0N",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:45:16.097Z",
+        "completed": "2026-11-08T01:46:42.979Z",
+        "records-deleted": 500,
+        "run-id": "85f7dd4f-c965-4dc9-b2ee-e3f559d9a47e",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "recsI8CDxmgaArXHa",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:42:18.264Z",
+        "completed": "2026-11-08T01:43:36.151Z",
+        "records-deleted": 500,
+        "run-id": "390bf9ea-f7a0-43f1-8e33-c19a6d154037",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "recuwcj2bv8mRkWQ6",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:39:19.497Z",
+        "completed": "2026-11-08T01:40:40.019Z",
+        "records-deleted": 500,
+        "run-id": "d1ba1669-7c0a-45d3-8296-06f6169ab324",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "recPhtukAqj4mnXw0",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:36:21.151Z",
+        "completed": "2026-11-08T01:37:42.752Z",
+        "records-deleted": 500,
+        "run-id": "28aed3eb-cd31-4bda-9ead-13fe491c6fc9",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "recTxkCGxnxlqKsaO",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:33:23.421Z",
+        "completed": "2026-11-08T01:34:41.820Z",
+        "records-deleted": 500,
+        "run-id": "97cf675a-8421-4fde-9182-2ff8bd6153bf",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "recrXwnUwjA2cJ7kC",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:30:25.842Z",
+        "completed": "2026-11-08T01:31:46.040Z",
+        "records-deleted": 500,
+        "run-id": "f84a5b87-3ce3-4d57-af81-ca2727a3e4d4",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "recQU2fspUXECREzD",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:27:26.816Z",
+        "completed": "2026-11-08T01:28:46.836Z",
+        "records-deleted": 500,
+        "run-id": "291e3343-71b8-4be7-a76e-6dca40f7c062",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "rec3RUSk7P4bgVDB2",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:24:34.975Z",
+        "completed": "2026-11-08T01:25:56.140Z",
+        "records-deleted": 500,
+        "run-id": "d6cf37e2-59d9-4692-94d5-6ced49ec4554",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "rec4O9qNojQ2nHyPW",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:21:30.490Z",
+        "completed": "2026-11-08T01:22:51.565Z",
+        "records-deleted": 500,
+        "run-id": "d971d36a-995d-4879-9f95-6f0148b61cda",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    },
+    {
+      "id": "recGetaxCtyrVai1y",
+      "fields": {
+        "result": {
+          "id": "selEVDw7OrJnMMBWm",
+          "name": "Success",
+          "color": "grayLight2"
+        },
+        "started": "2026-11-08T01:18:34.596Z",
+        "completed": "2026-11-08T01:19:58.004Z",
+        "records-deleted": 500,
+        "run-id": "a1c4ebc9-61d1-46e1-9114-94157ba1799d",
+        "trigger": "quick-cleanup",
+        "table": "run-logs"
+      }
+    }
+  ]
+}

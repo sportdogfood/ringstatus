@@ -1,0 +1,42 @@
+[
+  {
+    "path": "workers\\wef-schedules-decoded\\worker.js",
+    "sha256": "8bc87128b4e0210302d4795c2186673b954fdd63a74cc60f5a0848fa17d390f3",
+    "snapshot": "workers\\wef-schedules-decoded\\evidence\\fallback-profile-release-20261110\\worker.js.before"
+  },
+  {
+    "path": "workers\\wef-schedules-decoded\\fallback.mjs",
+    "sha256": "1fabdcbf85fa6a5939e373a676eb875d0e0fc95bfadaa37812a8e58d2f9bf4d2",
+    "snapshot": "workers\\wef-schedules-decoded\\evidence\\fallback-profile-release-20261110\\fallback.mjs.before"
+  },
+  {
+    "path": "workers\\wef-schedules-decoded\\shared-worker.mjs",
+    "sha256": "4908da0b20a737b746b9e7ec420dcd192e3330336f3ee6c514bf5d9db30b2e73",
+    "snapshot": "workers\\wef-schedules-decoded\\evidence\\fallback-profile-release-20261110\\shared-worker.mjs.before"
+  },
+  {
+    "path": "workers\\wef-schedules-decoded\\schedule-health.mjs",
+    "sha256": "3e415811504b8e9020d25a1624ce9d0b83bc4692bdbd11442b1d539537c97eb4",
+    "snapshot": "workers\\wef-schedules-decoded\\evidence\\fallback-profile-release-20261110\\schedule-health.mjs.before"
+  },
+  {
+    "path": "workers\\wef-schedules-decoded\\tests\\fallback.test.mjs",
+    "sha256": "13883f8fcbd2d438976b6aaef6a32dd1cecf2ae8ac076972a9bc61738379f5c5",
+    "snapshot": "workers\\wef-schedules-decoded\\evidence\\fallback-profile-release-20261110\\tests-fallback.test.mjs.before"
+  },
+  {
+    "path": "workers\\wef-schedules-decoded\\tests\\schedule-health.test.mjs",
+    "sha256": "bb1c69ecf591cad40721b278da58a6d06349364af14d52189bfba10aa0794b54",
+    "snapshot": "workers\\wef-schedules-decoded\\evidence\\fallback-profile-release-20261110\\tests-schedule-health.test.mjs.before"
+  },
+  {
+    "path": "workers\\wef-schedules-decoded\\README.md",
+    "sha256": "577bc60f871cc3aea7211c1dd1d2c7e8be5f404b42262a38806de65e0aeb7068",
+    "snapshot": "workers\\wef-schedules-decoded\\evidence\\fallback-profile-release-20261110\\README.md.before"
+  },
+  {
+    "path": "workers\\wef-schedules-decoded\\AUTOMATIC-FALLBACK.md",
+    "sha256": "29e16e6b5ffb2653277dc9269f199f3fcf41f11230d2fb401e7f576fa5714adb",
+    "snapshot": "workers\\wef-schedules-decoded\\evidence\\fallback-profile-release-20261110\\AUTOMATIC-FALLBACK.md.before"
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "timestamp": "2026-11-08T14:34:51.024Z",
+    "text": "APPROVED TO EDIT. Catch logging tables at 1,000 and reduce them to 500. Stop repeating unchanged errors. Preserve 7 p.m. and new-show cleanup. Test, deploy and verify normal runs. No manual runs or record repairs.\n"
+  },
+  {
+    "timestamp": "2026-11-08T14:44:23.494Z",
+    "text": "stop making the err-logs\n"
+  },
+  {
+    "timestamp": "2026-11-08T14:57:04.198Z",
+    "text": "i did not tell you to disable - you were wrifing 1000s per miniute\n"
+  },
+  {
+    "timestamp": "2026-11-08T15:04:47.904Z",
+    "text": "if you find a table with 1000 records or more you need to delered until 500 remain -- not delete 500\n"
+  }
+]

@@ -1,0 +1,252 @@
+[
+  [
+    "/shows",
+    "old:shows-no-auth",
+    [],
+    "Primary: show discovery/default",
+    "802 source shows and source default_show; no account login. One response supplies the show authority. Full response, not one show sample."
+  ],
+  [
+    "/schedule",
+    "remain-schedule-export-pair",
+    [
+      "remain-schedule-no-auth-replay"
+    ],
+    "Primary: complete schedule; fallback: official export/browser",
+    "Completed Nov 8 show 200000077: 67 classes across 7 rings. Current Nov 11 show 200000078: 9 rings. Keep each response's show/date; never combine them as one schedule."
+  ],
+  [
+    "/ring",
+    "remain-ring-no-auth-replay",
+    [],
+    "Fallback: ring/live order view; reuse schedule first",
+    "9 rings and 5 source dates. Includes active/upcoming class groups and a source-local time_zone_date_time; metadata is not a full-class replacement."
+  ],
+  [
+    "/ring/{id}",
+    "remain-ring-detail-decoded",
+    [
+      "remain-ring-populated-decoded"
+    ],
+    "Supporting read; not preferred over schedule/ring list",
+    "Two correct show/date/ring combinations returned matching ring metadata and fresh source clock, but empty class_groups/result_classes. Not proven to replace populated schedule/OOG."
+  ],
+  [
+    "/classes",
+    "remain-jumper-directory-decoded",
+    [
+      "remain-classes-page2",
+      "remain-hunter-directory-decoded"
+    ],
+    "Fallback: paged basic class directory",
+    "Filtered page 1 and page 2 each return 10 rows; Jumper total 82, Hunter total 260. Complete payloads for those requests, not a complete download of all pages."
+  ],
+  [
+    "/classes/{id}",
+    "remain-hunter-api-decoded",
+    [
+      "remain-jumper-api-decoded"
+    ],
+    "Primary: full class detail/final results; fallback: iphone data for covered fields",
+    "Completed hunter class 200031026 has 8 trips; jumper 200031235 has 4. After anonymous-token replay/decode, results_verified=1 and IDs, scores, placings and OOG fields populate. Token-free bodies had null protected values. Public iphone rows match all trip IDs/names/entry numbers and relevant populated scores/times; blank/zero and unset-order representations differ. Identity-field acceptance remains for owner review."
+  ],
+  [
+    "/entries",
+    "remain-entries-decoded",
+    [
+      "remain-entries-page2"
+    ],
+    "Supporting: show entry inventory; reuse class trips first",
+    "10 entries per sampled page, total_entries=1278; page 2 checked separately. Not the full 1278-entry collection."
+  ],
+  [
+    "/entries/{id}",
+    "remain-entry-populated",
+    [
+      "remain-entry-detail-decoded"
+    ],
+    "Supporting fallback: entry-centric class detail",
+    "Source-derived entry 200248889 returns 3 classes and 1 rider. A separate source entry with zero classes is valid empty, not an outage."
+  ],
+  [
+    "/people",
+    "remain-people-decoded",
+    [
+      "remain-people-page2"
+    ],
+    "Supporting: paged show people inventory",
+    "10 people per sampled page; total_people=1328; page 2 checked. Not an account-associated list and not all pages collected."
+  ],
+  [
+    "/people/{id}",
+    "remain-person-populated",
+    [
+      "remain-person-detail-decoded"
+    ],
+    "Supporting fallback: person-centric trip detail",
+    "Source rider 88485 returns 3 trips; separate organization sample has zero trips. Token replay/decode is required for protected fields."
+  ],
+  [
+    "/entries/getPeopleLinkedToHorse",
+    "remain-linked-people-decoded",
+    [],
+    "Supporting: horse-linked people lookup",
+    "Source horse 147368 returns 2 linked people. Full actual fields retained; scope is that horse, not the whole show."
+  ],
+  [
+    "/results/daily",
+    "remain-daily-decoded",
+    [],
+    "Supporting results index; full class detail supplies actual results",
+    "Nov 8 show 200000077 returns 67 classes and 4 dates. Local Windows-clean anonymous-token read succeeded; earlier browser 401 did not establish route failure."
+  ],
+  [
+    "/results/showChamps",
+    "remain-showChamps-decoded",
+    [],
+    "Primary: show champion summary",
+    "Completed show returns 32 divisions with champion/reserve records. Whole-show summary avoids fetching each division just to identify champions."
+  ],
+  [
+    "/results/championships",
+    "remain-championships-decoded",
+    [
+      "remain-championships-regional-decoded",
+      "remain-championships-wef12-decoded"
+    ],
+    "Conditional: championship index; not current primary",
+    "All three source-known completed shows (200000077, 200000070, 200000056) return valid empty championships arrays, with and without anonymous bearer. No eligible championship chip ID was published; detail cannot be positively tested without one. Do not substitute an ordinary class/division ID."
+  ],
+  [
+    "/results/circuitStanding",
+    "remain-circuit-decoded",
+    [],
+    "Primary: circuit division index",
+    "Source-client circuit_id=0 default selects actual circuit 200000014, 47 divisions. One response gives the circuit scope."
+  ],
+  [
+    "/results/circuitStanding/{id}",
+    "remain-circuit-division-decoded",
+    [],
+    "Primary: requested circuit standings",
+    "Actual listed division 200000510 returns 6 ranked standings. IDs are circuit-division IDs, not show division IDs."
+  ],
+  [
+    "/results/circuitStanding/{id}/person/{id}/horse/{id}",
+    "remain-circuit-points-decoded",
+    [],
+    "Supporting: points explanation, on demand",
+    "Actual standing's rider 66758/horse 200004081 returns 21 circuit point records; not a constant update feed."
+  ],
+  [
+    "/results/{id}",
+    "remain-division-results-decoded",
+    [],
+    "Primary: division standings; class detail fallback",
+    "Actual show division 200005953 returns 3 entries and 3 classes with populated decoded results and points_data. Not interchangeable with a class ID."
+  ],
+  [
+    "legacy:getLiveClassData",
+    "remain-hunter-phone",
+    [
+      "remain-jumper-phone"
+    ],
+    "Primary: frequent public trip/score updates; full API class fallback",
+    "No cookies or bearer: 8 hunter and 4 jumper rows. All trip IDs/names/entry numbers matched decoded full classes; hunter scores/placings and jumper times/placings matched. Jumper planned OOG populated; hunter OOG blank while actual order populated. API retains final verification and full class metadata. Earlier class 200031333 returned 404, so route coverage is not universal."
+  ],
+  [
+    "legacy:ClassStatus",
+    "remain-class-status-completed",
+    [],
+    "Supporting live-route/status hint; not class health",
+    "is_live=false for an existing completed class that returned 4 score rows. False is valid and cannot be used to suppress class data reads."
+  ],
+  [
+    "legacy:Detail",
+    "remain-class-detail-html",
+    [],
+    "Manual/browser fallback: class/group view",
+    "Full anonymous HTML for class 200031235/group 200028543, including source inline scripts/configuration. It invokes the same live data route; not an independent score backend."
+  ],
+  [
+    "legacy:LiveScoreWidget",
+    "remain-widget-post",
+    [
+      "old:legacy-widget-no-auth"
+    ],
+    "Supporting current live-ring discovery",
+    "Source-backed JSON POST and existing GET both return a valid empty live_data wrapper at test time. Empty response is not proof of populated live coverage."
+  ],
+  [
+    "legacy:ListAjax",
+    "old:legacy-groups-no-auth",
+    [],
+    "Supporting public live group discovery",
+    "Full response retained. Valid empty live_data wrapper in current evidence, not a whole-show class source."
+  ],
+  [
+    "/homepage/getLiveClassStatus",
+    "old:live-status-no-auth",
+    [],
+    "Supporting status only; not a substitute for class detail",
+    "Actual saved API response is null. Not a populated data source; avoid mandatory preflight requests."
+  ],
+  [
+    "/classsignup",
+    "remain-class-signups-no-auth-replay",
+    [],
+    "Primary: signup group discovery when needed",
+    "9 rings and 5 dates with class-group signup metadata. Anonymous bearer/decode succeeds. No signup writes were invoked."
+  ],
+  [
+    "/classsignup/{id}",
+    "remain-completed-signups",
+    [
+      "remain-class-signup-detail-no-auth-replay"
+    ],
+    "Primary: signup/order-of-go records; full class fallback",
+    "Completed group 200028543 returns 6 entry/class records across two classes, including planned order. Current group 200028831 returns 2. eid and path are class-group IDs; these are not class or entry IDs. Signup/order may include entries absent from final result rows."
+  ],
+  [
+    "legacy:SearchHorse",
+    "remain-horse-search-browser",
+    [],
+    "Browser-session supporting lookup; not anonymous fallback",
+    "Existing Edge session returns 5 KADANS matches with full horse/member/relationship data. No-cookie and fresh anonymous bearer controls return DoLogin."
+  ],
+  [
+    "legacy:SearchPerson",
+    "remain-people-search-browser",
+    [],
+    "Browser-session supporting lookup; not anonymous fallback",
+    "Existing Edge session returns 4 Catherine Tyree matches. No-cookie and fresh anonymous bearer controls return DoLogin."
+  ],
+  [
+    "/horses/search",
+    "remain-horse-search-api-anon",
+    [],
+    "Not demonstrated anonymous fallback",
+    "Exact source-derived parameters: HTTP 401 without bearer and with fresh working anonymous token. Browser legacy sibling succeeds with existing session; that does not prove API account-token access."
+  ],
+  [
+    "/people/search",
+    "remain-people-search-api-anon",
+    [],
+    "Not demonstrated anonymous fallback",
+    "Exact source-derived parameters: HTTP 401 without bearer and with fresh working anonymous token. No claim that another account access method was tested."
+  ],
+  [
+    "version",
+    "old:version-no-auth",
+    [],
+    "Primary: show-time version/HTTP Date",
+    "Full build version body retained; show-time uses HTTP Date, not builtAt. Existing successful API response Date/source-local clock can be a conditional clock backup; no additional schedule health call is needed."
+  ],
+  [
+    "/utilities/get-config",
+    "old:config-no-auth",
+    [],
+    "Primary: anonymous token bootstrap/renewal",
+    "Existing successful exact token request returned anonymous _t. Authentication material redacted only; token is adopted then original GET replayed/decrypted in diagnostics. Token refresh is not the clock and these diagnostics did not alter stored credentials."
+  ]
+]

@@ -1,0 +1,15 @@
+{
+  "observed_at": "2026-11-07T23:38:10.371Z",
+  "url": "https://www.wellingtoninternational.com/showgrounds/show-schedule/?date=2026-11-07&sid=200000077",
+  "default_show": 200000077,
+  "headless": true,
+  "fresh_context": true,
+  "show": {
+    "show_id": 200000077,
+    "show_name": "2026 ESP November (#7129)",
+    "facility_id": 500,
+    "start_date": "2026-11-05T00:00:00.000Z",
+    "end_date": "2026-11-08T00:00:00.000Z"
+  },
+  "source_selected_date": "2026-11-07"
+}

@@ -1,10 +1,10 @@
-# Operating lock — version 2026.11.07.1
+# Operating lock - version 2026.11.08.1
 
-Updated **7 November 2026, America/New_York**. Documentation-only revision; no runtime, task, credential or deployment change.
+Updated **8 November 2026, America/New_York**. Approved narrow runtime releases include existing header recovery on actual Fast schedule/class requests; default-show schedule health, header recovery, renewal metadata logging and existing-chat warning delivery. See README and dated release evidence; broader class work remains paused.
 
 The [current README](README.md) is the current status and known-trouble register. Preserve existing local-first runner/tunnel, independent fallback, shared one-second pause, agent URLs, supported routes, token renewal and schedules. Data's approved timeout alignment is installed; do not restore the premature18s/28s defaults. No new queue limit is authorized.
 
-**Open:** paused class-detail work and show-time Date-header freshness (Unverified despite verified scheduled saves). Keep other reported/historical issues and proof limits visible in the README; they are not silently marked resolved. Documentation does not resume paused work or authorize new changes, collectors, retries, repairs or legacy routes. Code edits and deployments remain subject to explicit owner approval and preview gates; after failed verification obtain fresh correction approval.
+**Open:** paused class-detail work, separate public Live routing/Shows browser-discovery discussions, and show-time Date-header freshness (Unverified despite verified scheduled saves). Keep other reported/historical issues and proof limits visible in the README; they are not silently marked resolved. Documentation does not resume paused work or authorize new changes, collectors, retries, repairs or legacy routes. Code edits and deployments remain subject to explicit owner approval and preview gates; after failed verification obtain fresh correction approval.
 
 This lock records scope and preservation requirements; it is not a new runtime or filesystem control. The historical baseline below is retained as dated evidence, including limitations that were subsequently addressed only by the approved releases linked in the README.
 

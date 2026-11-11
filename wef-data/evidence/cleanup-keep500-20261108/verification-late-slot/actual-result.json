@@ -1,0 +1,73 @@
+{
+  "event_id": "log-check|2026-11-08|7",
+  "run_id": 1794203791052,
+  "heartbeat_received": "2026-11-09T05:55:19.553Z",
+  "pointer_issued": "2026-11-09T05:55:56.829Z",
+  "started": "2026-11-09T05:56:31.052Z",
+  "completed": "2026-11-09T05:56:35.907Z",
+  "result": "Success",
+  "errors": [],
+  "task_exit": 0,
+  "native_tables": [
+    {
+      "table": "runs",
+      "before": 112,
+      "after": 112,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "run-logs",
+      "before": 222,
+      "after": 222,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "err-logs",
+      "before": 112,
+      "after": 112,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "heartbeat",
+      "before": 2,
+      "after": 2,
+      "priorIDsMissing": 0
+    }
+  ],
+  "cleanupV2": [
+    {
+      "table": "runs",
+      "run": 1794203791052,
+      "result": "Success",
+      "deleted": 0
+    },
+    {
+      "table": "run-logs",
+      "run": 1794203791052,
+      "result": "Success",
+      "deleted": 0
+    },
+    {
+      "table": "err-logs",
+      "run": 1794203791052,
+      "result": "Success",
+      "deleted": 0
+    },
+    {
+      "table": "heartbeat",
+      "run": 1794203791052,
+      "result": "Success",
+      "deleted": 0
+    }
+  ],
+  "local": {
+    "runs": 0,
+    "errors": 0,
+    "acks": 0
+  },
+  "acceptance": {
+    "genuine_records_route": "PASS",
+    "under_threshold_no_deletion": "PASS",
+    "over_1000_keep500_branch": "Unexercised in this run"
+  }
+}

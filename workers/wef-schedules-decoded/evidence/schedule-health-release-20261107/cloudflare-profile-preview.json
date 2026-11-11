@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-07T23:31:01.013Z",
+  "results": [
+    {
+      "profile": "original-header",
+      "status": 200,
+      "show": 200000077,
+      "date": "2026-11-07",
+      "rings": 7,
+      "usable": true
+    },
+    {
+      "profile": "profile-fb-header1",
+      "status": 200,
+      "show": 200000077,
+      "date": "2026-11-07",
+      "rings": 7,
+      "usable": true
+    },
+    {
+      "profile": "profile-fb-header2",
+      "status": 200,
+      "show": 200000077,
+      "date": "2026-11-07",
+      "rings": 7,
+      "usable": true
+    }
+  ],
+  "health": {
+    "status": 200,
+    "ok": true,
+    "worker": "wef-schedules-decoded",
+    "show_id": "200000077",
+    "rings": 7,
+    "schedule_status": 200,
+    "attempts": [
+      {
+        "round": 1,
+        "profile": "original-header",
+        "lane": "runner",
+        "status": 200,
+        "usable": true
+      }
+    ],
+    "errors": [],
+    "previewWrites": [
+      {
+        "table": "tblcYgKFwKtILSdU8",
+        "fields": {
+          "health-key": "decoder",
+          "service": "decoder",
+          "endpoint": "https://wef-agent-proxy-preview-20261106.gombcg.workers.dev/health",
+          "show": [
+            "rec8GtJJ7eSjY3Nd3"
+          ],
+          "show-day": [],
+          "status": "Healthy",
+          "checked-at": "2026-11-07T23:31:07.451Z",
+          "http-status": 200,
+          "last-success-at": "2026-11-07T23:31:07.451Z",
+          "outage-started-at": null,
+          "recovered-at": null,
+          "details": "{\"attempts\":[{\"round\":1,\"profile\":\"original-header\",\"lane\":\"runner\",\"status\":200,\"usable\":true}],\"errors\":[],\"rings\":7}"
+        }
+      }
+    ]
+  }
+}

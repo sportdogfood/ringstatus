@@ -1,0 +1,20 @@
+
+export async function previewReturnedToken(env){
+ const originalTcp=tcpFetch;let count=0,received,matched=false,priorEnd,gap=null;
+ cached={token:'preview-primer',expires:Date.now()+2592000000,cookie:env.SGL_COOKIE};
+ tcpFetch=async(url,options)=>{
+  count++;
+  const headers={...options.headers};
+  if(count===1)delete headers.Authorization;
+  else {matched=headers.Authorization==='Bearer '+received;gap=Date.now()-priorEnd;}
+  const response=await originalTcp(url,{...options,headers});
+  if(count===1){const data=await response.clone().json();received=data._t;priorEnd=Date.now();}
+  return response;
+ };
+ try{
+  const result=await fetchFallback(new Request('https://preview.test/classes/200031333?show_id=200000078&customer_id=15&cgid=-1'),env,{profile:'windows-clean'});
+  const data=await result.json();
+  const evidence={status:result.status,returnedTokenReceived:typeof received==='string',tokenCached:cached?.token===received,replayUsedReturnedToken:matched,sourceRequests:count,replayGapMs:gap,decoded:result.headers.get('x-rs-decoded')==='1',classId:data.class?.class_id,trips:data.trips?.length,tripIdsPopulated:Array.isArray(data.trips)&&data.trips.every(row=>Number.isFinite(row.trip_id))};
+  return Response.json(evidence,{status:evidence.status===200&&evidence.returnedTokenReceived&&evidence.tokenCached&&matched&&count===2&&gap>=1000&&evidence.decoded&&evidence.classId===200031333&&evidence.trips===2&&evidence.tripIdsPopulated?200:502});
+ }finally{tcpFetch=originalTcp;cached=undefined;}
+}

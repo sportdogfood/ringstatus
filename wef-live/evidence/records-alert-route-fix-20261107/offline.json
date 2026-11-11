@@ -1,0 +1,16 @@
+{
+  "reviewer": "wef-live author",
+  "commands": [
+    {
+      "id": "records-route-offline",
+      "command": "node --test wef-live\\evidence\\records-alert-route-fix-20261107\\alerts.test.cjs",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T01:04:47.998112+00:00",
+      "ended_at": "2026-11-08T01:04:48.166647+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: status/parser failure remains alertable even though report says ok true / Skipped\nok 1 - status/parser failure remains alertable even though report says ok true / Skipped\n  ---\n  duration_ms: 0.8031\n  type: 'test'\n  ...\n# Subtest: collection/logging/linker stage and cleanup failures included; routine warnings/link checks excluded\nok 2 - collection/logging/linker stage and cleanup failures included; routine warnings/link checks excluded\n  ---\n  duration_ms: 0.1777\n  type: 'test'\n  ...\n# Subtest: first normal invocation sends honest connection notice once; healthy repeats silent; later failures report\nok 3 - first normal invocation sends honest connection notice once; healthy repeats silent; later failures report\n  ---\n  duration_ms: 10.3467\n  type: 'test'\n  ...\n# Subtest: delivery failure is honest, does not throw into collection, and is not retried automatically\nok 4 - delivery failure is honest, does not throw into collection, and is not retried automatically\n  ---\n  duration_ms: 5.1292\n  type: 'test'\n  ...\n# Subtest: existing CLI route exact target, hidden window, no secret env; requires acknowledgement and zero exit\nok 5 - existing CLI route exact target, hidden window, no secret env; requires acknowledgement and zero exit\n  ---\n  duration_ms: 6.1246\n  type: 'test'\n  ...\n# Subtest: corrected route uses desktop executable and captures redacted failure reason\nok 6 - corrected route uses desktop executable and captures redacted failure reason\n  ---\n  duration_ms: 3.1855\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 109.8349\n",
+      "stderr": ""
+    }
+  ]
+}

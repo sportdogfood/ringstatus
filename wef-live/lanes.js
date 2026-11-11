@@ -175,7 +175,7 @@ async function lane(name,{
       successfulDetails++;
       await evidence('class-'+c['class-id'],{detail:payload});
       // Validate class scope independently, then isolate each malformed/unresolved trip.
-      const empty=model.classDetail({...payload,rows:[],recs:0},null,r.scope,c,live.received),entries=[];
+      const empty=model.classDetail({...payload,rows:[],recs:0},null,r.scope,c,live.received),entries=[];let tripsComplete=true;
       if(!Array.isArray(payload.rows)||Number(payload.recs)!==payload.rows.length){issue('Incomplete class detail',{class_id:c['class-id']});continue;}
       for(const row of payload.rows){try{
        const observed=model.classDetail({...payload,rows:[row],recs:1},null,r.scope,c,live.received).entries[0];
@@ -184,11 +184,11 @@ async function lane(name,{
        for(const field of ['horse-id','rider-id','trainer-id'])if(observed[field]===null)delete observed[field];
        if(!observed['trainer-name'])delete observed['trainer-name'];
        entries.push(observed);
-      }catch(e){if(e.code!=='LIVE_IDENTITY_SNAPSHOT_MISMATCH')issue(e.message,{class_id:c['class-id'],trip_id:e.trip_id});}}
+      }catch(e){tripsComplete=false;if(e.code!=='LIVE_IDENTITY_SNAPSHOT_MISMATCH')issue(e.message,{class_id:c['class-id'],trip_id:e.trip_id});}}
       for(const [field,source]of [['gone','gone_trips'],['jo-gone','jo_gone_trips'],['r2-gone','r2_gone_trips']])if(typeof payload[source]!=='string')delete empty.fields[field];
       if(payload.curr===undefined||payload.curr===null)delete empty.fields['current-trip-id'];
       empty.fields['source-json']=JSON.stringify(Object.fromEntries(Object.entries(payload).filter(([k])=>k!=='rows')));
-      results.push({c:{...c,...empty.fields,total:payload.rows.length,'last-seen':live.received},entries,received:live.received});
+      results.push({c:{...c,...empty.fields,total:payload.rows.length,'last-seen':live.received},entries,received:live.received,tripsComplete});
      }catch(e){issue(e.message,{class_id:c['class-id']});}
     }
    }));
@@ -202,7 +202,16 @@ async function lane(name,{
     entries.push(...result.entries.map(e=>({...clean(e),class:[id]})));
    }
    await save('live-entries','live-entry-key',entries,k=>entries.find(e=>e['live-entry-key']===k)['last-seen']);
-   // Existing live-trips, identities, membership states and links remain untouched while paused.
+   // The same response also supplies day-0 trips. Decoded acquisition stays paused.
+   const priorTrips=scoped(await db.list('live-trips')).map(x=>x.fields),tripRows=[],tripObservedAt=new Map();
+   for(const result of results){
+    const projected=require('./live-trips').fromLive(result.entries,r.scope,result.c,priorTrips,result.received,issue);
+    const previous=priorTrips.filter(x=>Number(x['class-id'])===result.c['class-id']);
+    const states=require('./membership').reconcile(previous.map(x=>({...x,key:x['trip-key']})),projected.rows.map(x=>({...x,key:x['trip-key']})),{complete:result.tripsComplete&&projected.complete,scope:r.scope});
+    const observed=new Map(projected.rows.map(x=>[x['trip-key'],x]));
+    for(const state of states){tripRows.push(observed.get(state.key)||{'trip-key':state.key,'record-status':state['record-status']});tripObservedAt.set(state.key,result.received);}
+   }
+   await save('live-trips','trip-key',tripRows,k=>tripObservedAt.get(k));
 
   }
  }catch(e){await stageFailure('collection/save',e);}
@@ -212,10 +221,10 @@ async function lane(name,{
   const result=!r.ok?'Failed':r.skipped?'Skipped':r.issues.length?'Partial':'Success';
   const receipt=path.join(runtime,'lane-'+name+'-'+r.run_id+'.json');
   const summary=JSON.stringify({lane:name,skipped:r.skipped,day_priority:r.day_priority,live_status:r.live_status,membership:r.membership,timings:Object.fromEntries(Object.entries(r.timings).filter(([k])=>!['requests','saves'].includes(k))),counts:r.counts,changed_records:r.changes.length,issues:r.issues.length,diffs_and_coverage:receipt});
-  await log('run-logs','run-id',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':r.scope?.show||null,date:r.scope?.date||'',summary,errors:r.stage_errors.map(x=>x.message).join('\n'),'ring-count':r.counts['live-rings']||0,'group-count':r.counts['live-groups']||0,'class-count':r.counts['live-class-appearances']??r.counts['live-classes']??0,'entry-count':r.counts['live-entries']||0}]);
+  await log('run-logs','run-id',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':r.scope?.show||null,date:r.scope?.date||'',summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000),'ring-count':r.counts['live-rings']||0,'group-count':r.counts['live-groups']||0,'class-count':r.counts['live-class-appearances']??r.counts['live-classes']??0,'entry-count':r.counts['live-entries']||0}]);
   await log('run-logs','run-id',r.changes.map((change,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':r.scope?.show||null,date:r.scope?.date||'',summary:JSON.stringify({lane:name,parent_run_id:r.run_id,...change})})));
   const errors=[...r.issues,...r.stage_errors,...r.logging_errors.map(message=>({message}))];
-  await log('errs-log','error-key',errors.map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':r.scope?.show||null,date:r.scope?.date||'',message:name+': '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null})));
+  try{await require('./error-log').report({api,runtime,lane:name,rows:errors.map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':r.scope?.show||null,date:r.scope?.date||'',message:name+': '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null}))});}catch(e){r.logging_errors.push('errs-log: '+e.message);}
   await log('heartbeat','heartbeat-key',[{'heartbeat-key':r.run_id,'run-id':r.run_id,started:r.started,completed:r.completed,'checked-at':r.completed,result,summary}]);
   try{write(path.join(runtime,'lane-'+name+'-'+r.run_id+'.json'),r);write(path.join(runtime,'lane-'+name+'-last-run.json'),r);}catch{}
  }

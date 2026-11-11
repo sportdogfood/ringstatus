@@ -1,0 +1,17 @@
+{
+  "records": 40,
+  "differences": 0,
+  "checkedFields": 361,
+  "checkedAt": "2026-11-11 15:47:04 UTC",
+  "selectedCovered": 26,
+  "additionalLeads": 14,
+  "runtimeRoutes": 29,
+  "sourceContractRoutes": 11,
+  "anonymousIssuers": 11,
+  "totalHttpProbes": 43,
+  "excludedInvalidOrNoncanonicalProbes": [
+    "class-results-no-auth",
+    "results-list-no-auth"
+  ],
+  "relatedTaskReadbackDifferences": 0
+}

@@ -1,0 +1,61 @@
+--- baseline/airtable.js
++++ candidate/airtable.js
+@@ -206,7 +206,7 @@
+     if(!cleanup.TABLES.includes(table)||!Number.isSafeInteger(policy.show)||policy.show<=0||
+       !['new-show','calendar-day','quick-cleanup'].includes(policy.trigger)||
+       rows.some(r=>!cleanup.eligible(table,r,policy.trigger,policy.show)||cleanup.protectedRun(r,policy.protectedRuns||new Set())))throw Error('Forbidden cleanup scope');
+-    if(policy.trigger==='quick-cleanup'&&rows.length!==500)throw Error('Quick cleanup requires exactly 500 records');
++    if(policy.trigger==='quick-cleanup'&&(rows.length<1||rows.length>500))throw Error('Quick cleanup requires 1 to 500 records');
+     const afterDeleted=fields=>Object.fromEntries(Object.entries(fields).map(([k,v])=>[k,
+       Array.isArray(v)&&v.every(id=>typeof id==='string'&&/^rec[a-zA-Z0-9]+$/.test(id))?v.filter(id=>!policy.deletedIds.has(id)):v
+     ]).filter(([,v])=>!Array.isArray(v)||v.length));
+--- baseline/cleanup.js
++++ candidate/cleanup.js
+@@ -19,11 +19,11 @@
+  const id=row.fields?.['run-id'];
+  return typeof id==='string'&&[...runs].some(run=>id===run||id.startsWith(run+'|'));
+ }
+-function quickRows(table,rows,total=rows.length){
+- if(!LOGS.includes(table)||total<1000)return[];
++function quickRows(table,rows,total=rows.length,draining=false){
++ if(!LOGS.includes(table)||total<=500||(!draining&&total<1000))return[];
+  const available=rows.filter(r=>completed(table,r)&&Number.isFinite(Date.parse(r.createdTime)))
+   .sort((a,b)=>Date.parse(a.createdTime)-Date.parse(b.createdTime)||a.id.localeCompare(b.id));
+- return available.length>=500?available.slice(0,500):[];
++ return available.slice(0,Math.min(500,total-500));
+ }
+ function write(file,value){const tmp=file+'.'+process.pid+'.tmp';fs.writeFileSync(tmp,JSON.stringify(value,null,2));fs.renameSync(tmp,file);}
+ async function canonical(api){
+@@ -82,8 +82,8 @@
+   // Existing checkpoints have no day: derive it from their original completion, without renewing it.
+   const previousDay=previous.day||(previous.completed?localDay(previous.completed):run.day);
+   run.new_day=previousDay!==run.day;
+-  const lastQuick=Date.parse(previous.quick_checked_at||previous.completed);
+-  run.quick_due=!Number.isFinite(lastQuick)||Date.parse(run.started)-lastQuick>=3*60*60*1000;
++  // Check the log threshold on every existing invocation; no separate schedule.
++  run.quick_due=true;
+   // Quiet dispatcher wakes use only local state unless calendar/three-hour work is due.
+   if(!checkShow&&!run.new_day&&!run.quick_due)return{...run,result:'Skipped',reason:'Cleanup not due',completed:clock()};
+   run.show=await canonical(api);
+@@ -106,15 +106,17 @@
+    for(const t of selected){const rows=await api.list(t);plans.push(plan(t,'new-show',rows.filter(r=>eligible(t,r,'new-show',run.show)&&!protect(t,r)),rows.length));}
+    await execute(plans);
+   }
+-  const quick=[];
++  const quick=[],draining=new Set(run.new_show?[]:(previous.draining_logs||[]));
+   for(const t of LOGS.filter(t=>!run.new_show&&(run.new_day||run.quick_due)&&selected.includes(t))){const rows=await api.list(t);
+    // Threshold uses full table count; selection excludes active/current-invocation records.
+    const available=rows.filter(r=>completed(t,r)&&!protect(t,r));
+-   const targets=run.new_day?available:quickRows(t,available,rows.length);
+-   quick.push(plan(t,run.new_day?'calendar-day':'quick-cleanup',targets,rows.length));
++   const targets=run.new_day?available:quickRows(t,available,rows.length,draining.has(t));
++   if(targets.length||run.new_day)quick.push(plan(t,run.new_day?'calendar-day':'quick-cleanup',targets,rows.length));
++   if(!run.new_day&&(rows.length>=1000||draining.has(t))&&rows.length-targets.length>500)draining.add(t);else draining.delete(t);
+   }
+   await execute(quick);
+-  write(stateFile,{show:run.show,day:run.day,quick_checked_at:run.started,run_id:run.run_id,completed:clock()});
++  write(stateFile,{show:run.show,day:run.day,quick_checked_at:run.started,draining_logs:[...draining],run_id:run.run_id,completed:clock()});
++  if(!run.actions.length){run.result='Skipped';run.reason='Log counts below trigger/target or no eligible records';}
+   run.completed=clock();receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());fs.unlinkSync(stop);
+  }catch(e){
+   run.result='Error';run.error=e.message;run.completed=clock();

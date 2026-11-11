@@ -1,5 +1,97 @@
 # wef-shows
 
+## Cleanup release - November 11, 2026 - README v1.9.3
+
+Owner-approved cleanup is deployed at 1:39 p.m. Eastern through the existing
+five-minute Shows task. The current contract is CLEANUP-CONTRACT.md v1.5.
+Checked owned targets are shows, show-days, heartbeat, run-logs and err-logs.
+On a new show, clear eligible previous-show records and logs. At 7 p.m. Eastern,
+clear completed eligible logs once per date. At 1,000+ logs, delete oldest eligible
+records until 500 total remain: 1,400 means 900 deletions. Preserve active/pending,
+reference and permanent cleanup-history records. Cleanup creates no new archives.
+Existing source/discovery archives and historical archive files are preserved.
+
+Permanent cleanup-logs is tbl7jjcBsKr8fVQOl. Existing cleanup holds selections and
+latest actual outcomes. Work continues between confirmed batches on normal wakes
+when needed to stay within the existing task limit. Failed or uncertain deletion
+is reconciled and held, never blindly retried. No task/cadence changes or manual runs.
+Normal runs at 1:49 and 1:54 p.m. Eastern passed, with matching Airtable logs/heartbeat
+and no errors. No cleanup was due (251 run logs, 46 errors, one protected heartbeat).
+Actual threshold, 7 p.m. clear and new-show deletion remain unverified until genuine events. Existing browser-discovery findings
+remain separate. No count work or downstream workflow changes are included.
+
+## Latest verified status - November 9, 2026
+
+The installed browser and decoder files match the reviewed **browser-primary-20261107**
+release. The first two due runs, **November 8 at 10:04 p.m. Eastern** and
+**November 9 at 1:09 a.m. Eastern**, both reached the **20-second browser deadline**.
+The proxy fallback succeeded both times. The first run retained show **200000077**.
+The second selected **200000078 - 2026 ESP Pre-Charity**, November 11-15, with
+**November 11** as source-selected date and planning day 0. All five show-days
+were verified in Airtable at priorities 0-4. The next scheduled discovery is
+**November 15 at 10 p.m. Eastern**.
+
+### Browser timeout investigation
+
+The November 7 isolated headless test finished in about seven seconds. The scheduled
+task and the diagnostic used the same Windows account. The task uses
+`InteractiveToken`, and the deployed browser and decoder hashes match the reviewed
+release. The successful test establishes browser discovery worked in that test
+session. Both scheduled attempts still lack a successful browser result.
+
+Browser launch, navigation and validation of the matching `/shows` and `/schedule`
+responses share one deadline. The response handler suppresses parse, header-read
+and decoding errors. The saved logs show only the generic timeout, and the
+available Windows logs contain no matching browser failure. The exact cause remains
+unresolved. To isolate it on a future scheduled attempt, the proposed diagnostic is
+to record the last completed stage and any rejected response reason without
+including authentication headers. This is a review finding pending approval.
+
+Evidence: [headless test](evidence/browser-primary-20261107/headless-decoded-observation.json),
+[browser discovery code](browser-discovery.js),
+[November 8 collector log](runtime/collector-2026-11-08.log),
+[November 9 collector log](runtime/collector-2026-11-09.log),
+[Airtable review](https://airtable.com/appCaSmL819KK7UFJ/tblYDJfIh17xCCtIP/recZTORMGcgsAaezQ).
+
+
+## Browser-primary discovery - approved November 7, 2026
+
+Current release: **browser-primary-20261107**, README **v1.9.2**, lock **v1.2**
+([dated lock](evidence/browser-primary-20261107/lock.json)).
+This approved change reopens only the discovery-method boundary of the Shows lock.
+At the existing due slot, Shows launches a fresh isolated **headless** Edge process
+and opens the clean Wellington Show Schedule page. It validates the page-selected
+show ID/date against the page's own default-show response and schedule metadata.
+The name, facility, start/end dates and selected date come from those responses.
+No owner browser profile, window, stored selection or logged-in session is reused.
+
+Primary discovery makes no direct proxy `/ring` or `/schedule` calls. The page
+makes its own normal authenticated requests. The existing proven decoder processes
+its schedule response with that request's authentication **in memory only**, retaining
+the decoded payload/IDs and archive contract used by downstream readers. Authentication
+headers are never saved in archives, focus state or logs. Browser failure/timeout or
+unusable decoded evidence invokes the original proxy `/ring` then `/schedule` pair.
+Archive/publication failures do not trigger fallback. Browser failures remain linked
+in sources/err-logs even if fallback succeeds. Browser work is bounded to 20 seconds
+before the unchanged fallback, preserving the existing four-minute task limit.
+
+Cadence remains Sunday **10 p.m. Eastern**, retrying every three hours until the
+show ID changes; existing five-minute validation/heartbeat/logs and after-7 p.m.
+calendar day selection remain unchanged. No counts, downstream jobs, manual collector
+runs, repairs, task edits, schema changes or dependency upgrades are introduced.
+
+Release evidence: [browser-primary-20261107](evidence/browser-primary-20261107/task.md).
+Offline tests: 48 passed, including decoded downstream fallback, native links,
+repeat-run deduplication, browser timing and failure/fallback behavior. Separate
+headless diagnostic recovered 87 class IDs and one legitimate non-class break.
+Normal retained-state acceptance: **November 7, 6:49 and 6:54 p.m. Eastern PASS**.
+Matching Airtable heartbeat/run-logs and saved task exit 0 were verified. Scheduled
+fallback and rollover verification are recorded in the November 9 status above.
+
+This section supersedes older descriptions of `/ring` as the primary discovery
+method. All other locked scope and the four current notice recipients remain.
+
+
 ## Current recipients - owner update November 7, 2026
 
 Contact only **wef-records-coordinator, wef-timing-coordinator,
@@ -11,15 +103,15 @@ daily automation now lists four recipients; schedule, tolerance and duplicate
 protection are unchanged. Collector scope remains locked.
 
 
-Version: **1.8.6**
+Version: **1.9.2**
 
-Updated: **November 7, 2026 (America/New_York)**
+Updated: **November 9, 2026 (America/New_York)**
 
-## Verified lock renewal - November 7, 2026
+## Historical lock renewal - November 7, 2026 (superseded by browser-primary release)
 
 **LOCKED; README v1.8.5; lock v1.1.** Deployed baseline remains
 `day-state-20261102`. All 21 runtime hashes match the original November 2 lock.
-[Current dated lock](evidence/locked-20261107/lock.json). Original evidence is preserved.
+[Previous dated lock](evidence/locked-20261107/lock.json). Original evidence is preserved.
 
 Latest inspected normal run completed **November 7, 7:59:13 a.m. Eastern**:
 `f4ce6988-b977-420d-a498-9af6479bd888`. Saved receipt, Airtable heartbeat and
@@ -266,6 +358,10 @@ collector ownership or a reason to delete them. Shows archives are under
 
 ## Real cadence, archival and deployment
 
+See the [Shows cleanup contract](CLEANUP-CONTRACT.md) for current retention,
+the existing cleanup table and the policy still needed for table-driven cleanup.
+The owner's `cleanup-example` table is reference only.
+
 Inspected Windows Task Scheduler task **wef-shows-collector** repeats every five
 minutes, anchored at :04/:09/:14 etc., with a four-minute execution limit. Its
 established action is `wscript.exe //B //Nologo .../wef-shows/run-hidden.vbs` ->
@@ -275,17 +371,7 @@ through this existing checkout/route and verify normal scheduled runs.
 
 Each successful discovery archives default-ring, default-schedule and shows-before
 within the collector; identical content can reuse its compressed SHA256 file after
-readback. There is no separate Shows archive timer. At 1,000 run-log rows, the
-collector archives an eligible old non-Running row before reusing its slot;
-error-linked rows are protected. If all slots are protected it appends, making
-1,000 a soft limit. No automatic local-file expiry/deletion is implemented here.
-Heartbeat is a single latest-state upsert (`heartbeat-key=WEF-default`), not an
-append-only history or a separately archived stream. Sources similarly retain
-latest per-source state. Error records are keyed by `error-key`; no automatic
-error-log expiry is implemented in the inspected Shows code. Historical show/day
-records are not purged by these log-slot rules. No claim of bounded total base
-size or full-table archival follows from the 1,000-row log threshold.
-This is Shows evidence/log retention, not Season's broader Data archival cadence.
+readback. There is no separate Shows archive timer. The approved cleanup contract now controls log retention and eligible previous-show removal. It replaces archived log-slot reuse with the common new-show, 7 p.m. Eastern and 1,000-to-500 rules, preserving protected records and permanent cleanup history. Cleanup makes no new archives. Existing non-cleanup discovery archives remain in place. See CLEANUP-CONTRACT.md and the dated cleanup release above.
 
 Sunday 16:00-20:00 America/New_York is an expected rollover window, not the only
 polling window; the five-minute task continues. Latest local receipt inspected:

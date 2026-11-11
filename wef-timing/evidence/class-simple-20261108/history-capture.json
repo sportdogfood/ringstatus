@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "-e",
+    "const s=require('./wef-timing/class-snapshot');const fs=require('node:fs');const h=s.savedObservations({day:'2026-11-08',show:200000077});fs.writeFileSync('wef-timing/evidence/class-simple-20261108/saved-observations.json',JSON.stringify(h));console.log(JSON.stringify({savedObservations:h.length}));"
+  ],
+  "started_at": "2026-11-08T20:11:18.503818+00:00",
+  "ended_at": "2026-11-08T20:11:20.185054+00:00",
+  "exit_code": 0,
+  "stdout": "{\"savedObservations\":438}\n",
+  "stderr": ""
+}

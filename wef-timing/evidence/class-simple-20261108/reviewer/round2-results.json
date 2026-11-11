@@ -1,0 +1,34 @@
+[
+  {
+    "name": "empty current Ring pointer cannot revive an old group backlink",
+    "result": "PASS"
+  },
+  {
+    "name": "source false is-live remains false",
+    "result": "PASS"
+  },
+  {
+    "name": "Class logs and heartbeat retain verified default-show ID",
+    "result": "PASS"
+  },
+  {
+    "name": "invalid default identity is failed rather than successful empty output",
+    "result": "PASS"
+  },
+  {
+    "name": "record-ID reference protects an otherwise eligible old timing answer",
+    "result": "PASS"
+  },
+  {
+    "name": "explicit retired checkpoint is cleaned through full offline new-show executor",
+    "result": "PASS"
+  },
+  {
+    "name": "shared current group fallback does not run workload in parallel",
+    "result": "PASS"
+  },
+  {
+    "name": "invalid default show cannot trigger new-show deletion",
+    "result": "PASS"
+  }
+]

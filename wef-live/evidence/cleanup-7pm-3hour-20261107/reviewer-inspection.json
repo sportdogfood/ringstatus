@@ -1,0 +1,89 @@
+{
+  "reviewer": "/root/review_cleanup7pm",
+  "at": "2026-11-08T02:00:46.342053+00:00",
+  "baseline_matches_deployed_27JS": true,
+  "changed_js": [
+    "airtable.js",
+    "cleanup.js"
+  ],
+  "unchanged_js": 25,
+  "frozen_inputs_match_pretest_hashes": true,
+  "dependencies": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\run.ps1",
+      "sha256": "8b176d4bea2ca9e079bc25729ccf30dea81144b1915bddadc4818b8c56617f17"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\run-hidden.vbs",
+      "sha256": "938c4a54ff5f3023c9c9331f69037a914690091b3e79704f01d0ed3b9aba44b9"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\log-cap-20261107\\deployed.json",
+      "sha256": "da6abbdce1e01c403cefa858c8316681d5b7b8ecf1714a731fb9e902ed362f56"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\records-alert-route-fix-20261107\\acceptance.json",
+      "sha256": "dd72da846595e5e6766c15fd96e59d7cdd97dcdf298edbb4eb42f4a51f9975a7"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\AGENTS.md",
+      "sha256": "ec6bb2238cab39a76d64c839784c3728408bcb1b89918b93e0ae26167666b53f"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\AGENTS.md",
+      "sha256": "ac17f80ba1d177f33b31a37786fc782ef1d2c2ad594374187f69325a0afa8c21"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\coordination\\wef-owner-operating-instructions.md",
+      "sha256": "608fb43bf753f8b2453542e375be8f096cf9953155f4483d0bdd38f27b42b1f4"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\docs\\coordination\\wef-code-review-standard.md",
+      "sha256": "02136e25b4f843edd3891f95958fd1af5e5b24b76cd20fca1b67e0d01e9fab89"
+    }
+  ],
+  "approval": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\cleanup-7pm-3hour-20261107\\owner-instruction.json",
+      "sha256": "a30b86562f745b9afc46cd7bc8cadb0b2314f119605b77634d933f6240be0dc9"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\cleanup-7pm-3hour-20261107\\TASK.md",
+      "sha256": "d69093467710369c9e2fb20310ff555f1f5e050f82a1d915a281169dea9fc9ec"
+    }
+  ],
+  "git_changed_paths": [
+    "wef-data/README.md",
+    "wef-data/cleanup-lane.js",
+    "wef-live/HANDOFF.md",
+    "wef-live/LOCK.md",
+    "wef-live/README.md",
+    "wef-live/activity.js",
+    "wef-live/airtable.js",
+    "wef-live/cleanup.js",
+    "wef-live/entry.js",
+    "wef-live/scope.md",
+    "wef-live/source.js",
+    "wef-season/LOCK.md",
+    "wef-season/README.md",
+    "wef-shows/AGENTS.md",
+    "wef-shows/README.md",
+    "wef-shows/audit.js",
+    "wef-shows/collector.js",
+    "wef-shows/scope.md",
+    "wef-shows/tests/day-priority.test.js",
+    "wef-shows/tests/shows.test.js",
+    "workers/wef-schedules-decoded/README.md",
+    "workers/wef-schedules-decoded/VERIFIED-BASELINE.md",
+    "workers/wef-schedules-decoded/fallback.mjs",
+    "workers/wef-schedules-decoded/runner-relay.mjs",
+    "workers/wef-schedules-decoded/shared-worker.mjs",
+    "workers/wef-schedules-decoded/show-time-health.mjs",
+    "workers/wef-schedules-decoded/tests/fallback.test.mjs",
+    "workers/wef-schedules-decoded/tests/show-time-health.test.mjs",
+    "workers/wef-schedules-decoded/tests/worker.test.js",
+    "workers/wef-schedules-decoded/worker.js",
+    "workers/wef-schedules-decoded/wrangler.jsonc"
+  ],
+  "source_trace": "Saved task XML -> run-hidden.vbs -> run.ps1 -> entry.js -> lanes.scheduled -> cleanup; cleanup direct Airtable adapter and native cleanup/cleanup-logs. records-alerts receives Error/Blocked/Failed only, not successful cleanup actions."
+}

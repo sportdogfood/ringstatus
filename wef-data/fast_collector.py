@@ -94,10 +94,17 @@ def blocking_errors(errors):
     return any(not item.get('nonblocking') for item in errors)
 
 
+def class_detail_required(saved, fields):
+    return saved.get(fields['record-status']['id']) != 'Dropped' and not (
+        saved.get(fields['status']['id']) == 'Completed'
+        and saved.get(fields['class_related_data.results_verified']['id']) == 1)
+
+
 def collect_day(schema_file, selection):
     """Existing fresh single-day collection; no class work is queued or resumed."""
     errors=[];saved=set();show=None;day=None;runkey=None;run_started=stamp()
     started=time.perf_counter();stage_started=started;timings={}
+    detail_counts={'class-detail-requested':0,'class-detail-skipped':0}
     def timed(stage):
         nonlocal stage_started
         now=time.perf_counter();timings[stage]=round(now-stage_started,6);stage_started=now
@@ -111,7 +118,7 @@ def collect_day(schema_file, selection):
             timed('save-run-summary')
         return {'ok':not blocking_errors(errors),'state':'Partial' if blocking_errors(errors) else 'Saved',
                 'show-key':show,'day':day,'run-key':runkey,'counts':{'saved':len(saved),
-                'stage-seconds':dict(timings),'total-seconds':round(time.perf_counter()-started,6)},'item-errors':errors}
+                'stage-seconds':dict(timings),'total-seconds':round(time.perf_counter()-started,6),**detail_counts},'item-errors':errors}
     try:
         client=Airtable();source=Source()
         store=DataStore(client,json.loads(pathlib.Path(schema_file).read_text(encoding='utf-8')),cache=True)
@@ -258,6 +265,12 @@ def collect_day(schema_file, selection):
                 inventory_complete=False;error(rk,exception)
     graph={table:list(rows.values()) for table,rows in inventory.items()}
     timed('prepare-rings-groups-classes')
+    try:prior_classes=store.inventory('classes') if graph.get('classes') else {}
+    except Exception as exception:
+        error('Class-detail selection',exception);prior_classes={}
+    detail_rows=[row for row in graph.get('classes',[]) if class_detail_required(
+        prior_classes.get(row['class-key'],{}).get('fields',{}),store.fields['classes'])]
+    detail_counts['class-detail-skipped']=len(graph.get('classes',[]))-len(detail_rows)
     for table in tables[:3]:
         save(table,source_rows(graph[table]));timed('save-inventory-'+table)
 
@@ -283,7 +296,8 @@ def collect_day(schema_file, selection):
     entities={table:{} for table in ('horses','riders','trainers','owners')}
     def fetch(row):return source.fetch('/classes/'+str(row['class-id']),params)
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
-        requests={pool.submit(fetch,row):row for row in graph.get('classes',[])}
+        requests={pool.submit(fetch,row):row for row in detail_rows}
+        detail_counts['class-detail-requested']=len(requests)
         for future in concurrent.futures.as_completed(requests):
             row=requests[future];key=row['class-key']
             try:
@@ -362,14 +376,14 @@ def run(schema_file):
         for row in rows:
             fields=row['fields'];priority=fields.get(day_fields['day-priority'])
             if fields.get(day_fields['show'])!=show:continue
-            if type(priority) not in (int,float) or priority not in DAY_INTERVALS:continue
+            if type(priority) not in (int,float) or priority not in (0,1,2,3,4):continue
             try:
                 day=datetime.date.fromisoformat(fields[day_fields['date']][:10]).isoformat()
                 if fields.get(day_fields['show-day-key'])!=show+'|'+day or day in seen_days:raise ValueError('Invalid show-day key/date')
                 days.append((int(priority),day));seen_days.add(day)
             except Exception as exception:error('Show-day '+str(row.get('id')),exception)
         days.sort()
-        if not days:raise ValueError('No synced days with priority 0-3')
+        if not days:raise ValueError('No synced days with priority 0-4')
     except Exception as exception:
         error('Show and day selection',exception);days=[]
     try:
@@ -385,13 +399,12 @@ def run(schema_file):
         # Day zero retains its proven every-wake behavior. Future days use
         # elapsed time since their last attempt, including incomplete attempts.
         try:
-            interval=DAY_INTERVALS[priority]
             if priority==0:
                 from zoneinfo import ZoneInfo
                 today=datetime.datetime.fromtimestamp(attempted,datetime.timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()
                 interval=0 if day==today else 3600
             else:
-                # One half-hour cycle: day 1, then 2, then 3, completing each in order.
+                # One half-hour cycle: days 1 through 4, completing each in order.
                 if future_due is None:future_due=previous.get('force-next') is True or attempted-float(previous.get('attempted',0))>=1800
                 if not future_due:continue
                 interval=0

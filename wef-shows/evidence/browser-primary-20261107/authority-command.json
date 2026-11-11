@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\authority-age.test.js"
+  ],
+  "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107",
+  "started": "2026-11-07T23:41:48.387411+00:00",
+  "completed": "2026-11-07T23:41:49.329725+00:00",
+  "exit_code": 0
+}

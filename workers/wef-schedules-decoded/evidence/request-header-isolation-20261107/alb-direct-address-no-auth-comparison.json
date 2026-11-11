@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-11-07T21:28:20.068Z",
+  "scope": "Separate direct-address diagnostic. No Authorization/Cookie. TLS SNI and Host retained; normal certificate validation. Earlier lookup-hook attempt failed locally before HTTP and is retained separately.",
+  "results": [
+    {
+      "ip": "100.57.42.211",
+      "ordinaryAuthorityHeader": false,
+      "status": 200,
+      "bytes": 333,
+      "empty": false,
+      "anonymousTokenPresent": true,
+      "server": null
+    },
+    {
+      "ip": "100.57.42.211",
+      "ordinaryAuthorityHeader": true,
+      "status": 200,
+      "bytes": 2,
+      "empty": true,
+      "anonymousTokenPresent": false,
+      "server": "awselb/2.0"
+    },
+    {
+      "ip": "100.59.103.186",
+      "ordinaryAuthorityHeader": false,
+      "status": 200,
+      "bytes": 333,
+      "empty": false,
+      "anonymousTokenPresent": true,
+      "server": null
+    },
+    {
+      "ip": "100.59.103.186",
+      "ordinaryAuthorityHeader": true,
+      "status": 200,
+      "bytes": 2,
+      "empty": true,
+      "anonymousTokenPresent": false,
+      "server": "awselb/2.0"
+    }
+  ]
+}

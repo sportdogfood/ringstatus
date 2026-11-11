@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-11-08T01:01:13.133055+00:00",
+  "offline": "PASS5",
+  "review": "PASS author,not independent",
+  "deployed_hashes": "PASS27JS;25unchanged",
+  "normal_invocation": "2026-11-07 20:00 Eastern",
+  "delivery": "FAIL",
+  "alert_id": "65a538cc-d259-4571-aa21-2079db3205af",
+  "error": "Records delivery exited 1 without acknowledgement",
+  "destination": "01a169bc-e58a-7de0-94c6-5d3931fcf745",
+  "destination_chat_readback": "Latest visible turn remained completed19:56Records heartbeat;no new connection-check message or acknowledgement visible at20:00:47",
+  "collection_unchanged": true,
+  "task_exit": 0,
+  "manual_runs": false,
+  "record_repairs": false,
+  "verification_stop": "No retry or transport correction authorized after failed normal workflow proof. Connection test attempted once;not automatically repeated. Future genuine failure reports remain wired to the same unverified route.",
+  "next_required_decision": "Owner approval to diagnose/correct existing Codex delivery failure;do not claim failure alerts working."
+}

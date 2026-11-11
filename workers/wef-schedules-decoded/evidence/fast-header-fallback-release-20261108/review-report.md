@@ -1,0 +1,7 @@
+# Fast actual request header fallback — 8 November 2026
+
+Current-chat source review, not delegated review. PASS for exact approved delta. Only shared-worker.mjs source logic changes: existing fallback branch now tries existing original/header1/header2 profiles for /schedule and /classes/{id}, stops on decoded nonempty data, renews once after exhaustion and repeats once. Failed 200/empty results remain errors; zero-trip class objects remain allowed. Local-first and existing fallback transport preserved. Existing health probe explicitly retains its own recovery owner to prevent nested sweeps. Public feeds and other routes retain existing single fallback behavior. One-second gaps added only between these internal recovery attempts. Existing global pacer, queue, URLs, credentials, configuration, tasks and agent readers unchanged.
+
+47 focused executed checks cover schedule/class header2 recovery, first-success stop, exact six-attempt exhaustion/one renewal, invalid payloads, health recovery separation, existing public routes, decode and pacing behavior. Existing Cloudflare preview exercised actual Fast dated schedule scope: 2026-11-08, seven rings; class from that response 200031205, 27 trips. Both usable via header2.
+
+Live deployment and two actual normal scheduled Fast collections remain separate acceptance gates; no manual collector proof. This fix does not add a collector, endpoint, queue or dependency, resume paused work or alter unrelated edits.

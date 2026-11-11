@@ -1,6 +1,45 @@
 # wef-class-calculator owner
 
-README version: **1.0** (first explicit document version). Updated **31 October 2026**, America/New_York. This version identifies this README, not a runtime or skill-package release.
+**README version 1.4**, updated **8 November 2026** (Eastern). The active runtime is the reviewed `class-simple-20261108` release.
+
+## Deployed and verified — 8 November 2026
+
+Owner approved deployment of the exact independently reviewed Class package and verification of two normal scheduled runs, with no manual runs. Seven approved fields were applied and read back in `appeqxxJyPGS1iqdm`. The four active runtime files match the reviewed release hashes. The existing `wef-timing-data` task, launcher and three-minute schedule were retained.
+
+Deployment completed at **6:36 p.m. Eastern**. The **6:37 p.m.** and **6:40 p.m.** scheduled runs both completed successfully. Each appended three `class-status` snapshots and updated three `class-status-as-of` summaries on the linked local `wef-data.classes` records. Direct Airtable readback verified that all six snapshots remained, the second three linked to the first three, and all summaries advanced from 6:37 to 6:40. Both cycles covered three upcoming Ring 6 classes; their scheduled starts had passed and the summaries flagged that Live had not confirmed a start. This proves recurring publication and summary updates for the observed scope; it does not exercise an underway class or prove Trip consumer integration.
+
+The four deployed files still match the release hashes. Five consecutive scheduled runs from **7:25 through 7:37 p.m.** each reported three snapshots, three summary updates and exit code 0. Windows reported zero missed runs at the 7:37 check. The **7:01 p.m.** daily cleanup receipt and saved cleanup state agree that eight eligible `run-logs` records were deleted. The cleanup state had no pending deletion or unfinished event. [Deployment](../../../wef-timing/evidence/class-simple-20261108/deployment.json), [schema readback](../../../wef-timing/evidence/class-simple-20261108/deployed-schema-readback.json), [Airtable readback for both acceptance runs](../../../wef-timing/evidence/class-simple-20261108/scheduled-verification.json), [saved runner log](../../../wef-timing/runtime/data/runner.log), [cleanup state](../../../wef-timing/runtime/class-cleanup/state.json).
+
+## Open items and known trouble
+
+- **Live timing evidence.** Both Airtable acceptance runs saw three upcoming Ring 6 classes whose scheduled starts had already passed. The output used fallback pace, showed a zero start countdown and flagged that Live had not confirmed a start. An underway class, measured pace, actual start and a usable end estimate still need scheduled evidence when those inputs are present. The [independent review](../../../wef-timing/evidence/class-simple-20261108/reviewer/report.md) covers code and offline behavior.
+- **Trip handoff.** The Class snapshot contract was shared with the Trip owner. Trip’s receipt and use of the deployed output remain unverified.
+- **Class linker.** The new helper fills blank Class, schedule, ring, group and Ring snapshot links. It preserves existing links and records missing or ambiguous matches. The [helper](../../../wef-class-calculator/linker.js) and [staged integration](../../../wef-timing/evidence/class-linker-20261108/candidate/wef-timing/class-snapshot.js) were checked offline. Independent release review and deployment remain open.
+- **Cleanup evidence and decision.** The three-hour check ran with zero deletions. The 1,000-record threshold, the cap of 500 oldest eligible records per table, and the previous-show archive and deletion path still lack scheduled proof with eligible records. The retention window for `class-status` history is undecided, so that history stays protected.
+
+The deployed Class path uses synced inputs. The earlier Class attempt depended on a missing Data handoff and repeatedly stopped at the shared clock check. The rejected November 7 candidate and earlier shared-output reviews below are historical evidence. Their stopped work is outside the active Class release.
+
+## Prepared simple workflow — before deployment
+
+Latest owner approval authorizes completing this fresh workflow and correcting in-scope offline/review failures without per-edit permission. Deployment, schedule changes, manual production runs and scope expansion remain excluded. This section supersedes the rejected candidate as the current prepared work; it does not claim a live migration.
+
+Fresh implementation: `wef-timing/class-snapshot.js`; separate cleanup: `wef-timing/class-cleanup.js`. Read today's current/next Ring pointers and existing Class/schedule/trip evidence, measure Class pace, calculate timing/warnings, compare, save/read back one new snapshot per Class cycle and print/read back the latest local Class timing summary. Actual start remains distinct from first-seen/planned start. 2.5746 is a fallback after measured Class/shared Ring evidence. No full-day Ring forecast or individual Trip go-time calculation is included.
+
+Output is the existing `class-status` table `appeqxxJyPGS1iqdm/tblxhS1xWpfHKTd6l`; the latest print is a prepared local `class-status-as-of` field on synced `wef-data.classes` (`tblUgcgOMvfjbEthx`), not a source Data producer mutation. Seven additive fields are prepared in `wef-timing/evidence/class-simple-20261108/schema-changes.json`; **none have been applied**. Reviewed integration copies `candidate/data-runner.js` and `candidate/entry-data.js` preserve the established `wef-timing-data` launcher, Ring producer and receipt shape. Active runner files remain unchanged.
+
+Offline checks use438frozen saved observations and the saved Nov8 input corpus. They cover the owner's2:28/1:59/30total10gone example, observation pace2.9,58minutes remaining,3:26finish and26-minute delay warning against next3:00start. Saved-source output contains4current/next snapshots; this is offline evidence, not fresh scheduled output. Independent review fixes cover stale selection, source is-live, identity, shared workload, receipt/audit failure paths, archive-time changes and the500-record cleanup cap after reporting failure. Final evidence is in `wef-timing/evidence/class-simple-20261108/reviewer/`.
+
+Final independent [Code Review](../../../wef-timing/evidence/class-simple-20261108/reviewer/report.md) is COMPLETE/PASS for code and offline scope:35suite checks and16reviewer checks passed; the packet verifier passed and all11protected baseline files remained unchanged. The [workflow and cleanup contract](../../../wef-timing/CLASS-SNAPSHOT.md) gives exact sources, output, cleanup protections and prepared artifacts. No new schedules, Records alerts, live Class writes, schema writes, deletions or deployment were performed. The previous Nov7 candidate is preserved and unused. Normal scheduled execution and Trip consumer readback remain unverified until separately authorized deployment.
+
+## New snapshot candidate — 7 November 2026
+
+Owner approved `class-status` with the 35 proposed fields, fixed prediction pace **2.5746 minutes/trip**, offline testing of saved November 6 inputs, Code Review and the cleanup script/contract. Created and read back `appeqxxJyPGS1iqdm/tblxhS1xWpfHKTd6l`. No snapshot records were published; existing timing-answers and scheduled runner are unchanged.
+
+Candidate: [Class contract](../../../wef-timing/CLASS-STATUS.md), `wef-timing/class-status.js` and `class-status-cleanup.js`. Writer checks passed 15 assertions and produced 43 offline snapshots (42 Completed, one Upcoming); no actual starts were invented. This is retrospective saved-input evidence, not historical inventory reconstruction or scheduled execution proof.
+
+Independent review reproduced four blockers: unsupported preceding phase leaves a past next-class forecast; one invalid observation clock aborts the entire class batch; old-show cleanup accepts missing identity/date; answer cleanup lacks mandatory age/archive enforcement. Candidate is stopped and not deployed. Evidence and the exact pending correction proposal are under `wef-timing/evidence/class-status-20261107/`. Separate APPROVED TO EDIT is required before correcting/retesting the failed candidate.
+
+Current cleanup contract supersedes the historical daily timing below: 7 p.m. Eastern clears eligible completed operational logs; every three hours applies the 1,000/500 rule; changed default show ID clears eligible previous-show owned records. No separate day-0 cleanup, new schedules or Records alerts. Active/current, unresolved/pending work and all synced/reference tables remain protected. Class-status history stays protected pending its agreed retention window. Six cleanup purpose fields and three new protected-table control rows were read back; all five existing checked targets stayed unchanged. No cleanup was executed. Earlier answer age/archive obligations remain in effect.
 
 ## Current responsibilities
 
@@ -14,9 +53,9 @@ Owner: `wef-class-calculator`, chat `01a16f18-25b9-7222-9b53-b64496ec84d9`. The 
 
 Class does not own source collection, Ring pace production, Entry implementation, source-record repair, retention execution, message delivery or publication. Codex is not the runner; no manual production runs or substitute workflow proof. Runtime edits, deployment and failed-path retries require the applicable explicit approval. No dependency upgrades, contract changes, refactoring or adjacent work are included without approval.
 
-Current Class implementation: `wef-timing/class-timing.js`, `class-adapter.js`, `class-live-source.js` and `class-worker.js`. Class answers are saved in `appeqxxJyPGS1iqdm/tblmoBFySYW2TkDHf` through the existing shared `wef-timing-data` route. There is no separate Class runner. The approved default pace is **2.5746 minutes per trip** when compatible Ring pace is unavailable; original evidence clocks and the existing active-pace age limit remain intact.
+The active Class implementation is `wef-timing/class-snapshot.js` with separate `class-cleanup.js`, called by the existing shared `wef-timing-data` route. It publishes snapshots to `appeqxxJyPGS1iqdm/tblxhS1xWpfHKTd6l` and writes the local Class timing print. The prior Class timing modules and `timing-answers` are preserved; they are not the new snapshot destination.
 
-## Latest verified evidence — 31 October 2026
+## Historical verified evidence — 31 October 2026
 
 Independent Ring date-filter review and two normal scheduled run readbacks passed. Separate Class review of the second run (`5720dbb7-b396-4b03-9444-38323b4dbac8`) verified 72 saved answers evaluated at `2026-10-31T16:09:26.730Z`: all unavailable, all using the approved fallback, none with an accepted start/count or selected Ring pace component. The prior run safely deferred Class publication after a source change. This is dated evidence, not a claim about later runs or proof that the inputs are physically absent upstream.
 

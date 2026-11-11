@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-08T18:49:11.204Z",
+  "count": 306,
+  "links": {
+    "w-horses": 306,
+    "w-riders": 297,
+    "w-trainers": 298
+  },
+  "all_prior_helper_links_unchanged": true,
+  "ambiguous_still_empty": {
+    "w-horses": true,
+    "w-riders": true,
+    "w-trainers": true
+  }
+}

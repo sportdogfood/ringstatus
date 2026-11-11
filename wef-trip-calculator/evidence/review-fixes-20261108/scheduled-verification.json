@@ -1,0 +1,252 @@
+{
+  "task": "wef-timing-data",
+  "observed_runs": 1,
+  "accepted_end_to_end_runs": 0,
+  "result": "FAIL",
+  "blocker": "Trip Airtable GET errors HTTP 403",
+  "manual_runs": 0,
+  "receipt": "scheduled-run-1.json",
+  "airtable_readback": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "total": 1,
+        "more": false,
+        "rows": [
+          {
+            "id": "recnbeP2cJH6nAHbO",
+            "run-id": "f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+            "result": "Success",
+            "started": "2026-11-09T02:16:35.369Z",
+            "completed": "2026-11-09T02:17:43.272Z"
+          }
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "total": 1,
+        "more": false,
+        "rows": [
+          {
+            "id": "rec3gXVwkBpCi3xXR",
+            "run-id": "f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+            "result": "Success",
+            "started": "2026-11-09T02:16:35.369Z",
+            "completed": "2026-11-09T02:17:43.272Z"
+          }
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "total": 307,
+        "more": true,
+        "rows": [
+          {
+            "id": "rec8N4AW0JoYfCzsR",
+            "snapshot-key": "15|200000077|2026-11-08|52|200031231||200400616|f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+            "trip-key": "15|200000077|2026-11-08|52|200031231||200400616",
+            "snapshot-at": "2026-11-09T02:16:35.369Z",
+            "status": "Gone",
+            "estimated-go-time": null,
+            "unavailable-reasons": "missing_or_ambiguous_class-status_reference"
+          },
+          {
+            "id": "recLz3ZZPCgprZ3no",
+            "snapshot-key": "15|200000077|2026-11-08|51|200031254||200400320|f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+            "trip-key": "15|200000077|2026-11-08|51|200031254||200400320",
+            "snapshot-at": "2026-11-09T02:16:35.369Z",
+            "status": "Gone",
+            "estimated-go-time": null,
+            "unavailable-reasons": "missing_or_ambiguous_class-status_reference"
+          },
+          {
+            "id": "recVwaLtP6xNdCrqa",
+            "snapshot-key": "15|200000077|2026-11-08|51|200031217||200397687|f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+            "trip-key": "15|200000077|2026-11-08|51|200031217||200397687",
+            "snapshot-at": "2026-11-09T02:16:35.369Z",
+            "status": "Gone",
+            "estimated-go-time": null,
+            "unavailable-reasons": "missing_or_ambiguous_class-status_reference"
+          },
+          {
+            "id": "recZcQIrdkISAoves",
+            "snapshot-key": "15|200000077|2026-11-08|37|200031146||200400868|f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+            "trip-key": "15|200000077|2026-11-08|37|200031146||200400868",
+            "snapshot-at": "2026-11-09T02:16:35.369Z",
+            "status": "Gone",
+            "estimated-go-time": null,
+            "unavailable-reasons": "missing_or_ambiguous_class-status_reference"
+          },
+          {
+            "id": "recbJmZZFMA4nsyNB",
+            "snapshot-key": "15|200000077|2026-11-08|37|200031021||200401032|f25c51b8-fb07-4df8-822d-93ce3b3e74b8",
+            "trip-key": "15|200000077|2026-11-08|37|200031021||200401032",
+            "snapshot-at": "2026-11-09T02:16:35.369Z",
+            "status": "Gone",
+            "estimated-go-time": null,
+            "unavailable-reasons": "missing_or_ambiguous_class-status_reference"
+          }
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "total": 2,
+        "more": false,
+        "rows": [
+          {
+            "id": "recIVobiV9wRRxpzO",
+            "trip-key": "15|200000077|2026-11-08|25|200031046||200399494",
+            "order-of-go": null,
+            "calculated-at-time": "2026-11-09T02:16:35.369Z",
+            "calculated-estimated-go-time": null,
+            "calculated-order-of-go": null
+          },
+          {
+            "id": "recgNYhZHHmKHIrMN",
+            "trip-key": "15|200000077|2026-11-08|25|200031045||200399493",
+            "order-of-go": null,
+            "calculated-at-time": "2026-11-09T02:16:35.369Z",
+            "calculated-estimated-go-time": null,
+            "calculated-order-of-go": null
+          }
+        ]
+      }
+    }
+  ],
+  "pending_source_check": {
+    "returned": 451,
+    "more": false,
+    "scoped": 10,
+    "rows": [
+      {
+        "id": "rec1D3opyruY2R01m",
+        "trip-key": "15|200000077|2026-11-08|52|200031253||200401565",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": true,
+        "order-of-go": 9,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      },
+      {
+        "id": "rec1TekdHfYo6aB7Y",
+        "trip-key": "15|200000077|2026-11-08|25|200031090||200401448",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": true,
+        "order-of-go": null,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      },
+      {
+        "id": "rec9Ae1VINkfyXjWr",
+        "trip-key": "15|200000077|2026-11-08|49|200031222||200401681",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": true,
+        "order-of-go": null,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      },
+      {
+        "id": "recFBvaaVzbKEhr06",
+        "trip-key": "15|200000077|2026-11-08|52|200031177||200400409",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": true,
+        "order-of-go": 4,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      },
+      {
+        "id": "recIVobiV9wRRxpzO",
+        "trip-key": "15|200000077|2026-11-08|25|200031046||200399494",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": null,
+        "order-of-go": null,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      },
+      {
+        "id": "recUOm5BwluvQFoav",
+        "trip-key": "15|200000077|2026-11-08|25|200031091||200401446",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": true,
+        "order-of-go": null,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      },
+      {
+        "id": "recZ4nD154tbNpqDC",
+        "trip-key": "15|200000077|2026-11-08|51|200031251||200400141",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": true,
+        "order-of-go": 11,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      },
+      {
+        "id": "recdDoKCWLpu2ogXk",
+        "trip-key": "15|200000077|2026-11-08|49|200031193||200401470",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": true,
+        "order-of-go": 11,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      },
+      {
+        "id": "recgNYhZHHmKHIrMN",
+        "trip-key": "15|200000077|2026-11-08|25|200031045||200399493",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": null,
+        "order-of-go": null,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      },
+      {
+        "id": "rechmCEBogt1VmiK6",
+        "trip-key": "15|200000077|2026-11-08|52|200031231||200401522",
+        "date": "2026-11-08",
+        "record-status": "Active",
+        "gone": 0,
+        "scratch": true,
+        "order-of-go": 4,
+        "gone-in": null,
+        "calculated-estimated-go-time": null,
+        "calculated-at-time": null
+      }
+    ]
+  },
+  "schedule_unchanged": true,
+  "deployment_hash_matches": true,
+  "verified_at": "2026-11-09T02:18:20.5350513Z"
+}

@@ -52,7 +52,7 @@ function diagnostic(error,env,seen=new Set()) {
     return diagnostic(message,env)+(error.cause!==undefined?' Cause: '+diagnostic(error.cause,env,seen):'');
   }
   let text=String(error);
-  for(const secret of [env.SGL_TOKEN,env.SGL_COOKIE])if(secret)text=text.split(secret).join('[redacted]');
+  for(const secret of [env.SGL_TOKEN,env.SGL_COOKIE,env.SGL_RETURNED_TOKEN])if(secret)text=text.split(secret).join('[redacted]');
   return text.replace(/Bearer\s+[^\s"'<>]+/gi,'Bearer [redacted]').slice(0,2000);
 }
 export default {
@@ -81,7 +81,7 @@ export default {
     if(!env.SGL_TOKEN) return reply({message:"Source authentication not configured"},503);
     const upstream=new URL(pathname,"https://sglapi.wellingtoninternational.com");
     upstream.search=url.search;
-    const authorization="Bearer "+env.SGL_TOKEN;
+    let authorization="Bearer "+env.SGL_TOKEN;
     const headers={
       Accept:"application/json, text/plain, */*","User-Agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
       "Cache-Control":"no-cache",Pragma:"no-cache",Expires:"0",
@@ -89,24 +89,56 @@ export default {
       Origin:"https://www.wellingtoninternational.com",Referer:"https://www.wellingtoninternational.com/"
     };
     if (isRingDetail || pathname === "/schedule" || isClasses || isPeople) Object.assign(headers, {
-      authority: upstream.host, method: "GET", path: upstream.pathname + upstream.search, scheme: "https",
+      path: upstream.pathname + upstream.search,
       "accept-encoding": "gzip, deflate, br, zstd", "accept-language": "en-US,en;q=0.9", priority: "u=1, i",
       "sec-ch-ua": '"Not-A.Brand";v="99", "Microsoft Edge";v="157", "Chromium";v="157"',
       "sec-ch-ua-mobile": "?1", "sec-ch-ua-platform": '"iOS"', "sec-fetch-dest": "empty",
       "sec-fetch-mode": "cors", "sec-fetch-site": "same-site"
     });
+    if(env.SGL_HEADER_PROFILE==='profile-fb-header1'){
+      headers['User-Agent']='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0';
+      Object.assign(headers,{'sec-ch-ua':'"Chromium";v="158", "Not.A/Brand";v="24", "Microsoft Edge";v="158"','sec-ch-ua-mobile':'?0','sec-ch-ua-platform':'"Windows"','sec-fetch-site':'cross-site','sec-fetch-dest':'document','sec-fetch-mode':'navigate','sec-fetch-user':'?1'});
+    }else if(env.SGL_HEADER_PROFILE==='profile-fb-header2'){
+      for(const name of ['path','priority','sec-ch-ua','sec-ch-ua-mobile','sec-ch-ua-platform'])delete headers[name];
+      headers['sec-fetch-site']='cross-site';
+    }
+    if(env.SGL_HEADER_PROFILE==='windows-clean'){
+      headers['User-Agent']='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0';
+      headers['sec-ch-ua']='"Chromium";v="158", "Not.A/Brand";v="24", "Microsoft Edge";v="158"';
+      headers['sec-ch-ua-mobile']='?0';
+      headers['sec-ch-ua-platform']='"Windows"';
+      for(const name of ['authority','method','path','scheme'])delete headers[name];
+    }else if(env.SGL_HEADER_PROFILE==='android-clean'){
+      headers['User-Agent']='Mozilla/5.0 (Linux; Android 16; Pixel 10) AppleWebKit/537.36 (KHTML, like Gecko) Edg/157.0.0.0 Mobile Safari/537.36';
+      delete headers.path;
+    }
     if(env.SGL_COOKIE) headers.Cookie=env.SGL_COOKIE;
-    let upstreamStatus=null,stage='fetch';
+    let upstreamStatus=null,stage='fetch',returnedToken;
     try {
+      for(let replay=0;replay<2;replay++){
       const response=await (env.SGL_FETCH || fetch)(upstream.toString(),{method:"GET",headers,redirect:"manual",signal:AbortSignal.timeout(25000),cf:{cacheTtl:0,cacheEverything:false}});
       upstreamStatus=response.status;
       if(response.status>=300&&response.status<400){console.error(JSON.stringify({message:"Source redirect blocked",upstreamStatus}));return reply({message:"Source redirect blocked",statusCode:502},502);}
       if(!response.ok){console.error(JSON.stringify({message:"Source request failed",upstreamStatus}));return reply({message:"Source request failed",statusCode:response.status},response.status);}
       stage="decode";
-      const body=await decodeSglPayload(await response.text(),authorization,env.SGL_BUNDLE_SALT||SGL_BUNDLE_SALT,pathname==="/schedule");
+      const text=await response.text(),payload=JSON.parse(text);
+      if(payload&&Object.hasOwn(payload,'_t')){
+        returnedToken=payload._t;
+        let claims;
+        try{claims=JSON.parse(atob(returnedToken.split('.')[1].replaceAll('-','+').replaceAll('_','/')));}catch{throw Error('Invalid returned anonymous token');}
+        if(claims?.anon!==true||!Number.isFinite(claims.exp)||claims.exp*1000<=Date.now())throw Error('Invalid returned anonymous token');
+        await env.SGL_ON_TOKEN?.(returnedToken,claims.exp*1000);
+        if(replay)throw Error('Upstream token refresh required after replay');
+        headers.Authorization=authorization='Bearer '+returnedToken;
+        await new Promise(resolve=>setTimeout(resolve,1000));
+        stage='fetch';
+        continue;
+      }
+      const body=await decodeSglPayload(text,authorization,env.SGL_BUNDLE_SALT||SGL_BUNDLE_SALT,pathname==="/schedule");
       return new Response(body,{headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store","X-RS-Decoded":"1"}});
+      }
     } catch (error) {
-      console.error(JSON.stringify({message:"Source fetch or protected response decoding failed",stage,upstreamStatus,error:diagnostic(error,env)}));
+      console.error(JSON.stringify({message:"Source fetch or protected response decoding failed",stage,upstreamStatus,error:diagnostic(error,{...env,SGL_RETURNED_TOKEN:returnedToken})}));
       return reply({message:"Source fetch or protected response decoding failed",statusCode:502},502);
     }
   }

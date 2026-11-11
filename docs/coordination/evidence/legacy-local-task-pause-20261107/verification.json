@@ -1,0 +1,20 @@
+[
+  {
+    "Task": "epoch-tagger-local",
+    "State": "Disabled",
+    "Enabled": false,
+    "OnlyEnabledSettingChanged": true
+  },
+  {
+    "Task": "ringstatus-heartbeat",
+    "State": "Disabled",
+    "Enabled": false,
+    "OnlyEnabledSettingChanged": true
+  },
+  {
+    "Task": "ringstatus-pipeline-local",
+    "State": "Disabled",
+    "Enabled": false,
+    "OnlyEnabledSettingChanged": true
+  }
+]

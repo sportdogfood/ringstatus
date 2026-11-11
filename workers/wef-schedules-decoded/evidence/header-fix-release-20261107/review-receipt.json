@@ -1,0 +1,148 @@
+{
+  "reviewer": "wef-decoder",
+  "reviewed_at": "2026-11-07T21:46:42.913Z",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Review removal of three ordinary copied pseudo-headers, preserving all existing behavior outside request-header omission",
+  "target": "Staged installed-runner and hosted/fallback worker.js with one regression test",
+  "integration_coverage": "26 staged+26 installed regressions, local runner preview twice, actual Cloudflare forced-fallback preview, live normal usable schedule/class and forced fallback on both. Primary live class remains empty; normal class succeeds through existing fallback. No scheduled collector proof claimed.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\runner-worker.before.js",
+      "sha256": "66fc72f8e02b9ee62ada124469778a43678c0c8df5d267a3c104c5ba99a16dd4"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\fallback-worker.before.js",
+      "sha256": "641a3ce66d292297ecea235b0b629466938b7a9c668c80cacdcf28a4f2986290"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\worker.test.before.js",
+      "sha256": "2fd1762135cd4027df2aa42a3efadcc88278ddca1a1852c228275fd7e5e7ef23"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\runtime\\wef-decoder-runner\\worker.js",
+      "sha256": "eff1667fe6598ebb8054e53259654e3d1ed7a5e140331fb8b28a74aefd946f62"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\worker.js",
+      "sha256": "e6b2c505a163e9956c7ee23a552ca5b204e313f0bd71506f2cc4c471a4e237e4"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\worker.test.js",
+      "sha256": "b5b2622e28ac79296e22c449e6d83480428c79327d32692b9945f654d951ba4c"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\review-report.md",
+    "sha256": "9b07a56d4b9a351aac75826764736fa89e9dc046dca9b558224fe29c31d29d64"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\execution-log.json",
+      "sha256": "b356c7f3c63f1d2b43229db1ac7d93af54b3b5aab3e0f526d855184380d21f03"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "approved-delta and protected dependency inspection",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Compared exact candidate lines against saved baseline; inspected protected connection,queue,fallback and task definitions. No delegated reviewer claim.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\scope.md",
+          "sha256": "a886edc1a0642d628815c5f030a7de14b611024114c42add9fbce5c5558165dc"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\protected-hashes.json",
+          "sha256": "94f464b4a9afe5eafbecfe9accc2a620bd5d8b381954c99a0da6a9c72cc709be"
+        }
+      ]
+    },
+    {
+      "name": "staged source regressions",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "preview-offline-regressions"
+      ]
+    },
+    {
+      "name": "local runner preview",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "local-runner-preview"
+      ]
+    },
+    {
+      "name": "actual Cloudflare independent fallback preview",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "deploy-isolated-cloudflare-preview",
+        "cloudflare-preview-source-checks"
+      ]
+    },
+    {
+      "name": "installed focused regression suite",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "installed-offline-regressions"
+      ]
+    },
+    {
+      "name": "protected sources and task definitions readback",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Compared final source hashes and exported task definitions; only permitted header source files/test differ, all protected files unchanged, all three legacy tasks still disabled.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\protected-readback.json",
+          "sha256": "5d77dc0d6fa51629b928a7ef15303c47c881ea8df0e8662d4f663771465c25d1"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\task-readback.json",
+          "sha256": "b5ee13b75783b54cd36795725ae9326f90f1d56c3d047562360d1a4952955dee"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\installation.json",
+          "sha256": "f1cc078fe77210f92a9b280c584889d945b170468b7441f5e14b370e9a7d104b"
+        }
+      ]
+    },
+    {
+      "name": "production deployment and approved live source acceptance",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "production-worker-deployment",
+        "live-approved-normal-and-fallback-checks"
+      ]
+    },
+    {
+      "name": "initial checks and remaining primary-class limitation",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Preserved initial502 and too-strict lane criterion; final accepted normal mode may use existing fallback. Live primary class{} is explicitly unresolved, not silently repaired.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\live-primary-before-ready.json",
+          "sha256": "922dc80361bf342ffca53f23e206f3f56fc83b6e9f51f2e586de18660426eee4"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\live-normal-lane-criterion-too-strict.json",
+          "sha256": "a920da4d65427a61b23024e7a51457875c60f7e4278353d6575aea14d7c79819"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\header-fix-release-20261107\\live-final-results.json",
+          "sha256": "4112c11de406184832dfc7ebb4cdbd51e0dc0555e7b7affb98f70de0e41b7a46"
+        }
+      ]
+    }
+  ]
+}

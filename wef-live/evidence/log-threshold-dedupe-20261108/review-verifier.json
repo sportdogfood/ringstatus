@@ -1,0 +1,38 @@
+{
+  "reviewer": "/root/review_cleanup7pm",
+  "commands": [
+    {
+      "id": "review-integrity-verifier",
+      "command": "python -B scripts/verify_review.py --receipt \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\log-threshold-dedupe-20261108\\review-receipt.json\"",
+      "cwd": "C:\\Users\\gombc\\.agents\\skills\\code-review",
+      "runtime": "Python 3.11.3",
+      "started_at": "2026-11-08T14:50:46.642693+00:00",
+      "ended_at": "2026-11-08T14:50:46.849467+00:00",
+      "exit_code": 0,
+      "stdout": "{\"status\": \"PASS\", \"errors\": [], \"mechanical_only\": true, \"review_status\": \"COMPLETE\", \"candidate_status\": \"FAIL\", \"reviewer\": \"/root/review_cleanup7pm\", \"command_count\": 2}\n",
+      "stderr": ""
+    },
+    {
+      "id": "review-integrity-verifier-p3-resolved",
+      "command": "python -B scripts/verify_review.py --receipt \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\log-threshold-dedupe-20261108\\review-receipt.json\"",
+      "cwd": "C:\\Users\\gombc\\.agents\\skills\\code-review",
+      "runtime": "Python 3.11.3",
+      "started_at": "2026-11-08T14:51:48.018316+00:00",
+      "ended_at": "2026-11-08T14:51:48.161019+00:00",
+      "exit_code": 0,
+      "stdout": "{\"status\": \"PASS\", \"errors\": [], \"mechanical_only\": true, \"review_status\": \"COMPLETE\", \"candidate_status\": \"PASS\", \"reviewer\": \"/root/review_cleanup7pm\", \"command_count\": 2}\n",
+      "stderr": ""
+    },
+    {
+      "id": "review-integrity-final-readback",
+      "command": "python -B scripts/verify_review.py --receipt \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\log-threshold-dedupe-20261108\\review-receipt.json\"",
+      "cwd": "C:\\Users\\gombc\\.agents\\skills\\code-review",
+      "runtime": "Python 3.11.3",
+      "started_at": "2026-11-08T14:52:08.612105+00:00",
+      "ended_at": "2026-11-08T14:52:08.795481+00:00",
+      "exit_code": 0,
+      "stdout": "{\"status\": \"PASS\", \"errors\": [], \"mechanical_only\": true, \"review_status\": \"COMPLETE\", \"candidate_status\": \"PASS\", \"reviewer\": \"/root/review_cleanup7pm\", \"command_count\": 2}\n",
+      "stderr": ""
+    }
+  ]
+}

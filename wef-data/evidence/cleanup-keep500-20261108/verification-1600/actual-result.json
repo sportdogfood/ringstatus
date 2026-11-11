@@ -1,0 +1,90 @@
+{
+  "event_id": "log-check|2026-11-08|5",
+  "run_id": 1794171919425,
+  "heartbeat_received": "2026-11-08T21:03:42.935Z",
+  "pointer_issued": "2026-11-08T21:04:18.646Z",
+  "started": "2026-11-08T21:05:19.425Z",
+  "completed": "2026-11-08T21:05:29.231Z",
+  "result": "Success",
+  "errors": [],
+  "task_exit": 0,
+  "native_tables": [
+    {
+      "table": "runs",
+      "before": 75,
+      "after": 75,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "run-logs",
+      "before": 158,
+      "after": 159,
+      "priorIDsMissing": 0
+    },
+    {
+      "table": "err-logs",
+      "before": 91,
+      "after": 92,
+      "priorIDsMissing": 0
+    }
+  ],
+  "cleanupV2": [
+    {
+      "id": "recyDF0NX2VI5tSZl",
+      "createdTime": "2026-11-07T12:40:56.000Z",
+      "cellValuesByFieldId": {
+        "fld4jnmzwJkKTe8wJ": 0,
+        "fldHr91pmw8EBCT37": {
+          "id": "sel6F8g21VdmcuYme",
+          "name": "Success",
+          "color": "blueLight2"
+        },
+        "fldKjmFaaBt3yTuGF": "runs",
+        "fldoBlDL8V0qpLwqO": 1794171919425,
+        "fldtfYtd0dZXppisd": "2026-11-08T21:05:25.785Z"
+      }
+    },
+    {
+      "id": "recy2uO09iogJYaSu",
+      "createdTime": "2026-11-07T12:40:56.000Z",
+      "cellValuesByFieldId": {
+        "fld4jnmzwJkKTe8wJ": 0,
+        "fldHr91pmw8EBCT37": {
+          "id": "sel6F8g21VdmcuYme",
+          "name": "Success",
+          "color": "blueLight2"
+        },
+        "fldKjmFaaBt3yTuGF": "run-logs",
+        "fldoBlDL8V0qpLwqO": 1794171919425,
+        "fldtfYtd0dZXppisd": "2026-11-08T21:05:25.303Z"
+      }
+    },
+    {
+      "id": "recm1It0cR6TNQtqS",
+      "createdTime": "2026-11-07T12:40:56.000Z",
+      "cellValuesByFieldId": {
+        "fld4jnmzwJkKTe8wJ": 0,
+        "fldHr91pmw8EBCT37": {
+          "id": "sel6F8g21VdmcuYme",
+          "name": "Success",
+          "color": "blueLight2"
+        },
+        "fldKjmFaaBt3yTuGF": "err-logs",
+        "fldoBlDL8V0qpLwqO": 1794171919425,
+        "fldtfYtd0dZXppisd": "2026-11-08T21:05:24.753Z"
+      }
+    }
+  ],
+  "local": {
+    "runs": 0,
+    "errors": 0,
+    "acks": 0
+  },
+  "acceptance": {
+    "genuine_records_route": "PASS",
+    "under_threshold_no_deletion": "PASS",
+    "over_1000_keep500_branch": "UNVERIFIED: all tables below1000"
+  },
+  "manual_collection": false,
+  "new_schedule": false
+}

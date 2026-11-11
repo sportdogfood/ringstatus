@@ -1,0 +1,340 @@
+TAP version 13
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-401"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-403"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-429"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-unavailable"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-undecoded"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-empty-or-invalid"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-empty-or-invalid"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-empty-or-invalid"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-empty-or-invalid"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"authorized-verification"}
+# {"message":"Using direct source fallback","path":"/classes/200031233","reason":"authorized-verification"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/people/1","reason":"authorized-verification"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/classes/200031233","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/classes/200031233","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/classes/200031233","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-502"}
+# {"message":"Using direct source fallback","path":"/schedule","reason":"runner-http-502"}
+# {"message":"Direct source fallback failed","path":"/schedule"}
+# {"message":"Direct source fallback failed","path":"/schedule"}
+# {"message":"Direct source fallback failed","path":"/schedule"}
+# Subtest: healthy local response is returned without invoking fallback
+ok 1 - healthy local response is returned without invoking fallback
+  ---
+  duration_ms: 50.1325
+  type: 'test'
+  ...
+# Subtest: HTTP errors, exception, undecoded, malformed and empty primary invoke fallback once
+ok 2 - HTTP errors, exception, undecoded, malformed and empty primary invoke fallback once
+  ---
+  duration_ms: 20.91
+  type: 'test'
+  ...
+# Subtest: secret-authorized verification bypasses local for both routes; invalid key does not
+ok 3 - secret-authorized verification bypasses local for both routes; invalid key does not
+  ---
+  duration_ms: 3.7732
+  type: 'test'
+  ...
+# Subtest: fallback failure remains an error and invalid routes do not enter fallback
+ok 4 - fallback failure remains an error and invalid routes do not enter fallback
+  ---
+  duration_ms: 4.1271
+  type: 'test'
+  ...
+# Subtest: actual dated schedule and class routes recover with header2 inside the same queue operation
+ok 5 - actual dated schedule and class routes recover with header2 inside the same queue operation
+  ---
+  duration_ms: 2.2588
+  type: 'test'
+  ...
+# Subtest: all profiles fail: renew once, repeat the five once, then return the failure
+ok 6 - all profiles fail: renew once, repeat the five once, then return the failure
+  ---
+  duration_ms: 1.1926
+  type: 'test'
+  ...
+# Subtest: each added profile can recover either route and stops before renewal
+ok 7 - each added profile can recover either route and stops before renewal
+  ---
+  duration_ms: 5.5538
+  type: 'test'
+  ...
+# Subtest: health probes retain their separate recovery owner; empty 200 never becomes collection success
+ok 8 - health probes retain their separate recovery owner; empty 200 never becomes collection success
+  ---
+  duration_ms: 7.4022
+  type: 'test'
+  ...
+# Subtest: fallback renews anonymously inside Cloudflare and reuses token without runner calls
+ok 9 - fallback renews anonymously inside Cloudflare and reuses token without runner calls
+  ---
+  duration_ms: 5.0725
+  type: 'test'
+  ...
+# Subtest: renewal failures and expired tokens cannot become decoded success
+ok 10 - renewal failures and expired tokens cannot become decoded success
+  ---
+  duration_ms: 6.005
+  type: 'test'
+  ...
+# Subtest: data-response token replaces the existing fallback cache even when that response fails
+ok 11 - data-response token replaces the existing fallback cache even when that response fails
+  ---
+  duration_ms: 2.9631
+  type: 'test'
+  ...
+# Subtest: public false and empty arrays remain valid without a decoded marker
+ok 12 - public false and empty arrays remain valid without a decoded marker
+  ---
+  duration_ms: 2.0839
+  type: 'test'
+  ...
+# Subtest: public fallback uses existing public fetch over TLS without token renewal or decoding
+ok 13 - public fallback uses existing public fetch over TLS without token renewal or decoding
+  ---
+  duration_ms: 0.8194
+  type: 'test'
+  ...
+# Subtest: three simultaneous agents run serially with one second after each completion
+ok 14 - three simultaneous agents run serially with one second after each completion
+  ---
+  duration_ms: 2.8073
+  type: 'test'
+  ...
+# Subtest: stored completion survives a new queue and early timer wake cannot shorten pause
+ok 15 - stored completion survives a new queue and early timer wake cannot shorten pause
+  ---
+  duration_ms: 0.521
+  type: 'test'
+  ...
+# {"message":"Shared source queue unavailable"}
+# Subtest: real timer enforces one second between two request bodies
+ok 16 - real timer enforces one second between two request bodies
+  ---
+  duration_ms: 1014.3931
+  type: 'test'
+  ...
+# Subtest: storage failure blocks further source work instead of silently removing pacing
+ok 17 - storage failure blocks further source work instead of silently removing pacing
+  ---
+  duration_ms: 1.4144
+  type: 'test'
+  ...
+# Subtest: all Worker instances use the same object name; absent queue fails closed
+ok 18 - all Worker instances use the same object name; absent queue fails closed
+  ---
+  duration_ms: 30.3089
+  type: 'test'
+  ...
+# {"message":"Token renewal log save failed","refresh_id":"failed"}
+# Subtest: uses the default show, accepts legitimate zero rings, links correct day and never touches clock records
+ok 19 - uses the default show, accepts legitimate zero rings, links correct day and never touches clock records
+  ---
+  duration_ms: 53.0991
+  type: 'test'
+  ...
+# Subtest: profile1 recovery stops immediately without token renewal
+ok 20 - profile1 recovery stops immediately without token renewal
+  ---
+  duration_ms: 1.9411
+  type: 'test'
+  ...
+# Subtest: health can recover with either cleaned profile without renewing
+ok 21 - health can recover with either cleaned profile without renewing
+  ---
+  duration_ms: 5.3292
+  type: 'test'
+  ...
+# Subtest: exhaustion renews once then repeats exactly five, warns once and preserves last success
+ok 22 - exhaustion renews once then repeats exactly five, warns once and preserves last success
+  ---
+  duration_ms: 34.6768
+  type: 'test'
+  ...
+# Subtest: repeated outage does not duplicate warnings; successful recovery warns once
+ok 23 - repeated outage does not duplicate warnings; successful recovery warns once
+  ---
+  duration_ms: 5.269
+  type: 'test'
+  ...
+# Subtest: missing or ambiguous defaults never invoke schedule or invent a fallback show ID
+ok 24 - missing or ambiguous defaults never invoke schedule or invent a fallback show ID
+  ---
+  duration_ms: 0.7824
+  type: 'test'
+  ...
+# Subtest: wrong show, malformed payload, missing decode proof are never healthy
+ok 25 - wrong show, malformed payload, missing decode proof are never healthy
+  ---
+  duration_ms: 8.659
+  type: 'test'
+  ...
+# Subtest: renewal log redacts unknown fields and logging failure is visible without throwing
+ok 26 - renewal log redacts unknown fields and logging failure is visible without throwing
+  ---
+  duration_ms: 3.7791
+  type: 'test'
+  ...
+# Subtest: dual health samples current schedule class and accepts zero trips
+ok 27 - dual health samples current schedule class and accepts zero trips
+  ---
+  duration_ms: 2.7078
+  type: 'test'
+  ...
+# Subtest: class failure makes health fail despite usable schedule and alerts once
+ok 28 - class failure makes health fail despite usable schedule and alerts once
+  ---
+  duration_ms: 6.122
+  type: 'test'
+  ...
+# Subtest: class recovery uses header profiles, stops first usable result and preserves spacing
+ok 29 - class recovery uses header profiles, stops first usable result and preserves spacing
+  ---
+  duration_ms: 4.8271
+  type: 'test'
+  ...
+# Subtest: wrong class or missing trips never passes and repeat outage does not warn twice
+ok 30 - wrong class or missing trips never passes and repeat outage does not warn twice
+  ---
+  duration_ms: 12.2795
+  type: 'test'
+  ...
+# Subtest: cleaned profiles send tested browser headers without ordinary protocol fields
+ok 31 - cleaned profiles send tested browser headers without ordinary protocol fields
+  ---
+  duration_ms: 61.1996
+  type: 'test'
+  ...
+# Subtest: schedule restores class IDs and preserves source evidence and schedule keys
+ok 32 - schedule restores class IDs and preserves source evidence and schedule keys
+  ---
+  duration_ms: 77.5138
+  type: 'test'
+  ...
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Empty source payload"}
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Empty source payload"}
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Empty source payload"}
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Empty source payload"}
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Empty source payload"}
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Empty source payload"}
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Empty source payload"}
+# Subtest: people restores IDs and removes protected blobs without returning credentials
+ok 33 - people restores IDs and removes protected blobs without returning credentials
+  ---
+  duration_ms: 13.1028
+  type: 'test'
+  ...
+# Subtest: empty show day remains empty and ring discovery is supported
+ok 34 - empty show day remains empty and ring discovery is supported
+  ---
+  duration_ms: 2.8967
+  type: 'test'
+  ...
+# Subtest: empty source objects fail without a decoded-success marker on every data route
+ok 35 - empty source objects fail without a decoded-success marker on every data route
+  ---
+  duration_ms: 6.3453
+  type: 'test'
+  ...
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Empty source payload"}
+# Subtest: a protected object that decodes to an empty object also fails
+ok 36 - a protected object that decodes to an empty object also fails
+  ---
+  duration_ms: 4.4665
+  type: 'test'
+  ...
+# Subtest: identified classes and directory pages may legitimately contain no rows
+ok 37 - identified classes and directory pages may legitimately contain no rows
+  ---
+  duration_ms: 2.0037
+  type: 'test'
+  ...
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"OperationError: The operation failed for an operation-specific reason Cause: Error: Cipher job failed"}
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Invalid blob length"}
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"SyntaxError: Unexpected token 'o', \\"not-json\\" is not valid JSON"}
+# {"message":"Source fetch or protected response decoding failed","stage":"decode","upstreamStatus":200,"error":"Error: Invalid returned anonymous token"}
+# {"message":"Source request failed","upstreamStatus":401}
+# Subtest: bad key, damaged blobs, invalid JSON, refreshed token and missing auth fail closed
+ok 38 - bad key, damaged blobs, invalid JSON, refreshed token and missing auth fail closed
+  ---
+  duration_ms: 7.2034
+  type: 'test'
+  ...
+# Subtest: unapproved routes, methods and query parameters cannot cause upstream actions
+ok 39 - unapproved routes, methods and query parameters cannot cause upstream actions
+  ---
+  duration_ms: 1.3825
+  type: 'test'
+  ...
+# Subtest: upstream failures stay failures, without retries or leaking the body
+ok 40 - upstream failures stay failures, without retries or leaking the body
+  ---
+  duration_ms: 2.0964
+  type: 'test'
+  ...
+# {"message":"Source redirect blocked","upstreamStatus":302}
+# Subtest: returned anonymous token is saved and the identical class GET is replayed and decoded
+ok 41 - returned anonymous token is saved and the identical class GET is replayed and decoded
+  ---
+  duration_ms: 6.3644
+  type: 'test'
+  ...
+# Subtest: invalid, expired or account returned tokens cannot replay or become success
+ok 42 - invalid, expired or account returned tokens cannot replay or become success
+  ---
+  duration_ms: 4.9514
+  type: 'test'
+  ...
+# Subtest: a second returned token is saved without a third request or a decoded success
+ok 43 - a second returned token is saved without a third request or a decoded success
+  ---
+  duration_ms: 1.0096
+  type: 'test'
+  ...
+# Subtest: replay redirects and HTTP failures remain failures after adopting the token
+ok 44 - replay redirects and HTTP failures remain failures after adopting the token
+  ---
+  duration_ms: 1.2947
+  type: 'test'
+  ...
+# Subtest: uses Workers-supported manual redirects and blocks them without forwarding credentials
+ok 45 - uses Workers-supported manual redirects and blocks them without forwarding credentials
+  ---
+  duration_ms: 0.5511
+  type: 'test'
+  ...
+# Subtest: entries decodes a single explicitly scoped directory page
+ok 46 - entries decodes a single explicitly scoped directory page
+  ---
+  duration_ms: 5.3625
+  type: 'test'
+  ...
+# Subtest: entries rejects unbounded, malformed or different-filter requests without upstream calls
+ok 47 - entries rejects unbounded, malformed or different-filter requests without upstream calls
+  ---
+  duration_ms: 2.0626
+  type: 'test'
+  ...
+# Subtest: runner and fallback omit copied authority/method/scheme while preserving other headers
+ok 48 - runner and fallback omit copied authority/method/scheme while preserving other headers
+  ---
+  duration_ms: 4.1715
+  type: 'test'
+  ...
+1..48
+# tests 48
+# suites 0
+# pass 48
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1226.4722

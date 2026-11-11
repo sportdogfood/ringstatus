@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "C:/Users/gombc/AppData/Local/npm-cache/_npx/a9ac0152b79c2b1d/node_modules/wrangler/bin/wrangler.js",
+    "deploy",
+    "--config",
+    "workers/wef-schedules-decoded/wrangler.jsonc"
+  ],
+  "started": "2026-11-07T23:34:04.365685+00:00",
+  "ended": "2026-11-07T23:34:10.300446+00:00",
+  "exitCode": 0,
+  "stdout": null,
+  "stderr": ""
+}

@@ -1,0 +1,16 @@
+{
+  "reviewer": "wef-live author",
+  "commands": [
+    {
+      "id": "remove-alerts-author",
+      "command": "node --test wef-live\\evidence\\remove-records-alerts-20261107\\entry.test.cjs",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-08T02:12:44.400233+00:00",
+      "ended_at": "2026-11-08T02:12:44.556328+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: proven original entry restored byte-for-byte;Records alert module absent\nok 1 - proven original entry restored byte-for-byte;Records alert module absent\n  ---\n  duration_ms: 2.5874\n  type: 'test'\n  ...\n# Subtest: normal reports unchanged,noalertrequire/noCLI,and preserved module export\nok 2 - normal reports unchanged,noalertrequire/noCLI,and preserved module export\n  ---\n  duration_ms: 4.9354\n  type: 'test'\n  ...\n# Subtest: failed report still returns1 without notification transport\nok 3 - failed report still returns1 without notification transport\n  ---\n  duration_ms: 0.9858\n  type: 'test'\n  ...\n# Subtest: uncaught scheduled failure still returns1 and logs original error without alerts\nok 4 - uncaught scheduled failure still returns1 and logs original error without alerts\n  ---\n  duration_ms: 1.0578\n  type: 'test'\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 93.2227\n",
+      "stderr": ""
+    }
+  ]
+}

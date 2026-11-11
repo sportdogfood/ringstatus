@@ -1,0 +1,11 @@
+{
+  "verified_at": "2026-11-08T15:07:04.522311+00:00",
+  "source_sha256": "161feaf0f4dd2364c412537a7a001d6c2225df028e1bf990c4b31fe0eb77b9dd",
+  "prompt_sha256": "e3fc31a9331bc5d0120f7e488e4eed66cc4ec12d940f13b08a8bbb8301a82f04",
+  "same_automation_id": "wef-records-rebalance-and-context-checkpoint",
+  "same_cadence": "FREQ=DAILY;BYHOUR=1,4,7,10,13,16,19,22;BYMINUTE=0;BYSECOND=0",
+  "purpose_readbacks": 5,
+  "keep500_genuine_alert_verified": false,
+  "next_configured_alert": "2026-11-08 13:00 America/New_York",
+  "no_manual_or_replay": true
+}

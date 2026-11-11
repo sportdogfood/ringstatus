@@ -1,0 +1,104 @@
+[
+  {
+    "table": "live-trips",
+    "target": "w-horses",
+    "result": {
+      "id": "fldrE0Jw7dnAp6k5k",
+      "name": "w-horses",
+      "type": "multipleRecordLinks",
+      "description": "Filled only when empty by the normal Live linker using a unique matching source ID. Existing links and helper data are preserved.",
+      "options": {
+        "linkedTableId": "tblfPyhUwNtEMGcc8",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "inverseLinkFieldId": "fldAuTZZvWqvxedDc"
+      },
+      "actionId": "actttWcMa4clQeXM4"
+    }
+  },
+  {
+    "table": "live-trips",
+    "target": "w-riders",
+    "result": {
+      "id": "fld6yEcuU9sQ9VWpb",
+      "name": "w-riders",
+      "type": "multipleRecordLinks",
+      "description": "Filled only when empty by the normal Live linker using a unique matching source ID. Existing links and helper data are preserved.",
+      "options": {
+        "linkedTableId": "tblI9crOs7oJFNyci",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "inverseLinkFieldId": "fld5JV6SDJIyKivXH"
+      },
+      "actionId": "actbMB6AIxkxXpVGT"
+    }
+  },
+  {
+    "table": "live-trips",
+    "target": "w-trainers",
+    "result": {
+      "id": "fldBIEQJRvguluGsy",
+      "name": "w-trainers",
+      "type": "multipleRecordLinks",
+      "description": "Filled only when empty by the normal Live linker using a unique matching source ID. Existing links and helper data are preserved.",
+      "options": {
+        "linkedTableId": "tblxy2GeQzBM8wL2e",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "inverseLinkFieldId": "fldnylyYekrFHsbHl"
+      },
+      "actionId": "actd3xt31dvU8k16f"
+    }
+  },
+  {
+    "table": "live-entries",
+    "target": "w-horses",
+    "result": {
+      "id": "fldyAytQ6gWaKNrBV",
+      "name": "w-horses",
+      "type": "multipleRecordLinks",
+      "description": "Filled only when empty by the normal Live linker using a unique matching source ID. Existing links and helper data are preserved.",
+      "options": {
+        "linkedTableId": "tblfPyhUwNtEMGcc8",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "inverseLinkFieldId": "fldm3HS638oBnvDCO"
+      },
+      "actionId": "actkTA27qNG0x2WJ9"
+    }
+  },
+  {
+    "table": "live-entries",
+    "target": "w-riders",
+    "result": {
+      "id": "fld0pdG0Bklrekt2E",
+      "name": "w-riders",
+      "type": "multipleRecordLinks",
+      "description": "Filled only when empty by the normal Live linker using a unique matching source ID. Existing links and helper data are preserved.",
+      "options": {
+        "linkedTableId": "tblI9crOs7oJFNyci",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "inverseLinkFieldId": "fldDtZS46nGcS1HV2"
+      },
+      "actionId": "actoFhGVnKy8kX90V"
+    }
+  },
+  {
+    "table": "live-entries",
+    "target": "w-trainers",
+    "result": {
+      "id": "fldGDPKTTzHbBMas2",
+      "name": "w-trainers",
+      "type": "multipleRecordLinks",
+      "description": "Filled only when empty by the normal Live linker using a unique matching source ID. Existing links and helper data are preserved.",
+      "options": {
+        "linkedTableId": "tblxy2GeQzBM8wL2e",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "inverseLinkFieldId": "fldUOd6x5FsqHMZ8l"
+      },
+      "actionId": "actdbGME90aur6Rfx"
+    }
+  }
+]

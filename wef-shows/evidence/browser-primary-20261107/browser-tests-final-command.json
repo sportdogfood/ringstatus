@@ -1,0 +1,11 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107\\wef-shows\\tests\\browser-discovery.test.js"
+  ],
+  "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-shows\\staged\\browser-primary-20261107",
+  "started": "2026-11-07T23:42:47.033312+00:00",
+  "completed": "2026-11-07T23:42:47.421674+00:00",
+  "exit_code": 0
+}

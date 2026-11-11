@@ -1,0 +1,118 @@
+{
+  "reviewer": "01a1a753-dce7-7951-a147-1b096e1538ba",
+  "reviewed_at": "2026-11-07T23:33:49.141666+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Review exact approved schedule-health, renewal metadata logs and warning states; preserve show-time and working source path.",
+  "target": "Existing decoder Worker and existing runner relay; no new infrastructure.",
+  "integration_coverage": "44 focused checks executed; real default show, schedule profiles in local and existing Cloudflare preview, real token log save/readback, corrected show-day linkage. Production/live acceptance remains separate.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\0-shared-worker.mjs.before",
+      "sha256": "7d7a4db6dd307ace033e9ca40f0ea2f7998be563f3fd1a4f785654d8e2f04d72"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\1-fallback.mjs.before",
+      "sha256": "85b45c66c1b77191bdee423877dbb1095ec447979f6259268dc01d9fb3d79032"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\2-worker.js.before",
+      "sha256": "e6b2c505a163e9956c7ee23a552ca5b204e313f0bd71506f2cc4c471a4e237e4"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\3-runner-relay.mjs.before",
+      "sha256": "84609e512f56d601f138700a9de059c27d9275ad2dd21baef532b25233d899c0"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\4-runner-relay.mjs.before",
+      "sha256": "84609e512f56d601f138700a9de059c27d9275ad2dd21baef532b25233d899c0"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\5-wrangler.jsonc.before",
+      "sha256": "bc5699c35602798b398134dd23683614699c99d3f5696b317b41265c16c1e972"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\6-show-time-health.mjs.before",
+      "sha256": "0596a90d0c6b4b57efdf664d9741b41a76e5880133461e36410e3b1e7d58516e"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+      "sha256": "6daa86ae2428d8681b1bdddbfcbfedf6744caaa95995d7f90017b343d71a05a9"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\fallback.mjs",
+      "sha256": "c5433cb80a29375188095658b034c89f68ef714703ebf3cc21b17013256e7bc9"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\worker.js",
+      "sha256": "8bc87128b4e0210302d4795c2186673b954fdd63a74cc60f5a0848fa17d390f3"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\runner-relay.mjs",
+      "sha256": "91412b7699d71cf4cb725c7205d34e267ca9443052c84705fa547d5a943dce57"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\health-records.mjs",
+      "sha256": "0a3ea3521cdd076f794b4757c3a5f084857b6cfc18d54bdc13890a08a3bff92e"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\schedule-health.mjs",
+      "sha256": "b30eb9bd89a600c82799452b09276620d6b122fb147a8a2e6e06846bf7738569"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\wrangler.jsonc",
+      "sha256": "5ab86d303fa878081bda5082e2696bb1e0043325f5fd472b82102bf0f928c12d"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\schedule-health.test.mjs",
+      "sha256": "bb1c69ecf591cad40721b278da58a6d06349364af14d52189bfba10aa0794b54"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\fallback.test.mjs",
+      "sha256": "38c0f3a7add83a190b2d13e4857be0d12a0b0203348c56b838ecae92e91016f9"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\review-report.md",
+    "sha256": "14ad81f2d0cf442ee21da602a605fe875a4674bf5e9d7d99f76f66510c32f821"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\execution-log.json",
+      "sha256": "c12b8e9d35f44050859491542081aa649fda4c8e3dc7f2f139dbc7f387dd3bf3"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "focused suite",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "focused-suite"
+      ]
+    },
+    {
+      "name": "actual source and Airtable preview evidence",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Read back current-chat diagnostic output files separately from focused offline execution; no delegated reviewer.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\local-profile-preview.json",
+          "sha256": "7da4da6ba523f4250b8260f3dc5386ba4daeb742bceb481b8e992666557a6a5c"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\cloudflare-profile-preview.json",
+          "sha256": "eeda4ed9c0eb71059c88abd5c34e2b81dbd0ecc6c62466c89910207181444061"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\schedule-health-release-20261107\\preview-after-lookup.json",
+          "sha256": "2baf040e22162bb5203547c60ebbb5f9650642d7a89f447aaffba3b649b26311"
+        }
+      ]
+    }
+  ]
+}

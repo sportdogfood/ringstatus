@@ -1,0 +1,13 @@
+{
+  "deployed_at": "2026-11-08T19:23:50.812217+00:00",
+  "files": {
+    "schema.json": "09d22e7bc92a44d55cea89c2d23ef2ee7871939759099d2f393bc8491b0258cc",
+    "fast_collector.py": "b3881265235b79bdd8bda0f0c160dbffa8a5f0939287c051c1485b0fb9d9a04c"
+  },
+  "order": "existing-field metadata first, then collector; no incompatible new-code/old-metadata launch window",
+  "review": "review/review-receipt.json",
+  "new_airtable_fields": false,
+  "manual_collection": false,
+  "cadence_changes": false,
+  "scheduled_verified": false
+}

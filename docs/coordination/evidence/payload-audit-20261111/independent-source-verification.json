@@ -1,0 +1,80 @@
+[
+  {
+    "route": "https://sglapi.wellingtoninternational.com/associated-horses/get-horses",
+    "label": "associated-horses-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/classsignup/{id}",
+    "label": "class-signup-detail-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/homepage/getLiveClassStatus",
+    "label": "live-status-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/classsignup",
+    "label": "class-signups-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/ring",
+    "label": "ring-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ListAjax",
+    "label": "legacy-groups-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/users/getUser",
+    "label": "api-user-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/classes",
+    "label": "classes-list-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sglapp.showgroundslive.com/version.json",
+    "label": "version-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/results/{id}",
+    "label": "division-results-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sglapi.wellingtoninternational.com/results",
+    "label": "results-list-jumper-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sgl.wellingtoninternational.com/iphonev2/index.php/esp/liveclassv2/ClassStatus",
+    "label": "legacy-class-status-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  },
+  {
+    "route": "https://sgl.wellingtoninternational.com/iphone.php/esp/webservice/LiveScoreWidget",
+    "label": "legacy-widget-no-auth",
+    "sourceHashMatches": true,
+    "independentLeafComparison": "PASS"
+  }
+]

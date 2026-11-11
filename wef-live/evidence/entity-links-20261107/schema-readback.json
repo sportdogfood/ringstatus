@@ -1,0 +1,74 @@
+{
+  "tables": [
+    {
+      "tableId": "tblhUd5DucnpkEall",
+      "fields": [
+        {
+          "id": "fldrE0Jw7dnAp6k5k",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblfPyhUwNtEMGcc8",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldAuTZZvWqvxedDc"
+          }
+        },
+        {
+          "id": "fld6yEcuU9sQ9VWpb",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblI9crOs7oJFNyci",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fld5JV6SDJIyKivXH"
+          }
+        },
+        {
+          "id": "fldBIEQJRvguluGsy",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblxy2GeQzBM8wL2e",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldnylyYekrFHsbHl"
+          }
+        }
+      ]
+    },
+    {
+      "tableId": "tblf7550e7UGT8ZSF",
+      "fields": [
+        {
+          "id": "fldyAytQ6gWaKNrBV",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblfPyhUwNtEMGcc8",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldm3HS638oBnvDCO"
+          }
+        },
+        {
+          "id": "fld0pdG0Bklrekt2E",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblI9crOs7oJFNyci",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldDtZS46nGcS1HV2"
+          }
+        },
+        {
+          "id": "fldGDPKTTzHbBMas2",
+          "type": "multipleRecordLinks",
+          "config": {
+            "linkedTableId": "tblxy2GeQzBM8wL2e",
+            "isReversed": false,
+            "prefersSingleRecordLink": false,
+            "inverseLinkFieldId": "fldUOd6x5FsqHMZ8l"
+          }
+        }
+      ]
+    }
+  ]
+}
