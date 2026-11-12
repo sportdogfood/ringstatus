@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "-B",
+    "scripts/verify_review.py",
+    "--receipt",
+    "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\evidence\\cleanup-read-recovery-20261112\\review-receipt.json"
+  ],
+  "started": "2026-11-12T15:41:09.445501+00:00",
+  "completed": "2026-11-12T15:41:09.599481+00:00",
+  "exit_code": 0,
+  "stdout": "{\"status\": \"PASS\", \"errors\": [], \"mechanical_only\": true, \"review_status\": \"COMPLETE\", \"candidate_status\": \"PASS\", \"reviewer\": \"wef-live owner chat 01a16902-240a-7280-8661-90b0d8d7325a (author review)\", \"command_count\": 1}\n",
+  "stderr": ""
+}

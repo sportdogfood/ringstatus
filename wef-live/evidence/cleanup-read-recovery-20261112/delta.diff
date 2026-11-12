@@ -1,0 +1,37 @@
+diff --git "a/wef-live\\evidence\\cleanup-read-recovery-20261112\\baseline\\wef-live/cleanup.js" "b/wef-live\\evidence\\cleanup-read-recovery-20261112\\candidate\\wef-live/cleanup.js"
+index e1bb6016..c02b9c1e 100644
+--- "a/wef-live\\evidence\\cleanup-read-recovery-20261112\\baseline\\wef-live/cleanup.js"
++++ "b/wef-live\\evidence\\cleanup-read-recovery-20261112\\candidate\\wef-live/cleanup.js"
+@@ -35,7 +35,17 @@ async function canonical(api){
+  if(rows.length!==1||!Number.isSafeInteger(Number(rows[0].fields.show_id))||Number(rows[0].fields.show_id)<=0)throw Error('Cleanup requires one canonical default show');
+  return Number(rows[0].fields.show_id);
+ }
+-async function cleanup({api=require('./airtable').airtable(),runtime=settings.RUNTIME,clock=()=>new Date().toISOString(),
++function cleanupApi(request=globalThis.fetch,pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))){
++ return require('./airtable').airtable({request:async(url,options)=>{
++  try{return await request(url,options);}
++  catch(error){
++   if(options.method!=='GET')throw error;
++   await pause(500);
++   return request(url,{...options,signal:AbortSignal.timeout(30000)});
++  }
++ }});
++}
++async function cleanup({api=cleanupApi(),runtime=settings.RUNTIME,clock=()=>new Date().toISOString(),
+  protectedRuns=[],checkShow=true}={}){
+  fs.mkdirSync(runtime,{recursive:true});
+  const stateFile=path.join(runtime,'cleanup-state.json'),stop=path.join(runtime,'cleanup-stop.json');
+@@ -125,8 +135,11 @@ async function cleanup({api=require('./airtable').airtable(),runtime=settings.RU
+   run.result='Error';run.error=e.message;run.completed=clock();
+   if(activeAction){activeAction.result='Error';activeAction.error=e.message;activeAction.completed=run.completed;try{await publish(activeAction);}catch(log){run.logging_error=log.message;}}
+   try{await require('./error-log').report({api,runtime,lane:'cleanup',rows:[{'error-key':run.run_id+'|cleanup','run-id':run.run_id,'occurred-at':run.completed,'show-id':run.show||null,message:'Cleanup: '+e.message}]});}catch(log){run.error_log_error=log.message;}
+-  write(stop,{run_id:run.run_id,at:run.completed,error:e.message});receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());
++  // A failed read before any action leaves nothing to reconcile or resume.
++  if(run.actions.length)write(stop,{run_id:run.run_id,at:run.completed,error:e.message});
++  else if(fs.existsSync(stop))fs.unlinkSync(stop);
++  receipt();write(path.join(runtime,'cleanup-last-run.json'),savedRun());
+  }
+  return run;
+ }
+-module.exports={cleanup,TABLES,LOGS,completed,eligible,quickRows,canonical,protectedRun,dailyClearDay};
++module.exports={cleanup,TABLES,LOGS,completed,eligible,quickRows,canonical,protectedRun,dailyClearDay,cleanupApi};

@@ -1288,6 +1288,16 @@
           "options": {
             "precision": 0
           }
+        },
+        {
+          "name": "class-detail-failed",
+          "id": "fld4ygW7rt6WpgxyA",
+          "type": "checkbox"
+        },
+        {
+          "name": "class-detail-error",
+          "id": "fldkeu1Vx5gSB6SXA",
+          "type": "multilineText"
         }
       ]
     },

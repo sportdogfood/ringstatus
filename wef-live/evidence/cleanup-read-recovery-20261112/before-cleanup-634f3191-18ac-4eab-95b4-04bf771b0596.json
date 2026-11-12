@@ -1,0 +1,12 @@
+{
+  "run_id": "634f3191-18ac-4eab-95b4-04bf771b0596",
+  "started": "2026-11-11T00:30:04.127Z",
+  "actions": [],
+  "result": "Error",
+  "day": "2026-11-10",
+  "daily_clear_day": "2026-11-10",
+  "daily_due": false,
+  "quick_due": true,
+  "error": "fetch failed",
+  "completed": "2026-11-11T00:30:15.145Z"
+}

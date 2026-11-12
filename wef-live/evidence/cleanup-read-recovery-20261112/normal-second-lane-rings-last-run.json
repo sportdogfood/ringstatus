@@ -1,0 +1,193 @@
+{
+  "lane": "rings",
+  "run_id": "407889c3-7dd6-43f6-92b3-ff79b3d36f74",
+  "started": "2026-11-12T15:45:04.433Z",
+  "ok": true,
+  "issues": [],
+  "stage_errors": [],
+  "logging_errors": [],
+  "changes": [
+    {
+      "table": "live-rings",
+      "key": "200000078|2026-11-12|49",
+      "created": false,
+      "fields": [
+        {
+          "field": "source-json.livenow",
+          "before": [
+            {
+              "class_group_id": "200028733",
+              "group_name": "1.25m Open Jumper II2d",
+              "day": "2026-11-12",
+              "group_sequence": "2",
+              "estimated_start_time": "10:30:00",
+              "jumper_table": "USEF Table II.2.d",
+              "hunter_type": "",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "5",
+              "classes": [
+                "200031628"
+              ],
+              "classNumbers": [
+                "710"
+              ],
+              "classNames": [
+                "1.25m Open Jumper II2d"
+              ],
+              "class_numbers": "710",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 7,
+              "total": 17,
+              "jo_gone": 6,
+              "jo_total": 6,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031628",
+              "recent_updated_classes": [
+                "200031628"
+              ],
+              "ring_id": "49",
+              "ring": "Denemethy",
+              "link": "/liveclass/detail?cid=200031628&class_group_id=200028733",
+              "trips": "7/17"
+            }
+          ],
+          "after": [
+            {
+              "class_group_id": "200028733",
+              "group_name": "1.25m Open Jumper II2d",
+              "day": "2026-11-12",
+              "group_sequence": "2",
+              "estimated_start_time": "10:30:00",
+              "jumper_table": "USEF Table II.2.d",
+              "hunter_type": "",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "5",
+              "classes": [
+                "200031628"
+              ],
+              "classNumbers": [
+                "710"
+              ],
+              "classNames": [
+                "1.25m Open Jumper II2d"
+              ],
+              "class_numbers": "710",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 8,
+              "total": 17,
+              "jo_gone": 7,
+              "jo_total": 8,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031628",
+              "recent_updated_classes": [
+                "200031628"
+              ],
+              "ring_id": "49",
+              "ring": "Denemethy",
+              "link": "/liveclass/detail?cid=200031628&class_group_id=200028733",
+              "trips": "8/17"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "table": "live-rings",
+      "key": "200000078|2026-11-12|51",
+      "last_success": "2026-11-12T15:45:05.283Z",
+      "last_changed": "2026-11-12T15:36:06.125Z"
+    },
+    {
+      "table": "live-rings",
+      "key": "200000078|2026-11-12|49",
+      "last_success": "2026-11-12T15:45:05.283Z",
+      "last_changed": "2026-11-12T15:45:05.283Z"
+    }
+  ],
+  "archives": [
+    {
+      "at": "2026-11-12T15:45:05.288Z",
+      "kind": "source-widget",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\60d58af282cd4c185c9aa25d78200bf053f3c82de8a154ec9bcdcc1c8eb59e18.json.gz",
+      "records": 1,
+      "sha256": "60d58af282cd4c185c9aa25d78200bf053f3c82de8a154ec9bcdcc1c8eb59e18",
+      "shows": [
+        200000078
+      ],
+      "dates": [
+        "2026-11-12"
+      ]
+    }
+  ],
+  "timings": {
+    "collection_ms": 118.12049999999999,
+    "save_ms": 870.4259999999999,
+    "collection_started": "2026-11-12T15:45:05.165Z",
+    "collection_completed": "2026-11-12T15:45:05.283Z",
+    "requests": [
+      {
+        "label": "rings",
+        "started": "2026-11-12T15:45:05.165Z",
+        "completed": "2026-11-12T15:45:05.283Z"
+      }
+    ],
+    "save_started": "2026-11-12T15:45:06.185Z",
+    "saves": [
+      {
+        "table": "live-rings",
+        "started": "2026-11-12T15:45:06.185Z",
+        "completed": "2026-11-12T15:45:07.056Z",
+        "rows": 2,
+        "changed": 1,
+        "source_to_save": [
+          {
+            "key": "200000078|2026-11-12|51",
+            "source_response_at": "2026-11-12T15:45:05.283Z",
+            "elapsed_ms": 1773
+          },
+          {
+            "key": "200000078|2026-11-12|49",
+            "source_response_at": "2026-11-12T15:45:05.283Z",
+            "elapsed_ms": 1773
+          }
+        ]
+      }
+    ],
+    "save_completed": "2026-11-12T15:45:07.056Z",
+    "total_ms": 2623
+  },
+  "counts": {
+    "live-rings": 2
+  },
+  "scope": {
+    "show": 200000078,
+    "customer": 15,
+    "date": "2026-11-12",
+    "authority": "recqIXAwokTzdiyWp",
+    "checked_at": "2026-11-09T06:09:40.397Z",
+    "active": true,
+    "eastern_time": "2026-11-12 10:42:13"
+  },
+  "day_priority": 0,
+  "live_status": true,
+  "completed": "2026-11-12T15:45:07.056Z"
+}

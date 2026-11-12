@@ -1,0 +1,283 @@
+{
+  "lane": "groups",
+  "run_id": "550ffb9c-8d75-494e-889a-97a258ca8109",
+  "started": "2026-11-12T15:45:04.430Z",
+  "ok": true,
+  "issues": [],
+  "stage_errors": [],
+  "logging_errors": [],
+  "changes": [
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028733",
+      "created": false,
+      "fields": [
+        {
+          "field": "source-json.gone",
+          "before": "7",
+          "after": "8"
+        },
+        {
+          "field": "source-json.jo_gone",
+          "before": "6",
+          "after": "7"
+        },
+        {
+          "field": "source-json.jo_total",
+          "before": "6",
+          "after": "8"
+        },
+        {
+          "field": "source-json.trips",
+          "before": "7/17",
+          "after": "8/17"
+        },
+        {
+          "field": "gone",
+          "before": 7,
+          "after": 8
+        },
+        {
+          "field": "jo-total",
+          "before": 6,
+          "after": 8
+        },
+        {
+          "field": "jo-gone",
+          "before": 6,
+          "after": 7
+        }
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028729",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T15:24:06.346Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028730",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T15:36:06.047Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028731",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T15:33:07.427Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028732",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T15:09:05.730Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028760",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T15:00:05.428Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028735",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T12:03:05.472Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028733",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T15:45:05.216Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028729|200031715",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028730|200031714",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028731|200031679",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028732|200031625",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028733|200031628",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028760|200031630",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028735|200031633",
+      "last_success": "2026-11-12T15:45:05.216Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    }
+  ],
+  "archives": [
+    {
+      "at": "2026-11-12T15:45:05.231Z",
+      "kind": "source-groups",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\1468da0fb32a34c9b35414f9ba52469ed6340de71701874492e9434c8e7a7290.json.gz",
+      "records": 1,
+      "sha256": "1468da0fb32a34c9b35414f9ba52469ed6340de71701874492e9434c8e7a7290",
+      "shows": [
+        200000078
+      ],
+      "dates": [
+        "2026-11-12"
+      ]
+    }
+  ],
+  "timings": {
+    "collection_ms": 243.50490000000013,
+    "save_ms": 964.5506,
+    "collection_started": "2026-11-12T15:45:04.973Z",
+    "collection_completed": "2026-11-12T15:45:05.216Z",
+    "requests": [
+      {
+        "label": "groups",
+        "started": "2026-11-12T15:45:04.973Z",
+        "completed": "2026-11-12T15:45:05.216Z"
+      }
+    ],
+    "save_started": "2026-11-12T15:45:06.160Z",
+    "saves": [
+      {
+        "table": "live-groups",
+        "started": "2026-11-12T15:45:06.160Z",
+        "completed": "2026-11-12T15:45:07.124Z",
+        "rows": 7,
+        "changed": 1,
+        "source_to_save": [
+          {
+            "key": "200000078|2026-11-12|200028729",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 1908
+          },
+          {
+            "key": "200000078|2026-11-12|200028730",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 1908
+          },
+          {
+            "key": "200000078|2026-11-12|200028731",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 1908
+          },
+          {
+            "key": "200000078|2026-11-12|200028732",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 1908
+          },
+          {
+            "key": "200000078|2026-11-12|200028760",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 1908
+          },
+          {
+            "key": "200000078|2026-11-12|200028735",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 1908
+          },
+          {
+            "key": "200000078|2026-11-12|200028733",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 1908
+          }
+        ]
+      },
+      {
+        "table": "live-class-appearances",
+        "started": "2026-11-12T15:45:08.025Z",
+        "completed": "2026-11-12T15:45:08.025Z",
+        "rows": 7,
+        "changed": 0,
+        "source_to_save": [
+          {
+            "key": "200000078|2026-11-12|200028729|200031715",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 2809
+          },
+          {
+            "key": "200000078|2026-11-12|200028730|200031714",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 2809
+          },
+          {
+            "key": "200000078|2026-11-12|200028731|200031679",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 2809
+          },
+          {
+            "key": "200000078|2026-11-12|200028732|200031625",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 2809
+          },
+          {
+            "key": "200000078|2026-11-12|200028733|200031628",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 2809
+          },
+          {
+            "key": "200000078|2026-11-12|200028760|200031630",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 2809
+          },
+          {
+            "key": "200000078|2026-11-12|200028735|200031633",
+            "source_response_at": "2026-11-12T15:45:05.216Z",
+            "elapsed_ms": 2809
+          }
+        ]
+      }
+    ],
+    "save_completed": "2026-11-12T15:45:08.025Z",
+    "total_ms": 3595
+  },
+  "counts": {
+    "live-groups": 7,
+    "live-class-appearances": 7
+  },
+  "scope": {
+    "show": 200000078,
+    "customer": 15,
+    "date": "2026-11-12",
+    "authority": "recqIXAwokTzdiyWp",
+    "checked_at": "2026-11-09T06:09:40.397Z",
+    "active": true,
+    "eastern_time": "2026-11-12 10:42:13"
+  },
+  "day_priority": 0,
+  "live_status": true,
+  "membership": {
+    "complete": true,
+    "groups": 7,
+    "class_appearances": 7,
+    "unique_classes": 7
+  },
+  "completed": "2026-11-12T15:45:08.025Z"
+}

@@ -1,5 +1,19 @@
 # wef-data — November 12, 2026
 
+## Fast workflow release — November 12, 10:24 a.m. Eastern
+
+The owner-approved workflow in [fast-test.md](fast-test.md) is deployed through the existing Windows collector and linking tasks. Code Review and the mocked first/repeat/source/link/identity checks passed before deployment. Natural scheduled acceptance is still being verified; the older running pass was left to finish.
+
+- `fast-entry.js` / `fast-day.py` use the same `fast_workflow.py` for Days 0–4, sequentially. Schedule requests stay on the existing decoder. Classes use iphonev2 `getLiveClassData`; protected class detail remains available but is not requested by this workflow.
+- Source-lane discovery occurs in preparation. Ordinary class calls use one selected profile, with no retries or trouble pass. Existing class exclusions/order are reused. `class-detail-failed` / `class-detail-error` on schedules retain actual failures; recurring passes exclude marked classes.
+- Schedule rows compare saved decoded source values and position; unchanged rows are not rewritten. A saving worker consumes captured responses while class acquisition continues. Each day completes its saving/logging before the next sequential day starts.
+- Preserve existing native trip keys when matched by trip ID. A new source trip without an entry ID uses the existing key positions with its entry slot blank and its supplied trip ID; no entry/person ID is invented. Full responses stay captured, and unresolved identity notes remain in the saved report. Existing results are retained; future-day results are not overwritten with blank iphone values.
+- Basic links save with records. The existing linking task now runs `fast/linker.js`, filling required empty native links from saved data, preserving populated/ambiguous links and checking each link save. It fetches no live feeds.
+- Day 0 stops class requests only for exact customer/show/date/class coverage confirmed by the existing successful, current scheduled Live save receipt. An SGL live flag alone is insufficient.
+- Triggers, principals, settings, credentials, source URLs and the decoder's pause are unchanged. No task was started manually. The old trouble action was removed; separate day/save/rerun tasks remain disabled.
+
+Review/deployment evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-fast-workflow-20261112/`. Runtime receipts: `runtime/fast/dayN-last-run.json` and `runtime/fast/fast-linker-last-run.json`. Earlier sections below describe historical deployments and do not override this release.
+
 ## Current shared-day collector
 
 **Sequential correction, November12:** the added shared Airtable lock has been removed from the active Python and logging code. The existing `wef-data-collector` Windows task now runs the same `day1.py` implementation for Days0,1,2,3,4 in that order, followed by its trouble pass. Windows runs these task actions one after another. The separate day/rerun/save tasks are disabled. The existing three-minute task wake remains, but a running full sequence is allowed to finish; this is not a promise of a Day0 refresh every three minutes.

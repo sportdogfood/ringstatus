@@ -1,0 +1,50 @@
+{
+  "run_id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee",
+  "started": "2026-11-12T15:42:35.162Z",
+  "actions": [
+    {
+      "id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee|daily-clear|heartbeat",
+      "table": "heartbeat",
+      "trigger": "daily-clear",
+      "before": 365,
+      "old_show": null,
+      "deleted": 359,
+      "started": "2026-11-12T15:42:38.233Z",
+      "result": "Success",
+      "completed": "2026-11-12T15:43:42.340Z",
+      "target_count": 359
+    },
+    {
+      "id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee|daily-clear|run-logs",
+      "table": "run-logs",
+      "trigger": "daily-clear",
+      "before": 50,
+      "old_show": null,
+      "deleted": 23,
+      "started": "2026-11-12T15:42:41.317Z",
+      "result": "Success",
+      "completed": "2026-11-12T15:43:49.352Z",
+      "target_count": 23
+    },
+    {
+      "id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee|daily-clear|errs-log",
+      "table": "errs-log",
+      "trigger": "daily-clear",
+      "before": 31,
+      "old_show": null,
+      "deleted": 31,
+      "started": "2026-11-12T15:42:44.378Z",
+      "result": "Success",
+      "completed": "2026-11-12T15:43:57.972Z",
+      "target_count": 31
+    }
+  ],
+  "result": "Success",
+  "day": "2026-11-12",
+  "daily_clear_day": "2026-11-11",
+  "daily_due": true,
+  "quick_due": true,
+  "show": 200000078,
+  "new_show": false,
+  "completed": "2026-11-12T15:44:00.200Z"
+}

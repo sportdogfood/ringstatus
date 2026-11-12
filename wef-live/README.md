@@ -1,3 +1,9 @@
+# Current cleanup recovery
+
+**November 12, 2026.** The cleanup-only Airtable reader retries one failed GET transport request. A read failure before any cleanup action records Error and allows a later normal scheduled check. Errors after an action starts retain the stop for reconciliation. Existing unknown stops remain protected.
+
+The approved recovery released only failed run634f3191-18ac-4eab-95b4-04bf771b0596, whose receipt proves zero cleanup actions/deletions. Its stop and failure evidence are preserved. Owner cleared run-logs before recovery. Only cleanup.js changed, with26otherJS and task unchanged.29offline checks and author review passed. Normal 10:42 and 10:45 Eastern runs verified recovery: first cleared 359 eligible heartbeat, 23 run-logs and 31 errs-log records; second safely skipped without repeating the daily clear. Native cleanup action readback confirmed. [Acceptance](evidence/cleanup-read-recovery-20261112/ACCEPTANCE.md). [Current task](evidence/cleanup-read-recovery-20261112/TASK.md), [review](evidence/cleanup-read-recovery-20261112/review.md), [deployment](evidence/cleanup-read-recovery-20261112/deployed.json).
+
 # Current release — unique name fallback for day-0 trips
 
 **Version 2026.11.08.16 · Deployed November 8, 2026, 1:41 p.m. Eastern.** Empty w-horses/w-riders/w-trainers links on day-0 live-trips now use one unique helper-name match only when the source ID is blank. Supplied IDs retain priority. Names ignore case and surrounding/repeated spaces; punctuation and diacritics remain significant. Ambiguous/missing matches stay empty. Existing populated links, helper records and source ID fields are preserved. No fallback on live-entries.

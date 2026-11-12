@@ -1,0 +1,50 @@
+{
+  "checked_at": "2026-11-12T15:44:26.180Z",
+  "records": [
+    {
+      "id": "rec80aAiCivHr97Ef",
+      "fields": {
+        "records-archived": 0,
+        "result": "Success",
+        "new-show-id": 200000078,
+        "started": "2026-11-12T15:42:44.378Z",
+        "completed": "2026-11-12T15:43:57.972Z",
+        "records-deleted": 31,
+        "run-id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee",
+        "trigger": "daily-clear",
+        "table": "errs-log",
+        "cleanup-id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee|daily-clear|errs-log"
+      }
+    },
+    {
+      "id": "recJXsxgQF6Zx64yK",
+      "fields": {
+        "records-archived": 0,
+        "result": "Success",
+        "new-show-id": 200000078,
+        "started": "2026-11-12T15:42:41.317Z",
+        "completed": "2026-11-12T15:43:49.352Z",
+        "records-deleted": 23,
+        "run-id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee",
+        "trigger": "daily-clear",
+        "table": "run-logs",
+        "cleanup-id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee|daily-clear|run-logs"
+      }
+    },
+    {
+      "id": "reckZKdiksTZQKP9v",
+      "fields": {
+        "records-archived": 0,
+        "result": "Success",
+        "new-show-id": 200000078,
+        "started": "2026-11-12T15:42:38.233Z",
+        "completed": "2026-11-12T15:43:42.340Z",
+        "records-deleted": 359,
+        "run-id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee",
+        "trigger": "daily-clear",
+        "table": "heartbeat",
+        "cleanup-id": "a4d78d54-aea5-47d6-b7b5-6b531513b0ee|daily-clear|heartbeat"
+      }
+    }
+  ]
+}

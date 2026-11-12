@@ -1,3 +1,6 @@
+# November 12 cleanup recovery exception
+Owner-approved one-file cleanup read recovery is installed. Existing general lock remains outside this delta. Exact27JS hashes and released zero-action failure are in evidence/cleanup-read-recovery-20261112/deployed.json. Two normal scheduled runs pending. Collection, linking, schedules and other existing holds continue under their established scope.
+
 # Current release — unique name fallback for day-0 trips
 
 **Version 2026.11.08.16 · Deployed November 8, 2026, 1:41 p.m. Eastern.** Empty w-horses/w-riders/w-trainers links on day-0 live-trips now use one unique helper-name match only when the source ID is blank. Supplied IDs retain priority. Names ignore case and surrounding/repeated spaces; punctuation and diacritics remain significant. Ambiguous/missing matches stay empty. Existing populated links, helper records and source ID fields are preserved. No fallback on live-entries.
