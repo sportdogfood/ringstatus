@@ -1,5 +1,5 @@
 {
-  "version": "2026.11.12.1",
+  "version": "2026.11.12.3",
   "date": "2026-11-12",
   "timezone": "America/New_York",
   "created_at": "2026-11-12T17:09:17.833628+00:00",
@@ -11,7 +11,7 @@
     "wef-records-coordinator"
   ],
   "cleanup_owner": "wef-decoder",
-  "cleanup_routing": "Pending: Records reminder still targets deprecated Fast; no routing edit authorized/performed by notice",
+  "cleanup_routing": "Existing Records reminder updated/read back to Decoder; next genuine event dispatch unverified",
   "git_head_at_lock": "82582d38c91763e5672ce5dca15579843d4e6283",
   "lock_kind": "Documented approval boundary and SHA-256 snapshot; no runtime gate or filesystem permission change",
   "core_status": "Scheduled verification recorded with existing failed-class exclusions; not all historical class endpoints recovered",
@@ -110,7 +110,7 @@
   "readme": {
     "path": "wef-data/FAST-README.md",
     "role": "dated operating documentation",
-    "sha256": "6962d997bbfa8f50b5ce041212484fe37b84628bae5bff66abb6016ffdf8e077"
+    "sha256": "990b20792d760a3be69c6104eef7d572fbdf3aeabf5c7e690d492d09ffc5b65a"
   },
   "observed_support_files": [
     {
@@ -125,8 +125,8 @@
     },
     {
       "path": "wef-data/cleanup-lane.js",
-      "role": "separate support; known coverage gaps retained",
-      "sha256": "5ab2ee76da296cd828c51a1e4c251843d419878e53945e469ac4642fbeb1bedd"
+      "role": "Independent cleanup covers Fast paths; review/offline PASS; natural scheduled proof pending",
+      "sha256": "f2510f1fc1b457bee3fb1e01de4714b071d759fefc0b469d8386d7c1ac1104b3"
     },
     {
       "path": "wef-data/collection-alerts.js",
@@ -141,9 +141,10 @@
   ],
   "show_times_producer": {
     "path": "workers/wef-schedules-decoded/show-time-health.mjs",
-    "role": "owned separately; known wrong-date fallback, not accepted as correct",
-    "sha256": "b76b399edac690b7a0568d1234bf6607b0c48e7e992008eac84ae940dd17e0ee",
-    "status": "Known defect; no code or business-record correction in this documentation task"
+    "role": "Separately owned clock producer; exact-day optional-link correction",
+    "sha256": "f6a62df431a325be53a4242faa968b9361829bde4ac90eeb261d2c558606808d",
+    "status": "Code Review PASS;15offline tests PASS; normal12:21clock save/native readback verified",
+    "release_evidence": "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-show-times-exact-date-20261112\\scheduled-readback.json"
   },
   "task_snapshot": [
     {
@@ -260,13 +261,23 @@
   ],
   "evidence": [
     "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-fast-md-exact-20261112\\per-date\\utf8\\scheduled-verification.json",
-    "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-fast-md-exact-20261112\\per-date\\utf8\\native-readback.json"
+    "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-fast-md-exact-20261112\\per-date\\utf8\\native-readback.json",
+    "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-show-times-exact-date-20261112\\scheduled-readback.json",
+    "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-fast-support-20261112\\deployment.json"
   ],
   "open_items": [
-    "Cleanup local scanner/pending-log protection does not cover runtime/fast outboxes",
-    "Fast failure logging is not verified owner-alert delivery; legacy notifier not called by fast-entry",
-    "Records cleanup routing still points to deprecated Fast",
-    "show-times rec70KnNzBms3sj1M has November10 key linked to November11; exact canonical November10 day absent",
+    "Scheduled verification of updated cleanup and automatic Fast owner notices pending",
     "Periodic Data review activation/routing and shared schedule-app propagation remain unverified"
-  ]
+  ],
+  "collector_baseline_version": "2026.11.12.1",
+  "updated_at": "2026-11-12T17:37:03.326359+00:00",
+  "support_revision": {
+    "version": "2026.11.12.3",
+    "evidence": "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-fast-support-20261112",
+    "code_review": "COMPLETE/PASS",
+    "offline_tests": "7 passed",
+    "scheduled_cleanup": "Pending next genuine Records event or 19:00 Eastern task",
+    "scheduled_owner_alerts": "Pending next existing hourly heartbeat",
+    "collector_changes": false
+  }
 }

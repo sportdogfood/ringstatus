@@ -32,8 +32,15 @@ function choose(rows,eligible,trigger){
 }
 function localLogs(runtime){
  const families=[],pending=new Set();
- for(const workflow of ['wef-data','wef-data-linking']){
-  const root=path.join(runtime,'logging',workflow);
+ const roots=['wef-data','wef-data-linking'].map(workflow=>path.join(runtime,'logging',workflow));
+ const fast=path.join(runtime,'fast');
+ const notices=read(path.join(fast,'owner-alerts.json'),{submitted:{}});
+ if(!notices?.submitted||typeof notices.submitted!=='object'||Array.isArray(notices.submitted)||Object.values(notices.submitted).some(v=>!v||!Number.isFinite(Date.parse(v.at))||typeof v.message!=='string'||!v.message.trim()))throw Error('Invalid Fast owner notification receipt; failure evidence retained');
+ if(fs.existsSync(fast))for(const entry of fs.readdirSync(fast,{withFileTypes:true})){
+  if(entry.isDirectory()&&/^(day\d+|fast-save|fast-linker)$/.test(entry.name))roots.push(path.join(fast,entry.name,'logging'));
+ }
+ for(const root of roots){
+  const workflow=path.relative(runtime,root);
   const files=dir=>fs.existsSync(path.join(root,dir))?fs.readdirSync(path.join(root,dir)).filter(n=>n.endsWith('.json')).map(n=>({file:path.join(root,dir,n),data:read(path.join(root,dir,n))})):[];
   const runs=files('run-logs'),errors=files('err-logs');
   const newest=runs.slice().sort((a,b)=>Date.parse(b.data.started)-Date.parse(a.data.started))[0];
@@ -45,7 +52,8 @@ function localLogs(runtime){
     const v=e.data,f={'error-id':v.id,run:[ack.id],'occurred-at':v.at,stage:v.stage,category:v.category,operation:v.operation,target:v.target,message:v.message,'write-outcome':v['write-outcome']};
     const af=path.join(root,'acks','err-logs-'+v.id+'.json');return {...e,ackFile:af,delivered:read(af,{}).hash===digest(f)};
    });
-   const delivered=ack.hash===digest(fields)&&children.every(e=>e.delivered);
+   const needsNotice=root.startsWith(fast+path.sep)&&(children.some(e=>!notices.submitted?.[e.data.id])||(['Partial','Failed','Interrupted'].includes(a.status)&&!notices.submitted?.['run|'+a.id]));
+   const delivered=ack.hash===digest(fields)&&children.every(e=>e.delivered)&&!needsNotice;
    const current=run===newest||alive(a['owner-pid'])||alive(a['child-pid']);
    if(!delivered||current){pending.add(a.id);if(ack.id)pending.add(ack.id);}
    families.push({run,ackFile,children,workflow,delivered,current,runCount:runs.length,errorCount:errors.length});
@@ -55,7 +63,7 @@ function localLogs(runtime){
 }
 function pruneLocal(families,trigger){
  const out={runs:0,errors:0,acks:0};
- for(const workflow of ['wef-data','wef-data-linking']){
+ for(const workflow of new Set(families.map(f=>f.workflow))){
   const list=families.filter(f=>f.workflow===workflow).sort((a,b)=>Date.parse(a.run.data.started)-Date.parse(b.run.data.started));
   let nr=0,ne=0;
   for(const f of list){

@@ -64,7 +64,7 @@ Write to [wef-schedule-app](https://airtable.com/appqWC58FLtmHcUAW/) using the e
 
 Use `wef-schedule-app|day0` and `wef-schedule-app|full` as heartbeat keys. Use ISO timestamps and the source show date. Leave scope fields blank if scope could not be resolved. Upsert by the existing keys so delivery of the same outcome cannot create duplicate evidence. An older run must not replace a newer heartbeat. If Airtable logging fails, preserve the outcome in the runner's own receipt and report the logging failure.
 
-The [cleanup table](https://airtable.com/appqWC58FLtmHcUAW/tblIIxlPF7AtjEDeu) is a separate control. Retention and cleanup execution require their own contract.
+The [cleanup table](https://airtable.com/appqWC58FLtmHcUAW/tblIIxlPF7AtjEDeu) is a separate control. Follow the [common Cleanup Contract](CLEANUP-CONTRACT.md). The table and saved contract do not prove an implemented cleanup workflow. The exact Schedule table mapping and implementation require the owner's approval.
 
 ## Acceptance
 

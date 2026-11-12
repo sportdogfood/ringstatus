@@ -1,7 +1,7 @@
 # Fast operating README
 
 Date: **November 12, 2026 — America/New_York**  
-Document/release version: **2026.11.12.1**  
+Document/lock revision: **2026.11.12.3**; frozen Fast collector baseline: **2026.11.12.1**  
 Operational owner: **wef-decoder**, chat `01a1a753-dce7-7951-a147-1b096e1538ba`  
 Collector lock: [FAST-LOCK.json](FAST-LOCK.json)  
 Exact accepted workflow and dated results: [fast-test.md](fast-test.md)
@@ -10,7 +10,7 @@ Exact accepted workflow and dated results: [fast-test.md](fast-test.md)
 
 The owner deprecated **wef-fast as the operational owner** and instructed wef-decoder to retain this workflow, own wef-data cleanup and remain responsible for show-times. This does not disable the working Windows collector or its separate saving/linking tasks. Windows tasks execute the business workflow; Codex inspects, makes explicitly approved changes, reviews and verifies.
 
-On November 12, owner-directed notices were submitted to `wef-fast` (`01a19273-bdf8-71b2-8503-cc8079efc129`) and `wef-records-coordinator` (`01a169bc-e58a-7de0-94c6-5d3931fcf745`). Fast was asked to identify every remaining responsibility not already covered. Records was asked to identify cleanup/alert routing still directed to deprecated Fast. Both recipient chats acknowledged the change. Records confirmed that its existing cleanup reminder still targets deprecated Fast; redirecting future notices is pending and was not performed by these messages. No additional chats were notified.
+On November 12, owner-directed notices were submitted to `wef-fast` (`01a19273-bdf8-71b2-8503-cc8079efc129`) and `wef-records-coordinator` (`01a169bc-e58a-7de0-94c6-5d3931fcf745`). Fast was asked to identify every remaining responsibility not already covered. Records was asked to identify cleanup/alert routing still directed to deprecated Fast. Both recipient chats acknowledged the change. The existing Records cleanup reminder is now routed to wef-decoder. Its three-hour schedule, event IDs, completed-event receipts and genuine-event-only task dispatch remain unchanged; no old event is replayed. No additional chats were notified.
 
 ## Frozen collector
 
@@ -52,33 +52,31 @@ Both remain separate task executions. The collector, saver and linker share some
 
 `cleanupV2` checked selections control the existing native-table cleanup. Existing daily/new-show/log-retention rules remain unchanged. The last inspected receipt `runtime/cleanup/simple-last-run.json` records the November 11 daily event; that historical success is not proof of complete coverage of the new Fast paths.
 
-**Confirmed gap:** `cleanup-lane.js` scans local `runtime/logging/wef-data` and `runtime/logging/wef-data-linking`. The active Fast outboxes are under `runtime/fast/day*/logging`, `runtime/fast/fast-save/logging` and `runtime/fast/fast-linker/logging`. Those new local paths are not covered by that scanner, including its protection of pending delivery. Capture/save/link receipt retention is not established by the existing scanner either.
+The independent scanner now covers the existing legacy log folders and every actual `runtime/fast/dayN/logging`, `runtime/fast/fast-save/logging` and `runtime/fast/fast-linker/logging` folder. Retention is counted separately per folder. Existing native cleanup selections, daily/new-show/log-check rules, active/latest/pending-delivery protection and acknowledgement-file retention remain unchanged. Fast failure families stay protected locally and in Airtable until their actual owner notice is submitted; malformed notification receipts preserve evidence and report the failure. This does not block collection, saving or linking. No new capture/manifest deletion policy was added.
 
-The independent cleanup consumer can be adapted to those actual paths without editing the frozen collector. That adaptation is not implemented or authorized by this documentation. Records' existing cleanup routing to deprecated Fast must also be reconciled with the new owner before claiming the event handoff works end to end.
+Offline fixtures and independent Code Review are recorded in `C:/Users/gombc/Documents/Codex/outputs/wef-fast-support-20261112/`. Actual cleanup under this revision still requires the next genuine Records event or the normal 7 p.m. task; deployment is not proof of deletion. Do not manually run or replay cleanup to obtain proof.
 
 ## Failure logging and owner alerts
 
 Collection, saving and linking retain actual redacted errors and deliver their own results through the existing Data `run-logs`, `err-logs` and `heartbeat` tables. A source failure, saving failure and linking failure are distinct outcomes. The scheduled UTF-8 saving correction was verified using the actual Windows Python and native Airtable readback.
 
-**Confirmed gap:** the legacy desktop/Records notifier `collection-alerts.js` is called by old `entry.js`; the current `fast-entry.js` does not call it. It expects the old report shape. Error records and successful log delivery do not prove that an owner failure notice was sent.
+The existing hourly `check-wellington-decoder` monitor now also reads saved Fast collection, saving, linking, log-delivery and cleanup outcomes. It does not invoke a collector or source. It examines all retained errors, so a healthy latest wake cannot hide a preceding failure. Notices go to this chat, grouped by actual date/lane/cause, once per saved failure identity. Existing old errors are labeled historical rather than treated as failures of the latest run.
 
-A separate consumer of the existing native run/error records can provide owner alerts without changing collection. Its deduplication, delivery and recovery behavior still need an explicitly approved implementation and verification; no such consumer was created here.
+Submission receipts live only at `runtime/fast/owner-alerts.json`; they mean submitted to chat, never owner-read acknowledgement. A failed/malformed receipt is reported and left pending for the next existing check. A class exclusion, successful other class or healthy schedule is never class recovery. Recovery requires a saved later success for the same exact operation and scope. No new notification service, task, cadence, class retry or collector hook was introduced. The legacy Windows/Records notifier is not used by this workflow.
 
-The existing hourly `check-wellington-decoder` automation covers decoder schedule health and passive tunnel connection transitions. WEF Shows `warning-log` remains its notification authority, mirrored to `decoder-fail-alerts`; submitted notices are not owner-read acknowledgments. That monitor does not establish Fast class/saving/linking alert coverage.
+This remains hourly, not instant monitoring. Its first natural updated heartbeat, actual chat submission and receipt readback must be verified separately from configuration. WEF Shows warning-log remains the authority for existing decoder schedule/tunnel notices; that workflow is unchanged. The task record retains pending scheduled proof rather than treating reviewed configuration as working delivery.
 
-## Show-times — owned here, known wrong-date link
+## Show-times — daily observation with optional exact-date link
 
-**wef-decoder remains responsible for show-times.** The owner's reported row is still incorrect:
+**wef-decoder remains responsible for show-times.** The owner directed: create a time for every day and link only when the matching show-day is available.
 
-- Table: WEF Shows `show-times`, `tblBJ8DwRklrmDNb5`.
-- Record: `rec70KnNzBms3sj1M`.
-- Key: `15|200000078|2026-11-10`.
-- Actual linked day: November 11, `recSDxcUJg9vRSoW0`.
-- Exact November 10 show-day lookup for this show returned no record.
+The producer now saves a valid daily clock observation whether or not a canonical show-day exists. It links only the exact show plus source-calendar date. When there is no match, the show-day link is empty and the observation remains saved. There is no selected-day substitution, artificial canonical day, future timestamp or historical clock backfill. The existing source request, clock key/time, cadence, health behavior and slot dedup remain unchanged.
 
-The cause is explicit in `workers/wef-schedules-decoded/show-time-health.mjs`: the producer falls back to the selected day when a matching day is absent, then uses that fallback for the source-date observation. The row notes confirm that substitution. Its source timestamp and November 10 key were preserved; the linked date was not.
+The November 10 row `rec70KnNzBms3sj1M`, key `15|200000078|2026-11-10`, previously linked November 11. The owner cleared that link. Native readback verified it empty while the source timestamp and show link remained. Codex did not edit that business record; no November 10 show-day was created.
 
-This is an **open defect**, not a verified link correction. Exact-date matching and the disposition of the already incorrect historical link need an approved correction; do not manufacture a canonical show-day or silently repair the business row. Show-times is separate from the frozen Fast collector and is not represented as a verified component of this lock.
+The narrow producer correction and tests passed independent Code Review and 15 offline tests. Deployment: November 12 at 12:18:12 Eastern. The normal 12:21 scheduled check returned Recorded, clock true, zero errors and exit 0. Native record `recahnH3v9D9IG3t8` has today's key, show and exact November 12 day `recheWy529gKKegCk`; checked-at advanced to 12:21:06 Eastern. The unmatched-day case was verified offline, not by manufacturing a live source day.
+
+Evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-show-times-exact-date-20261112/`, including `scheduled-readback.json` and `independent-review/`. No Fast collector file, credential, task configuration, source URL or pause changed for this correction.
 
 ## Verification and evidence
 
