@@ -3,6 +3,7 @@ import { refreshScheduleFeed } from './shared-feed.mjs';
 import { refreshReadableSchedule } from './readable-feed.mjs';
 import { isSharedDataConflict } from './shared-projection.mjs';
 import { createHash } from 'node:crypto';
+import {conflictReviewFields} from './conflict-review.mjs';
 
 const safeError = error => /^[a-z0-9_:-]{1,100}$/.test(error?.message ?? '') ? error.message : 'schedule_feed_failed';
 
@@ -33,7 +34,14 @@ export async function runScheduleRefresh(api,{lane,slot,clock = () => new Date()
       const previous=await api.read('conflicts',equals('conflict-key',key));
       // Admin status/notes belong to the admin. An unchanged conflict is not rewritten.
       if (!previous.length) await api.upsert('conflicts',{'conflict-key':key,'detected-at':started,'run-id':runId,lane,
-        date:conflict.date??null,'record-key':conflict.recordKey,reason:conflict.reason,'details-json':details,'admin-status':'Open'});
+        date:conflict.date??null,'record-key':conflict.recordKey,reason:conflict.reason,'details-json':details,'admin-status':'Open',
+        ...await conflictReviewFields(api,conflict)});
+    }
+    // Fill the approved display fields on older review records through the normal runner.
+    for(const row of await api.read('conflicts')) {
+      if(row.Record&&row['Problem 1'])continue;
+      const conflict={recordKey:row['record-key'],date:row.date,reason:row.reason,details:JSON.parse(row['details-json']||'{}')};
+      await api.upsert('conflicts',{'conflict-key':row['conflict-key'],...await conflictReviewFields(api,conflict)});
     }
   } catch(error) {failure=safeError(error);}
   const completed = clock();

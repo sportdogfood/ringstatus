@@ -8,6 +8,7 @@ import { buildSharedDay, sharedScope } from '../src/lib/wef-schedule/shared-proj
 import { readScheduleFeed, refreshScheduleFeed } from '../src/lib/wef-schedule/shared-feed.mjs';
 import { runScheduleRefresh } from '../src/lib/wef-schedule/refresh-run.mjs';
 import { runDueFeeds } from '../src/lib/wef-schedule/cadence.mjs';
+import {conflictReviewFields} from '../src/lib/wef-schedule/conflict-review.mjs';
 import { applyDay0Diff, makeDay0Diff } from '../public/wef-schedule-v2/day0-diff.js';
 import { createDeviceData, validDataset } from '../public/wef-schedule-v2/device-data.js';
 import { encodePayload, decodePayload } from '../src/lib/wef-schedule/shared-payload.mjs';
@@ -312,6 +313,35 @@ test('scheduled data conflicts do not stop either lane or rewrite synced sources
   assert.equal(next.stopped,null);assert.equal(next.outcomes.length,1);
   assert.equal(api.writes.filter(r=>r.name==='conflicts').length,reviewWrites);
   assert.equal(JSON.stringify([api.data.shows,api.data.days,api.data.schedules,api.data.classes,api.data.trips]),original);
+});
+
+test('review fields show a named direct class link and only observed short problems',async()=>{
+  const api={read:async()=>[{id:'recDSq8H2HQ8IlnjV','class-number':'526','class-name':'Medal [Flat]'}]};
+  const fields=await conflictReviewFields(api,{recordKey:classKey,reason:'invalid_shared_class',
+    details:{source:'wef-data.classes',classId:99,snapshotShowId:null,snapshotClassId:null,entryCount:null}});
+  assert.equal(fields.Record,'[Class — 526 — Medal \\[Flat\\]](https://airtable.com/appqWC58FLtmHcUAW/tblL2BwNM2Z8sdGDQ/recDSq8H2HQ8IlnjV)');
+  assert.equal(fields['Problem 1'],'Class details are empty.');
+  assert.equal(fields['Problem 2'],'Entry count is missing.');assert.equal(fields['Problem 3'],null);
+});
+
+test('review trip link points to the trip and explains the two rider values',async()=>{
+  const api={read:async()=>[{id:'rec00000000000055','source-json':JSON.stringify({number:811})}]};
+  const fields=await conflictReviewFields(api,{recordKey:tripKey,reason:'shared_participant_conflict',details:{source:'wef-data.trips',field:'rider',linked:'45891, 19389',snapshot:19389}});
+  assert.equal(fields.Record,'[Trip — entry 811](https://airtable.com/appqWC58FLtmHcUAW/tbl9dATHFaF8z0x0I/rec00000000000055)');
+  assert.equal(fields['Problem 1'],'Rider field lists multiple riders.');
+  assert.equal(fields['Problem 2'],'Trip details identify rider 19389.');assert.equal(fields['Problem 3'],null);
+});
+
+test('normal runner fills older review display fields once and preserves admin links and notes',async()=>{
+  const api=memory();api.data.conflicts.push({'conflict-key':'existing','record-key':classKey,reason:'invalid_shared_class',
+    'details-json':JSON.stringify({source:'wef-data.classes',entryCount:null}),'admin-status':'Reviewing','admin-notes':'Keep this','wef-data.classes':['existing-link']});
+  const run=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
+  assert.equal(run.log.result,'Success');assert.ok(api.data.conflicts[0].Record);
+  assert.equal(api.data.conflicts[0]['admin-status'],'Reviewing');assert.equal(api.data.conflicts[0]['admin-notes'],'Keep this');
+  assert.deepEqual(api.data.conflicts[0]['wef-data.classes'],['existing-link']);
+  const count=api.writes.filter(w=>w.name==='conflicts').length;
+  await runScheduleRefresh(api,{lane:'full',slot:'2026-11-12T17:15:00Z',clock:()=>now});
+  assert.equal(api.writes.filter(w=>w.name==='conflicts').length,count);
 });
 
 test('lossless compression carries an oversized full day and Day 0 stays a diff', async () => {
