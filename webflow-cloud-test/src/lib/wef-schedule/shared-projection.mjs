@@ -20,7 +20,7 @@ export async function sharedScope(api) {
       show['show-key'] !== `${show.customer_id}|${show.show_id}` || !show.show_name) throw Error('invalid_shared_show');
   const days = await api.read('days', equals('show', show['show-key']));
   if (days.some(d => d.show !== show['show-key'] || !dateText(d.date) ||
-    d['show-day-key'] !== `${d.show}|${d.date}` || !Number.isSafeInteger(d['day-priority']) || d['day-priority'] < 0)
+    d['show-day-key'] !== `${d.show}|${d.date}` || !Number.isSafeInteger(d['day-priority']))
     || new Set(days.map(d => d.date)).size !== days.length) throw Error('invalid_shared_days');
   const day0 = days.filter(d => d['day-priority'] === 0);
   if (day0.length !== 1) throw Error('invalid_shared_day0');

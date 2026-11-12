@@ -79,6 +79,35 @@ function live(data) {
     'participation-link-status':'current','participation-verified-at':'2026-11-12T16:59:00Z','order-of-go':1,'actual-order':3,scratch:false}];
 }
 
+test('day rollover accepts signed priorities and retains past schedule days in the full feed',async () => {
+  const api=memory();
+  api.data.days[0]['day-priority']=-1;
+  api.data.days[1]['day-priority']=0;
+  const scope=await sharedScope(api);
+  assert.equal(scope.day0.date,other);
+  assert.deepEqual(scope.days.map(d=>d['day-priority']),[-1,0]);
+  await refreshScheduleFeed(api,'full',now);
+  const full=await readScheduleFeed(api,showId,'full');
+  assert.deepEqual(full.days.map(d=>d.date),[date,other]);
+  assert.equal(full.records.some(r=>r.key===scheduleKey),true);
+  await refreshScheduleFeed(api,'day0',now);
+  assert.equal((await readScheduleFeed(api,showId,'day0')).date,other);
+  assert.deepEqual((await refreshScheduleFeed(api,'full',now)).upserts,[]);
+});
+
+test('signed priorities still reject malformed values and ambiguous Day 0',async () => {
+  for(const priority of [undefined,null,'-1',-0.5,Number.NaN,Number.MAX_SAFE_INTEGER+1]) {
+    const api=memory();api.data.days[1]['day-priority']=priority;
+    await assert.rejects(sharedScope(api),/invalid_shared_days/);
+    assert.deepEqual(api.writes,[]);
+  }
+  for(const priorities of [[-2,-1],[0,0]]) {
+    const api=memory();api.data.days.forEach((d,i)=>d['day-priority']=priorities[i]);
+    await assert.rejects(sharedScope(api),/invalid_shared_day0/);
+    assert.deepEqual(api.writes,[]);
+  }
+});
+
 test('full upsert is Data-only, reuses date keys and preserves an unchanged Day 0 diff',async () => {
   const api = memory();live(api.data);
   assert.equal((await refreshScheduleFeed(api,'full',now)).upserts.length,2);
