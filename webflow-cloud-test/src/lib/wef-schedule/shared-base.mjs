@@ -87,7 +87,9 @@ export function sharedBase({token, fetchImpl = fetch, pause = ms => new Promise(
       if (saved.records.length !== 1 || !recordId(saved.records[0].id)) throw Error('invalid_feed_write_result');
       const rows = await this.read(name, equals(key, fields[key]));
       if (rows.length !== 1 || rows[0].id !== saved.records[0].id || Object.entries(fields).some(([k,v]) =>
-        k.endsWith('-at') || ['started','completed'].includes(k) ? Date.parse(rows[0][k]) !== Date.parse(v) : (rows[0][k] ?? null) !== v
+        k.endsWith('-at') || ['started','completed'].includes(k) ? Date.parse(rows[0][k]) !== Date.parse(v) :
+        name==='conflicts' && k==='Record' && typeof rows[0][k]==='string' ? rows[0][k].replace(/\r?\n$/,'') !== v :
+        (rows[0][k] ?? null) !== v
       )) throw Error('schedule_app_write_readback');
       return rows[0];
     }

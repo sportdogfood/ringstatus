@@ -564,3 +564,18 @@ test('derived batch adapter normalizes false and empty links and forbids synced 
  await assert.rejects(api.upsertRows('day0Rows',[{'schedule-key':'key','publish-default':'Yes'}]),/invalid_readable_write/);
  assert.equal(calls,2);
 });
+
+test('review link readback accepts Airtable terminal newline but rejects changed links and problem text',async()=>{
+  let stored,change='newline';
+  const fields={'conflict-key':'review',Record:'[Class 526](https://airtable.com/appqWC58FLtmHcUAW/tblL2BwNM2Z8sdGDQ/recDSq8H2HQ8IlnjV)','Problem 1':'Class details are empty.'};
+  const api=sharedBase({token:'fixture',writable:true,pause:async()=>{},fetchImpl:async(url,init)=>{
+    if(init.method==='PATCH'){stored=JSON.parse(init.body).records[0].fields;return Response.json({records:[{id:'rec00000000000055',fields:stored}]});}
+    const returned={...stored,Record:stored.Record+'\n'};
+    if(change==='link')returned.Record=returned.Record.replace('recDSq8H2HQ8IlnjV','rec00000000000066');
+    if(change==='problem')returned['Problem 1']+='\n';
+    return Response.json({records:[{id:'rec00000000000055',fields:returned}]});
+  }});
+  await api.upsert('conflicts',fields);
+  change='link';await assert.rejects(api.upsert('conflicts',fields),/schedule_app_write_readback/);
+  change='problem';await assert.rejects(api.upsert('conflicts',fields),/schedule_app_write_readback/);
+});
