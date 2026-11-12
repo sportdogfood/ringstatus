@@ -1,3 +1,9 @@
+# Current release — readable run-log fields
+
+**November 12, 2026.** Future run-logs include lane, record-type, record-key, trip-id, class-id and ring-id. Run summaries use type run and their UUID key; change rows use ring/group/class-appearance/class/entry/trip and the affected saved key. IDs come from saved fields and exact single native links; unavailable IDs stay blank. Existing diff bodies and old logs are untouched. Collection, source requests, links, cleanup, schedule and decoded pause are unchanged. Quiet checks identify lane live-check; linker identifies lane linker.
+
+Six native fields verified; 28 offline tests and author code review passed. Verified through normal 11:18 and 11:21 Eastern runs: new summary/change descriptors and trip/class/ring IDs read back, no stage/logging errors; 20 prior log samples unchanged. [Acceptance](evidence/run-log-fields-20261112/ACCEPTANCE.md). [Evidence](evidence/run-log-fields-20261112/TASK.md), [review](evidence/run-log-fields-20261112/review.md). General lock remains outside this approved delta.
+
 # November 12 cleanup recovery exception
 Owner-approved one-file cleanup read recovery is installed. Existing general lock remains outside this delta. Exact27JS hashes and released zero-action failure are in evidence/cleanup-read-recovery-20261112/deployed.json. Two normal scheduled runs pending. Collection, linking, schedules and other existing holds continue under their established scope.
 

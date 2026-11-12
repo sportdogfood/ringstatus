@@ -10,9 +10,15 @@ Independent Code Review: COMPLETE/PASS. Mocked checks: 10 Python and 3 Node test
 
 Source-loop independence applies within each one-day invocation. A day finishes saving/logging before the next day starts sequentially. No parallel-day collection or additional service was introduced.
 
-## Consolidated discussed workflow — Day 0 and Days 1–4
+## Correction deployment — November 12, 2026, 11:09 a.m. Eastern
 
-Not implemented. This section records the owner's workflow discussion; it does not authorize code changes. Historical test results below describe the script that actually ran, not this proposed behavior.
+This record supersedes the earlier implementation status, not the workflow below. The owner explicitly reapproved editing to match this MD exactly. Collection now captures only; the existing separate saving task reads those captures and delivers collection logs; the existing linking task fills required empty links. The five reviewed runtime changes were deployed at 16:09:25Z. Existing task triggers/settings/principals were preserved apart from enabling the existing saving task. No manual collector or task start was performed.
+
+Independent Code Review COMPLETE/PASS; 14 Python and 6 Node offline checks passed. The prior implementation's review remains FAIL in its historical packet. Natural scheduled end-to-end verification of this correction is UNVERIFIED. Current evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-fast-md-exact-20261112/`.
+
+## Current approved workflow — Day 0 and Days 1–4
+
+Owner-approved November 12 after the scheduled preflight failure. This is the current requirement and supersedes conflicting earlier discussion and implementation-status notes. The amendment and separately approved one-line UTF-8 correction are deployed. The normal scheduled collection, saving, linking, logging and same-date repeat boundary were verified below. Historical failures and their evidence remain retained.
 
 ### Implementation and delivery limits
 
@@ -27,22 +33,23 @@ Not implemented. This section records the owner's workflow discussion; it does n
 
 | Stage | First pass | Recurring passes |
 |---|---|---|
-| Health and lane | Check schedule and class access. Run fallbacks here to find a working lane. | Confirm and reuse the working lane. |
-| Schedule | Fetch and save the day's schedule. | Compare with saved schedule rows; save only new or changed rows. |
+| Same-date completion | No previous pass to wait for. | Do not start another collection for this actual show/date until its previous saving and linking have completed. Other dates continue independently. |
+| Health and lane | Confirm schedule and getLiveClassData access. Check the saved working lane first; use fallbacks here if needed. Retain the successful check responses. | Confirm/reuse both working lanes before collection, with recovery only in preparation if needed. |
+| Schedule | Use the successful preparation response; capture it for separate saving. | Compare source-position and decoded source-json (excluding encrypted _) with saved schedules; save only new/changed rows. Show each changed field as old → new. Full diffs are in schedule-diffs in the existing local capture/report; the run log records their count and capture path. |
 | Rules | Apply existing exclusions and priority order. | Same rules; also exclude classes marked failed. |
 | Collect classes | Request each eligible class once using `getLiveClassData`. Capture responses locally. | Request remaining eligible classes once. No retries or fallbacks inside collection. |
 | Save | A separate stage reads captured responses and saves records with their basic links. | Same. Changed-only saving for class data is not yet defined. |
-| Link | Proposed `fast/linker.js` fills remaining required empty links as saved records become available. | Same; preserve existing links and leave ambiguous matches empty. |
+| Link | `fast/linker.js` fills remaining required empty links as saved records become available. | Same; preserve existing links and leave ambiguous matches empty. |
 | Errors | Record failures and indicate them on the schedule row. Do not retry. | Keep failed classes excluded. |
 
 - **Day 0:** pause protected class-detail requests without removing the endpoint. Use `getLiveClassData` until a successful scheduled live run saves fresh data for the exact expected show, date and class. Then stop Fast's requests for that class. SGL live flags alone are insufficient.
 - **Days 1–4:** use `getLiveClassData`, mapped to existing fields. Scores/results are not needed for the future-day preparation discussed; the owner's explicit earlier clarification named Days 1–3.
-- **Existing rules:** retain records but skip requests for No entries/zero trips, Flat, Under Saddle/Flat, Model, breaks, priority 999, and Completed classes with verified results. Request First trip → Second trip → Classic → other.
-- **Basic links and remaining links:** saving still sets the basic links needed to identify each record. The exact basic-link field list is not yet specified. The proposed `fast/linker.js` covers the remaining required empty links from already saved records; it does not fetch source data or relink populated fields. This describes intended behavior, not an existing verified file.
-- **Independent progress:** collection does not wait for Airtable saving or linking. Linking can work as records become saved; it does not wait for the entire day to finish and does not block collection.
-- **No additional mechanisms defined:** the health checks, lane reuse across passes, separate saving/linking execution and failure-field mapping still require concrete implementation and verification. This section does not introduce additional retries, recovery procedures or gates.
+- **Existing rules:** retain records but skip requests for No entries/zero trips, Flat, Under Saddle/Flat, Model, breaks and priority 999. Request First trip → Second trip → Classic → other.
+- **Basic links and remaining links:** saving still sets the basic links needed to identify each record. The exact basic-link field list is not yet specified. `fast/linker.js` covers the remaining required empty links from already saved records; it does not fetch source data or relink populated fields. Existing implementation must be verified through its scheduled path.
+- **Independent progress:** collection, saving and linking run separately. Finishing collection does not wait for saving or linking, and the next date can collect. Only a repeat pass for the same actual show/date waits for that date’s prior saving AND linking to finish. Linking can fill empty links as records become available. It confirms completion only for saves finished before that linker pass began.
+- **No additions:** the only repeat-start condition is the same-date save/link completion explicitly approved above. No global hold, extra retries, optional features, new tasks, credential changes or manual collectors. Existing URLs, pause, separate task triggers and native records/identities/links stay unchanged.
 
-## Discussed recurring passes — November 14 only
+## Historical discussion — recurring passes for November 14 only
 
 ### Working lane before collection
 
@@ -230,3 +237,26 @@ This message does not establish the precise upstream cause. No root-cause claim 
 - Private run receipt: [attempt receipt](runtime/one-day-test-2026-11-14/logging/run-logs/4db6a77e-f934-4d8d-8400-6da7b047e228.json).
 - Redacted individual source captures: `runtime/one-day-test-2026-11-14/responses/`.
 - [Saved Airtable run log](https://airtable.com/appdl16HJ5ETm8N69/tblKMNAtvvIFSvgLh/reci2NFOQXvtJ5NIQ).
+
+
+## Scheduled verification — November 12, 2026, 11:53 a.m. Eastern
+
+The 11:45 scheduled pass completed through separate saving, empty-only linking and native logging. Source/URL/pause/task settings and credentials stayed unchanged; no manual collectors or capture replay were run. The only later correction was the separately approved UTF-8 capture read, independently reviewed and tested using the actual scheduled Python.
+
+| Day | Date | Source collection | Class requests | Acknowledged business writes | New source/save/link errors |
+|---|---|---:|---:|---:|---:|
+| 0 | Nov 12 | 5.05 sec | 0 (Live owns 7) | 39 | 0 |
+| 1 | Nov 13 | 20.36 sec | 51 | 2,432 | 0 |
+| 2 | Nov 14 | 6.11 sec | 0 (prior failed classes excluded) | 264 | 0 |
+| 3 | Nov 15 | 5.39 sec | 0 (prior failed classes excluded) | 217 | 0 |
+| 4 | — | Skipped: outside show range | 0 | 0 | 0 |
+
+Counts are acknowledged writes, including updates; not new or unique record counts. All four native Data run records are Succeeded with zero errors and original show/day links. Native saving log records 2,952 business writes; final linking log records 3 empty-link updates and 3 completed passes. Logging delivery succeeded. Saving completed by 11:52:16; final linking completed at 11:53:28 Eastern. The three previously affected November 13 classes now have 77 freshly saved trip records (47 + 18 + 12), matching their current captures, with show/day/class links. Their earlier captures contained 76 rows; current collection added one trip.
+
+Same-date sequencing was observed: Day0's next collection began 11:51:14 after its saving finished 11:48:27 and linking finished 11:50:27. That next-date-independent work proceeded before Day1 saving finished 11:51:33. Days1–3 next collected after their own linking finished 11:53:28. No global save/link hold was added.
+
+Schedule diffs were captured as field/old/new. Example: Nov13 schedule key `15|200000078|2026-11-13|1|200043443`, `total_trips`: **46 → 47**. Nov12 had 5 changed rows; Nov13 had 13; Nov14/15 had none in this pass. Full differences remain in each existing local capture/report's `schedule-diffs`; run logs include their count and capture path.
+
+This verification does not declare the historically failed class endpoints recovered: their existing failure marks remain and exclude their requests as agreed. No history, failed marks or business records were manually repaired.
+
+Evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-fast-md-exact-20261112/per-date/utf8/scheduled-verification.json` and `native-readback.json`. Independent reviews are retained under the per-date and UTF-8 `independent-review/` directories; the earlier failing releases are historical evidence.

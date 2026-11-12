@@ -1,0 +1,193 @@
+{
+  "lane": "rings",
+  "run_id": "10476226-9bba-490f-95c7-613e1bd5340b",
+  "started": "2026-11-12T16:21:04.904Z",
+  "ok": true,
+  "issues": [],
+  "stage_errors": [],
+  "logging_errors": [],
+  "changes": [
+    {
+      "table": "live-rings",
+      "key": "200000078|2026-11-12|51",
+      "created": false,
+      "fields": [
+        {
+          "field": "source-json.livenow",
+          "before": [
+            {
+              "class_group_id": "200028730",
+              "group_name": "$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)",
+              "day": "2026-11-12",
+              "group_sequence": "2",
+              "estimated_start_time": "11:00:00",
+              "jumper_table": "FEI Rule 222.2.3",
+              "hunter_type": "",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "1",
+              "classes": [
+                "200031714"
+              ],
+              "classNumbers": [
+                "3010"
+              ],
+              "classNames": [
+                "$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)"
+              ],
+              "class_numbers": "3010",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 8,
+              "total": 59,
+              "jo_gone": 7,
+              "jo_total": 8,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031714",
+              "recent_updated_classes": [
+                "200031714"
+              ],
+              "ring_id": "51",
+              "ring": "International Ring",
+              "link": "/liveclass/detail?cid=200031714&class_group_id=200028730",
+              "trips": "8/59"
+            }
+          ],
+          "after": [
+            {
+              "class_group_id": "200028730",
+              "group_name": "$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)",
+              "day": "2026-11-12",
+              "group_sequence": "2",
+              "estimated_start_time": "11:00:00",
+              "jumper_table": "FEI Rule 222.2.3",
+              "hunter_type": "",
+              "hunter_scoreby": "",
+              "jogordertrips": "0",
+              "ring_number": "1",
+              "classes": [
+                "200031714"
+              ],
+              "classNumbers": [
+                "3010"
+              ],
+              "classNames": [
+                "$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)"
+              ],
+              "class_numbers": "3010",
+              "status": "Underway",
+              "JOUnderway": false,
+              "JOUpcoming": false,
+              "gone": 9,
+              "total": 59,
+              "jo_gone": 8,
+              "jo_total": 9,
+              "R2Underway": false,
+              "R2Upcoming": false,
+              "r2_gone": 0,
+              "r2_total": 0,
+              "is_live": true,
+              "has_JSON": true,
+              "last_updated_class": "200031714",
+              "recent_updated_classes": [
+                "200031714"
+              ],
+              "ring_id": "51",
+              "ring": "International Ring",
+              "link": "/liveclass/detail?cid=200031714&class_group_id=200028730",
+              "trips": "9/59"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "table": "live-rings",
+      "key": "200000078|2026-11-12|49",
+      "last_success": "2026-11-12T16:21:05.973Z",
+      "last_changed": "2026-11-12T16:18:05.412Z"
+    },
+    {
+      "table": "live-rings",
+      "key": "200000078|2026-11-12|51",
+      "last_success": "2026-11-12T16:21:05.973Z",
+      "last_changed": "2026-11-12T16:21:05.973Z"
+    }
+  ],
+  "archives": [
+    {
+      "at": "2026-11-12T16:21:05.980Z",
+      "kind": "source-widget",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-widget\\73db7e8ee5b9cf5f99591aefd9e25d2e5fb25e00c5f40f4e16457b6616cb82e4.json.gz",
+      "records": 1,
+      "sha256": "73db7e8ee5b9cf5f99591aefd9e25d2e5fb25e00c5f40f4e16457b6616cb82e4",
+      "shows": [
+        200000078
+      ],
+      "dates": [
+        "2026-11-12"
+      ]
+    }
+  ],
+  "timings": {
+    "collection_ms": 121.25729999999976,
+    "save_ms": 766.721,
+    "collection_started": "2026-11-12T16:21:05.851Z",
+    "collection_completed": "2026-11-12T16:21:05.973Z",
+    "requests": [
+      {
+        "label": "rings",
+        "started": "2026-11-12T16:21:05.851Z",
+        "completed": "2026-11-12T16:21:05.973Z"
+      }
+    ],
+    "save_started": "2026-11-12T16:21:06.783Z",
+    "saves": [
+      {
+        "table": "live-rings",
+        "started": "2026-11-12T16:21:06.783Z",
+        "completed": "2026-11-12T16:21:07.550Z",
+        "rows": 2,
+        "changed": 1,
+        "source_to_save": [
+          {
+            "key": "200000078|2026-11-12|49",
+            "source_response_at": "2026-11-12T16:21:05.973Z",
+            "elapsed_ms": 1577
+          },
+          {
+            "key": "200000078|2026-11-12|51",
+            "source_response_at": "2026-11-12T16:21:05.973Z",
+            "elapsed_ms": 1577
+          }
+        ]
+      }
+    ],
+    "save_completed": "2026-11-12T16:21:07.550Z",
+    "total_ms": 2646
+  },
+  "counts": {
+    "live-rings": 2
+  },
+  "scope": {
+    "show": 200000078,
+    "customer": 15,
+    "date": "2026-11-12",
+    "authority": "recqIXAwokTzdiyWp",
+    "checked_at": "2026-11-09T06:09:40.397Z",
+    "active": true,
+    "eastern_time": "2026-11-12 11:18:13"
+  },
+  "day_priority": 0,
+  "live_status": true,
+  "completed": "2026-11-12T16:21:07.550Z"
+}

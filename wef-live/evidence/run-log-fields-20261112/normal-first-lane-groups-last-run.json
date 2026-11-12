@@ -1,0 +1,350 @@
+{
+  "lane": "groups",
+  "run_id": "9f0f3da8-83b3-4c86-8eec-b83421531e41",
+  "started": "2026-11-12T16:18:04.482Z",
+  "ok": true,
+  "issues": [],
+  "stage_errors": [],
+  "logging_errors": [],
+  "changes": [
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028730",
+      "created": false,
+      "fields": [
+        {
+          "field": "source-json.gone",
+          "before": "7",
+          "after": "8"
+        },
+        {
+          "field": "source-json.jo_gone",
+          "before": "6",
+          "after": "7"
+        },
+        {
+          "field": "source-json.jo_total",
+          "before": "7",
+          "after": "8"
+        },
+        {
+          "field": "source-json.trips",
+          "before": "7/59",
+          "after": "8/59"
+        },
+        {
+          "field": "gone",
+          "before": 7,
+          "after": 8
+        },
+        {
+          "field": "jo-total",
+          "before": 7,
+          "after": 8
+        },
+        {
+          "field": "jo-gone",
+          "before": 6,
+          "after": 7
+        }
+      ]
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028733",
+      "created": false,
+      "fields": [
+        {
+          "field": "source-json.status",
+          "before": "Underway",
+          "after": "Completed"
+        },
+        {
+          "field": "source-json.gone",
+          "before": "16",
+          "after": "17"
+        },
+        {
+          "field": "source-json.jo_gone",
+          "before": "16",
+          "after": "17"
+        },
+        {
+          "field": "source-json.jo_total",
+          "before": "16",
+          "after": "17"
+        },
+        {
+          "field": "source-json.is_live",
+          "before": true,
+          "after": false
+        },
+        {
+          "field": "source-json.grid",
+          "before": "#LiveNow",
+          "after": "#Completed"
+        },
+        {
+          "field": "source-json.trips",
+          "before": "16/17",
+          "after": "17"
+        },
+        {
+          "field": "status",
+          "before": "Underway",
+          "after": "Completed"
+        },
+        {
+          "field": "is-live",
+          "before": true,
+          "after": false
+        },
+        {
+          "field": "gone",
+          "before": 16,
+          "after": 17
+        },
+        {
+          "field": "jo-total",
+          "before": 16,
+          "after": 17
+        },
+        {
+          "field": "jo-gone",
+          "before": 16,
+          "after": 17
+        }
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028729",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T15:24:06.346Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028731",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T15:33:07.427Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028732",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T15:09:05.730Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028760",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T16:15:05.658Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028735",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T15:57:06.679Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028730",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T16:18:05.269Z"
+    },
+    {
+      "table": "live-groups",
+      "key": "200000078|2026-11-12|200028733",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T16:18:05.269Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028729|200031715",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028730|200031714",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028731|200031679",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028732|200031625",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028733|200031628",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028760|200031630",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    },
+    {
+      "table": "live-class-appearances",
+      "key": "200000078|2026-11-12|200028735|200031633",
+      "last_success": "2026-11-12T16:18:05.269Z",
+      "last_changed": "2026-11-12T12:12:05.745Z"
+    }
+  ],
+  "archives": [
+    {
+      "at": "2026-11-12T16:18:05.282Z",
+      "kind": "source-groups",
+      "outcome": "Created",
+      "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-live\\runtime\\history\\source-groups\\268a9c44f44859270904fa2f5510afc5dca9dfa887a3cd0b4bca88e63a11c99d.json.gz",
+      "records": 1,
+      "sha256": "268a9c44f44859270904fa2f5510afc5dca9dfa887a3cd0b4bca88e63a11c99d",
+      "shows": [
+        200000078
+      ],
+      "dates": [
+        "2026-11-12"
+      ]
+    }
+  ],
+  "timings": {
+    "collection_ms": 238.8837000000001,
+    "save_ms": 802.3094000000006,
+    "collection_started": "2026-11-12T16:18:05.030Z",
+    "collection_completed": "2026-11-12T16:18:05.269Z",
+    "requests": [
+      {
+        "label": "groups",
+        "started": "2026-11-12T16:18:05.030Z",
+        "completed": "2026-11-12T16:18:05.269Z"
+      }
+    ],
+    "save_started": "2026-11-12T16:18:05.998Z",
+    "saves": [
+      {
+        "table": "live-groups",
+        "started": "2026-11-12T16:18:05.998Z",
+        "completed": "2026-11-12T16:18:06.800Z",
+        "rows": 7,
+        "changed": 2,
+        "source_to_save": [
+          {
+            "key": "200000078|2026-11-12|200028729",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 1531
+          },
+          {
+            "key": "200000078|2026-11-12|200028731",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 1531
+          },
+          {
+            "key": "200000078|2026-11-12|200028732",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 1531
+          },
+          {
+            "key": "200000078|2026-11-12|200028760",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 1531
+          },
+          {
+            "key": "200000078|2026-11-12|200028735",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 1531
+          },
+          {
+            "key": "200000078|2026-11-12|200028730",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 1531
+          },
+          {
+            "key": "200000078|2026-11-12|200028733",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 1531
+          }
+        ]
+      },
+      {
+        "table": "live-class-appearances",
+        "started": "2026-11-12T16:18:07.580Z",
+        "completed": "2026-11-12T16:18:07.580Z",
+        "rows": 7,
+        "changed": 0,
+        "source_to_save": [
+          {
+            "key": "200000078|2026-11-12|200028729|200031715",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 2311
+          },
+          {
+            "key": "200000078|2026-11-12|200028730|200031714",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 2311
+          },
+          {
+            "key": "200000078|2026-11-12|200028731|200031679",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 2311
+          },
+          {
+            "key": "200000078|2026-11-12|200028732|200031625",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 2311
+          },
+          {
+            "key": "200000078|2026-11-12|200028733|200031628",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 2311
+          },
+          {
+            "key": "200000078|2026-11-12|200028760|200031630",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 2311
+          },
+          {
+            "key": "200000078|2026-11-12|200028735|200031633",
+            "source_response_at": "2026-11-12T16:18:05.269Z",
+            "elapsed_ms": 2311
+          }
+        ]
+      }
+    ],
+    "save_completed": "2026-11-12T16:18:07.580Z",
+    "total_ms": 3098
+  },
+  "counts": {
+    "live-groups": 7,
+    "live-class-appearances": 7
+  },
+  "scope": {
+    "show": 200000078,
+    "customer": 15,
+    "date": "2026-11-12",
+    "authority": "recqIXAwokTzdiyWp",
+    "checked_at": "2026-11-09T06:09:40.397Z",
+    "active": true,
+    "eastern_time": "2026-11-12 11:15:13"
+  },
+  "day_priority": 0,
+  "live_status": true,
+  "membership": {
+    "complete": true,
+    "groups": 7,
+    "class_appearances": 7,
+    "unique_classes": 7
+  },
+  "completed": "2026-11-12T16:18:07.580Z"
+}

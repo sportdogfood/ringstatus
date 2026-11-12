@@ -1,0 +1,14 @@
+{
+  "run_id": "77077d6c-7671-4cf9-b57a-c0ff300cf0ca",
+  "started": "2026-11-12T16:21:34.712Z",
+  "actions": [],
+  "result": "Skipped",
+  "day": "2026-11-12",
+  "daily_clear_day": "2026-11-11",
+  "daily_due": false,
+  "quick_due": true,
+  "show": 200000078,
+  "new_show": false,
+  "reason": "Log counts below trigger/target or no eligible records",
+  "completed": "2026-11-12T16:21:38.419Z"
+}

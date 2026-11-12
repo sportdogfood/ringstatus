@@ -1,3 +1,9 @@
+# Current release — readable run-log fields
+
+**November 12, 2026.** Future run-logs include lane, record-type, record-key, trip-id, class-id and ring-id. Run summaries use type run and their UUID key; change rows use ring/group/class-appearance/class/entry/trip and the affected saved key. IDs come from saved fields and exact single native links; unavailable IDs stay blank. Existing diff bodies and old logs are untouched. Collection, source requests, links, cleanup, schedule and decoded pause are unchanged. Quiet checks identify lane live-check; linker identifies lane linker.
+
+Six native fields verified; 28 offline tests and author code review passed. Verified through normal 11:18 and 11:21 Eastern runs: new summary/change descriptors and trip/class/ring IDs read back, no stage/logging errors; 20 prior log samples unchanged. [Acceptance](evidence/run-log-fields-20261112/ACCEPTANCE.md). [Evidence](evidence/run-log-fields-20261112/TASK.md), [review](evidence/run-log-fields-20261112/review.md). General lock remains outside this approved delta.
+
 # Current cleanup recovery
 
 **November 12, 2026.** The cleanup-only Airtable reader retries one failed GET transport request. A read failure before any cleanup action records Error and allows a later normal scheduled check. Errors after an action starts retain the stop for reconciliation. Existing unknown stops remain protected.

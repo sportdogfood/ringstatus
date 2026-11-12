@@ -1,0 +1,1303 @@
+{
+  "checked_at": "2026-11-12T16:21:36.328Z",
+  "records": [
+    {
+      "id": "rec0IRzC4SaRYO5dV",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "run",
+        "entry-count": 296,
+        "group-count": 0,
+        "ring-count": 0,
+        "record-key": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff",
+        "class-count": 7,
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"day_priority\":0,\"live_status\":true,\"timings\":{\"collection_ms\":277.9744999999998,\"save_ms\":4139.3033000000005,\"collection_started\":\"2026-11-12T16:21:06.762Z\",\"collection_completed\":\"2026-11-12T16:21:07.040Z\",\"save_started\":\"2026-11-12T16:21:07.395Z\",\"save_completed\":\"2026-11-12T16:21:13.066Z\",\"total_ms\":8160},\"counts\":{\"live-classes\":7,\"live-entries\":296,\"live-trips\":306},\"changed_records\":19,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-classes-deac0a84-fa85-46db-9ff3-d0ee07ed66ff.json\"}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff"
+      }
+    },
+    {
+      "id": "rec0Irgzdatn1aF02",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200402094",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200402094\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"source-json.live.Pos\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"position\",\"before\":9,\"after\":10}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402094,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|11"
+      }
+    },
+    {
+      "id": "rec0n7XJA8RFKNG1o",
+      "createdTime": "2026-11-12T16:21:43.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Partial",
+        "lane": "linker",
+        "record-type": "run",
+        "errors": "No unique exact match for live-trips.w-trainers (trainer-name=DANIEL MICHAN HALBINGER). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-horses (horse-name=COLD AS ICE KING Z). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-horses (horse-name=CELINE). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-riders (rider-name=MADISON MYRO). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-riders (rider-name=CATHERINE TYREE FLORES). No retry recommended until source data changes.\nNo unique exact match for live-entries.w-horses (horse-id=missing). No retry recommended until source data changes.\nNo unique exact match for live-entries.w-riders (rider-id=missing). No retry recommended until source data changes.\nNo unique exact match for live-entries.w-trainers (trainer-id=missing). No retry recommended until source data changes.",
+        "record-key": "810a70c7-f1a9-451c-8926-6b3307dba368",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:33.858Z",
+        "summary": "{\"lane\":\"linker\",\"counts\":{},\"changed_records\":0,\"issues\":924}",
+        "started": "2026-11-12T16:21:15.407Z",
+        "run-id": "810a70c7-f1a9-451c-8926-6b3307dba368"
+      }
+    },
+    {
+      "id": "rec2di0lotV8K9yOB",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200401905",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200401905\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"5\",\"after\":\"7\"},{\"field\":\"source-json.live.Pos\",\"before\":\"5\",\"after\":\"7\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"4\",\"after\":\"6\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"5\",\"after\":\"7\"},{\"field\":\"position\",\"before\":5,\"after\":7}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200401905,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|7"
+      }
+    },
+    {
+      "id": "rec2n66CKXB0EbI8U",
+      "createdTime": "2026-11-12T16:21:19.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "groups",
+        "record-type": "group",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200028730",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:08.449Z",
+        "summary": "{\"lane\":\"groups\",\"parent_run_id\":\"76eea0ad-bdf2-4787-8652-0423088d1509\",\"table\":\"live-groups\",\"key\":\"200000078|2026-11-12|200028730\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"source-json.jo_gone\",\"before\":\"7\",\"after\":\"9\"},{\"field\":\"source-json.jo_total\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"source-json.trips\",\"before\":\"8/59\",\"after\":\"9/59\"},{\"field\":\"gone\",\"before\":8,\"after\":9},{\"field\":\"jo-total\",\"before\":8,\"after\":9},{\"field\":\"jo-gone\",\"before\":7,\"after\":9}]}",
+        "started": "2026-11-12T16:21:04.900Z",
+        "run-id": "76eea0ad-bdf2-4787-8652-0423088d1509|diff|0"
+      }
+    },
+    {
+      "id": "rec44XFXrY9Teql35",
+      "createdTime": "2026-11-12T16:21:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402127",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402127\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":7,\"after\":9},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"7\",\"after\":\"9\"},{\"field\":\"source-json.live.Pos\",\"before\":\"7\",\"after\":\"9\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"6\",\"after\":\"8\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"7\",\"after\":\"9\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"7\\\"}\",\"after\":\"{\\\"position\\\":\\\"9\\\"}\"}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402127,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|18"
+      }
+    },
+    {
+      "id": "rec5GdGi1OR8n4t1h",
+      "createdTime": "2026-11-12T16:21:17.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "rings",
+        "record-type": "run",
+        "entry-count": 0,
+        "group-count": 0,
+        "ring-count": 2,
+        "record-key": "10476226-9bba-490f-95c7-613e1bd5340b",
+        "class-count": 0,
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:07.550Z",
+        "summary": "{\"lane\":\"rings\",\"day_priority\":0,\"live_status\":true,\"timings\":{\"collection_ms\":121.25729999999976,\"save_ms\":766.721,\"collection_started\":\"2026-11-12T16:21:05.851Z\",\"collection_completed\":\"2026-11-12T16:21:05.973Z\",\"save_started\":\"2026-11-12T16:21:06.783Z\",\"save_completed\":\"2026-11-12T16:21:07.550Z\",\"total_ms\":2646},\"counts\":{\"live-rings\":2},\"changed_records\":1,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-rings-10476226-9bba-490f-95c7-613e1bd5340b.json\"}",
+        "started": "2026-11-12T16:21:04.904Z",
+        "run-id": "10476226-9bba-490f-95c7-613e1bd5340b"
+      }
+    },
+    {
+      "id": "rec7lrUYv3kJLKl3r",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402011",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402011\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"1\",\"after\":\"2\"},{\"field\":\"source-json.live.Pos\",\"before\":\"1\",\"after\":\"2\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"4\",\"after\":\"1\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"1\",\"after\":\"2\"},{\"field\":\"position\",\"before\":1,\"after\":2}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402011,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|2"
+      }
+    },
+    {
+      "id": "rec7qgGQ6sNdoYB7k",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402660",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402660\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"6\",\"after\":\"8\"},{\"field\":\"source-json.live.Pos\",\"before\":\"6\",\"after\":\"8\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"6\",\"after\":\"8\"},{\"field\":\"position\",\"before\":6,\"after\":8}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402660,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|8"
+      }
+    },
+    {
+      "id": "rec8Vw7eKh0rlfXRk",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200403363",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200403363\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"4\",\"after\":\"5\"},{\"field\":\"source-json.live.Pos\",\"before\":\"4\",\"after\":\"5\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"4\",\"after\":\"5\"},{\"field\":\"position\",\"before\":4,\"after\":5}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403363,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|6"
+      }
+    },
+    {
+      "id": "rec8jNQGDNh0fmelL",
+      "createdTime": "2026-11-12T16:21:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402660",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402660\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":6,\"after\":8},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"6\",\"after\":\"8\"},{\"field\":\"source-json.live.Pos\",\"before\":\"6\",\"after\":\"8\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"6\",\"after\":\"8\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"6\\\"}\",\"after\":\"{\\\"position\\\":\\\"8\\\"}\"}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402660,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|17"
+      }
+    },
+    {
+      "id": "rec8rlZBENybiZYrE",
+      "createdTime": "2026-11-12T16:18:17.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "rings",
+        "record-type": "ring",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|51",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:07.109Z",
+        "summary": "{\"lane\":\"rings\",\"parent_run_id\":\"a098f349-1162-4158-9391-7286accad58d\",\"table\":\"live-rings\",\"key\":\"200000078|2026-11-12|51\",\"created\":false,\"fields\":[{\"field\":\"source-json.livenow\",\"before\":[{\"class_group_id\":\"200028730\",\"group_name\":\"$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)\",\"day\":\"2026-11-12\",\"group_sequence\":\"2\",\"estimated_start_time\":\"11:00:00\",\"jumper_table\":\"FEI Rule 222.2.3\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"1\",\"classes\":[\"200031714\"],\"classNumbers\":[\"3010\"],\"classNames\":[\"$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)\"],\"class_numbers\":\"3010\",\"status\":\"Underway\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":7,\"total\":59,\"jo_gone\":6,\"jo_total\":7,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":true,\"has_JSON\":true,\"last_updated_class\":\"200031714\",\"recent_updated_classes\":[\"200031714\"],\"ring_id\":\"51\",\"ring\":\"International Ring\",\"link\":\"/liveclass/detail?cid=200031714&class_group_id=200028730\",\"trips\":\"7/59\"}],\"after\":[{\"class_group_id\":\"200028730\",\"group_name\":\"$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)\",\"day\":\"2026-11-12\",\"group_sequence\":\"2\",\"estimated_start_time\":\"11:00:00\",\"jumper_table\":\"FEI Rule 222.2.3\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"1\",\"classes\":[\"200031714\"],\"classNumbers\":[\"3010\"],\"classNames\":[\"$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)\"],\"class_numbers\":\"3010\",\"status\":\"Underway\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":8,\"total\":59,\"jo_gone\":7,\"jo_total\":8,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":true,\"has_JSON\":true,\"last_updated_class\":\"200031714\",\"recent_updated_classes\":[\"200031714\"],\"ring_id\":\"51\",\"ring\":\"International Ring\",\"link\":\"/liveclass/detail?cid=200031714&class_group_id=200028730\",\"trips\":\"8/59\"}]}]}",
+        "started": "2026-11-12T16:18:04.485Z",
+        "run-id": "a098f349-1162-4158-9391-7286accad58d|diff|0"
+      }
+    },
+    {
+      "id": "rec9KJPzrJv7AaC16",
+      "createdTime": "2026-11-12T16:21:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402353",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402353\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":4,\"after\":6},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"4\",\"after\":\"6\"},{\"field\":\"source-json.live.Pos\",\"before\":\"4\",\"after\":\"6\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"4\",\"after\":\"6\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"4\\\"}\",\"after\":\"{\\\"position\\\":\\\"6\\\"}\"}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402353,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|15"
+      }
+    },
+    {
+      "id": "rec9ZIZMjkkeGLmm3",
+      "createdTime": "2026-11-12T16:18:17.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "rings",
+        "record-type": "ring",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|49",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:07.109Z",
+        "summary": "{\"lane\":\"rings\",\"parent_run_id\":\"a098f349-1162-4158-9391-7286accad58d\",\"table\":\"live-rings\",\"key\":\"200000078|2026-11-12|49\",\"created\":false,\"fields\":[{\"field\":\"source-json.livenow\",\"before\":[{\"class_group_id\":\"200028733\",\"group_name\":\"1.25m Open Jumper II2d\",\"day\":\"2026-11-12\",\"group_sequence\":\"2\",\"estimated_start_time\":\"10:30:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031628\"],\"classNumbers\":[\"710\"],\"classNames\":[\"1.25m Open Jumper II2d\"],\"class_numbers\":\"710\",\"status\":\"Underway\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":16,\"total\":17,\"jo_gone\":16,\"jo_total\":16,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":true,\"has_JSON\":true,\"last_updated_class\":\"200031628\",\"recent_updated_classes\":[\"200031628\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031628&class_group_id=200028733\",\"trips\":\"16/17\"}],\"after\":[]},{\"field\":\"source-json.completed\",\"before\":[{\"class_group_id\":\"200028732\",\"group_name\":\"1.20m Open Jumper II2d\",\"day\":\"2026-11-12\",\"group_sequence\":\"1\",\"estimated_start_time\":\"08:30:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031625\"],\"classNumbers\":[\"787\"],\"classNames\":[\"1.20m Open Jumper II2d\"],\"class_numbers\":\"787\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":37,\"total\":37,\"jo_gone\":36,\"jo_total\":36,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"last_updated_class\":\"200031625\",\"recent_updated_classes\":[\"200031625\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031625&class_group_id=200028732\",\"trips\":37}],\"after\":[{\"class_group_id\":\"200028732\",\"group_name\":\"1.20m Open Jumper II2d\",\"day\":\"2026-11-12\",\"group_sequence\":\"1\",\"estimated_start_time\":\"08:30:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031625\"],\"classNumbers\":[\"787\"],\"classNames\":[\"1.20m Open Jumper II2d\"],\"class_numbers\":\"787\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":37,\"total\":37,\"jo_gone\":36,\"jo_total\":36,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"last_updated_class\":\"200031625\",\"recent_updated_classes\":[\"200031625\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031625&class_group_id=200028732\",\"trips\":37},{\"class_group_id\":\"200028733\",\"group_name\":\"1.25m Open Jumper II2d\",\"day\":\"2026-11-12\",\"group_sequence\":\"2\",\"estimated_start_time\":\"10:30:00\",\"jumper_table\":\"USEF Table II.2.d\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"5\",\"classes\":[\"200031628\"],\"classNumbers\":[\"710\"],\"classNames\":[\"1.25m Open Jumper II2d\"],\"class_numbers\":\"710\",\"status\":\"Completed\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":17,\"total\":17,\"jo_gone\":17,\"jo_total\":17,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":false,\"has_JSON\":true,\"last_updated_class\":\"200031628\",\"recent_updated_classes\":[\"200031628\"],\"ring_id\":\"49\",\"ring\":\"Denemethy\",\"link\":\"/liveclass/detail?cid=200031628&class_group_id=200028733\",\"trips\":17}]},{\"field\":\"current-group\",\"before\":[\"recVtubff7nU4L5I8\"],\"after\":[]},{\"field\":\"completed-groups\",\"before\":[\"recIgrGpXlhfMUVaw\"],\"after\":[\"recIgrGpXlhfMUVaw\",\"recVtubff7nU4L5I8\"]}]}",
+        "started": "2026-11-12T16:18:04.485Z",
+        "run-id": "a098f349-1162-4158-9391-7286accad58d|diff|1"
+      }
+    },
+    {
+      "id": "recByodtOuh2RQv9C",
+      "createdTime": "2026-11-12T16:18:18.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "groups",
+        "record-type": "group",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200028733",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:07.580Z",
+        "summary": "{\"lane\":\"groups\",\"parent_run_id\":\"9f0f3da8-83b3-4c86-8eec-b83421531e41\",\"table\":\"live-groups\",\"key\":\"200000078|2026-11-12|200028733\",\"created\":false,\"fields\":[{\"field\":\"source-json.status\",\"before\":\"Underway\",\"after\":\"Completed\"},{\"field\":\"source-json.gone\",\"before\":\"16\",\"after\":\"17\"},{\"field\":\"source-json.jo_gone\",\"before\":\"16\",\"after\":\"17\"},{\"field\":\"source-json.jo_total\",\"before\":\"16\",\"after\":\"17\"},{\"field\":\"source-json.is_live\",\"before\":true,\"after\":false},{\"field\":\"source-json.grid\",\"before\":\"#LiveNow\",\"after\":\"#Completed\"},{\"field\":\"source-json.trips\",\"before\":\"16/17\",\"after\":\"17\"},{\"field\":\"status\",\"before\":\"Underway\",\"after\":\"Completed\"},{\"field\":\"is-live\",\"before\":true,\"after\":false},{\"field\":\"gone\",\"before\":16,\"after\":17},{\"field\":\"jo-total\",\"before\":16,\"after\":17},{\"field\":\"jo-gone\",\"before\":16,\"after\":17}]}",
+        "started": "2026-11-12T16:18:04.482Z",
+        "run-id": "9f0f3da8-83b3-4c86-8eec-b83421531e41|diff|1"
+      }
+    },
+    {
+      "id": "recDN4zZT4VJQTo4Y",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200402783",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200402783\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"source-json.live.Pos\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"10\",\"after\":\"11\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"position\",\"before\":11,\"after\":12}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402783,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|13"
+      }
+    },
+    {
+      "id": "recEV7OczwyBY4LpB",
+      "createdTime": "2026-11-12T16:18:26.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200402377",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402377\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":12,\"after\":13},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"source-json.live.Pos\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"12\\\"}\",\"after\":\"{\\\"position\\\":\\\"13\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402377,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|31"
+      }
+    },
+    {
+      "id": "recErdnjHQOFwBbWG",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402660",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402660\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":7,\"after\":6},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"7\",\"after\":\"6\"},{\"field\":\"source-json.live.Pos\",\"before\":\"7\",\"after\":\"6\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"7\",\"after\":\"6\"},{\"field\":\"source-json.live.JOTF\",\"before\":\"\",\"after\":\"3\"},{\"field\":\"source-json.live.JOF\",\"before\":\"\",\"after\":\"3\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"49.18\"},{\"field\":\"source-json.live.jo_done\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"7\",\"after\":\"6\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"7\\\"}\",\"after\":\"{\\\"position\\\":\\\"6\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402660,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|19"
+      }
+    },
+    {
+      "id": "recFJpNelVD8QOd8e",
+      "createdTime": "2026-11-12T16:18:45.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Partial",
+        "lane": "linker",
+        "record-type": "run",
+        "errors": "No unique exact match for live-trips.w-trainers (trainer-name=DANIEL MICHAN HALBINGER). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-horses (horse-name=COLD AS ICE KING Z). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-horses (horse-name=CELINE). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-riders (rider-name=MADISON MYRO). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-riders (rider-name=CATHERINE TYREE FLORES). No retry recommended until source data changes.\nNo unique exact match for live-entries.w-horses (horse-id=missing). No retry recommended until source data changes.\nNo unique exact match for live-entries.w-riders (rider-id=missing). No retry recommended until source data changes.\nNo unique exact match for live-entries.w-trainers (trainer-id=missing). No retry recommended until source data changes.",
+        "record-key": "48557de8-2caf-404a-a0ae-b18121586622",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:35.375Z",
+        "summary": "{\"lane\":\"linker\",\"counts\":{},\"changed_records\":0,\"issues\":924}",
+        "started": "2026-11-12T16:18:17.289Z",
+        "run-id": "48557de8-2caf-404a-a0ae-b18121586622"
+      }
+    },
+    {
+      "id": "recIHwTdsv2fOnhIq",
+      "createdTime": "2026-11-12T16:21:18.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "groups",
+        "record-type": "run",
+        "entry-count": 0,
+        "group-count": 7,
+        "ring-count": 0,
+        "record-key": "76eea0ad-bdf2-4787-8652-0423088d1509",
+        "class-count": 7,
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:08.449Z",
+        "summary": "{\"lane\":\"groups\",\"day_priority\":0,\"live_status\":true,\"membership\":{\"complete\":true,\"groups\":7,\"class_appearances\":7,\"unique_classes\":7},\"timings\":{\"collection_ms\":252.72490000000016,\"save_ms\":836.8878,\"collection_started\":\"2026-11-12T16:21:05.737Z\",\"collection_completed\":\"2026-11-12T16:21:05.990Z\",\"save_started\":\"2026-11-12T16:21:06.812Z\",\"save_completed\":\"2026-11-12T16:21:08.449Z\",\"total_ms\":3549},\"counts\":{\"live-groups\":7,\"live-class-appearances\":7},\"changed_records\":1,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-groups-76eea0ad-bdf2-4787-8652-0423088d1509.json\"}",
+        "started": "2026-11-12T16:21:04.900Z",
+        "run-id": "76eea0ad-bdf2-4787-8652-0423088d1509"
+      }
+    },
+    {
+      "id": "recInOsL1DjleeXjz",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200403097",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200403097\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"16\",\"after\":\"17\"},{\"field\":\"source-json.live.Pos\",\"before\":\"16\",\"after\":\"17\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"15\",\"after\":\"16\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"16\",\"after\":\"17\"},{\"field\":\"position\",\"before\":16,\"after\":17}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403097,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|18"
+      }
+    },
+    {
+      "id": "recIo2nAr77zSoIpw",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "class",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-classes\",\"key\":\"200000078|2026-11-12|200031714\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"200402011,200402577,200401953,200402353,200401905,200402660,200402127,200402737\",\"after\":\"200402737,200402011,200402577,200402776,200401953,200402353,200401905,200402660,200402127\"},{\"field\":\"source-json.jo_gone_trips\",\"before\":\"200402011,200402577,200401953,200402353,200401905,200402660,200402127\",\"after\":\"200402737,200402011,200402577,200402776,200401953,200402353,200401905,200402660,200402127\"},{\"field\":\"source-json.curr\",\"before\":\"200402737\",\"after\":\"200402776\"},{\"field\":\"gone\",\"before\":8,\"after\":9},{\"field\":\"jo-gone\",\"before\":7,\"after\":9},{\"field\":\"current-trip-id\",\"before\":200402737,\"after\":200402776}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|0"
+      }
+    },
+    {
+      "id": "recJxwCOOvs5QCKzO",
+      "createdTime": "2026-11-12T16:21:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200401905",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200401905\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":5,\"after\":7},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"5\",\"after\":\"7\"},{\"field\":\"source-json.live.Pos\",\"before\":\"5\",\"after\":\"7\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"4\",\"after\":\"6\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"5\",\"after\":\"7\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"5\\\"}\",\"after\":\"{\\\"position\\\":\\\"7\\\"}\"}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200401905,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|16"
+      }
+    },
+    {
+      "id": "recM53vEm333e8pgF",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402737",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402737\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"8\",\"after\":\"1\"},{\"field\":\"source-json.live.Pos\",\"before\":\"8\",\"after\":\"1\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"8\",\"after\":\"1\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"35.68\"},{\"field\":\"source-json.live.jo_done\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"8\",\"after\":\"1\"},{\"field\":\"position\",\"before\":8,\"after\":1}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402737,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|1"
+      }
+    },
+    {
+      "id": "recO025RxkvxxbXYe",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "class",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-classes\",\"key\":\"200000078|2026-11-12|200031714\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"200402011,200402577,200401953,200402353,200401905,200402127,200402660\",\"after\":\"200402011,200402577,200401953,200402353,200401905,200402660,200402127,200402737\"},{\"field\":\"source-json.jo_gone_trips\",\"before\":\"200402011,200402577,200401953,200402353,200401905,200402127\",\"after\":\"200402011,200402577,200401953,200402353,200401905,200402660,200402127\"},{\"field\":\"source-json.curr\",\"before\":\"200402660\",\"after\":\"200402737\"},{\"field\":\"gone\",\"before\":7,\"after\":8},{\"field\":\"jo-gone\",\"before\":6,\"after\":7},{\"field\":\"current-trip-id\",\"before\":200402660,\"after\":200402737}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|0"
+      }
+    },
+    {
+      "id": "recPEPsONO5D1XAwS",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200403028",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200403028\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"14\",\"after\":\"15\"},{\"field\":\"source-json.live.Pos\",\"before\":\"14\",\"after\":\"15\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"14\",\"after\":\"15\"},{\"field\":\"position\",\"before\":14,\"after\":15}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403028,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|16"
+      }
+    },
+    {
+      "id": "recPH1pxJ9FSY6Qlr",
+      "createdTime": "2026-11-12T16:21:18.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "rings",
+        "record-type": "ring",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|51",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:07.550Z",
+        "summary": "{\"lane\":\"rings\",\"parent_run_id\":\"10476226-9bba-490f-95c7-613e1bd5340b\",\"table\":\"live-rings\",\"key\":\"200000078|2026-11-12|51\",\"created\":false,\"fields\":[{\"field\":\"source-json.livenow\",\"before\":[{\"class_group_id\":\"200028730\",\"group_name\":\"$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)\",\"day\":\"2026-11-12\",\"group_sequence\":\"2\",\"estimated_start_time\":\"11:00:00\",\"jumper_table\":\"FEI Rule 222.2.3\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"1\",\"classes\":[\"200031714\"],\"classNumbers\":[\"3010\"],\"classNames\":[\"$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)\"],\"class_numbers\":\"3010\",\"status\":\"Underway\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":8,\"total\":59,\"jo_gone\":7,\"jo_total\":8,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":true,\"has_JSON\":true,\"last_updated_class\":\"200031714\",\"recent_updated_classes\":[\"200031714\"],\"ring_id\":\"51\",\"ring\":\"International Ring\",\"link\":\"/liveclass/detail?cid=200031714&class_group_id=200028730\",\"trips\":\"8/59\"}],\"after\":[{\"class_group_id\":\"200028730\",\"group_name\":\"$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)\",\"day\":\"2026-11-12\",\"group_sequence\":\"2\",\"estimated_start_time\":\"11:00:00\",\"jumper_table\":\"FEI Rule 222.2.3\",\"hunter_type\":\"\",\"hunter_scoreby\":\"\",\"jogordertrips\":\"0\",\"ring_number\":\"1\",\"classes\":[\"200031714\"],\"classNumbers\":[\"3010\"],\"classNames\":[\"$32,000 JTWG Inc. CSI3* 1.45m 2 Phase Special (222.2.3)\"],\"class_numbers\":\"3010\",\"status\":\"Underway\",\"JOUnderway\":false,\"JOUpcoming\":false,\"gone\":9,\"total\":59,\"jo_gone\":8,\"jo_total\":9,\"R2Underway\":false,\"R2Upcoming\":false,\"r2_gone\":0,\"r2_total\":0,\"is_live\":true,\"has_JSON\":true,\"last_updated_class\":\"200031714\",\"recent_updated_classes\":[\"200031714\"],\"ring_id\":\"51\",\"ring\":\"International Ring\",\"link\":\"/liveclass/detail?cid=200031714&class_group_id=200028730\",\"trips\":\"9/59\"}]}]}",
+        "started": "2026-11-12T16:21:04.904Z",
+        "run-id": "10476226-9bba-490f-95c7-613e1bd5340b|diff|0"
+      }
+    },
+    {
+      "id": "recQk7nPXSGRflZbp",
+      "createdTime": "2026-11-12T16:18:26.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200403028",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200403028\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":14,\"after\":15},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"14\",\"after\":\"15\"},{\"field\":\"source-json.live.Pos\",\"before\":\"14\",\"after\":\"15\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"14\",\"after\":\"15\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"14\\\"}\",\"after\":\"{\\\"position\\\":\\\"15\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403028,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|33"
+      }
+    },
+    {
+      "id": "recSdQK1ILwWh0tyA",
+      "createdTime": "2026-11-12T16:18:26.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200402783",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402783\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":11,\"after\":12},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"source-json.live.Pos\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"10\",\"after\":\"11\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"11\\\"}\",\"after\":\"{\\\"position\\\":\\\"12\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402783,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|30"
+      }
+    },
+    {
+      "id": "recSgsNnEXwJzBd0a",
+      "createdTime": "2026-11-12T16:21:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402737",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402737\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":8,\"after\":1},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"8\",\"after\":\"1\"},{\"field\":\"source-json.live.Pos\",\"before\":\"8\",\"after\":\"1\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"8\",\"after\":\"1\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"35.68\"},{\"field\":\"source-json.live.jo_done\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"8\",\"after\":\"1\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"8\\\"}\",\"after\":\"{\\\"position\\\":\\\"1\\\"}\"}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402737,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|10"
+      }
+    },
+    {
+      "id": "recSqJOY9EDuhhpDS",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "run",
+        "entry-count": 296,
+        "group-count": 0,
+        "ring-count": 0,
+        "record-key": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf",
+        "class-count": 7,
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"day_priority\":0,\"live_status\":true,\"timings\":{\"collection_ms\":268.64980000000014,\"save_ms\":5997.637299999999,\"collection_started\":\"2026-11-12T16:18:05.953Z\",\"collection_completed\":\"2026-11-12T16:18:06.222Z\",\"save_started\":\"2026-11-12T16:18:06.600Z\",\"save_completed\":\"2026-11-12T16:18:14.139Z\",\"total_ms\":9652},\"counts\":{\"live-classes\":7,\"live-entries\":296,\"live-trips\":306},\"changed_records\":36,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-classes-5268aaa5-2912-45b7-ba3c-5ba1b8932dbf.json\"}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf"
+      }
+    },
+    {
+      "id": "recTaaeI9PfjeEc3J",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200403194",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200403194\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"15\",\"after\":\"16\"},{\"field\":\"source-json.live.Pos\",\"before\":\"15\",\"after\":\"16\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"14\",\"after\":\"15\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"15\",\"after\":\"16\"},{\"field\":\"position\",\"before\":15,\"after\":16}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403194,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|17"
+      }
+    },
+    {
+      "id": "recUZcIVLdMvP46Q9",
+      "createdTime": "2026-11-12T16:18:26.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200403097",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200403097\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":16,\"after\":17},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"16\",\"after\":\"17\"},{\"field\":\"source-json.live.Pos\",\"before\":\"16\",\"after\":\"17\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"15\",\"after\":\"16\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"16\",\"after\":\"17\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"16\\\"}\",\"after\":\"{\\\"position\\\":\\\"17\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403097,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|35"
+      }
+    },
+    {
+      "id": "recUcT6PwUqupXMn2",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200403189",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200403189\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":10,\"after\":11},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"10\",\"after\":\"11\"},{\"field\":\"source-json.live.Pos\",\"before\":\"10\",\"after\":\"11\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"10\",\"after\":\"11\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"10\\\"}\",\"after\":\"{\\\"position\\\":\\\"11\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403189,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|29"
+      }
+    },
+    {
+      "id": "recVuPOHao8fOHN5l",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402660",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402660\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"7\",\"after\":\"6\"},{\"field\":\"source-json.live.Pos\",\"before\":\"7\",\"after\":\"6\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"7\",\"after\":\"6\"},{\"field\":\"source-json.live.JOTF\",\"before\":\"\",\"after\":\"3\"},{\"field\":\"source-json.live.JOF\",\"before\":\"\",\"after\":\"3\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"49.18\"},{\"field\":\"source-json.live.jo_done\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"7\",\"after\":\"6\"},{\"field\":\"position\",\"before\":7,\"after\":6}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402660,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|2"
+      }
+    },
+    {
+      "id": "recX5uXTHkZ0UHXUP",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200403045",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200403045\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"source-json.live.Pos\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"position\",\"before\":13,\"after\":14}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403045,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|15"
+      }
+    },
+    {
+      "id": "recX6OMIWpQookVcd",
+      "createdTime": "2026-11-12T16:21:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402011",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402011\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":1,\"after\":2},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"1\",\"after\":\"2\"},{\"field\":\"source-json.live.Pos\",\"before\":\"1\",\"after\":\"2\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"4\",\"after\":\"1\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"1\",\"after\":\"2\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"1\\\"}\",\"after\":\"{\\\"position\\\":\\\"2\\\"}\"}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402011,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|11"
+      }
+    },
+    {
+      "id": "recXBVzhb6ecuxaCW",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200402777",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402777\",\"created\":false,\"fields\":[{\"field\":\"actual-order\",\"before\":null,\"after\":17},{\"field\":\"gone\",\"before\":0,\"after\":1},{\"field\":\"position\",\"before\":0,\"after\":4},{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"\",\"after\":\"4\"},{\"field\":\"source-json.live.R2_Qualified\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_Upcoming\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"17\"},{\"field\":\"source-json.live.Actual_OOG_R2\",\"before\":\"\",\"after\":\"17\"},{\"field\":\"source-json.live.Pos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"source-json.live.R1T\",\"before\":\"\",\"after\":\"37.798\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"32.868\"},{\"field\":\"source-json.live.jo_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:17:07 GMT\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"0\\\"}\",\"after\":\"{\\\"position\\\":\\\"4\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402777,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|22"
+      }
+    },
+    {
+      "id": "recZIpm8q5Zaeh6KF",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200402154",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200402154\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"source-json.live.Pos\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"position\",\"before\":7,\"after\":8}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402154,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|9"
+      }
+    },
+    {
+      "id": "recZQh2Mti8DxrsC3",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402353",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402353\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"4\",\"after\":\"6\"},{\"field\":\"source-json.live.Pos\",\"before\":\"4\",\"after\":\"6\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"4\",\"after\":\"6\"},{\"field\":\"position\",\"before\":4,\"after\":6}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402353,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|6"
+      }
+    },
+    {
+      "id": "recaJyPfetGzzUj9h",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200403189",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200403189\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"10\",\"after\":\"11\"},{\"field\":\"source-json.live.Pos\",\"before\":\"10\",\"after\":\"11\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"10\",\"after\":\"11\"},{\"field\":\"position\",\"before\":10,\"after\":11}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403189,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|12"
+      }
+    },
+    {
+      "id": "recaQPU9MybdATUoc",
+      "createdTime": "2026-11-12T16:21:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402577",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402577\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":2,\"after\":3},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"source-json.live.Pos\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"2\\\"}\",\"after\":\"{\\\"position\\\":\\\"3\\\"}\"}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402577,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|12"
+      }
+    },
+    {
+      "id": "recah78U97w0oWHV0",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200402097",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200402097\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"source-json.live.Pos\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"position\",\"before\":8,\"after\":9}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402097,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|10"
+      }
+    },
+    {
+      "id": "recbL8pudeFiu0mNW",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402127",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402127\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.Pos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"position\",\"before\":6,\"after\":7}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402127,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|3"
+      }
+    },
+    {
+      "id": "recd0mbw712V5CCJF",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402737",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402737\",\"created\":false,\"fields\":[{\"field\":\"actual-order\",\"before\":null,\"after\":8},{\"field\":\"gone\",\"before\":0,\"after\":1},{\"field\":\"position\",\"before\":0,\"after\":8},{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"\",\"after\":\"8\"},{\"field\":\"source-json.live.R2_Qualified\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_Upcoming\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"8\"},{\"field\":\"source-json.live.Actual_OOG_R2\",\"before\":\"\",\"after\":\"8\"},{\"field\":\"source-json.live.Pos\",\"before\":\"0\",\"after\":\"8\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"0\",\"after\":\"8\"},{\"field\":\"source-json.live.R1T\",\"before\":\"\",\"after\":\"44.19\"},{\"field\":\"source-json.live.pt\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.r1_cd\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:16:40 GMT\"},{\"field\":\"source-json.live.r1_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:16:59 GMT\"},{\"field\":\"source-json.live.jo_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:17:43 GMT\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"0\",\"after\":\"8\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"0\\\"}\",\"after\":\"{\\\"position\\\":\\\"8\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402737,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|21"
+      }
+    },
+    {
+      "id": "rece0okTlocpNhO5U",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402737",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402737\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"\",\"after\":\"8\"},{\"field\":\"source-json.live.R2_Qualified\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_Upcoming\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"8\"},{\"field\":\"source-json.live.Actual_OOG_R2\",\"before\":\"\",\"after\":\"8\"},{\"field\":\"source-json.live.Pos\",\"before\":\"0\",\"after\":\"8\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"0\",\"after\":\"8\"},{\"field\":\"source-json.live.R1T\",\"before\":\"\",\"after\":\"44.19\"},{\"field\":\"source-json.live.pt\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.r1_cd\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:16:40 GMT\"},{\"field\":\"source-json.live.r1_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:16:59 GMT\"},{\"field\":\"source-json.live.jo_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:17:43 GMT\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"0\",\"after\":\"8\"},{\"field\":\"actual-order\",\"before\":null,\"after\":8},{\"field\":\"gone\",\"before\":0,\"after\":1},{\"field\":\"position\",\"before\":0,\"after\":8}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402737,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|4"
+      }
+    },
+    {
+      "id": "rece5zrzmn577Ald6",
+      "createdTime": "2026-11-12T16:18:26.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200403194",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200403194\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":15,\"after\":16},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"15\",\"after\":\"16\"},{\"field\":\"source-json.live.Pos\",\"before\":\"15\",\"after\":\"16\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"14\",\"after\":\"15\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"15\",\"after\":\"16\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"15\\\"}\",\"after\":\"{\\\"position\\\":\\\"16\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403194,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|34"
+      }
+    },
+    {
+      "id": "receJaLPrK2GntyS2",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200402154",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402154\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":7,\"after\":8},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"source-json.live.Pos\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"7\\\"}\",\"after\":\"{\\\"position\\\":\\\"8\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402154,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|26"
+      }
+    },
+    {
+      "id": "recfBjPCHUge6HWmW",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200402377",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200402377\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"source-json.live.Pos\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"position\",\"before\":12,\"after\":13}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402377,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|14"
+      }
+    },
+    {
+      "id": "recgFsiwqxxfNCgRY",
+      "createdTime": "2026-11-12T16:21:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200401953",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200401953\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":3,\"after\":5},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"3\",\"after\":\"5\"},{\"field\":\"source-json.live.Pos\",\"before\":\"3\",\"after\":\"5\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"3\",\"after\":\"5\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"3\\\"}\",\"after\":\"{\\\"position\\\":\\\"5\\\"}\"}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200401953,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|14"
+      }
+    },
+    {
+      "id": "recj24gUJZDpY8L2T",
+      "createdTime": "2026-11-12T16:18:17.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "rings",
+        "record-type": "run",
+        "entry-count": 0,
+        "group-count": 0,
+        "ring-count": 2,
+        "record-key": "a098f349-1162-4158-9391-7286accad58d",
+        "class-count": 0,
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:07.109Z",
+        "summary": "{\"lane\":\"rings\",\"day_priority\":0,\"live_status\":true,\"timings\":{\"collection_ms\":177.92390000000023,\"save_ms\":836.2467999999999,\"collection_started\":\"2026-11-12T16:18:05.234Z\",\"collection_completed\":\"2026-11-12T16:18:05.412Z\",\"save_started\":\"2026-11-12T16:18:06.273Z\",\"save_completed\":\"2026-11-12T16:18:07.109Z\",\"total_ms\":2624},\"counts\":{\"live-rings\":2},\"changed_records\":2,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-rings-a098f349-1162-4158-9391-7286accad58d.json\"}",
+        "started": "2026-11-12T16:18:04.485Z",
+        "run-id": "a098f349-1162-4158-9391-7286accad58d"
+      }
+    },
+    {
+      "id": "recjKQ3J0DMMSqP6L",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200402097",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402097\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":8,\"after\":9},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"source-json.live.Pos\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"8\\\"}\",\"after\":\"{\\\"position\\\":\\\"9\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402097,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|27"
+      }
+    },
+    {
+      "id": "recjOrda7BzCwVI39",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200402871",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402871\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":5,\"after\":6},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"5\",\"after\":\"6\"},{\"field\":\"source-json.live.Pos\",\"before\":\"5\",\"after\":\"6\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"5\",\"after\":\"6\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"5\\\"}\",\"after\":\"{\\\"position\\\":\\\"6\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402871,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|24"
+      }
+    },
+    {
+      "id": "recjxxjMaAW0vSNQr",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402127",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402127\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":6,\"after\":7},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.Pos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"6\\\"}\",\"after\":\"{\\\"position\\\":\\\"7\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402127,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|20"
+      }
+    },
+    {
+      "id": "recjz5bgE4jLp6T4H",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402127",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402127\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"7\",\"after\":\"9\"},{\"field\":\"source-json.live.Pos\",\"before\":\"7\",\"after\":\"9\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"6\",\"after\":\"8\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"7\",\"after\":\"9\"},{\"field\":\"position\",\"before\":7,\"after\":9}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402127,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|9"
+      }
+    },
+    {
+      "id": "recljDBIzgqtfk1dV",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200402094",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402094\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":9,\"after\":10},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"source-json.live.Pos\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"9\\\"}\",\"after\":\"{\\\"position\\\":\\\"10\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402094,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|28"
+      }
+    },
+    {
+      "id": "recpg06kkBhO0seQX",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402577",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402577\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"source-json.live.Pos\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"position\",\"before\":2,\"after\":3}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402577,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|3"
+      }
+    },
+    {
+      "id": "recs2mxkaqQOOCjRo",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200403363",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200403363\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":4,\"after\":5},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"4\",\"after\":\"5\"},{\"field\":\"source-json.live.Pos\",\"before\":\"4\",\"after\":\"5\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"4\",\"after\":\"5\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"4\\\"}\",\"after\":\"{\\\"position\\\":\\\"5\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403363,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|23"
+      }
+    },
+    {
+      "id": "recsUXrCJKKAxXc5z",
+      "createdTime": "2026-11-12T16:18:26.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200403045",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200403045\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":13,\"after\":14},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"source-json.live.Pos\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"13\\\"}\",\"after\":\"{\\\"position\\\":\\\"14\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200403045,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|32"
+      }
+    },
+    {
+      "id": "recsZ5Df9F7xVb0U1",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200402871",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200402871\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"5\",\"after\":\"6\"},{\"field\":\"source-json.live.Pos\",\"before\":\"5\",\"after\":\"6\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"5\",\"after\":\"6\"},{\"field\":\"position\",\"before\":5,\"after\":6}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402871,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|7"
+      }
+    },
+    {
+      "id": "recsdifLijkwSOkiT",
+      "createdTime": "2026-11-12T16:18:17.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "groups",
+        "record-type": "run",
+        "entry-count": 0,
+        "group-count": 7,
+        "ring-count": 0,
+        "record-key": "9f0f3da8-83b3-4c86-8eec-b83421531e41",
+        "class-count": 7,
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:07.580Z",
+        "summary": "{\"lane\":\"groups\",\"day_priority\":0,\"live_status\":true,\"membership\":{\"complete\":true,\"groups\":7,\"class_appearances\":7,\"unique_classes\":7},\"timings\":{\"collection_ms\":238.8837000000001,\"save_ms\":802.3094000000006,\"collection_started\":\"2026-11-12T16:18:05.030Z\",\"collection_completed\":\"2026-11-12T16:18:05.269Z\",\"save_started\":\"2026-11-12T16:18:05.998Z\",\"save_completed\":\"2026-11-12T16:18:07.580Z\",\"total_ms\":3098},\"counts\":{\"live-groups\":7,\"live-class-appearances\":7},\"changed_records\":2,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-groups-9f0f3da8-83b3-4c86-8eec-b83421531e41.json\"}",
+        "started": "2026-11-12T16:18:04.482Z",
+        "run-id": "9f0f3da8-83b3-4c86-8eec-b83421531e41"
+      }
+    },
+    {
+      "id": "rectXyr1KqQqw1OgV",
+      "createdTime": "2026-11-12T16:21:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 51,
+        "record-key": "15|200000078|2026-11-12|51|200031714||200402776",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200402776\",\"created\":false,\"fields\":[{\"field\":\"actual-order\",\"before\":null,\"after\":9},{\"field\":\"gone\",\"before\":0,\"after\":1},{\"field\":\"position\",\"before\":0,\"after\":4},{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"\",\"after\":\"4\"},{\"field\":\"source-json.live.R2_Qualified\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_Upcoming\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"9\"},{\"field\":\"source-json.live.Actual_OOG_R2\",\"before\":\"\",\"after\":\"9\"},{\"field\":\"source-json.live.Pos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"source-json.live.R1TF\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R1F\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R1T\",\"before\":\"\",\"after\":\"48.95\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"44.57\"},{\"field\":\"source-json.live.pt\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.r1_cd\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:18:38 GMT\"},{\"field\":\"source-json.live.r1_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:19:23 GMT\"},{\"field\":\"source-json.live.jo_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:20:12 GMT\"},{\"field\":\"source-json.live.jo_done\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"0\\\"}\",\"after\":\"{\\\"position\\\":\\\"4\\\"}\"}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402776,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|13"
+      }
+    },
+    {
+      "id": "rectq0Xdf1vH17np9",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200402776",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200402776\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"\",\"after\":\"4\"},{\"field\":\"source-json.live.R2_Qualified\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_Upcoming\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"9\"},{\"field\":\"source-json.live.Actual_OOG_R2\",\"before\":\"\",\"after\":\"9\"},{\"field\":\"source-json.live.Pos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"source-json.live.R1TF\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R1F\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R1T\",\"before\":\"\",\"after\":\"48.95\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"44.57\"},{\"field\":\"source-json.live.pt\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.r1_cd\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:18:38 GMT\"},{\"field\":\"source-json.live.r1_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:19:23 GMT\"},{\"field\":\"source-json.live.jo_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:20:12 GMT\"},{\"field\":\"source-json.live.jo_done\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"actual-order\",\"before\":null,\"after\":9},{\"field\":\"gone\",\"before\":0,\"after\":1},{\"field\":\"position\",\"before\":0,\"after\":4}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200402776,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|4"
+      }
+    },
+    {
+      "id": "rectzHW73JqVOet0X",
+      "createdTime": "2026-11-12T16:18:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "trip",
+        "ring-id": 49,
+        "record-key": "15|200000078|2026-11-12|49|200031628||200402028",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402028\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":6,\"after\":7},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.Pos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"5\",\"after\":\"6\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"6\\\"}\",\"after\":\"{\\\"position\\\":\\\"7\\\"}\"}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402028,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|25"
+      }
+    },
+    {
+      "id": "recudw94QmL49HnWm",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200402028",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200402028\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.Pos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"5\",\"after\":\"6\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"position\",\"before\":6,\"after\":7}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402028,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|8"
+      }
+    },
+    {
+      "id": "recwl56NdxfZTgIN8",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628|200402777",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200402777\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.Gone\",\"before\":\"0\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"\",\"after\":\"4\"},{\"field\":\"source-json.live.R2_Qualified\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.R2_Upcoming\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.Actual_OOG\",\"before\":\"\",\"after\":\"17\"},{\"field\":\"source-json.live.Actual_OOG_R2\",\"before\":\"\",\"after\":\"17\"},{\"field\":\"source-json.live.Pos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"source-json.live.R1T\",\"before\":\"\",\"after\":\"37.798\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"32.868\"},{\"field\":\"source-json.live.jo_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:17:07 GMT\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"actual-order\",\"before\":null,\"after\":17},{\"field\":\"gone\",\"before\":0,\"after\":1},{\"field\":\"position\",\"before\":0,\"after\":4}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "trip-id": 200402777,
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|5"
+      }
+    },
+    {
+      "id": "recxFH8Fcn7yjmSyh",
+      "createdTime": "2026-11-12T16:21:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031714,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "entry",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200031714|200401953",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:21:13.066Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"deac0a84-fa85-46db-9ff3-d0ee07ed66ff\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031714|200401953\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"3\",\"after\":\"5\"},{\"field\":\"source-json.live.Pos\",\"before\":\"3\",\"after\":\"5\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"3\",\"after\":\"5\"},{\"field\":\"position\",\"before\":3,\"after\":5}]}",
+        "started": "2026-11-12T16:21:04.906Z",
+        "trip-id": 200401953,
+        "run-id": "deac0a84-fa85-46db-9ff3-d0ee07ed66ff|diff|5"
+      }
+    },
+    {
+      "id": "reczTCVwQBKU8W3sV",
+      "createdTime": "2026-11-12T16:18:18.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "lane": "groups",
+        "record-type": "group",
+        "ring-id": 51,
+        "record-key": "200000078|2026-11-12|200028730",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:07.580Z",
+        "summary": "{\"lane\":\"groups\",\"parent_run_id\":\"9f0f3da8-83b3-4c86-8eec-b83421531e41\",\"table\":\"live-groups\",\"key\":\"200000078|2026-11-12|200028730\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"source-json.jo_gone\",\"before\":\"6\",\"after\":\"7\"},{\"field\":\"source-json.jo_total\",\"before\":\"7\",\"after\":\"8\"},{\"field\":\"source-json.trips\",\"before\":\"7/59\",\"after\":\"8/59\"},{\"field\":\"gone\",\"before\":7,\"after\":8},{\"field\":\"jo-total\",\"before\":7,\"after\":8},{\"field\":\"jo-gone\",\"before\":6,\"after\":7}]}",
+        "started": "2026-11-12T16:18:04.482Z",
+        "run-id": "9f0f3da8-83b3-4c86-8eec-b83421531e41|diff|0"
+      }
+    },
+    {
+      "id": "reczjG3CHSVeQjISm",
+      "createdTime": "2026-11-12T16:18:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "class-id": 200031628,
+        "result": "Success",
+        "lane": "classes",
+        "record-type": "class",
+        "ring-id": 49,
+        "record-key": "200000078|2026-11-12|200031628",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:18:14.139Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"5268aaa5-2912-45b7-ba3c-5ba1b8932dbf\",\"table\":\"live-classes\",\"key\":\"200000078|2026-11-12|200031628\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"200402998,200403199,200402027,200403363,200402871,200402028,200402154,200402097,200402094,200403189,200402783,200402377,200403045,200403028,200403194,200403097\",\"after\":\"200402998,200403199,200402027,200402777,200403363,200402871,200402028,200402154,200402097,200402094,200403189,200402783,200402377,200403045,200403028,200403194,200403097\"},{\"field\":\"source-json.jo_gone_trips\",\"before\":\"200402998,200403199,200402027,200403363,200402871,200402028,200402154,200402097,200402094,200403189,200402783,200402377,200403045,200403028,200403194,200403097\",\"after\":\"200402998,200403199,200402027,200402777,200403363,200402871,200402028,200402154,200402097,200402094,200403189,200402783,200402377,200403045,200403028,200403194,200403097\"},{\"field\":\"source-json.curr\",\"before\":\"200402094\",\"after\":\"200402777\"},{\"field\":\"gone\",\"before\":16,\"after\":17},{\"field\":\"jo-gone\",\"before\":16,\"after\":17},{\"field\":\"current-trip-id\",\"before\":200402094,\"after\":200402777}]}",
+        "started": "2026-11-12T16:18:04.487Z",
+        "run-id": "5268aaa5-2912-45b7-ba3c-5ba1b8932dbf|diff|1"
+      }
+    }
+  ]
+}

@@ -3,6 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const model=require('./model'),sources=require('./source'),settings=require('./settings');
 const {store}=require('./lane-store'),membership=require('./membership');
 const LANES=['groups','rings','classes'];
+const {logFields}=require('./run-log-fields');
 const clean=r=>Object.fromEntries(Object.entries(r).filter(([k])=>!k.startsWith('_')&&k!=='scope-status'));
 const {inWindow}=require('./live-cadence');
 function read(file){try{return JSON.parse(fs.readFileSync(file,'utf8'));}catch(e){if(e.code==='ENOENT')return null;throw e;}}
@@ -19,7 +20,7 @@ async function lane(name,{
  let previous={records:{}},shared,collectionStart;
  try{previous=read(sharedFile)||previous;if(!previous.records||typeof previous.records!=='object')previous.records={};}catch(e){issue('Shared state unavailable: '+e.message);}
  fs.mkdirSync(runtime,{recursive:true});
- const logIds=new Map(),uncertainLogs=new Set();
+ const logIds=new Map(),uncertainLogs=new Set(),logData={};
  async function log(table,key,fields){
   for(let i=0;i<fields.length;i+=10){const batch=fields.slice(i,i+10).filter(f=>!uncertainLogs.has(table+'|'+f[key])),existing=new Set(batch.filter(f=>logIds.has(table+'|'+f[key])).map(f=>f[key]));
    for(const method of ['POST','PATCH']){const selected=batch.filter(f=>existing.has(f[key])===(method==='PATCH'));if(!selected.length)continue;
@@ -45,7 +46,7 @@ async function lane(name,{
  async function save(table,key,rows,observedAt){
   const start=clock(),begin=performance.now();r.timings.save_started||=start;
   try{
-   const result=await db.save(table,key,rows);r.changes.push(...result.changes);
+   const result=await db.save(table,key,rows);logData[table]=result.rows;r.changes.push(...result.changes);
    if(result.attempted&&!result.covered.length)await stageFailure('save '+table,Error('No attempted records confirmed saved'));
    for(const k of result.covered){const changed=result.changes.some(c=>c.key===k);const prior=previous.records?.[table+'|'+k];
     const stampAt=typeof observedAt==='function'?observedAt(k):observedAt;
@@ -88,7 +89,7 @@ async function lane(name,{
    if(selected.length&&!Array.isArray(selected[0].json_data)){issue('Missing groups array');return r;}
    const inventory=membership.appearances(data,r.scope);
    if(!inventory.complete)issue('Incomplete group/class membership; absent states unchanged');
-   const rings=scoped(await db.list('live-rings')),groups=[],refs=new Map();
+   const rings=scoped(await db.list('live-rings')),groups=[],refs=new Map();logData['live-rings']=rings;
    for(const raw of selected[0]?.json_data||[]){
     if(!raw||typeof raw!=='object'){issue('Unreadable group record');continue;}
     if(model.day(raw.day)!==r.scope.date){if(!model.day(raw.day))issue('Group date missing');continue;}
@@ -120,7 +121,7 @@ async function lane(name,{
    const presentGroups=new Set(inventory.groups.map(g=>g.key));
    const groupRows=groupStates.map(g=>({...mapped.get(g.key),'group-key':g.key,'record-status':g['record-status'],...(presentGroups.has(g.key)?{'show-id':r.scope.show,date:r.scope.date,'class-group-id':g['group-id'],'last-seen':received}:{})}));
    await save('live-groups','group-key',groupRows,received);
-   const savedGroups=scoped(await db.list('live-groups')),savedClasses=scoped(await db.list('live-classes'));
+   const savedGroups=scoped(await db.list('live-groups')),savedClasses=scoped(await db.list('live-classes'));logData['live-classes']=savedClasses;
    const priorAppearances=scoped(await db.list('live-class-appearances'));
    const appearanceStates=membership.reconcile(priorAppearances.map(x=>({...x.fields,key:x.fields['appearance-key']})),inventory.classes,{complete:inventory.complete,scope:r.scope});
    const currentAppearances=new Set(inventory.classes.map(a=>a.key));
@@ -165,7 +166,7 @@ async function lane(name,{
   }else if(name==='classes'){
    let latest;try{latest=read(path.join(runtime,'lane-groups-state.json'));}catch(e){issue('Shared class references unreadable: '+e.message);return r;}
    if(latest?.shared?.scope?.show!==r.scope.show||latest.shared.scope.date!==r.scope.date||!Array.isArray(latest.shared.classes)){issue('No matching saved class references');return r;}
-   const rings=scoped(await db.list('live-rings')),groups=scoped(await db.list('live-groups'));
+   const rings=scoped(await db.list('live-rings')),groups=scoped(await db.list('live-groups'));logData['live-rings']=rings;
    const references=latest.shared.classes,results=[];let next=0,successfulDetails=0;
    await Promise.all(Array.from({length:Math.min(4,references.length)},async()=>{
     while(next<references.length){const c=references[next++];
@@ -197,7 +198,7 @@ async function lane(name,{
    const rows=classSources.map(({c})=>{const ring=lookup(rings,'ring-key',c._ring),links=c._groups.map(k=>lookup(groups,'group-key',k)),prior=priorClasses.find(x=>x.fields['class-key']===c['class-key']);return{...clean(c),...(ring?{ring:[ring]}:{}),...(links.every(Boolean)?{groups:[...new Set([...(prior?.fields.groups||[]),...links])]}:{})};});
    if(references.length&&!successfulDetails)throw Error('No class source collections succeeded');
    await save('live-classes','class-key',rows,k=>classSources.find(x=>x.c['class-key']===k).received);
-   const classes=await db.list('live-classes');
+   const classes=await db.list('live-classes');logData['live-classes']=classes;
    const entries=[];for(const result of results){const id=lookup(classes,'class-key',result.c['class-key']);if(!id)continue;
     entries.push(...result.entries.map(e=>({...clean(e),class:[id]})));
    }
@@ -221,8 +222,8 @@ async function lane(name,{
   const result=!r.ok?'Failed':r.skipped?'Skipped':r.issues.length?'Partial':'Success';
   const receipt=path.join(runtime,'lane-'+name+'-'+r.run_id+'.json');
   const summary=JSON.stringify({lane:name,skipped:r.skipped,day_priority:r.day_priority,live_status:r.live_status,membership:r.membership,timings:Object.fromEntries(Object.entries(r.timings).filter(([k])=>!['requests','saves'].includes(k))),counts:r.counts,changed_records:r.changes.length,issues:r.issues.length,diffs_and_coverage:receipt});
-  await log('run-logs','run-id',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':r.scope?.show||null,date:r.scope?.date||'',summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000),'ring-count':r.counts['live-rings']||0,'group-count':r.counts['live-groups']||0,'class-count':r.counts['live-class-appearances']??r.counts['live-classes']??0,'entry-count':r.counts['live-entries']||0}]);
-  await log('run-logs','run-id',r.changes.map((change,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':r.scope?.show||null,date:r.scope?.date||'',summary:JSON.stringify({lane:name,parent_run_id:r.run_id,...change})})));
+  await log('run-logs','run-id',[{...logFields(name,r.run_id),'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':r.scope?.show||null,date:r.scope?.date||'',summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000),'ring-count':r.counts['live-rings']||0,'group-count':r.counts['live-groups']||0,'class-count':r.counts['live-class-appearances']??r.counts['live-classes']??0,'entry-count':r.counts['live-entries']||0}]);
+  await log('run-logs','run-id',r.changes.map((change,i)=>({...logFields(name,r.run_id,change,logData),'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':r.scope?.show||null,date:r.scope?.date||'',summary:JSON.stringify({lane:name,parent_run_id:r.run_id,...change})})));
   const errors=[...r.issues,...r.stage_errors,...r.logging_errors.map(message=>({message}))];
   try{await require('./error-log').report({api,runtime,lane:name,rows:errors.map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':r.scope?.show||null,date:r.scope?.date||'',message:name+': '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null}))});}catch(e){r.logging_errors.push('errs-log: '+e.message);}
   await log('heartbeat','heartbeat-key',[{'heartbeat-key':r.run_id,'run-id':r.run_id,started:r.started,completed:r.completed,'checked-at':r.completed,result,summary}]);

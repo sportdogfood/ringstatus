@@ -24,7 +24,12 @@ async function once(route,params,profile,mode,request=fetch){
  }catch(e){return {ok:false,error:require('./attempt-log').safe(e.message),metric:{route,params,url:url.toString(),started,completed:new Date().toISOString(),http:status,profile,elapsed_seconds:(Date.now()-begin)/1000}};}
 }
 async function read(route,params,prepare=false,laneFile=null,request=fetch){
- if(route==='/schedule')return once(route,params,null,prepare?'trouble':'defer',request);
+ if(route==='/schedule'){
+  const check=await once(route,params,null,'defer',request);
+  if(check.ok||!prepare)return {...check,attempts:[check.metric]};
+  const recovered=await once(route,params,null,'trouble',request);
+  return {...recovered,attempts:[check.metric,recovered.metric]};
+ }
  let saved;try{saved=JSON.parse(fs.readFileSync(laneFile,'utf8')).profile;}catch{}
  const choices=prepare?[...new Set([saved,...Object.keys(profiles)].filter(Boolean))]:[saved||'iphone'];
  const attempts=[];let result;

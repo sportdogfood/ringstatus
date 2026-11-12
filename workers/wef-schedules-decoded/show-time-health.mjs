@@ -122,11 +122,10 @@ export async function run({now=new Date().toISOString(), api, request=fetch, sta
     const results=await observe({now,request}), failures=[];
     if(results.clock.ok) {
       const sourceDate=localTime(results.clock.sourceTime).date;
-      const sourceDay=showDay(days,show.id,sourceDate)??day;
+      const sourceDay=showDay(days,show.id,sourceDate);
       try {
-        if(!sourceDay)throw Error('Matching source or selected show-day required');
-        const notes=results.clock.detail+(sourceDay.fields.date===sourceDate?'':` Linked to selected show-day ${sourceDay.fields.date}; source clock date remains ${sourceDate}.`);
-        await api.upsert(TABLES.times,'show-time-key',{'show-time-key':`15|${show.fields.show_id}|${sourceDate}`,show:[show.id],'show-day':[sourceDay.id], 'source-url':CLOCK_URL,'source-date-header':results.clock.header,'source-time':results.clock.sourceTime,'checked-at':now,freshness:results.clock.freshness,notes});
+        const notes=results.clock.detail+(sourceDay?'':` No matching show-day for ${sourceDate}; clock observation saved without a show-day link.`);
+        await api.upsert(TABLES.times,'show-time-key',{'show-time-key':`15|${show.fields.show_id}|${sourceDate}`,show:[show.id],'show-day':sourceDay?[sourceDay.id]:[], 'source-url':CLOCK_URL,'source-date-header':results.clock.header,'source-time':results.clock.sourceTime,'checked-at':now,freshness:results.clock.freshness,notes});
       }catch{failures.push('Clock observation save failed');}
     }
     for(const [key,endpoint] of [['clock',CLOCK_URL]]) {

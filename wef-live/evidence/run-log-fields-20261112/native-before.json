@@ -1,0 +1,275 @@
+{
+  "checked_at": "2026-11-12T16:16:23.116Z",
+  "count": 437,
+  "records": [
+    {
+      "id": "rec01KhPwsWFZW335",
+      "createdTime": "2026-11-12T15:54:34.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:54:20.583Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"80654f8f-3b64-4403-b7f5-15dfa800a6f7\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031679||200402658\",\"created\":false,\"fields\":[{\"field\":\"order-of-go\",\"before\":26,\"after\":25},{\"field\":\"source-json.live.OOG\",\"before\":\"26\",\"after\":\"25\"}]}",
+        "started": "2026-11-12T15:54:05.852Z",
+        "run-id": "80654f8f-3b64-4403-b7f5-15dfa800a6f7|diff|68"
+      }
+    },
+    {
+      "id": "rec07iR5rwvQQkYMe",
+      "createdTime": "2026-11-12T16:15:53.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:15:43.444Z",
+        "summary": "{\"lane\":\"linker\",\"parent_run_id\":\"294459b1-0d28-49fc-a756-3d20a03be1ed\",\"table\":\"live-entries\",\"id\":\"recDgiWemq2vJ0p8k\",\"fields\":{\"w-shows\":[\"recD6ph4vjkWnclt0\"],\"w-days\":[\"recNkxiD9iVCJqsuj\"],\"data-schedules\":[\"recIoj304lHZ32xjR\"]}}",
+        "started": "2026-11-12T16:15:22.637Z",
+        "run-id": "294459b1-0d28-49fc-a756-3d20a03be1ed|diff|1"
+      }
+    },
+    {
+      "id": "rec087KCFUFbPvAdy",
+      "createdTime": "2026-11-12T16:03:26.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:03:15.339Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"e366b965-7eb5-40b6-b1d7-af03835e2f96\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402783\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":9,\"after\":10},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"source-json.live.Pos\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"9\",\"after\":\"10\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"9\\\"}\",\"after\":\"{\\\"position\\\":\\\"10\\\"}\"}]}",
+        "started": "2026-11-12T16:03:05.480Z",
+        "run-id": "e366b965-7eb5-40b6-b1d7-af03835e2f96|diff|23"
+      }
+    },
+    {
+      "id": "rec08pioK4ly97qql",
+      "createdTime": "2026-11-12T16:03:18.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "entry-count": 0,
+        "group-count": 7,
+        "ring-count": 0,
+        "class-count": 7,
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:03:08.618Z",
+        "summary": "{\"lane\":\"groups\",\"day_priority\":0,\"live_status\":true,\"membership\":{\"complete\":true,\"groups\":7,\"class_appearances\":7,\"unique_classes\":7},\"timings\":{\"collection_ms\":234.0712000000001,\"save_ms\":777.3303999999998,\"collection_started\":\"2026-11-12T16:03:05.979Z\",\"collection_completed\":\"2026-11-12T16:03:06.213Z\",\"save_started\":\"2026-11-12T16:03:07.116Z\",\"save_completed\":\"2026-11-12T16:03:08.618Z\",\"total_ms\":3146},\"counts\":{\"live-groups\":7,\"live-class-appearances\":7},\"changed_records\":2,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-groups-f8bbfcbd-f14d-4226-9a73-7ffd2398aebd.json\"}",
+        "started": "2026-11-12T16:03:05.472Z",
+        "run-id": "f8bbfcbd-f14d-4226-9a73-7ffd2398aebd"
+      }
+    },
+    {
+      "id": "rec0B8BI0EumgQLsh",
+      "createdTime": "2026-11-12T15:54:32.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:54:20.583Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"80654f8f-3b64-4403-b7f5-15dfa800a6f7\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031679|200402906\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.OOG\",\"before\":\"28\",\"after\":\"27\"},{\"field\":\"order-of-go\",\"before\":28,\"after\":27}]}",
+        "started": "2026-11-12T15:54:05.852Z",
+        "run-id": "80654f8f-3b64-4403-b7f5-15dfa800a6f7|diff|20"
+      }
+    },
+    {
+      "id": "rec0E8h8HhSXooo56",
+      "createdTime": "2026-11-12T16:15:30.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:15:18.183Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"7eb2ecc6-62fb-4756-9285-ee581301bef5\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031714||200401905\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":0,\"after\":5},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"6\",\"after\":\"5\"},{\"field\":\"source-json.live.Actual_OOG_R2\",\"before\":\"\",\"after\":\"6\"},{\"field\":\"source-json.live.Pos\",\"before\":\"0\",\"after\":\"5\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"0\",\"after\":\"4\"},{\"field\":\"source-json.live.R1T\",\"before\":\"\",\"after\":\"41.87\"},{\"field\":\"source-json.live.JOJF\",\"before\":\"\",\"after\":\"8\"},{\"field\":\"source-json.live.JOF\",\"before\":\"\",\"after\":\"8\"},{\"field\":\"source-json.live.JOT\",\"before\":\"\",\"after\":\"43.02\"},{\"field\":\"source-json.live.jo_start\",\"before\":\"\",\"after\":\"Thu, 12 Nov 2026 16:12:53 GMT\"},{\"field\":\"source-json.live.jo_done\",\"before\":\"\",\"after\":\"1\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"0\",\"after\":\"5\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"0\\\"}\",\"after\":\"{\\\"position\\\":\\\"5\\\"}\"}]}",
+        "started": "2026-11-12T16:15:04.794Z",
+        "run-id": "7eb2ecc6-62fb-4756-9285-ee581301bef5|diff|34"
+      }
+    },
+    {
+      "id": "rec0GIyN8yDO8YOv3",
+      "createdTime": "2026-11-12T16:09:27.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:09:16.591Z",
+        "summary": "{\"lane\":\"groups\",\"parent_run_id\":\"1037adc9-8871-46a7-847f-d186b1ab6c31\",\"table\":\"live-groups\",\"key\":\"200000078|2026-11-12|200028730\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.jo_gone\",\"before\":\"2\",\"after\":\"4\"},{\"field\":\"source-json.jo_total\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.trips\",\"before\":\"3/59\",\"after\":\"4/59\"},{\"field\":\"gone\",\"before\":3,\"after\":4},{\"field\":\"jo-total\",\"before\":3,\"after\":4},{\"field\":\"jo-gone\",\"before\":2,\"after\":4}]}",
+        "started": "2026-11-12T16:09:06.328Z",
+        "run-id": "1037adc9-8871-46a7-847f-d186b1ab6c31|diff|0"
+      }
+    },
+    {
+      "id": "rec0JTyws6IoccwO9",
+      "createdTime": "2026-11-12T15:51:26.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:51:15.133Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"7228a878-90eb-4836-9071-d8dcf2eaa407\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200403194\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":9,\"after\":11},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"9\",\"after\":\"11\"},{\"field\":\"source-json.live.Pos\",\"before\":\"9\",\"after\":\"11\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"8\",\"after\":\"10\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"9\",\"after\":\"11\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"9\\\"}\",\"after\":\"{\\\"position\\\":\\\"11\\\"}\"}]}",
+        "started": "2026-11-12T15:51:05.687Z",
+        "run-id": "7228a878-90eb-4836-9071-d8dcf2eaa407|diff|24"
+      }
+    },
+    {
+      "id": "rec0cqvifdE7P472j",
+      "createdTime": "2026-11-12T16:06:23.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "entry-count": 295,
+        "group-count": 0,
+        "ring-count": 0,
+        "class-count": 7,
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:06:13.557Z",
+        "summary": "{\"lane\":\"classes\",\"day_priority\":0,\"live_status\":true,\"timings\":{\"collection_ms\":263.87260000000015,\"save_ms\":4158.2035000000005,\"collection_started\":\"2026-11-12T16:06:07.184Z\",\"collection_completed\":\"2026-11-12T16:06:07.448Z\",\"save_started\":\"2026-11-12T16:06:07.868Z\",\"save_completed\":\"2026-11-12T16:06:13.557Z\",\"total_ms\":7808},\"counts\":{\"live-classes\":7,\"live-entries\":295,\"live-trips\":305},\"changed_records\":22,\"issues\":0,\"diffs_and_coverage\":\"C:\\\\Users\\\\gombc\\\\OneDrive - Sport Dog Food\\\\github\\\\repos\\\\ringstatus\\\\wef-live\\\\runtime\\\\lane-classes-70eb2f5c-366e-436a-acce-bdc9dace118f.json\"}",
+        "started": "2026-11-12T16:06:05.749Z",
+        "run-id": "70eb2f5c-366e-436a-acce-bdc9dace118f"
+      }
+    },
+    {
+      "id": "rec0dH5y4piimnE0y",
+      "createdTime": "2026-11-12T16:00:19.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:00:09.211Z",
+        "summary": "{\"lane\":\"groups\",\"parent_run_id\":\"97213407-0f93-448c-b2c8-e86e082e8bd4\",\"table\":\"live-groups\",\"key\":\"200000078|2026-11-12|200028733\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone\",\"before\":\"14\",\"after\":\"15\"},{\"field\":\"source-json.jo_gone\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"source-json.jo_total\",\"before\":\"13\",\"after\":\"14\"},{\"field\":\"source-json.trips\",\"before\":\"14/17\",\"after\":\"15/17\"},{\"field\":\"gone\",\"before\":14,\"after\":15},{\"field\":\"jo-total\",\"before\":13,\"after\":14},{\"field\":\"jo-gone\",\"before\":13,\"after\":14}]}",
+        "started": "2026-11-12T16:00:05.693Z",
+        "run-id": "97213407-0f93-448c-b2c8-e86e082e8bd4|diff|1"
+      }
+    },
+    {
+      "id": "rec0lvqYUP1YDD0p8",
+      "createdTime": "2026-11-12T16:03:46.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Partial",
+        "errors": "No unique exact match for live-trips.w-trainers (trainer-name=DANIEL MICHAN HALBINGER). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-horses (horse-name=COLD AS ICE KING Z). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-horses (horse-name=CELINE). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-riders (rider-name=MADISON MYRO). No retry recommended until source data changes.\nNo unique exact match for live-trips.w-riders (rider-name=CATHERINE TYREE FLORES). No retry recommended until source data changes.\nNo unique exact match for live-entries.w-horses (horse-id=missing). No retry recommended until source data changes.\nNo unique exact match for live-entries.w-riders (rider-id=missing). No retry recommended until source data changes.\nNo unique exact match for live-entries.w-trainers (trainer-id=missing). No retry recommended until source data changes.",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:03:36.486Z",
+        "summary": "{\"lane\":\"linker\",\"counts\":{},\"changed_records\":0,\"issues\":921}",
+        "started": "2026-11-12T16:03:17.783Z",
+        "run-id": "0a3fa763-08e4-4dd6-9e82-d3396cd8edf3"
+      }
+    },
+    {
+      "id": "rec0oTHdkccQrncT9",
+      "createdTime": "2026-11-12T15:57:19.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:57:09.117Z",
+        "summary": "{\"lane\":\"groups\",\"parent_run_id\":\"fb023f02-76e1-4802-8e81-450532df91ad\",\"table\":\"live-groups\",\"key\":\"200000078|2026-11-12|200028760\",\"created\":false,\"fields\":[{\"field\":\"source-json.estimated_start_time\",\"before\":\"11:30:00\",\"after\":\"11:40:00\"},{\"field\":\"source-json.time\",\"before\":\"11:30 AM\",\"after\":\"11:40 AM\"},{\"field\":\"estimated-start-time\",\"before\":\"11:30:00\",\"after\":\"11:40:00\"}]}",
+        "started": "2026-11-12T15:57:05.934Z",
+        "run-id": "fb023f02-76e1-4802-8e81-450532df91ad|diff|1"
+      }
+    },
+    {
+      "id": "rec0rEz5hjXadS5fr",
+      "createdTime": "2026-11-12T15:54:35.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:54:20.583Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"80654f8f-3b64-4403-b7f5-15dfa800a6f7\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|51|200031679||200402929\",\"created\":false,\"fields\":[{\"field\":\"order-of-go\",\"before\":86,\"after\":85},{\"field\":\"source-json.live.OOG\",\"before\":\"86\",\"after\":\"85\"}]}",
+        "started": "2026-11-12T15:54:05.852Z",
+        "run-id": "80654f8f-3b64-4403-b7f5-15dfa800a6f7|diff|90"
+      }
+    },
+    {
+      "id": "rec1AzpeVTyTNZRDe",
+      "createdTime": "2026-11-12T15:54:32.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:54:20.583Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"80654f8f-3b64-4403-b7f5-15dfa800a6f7\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031679|200402309\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.OOG\",\"before\":\"82\",\"after\":\"81\"},{\"field\":\"order-of-go\",\"before\":82,\"after\":81}]}",
+        "started": "2026-11-12T15:54:05.852Z",
+        "run-id": "80654f8f-3b64-4403-b7f5-15dfa800a6f7|diff|36"
+      }
+    },
+    {
+      "id": "rec1GAVReWR0dRAIH",
+      "createdTime": "2026-11-12T15:57:25.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:57:14.090Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"d4949d33-edd4-4634-a185-b9c088567a41\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402377\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.OldPos\",\"before\":\"8\",\"after\":\"10\"}]}",
+        "started": "2026-11-12T15:57:05.939Z",
+        "run-id": "d4949d33-edd4-4634-a185-b9c088567a41|diff|11"
+      }
+    },
+    {
+      "id": "rec1RGrC0LLzDKx8N",
+      "createdTime": "2026-11-12T16:00:27.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:00:16.535Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"91b4c28a-4779-403e-a25c-e1ef4213c153\",\"table\":\"live-entries\",\"key\":\"200000078|2026-11-12|200031628|200403194\",\"created\":false,\"fields\":[{\"field\":\"source-json.live.R2_OOG\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"source-json.live.Pos\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"13\",\"after\":\"12\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"12\",\"after\":\"13\"},{\"field\":\"position\",\"before\":12,\"after\":13}]}",
+        "started": "2026-11-12T16:00:05.710Z",
+        "run-id": "91b4c28a-4779-403e-a25c-e1ef4213c153|diff|10"
+      }
+    },
+    {
+      "id": "rec1ZmQ6zwNvKKXW6",
+      "createdTime": "2026-11-12T15:42:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:42:13.087Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"6cf3ed26-687f-4470-8d94-9a45201b79eb\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402377\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":3,\"after\":4},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.live.Pos\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"2\",\"after\":\"3\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"3\",\"after\":\"4\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"3\\\"}\",\"after\":\"{\\\"position\\\":\\\"4\\\"}\"}]}",
+        "started": "2026-11-12T15:42:04.869Z",
+        "run-id": "6cf3ed26-687f-4470-8d94-9a45201b79eb|diff|13"
+      }
+    },
+    {
+      "id": "rec1ay1VI7nPmZSbP",
+      "createdTime": "2026-11-12T15:48:18.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:48:07.790Z",
+        "summary": "{\"lane\":\"groups\",\"parent_run_id\":\"22200d84-3960-404b-85d6-1df50e0d5ff5\",\"table\":\"live-groups\",\"key\":\"200000078|2026-11-12|200028733\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone\",\"before\":\"8\",\"after\":\"10\"},{\"field\":\"source-json.jo_gone\",\"before\":\"7\",\"after\":\"9\"},{\"field\":\"source-json.jo_total\",\"before\":\"8\",\"after\":\"9\"},{\"field\":\"source-json.trips\",\"before\":\"8/17\",\"after\":\"10/17\"},{\"field\":\"gone\",\"before\":8,\"after\":10},{\"field\":\"jo-total\",\"before\":8,\"after\":9},{\"field\":\"jo-gone\",\"before\":7,\"after\":9}]}",
+        "started": "2026-11-12T15:48:04.555Z",
+        "run-id": "22200d84-3960-404b-85d6-1df50e0d5ff5|diff|0"
+      }
+    },
+    {
+      "id": "rec1ejPyYml8jOimN",
+      "createdTime": "2026-11-12T16:06:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T16:06:13.557Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"70eb2f5c-366e-436a-acce-bdc9dace118f\",\"table\":\"live-trips\",\"key\":\"15|200000078|2026-11-12|49|200031628||200402377\",\"created\":false,\"fields\":[{\"field\":\"position\",\"before\":11,\"after\":12},{\"field\":\"source-json.live.R2_OOG\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"source-json.live.Pos\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"source-json.live.OldPos\",\"before\":\"10\",\"after\":\"11\"},{\"field\":\"source-json.live.ActualPos\",\"before\":\"11\",\"after\":\"12\"},{\"field\":\"results-json\",\"before\":\"{\\\"position\\\":\\\"11\\\"}\",\"after\":\"{\\\"position\\\":\\\"12\\\"}\"}]}",
+        "started": "2026-11-12T16:06:05.749Z",
+        "run-id": "70eb2f5c-366e-436a-acce-bdc9dace118f|diff|17"
+      }
+    },
+    {
+      "id": "rec1g5RXJqMvJIadd",
+      "createdTime": "2026-11-12T15:57:24.000Z",
+      "fields": {
+        "date": "2026-11-12",
+        "result": "Success",
+        "show-id": 200000078,
+        "completed": "2026-11-12T15:57:14.090Z",
+        "summary": "{\"lane\":\"classes\",\"parent_run_id\":\"d4949d33-edd4-4634-a185-b9c088567a41\",\"table\":\"live-classes\",\"key\":\"200000078|2026-11-12|200031628\",\"created\":false,\"fields\":[{\"field\":\"source-json.gone_trips\",\"before\":\"200402998,200403199,200402027,200403363,200402154,200402097,200403189,200402783,200402377,200403045,200403028,200403194,200403097\",\"after\":\"200402998,200403199,200402027,200403363,200402154,200402097,200403189,200402783,200402377,200403045,200403028,200403194,200403097,200402028\"},{\"field\":\"source-json.jo_gone_trips\",\"before\":\"200402998,200403199,200402027,200403363,200402154,200402097,200403189,200402783,200402377,200403045,200403028,200403194\",\"after\":\"200402998,200403199,200402027,200403363,200402154,200402097,200403189,200402783,200402377,200403045,200403028,200403194,200403097\"},{\"field\":\"source-json.curr\",\"before\":\"200403097\",\"after\":\"200402028\"},{\"field\":\"gone\",\"before\":13,\"after\":14},{\"field\":\"jo-gone\",\"before\":12,\"after\":13},{\"field\":\"current-trip-id\",\"before\":200403097,\"after\":200402028}]}",
+        "started": "2026-11-12T15:57:05.939Z",
+        "run-id": "d4949d33-edd4-4634-a185-b9c088567a41|diff|0"
+      }
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+{
+  "version": "2026.11.12.1",
+  "date": "2026-11-12",
+  "timezone": "America/New_York",
+  "created_at": "2026-11-12T17:09:17.833628+00:00",
+  "owner_chat": "wef-decoder",
+  "owner_thread": "01a1a753-dce7-7951-a147-1b096e1538ba",
+  "deprecated_owner_chat": "wef-fast",
+  "ownership_acknowledged_by": [
+    "wef-fast",
+    "wef-records-coordinator"
+  ],
+  "cleanup_owner": "wef-decoder",
+  "cleanup_routing": "Pending: Records reminder still targets deprecated Fast; no routing edit authorized/performed by notice",
+  "git_head_at_lock": "82582d38c91763e5672ce5dca15579843d4e6283",
+  "lock_kind": "Documented approval boundary and SHA-256 snapshot; no runtime gate or filesystem permission change",
+  "core_status": "Scheduled verification recorded with existing failed-class exclusions; not all historical class endpoints recovered",
+  "locked_core_files": [
+    {
+      "path": "wef-data/fast-day.py",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "dffd71ba1bc8d47b9dab28cb4c731181177b1d1d4a9e2810bdcdc94bac123e30"
+    },
+    {
+      "path": "wef-data/fast-entry.js",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "9bf9ea5e895dfad279f7af35ea9fa2520f76338eccddabdc61391a9240b52042"
+    },
+    {
+      "path": "wef-data/fast-hidden.vbs",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "a548394a882e4cc7aa91f9d02c1b430f1bf01b32fff0a82a88ae99a126716287"
+    },
+    {
+      "path": "wef-data/fast-source.js",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "daa6fc0c143ecf5810f53d60ae63ab721071eb82bde1c6fe5498a5b77fb4b6f2"
+    },
+    {
+      "path": "wef-data/fast_workflow.py",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "8facc4495f0c3983b4111772b05eff24c529db965ccb124934e5fa55ff6ad8e1"
+    },
+    {
+      "path": "wef-data/fast_linker.py",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "7d4d335eb123140f431f5ea9e5ce5f6688b9dc726f55d6d777cd2cf88082d83e"
+    },
+    {
+      "path": "wef-data/fast/linker.js",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "06642d8e1a466467a9534e383c0d6ddfd0fab1d093a512af9610357d8c67fef1"
+    },
+    {
+      "path": "wef-data/fast_collector.py",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "9fdaef590c79d1d1673702f0dd0ca176de2ae3f7f97dc85ef245f88ff3c51e9d"
+    },
+    {
+      "path": "wef-data/schedule-priority.js",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "53305b974cc06378fcf95e47351f3644ddee31a090381c356d8f2061a97f52cf"
+    },
+    {
+      "path": "wef-data/record_mappings.py",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "3b0828b33802d8b35837a7f1c4749b259a06664685d5b03237e955127c478974"
+    },
+    {
+      "path": "wef-data/wef_data_store.py",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "465bc5fd78bff26f0c4ad710b0fac45a14c814aa2cd3674395da7b2296388e59"
+    },
+    {
+      "path": "wef-data/wef_data_airtable.py",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "20ba396883f6fa2b0aeedd97d5d986376693ae8f72c31595de2bf72b7ce149d3"
+    },
+    {
+      "path": "wef-data/wef_data_context.py",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "e024574f851dc878656b8fe2ea067dfebd8fbdfc8307ad55533e2cd2b168d23d"
+    },
+    {
+      "path": "wef-data/data_contract.py",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "38d916b944eab7314f4f3b25a35e48968d3e560d68b20960ce199312d19b1f8f"
+    },
+    {
+      "path": "wef-data/attempt-log.js",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "0be1ba86170db5b3c79197a2e2eabf69aef2a3496ac121933ca78f84c099b623"
+    },
+    {
+      "path": "wef-data/source-reader.js",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "eb0dd365193956710b09b7a81c3eaa425397e038906c6e3c89a143132def226c"
+    },
+    {
+      "path": "wef-data/schema.json",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "fbc56d58488eb8b1a7966b15a1f060da4832f18ab22aca4e9c46e9a3043ab495"
+    },
+    {
+      "path": "wef-data/logging-schema.json",
+      "role": "locked collection/save/link/dependency",
+      "sha256": "f437a7b750dff73d32b7e4b65742c8f355cb7ef0b53c502986ed5a8b6bfd9292"
+    }
+  ],
+  "readme": {
+    "path": "wef-data/FAST-README.md",
+    "role": "dated operating documentation",
+    "sha256": "6962d997bbfa8f50b5ce041212484fe37b84628bae5bff66abb6016ffdf8e077"
+  },
+  "observed_support_files": [
+    {
+      "path": "wef-data/cleanup-hidden.vbs",
+      "role": "separate support; known coverage gaps retained",
+      "sha256": "ec9d252665e55abf6d585712acad147c396f0b0186dc08d8e6251714a7f90099"
+    },
+    {
+      "path": "wef-data/cleanup-run.js",
+      "role": "separate support; known coverage gaps retained",
+      "sha256": "736828dca3d0e0566eab8039b410cab2627113102cfb550c2145ebaabf4624c7"
+    },
+    {
+      "path": "wef-data/cleanup-lane.js",
+      "role": "separate support; known coverage gaps retained",
+      "sha256": "5ab2ee76da296cd828c51a1e4c251843d419878e53945e469ac4642fbeb1bedd"
+    },
+    {
+      "path": "wef-data/collection-alerts.js",
+      "role": "separate support; known coverage gaps retained",
+      "sha256": "ceb2d952a8284815631bfda4dadb3816a691738434aeecedabd6cc5c0eca327e"
+    },
+    {
+      "path": "wef-data/collection-notice.ps1",
+      "role": "separate support; known coverage gaps retained",
+      "sha256": "f462b9cb4d15804af10aa013771c491ee747584a11430611ab873c26bc108649"
+    }
+  ],
+  "show_times_producer": {
+    "path": "workers/wef-schedules-decoded/show-time-health.mjs",
+    "role": "owned separately; known wrong-date fallback, not accepted as correct",
+    "sha256": "b76b399edac690b7a0568d1234bf6607b0c48e7e992008eac84ae940dd17e0ee",
+    "status": "Known defect; no code or business-record correction in this documentation task"
+  },
+  "task_snapshot": [
+    {
+      "name": "wef-data-collector",
+      "state": "Ready",
+      "actions": [
+        {
+          "execute": "C:\\WINDOWS/System32/wscript.exe",
+          "arguments": "//B //Nologo \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\fast-hidden.vbs\" /day:0"
+        },
+        {
+          "execute": "C:\\WINDOWS/System32/wscript.exe",
+          "arguments": "//B //Nologo \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\fast-hidden.vbs\" /day:1"
+        },
+        {
+          "execute": "C:\\WINDOWS/System32/wscript.exe",
+          "arguments": "//B //Nologo \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\fast-hidden.vbs\" /day:2"
+        },
+        {
+          "execute": "C:\\WINDOWS/System32/wscript.exe",
+          "arguments": "//B //Nologo \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\fast-hidden.vbs\" /day:3"
+        },
+        {
+          "execute": "C:\\WINDOWS/System32/wscript.exe",
+          "arguments": "//B //Nologo \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\fast-hidden.vbs\" /day:4"
+        }
+      ],
+      "triggers": [
+        {
+          "start": "2026-10-28T23:18:13-05:00",
+          "interval": "PT3M",
+          "daysInterval": null,
+          "enabled": true,
+          "type": "MSFT_TaskTimeTrigger"
+        }
+      ]
+    },
+    {
+      "name": "wef-data-save",
+      "state": "Ready",
+      "actions": [
+        {
+          "execute": "C:\\WINDOWS/System32/wscript.exe",
+          "arguments": "//B //Nologo \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\fast-hidden.vbs\" /saving"
+        }
+      ],
+      "triggers": [
+        {
+          "start": "2026-11-11T23:36:13-05:00",
+          "interval": "PT3M",
+          "daysInterval": null,
+          "enabled": true,
+          "type": "MSFT_TaskTimeTrigger"
+        }
+      ]
+    },
+    {
+      "name": "wef-data-linking",
+      "state": "Ready",
+      "actions": [
+        {
+          "execute": "C:\\WINDOWS/System32/wscript.exe",
+          "arguments": "//B //Nologo \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\fast-hidden.vbs\" /linking"
+        }
+      ],
+      "triggers": [
+        {
+          "start": "2026-10-31T21:34:43-05:00",
+          "interval": "PT3M",
+          "daysInterval": null,
+          "enabled": true,
+          "type": "MSFT_TaskTimeTrigger"
+        }
+      ]
+    },
+    {
+      "name": "wef-data-cleanup",
+      "state": "Ready",
+      "actions": [
+        {
+          "execute": "C:\\WINDOWS\\System32\\wscript.exe",
+          "arguments": "//B //Nologo \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\cleanup-hidden.vbs\""
+        }
+      ],
+      "triggers": [
+        {
+          "start": "2026-11-11T19:00:00-05:00",
+          "interval": null,
+          "daysInterval": 1,
+          "enabled": true,
+          "type": "MSFT_TaskDailyTrigger"
+        }
+      ]
+    },
+    {
+      "name": "wef-decoder-show-time-health",
+      "state": "Ready",
+      "actions": [
+        {
+          "execute": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "arguments": "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\run-show-time-health.ps1\""
+        }
+      ],
+      "triggers": [
+        {
+          "start": "2026-11-06T16:22:00-05:00",
+          "interval": "PT1M",
+          "daysInterval": null,
+          "enabled": true,
+          "type": "MSFT_TaskTimeTrigger"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-fast-md-exact-20261112\\per-date\\utf8\\scheduled-verification.json",
+    "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-fast-md-exact-20261112\\per-date\\utf8\\native-readback.json"
+  ],
+  "open_items": [
+    "Cleanup local scanner/pending-log protection does not cover runtime/fast outboxes",
+    "Fast failure logging is not verified owner-alert delivery; legacy notifier not called by fast-entry",
+    "Records cleanup routing still points to deprecated Fast",
+    "show-times rec70KnNzBms3sj1M has November10 key linked to November11; exact canonical November10 day absent",
+    "Periodic Data review activation/routing and shared schedule-app propagation remain unverified"
+  ]
+}

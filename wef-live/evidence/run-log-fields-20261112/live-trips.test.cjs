@@ -1,0 +1,114 @@
+'use strict';
+globalThis.fetch=async()=>{throw Error('Offline tests: network forbidden');};
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const {lane,scheduled,inWindow}=require('./candidate/wef-live/lanes'),{diffs}=require('./candidate/wef-live/lane-store');
+function setup(t){
+ const runtime=fs.mkdtempSync(path.join(os.tmpdir(),'wef-lanes-test-'));t.after(()=>fs.rmSync(runtime,{recursive:true,force:true}));
+ let now='2026-11-01T14:00:00Z',seq=0;const db={},writes=[],alerts=[],requests=[];
+ const row=(table,key,fields)=>{(db[table]||=[]).push({id:'rec'+(++seq),fields:{[key]:fields[key],...fields}});};
+ row('shows','show-key',{'show-key':'15|75',customer_id:15,show_id:75,is_default:true,start_date:'2026-11-01',end_date:'2026-11-02',available_dates:'2026-11-01,2026-11-02',selected_date:'2026-11-01',last_checked:now,authority_checked_at:now});
+ row('show-days','show-day-key',{'show-day-key':'15|75|2026-11-01','day-priority':0,date:'2026-11-01'});
+ row('live-rings','ring-key',{'ring-key':'75|2026-11-01|3','show-id':75,date:'2026-11-01','ring-id':3,'ring-number':1,'ring-name':'Ring 1'});
+ const g={day:'2026-11-01',ring_id:3,ring_number:1,ring:'Ring 1',class_group_id:20,classes:[30],classNumbers:[1],classNames:['Class'],has_JSON:true,status:'Underway',is_live:true,total:2,gone:0};
+ const fixture={groups:[{show_id:75,json_data:[g]}],widget:[{show_id:75,live_data:{1:{name:'Ring 1',livenow:[g],upcoming:[],completed:[]}}}],detail:{ID:30,recs:2,rows:[{id:400,class_id:30,Hor:'Horse',Rid:'Rider',OOG:1,Actual_OOG:1,Scr:false,Gone:0,Pos:0},{id:401,class_id:30,Hor:'Horse2',Rid:'Rider2',OOG:2,Actual_OOG:2,Scr:false,Gone:0,Pos:0}],gone_trips:'',jo_gone_trips:'',r2_gone_trips:'',curr:400},decoded:{class:{class_id:30,show_id:75},class_related_data:{date:'2026-11-01'},trips:[{trip_id:400,entry_id:100,horse_id:10,rider_id:11,trainer_id:12},{trip_id:401,entry_id:101,horse_id:20,rider_id:21,trainer_id:12}]}};
+ const api={list:async table=>structuredClone(db[table]||[]),upsert:async(table,key,rows)=>{
+  for(const fields of rows){let r=(db[table]||=[]).find(r=>r.fields[key]===fields[key]);if(!r){row(table,key,fields);r=db[table].at(-1);}else Object.assign(r.fields,fields);}return structuredClone(db[table]||[]);
+ },call:async(base,table,method,body)=>{
+  if(method==='GET')return{records:structuredClone(db[table]||[])};
+  writes.push({table,method,body:structuredClone(body)});
+  const records=body.records.map(r=>{if(r.id){const old=db[table].find(x=>x.id===r.id);Object.assign(old.fields,r.fields);return old;}
+   const result={id:'rec'+(++seq),fields:structuredClone(r.fields)};(db[table]||=[]).push(result);return result;});return{records:structuredClone(records)};
+ }};
+ const options={runtime,api,clock:()=>now,getStatus:async()=>true,alert:async e=>alerts.push(e),archive:async(kind,data)=>({kind,file:'offline-evidence',sha256:'offline'}),get:async(url,decoded)=>{
+  requests.push(url);if(url.includes('ListAjax'))return structuredClone(fixture.groups);if(url.includes('LiveScoreWidget'))return structuredClone(fixture.widget);return structuredClone(decoded?fixture.decoded:fixture.detail);
+ }};
+ return{runtime,db,writes,alerts,requests,fixture,options,advance:()=>{now='2026-11-01T14:03:00Z';db.shows[0].fields.authority_checked_at=now;}};
+}
+
+test('one class fetch populates entries and trips; decoded paused; unchanged repeat does not save business rows',async t=>{
+ const a=setup(t);await lane('groups',a.options);a.requests.length=0;const get=a.options.get;a.options.get=async(url,decoded)=>{assert(!decoded);assert(!new URL(url).pathname.startsWith('/classes/'));return get(url,decoded);};
+ const r=await lane('classes',a.options);assert.equal(r.ok,true);assert.equal(r.issues.length,0);assert.equal(a.requests.length,1);assert.equal(a.db['live-classes'].length,1);assert.equal(a.db['live-entries'].length,2);assert.equal(a.db['live-trips'].length,2);
+ const ids=a.db['live-trips'].map(x=>x.id);for(const trip of a.db['live-trips']){assert.equal(trip.fields.date,'2026-11-01');assert.equal(trip.fields['record-status'],'Active');assert(trip.fields['trip-id']);assert(!('horse-id' in trip.fields));}
+ a.writes.length=0;a.advance();await lane('classes',a.options);assert.deepEqual(a.db['live-trips'].map(x=>x.id),ids);assert(!a.writes.some(x=>x.table.startsWith('live-')));assert.equal(a.requests.length,2);
+});
+
+test('existing entry identity fields and native links survive live-only updates',async t=>{
+ const a=setup(t);await lane('groups',a.options);a.db['live-classes']=[{id:'existingClass',fields:{'class-key':'75|2026-11-01|30','show-id':75,date:'2026-11-01','class-id':30,groups:['oldGroup'],schedules:['oldSchedule']}}];
+ const baseline=require('./baseline/wef-live/model');const old=baseline.classDetail(a.fixture.detail,a.fixture.decoded,{show:75,customer:15,date:'2026-11-01'},{'class-id':30,'class-key':'75|2026-11-01|30'},'old').entries[0];
+ a.db['live-entries']=[{id:'existingEntry',fields:{...old,class:['existingClass'],entry:['oldEntryLink'],'live-trips':['retainedTrip']}}];const fields=structuredClone(a.db['live-entries'][0].fields);
+ a.fixture.detail.rows[0].Gone=1;const r=await lane('classes',a.options);assert.equal(r.ok,true);const saved=a.db['live-entries'].find(x=>x.id==='existingEntry');
+ for(const key of ['entry-id','entry-key','horse-id','rider-id','trainer-id','class','entry','live-trips'])assert.deepEqual(saved.fields[key],fields[key]);assert.equal(saved.fields.gone,1);assert(a.db['live-classes'][0].fields.groups.includes('oldGroup'));assert.deepEqual(a.db['live-classes'][0].fields.schedules,['oldSchedule']);
+});
+
+test('live-only model preserves explicit zeros/false,validates source class and never fabricates identities',()=>{
+ const model=require('./candidate/wef-live/model'),s={show:75,customer:15,date:'2026-11-01'},c={'class-id':30,'class-key':'75|2026-11-01|30'};
+ const payload={ID:30,recs:1,rows:[{id:400,class_id:30,OOG:0,Actual_OOG:0,Gone:0,Scr:false,Pos:0}]};const result=model.classDetail(payload,null,s,c,'now');const row=result.entries[0];assert.equal(row['order-of-go'],0);assert.equal(row.scratch,false);assert.equal(row.gone,0);assert.equal(row.position,0);assert(!('entry-id' in row));assert(!('entry-key' in row));assert.equal(row['live-entry-key'],'75|2026-11-01|30|400');
+ assert.throws(()=>model.classDetail({...payload,ID:31},null,s,c,'now'),/Incomplete/);assert.throws(()=>model.classDetail({...payload,rows:[{id:400,class_id:31}]},null,s,c,'now'),/class mismatch/);assert.throws(()=>model.classDetail(payload,undefined,s,c,'now'),/Decoded class scope mismatch/);
+});
+
+test('existing decoded model callers preserve their exact previous fields and validation',async t=>{
+ const a=setup(t),before=require('./baseline/wef-live/model'),after=require('./candidate/wef-live/model'),s={show:75,customer:15,date:'2026-11-01'},c={'class-id':30,'class-key':'75|2026-11-01|30'};
+ assert.deepEqual(after.classDetail(a.fixture.detail,a.fixture.decoded,s,c,'now'),before.classDetail(a.fixture.detail,a.fixture.decoded,s,c,'now'));
+ assert.throws(()=>after.classDetail(a.fixture.detail,{...a.fixture.decoded,trips:[]},s,c,'now'),/No decoded identity/);
+});
+
+test('empty live detail succeeds; malformed row logs and other rows/class keep saving',async t=>{
+ const a=setup(t);await lane('groups',a.options);a.fixture.detail.rows[0].class_id=31;let r=await lane('classes',a.options);assert.equal(r.ok,true);assert.equal(a.db['live-entries'].length,1);assert(r.issues.some(x=>x.message==='Live row class mismatch'));
+ const before=structuredClone(a.db['live-entries']);a.fixture.detail.rows=[];a.fixture.detail.recs=0;r=await lane('classes',a.options);assert.equal(r.ok,true);assert.equal(a.db['live-classes'][0].fields.total,0);assert.deepEqual(a.db['live-entries'],before);
+});
+
+test('completed:null is an empty list without warnings; record and other ring links remain',async t=>{
+ const a=setup(t);await lane('groups',a.options);await lane('rings',a.options);const ring=a.db['live-rings'][0],id=ring.id,current=structuredClone(ring.fields['current-group']);ring.fields['completed-groups']=['previousCompleted'];a.fixture.widget[0].live_data[1].completed=null;
+ const r=await lane('rings',a.options);assert.equal(r.ok,true);assert.equal(r.issues.length,0);assert.equal(ring.id,id);assert.deepEqual(ring.fields['completed-groups'],[]);assert.deepEqual(ring.fields['current-group'],current);assert.equal(JSON.parse(ring.fields['source-json']).completed,null);
+});
+
+
+
+test('existing trip keys, identity, results and links survive; other dates remain untouched',async t=>{
+ const a=setup(t);await lane('groups',a.options);a.db['live-trips']=[{id:'today',fields:{'trip-key':'decoded-uuid-key','show-id':75,date:'2026-11-01','class-id':30,'trip-id':400,'entry-id':100,'horse-id':10,'rider-id':11,'trainer-id':12,'owner-id':99,class:['existingClass'],groups:['keptGroup'],'w-horses':['keptHorse'],'results-json':JSON.stringify({placing:'1',score1:'80'}),'source-json':JSON.stringify({identity:{horse_id:10}})}},{id:'yesterday',fields:{'trip-key':'old','show-id':75,date:'2026-10-31','class-id':30,'trip-id':400,'horse-id':9}}];
+ const previous=structuredClone(a.db['live-trips']);const r=await lane('classes',a.options);assert.equal(r.ok,true);const f=a.db['live-trips'].find(x=>x.id==='today').fields;for(const k of ['trip-key','entry-id','horse-id','rider-id','trainer-id','owner-id','class','groups','w-horses'])assert.deepEqual(f[k],previous[0].fields[k]);assert.equal(JSON.parse(f['results-json']).score1,'80');assert.equal(JSON.parse(f['source-json']).identity.horse_id,10);assert.deepEqual(a.db['live-trips'].find(x=>x.id==='yesterday'),previous[1]);assert.equal(a.db['live-trips'].length,3);
+});
+test('missing trips become absent then dropped; reappearance active; partial invalid input does not retire others',async t=>{
+ const a=setup(t);await lane('groups',a.options);await lane('classes',a.options);const id=a.db['live-trips'][0].id;
+ const full=structuredClone(a.fixture.detail);a.fixture.detail.rows=full.rows.slice(1);a.fixture.detail.recs=1;await lane('classes',a.options);assert.equal(a.db['live-trips'].find(x=>x.id===id).fields['record-status'],'Absent');await lane('classes',a.options);assert.equal(a.db['live-trips'].find(x=>x.id===id).fields['record-status'],'Dropped');a.fixture.detail=full;await lane('classes',a.options);assert.equal(a.db['live-trips'].find(x=>x.id===id).fields['record-status'],'Active');
+ a.fixture.detail.rows[0].class_id=31;await lane('classes',a.options);assert.equal(a.db['live-trips'].find(x=>x.id===id).fields['record-status'],'Active');
+});
+test('bad saved trip JSON logs that row and preserves collection of other trips',async t=>{
+ const a=setup(t);await lane('groups',a.options);a.db['live-trips']=[{id:'bad',fields:{'trip-key':'bad','show-id':75,date:'2026-11-01','class-id':30,'trip-id':400,'source-json':'not json','record-status':'Active'}}];const r=await lane('classes',a.options);assert.equal(r.ok,true);assert(r.issues.length);assert(a.db['live-trips'].some(x=>x.fields['trip-id']===401));assert.equal(a.db['live-trips'].find(x=>x.id==='bad').fields['record-status'],'Active');
+});
+test('existing stage7 linker connects live-response trips to class, group, ring and legacy live entry',async t=>{
+ const a=setup(t);await lane('groups',a.options);await lane('classes',a.options);
+ const {link}=require('./candidate/wef-live/linker');const r=await link({...a.options,scope:{show:75,customer:15,date:'2026-11-01'}});assert.equal(r.ok,true);
+ for(const trip of a.db['live-trips']){const f=trip.fields;assert(f.class?.length);assert(f.groups?.length);assert(f.ring?.length);assert(f['legacy-live-entry']?.length);const entry=a.db['live-entries'].find(e=>e.id===f['legacy-live-entry'][0]);assert.equal(entry.fields['trip-id'],f['trip-id']);}
+});
+
+
+test('future logs identify summary, group, class appearance, class, entry and trip without changing collection',async t=>{
+ const a=setup(t),b=setup(t);const baseline=require('./baseline/wef-live/lanes').lane;
+ for(const name of ['groups','rings','classes']){await baseline(name,b.options);await lane(name,a.options);}
+ const business=w=>w.filter(x=>x.table.startsWith('live-'));
+ assert.deepEqual(business(a.writes),business(b.writes));
+ assert.deepEqual(a.requests.map(x=>x.replace(/t=\d+/,'t=TIME')),b.requests.map(x=>x.replace(/t=\d+/,'t=TIME')));
+ const logs=a.db['run-logs'].map(x=>x.fields);
+ assert(logs.every(f=>f.lane&&f['record-type']&&f['record-key']));
+ const trip=logs.find(f=>f['record-type']==='trip');assert.equal(trip.lane,'classes');assert.equal(trip['class-id'],30);assert.equal(trip['trip-id'],400);assert.equal(trip['ring-id'],3);
+ const entry=logs.find(f=>f['record-type']==='entry');assert.equal(entry['trip-id'],400);assert.equal(entry['class-id'],30);assert.equal(entry['ring-id'],3);
+ const cls=logs.find(f=>f['record-type']==='class');assert.equal(cls['class-id'],30);assert.equal(cls['ring-id'],3);assert(!('trip-id' in cls));
+ const group=logs.find(f=>f['record-type']==='group');assert.equal(group['ring-id'],3);assert(!('class-id' in group));
+ const appearance=logs.find(f=>f['record-type']==='class-appearance');assert.equal(appearance['class-id'],30);assert.equal(appearance['ring-id'],3);
+ assert(logs.filter(f=>f['record-type']==='run').every(f=>f['record-key']===f['run-id']&&!('trip-id' in f)));
+});
+
+test('old logs stay unchanged; linker change logs use saved keys and IDs; repeated pass adds summaries only',async t=>{
+ const a=setup(t);const old={id:'old-log',fields:{'run-id':'old',summary:'keep existing',result:'Success'}};a.db['run-logs']=[structuredClone(old)];
+ await lane('groups',a.options);await lane('classes',a.options);
+ const {link}=require('./candidate/wef-live/linker');const r=await link({...a.options,scope:{show:75,customer:15,date:'2026-11-01'}});assert.equal(r.ok,true);
+ const changes=a.db['run-logs'].filter(x=>x.fields.lane==='linker'&&x.fields['record-type']==='trip');assert(changes.length);assert(changes.every(x=>x.fields['record-key']&&x.fields['trip-id']&&x.fields['class-id']===30&&x.fields['ring-id']===3));
+ assert.deepEqual(a.db['run-logs'][0],old);
+ const before=a.db['run-logs'].filter(x=>x.fields['record-type']!=='run').length;a.advance();await lane('classes',a.options);assert.equal(a.db['run-logs'].filter(x=>x.fields['record-type']!=='run').length,before);assert.deepEqual(a.db['run-logs'][0],old);
+});
+
+test('quiet hourly check logs run metadata without putting new fields on heartbeat',async t=>{
+ const a=setup(t);a.options.getStatus=async()=>false;const r=await require('./candidate/wef-live/live-cadence').check(a.options);assert.equal(r.collect,false);
+ const f=a.db['run-logs'][0].fields;assert.equal(f.lane,'live-check');assert.equal(f['record-type'],'run');assert.equal(f['record-key'],r.run_id);assert(!('lane' in a.db.heartbeat[0].fields));assert.equal(a.requests.length,0);
+});

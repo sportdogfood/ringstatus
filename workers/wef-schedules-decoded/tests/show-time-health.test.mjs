@@ -53,7 +53,7 @@ test('Airtable adapter preserves ambiguous-write failure with no automatic retry
   let calls=0;const api=airtable({token:'offline-placeholder',pause:async()=>{},request:async(url,options)=>{calls++;if(options.method==='GET')return new Response('{"records":[]}');throw Error('unknown create result');}});
   await assert.rejects(api.upsert(TABLES.health,'health-key',{'health-key':'clock'}));assert.equal(calls,2);
 });
-test('pre-show clock links the selected show-day while preserving the actual source date',async()=>{
+test('pre-show clock is saved unlinked and preserves its actual source date',async()=>{
  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'wef-clock-link-test-'));
  const writes=[];
  const api={
@@ -67,20 +67,22 @@ test('pre-show clock links the selected show-day while preserving the actual sou
   assert.equal(result.status,'Recorded');
   const clock=writes.find(row=>row.table===TABLES.times).fields;
   assert.deepEqual(clock.show,['recShow']);
-  assert.deepEqual(clock['show-day'],['recDay']);
+  assert.deepEqual(clock['show-day'],[]);
   assert.equal(clock['show-time-key'],'15|78|2026-11-10');
   assert.equal(clock['source-time'],'2026-11-10T22:57:00.000Z');
-  assert.match(clock.notes,/selected show-day 2026-11-11/);
+  assert.match(clock.notes,/No matching show-day for 2026-11-10/);
  }finally{await fs.rm(dir,{recursive:true});}
 });
-test('clock observation is not saved without a matching or selected show-day',async()=>{
+test('clock observation is saved even when no show-days exist',async()=>{
  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'wef-clock-missing-day-'));
  const writes=[];
  const api={list:async table=>table===TABLES.shows?[{id:'recShow',fields:{is_default:true,customer_id:15,show_id:78,'show-key':'15|78',selected_date:'2026-11-11'}}]:[],upsert:async(table,key,fields)=>writes.push({table,fields})};
  try{
   const result=await run({now:'2026-11-10T22:57:00Z',api,statePath:path.join(dir,'state.json'),request:async()=>Response.json({version:'test'},{headers:{Date:'Tue, 10 Nov 2026 22:57:00 GMT'}})});
-  assert.equal(result.status,'Failed');
-  assert.equal(writes.some(row=>row.table===TABLES.times),false);
+  assert.equal(result.status,'Recorded');
+  const clock=writes.find(row=>row.table===TABLES.times).fields;
+  assert.equal(clock['show-time-key'],'15|78|2026-11-10');
+  assert.deepEqual(clock['show-day'],[]);
  }finally{await fs.rm(dir,{recursive:true});}
 });
 
@@ -106,4 +108,23 @@ test('Airtable readback accepts equivalent timestamps and omitted empty links',a
 test('Airtable adapter follows read pagination without dropping default show',async()=>{
   let count=0;const api=airtable({token:'offline-placeholder',pause:async()=>{},request:async(url)=>{count++;if(!url.includes('offset='))return new Response('{"records":[{"id":"recOld","fields":{}}],"offset":"next"}');return new Response('{"records":[{"id":"recCurrent","fields":{}}]}');}});
   assert.equal((await api.list(TABLES.shows)).length,2);assert.equal(count,2);
+});
+
+
+test('daily observations use their own date and repeat updates keep one record per day',async()=>{
+ const dir=await fs.mkdtemp(path.join(os.tmpdir(),'wef-clock-daily-'));const records=new Map();let at;
+ const api={list:async table=>table===TABLES.shows?[{id:'recShow',fields:{is_default:true,customer_id:15,show_id:78,'show-key':'15|78',selected_date:'2026-11-11'}}]:table===TABLES.days?[{id:'recNov11',fields:{show:['recShow'],date:'2026-11-11'}}]:[],upsert:async(table,key,fields)=>{if(table===TABLES.times)records.set(fields[key],fields);}};
+ try{
+  for(at of ['2026-11-10T23:54:00Z','2026-11-10T23:57:00Z','2026-11-11T06:00:00Z']){
+   const result=await run({now:at,api,statePath:path.join(dir,'state.json'),request:async()=>Response.json({version:'fixture'},{headers:{Date:new Date(at).toUTCString()}})});assert.equal(result.status,'Recorded');
+  }
+  assert.equal(records.size,2);assert.deepEqual(records.get('15|78|2026-11-10')['show-day'],[]);assert.equal(records.get('15|78|2026-11-10')['source-time'],'2026-11-10T23:57:00.000Z');assert.deepEqual(records.get('15|78|2026-11-11')['show-day'],['recNov11']);
+ }finally{await fs.rm(dir,{recursive:true});}
+});
+
+test('a matching calendar date from another show is not used',async()=>{
+ const dir=await fs.mkdtemp(path.join(os.tmpdir(),'wef-clock-other-show-'));const writes=[];
+ const api={list:async table=>table===TABLES.shows?[{id:'recShow',fields:{is_default:true,customer_id:15,show_id:78,'show-key':'15|78',selected_date:'2026-11-11'}}]:table===TABLES.days?[{id:'recOther',fields:{show:['recOtherShow'],date:'2026-11-10'}}]:[],upsert:async(table,key,fields)=>writes.push({table,fields})};
+ try{await run({now:'2026-11-10T22:57:00Z',api,statePath:path.join(dir,'state.json'),request:async()=>Response.json({version:'fixture'},{headers:{Date:'Tue, 10 Nov 2026 22:57:00 GMT'}})});assert.deepEqual(writes.find(x=>x.table===TABLES.times).fields['show-day'],[]);}
+ finally{await fs.rm(dir,{recursive:true});}
 });

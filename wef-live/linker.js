@@ -2,6 +2,7 @@
 // Stage 7: fill empty native links from exact saved keys. No source calls or enrichment.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const settings=require('./settings');
+const {logFields}=require('./run-log-fields');
 const TABLES=['live-rings','live-groups','live-classes','live-trips','live-entries'];
 const REFS=['w-shows','w-days','wef-data.schedules','w-horses','w-riders','w-trainers'];
 const empty=v=>v==null||(Array.isArray(v)&&v.length===0);
@@ -78,9 +79,10 @@ function plan(data,scope,onIssue=()=>{}){
 }
 async function link({scope,api=require('./airtable').airtable(),runtime=settings.RUNTIME,clock=()=>new Date().toISOString()}={}){
  const r={lane:'linker',run_id:crypto.randomUUID(),started:clock(),scope,ok:true,issues:[],stage_errors:[],logging_errors:[],changes:[],counts:{}};
+ const data={};
  const issue=(message,ids={})=>r.issues.push({message,...ids});
  try{
-  const data={};for(const t of [...TABLES,...REFS])data[t]=await api.list(t);
+  for(const t of [...TABLES,...REFS])data[t]=await api.list(t);
   const plans=plan(data,scope,issue);
   for(const table of TABLES){const selected=plans.filter(p=>p.table===table);
    for(let i=0;i<selected.length;i+=10){
@@ -100,7 +102,7 @@ async function link({scope,api=require('./airtable').airtable(),runtime=settings
  const result=!r.ok?'Failed':r.issues.length?'Partial':'Success';
  const summary=JSON.stringify({lane:'linker',counts:r.counts,changed_records:r.changes.length,issues:r.issues.length});
  async function log(table,rows){for(let i=0;i<rows.length;i+=10){try{const batch=rows.slice(i,i+10);const saved=await api.call(settings.BASE_ID,table,'POST',{records:batch.map(fields=>({fields}))});if(saved.records?.length!==batch.length)throw Error('Incomplete linker log response');}catch(e){r.logging_errors.push(table+': '+e.message);}}}
- await log('run-logs',[{'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':scope.show,date:scope.date,summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000)},...r.changes.map((c,i)=>({'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':scope.show,date:scope.date,summary:JSON.stringify({lane:'linker',parent_run_id:r.run_id,...c})}))]);
+ await log('run-logs',[{...logFields('linker',r.run_id),'run-id':r.run_id,started:r.started,completed:r.completed,result,'show-id':scope.show,date:scope.date,summary,errors:[...new Set([...r.issues,...r.stage_errors].map(x=>x.message))].join('\n').slice(0,60000)},...r.changes.map((c,i)=>({...logFields('linker',r.run_id,c,data),'run-id':r.run_id+'|diff|'+i,started:r.started,completed:r.completed,result:'Success','show-id':scope.show,date:scope.date,summary:JSON.stringify({lane:'linker',parent_run_id:r.run_id,...c})}))]);
  try{await require('./error-log').report({api,runtime,lane:'linker',rows:[...r.issues,...r.stage_errors].map((e,i)=>({'error-key':r.run_id+'|'+i,'run-id':r.run_id,'occurred-at':r.completed,'show-id':scope.show,date:scope.date,message:'linker: '+e.message,'err-class':e.class_id||null,'err-trip':e.trip_id||null,'err-group':e.group_id||null}))});}catch(e){r.logging_errors.push('errs-log: '+e.message);}
  await log('heartbeat',[{'heartbeat-key':r.run_id,'run-id':r.run_id,started:r.started,completed:r.completed,'checked-at':r.completed,'show-id':scope.show,date:scope.date,result,summary}]);
  try{fs.mkdirSync(runtime,{recursive:true});for(const name of ['linker-'+r.run_id+'.json','linker-last-run.json']){const file=path.join(runtime,name),tmp=file+'.tmp';fs.writeFileSync(tmp,JSON.stringify(r,null,2));fs.renameSync(tmp,file);}}catch(e){r.logging_errors.push('Local linker receipt: '+e.message);}

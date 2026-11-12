@@ -28,6 +28,12 @@ def fill_empty(writer):
                 if cid is not None and not raw.get('schedule_break'):
                     ckey=ring+'|'+str(cid);add(table,key,'class',[('classes',ckey)])
                     add(table,key,'trips',[('trips',k) for k in data['trips'] if k.startswith(ckey+'|')])
+                    entries=set()
+                    for trip_key,trip in data['trips'].items():
+                        if trip_key.startswith(ckey+'|'):
+                            source=json.loads(trip.get('source-json') or '{}')
+                            if source.get('entry_id'):entries.add(parts[1]+'|'+str(source['entry_id']))
+                    add(table,key,'entries',[('entries',entry) for entry in sorted(entries)])
             if table=='trips':
                 raw=json.loads(row.get('source-json') or '{}');phone=raw.get('iphonev2',{})
                 if raw.get('entry_id'):add(table,key,'entry',[('entries',parts[1]+'|'+str(raw['entry_id']))])
@@ -78,19 +84,36 @@ def fill_empty(writer):
     writer.counts['empty-links']=writer.counts.get('empty-links',0)+count
     return count
 
+def mark_linked(root,show,day,started):
+    from fast_workflow import manifests,raw,atomic,now
+    count=0
+    for file in manifests(root):
+        plan=raw(file.read_text(encoding='utf-8'));saved_file=file.with_suffix('.saved')
+        if plan['show-key']!=show or plan['day']!=day or not saved_file.exists():continue
+        saved=raw(saved_file.read_text(encoding='utf-8'))
+        # This linker must have started after saving finished, so its inventory covers that pass.
+        if saved.get('complete') and saved.get('completed','')<=started:
+            target=file.with_suffix('.linked')
+            if not target.exists():atomic(target,{'complete':True,'completed':now(),'saving-completed':saved['completed'],'run-key':plan['run-key']});count+=1
+    return count
+
+
 def run(root):
-    from fast_workflow import Writer
+    from fast_workflow import Writer,now
     from fast_collector import synced_source
-    from wef_data_airtable import Airtable
-    api=Airtable();schema=json.loads((root/'schema.json').read_text());st,sf=synced_source('w-shows',root/'schema.json');dt,df=synced_source('w-days',root/'schema.json');owner=next(r['fields'] for r in api.records(DATA_BASE,st) if r['fields'].get(sf['is_default']) is True);errors=[];count=0
+    from wef_data_airtable import Airtable,error_text
+    started=now();api=Airtable();schema=json.loads((root/'schema.json').read_text());st,sf=synced_source('w-shows',root/'schema.json');dt,df=synced_source('w-days',root/'schema.json');owner=next(r['fields'] for r in api.records(DATA_BASE,st) if r['fields'].get(sf['is_default']) is True);errors=[];count=0;linked=0
     writer=None
     for row in api.records(DATA_BASE,dt):
         f=row['fields']
         if f.get(df['show'])==owner[sf['show-key']] and f.get(df['day-priority']) in range(5):
-            if writer is None:writer=Writer(api,schema,owner[sf['show-key']],f[df['date']][:10],errors)
-            else:writer.day=f[df['date']][:10]
-            count+=fill_empty(writer)
-    return {'ok':not errors,'state':'Linked','counts':{'saved':count},'item-errors':errors}
+            try:
+                if writer is None:writer=Writer(api,schema,owner[sf['show-key']],f[df['date']][:10],errors)
+                else:writer.day=f[df['date']][:10]
+                count+=fill_empty(writer)
+                linked+=mark_linked(root,writer.show,writer.day,started)
+            except Exception as error:errors.append({'key':'Link '+owner[sf['show-key']]+'|'+f[df['date']][:10],'error':error_text(error)})
+    return {'ok':not errors,'state':'Linked','counts':{'saved':count,'passes-linked':linked},'item-errors':errors}
 
 if __name__=='__main__':
     try:result=run(pathlib.Path(__file__).resolve().parent)

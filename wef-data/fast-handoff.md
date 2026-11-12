@@ -4,7 +4,7 @@
 
 Same-role continuation of the Fast workflow task. The required outcome is exactly the workflow in `fast-test.md`, copied verbatim below. This is not a saver-restoration assignment, a redesign, or permission to add requirements from an assistant's summary.
 
-Latest owner request: “create a handoff the exactly what is in the md”. This request authorizes this document only. No further implementation, deployment, task changes, manual collectors, repairs or retries are authorized by this handoff. The affected scheduled verification failed; preserve the existing fresh-edit-approval boundary. Do not treat the original implementation approval as approval to repair the failed deployment.
+Latest owner approval after this handoff was created: “APPROVED TO EDIT. Make the script match fast-test.md exactly, nothing more. Keep collection, saving and linking separate. Debug and run Code Review before deploying, then verify the scheduled run. No manual collectors.” That exact correction was independently reviewed (COMPLETE/PASS, 20 offline checks) and deployed at 2026-11-12T16:09:25Z. The existing save task was enabled at its unchanged trigger. Current packet: `C:/Users/gombc/Documents/Codex/outputs/wef-fast-md-exact-20261112/`. Normal scheduled end-to-end acceptance remains UNVERIFIED; preserve any new failed-verification stop. No additions or manual collectors are authorized.
 
 The source block's “discussed”, “not implemented” and approval labels are historical wording preserved verbatim. They do not describe current deployment state. Current state is recorded separately below. The source document's implementation header is not operational acceptance evidence.
 
@@ -105,7 +105,7 @@ For each second and later pass of this same one-day script:
 The schedule comparison does not handle failures or change the existing eligibility rules. This discussion adds no failure recovery procedure or changed-data-only saving for class details.
 
 
-## Current state and evidence — not additional requirements
+## Historical failed deployment evidence — superseded by correction packet above
 
 - CONFIRMED: the deployed implementation does not match the copied workflow. No code correction was made following the audit.
 - Existing registered collector is `wef-data-collector`; its five actions call `fast-hidden.vbs` for Days 0–4 sequentially. Existing `wef-data-linking` calls the new empty-link implementation. Existing schedules continue; no task was manually started or stopped for this handoff. Do not change their status or cadence from this document.
@@ -128,6 +128,6 @@ Evidence packet: `C:/Users/gombc/Documents/Codex/outputs/wef-fast-workflow-20261
 
 Read the exact copied workflow, actual source file and current failure evidence. Keep the owner's requirement intact: collection captures responses and continues without waiting for Airtable; a separate saving stage reads captures and saves basic links; the linker fills remaining required empty links. Do not replace this with “restore the batched saver”.
 
-No executable repair is currently authorized. If the owner separately authorizes implementation, perform only the MD's approved differences against the established working behavior; debug, run Code Review on the actual changes before delivery/deployment and verify the natural scheduled result. No manual collector, added gate, optional enhancement, final enhancement pass, substitute workflow or patch-over-patch work. The agent owns quality control and verification; do not make the owner the tester.
+The correction is deployed; continue read-only verification of its natural scheduled collection, saving, linking and logging through the current packet. Do not redeploy or manually invoke it. New scheduled failures do not authorize another code correction or retry. The exact MD remains the requirement; the older defect list is historical evidence, not a competing repair assignment. No manual collector, added gate, optional enhancement, final enhancement pass, substitute workflow or patch-over-patch work. The agent owns quality control and verification; do not make the owner the tester.
 
 This packet was prepared locally. No new chat was created, no handoff was dispatched, and no receiver acceptance or access has been verified. Existing review agents supply evidence only; no ongoing monitoring responsibility was transferred.

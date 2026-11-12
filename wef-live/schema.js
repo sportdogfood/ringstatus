@@ -87,6 +87,7 @@ const tables = {
   ],
   "run-logs": [
     "run-id",
+    "lane", "record-type", "record-key", "trip-id", "class-id", "ring-id",
     "started",
     "completed",
     "result",
