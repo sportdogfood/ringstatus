@@ -8,7 +8,7 @@ export function headerDropdowns(host){
  const trainerDialog=document.createElement('dialog');trainerDialog.className='ui-dialog v2-trainer-dialog';trainerDialog.dataset.width='short-list';trainerDialog.setAttribute('aria-labelledby','v2-trainer-title');
  trainerDialog.innerHTML=`<div class="rings-handle v2-trainer-handle" aria-hidden="true"></div><header class="dialog-head"><h2 id="v2-trainer-title">Trainers</h2><button type="button" class="ui-button" data-variant="quiet" data-clear-trainer hidden>Clear</button><button type="button" class="icon-button" aria-label="Close trainers">${v3Icon('close')}</button></header>${v3Search('Search trainers','trainer-search',v3Icon('search'),'Search trainers')}<div class="search-dialog-results results v2-trainer-options" data-layout="list" data-striped role="listbox" aria-label="Trainers"></div><p class="empty-result v2-trainer-empty" role="status" hidden>No matching trainers</p>`;
  document.body.append(trainerDialog);
- const search=trainerDialog.querySelector('input'),trainerList=trainerDialog.querySelector('[role=listbox]'),empty=trainerDialog.querySelector('[role=status]');
+ const search=trainerDialog.querySelector('input'),trainerList=trainerDialog.querySelector('[role=listbox]'),empty=trainerDialog.querySelector('[role=status]'),closeSelector=trainerDialog.querySelector('[aria-label="Close trainers"]');
  let trainerActive=null;
  function renderTrainers(){
   trainerList.replaceChildren();trainerDialog.querySelector('[data-clear-trainer]').hidden=!trainerActive.select.value;const query=search.value.trim().toLocaleLowerCase();let count=0;
@@ -21,7 +21,7 @@ export function headerDropdowns(host){
  }
  search.addEventListener('input',renderTrainers);
  trainerDialog.querySelector('[data-clear-trainer]').addEventListener('click',()=>{trainerActive.select.selectedIndex=0;trainerActive.select.dispatchEvent(new Event('change',{bubbles:true}));trainerDialog.close();});
- trainerDialog.querySelector('[aria-label="Close trainers"]').addEventListener('click',()=>trainerDialog.close());
+ closeSelector.addEventListener('click',()=>trainerDialog.close());
  trainerDialog.addEventListener('close',()=>{trainerActive?.button.setAttribute('aria-expanded','false');trainerActive?.button.focus({preventScroll:true});});
  let active=null;
  function close(){menu.hidePopover();active?.button.setAttribute('aria-expanded','false');}
@@ -31,9 +31,10 @@ export function headerDropdowns(host){
   select.selectedIndex=index;select.dispatchEvent(new Event('change',{bubbles:true}));close();button.focus({preventScroll:true});
  }
  function open(select,button){
-  if(select.getAttribute('aria-label')==='Trainer'){
+  if(['Trainer','Team'].includes(select.getAttribute('aria-label'))){
    if(select.options.length<=1||button.hidden)return;
-   close();trainerActive={select,button};search.value='';trainerDialog.querySelector('h2').textContent='Trainers';trainerDialog.title='Trainers for '+select.dataset.dayLabel;search.closest('.search-control').hidden=false;search.hidden=false;renderTrainers();trainerList.hidden=false;empty.textContent='No matching trainers';openShellDialog(trainerDialog);button.setAttribute('aria-expanded','true');if(!search.hidden)search.focus();return;
+   const label=select.getAttribute('aria-label')==='Team'?'Teams':'Trainers';
+   close();trainerActive={select,button};search.value='';trainerDialog.querySelector('h2').textContent=label;trainerDialog.title=label+' for '+select.dataset.dayLabel;closeSelector.setAttribute('aria-label','Close '+label.toLowerCase());search.placeholder='Search '+label.toLowerCase();search.setAttribute('aria-label',search.placeholder);trainerList.setAttribute('aria-label',label);search.closest('.search-control').hidden=false;search.hidden=false;renderTrainers();trainerList.hidden=false;empty.textContent='No matching '+label.toLowerCase();openShellDialog(trainerDialog);button.setAttribute('aria-expanded','true');if(!search.hidden)search.focus();return;
   }
   active={select,button};menu.replaceChildren();menu.setAttribute('aria-label',select.getAttribute('aria-label'));
   Array.from(select.options).forEach((option,index)=>{
@@ -62,7 +63,7 @@ export function headerDropdowns(host){
  addEventListener('resize',close);
  return (select,svg,{className='v2-header-filter',placement='bottom'}={})=>{
   const button=document.createElement('button');button.type='button';button.className=className;button.dataset.placement=placement;button.innerHTML=svg;if(placement==='top')button.insertAdjacentHTML('beforeend','<span class="v2-dropup-caret" aria-hidden="true">'+v3Icon('chevron')+'</span>');v3Control(button,{icon:className==='v2-header-filter'});
-  const trainer=select.getAttribute('aria-label')==='Trainer';trainerDialog.id='v2-trainer-dialog';button.setAttribute('aria-label',select.getAttribute('aria-label'));button.setAttribute('aria-haspopup',trainer?'dialog':'listbox');button.setAttribute('aria-controls',trainer?trainerDialog.id:menu.id);button.setAttribute('aria-expanded','false');
+  const trainer=['Trainer','Team'].includes(select.getAttribute('aria-label'));trainerDialog.id='v2-trainer-dialog';button.setAttribute('aria-label',select.getAttribute('aria-label'));button.setAttribute('aria-haspopup',trainer?'dialog':'listbox');button.setAttribute('aria-controls',trainer?trainerDialog.id:menu.id);button.setAttribute('aria-expanded','false');
   select.hidden=true;select.tabIndex=-1;host.append(button,select);
   if(!trainer)button.setAttribute('popovertarget',menu.id);
   button.addEventListener('click',()=>open(select,button));

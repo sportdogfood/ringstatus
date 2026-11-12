@@ -30,6 +30,11 @@ export function trainerOptions(records,day){
 export function filterTrainer(records,trainerId){
  return trainerId?records.map(r=>({...r,entries:r.entries.filter(e=>e.trainerId===trainerId)})).filter(r=>r.entries.length):records;
 }
+// Temporary CWF test scope: shared w-trainers trainer-id 8778, verified in wef-schedule-app.
+export const CWF_TEAM={id:'cwf',name:'CWF',sourceTrainerId:8778,trainerId:'recDJPooCZHz6vvNK'};
+export function teamRollups(records,team){
+ return team===CWF_TEAM.id?records.map(r=>({...r,entries:r.entries.filter(e=>e.trainerId===CWF_TEAM.trainerId)})):records;
+}
 export function createDeviceData({showId,endpoint,storage=packageStore(),seed=null,fetchImpl=fetch,onData,onError=()=>{},onChecked=()=>{}}){
  const packages={day0:null,full:null},inFlight={day0:null,full:null},timers={day0:null,full:null};
  let current=seed,stopped=true,generation=0,fullRequests=0;

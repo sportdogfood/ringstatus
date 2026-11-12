@@ -3,6 +3,7 @@
 :root .v3-panel[data-width="schedule"]{width:820px;max-width:calc(100% - 32px);height:calc(100dvh - 32px);max-height:calc(100dvh - 32px);margin:16px 16px 16px auto;overflow:hidden}
 :root .v3-panel[data-width="schedule"] .stack-scroll{overflow-x:hidden}
 .rings-header .action-icons{margin-left:auto}
+.rings-shell .back-row .v2-theme-toggle{margin-left:auto}
 .v2-page-nav,.rings-horse-actions{margin-inline:18px;overflow-x:auto;flex-shrink:0}
 .v2-page-nav{display:flex;gap:8px;padding-block:8px}
 .rings-pill{flex:0 0 auto}

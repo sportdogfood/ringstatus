@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createDeviceData,filterTrainer,trainerOptions,REFRESH_MS,FULL_REFRESH_MS,validDataset} from '../public/wef-schedule-v2/device-data.js';
+import {createDeviceData,filterTrainer,trainerOptions,CWF_TEAM,teamRollups,REFRESH_MS,FULL_REFRESH_MS,validDataset} from '../public/wef-schedule-v2/device-data.js';
 const showId='recxI7H0RojcE39BP';
 const sample=(lane='full',stamp='2026-11-04T12:00:00Z',name='Nick')=>({metadata:{showId,defaultDate:'2026-10-30',capturedAt:stamp,refreshedAt:stamp,package:{lane,complete:true,startedAt:stamp,dates:['2026-10-30']}},days:[{date:'2026-10-30',rings:[51]}],ringDetails:{51:{name:'Intl',number:1}},records:[{key:'row',date:'2026-10-30',ring:51,entryCount:5,trips:6,entries:[{key:'trip1',entryId:'same',trainerId:'t1',trainer:name},{key:'trip2',entryId:'same',trainerId:'t1',trainer:name},{key:'trip3',trainerId:'t2',trainer:'Other'}]}]});
 const store=()=>{const values=new Map();return {read:async(s,l)=>values.get(l),commit:async(s,l,d)=>{values.set(l,d);return d;}};};
@@ -26,6 +26,26 @@ test('incomplete, wrong-show, duplicate and empty packages retain saved data',as
 });
 test('trainer filter keeps both trips, totals and day eligibility',()=>{
  const data=sample(),result=filterTrainer(data.records,'t1');assert.deepEqual(result[0].entries.map(e=>e.key),['trip1','trip2']);assert.equal(result[0].entryCount,5);assert.equal(result[0].trips,6);assert.deepEqual(trainerOptions(data.records,'2026-11-01'),[]);
+});
+
+test('CWF rollups preserve the entire schedule and source totals, including classes without team trips',()=>{
+ const data=sample();data.records[0].entries[0].trainerId=CWF_TEAM.trainerId;data.records[0].entries[1].trainerId=CWF_TEAM.trainerId;
+ data.records.push({...data.records[0],key:'other-class',entries:[{key:'other-trip',trainerId:'other'}]},{...data.records[0],key:'no-trips',entries:[]});
+ const before=structuredClone(data.records),result=teamRollups(data.records,'cwf');
+ assert.deepEqual(result.map(r=>r.key),before.map(r=>r.key));
+ assert.deepEqual(result.map(r=>[r.entryCount,r.trips]),before.map(r=>[r.entryCount,r.trips]));
+ assert.deepEqual(result.map(r=>r.entries.map(e=>e.key)),[['trip1','trip2'],[],[]]);
+ assert.deepEqual(data.records,before);assert.equal(teamRollups(data.records,''),data.records);
+});
+
+test('team scope is independent of trainer scope and is reapplied to refreshed trips',()=>{
+ const rows=sample().records;rows[0].entries[0].trainerId=CWF_TEAM.trainerId;
+ assert.equal(teamRollups(filterTrainer(rows,'t2'),'cwf').length,1);
+ assert.equal(teamRollups(filterTrainer(rows,'t2'),'cwf')[0].entries.length,0);
+ assert.equal(teamRollups(rows,'cwf')[0].entries.length,1);
+ const refreshed=structuredClone(rows);refreshed[0].entries.push({...refreshed[0].entries[0],key:'new-trip'});
+ assert.equal(teamRollups(refreshed,'cwf')[0].entries.length,2);
+ assert.equal(teamRollups([{...rows[0],date:'2026-11-15',entries:[]}],'cwf').length,1);
 });
 test('full refresh fires at fifteen minutes while fast lane fires five times',async t=>{
  t.mock.timers.enable({apis:['setInterval']});const calls=[];

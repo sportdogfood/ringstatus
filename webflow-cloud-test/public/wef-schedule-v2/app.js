@@ -1,12 +1,13 @@
 import './shell.js';
 import {openShellDialog} from './shell-dialog.js';
 import {v3Button,v3Control} from '../rs-profile-v3/components.js';
+import {icon as v3Icon} from '../rs-profile-v3/icons.js';
 import {headerDropdowns} from './header-dropdown.js';
 import {dayRows} from './day.js?v=source-order-1';
 import {enableDragScroll} from './drag-scroll.js?v=entry-lane-1';
 import {addComment} from './comments.js?v=tokens-policy-1';
 import {records,days,ringDetails,metadata,replaceData,selectRingDetails,scopeReady} from './schedule-data.js';
-import {createDeviceData,trainerOptions,filterTrainer} from './device-data.js';
+import {createDeviceData,trainerOptions,filterTrainer,CWF_TEAM,teamRollups} from './device-data.js';
 import {publishedSchedule} from './publication.js';
 import {pingLocation} from './device-location.js';
 import {ringPanel,detailPanel,icon,commentsList,dayLine} from './components.js?v=group-subline-1';
@@ -15,7 +16,7 @@ const requestedDay=new URLSearchParams(location.search).get('date');
 const publicationOptions={showBreaks:new URLSearchParams(location.search).get('showBreaks')==='1',showOptionalClasses:new URLSearchParams(location.search).get('showOptionalClasses')==='1'};
 const todayDate=()=>new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const initialDay=days.some(d=>d.date===requestedDay)||requestedDay===todayDate()?requestedDay:todayDate();
-const state={trainer:new URLSearchParams(location.search).get('trainer')||'',day:initialDay,ring:null,horses:new Set(),selection:null,dayStatus:"",daySort:'time',dayDirection:'asc'};
+const state={trainer:new URLSearchParams(location.search).get('trainer')||'',team:new URLSearchParams(location.search).get('team')===CWF_TEAM.id?CWF_TEAM.id:'',day:initialDay,ring:null,horses:new Set(),selection:null,dayStatus:"",daySort:'time',dayDirection:'asc'};
 const schedule=document.querySelector('#rings-schedule');
 const surface=document.querySelector('#rings-surface');
 const scroller=document.querySelector('.rings-scroll');
@@ -34,6 +35,10 @@ daySelect.before(headerFilters);
 const headerFilter=headerDropdowns(headerFilters);
 const dayControl=headerFilter(daySelect,'<svg class="rings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18M8 15h3v3H8z"/></svg>');
 const trainerControl=headerFilter(trainerSelect,icon('trainer'));
+const teamSelect=document.createElement('select');teamSelect.setAttribute('aria-label','Team');
+teamSelect.innerHTML='<option value="">Select team</option><option value="'+CWF_TEAM.id+'">'+CWF_TEAM.name+'</option>';
+const teamControl=headerFilter(teamSelect,v3Icon('users'));
+teamSelect.addEventListener('change',()=>{state.team=teamSelect.value;state.horses.clear();horseActions.hidden=true;if(surface.open)surface.close();syncDay();renderSchedule();});
 const pageNav=document.querySelector('.v2-page-nav');
 const todayLink=pageNav.querySelector('a[href="day.html"]');
 const navDateSelect=document.createElement('select');navDateSelect.setAttribute('aria-label','Select date');
@@ -83,8 +88,9 @@ function syncDay(){
  const options=trainerOptions(records,state.day);
  trainerControl.hidden=!document.body.hasAttribute('data-trainer-filter')||options.length===0;
  if(state.trainer&&!options.some(([id])=>id===state.trainer))state.trainer='';
- const url=new URL(location.href);url.searchParams.set('view',isDay?'day':'schedule');url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');history.replaceState(null,'',url);
- document.querySelectorAll('a[href*="schedule.html"],a[href*="day.html"]').forEach(a=>{const target=new URL(a.getAttribute('href'),location.href);target.searchParams.set('date',state.day);if(state.trainer)target.searchParams.set('trainer',state.trainer);else target.searchParams.delete('trainer');a.href=target.href;});
+ const url=new URL(location.href);url.searchParams.set('view',isDay?'day':'schedule');url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');
+ if(state.team)url.searchParams.set('team',state.team);else url.searchParams.delete('team');history.replaceState(null,'',url);
+ document.querySelectorAll('a[href*="schedule.html"],a[href*="day.html"]').forEach(a=>{const target=new URL(a.getAttribute('href'),location.href);target.searchParams.set('date',state.day);if(state.trainer)target.searchParams.set('trainer',state.trainer);else target.searchParams.delete('trainer');if(state.team)target.searchParams.set('team',state.team);else target.searchParams.delete('team');a.href=target.href;});
  const dates=[...new Set([todayDate(),state.day,...days.map(d=>d.date)])].sort();
  daySelect.innerHTML=dates.map(date=>`<option value="${escape(date)}">${date===todayDate()?'Today':escape(dateLabel(date))}</option>`).join('');daySelect.value=state.day;
  navDateSelect.innerHTML=daySelect.innerHTML;navDateSelect.value=state.day;
@@ -95,6 +101,8 @@ function syncDay(){
  dayControl.title=daySelect.title='Schedule day: '+dateText;
  trainerControl.title=trainerSelect.title='Trainer: '+trainerSelect.selectedOptions[0].textContent;
  trainerControl.dataset.active=String(Boolean(state.trainer));
+ teamSelect.value=state.team;teamSelect.dataset.dayLabel=dateText;
+ teamControl.title=teamSelect.title=state.team?'Team: CWF':'Select team';teamControl.dataset.active=String(Boolean(state.team));
  schedule.setAttribute('aria-label','Schedule for '+dateText);
  if(isDay)document.querySelector('.v2-day-tools h1').textContent=state.day===new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())?'Today':dateText;
  const footer=document.querySelector('.rings-shell-footer');
@@ -104,7 +112,7 @@ function syncDay(){
  const rows=filterTrainer(publishedSchedule(records.filter(r=>r.date===state.day),publicationOptions),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
 
- const horses=new Map(rows.flatMap(r=>r.entries.map(e=>[e.horseId,e.name])));
+ const horses=new Map(teamRollups(rows,state.team).flatMap(r=>r.entries.map(e=>[e.horseId,e.name])));
  horseActions.innerHTML=[...horses].map(([id,name])=>v3Button('horse-filter',icon('horse')+escape(name),{extra:`data-horse="${escape(id)}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join('');
 }
 daySelect.addEventListener('change',()=>{
@@ -131,7 +139,7 @@ function renderSchedule(){
   ringActions.innerHTML=relevantRings.map(r=>v3Button('ring-anchor',icon('ring')+escape(ringDetails[r].name),{extra:`data-ring="${r}" aria-pressed="false"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join('');
   ringActions.scrollLeft=left;ringAnchorSignature=signature;
  }
- schedule.innerHTML=rings.filter(r=>(!state.horses.size&&!state.trainer)||visible.some(row=>row.ring===r)).map(r=>`<div id="ring-${r}" class="rings-anchor">${ringPanel(r,visible.filter(row=>row.ring===r))}</div>`).join('')||'<p class="rings-detail-note" role="status">No schedule rows match this view.</p>';
+ schedule.innerHTML=rings.filter(r=>(!state.horses.size&&!state.trainer)||visible.some(row=>row.ring===r)).map(r=>`<div id="ring-${r}" class="rings-anchor">${ringPanel(r,teamRollups(visible.filter(row=>row.ring===r),state.team))}</div>`).join('')||'<p class="rings-detail-note" role="status">No schedule rows match this view.</p>';
  if(pendingNote)schedule.innerHTML=pendingNote+(visible.length?schedule.innerHTML:'');
  entryLaneCleanup=[...schedule.querySelectorAll('.rings-entry-rollups')].map(enableDragScroll);
  if(state.ring!==null&&!visible.some(r=>String(r.ring)===state.ring))state.ring=null;

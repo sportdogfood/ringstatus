@@ -4,12 +4,14 @@ if(window.frameElement?.id==='profile-schedule-view')document.body.dataset.embed
 const back=document.querySelector('.rings-profile-nav a');back.className='back-link';
 const oldHeader=document.querySelector('.rings-header');
 const controls=Array.from(oldHeader.children).filter(node=>!node.classList.contains('rings-brand')) ;
+const theme=controls.splice(controls.findIndex(node=>node.classList.contains('v2-theme-toggle')),1)[0];
 const content=document.querySelector('.rings-scroll');oldHeader.remove();
 const bottom=document.querySelector('.v2-page-nav');
 const horses=document.querySelector('.rings-horse-actions');
 shell.classList.add('v3-panel');shell.setAttribute('role','main');shell.setAttribute('aria-label',content.getAttribute('aria-label')||'Schedule');shell.dataset.width='schedule';
 shell.innerHTML=v3Shell(v3Back(back.outerHTML)+v3Brand(`<div class="action-icons"></div>`),content.innerHTML,v3Footer('<span class="rings-shell-footer ui-button" data-variant="quiet" role="status"></span>'),horses.outerHTML+bottom.outerHTML);
 shell.querySelector('.action-icons').append(...controls);
+shell.querySelector('.back-row').append(theme);
 shell.querySelector('.stack-scroll').classList.add('rings-scroll');
 shell.querySelector('.brand-row').classList.add('rings-header');
 shell.querySelectorAll('.rings-pill').forEach(node=>v3Control(node));
