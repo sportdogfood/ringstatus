@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { APP_BASE, equals, prefix } from './shared-base.mjs';
-import { sharedScope, buildSharedDay } from './shared-projection.mjs';
+import { sharedScope, buildSharedDay, isSharedDataConflict } from './shared-projection.mjs';
 import { overlayDay0 } from './shared-live.mjs';
 import { fingerprint } from '../../../public/wef-schedule-v2/data-diff.js';
 import { validDataset } from '../../../public/wef-schedule-v2/device-data.js';
@@ -40,7 +40,7 @@ export async function readScheduleFeed(api, showId, lane) {
     const matches = await api.read('feed',equals('show-day-key',scope.day0['show-day-key']));
     if (matches.length !== 1) throw Error('day0_feed_unavailable');
     const {data,day0Diff,pending} = parseFeed(scope,scope.day0,matches[0]);
-    if (!data || pending) throw Error('day0_feed_unavailable');
+    if (!data) throw Error('day0_feed_unavailable');
     if (day0Diff?.baseVersion === data.metadata.dataVersion && day0Diff.showId === showId &&
         day0Diff.date === scope.day0.date) return day0Diff;
     return {...makeDay0Diff(data,data),checkedAt:data.metadata.capturedAt};
@@ -53,7 +53,7 @@ export async function readScheduleFeed(api, showId, lane) {
     return {...parseFeed(scope,day,matches[0]),day,saved:matches[0]};
   });
   const available = all.filter(d => d.data).map(d => d.data);
-  if (!available.length || all.some(d=>d.day.date===scope.day0.date && (!d.data || d.pending))) throw Error('day0_feed_unavailable');
+  if (!available.length) throw Error('day0_feed_unavailable');
   const checkedAt = all.map(d => d.saved['generated-at']).sort().at(-1);
   const dayVersions = Object.fromEntries(available.map(d => [d.days[0].date,d.metadata.dataVersion]));
   const pendingDays = all.filter(d=>d.pending).map(d=>({...d.pending,hasSavedData:Boolean(d.data)}));
@@ -101,10 +101,14 @@ export async function refreshScheduleFeed(api, lane, now, progress = []) {
       const previous = savedByKey.get(day['show-day-key']);
       const old = previous && parseFeed(scope,day,previous);
       let dataset;
-      try {({dataset} = await buildSharedDay(api,scope,day,now,byDay.get(day.date),{snapshots:true}));}
+      try {({dataset} = await buildSharedDay(api,scope,day,now,byDay.get(day.date),{snapshots:true,previous:old?.data}));}
       catch(error) {
         const incomplete = /^(invalid_shared_class|missing_shared_class|unconfirmed_empty_day:)/.test(error.message);
-        if (day.date === scope.day0.date || !incomplete) throw error;
+        if (api.onConflict && isSharedDataConflict(error)) {
+          api.onConflict({reason:error.message,date:day.date,recordKey:error.details?.recordKey??day['show-day-key'],
+            details:{source:'Shared Data day projection',...error.details,scheduleKeys:byDay.get(day.date).map(r=>r['schedule-key']),
+              handling:old?.data?'Retain confirmed day package; continue other dates.':'Retain source records; await admin review; continue other dates.'}});
+        } else if (day.date === scope.day0.date || !incomplete) throw error;
         const pending = {date:day.date,reason:error.message,sourceRowCount:byDay.get(day.date).length};
         pendingDays.push(pending);
         if (fingerprint(old?.pending ?? null) === fingerprint(pending) && previous['day-priority'] === day['day-priority']) continue;
@@ -136,8 +140,8 @@ export async function refreshScheduleFeed(api, lane, now, progress = []) {
   if (lane !== 'day0') throw Error('invalid_feed_lane');
   const day = scope.day0, previous = savedByKey.get(day['show-day-key']);
   const base = parseFeed(scope,day,previous);
-  if (!base.data || base.pending) throw Error('day0_feed_unavailable');
-  const built = await buildSharedDay(api,scope,day,now);
+  if (!base.data) throw Error('day0_feed_unavailable');
+  const built = await buildSharedDay(api,scope,day,now,undefined,{previous:base.data});
   const effective = await overlayDay0(api,scope,built,now);
   const diff = makeDay0Diff(base.data,effective);
   const {checkedAt:ignored,...oldDiff} = base.day0Diff ?? {};
