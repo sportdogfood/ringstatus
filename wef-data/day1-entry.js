@@ -9,7 +9,15 @@ async function publishGroup(report){
  if(changed.trim()){
   await git(['add','--',folder]);await git(['commit','-m','Save Day 0 grouped order of go '+report.day,'--',folder]);
  }
- return {ok:true,changed:Boolean(changed.trim()),commit:(await git(['rev-parse','HEAD'])).trim(),pushed:false};
+ const prefix=folder.slice(0,folder.lastIndexOf('/')),branch='codex/day0-order-of-go-'+parts[0]+'-'+parts[1];
+ const tree=(await git(['rev-parse','HEAD:'+prefix])).trim();
+ const remote=(await git(['ls-remote','--heads','origin','refs/heads/'+branch])).trim();
+ let parent;
+ if(remote){await git(['fetch','--no-tags','origin',branch]);parent=(await git(['rev-parse','FETCH_HEAD'])).trim();}
+ if(parent&&(await git(['rev-parse',parent+'^{tree}'])).trim()===tree)return {ok:true,pushed:true,branch,commit:parent,changed:false};
+ const commit=(await git(['commit-tree',tree,...(parent?['-p',parent]:[]),'-m','Day 0 grouped order of go '+report.day])).trim();
+ await git(['push','origin',commit+':refs/heads/'+branch]);
+ return {ok:true,changed:Boolean(changed.trim()),commit,pushed:true,branch};
 }
 async function main(){
  const config=JSON.parse(fs.readFileSync(path.join(__dirname,'logging-schema.json'),'utf8')).workflows['wef-data'];
