@@ -1,5 +1,6 @@
 import { projectData } from './data.mjs';
 import { APP_BASE, equals, prefix } from './shared-base.mjs';
+import {publicationStatus} from '../../../public/wef-schedule-v2/publication.js';
 
 const dateText = value => /^\d{4}-\d{2}-\d{2}$/.test(value ?? '') && Number.isFinite(Date.parse(value));
 const positive = value => Number.isSafeInteger(Number(value)) && Number(value) > 0;
@@ -33,7 +34,7 @@ export async function sharedScope(api) {
   return {show, days:days.sort((a,b) => a.date.localeCompare(b.date)), day0:day0[0]};
 }
 
-export async function buildSharedDay(api, scope, day, now, scopedSchedules, {snapshots=false} = {}) {
+export async function buildSharedDay(api, scope, day, now, scopedSchedules, {snapshots=false,previous} = {}) {
   const {show} = scope, showId = show.id, dayId = day.id, key = day['show-day-key'];
   const ringPrefix = `${show.customer_id}|${show.facility_id}|`;
   const schedules = (scopedSchedules ?? await api.read('schedules', prefix('schedule-key', key + '|'))).filter(r => !removed(r));
@@ -77,6 +78,24 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
     if (rings.get(row.ring)['ring-id'] !== ringId || classMap.has(classKey)) throw Error('shared_class_ring_conflict');
     classMap.set(classKey,{row,raw});
   }
+  // Schedule identity comes from the schedule; unavailable class detail is not a day gate.
+  if(api.onConflict)for(const classKey of needed) {
+    if(classMap.has(classKey))continue;
+    const occurrences=schedules.filter(r=>r.kind==='class'&&r.class===classKey);
+    const source=occurrences[0], number=Number(source?.ring?.split('|').at(-1));
+    const native=classes.filter(r=>r['class-key']===classKey);
+    const known=native.length===1&&inScope(native[0])&&native[0].ring===source?.ring&&
+      classKey===`${source.ring}|${native[0]['class-id']}`?native[0]:null;
+    const master=masters.filter(r=>r['ring-number']===number);
+    const ringId=rings.get(source?.ring)?.['ring-id']??(master.length===1?master[0]['ring-id']:null);
+    if(!source||!positive(ringId))throw Error('invalid_shared_ring');
+    if(!rings.has(source.ring))ring(source.ring,number,ringId,master[0]?.name);
+    if(!known)api.onConflict({reason:'missing_shared_class',date:day.date,recordKey:classKey,
+      details:{source:'wef-data.classes',handling:'Keep schedule rows; class details are unavailable.'}});
+    classMap.set(classKey,{row:{...known,'class-key':classKey,ring:source.ring,
+      'entry-count':Number.isSafeInteger(known?.['entry-count'])&&known['entry-count']>=0?known['entry-count']:null},
+      raw:{class:{schedule_ring_id:ringId},trips:[]},detailsMissing:true});
+  }
   if ([...needed].some(k => !classMap.has(k))) throw Error('missing_shared_class');
   const projectedSchedules = schedules.map(row => {
     const raw = scheduleJson.get(row.id);
@@ -91,7 +110,8 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
   const scopedTrips = new Map();
   // Full Data uses the trip arrays saved with each validated shared class.
   // A normalized row is optional here and supplies only its existing record ID.
-  const sourceTrips = snapshots ? [...classMap].flatMap(([classKey,{row,raw}]) => {
+  const sourceTrips = snapshots ? [...classMap].flatMap(([classKey,{row,raw,detailsMissing}]) => {
+    if(detailsMissing)return [];
     if (!Array.isArray(raw.trips)) throw Error('incomplete_shared_class_trips');
     return raw.trips.map(trip => {
       const tripKey=`${classKey}|${trip.entry_id}|${trip.entryxclasses_uuid}`;
@@ -107,7 +127,7 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
     const [customer, showNumber, date, ringNumber, classNumber, entryNumber, uuid, ...extra] = row['trip-key']?.split('|') ?? [];
     const classKey = [customer,showNumber,date,ringNumber,classNumber].join('|');
     const group = classMap.get(classKey);
-    if (!group) continue;
+    if (!group || group.detailsMissing) continue;
     if (!positive(entryNumber) || !uuid || extra.length || (row['w-days'] && row['w-days'] !== key) ||
       (row['w-shows'] && row['w-shows'] !== show['show-key']) || (row.class && row.class !== classKey) ||
       scopedTrips.has(row['trip-key'])) throw Error('invalid_shared_trip_identity');
@@ -127,6 +147,7 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
     scopedTrips.set(row['trip-key'], {row,raw,classKey});
   }
   for (const [classKey,group] of classMap) {
+    if(group.detailsMissing)continue;
     const list = group.raw.trips;
     const found = [...scopedTrips.values()].filter(t => t.classKey === classKey && !removed(t.row));
     if (!Array.isArray(list) || list.some(t => !scopedTrips.has(`${classKey}|${t.entry_id}|${t.entryxclasses_uuid}`)) ||
@@ -189,6 +210,15 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
     ringHelper:masters.filter(m => dayRings.some(r => r['ring-id'] === m['ring-id'] && r['ring-number'] === m['ring-number']))
       .map(m => ({id:m.id,key:m['ring-key'],ringId:m['ring-id'],nickname:m['ring-nickname'],active:true}))
   });} catch(error) {throw Object.assign(Error('schedule_projection_conflict'),{details:{message:error.message}});}
+  for(const record of dataset.records) {
+    if(classMap.get(record.classId)?.detailsMissing) {
+      const prior=previous?.records.find(r=>r.key===record.key&&r.classId===record.classId&&r.ring===record.ring&&r.date===record.date);
+      if(prior){record.entries=structuredClone(prior.entries);record.entryCount??=prior.entryCount;record.id||=prior.id;record.status||=prior.status;}
+      record.detailsMissing=true;
+    }
+    const source=schedules.find(r=>r['schedule-key']===record.key);
+    record.publication=publicationStatus(source,record.entryCount);
+  }
   const versions = [...schedules,...classes.filter(r => needed.has(r['class-key'])),...activeTrips.map(t => t.row)]
     .map(r => r['last-success']).filter(t => Number.isFinite(Date.parse(t))).sort();
   Object.assign(dataset.metadata,{source:'wef-schedule-app',sourceDayPriority:day['day-priority'],showKey:show['show-key'],

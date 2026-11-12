@@ -9,6 +9,7 @@ import { readScheduleFeed, refreshScheduleFeed } from '../src/lib/wef-schedule/s
 import { runScheduleRefresh } from '../src/lib/wef-schedule/refresh-run.mjs';
 import { runDueFeeds } from '../src/lib/wef-schedule/cadence.mjs';
 import {conflictReviewFields} from '../src/lib/wef-schedule/conflict-review.mjs';
+import {publicationStatus,publishedSchedule} from '../public/wef-schedule-v2/publication.js';
 import { applyDay0Diff, makeDay0Diff } from '../public/wef-schedule-v2/day0-diff.js';
 import { createDeviceData, validDataset } from '../public/wef-schedule-v2/device-data.js';
 import { encodePayload, decodePayload } from '../src/lib/wef-schedule/shared-payload.mjs';
@@ -298,8 +299,46 @@ test('class conflicts keep confirmed day data while unrelated dates update',asyn
   assert.equal(run.log.result,'Success');
   assert.equal(api.data.conflicts.some(r=>r['record-key']===classKey&&r.reason==='invalid_shared_class'),true);
   const full=await readScheduleFeed(api,showId,'full');
-  assert.deepEqual(full.records[0],original);assert.equal(full.records[1].name,'Updated unaffected date');
+  assert.deepEqual(full.records[0],{...original,detailsMissing:true});assert.equal(full.records[1].name,'Updated unaffected date');
   assert.equal(api.data.dataRows.some(r=>r['class-name']==='Updated unaffected date'),true);
+});
+
+test('November 15 schedule publishes with missing class details and publication exclusions stay separate',async()=>{
+  const api=memory(),sunday='2026-11-15';
+  api.data.days.push({id:'rec00000000000009',show:showKey,date:sunday,'show-day-key':dayKey(sunday),'day-priority':3});
+  const cases=[['200031576','Flat',9,'Under Saddle/Flat'],['200031558','Schooling pony',999,'Over Fences'],['200031999','First trip',1,'Over Fences']];
+  for(const [id,flag,priority,sequence]of cases){
+    const key=ringKey(sunday)+'|'+id;
+    api.data.classes.push({...api.data.classes[0],id:'class-'+id,'class-key':key,'class-id':Number(id),'w-days':dayKey(sunday),ring:ringKey(sunday),'entry-count':undefined,'source-json':undefined,trips:[]});
+    api.data.schedules.push({...api.data.schedules[0],id:'schedule-'+id,'schedule-key':key+'0',class:key,ring:ringKey(sunday),'w-days':dayKey(sunday),group:ringKey(sunday)+'|11','source-position':Number(id),
+      'rs-flag':flag,'rs-priority':priority,'rs-lever':'lever1',schedule_sequencetype:sequence,class_type:'Hunters',
+      'source-json':{class_id:Number(id),class_groupxclasses_id:Number(id+'0'),class_group_id:11,group_name:'Known schedule',class_type:'Hunters',schedule_sequencetype:sequence,total_trips:1}});
+  }
+  const source=JSON.stringify([api.data.schedules,api.data.classes]);
+  const run=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
+  assert.equal(run.log.result,'Success');assert.deepEqual(JSON.parse(run.log.summary).pendingDays,[]);
+  const full=await readScheduleFeed(api,showId,'full'),rows=full.records.filter(r=>r.date===sunday);
+  assert.equal(rows.length,3);assert.equal(rows.every(r=>r.detailsMissing&&r.entryCount===null&&r.entries.length===0),true);
+  assert.deepEqual(rows.map(r=>r.publication),['Optional: classes','Trip detail only','Visible']);
+  assert.equal(publishedSchedule(rows).length,1);
+  assert.equal(publishedSchedule(rows,{showOptionalClasses:true}).length,2);
+  assert.equal(api.data.dataRows.filter(r=>r.date===sunday).length,3);
+  assert.equal(api.data.conflicts.filter(r=>r.reason==='invalid_shared_class').length,3);
+  assert.equal(JSON.stringify([api.data.schedules,api.data.classes]),source);
+  const unchanged=await runScheduleRefresh(api,{lane:'full',slot:'2026-11-12T17:15:00Z',clock:()=>now});
+  assert.equal(unchanged.log.result,'Success');assert.equal(JSON.parse(unchanged.log.summary).readable.upserts,0);
+});
+
+test('publication rules match approved precedence without a blanket priority999 exclusion',()=>{
+ const base={kind:'class','record-status':'Active','rs-lever':'lever1'};
+ for(const [extra,count,expected]of [
+  [{'rs-flag':'No entries'},null,'Hidden'],[{},0,'Hidden'],[{kind:'break'},null,'Optional: breaks'],
+  [{'rs-priority':2},1,'Trip detail only'],[{'rs-flag':'Model'},1,'Trip detail only'],
+  [{'rs-flag':'Classic',class_type:'Hunters'},1,'Trip detail only'],
+  [{'rs-flag':'Classic',class_type:'Jumpers'},1,'Visible'],[{'rs-priority':999},1,'Visible'],
+  [{'rs-flag':'First trip','rs-priority':1},null,'Visible'],
+  [{'rs-flag':'Warmup'},1,'Optional: classes'],[{'record-status':'Dropped','rs-flag':'Warmup'},1,'Hidden']
+ ])assert.equal(publicationStatus({...base,...extra},count),expected);
 });
 
 test('scheduled data conflicts do not stop either lane or rewrite synced sources',async()=>{

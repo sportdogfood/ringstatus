@@ -7,10 +7,12 @@ import {enableDragScroll} from './drag-scroll.js?v=entry-lane-1';
 import {addComment} from './comments.js?v=tokens-policy-1';
 import {records,days,ringDetails,metadata,replaceData,selectRingDetails,scopeReady} from './schedule-data.js';
 import {createDeviceData,trainerOptions,filterTrainer} from './device-data.js';
+import {publishedSchedule} from './publication.js';
 import {pingLocation} from './device-location.js';
 import {ringPanel,detailPanel,icon,commentsList,dayLine} from './components.js?v=group-subline-1';
 let isDay=new URLSearchParams(location.search).has('view')?new URLSearchParams(location.search).get('view')==='day':document.body.dataset.view==='day';
 const requestedDay=new URLSearchParams(location.search).get('date');
+const publicationOptions={showBreaks:new URLSearchParams(location.search).get('showBreaks')==='1',showOptionalClasses:new URLSearchParams(location.search).get('showOptionalClasses')==='1'};
 const todayDate=()=>new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const initialDay=days.some(d=>d.date===requestedDay)||requestedDay===todayDate()?requestedDay:todayDate();
 const state={trainer:new URLSearchParams(location.search).get('trainer')||'',day:initialDay,ring:null,horses:new Set(),selection:null,dayStatus:"",daySort:'time',dayDirection:'asc'};
@@ -99,7 +101,7 @@ function syncDay(){
  const feedSource=['wef-data','wef-schedule-app'].includes(metadata.source);
  footer.textContent=Number.isFinite(Date.parse(metadata.capturedAt))?(feedSource?'Airtable refreshed':'Airtable snapshot')+' · '+new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:metadata.timezone,timeZoneName:'short'}).format(new Date(metadata.capturedAt))+(feedSource?'':' - not live'):'Loading schedule';
  footer.title=metadata.show+' · '+metadata.capturedAt;
- const rows=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
+ const rows=filterTrainer(publishedSchedule(records.filter(r=>r.date===state.day),publicationOptions),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
 
  const horses=new Map(rows.flatMap(r=>r.entries.map(e=>[e.horseId,e.name])));
@@ -113,7 +115,7 @@ daySelect.addEventListener('change',()=>{
 let entryLaneCleanup=[];
 function renderSchedule(){
  entryLaneCleanup.forEach(cleanup=>cleanup());entryLaneCleanup=[];
- const dayRecords=filterTrainer(records.filter(r=>r.date===state.day&&(r.kind!=='class'||r.entryCount!==0)),state.trainer);
+ const dayRecords=filterTrainer(publishedSchedule(records.filter(r=>r.date===state.day),publicationOptions),state.trainer);
  const pendingNote=days.find(d=>d.date===state.day)?.pending?'<p class="rings-detail-note" role="status">Schedule pending for '+escape(dateLabel(state.day))+'.'+(dayRecords.length?' Showing last loaded schedule.':'')+'</p>':'';
  if(isDay){
   const rows=dayRows(dayRecords,{status:state.dayStatus,sort:state.daySort,direction:state.dayDirection});

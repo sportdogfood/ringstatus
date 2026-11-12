@@ -101,7 +101,7 @@ export async function refreshScheduleFeed(api, lane, now, progress = []) {
       const previous = savedByKey.get(day['show-day-key']);
       const old = previous && parseFeed(scope,day,previous);
       let dataset;
-      try {({dataset} = await buildSharedDay(api,scope,day,now,byDay.get(day.date),{snapshots:true}));}
+      try {({dataset} = await buildSharedDay(api,scope,day,now,byDay.get(day.date),{snapshots:true,previous:old?.data}));}
       catch(error) {
         const incomplete = /^(invalid_shared_class|missing_shared_class|unconfirmed_empty_day:)/.test(error.message);
         if (api.onConflict && isSharedDataConflict(error)) {
@@ -141,7 +141,7 @@ export async function refreshScheduleFeed(api, lane, now, progress = []) {
   const day = scope.day0, previous = savedByKey.get(day['show-day-key']);
   const base = parseFeed(scope,day,previous);
   if (!base.data) throw Error('day0_feed_unavailable');
-  const built = await buildSharedDay(api,scope,day,now);
+  const built = await buildSharedDay(api,scope,day,now,undefined,{previous:base.data});
   const effective = await overlayDay0(api,scope,built,now);
   const diff = makeDay0Diff(base.data,effective);
   const {checkedAt:ignored,...oldDiff} = base.day0Diff ?? {};
