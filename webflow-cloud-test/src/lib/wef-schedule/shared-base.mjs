@@ -21,9 +21,10 @@ const tables = {
   day0Rows: ['tblHoADAZbp6u52Bo', rowFields+' source-feed baseline-record base-version diff-checked-at diff-applied live-state-json'],
   runs: ['tblWhGshVZuUlKHbO', 'run-id started completed result show-id date summary errors ring-count group-count class-count entry-count'],
   errors: ['tbl0q9iniaffVoXAa', 'error-key run-id occurred-at show-id date message'],
-  heartbeat: ['tblXeSnesC31P8P5S', 'heartbeat-key checked-at show-id date result summary errors run-id started completed']
+  heartbeat: ['tblXeSnesC31P8P5S', 'heartbeat-key checked-at show-id date result summary errors run-id started completed'],
+  changes: ['tblthYFb59kFJ4YRB', 'change-key request-id person-uid entity-type record-id record-name show-id changes-json submitted-at source status']
 };
-const writeKey = {conflicts:'conflict-key',dataRows:'schedule-key',day0Rows:'schedule-key',feed:'show-day-key', runs:'run-id', errors:'error-key', heartbeat:'heartbeat-key'};
+const writeKey = {conflicts:'conflict-key',dataRows:'schedule-key',day0Rows:'schedule-key',feed:'show-day-key', runs:'run-id', errors:'error-key', heartbeat:'heartbeat-key',changes:'change-key'};
 const fieldsFor = name => Array.isArray(tables[name][1]) ? tables[name][1] : tables[name][1].split(' ');
 const quoted = value => JSON.stringify(String(value));
 export const equals = (field, value) => `{${field}}=${typeof value === 'number' ? value : quoted(value)}`;

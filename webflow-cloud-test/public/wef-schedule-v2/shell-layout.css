@@ -52,3 +52,12 @@
  .v2-trainer-dialog{inset:auto 12px 12px;margin:0 auto}
  .v2-trainer-dialog[open]{animation:rings-reveal .2s ease-out}
 }
+
+/* Existing V3 input/buttons; these rules arrange the inline editor and single-row choices only. */
+.v2-entry-item{display:inline-flex;align-items:center;gap:4px;flex:0 0 auto;white-space:nowrap}
+.v2-nickname-form{display:flex;align-items:center;gap:8px;min-width:0}
+.v2-nickname-form>.field{width:180px;max-width:42vw}
+.v2-nickname-form .form-error{margin:0;max-width:180px;white-space:normal}
+.v2-horse-form{padding:8px 10px}
+.horse-choice-row{display:flex;gap:8px;overflow-x:auto;white-space:nowrap}
+.horse-choice-row>.ui-button{flex:0 0 auto}

@@ -1,4 +1,7 @@
 import './shell.js';
+import {recognitionAdapter} from '/test/rs-recognition/widget.js';
+import {createHorseEdits} from './horse-edits.js';
+import {inlineNickname,horseForm} from './horse-forms.js';
 import {openShellDialog} from './shell-dialog.js';
 import {v3Button,v3Control} from '../rs-profile-v3/components.js';
 import {icon as v3Icon} from '../rs-profile-v3/icons.js';
@@ -16,7 +19,13 @@ const requestedDay=new URLSearchParams(location.search).get('date');
 const publicationOptions={showBreaks:new URLSearchParams(location.search).get('showBreaks')==='1',showOptionalClasses:new URLSearchParams(location.search).get('showOptionalClasses')==='1'};
 const todayDate=()=>new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const initialDay=days.some(d=>d.date===requestedDay)||requestedDay===todayDate()?requestedDay:todayDate();
-const state={trainer:new URLSearchParams(location.search).get('trainer')||'',team:new URLSearchParams(location.search).get('team')===CWF_TEAM.id?CWF_TEAM.id:'',day:initialDay,ring:null,horses:new Set(),selection:null,dayStatus:"",daySort:'time',dayDirection:'asc'};
+const newListState=()=>({trainer:'',team:'',day:todayDate(),ring:null,horses:new Set(),selection:null,dayStatus:'',daySort:'time',dayDirection:'asc'});
+const listStates={schedule:newListState(),day:newListState()};
+let state=listStates[isDay?'day':'schedule'];
+Object.assign(state,{trainer:new URLSearchParams(location.search).get('trainer')||'',team:new URLSearchParams(location.search).get('team')===CWF_TEAM.id?CWF_TEAM.id:'',day:initialDay});
+const horseEdits=createHorseEdits({endpoint:new URL('../wef-schedule/input',location.href).href,onChange:refreshHorseDisplay});
+const shownRecords=()=>horseEdits.apply(records);
+let horseEditor=null;
 const schedule=document.querySelector('#rings-schedule');
 const surface=document.querySelector('#rings-surface');
 const scroller=document.querySelector('.rings-scroll');
@@ -41,17 +50,11 @@ const teamControl=headerFilter(teamSelect,v3Icon('users'));
 teamSelect.addEventListener('change',()=>{state.team=teamSelect.value;state.horses.clear();horseActions.hidden=true;if(surface.open)surface.close();syncDay();renderSchedule();});
 const pageNav=document.querySelector('.v2-page-nav');
 const todayLink=pageNav.querySelector('a[href="day.html"]');
-const navDateSelect=document.createElement('select');navDateSelect.setAttribute('aria-label','Select date');
-const navDateControl=headerFilter(navDateSelect,todayLink.innerHTML,{className:'rings-pill ui-button',placement:'top'});
-todayLink.replaceWith(navDateControl);pageNav.append(navDateSelect);
-if(isDay)navDateControl.setAttribute('aria-current','page');
-for(const [label,glyph] of [['Horses','horse'],['Results','list'],['Messages','comment']]){
- const button=document.createElement('button');button.type='button';button.innerHTML=icon(glyph)+'<span>'+label+'</span>';button.classList.add('rings-pill');v3Control(button);pageNav.append(button);
+const timelinesControl=document.createElement('button');timelinesControl.type='button';timelinesControl.className='rings-pill';timelinesControl.dataset.listView='day';timelinesControl.innerHTML=v3Icon('calendar')+'<span>Timelines</span>';v3Control(timelinesControl);todayLink.replaceWith(timelinesControl);
+pageNav.querySelector('a').dataset.listView='schedule';
+for(const [label,glyph] of [['Horses','horse'],['Results','list'],['Notifications','bell'],['Comments','comment']]){
+ const button=document.createElement('button');button.type='button';button.disabled=true;button.innerHTML=v3Icon(glyph)+'<span>'+label+'</span>';button.classList.add('rings-pill');v3Control(button);pageNav.append(button);
 }
-navDateSelect.addEventListener('change',()=>{
- if(isDay){daySelect.value=navDateSelect.value;daySelect.dispatchEvent(new Event('change',{bubbles:true}));}
- else{state.day=navDateSelect.value;switchView(true);}
-});
 trainerControl.hidden=true;
 trainerSelect.addEventListener('change',()=>{state.trainer=trainerSelect.value;state.horses.clear();if(surface.open)surface.close();syncDay();renderSchedule();});
 daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');
@@ -63,23 +66,23 @@ function configureView(){
  document.body.dataset.view=isDay?'day':'schedule';
  ringActions.classList.toggle('v2-day-tools',isDay);
  ringActions.setAttribute('aria-label',isDay?'Day status':'Jump to ring');
- ringActions.innerHTML=isDay?'<h1>Today</h1>'+[['done','DONE'],['upc','UPCM'],['live','LIVE']].map(([value,label])=>v3Button('day-status',label,{extra:`data-day-status="${value}" aria-pressed="${state.dayStatus===value}"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join(''):'';
+ ringActions.innerHTML=isDay?'<h1>Timelines</h1>'+[['done','DONE'],['upc','UPCM'],['live','LIVE']].map(([value,label])=>v3Button('day-status',label,{extra:`data-day-status="${value}" aria-pressed="${state.dayStatus===value}"`}).replace('class="ui-button"','class="ui-button rings-pill" data-v3-control="action"')).join(''):'';
  ringAnchorSignature='';
  const scheduleLink=pageNav.querySelector('a');
- if(isDay){navDateControl.setAttribute('aria-current','page');scheduleLink.removeAttribute('aria-current');}
- else{scheduleLink.setAttribute('aria-current','page');navDateControl.removeAttribute('aria-current');}
+ if(isDay){timelinesControl.setAttribute('aria-current','page');scheduleLink.removeAttribute('aria-current');}
+ else{scheduleLink.setAttribute('aria-current','page');timelinesControl.removeAttribute('aria-current');}
  horseActions.hidden=isDay||!state.horses.size;
 }
 function switchView(day){
  viewScroll[isDay?'day':'schedule']=scroller.scrollTop;
  if(surface.open)surface.close();
- isDay=day;configureView();syncDay();renderSchedule();
+ isDay=day;state=listStates[isDay?'day':'schedule'];configureView();syncDay();renderSchedule();
  scroller.scrollTo({top:viewScroll[isDay?'day':'schedule'],behavior:'instant'});
 }
 pageNav.addEventListener('click',event=>{
- const link=event.target.closest('a');
+ const link=event.target.closest('[data-list-view]');
  if(!link||event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
- event.preventDefault();if(isDay)switchView(false);
+ event.preventDefault();const day=link.dataset.listView==='day';if(isDay!==day)switchView(day);
 });
 
 function syncDay(){
@@ -90,11 +93,9 @@ function syncDay(){
  if(state.trainer&&!options.some(([id])=>id===state.trainer))state.trainer='';
  const url=new URL(location.href);url.searchParams.set('view',isDay?'day':'schedule');url.searchParams.set('date',state.day);if(state.trainer)url.searchParams.set('trainer',state.trainer);else url.searchParams.delete('trainer');
  if(state.team)url.searchParams.set('team',state.team);else url.searchParams.delete('team');history.replaceState(null,'',url);
- document.querySelectorAll('a[href*="schedule.html"],a[href*="day.html"]').forEach(a=>{const target=new URL(a.getAttribute('href'),location.href);target.searchParams.set('date',state.day);if(state.trainer)target.searchParams.set('trainer',state.trainer);else target.searchParams.delete('trainer');if(state.team)target.searchParams.set('team',state.team);else target.searchParams.delete('team');a.href=target.href;});
+ document.querySelectorAll('a[href*="schedule.html"],a[href*="day.html"]').forEach(a=>{const linkState=listStates[a.dataset.listView]||state;const target=new URL(a.getAttribute('href'),location.href);target.searchParams.set('date',linkState.day);if(linkState.trainer)target.searchParams.set('trainer',linkState.trainer);else target.searchParams.delete('trainer');if(linkState.team)target.searchParams.set('team',linkState.team);else target.searchParams.delete('team');a.href=target.href;});
  const dates=[...new Set([todayDate(),state.day,...days.map(d=>d.date)])].sort();
  daySelect.innerHTML=dates.map(date=>`<option value="${escape(date)}">${date===todayDate()?'Today':escape(dateLabel(date))}</option>`).join('');daySelect.value=state.day;
- navDateSelect.innerHTML=daySelect.innerHTML;navDateSelect.value=state.day;
- navDateControl.querySelector('span').textContent=state.day===todayDate()?'Today':dateLabel(state.day);
  trainerSelect.innerHTML='<option value="">'+(options.length?'Select trainer':'No trainers for '+escape(dateLabel(state.day)))+'</option>'+options.map(([id,name])=>`<option value="${escape(id)}">${escape(name)}</option>`).join('');trainerSelect.value=state.trainer;
  const dateText=dateLabel(state.day);
  trainerSelect.dataset.dayLabel=dateText;
@@ -104,12 +105,12 @@ function syncDay(){
  teamSelect.value=state.team;teamSelect.dataset.dayLabel=dateText;
  teamControl.title=teamSelect.title=state.team?'Team: CWF':'Select team';teamControl.dataset.active=String(Boolean(state.team));
  schedule.setAttribute('aria-label','Schedule for '+dateText);
- if(isDay)document.querySelector('.v2-day-tools h1').textContent=state.day===new Intl.DateTimeFormat('en-CA',{timeZone:metadata.timezone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())?'Today':dateText;
+ if(isDay)document.querySelector('.v2-day-tools h1').textContent=state.day===todayDate()?'Timelines':dateText;
  const footer=document.querySelector('.rings-shell-footer');
  const feedSource=['wef-data','wef-schedule-app'].includes(metadata.source);
  footer.textContent=Number.isFinite(Date.parse(metadata.capturedAt))?(feedSource?'Airtable refreshed':'Airtable snapshot')+' · '+new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:metadata.timezone,timeZoneName:'short'}).format(new Date(metadata.capturedAt))+(feedSource?'':' - not live'):'Loading schedule';
  footer.title=metadata.show+' · '+metadata.capturedAt;
- const rows=filterTrainer(publishedSchedule(records.filter(r=>r.date===state.day),publicationOptions),state.trainer);
+ const rows=filterTrainer(publishedSchedule(shownRecords().filter(r=>r.date===state.day),publicationOptions),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
 
  const horses=new Map(teamRollups(rows,state.team).flatMap(r=>r.entries.map(e=>[e.horseId,e.name])));
@@ -123,7 +124,7 @@ daySelect.addEventListener('change',()=>{
 let entryLaneCleanup=[];
 function renderSchedule(){
  entryLaneCleanup.forEach(cleanup=>cleanup());entryLaneCleanup=[];
- const dayRecords=filterTrainer(publishedSchedule(records.filter(r=>r.date===state.day),publicationOptions),state.trainer);
+ const dayRecords=filterTrainer(publishedSchedule(shownRecords().filter(r=>r.date===state.day),publicationOptions),state.trainer);
  const pendingNote=days.find(d=>d.date===state.day)?.pending?'<p class="rings-detail-note" role="status">Schedule pending for '+escape(dateLabel(state.day))+'.'+(dayRecords.length?' Showing last loaded schedule.':'')+'</p>':'';
  if(isDay){
   const rows=dayRows(dayRecords,{status:state.dayStatus,sort:state.daySort,direction:state.dayDirection});
@@ -147,7 +148,7 @@ function renderSchedule(){
  horseActions.querySelectorAll('[data-horse]').forEach(b=>b.setAttribute('aria-pressed',String(state.horses.has(b.dataset.horse))));
 }
 function selectRecord(rowKey,entryKey,trigger){
- const row=filterTrainer(records,state.trainer).find(row=>row.key===rowKey);
+ const row=filterTrainer(shownRecords(),state.trainer).find(row=>row.key===rowKey);
  if(!row||row.date!==state.day||row.kind!=='class')return;
  const entry=entryKey?row.entries.find(entry=>entry.key===entryKey):null;
  if(entryKey&&!entry)return;
@@ -171,7 +172,9 @@ function selectRecord(rowKey,entryKey,trigger){
  }
 }
 function onRecordClick(event){
+ const edit=event.target.closest('[data-edit-horse]');if(edit){openInlineNickname(edit);return;}
  const trigger=event.target.closest('button[data-row-key]');
+ if(trigger&&surface.contains(trigger)&&surface.dataset.mode==='entry'&&trigger.classList.contains('v2-entry-name-link')){openHorseEditor(trigger);return;}
  if(trigger)selectRecord(trigger.dataset.rowKey,trigger.dataset.entryKey,trigger);
 }
 schedule.addEventListener('click',onRecordClick);
@@ -180,7 +183,7 @@ surface.addEventListener('click',event=>{
  onRecordClick(event);
 });
 document.querySelector('#rings-close').addEventListener('click',()=>surface.close());
-surface.addEventListener('close',()=>{state.selection=null;if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true});returnFocus=null;});
+surface.addEventListener('close',()=>{horseEditor=null;state.selection=null;if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true});returnFocus=null;});
 ringActions.addEventListener('click',event=>{
  const b=event.target.closest('[data-ring]');if(!b)return;
  const reset=state.ring===b.dataset.ring;
@@ -275,7 +278,7 @@ schedule.addEventListener('click',event=>{
 });
 function filterEntryLane(input){
  const lane=input.closest('.rings-entry-line'),query=input.value.trim().toLocaleLowerCase();let matches=0;
- lane.querySelectorAll('.rings-entry-rollup').forEach(pill=>{pill.hidden=!pill.querySelector('.rings-entry-name').textContent.toLocaleLowerCase().includes(query);if(!pill.hidden)matches++;});
+ lane.querySelectorAll('.rings-entry-rollup').forEach(pill=>{pill.hidden=!pill.querySelector('.rings-entry-name').textContent.toLocaleLowerCase().includes(query);if(pill.closest('.v2-entry-item'))pill.closest('.v2-entry-item').hidden=pill.hidden;if(!pill.hidden)matches++;});
  lane.querySelector('.v2-entry-empty').hidden=matches>0;
  lane.querySelector('.rings-entry-rollups').scrollLeft=0;
 }
@@ -289,6 +292,56 @@ document.addEventListener('click',event=>{
  toggle.setAttribute('aria-expanded',String(expanded));
  toggle.setAttribute('aria-label',toggle.getAttribute('aria-label').replace(expanded?'Show':'Hide',expanded?'Hide':'Show'));
 });
+// Horse inputs share Profile's identity, local-first save and quiet Astro confirmation semantics.
+function horseFromTrigger(trigger){const row=shownRecords().find(r=>r.key===trigger.dataset.rowKey);return {row,horse:row?.entries.find(e=>e.key===trigger.dataset.entryKey)};}
+function refreshHorseDisplay(){
+ if(horseEditor&&!horseEdits.ready){horseEditor=null;if(surface.open)surface.close();}
+ syncDay();renderSchedule();
+ if(surface.open&&surface.dataset.mode==='entry'&&state.selection&&!horseEditor)selectRecord(state.selection.rowKey,state.selection.entryKey);
+}
+function openInlineNickname(trigger){
+ if(!horseEdits.ready)return;
+ const {horse}=horseFromTrigger(trigger);if(!horse)return;
+ const item=trigger.closest('.v2-entry-item');if(item.querySelector('form'))return;
+ item.insertAdjacentHTML('beforeend',inlineNickname(horseEdits.fields(horse).nickname));
+ const form=item.querySelector('form');form.dataset.horseId=horse.horseId;form.dataset.rowKey=trigger.dataset.rowKey;form.dataset.entryKey=trigger.dataset.entryKey;
+ item.querySelectorAll(':scope>button').forEach(b=>b.hidden=true);form.querySelector('input').focus();form.querySelector('input').select();
+}
+schedule.addEventListener('click',event=>{const cancel=event.target.closest('[data-cancel-horse]');if(!cancel)return;const item=cancel.closest('.v2-entry-item');item.querySelector('form').remove();item.querySelectorAll(':scope>button').forEach(b=>b.hidden=false);});
+schedule.addEventListener('submit',event=>{
+ const form=event.target;if(!form.matches('.v2-nickname-form'))return;event.preventDefault();const {horse}=horseFromTrigger(form);if(!horse)return;
+ try{horseEdits.save(horse,metadata.showId,{nickname:form.elements.nickname.value});syncDay();renderSchedule();}catch(error){form.querySelector('[role=alert]').textContent=error.message;}
+});
+function openHorseEditor(trigger){
+ const {row,horse}=horseFromTrigger(trigger);if(!row||!horse||!horseEdits.ready)return;
+ horseEditor={rowKey:row.key,entryKey:horse.key,horse};
+ document.querySelector('#rings-surface-title').textContent='Edit horse';surface.dataset.mode='entry';
+ document.querySelector('#rings-surface-content').innerHTML=horseForm(horseEdits.fields(horse));
+ surface.querySelector('[name=nickname]').focus();
+}
+surface.addEventListener('click',event=>{
+ if(!horseEditor)return;
+ const option=event.target.closest('[data-horse-field]');
+ if(option){const field=option.dataset.horseField;surface.querySelector('[name='+field+']').value=option.dataset.value;option.closest('.horse-choice-row').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===option)));}
+ if(event.target.closest('[data-cancel-horse]')){const current=horseEditor;horseEditor=null;selectRecord(current.rowKey,current.entryKey);}
+});
+surface.addEventListener('submit',event=>{
+ const form=event.target;if(!form.matches('.v2-horse-form')||!horseEditor)return;event.preventDefault();
+ const current=horseEditor,fields={nickname:form.elements.nickname.value};for(const key of ['color','gender'])if(form.elements[key].value)fields[key]=form.elements[key].value;
+ try{horseEdits.save(current.horse,metadata.showId,fields);horseEditor=null;selectRecord(current.rowKey,current.entryKey);}catch(error){form.querySelector('[role=alert]').textContent=error.message;}
+});
+let horseIdentityGeneration=0;
+async function prepareHorseIdentity(){
+ const check=++horseIdentityGeneration;horseEdits.setIdentity(null);
+ // Reuse Profile's established returning-device association; Astro still authorizes every write.
+ try{const identity=JSON.parse(localStorage.getItem('rs_recognition_identity_v1')||'null'),snapshot=identity?.personUid?JSON.parse(localStorage.getItem('rs_profile_snapshot_v1:'+identity.personUid)||'null'):null;
+  if(!localStorage.getItem('rs_recognition_pending_signout_v1')&&identity?.expiresAt>Date.now()&&identity.deviceToken===localStorage.getItem('rs_recognition_device_token_v1')&&snapshot?.uid===identity.personUid&&snapshot.state?.identity?.currentId===identity.personUid&&snapshot.deviceFingerprint)horseEdits.setIdentity({uid:identity.personUid,fingerprint:snapshot.deviceFingerprint});
+ }catch{}
+ try{await recognitionAdapter.current();if(check!==horseIdentityGeneration)return;const identity=recognitionAdapter.profileIdentity();horseEdits.setIdentity(identity?{uid:identity.uid,fingerprint:recognitionAdapter.profileDeviceFingerprint()}:null);}catch{}
+}
+void prepareHorseIdentity();
+addEventListener('storage',event=>{if(['rs_recognition_pending_signout_v1','rs_recognition_device_token_v1'].includes(event.key))void prepareHorseIdentity();});
+addEventListener('online',()=>void horseEdits.flush());
 // Same-origin Astro refresh; device packages are separate from Profile storage.
 const endpoint=document.body.dataset.scheduleEndpoint;
 let pendingData=null;
@@ -304,7 +357,7 @@ function applyDeviceData(data){
 if(endpoint)scopeReady.then(scope=>{
  if(!scope?.showId){markScheduleReady();return;}
  const dataEndpoint=new URL(endpoint,location.href).href;
- const device=createDeviceData({showId:scope.showId,endpoint:dataEndpoint,seed:metadata.showId===scope.showId&&records.length?{records,days,ringDetails,metadata}:null,onData:applyDeviceData,onError:()=>{document.querySelector('.rings-shell-footer').textContent='Refresh unavailable - showing last loaded data';markScheduleReady();},onChecked:(data,lane)=>{document.querySelector('.rings-shell-footer').textContent=(lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date());}});
+ const device=createDeviceData({showId:scope.showId,endpoint:dataEndpoint,seed:metadata.showId===scope.showId&&records.length?{records,days,ringDetails,metadata}:null,onData:applyDeviceData,onError:()=>{document.querySelector('.rings-shell-footer').textContent='Refresh unavailable - showing last loaded data';markScheduleReady();},onChecked:(data,lane)=>{void horseEdits.flush();document.querySelector('.rings-shell-footer').textContent=(lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date());}});
  // Only the same Astro application's approximate GeoIP ping; no GPS or persistence.
  void pingLocation(new URL('geo',dataEndpoint).href);
  let stop=device.start();
