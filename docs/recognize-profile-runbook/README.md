@@ -1,8 +1,10 @@
 # Recognize + Profile: behavior, storage and runbook
 
-Document version: **1.0 — 2026-11-11**. Evidence date: **2026-11-11**, America/New_York. This is a dated operational record, not a claim that later deployments are identical.
+Document version: **1.1 — 2026-11-12** (repository publication; behavior unchanged). Evidence date: **2026-11-11**, America/New_York. This is a dated operational record, not a claim that later deployments are identical.
 
 Scope: existing Recognize and Profile v3 integration through Astro/Webflow Cloud. Documentation only. No runtime changes, record changes, deployment, new synchronization route or new behavior is authorized by this document. Schedule owns its own datasets and is not reimplemented here.
+
+Canonical repository path: docs/recognize-profile-runbook/README.md on shared main. The [shared data and UI contract](../profile/README.md) and this runbook must be read from the same repository commit. Local checkout paths below identify historical evidence, not the canonical distribution location.
 
 ## Version and deployment record
 
