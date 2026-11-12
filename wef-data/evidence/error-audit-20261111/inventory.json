@@ -1,0 +1,285 @@
+{
+  "count": 6159,
+  "unreadable": [],
+  "runs": 43,
+  "by_kind": {
+    "Source HTTP 502": 6043,
+    "Airtable source-json 422": 32,
+    "Logger own delivery budget": 32,
+    "Source HTTP 503": 26,
+    "SourceFailure: Source transport failed:": 14,
+    "TimeoutError: The operation was aborted due to timeout": 3,
+    "TypeError: fetch failed": 2,
+    "KeyError: 'rings'": 2,
+    "TransportDeferred: Airtable transport deferred: PATCH tbl9ROAViHtbKqpRd": 1,
+    "TransportDeferred: Airtable transport deferred: PATCH tblvEa5ZqW6W2aL7N": 1,
+    "TransportDeferred: Airtable transport deferred: GET tblGc03icHzudV1v2": 1,
+    "TransportDeferred: Airtable transport deferred: PATCH tblt0GvQ39bHIu930": 1,
+    "Runner returned no terminal attempt <record>; exit -1": 1
+  },
+  "by_stage": {
+    "Collection": 6121,
+    "LogDelivery": 37,
+    "ProcessStartup": 1
+  },
+  "by_utc_date": {
+    "2026-11-11": 4876,
+    "2026-11-12": 344,
+    "2026-11-10": 934,
+    "2026-11-07": 2,
+    "2026-11-08": 1,
+    "2026-11-05": 2
+  },
+  "distinct_source_targets": 410,
+  "top_source_targets": [
+    [
+      "15|200000078|2026-11-14|3|200031401",
+      26
+    ],
+    [
+      "15|200000078|2026-11-14|3|200031494",
+      26
+    ],
+    [
+      "15|200000078|2026-11-14|6|200031469",
+      24
+    ],
+    [
+      "15|200000078|2026-11-14|6|200031476",
+      23
+    ],
+    [
+      "15|200000078|2026-11-14|6|200031479",
+      23
+    ],
+    [
+      "15|200000078|2026-11-14|6|200031484",
+      23
+    ],
+    [
+      "15|200000078|2026-11-15|8|200031660",
+      23
+    ],
+    [
+      "15|200000078|2026-11-15|8|200031661",
+      23
+    ]
+  ],
+  "samples": {
+    "Airtable source-json 422": [
+      {
+        "id": "08a584fa-46c3-412c-8478-805ee63aac40-0001",
+        "at": "2026-11-11T23:53:51.506Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "classes 15|200000078|2026-11-12|1|200031715 source-json",
+        "message": "RuntimeError: Airtable HTTP 422\nHTTPError: HTTP Error 422: Unprocessable Entity\nAirtable message: INVALID_VALUE_FOR_COLUMN; Field \"source-json\" cannot accept the provided value"
+      },
+      {
+        "id": "08a584fa-46c3-412c-8478-805ee63aac40-0002",
+        "at": "2026-11-11T23:54:00.017Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "classes 15|200000078|2026-11-12|1|200031714 source-json",
+        "message": "RuntimeError: Airtable HTTP 422\nHTTPError: HTTP Error 422: Unprocessable Entity\nAirtable message: INVALID_VALUE_FOR_COLUMN; Field \"source-json\" cannot accept the provided value"
+      }
+    ],
+    "Source HTTP 502": [
+      {
+        "id": "08a584fa-46c3-412c-8478-805ee63aac40-0004",
+        "at": "2026-11-11T23:54:18.631Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "15|200000078|2026-11-14|4|200031669",
+        "message": "SourceFailure: Source HTTP 502\nSource fetch or protected response decoding failed\nRequested URL: https://wef-schedules-decoded.gombcg.workers.dev/classes/200031669?customer_id=15&show_id=200000078\nSource completed: 2026-11-11T23:36:54.048Z\nSaved response: C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\runtime\\source-responses\\8e51f9229313a50337a08f0919e9bcc2d0f67b4971cca2f46b937a764473d8bd.json"
+      },
+      {
+        "id": "08a584fa-46c3-412c-8478-805ee63aac40-0005",
+        "at": "2026-11-11T23:54:23.289Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "15|200000078|2026-11-14|4|200031646",
+        "message": "SourceFailure: Source HTTP 502\nSource fetch or protected response decoding failed\nRequested URL: https://wef-schedules-decoded.gombcg.workers.dev/classes/200031646?customer_id=15&show_id=200000078\nSource completed: 2026-11-11T23:37:07.442Z\nSaved response: C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\runtime\\source-responses\\f4da09931c0f1b28a5c91d067b48c0015f21c8e8eab7577d50f093f5fb2b6abe.json"
+      }
+    ],
+    "SourceFailure: Source transport failed:": [
+      {
+        "id": "08a584fa-46c3-412c-8478-805ee63aac40-0012",
+        "at": "2026-11-11T23:54:51.588Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "15|200000078|2026-11-14|7|200031368",
+        "message": "SourceFailure: Source transport failed:\nTypeError: fetch failed\nCause:\nConnectTimeoutError: Connect Timeout Error (attempted addresses: 2606:4700:3033::ac43:a38d:443, 172.67.163.141:443, timeout: 10000ms)\ncode: UND_ERR_CONNECT_TIMEOUT\nRequested URL: https://wef-schedules-decoded.gombcg.workers.dev/classes/200031368?customer_id=15&show_id=200000078\nSource completed: 2026-11-11T23:39:03.745Z\nSaved response: C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\runtime\\source-responses\\e256bce47c0abf3fb59bab242a4f643237215ef65a0ce11514fc80ea3ed1f3b8.json"
+      },
+      {
+        "id": "08a584fa-46c3-412c-8478-805ee63aac40-0013",
+        "at": "2026-11-11T23:54:55.248Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "15|200000078|2026-11-14|7|200031373",
+        "message": "SourceFailure: Source transport failed:\nTypeError: fetch failed\nCause:\nConnectTimeoutError: Connect Timeout Error (attempted addresses: 2606:4700:3033::ac43:a38d:443, timeout: 10000ms)\ncode: UND_ERR_CONNECT_TIMEOUT\nRequested URL: https://wef-schedules-decoded.gombcg.workers.dev/classes/200031373?customer_id=15&show_id=200000078\nSource completed: 2026-11-11T23:39:17.615Z\nSaved response: C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\runtime\\source-responses\\7e3ac9a8b02d8f60607c340fc90016d2b4dea8952fdacdf95e0b8c3bd814c743.json"
+      }
+    ],
+    "TransportDeferred: Airtable transport deferred: PATCH tbl9ROAViHtbKqpRd": [
+      {
+        "id": "08a584fa-46c3-412c-8478-805ee63aac40-0034",
+        "at": "2026-11-11T23:55:58.258Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "trainers",
+        "message": "TransportDeferred: Airtable transport deferred: PATCH tbl9ROAViHtbKqpRd\nURLError: <urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>\nCause: ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host\nerrno: 10054\nwinerror: 10054"
+      }
+    ],
+    "Logger own delivery budget": [
+      {
+        "id": "08a584fa-46c3-412c-8478-805ee63aac40-0057",
+        "at": "2026-11-11T23:57:30.200Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "Logging delivery budget reached"
+      },
+      {
+        "id": "0bc865c1-23a2-409c-829e-938d396513e3-0393",
+        "at": "2026-11-11T01:36:25.169Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "Logging delivery budget reached"
+      }
+    ],
+    "Source HTTP 503": [
+      {
+        "id": "0bc865c1-23a2-409c-829e-938d396513e3-0219",
+        "at": "2026-11-11T01:34:41.504Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "15|200000078|2026-11-14|7|200031307",
+        "message": "SourceFailure: Source HTTP 503\nSource queue unavailable"
+      },
+      {
+        "id": "214c56c3-1f7d-4899-836a-78ab9a0aa971-0293",
+        "at": "2026-11-11T15:20:40.872Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "15|200000078|2026-11-15|3|200031579",
+        "message": "SourceFailure: Source HTTP 503\nSource queue unavailable"
+      }
+    ],
+    "TimeoutError: The operation was aborted due to timeout": [
+      {
+        "id": "126f871c-fe11-4cff-9f57-0c488bcc8851-0041",
+        "at": "2026-11-12T03:15:11.447Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "TimeoutError: The operation was aborted due to timeout\ncode: 23"
+      },
+      {
+        "id": "2e0b52bf-fe7f-4f7f-8562-024e3f3faba3-0049",
+        "at": "2026-11-12T04:25:04.515Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "TimeoutError: The operation was aborted due to timeout\ncode: 23"
+      }
+    ],
+    "TypeError: fetch failed": [
+      {
+        "id": "796c3c68-ee14-4786-b272-d43343a5dc01-0394",
+        "at": "2026-11-11T08:16:38.041Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "TypeError: fetch failed\nCause:\nError: getaddrinfo ENOTFOUND api.airtable.com\ncode: ENOTFOUND\nerrno: -3008\nsyscall: getaddrinfo\nhostname: api.airtable.com"
+      },
+      {
+        "id": "cdf3e019-77eb-40c2-8237-f29f5813c686-0002",
+        "at": "2026-11-11T08:18:26.276Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "TypeError: fetch failed\nCause:\nError: certificate has expired\ncode: CERT_HAS_EXPIRED"
+      }
+    ],
+    "TransportDeferred: Airtable transport deferred: PATCH tblvEa5ZqW6W2aL7N": [
+      {
+        "id": "878483f7-e2aa-4b66-9203-4507e8133cb6-0004",
+        "at": "2026-11-11T21:48:47.728Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "owners",
+        "message": "TransportDeferred: Airtable transport deferred: PATCH tblvEa5ZqW6W2aL7N\nURLError: <urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>\nCause: ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host\nerrno: 10054\nwinerror: 10054"
+      }
+    ],
+    "TransportDeferred: Airtable transport deferred: GET tblGc03icHzudV1v2": [
+      {
+        "id": "cdf3e019-77eb-40c2-8237-f29f5813c686-0001",
+        "at": "2026-11-11T08:18:24.029Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "Show and day selection",
+        "message": "TransportDeferred: Airtable transport deferred: GET tblGc03icHzudV1v2\nURLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'api.airtable.com'. (_ssl.c:1002)>\nCause: SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'api.airtable.com'. (_ssl.c:1002)\nerrno: 1"
+      }
+    ],
+    "KeyError: 'rings'": [
+      {
+        "id": "cf6b9d35-8966-49c8-b9e8-416583bb533a-0001",
+        "at": "2026-11-05T21:00:22.718Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "Day inventory collection",
+        "message": "KeyError: 'rings'"
+      },
+      {
+        "id": "d9ae39f2-b958-4d3e-9d0e-1ba378a232fc-0001",
+        "at": "2026-11-05T22:51:22.442Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "Day inventory collection",
+        "message": "KeyError: 'rings'"
+      }
+    ],
+    "TransportDeferred: Airtable transport deferred: PATCH tblt0GvQ39bHIu930": [
+      {
+        "id": "def3fcc7-20f5-41c1-ae29-c601654b5fd1-0058",
+        "at": "2026-11-11T20:37:53.618Z",
+        "stage": "Collection",
+        "category": "Collection",
+        "operation": "Collect",
+        "target": "trips",
+        "message": "TransportDeferred: Airtable transport deferred: PATCH tblt0GvQ39bHIu930\nHTTPError: HTTP Error 504: Gateway Time-out\nAirtable message: <html>\r\n<head><title>504 Gateway Time-out</title></head>\r\n<body>\r\n<center><h1>504 Gateway Time-out</h1></center>\r\n</body>\r\n</html>\r\n"
+      }
+    ],
+    "Runner returned no terminal attempt <record>; exit -1": [
+      {
+        "id": "fcad1ded-9f26-4c63-a877-315479d2fa27-0001",
+        "at": "2026-11-12T04:46:05.380Z",
+        "stage": "ProcessStartup",
+        "category": "Process",
+        "operation": "Start",
+        "target": "Local runner",
+        "message": "Runner returned no terminal attempt receipt; exit -1"
+      }
+    ]
+  }
+}

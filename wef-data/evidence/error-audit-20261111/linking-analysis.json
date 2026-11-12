@@ -1,0 +1,195 @@
+{
+  "counts": {
+    "Missing/ambiguous w-horses": 1169,
+    "Missing/ambiguous w-riders": 492,
+    "Optional canonical w-rings missing/ambiguous": 83,
+    "Optional run-log missing/ambiguous": 73,
+    "Logger delivery budget": 72,
+    "Unexpected end of JSON input": 1,
+    "Missing/ambiguous w-trainers": 166,
+    "TimeoutError: The operation was aborted due to timeout": 2
+  },
+  "samples": {
+    "Missing/ambiguous w-horses": [
+      {
+        "id": "045e264a-f5aa-4bdd-b1d4-0d0a8f3801c8-0001",
+        "attempt": "045e264a-f5aa-4bdd-b1d4-0d0a8f3801c8",
+        "at": "2026-11-12T02:32:07.540Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "w-horses 200004558",
+        "message": "No unique existing link target; existing links preserved",
+        "write-outcome": "Unknown"
+      },
+      {
+        "id": "139c856e-830c-4ad1-bae1-f0838ebb3ba9-0001",
+        "attempt": "139c856e-830c-4ad1-bae1-f0838ebb3ba9",
+        "at": "2026-11-07T19:29:33.605Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "w-horses 144695",
+        "message": "No unique existing link target; existing links preserved",
+        "write-outcome": "Unknown"
+      }
+    ],
+    "Missing/ambiguous w-riders": [
+      {
+        "id": "045e264a-f5aa-4bdd-b1d4-0d0a8f3801c8-0002",
+        "attempt": "045e264a-f5aa-4bdd-b1d4-0d0a8f3801c8",
+        "at": "2026-11-12T02:32:08.790Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "w-riders 1000002913",
+        "message": "No unique existing link target; existing links preserved",
+        "write-outcome": "Unknown"
+      },
+      {
+        "id": "68770b6d-cb84-4cdd-a458-221ad7b97cb9-0023",
+        "attempt": "68770b6d-cb84-4cdd-a458-221ad7b97cb9",
+        "at": "2026-11-11T20:24:27.527Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "w-riders 40240",
+        "message": "No unique existing link target; existing links preserved",
+        "write-outcome": "Unknown"
+      }
+    ],
+    "Optional canonical w-rings missing/ambiguous": [
+      {
+        "id": "045e264a-f5aa-4bdd-b1d4-0d0a8f3801c8-0003",
+        "attempt": "045e264a-f5aa-4bdd-b1d4-0d0a8f3801c8",
+        "at": "2026-11-12T02:32:10.689Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "w-rings 15|500|49",
+        "message": "Optional w-rings match unavailable or ambiguous: Denemethy, ring number 5, ring ID 49, show 15|200000078, facility 500. Show-source mapping and existing links retained; linking continues.",
+        "write-outcome": "Unknown"
+      },
+      {
+        "id": "0809ec01-0d86-4efb-b8fa-bae16240c537-0002",
+        "attempt": "0809ec01-0d86-4efb-b8fa-bae16240c537",
+        "at": "2026-11-12T00:09:18.634Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "w-rings 15|500|49",
+        "message": "Optional w-rings match unavailable or ambiguous: Denemethy, ring number 5, ring ID 49, show 15|200000078, facility 500. Show-source mapping and existing links retained; linking continues.",
+        "write-outcome": "Unknown"
+      }
+    ],
+    "Optional run-log missing/ambiguous": [
+      {
+        "id": "0809ec01-0d86-4efb-b8fa-bae16240c537-0001",
+        "attempt": "0809ec01-0d86-4efb-b8fa-bae16240c537",
+        "at": "2026-11-12T00:09:17.406Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "run-logs collection-863c0e12-5a92-411d-a51a-c17e4f49b30d",
+        "message": "Optional run-log link unavailable or ambiguous: collection-863c0e12-5a92-411d-a51a-c17e4f49b30d. Existing links retained; linking continues.",
+        "write-outcome": "Unknown"
+      },
+      {
+        "id": "1b031fab-a8a6-4374-b41e-96858d0a6c96-0001",
+        "attempt": "1b031fab-a8a6-4374-b41e-96858d0a6c96",
+        "at": "2026-11-12T00:06:22.153Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "run-logs collection-863c0e12-5a92-411d-a51a-c17e4f49b30d",
+        "message": "Optional run-log link unavailable or ambiguous: collection-863c0e12-5a92-411d-a51a-c17e4f49b30d. Existing links retained; linking continues.",
+        "write-outcome": "Unknown"
+      }
+    ],
+    "Logger delivery budget": [
+      {
+        "id": "0809ec01-0d86-4efb-b8fa-bae16240c537-0003",
+        "attempt": "0809ec01-0d86-4efb-b8fa-bae16240c537",
+        "at": "2026-11-12T00:09:28.583Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "Logging delivery budget reached",
+        "write-outcome": "Unknown"
+      },
+      {
+        "id": "1b031fab-a8a6-4374-b41e-96858d0a6c96-0003",
+        "attempt": "1b031fab-a8a6-4374-b41e-96858d0a6c96",
+        "at": "2026-11-12T00:06:32.776Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "Logging delivery budget reached",
+        "write-outcome": "Unknown"
+      }
+    ],
+    "Unexpected end of JSON input": [
+      {
+        "id": "4858cd34-7930-4b05-96ee-9fbb3431f1eb-0001",
+        "attempt": "4858cd34-7930-4b05-96ee-9fbb3431f1eb",
+        "at": "2026-11-01T12:28:45.925Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "Collector",
+        "message": "Unexpected end of JSON input",
+        "write-outcome": "Unknown"
+      }
+    ],
+    "Missing/ambiguous w-trainers": [
+      {
+        "id": "68770b6d-cb84-4cdd-a458-221ad7b97cb9-0034",
+        "attempt": "68770b6d-cb84-4cdd-a458-221ad7b97cb9",
+        "at": "2026-11-11T20:24:38.901Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "w-trainers 13724",
+        "message": "No unique existing link target; existing links preserved",
+        "write-outcome": "Unknown"
+      },
+      {
+        "id": "68770b6d-cb84-4cdd-a458-221ad7b97cb9-0035",
+        "attempt": "68770b6d-cb84-4cdd-a458-221ad7b97cb9",
+        "at": "2026-11-11T20:24:40.187Z",
+        "stage": "Linking",
+        "category": "Linking",
+        "operation": "Link",
+        "target": "w-trainers 18172",
+        "message": "No unique existing link target; existing links preserved",
+        "write-outcome": "Unknown"
+      }
+    ],
+    "TimeoutError: The operation was aborted due to timeout": [
+      {
+        "id": "797d508b-8183-4390-a878-f92dce01ff3a-0003",
+        "attempt": "797d508b-8183-4390-a878-f92dce01ff3a",
+        "at": "2026-11-11T18:23:39.065Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "TimeoutError: The operation was aborted due to timeout\ncode: 23",
+        "write-outcome": "Unknown"
+      },
+      {
+        "id": "df8d4834-c3d1-4ac3-8b2b-2bfee971a567-0011",
+        "attempt": "df8d4834-c3d1-4ac3-8b2b-2bfee971a567",
+        "at": "2026-11-11T22:18:50.489Z",
+        "stage": "LogDelivery",
+        "category": "Logging",
+        "operation": "",
+        "target": "",
+        "message": "TimeoutError: The operation was aborted due to timeout\ncode: 23",
+        "write-outcome": "Unknown"
+      }
+    ]
+  }
+}

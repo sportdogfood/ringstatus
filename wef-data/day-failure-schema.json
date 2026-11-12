@@ -1,0 +1,261 @@
+{
+  "id": "tblZwLmLLZoAm7weM",
+  "name": "decoder-request-failures",
+  "description": "One current problem record per show/day/class endpoint, updated with repeat counts and actual request, recovery and save evidence. HTTP 502 is distinguished from the upstream response and decoded result. No credentials. Existing warning-log remains owner-notification authority.",
+  "primaryFieldId": "fldL54JHz4W0qTOXq",
+  "fields": [
+    {
+      "id": "fldL54JHz4W0qTOXq",
+      "name": "failure-key",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fldMBZenm9nY7r6CQ",
+      "name": "status",
+      "type": "singleSelect",
+      "config": {
+        "choices": [
+          {
+            "id": "selWkUwACeIRWIwp2",
+            "name": "Open",
+            "color": "grayLight2"
+          },
+          {
+            "id": "sel24iSuKX0lKLW6S",
+            "name": "Pending trouble",
+            "color": "grayLight2"
+          },
+          {
+            "id": "selOFuwQzCtTRNBV8",
+            "name": "Recovered",
+            "color": "grayLight2"
+          },
+          {
+            "id": "selSQaLXOewj6JjQ2",
+            "name": "Save failed",
+            "color": "grayLight2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "flduIg71Iyrhx5C5V",
+      "name": "show",
+      "type": "multipleRecordLinks",
+      "config": {
+        "linkedTableId": "tblJA5CUon5s1sWib",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "inverseLinkFieldId": "fldMdChT7Ran5Q04t"
+      }
+    },
+    {
+      "id": "fldBsILmK8NJhorR3",
+      "name": "show-day",
+      "type": "multipleRecordLinks",
+      "config": {
+        "linkedTableId": "tbl14MaCCDw6dAywH",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "inverseLinkFieldId": "fld0MbNM5e18z30IS"
+      }
+    },
+    {
+      "id": "fldi0ymLd3U4Lo86D",
+      "name": "class-id",
+      "type": "number",
+      "config": {
+        "precision": 0
+      }
+    },
+    {
+      "id": "fldGwyLwXtb5rSfFY",
+      "name": "class-number",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fldYa1dXVqOWpPURF",
+      "name": "class-name",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fld5HTdxvYtzADUwG",
+      "name": "rs-flag",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fld0KzuiDvGPmZtsH",
+      "name": "endpoint",
+      "type": "url"
+    },
+    {
+      "id": "fld0TxnAwkCplJXxI",
+      "name": "source-endpoint",
+      "type": "url"
+    },
+    {
+      "id": "flddcP5JozBAQ18hU",
+      "name": "first-observed-at",
+      "type": "dateTime",
+      "config": {
+        "dateFormat": {
+          "name": "iso",
+          "format": "YYYY-MM-DD"
+        },
+        "timeFormat": {
+          "name": "24hour",
+          "format": "HH:mm"
+        },
+        "timeZone": "America/New_York"
+      }
+    },
+    {
+      "id": "fldkZk0ZQfTsbaeho",
+      "name": "last-observed-at",
+      "type": "dateTime",
+      "config": {
+        "dateFormat": {
+          "name": "iso",
+          "format": "YYYY-MM-DD"
+        },
+        "timeFormat": {
+          "name": "24hour",
+          "format": "HH:mm"
+        },
+        "timeZone": "America/New_York"
+      }
+    },
+    {
+      "id": "fldD67RQq8RekJ3yx",
+      "name": "run-id",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fldGCKZbocKsGoyCu",
+      "name": "source-status",
+      "type": "number",
+      "config": {
+        "precision": 0
+      }
+    },
+    {
+      "id": "fld7HCNCcVzh3NiwJ",
+      "name": "proxy-status",
+      "type": "number",
+      "config": {
+        "precision": 0
+      }
+    },
+    {
+      "id": "fldMD7L3WDPukxxVy",
+      "name": "working-lane",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fldOdbCLVgcTwRBqi",
+      "name": "profile",
+      "type": "singleLineText"
+    },
+    {
+      "id": "fldf0mQJ12t6ZtIzT",
+      "name": "problem",
+      "type": "multilineText",
+      "description": "Observed failure and what remains unverified; do not replace a root cause with just an HTTP code."
+    },
+    {
+      "id": "fldYDYIFgf9uXFBD2",
+      "name": "response",
+      "type": "multilineText",
+      "description": "Actual redacted returned response. Identify proxy response separately from unavailable raw upstream bodies."
+    },
+    {
+      "id": "fldsOzwAM1ZkT2JT8",
+      "name": "empty-fallback-responses",
+      "type": "number",
+      "config": {
+        "precision": 0
+      }
+    },
+    {
+      "id": "fld9EnwVaO77DVVob",
+      "name": "repeat-count",
+      "type": "number",
+      "description": "Count observed failing collection requests for this target, not the individual fallback attempts.",
+      "config": {
+        "precision": 0
+      }
+    },
+    {
+      "id": "fldD9DvhdUTGfO2DQ",
+      "name": "elapsed-seconds",
+      "type": "number",
+      "config": {
+        "precision": 3
+      }
+    },
+    {
+      "id": "fldc1PWeHgS5ArJho",
+      "name": "trouble-status",
+      "type": "singleSelect",
+      "config": {
+        "choices": [
+          {
+            "id": "selsFxTzCtYCnZsGv",
+            "name": "Not run",
+            "color": "grayLight2"
+          },
+          {
+            "id": "selGRot2snoLQy4tQ",
+            "name": "Pending",
+            "color": "grayLight2"
+          },
+          {
+            "id": "selAZYOz3J8nUH0bX",
+            "name": "Failed",
+            "color": "grayLight2"
+          },
+          {
+            "id": "selLmIiz3SpcA9F22",
+            "name": "Recovered",
+            "color": "grayLight2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fldnCVwLYpfIqoano",
+      "name": "save-status",
+      "type": "singleSelect",
+      "config": {
+        "choices": [
+          {
+            "id": "sel5BejEyIWvf1QdR",
+            "name": "Unverified",
+            "color": "grayLight2"
+          },
+          {
+            "id": "selPQlRXgmqjSNaws",
+            "name": "Pending",
+            "color": "grayLight2"
+          },
+          {
+            "id": "selPnSaZmFfp9LlXu",
+            "name": "Saved",
+            "color": "grayLight2"
+          },
+          {
+            "id": "seleGrQWFILCof29G",
+            "name": "Failed",
+            "color": "grayLight2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fld5dvpVFam12ugzv",
+      "name": "evidence",
+      "type": "multilineText"
+    }
+  ],
+  "base": "appCaSmL819KK7UFJ"
+}

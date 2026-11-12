@@ -1,0 +1,189 @@
+{
+  "saved_response_counts": [
+    {
+      "proxy_http": "502",
+      "message": "Source fetch or protected response decoding failed",
+      "count": 515
+    },
+    {
+      "proxy_http": "503",
+      "message": "Source queue unavailable",
+      "count": 1
+    }
+  ],
+  "unavailable_capture": 5553,
+  "unreadable_capture": 0,
+  "distinct_day_endpoint_status": 433,
+  "top_repeated": [
+    {
+      "date": "2026-11-14",
+      "class_id": "200031401",
+      "status": "502",
+      "failures": 26
+    },
+    {
+      "date": "2026-11-14",
+      "class_id": "200031494",
+      "status": "502",
+      "failures": 26
+    },
+    {
+      "date": "2026-11-14",
+      "class_id": "200031469",
+      "status": "502",
+      "failures": 24
+    },
+    {
+      "date": "2026-11-14",
+      "class_id": "200031476",
+      "status": "502",
+      "failures": 23
+    },
+    {
+      "date": "2026-11-14",
+      "class_id": "200031479",
+      "status": "502",
+      "failures": 23
+    },
+    {
+      "date": "2026-11-14",
+      "class_id": "200031484",
+      "status": "502",
+      "failures": 23
+    },
+    {
+      "date": "2026-11-15",
+      "class_id": "200031660",
+      "status": "502",
+      "failures": 23
+    },
+    {
+      "date": "2026-11-15",
+      "class_id": "200031661",
+      "status": "502",
+      "failures": 23
+    },
+    {
+      "date": "2026-11-14",
+      "class_id": "200031567",
+      "status": "502",
+      "failures": 23
+    },
+    {
+      "date": "2026-11-14",
+      "class_id": "200031564",
+      "status": "502",
+      "failures": 23
+    }
+  ],
+  "large_json": {
+    "200031679": [
+      {
+        "file": "6f4cfd4ffd726110b2054f229bb6d1e9443c73fba1e97269c1e9c8a250091070.json",
+        "day": "2026-11-12",
+        "completed": "2026-11-12T03:18:45.517Z",
+        "json_chars": 152561,
+        "utf8_bytes": 152565,
+        "trips": 87
+      },
+      {
+        "file": "c7e7d7819de390c83ebf4b34ddd361cc050adb7d6bd8c60656687be980ac0986.json",
+        "day": "2026-11-12",
+        "completed": "2026-11-12T04:27:34.762Z",
+        "json_chars": 152561,
+        "utf8_bytes": 152565,
+        "trips": 87
+      }
+    ],
+    "200031715": [
+      {
+        "file": "00f355c039ba9140a4cbece8e87cb77bc6d6c776f1b8c813d28b3a73082879bf.json",
+        "day": "2026-11-12",
+        "completed": "2026-11-12T03:18:39.240Z",
+        "json_chars": 104392,
+        "utf8_bytes": 104394,
+        "trips": 59
+      },
+      {
+        "file": "aa45ab36ee67b96bf00b0023ca22935d86d2bc9b29e32cbb51c6e957ec646817.json",
+        "day": "2026-11-12",
+        "completed": "2026-11-12T04:27:31.756Z",
+        "json_chars": 104392,
+        "utf8_bytes": 104394,
+        "trips": 59
+      }
+    ],
+    "200031714": [
+      {
+        "file": "4f7728712139803129415b90b2d8605f0e62615e245f43cca1f424134e0094f1.json",
+        "day": "2026-11-12",
+        "completed": "2026-11-12T03:18:40.644Z",
+        "json_chars": 111182,
+        "utf8_bytes": 111182,
+        "trips": 63
+      },
+      {
+        "file": "2b16743df577b7da10b2209af7142fa0f59de5c56f73f340e16ad69a23f66f01.json",
+        "day": "2026-11-12",
+        "completed": "2026-11-12T04:27:33.084Z",
+        "json_chars": 111182,
+        "utf8_bytes": 111182,
+        "trips": 63
+      }
+    ]
+  },
+  "other_fast_logs": {
+    "wef-data-linking": {
+      "count": 2058,
+      "types": {
+        "No unique existing link target; existing links preserved": 1827,
+        "Optional w-rings match unavailable or ambiguous: Denemethy, ring number 5, ring ID 49, show 15|200000078, facility 500. Show-source mapping and existing links retained; linking continues.": 79,
+        "Optional run-log link unavailable or ambiguous: collection-863c0e12-5a92-411d-a51a-c17e4f49b30d. Existing links retained; linking continues.": 4,
+        "Logging delivery budget reached": 72,
+        "Optional w-rings match unavailable or ambiguous: Denemethy, ring number 5, ring ID 49, show 15|200000077, facility 500. Show-source mapping and existing links retained; linking continues.": 4,
+        "Optional run-log link unavailable or ambiguous: collection-08a584fa-46c3-412c-8478-805ee63aac40. Existing links retained; linking continues.": 7,
+        "Unexpected end of JSON input": 1,
+        "Optional run-log link unavailable or ambiguous: collection-a2c79c21-78de-41c3-a391-f35807b2003c. Existing links retained; linking continues.": 1,
+        "Optional run-log link unavailable or ambiguous: collection-def3fcc7-20f5-41c1-ae29-c601654b5fd1. Existing links retained; linking continues.": 8,
+        "Optional run-log link unavailable or ambiguous: collection-a7806e6e-bf61-4ff1-aeca-89bee2618f4d. Existing links retained; linking continues.": 5,
+        "Optional run-log link unavailable or ambiguous: collection-dfa1045c-b0e5-4752-bf1c-ac2b76f5d08d. Existing links retained; linking continues.": 4,
+        "Optional run-log link unavailable or ambiguous: collection-f702837e-52d3-4986-a872-4e96e32a3303. Existing links retained; linking continues.": 9,
+        "Optional run-log link unavailable or ambiguous: collection-e483d298-cdac-4f58-a4c6-fba2817a79aa. Existing links retained; linking continues.": 4,
+        "Optional run-log link unavailable or ambiguous: collection-25892f42-b070-4b95-8ac6-dfe97e2bc2e8. Existing links retained; linking continues.": 10,
+        "TimeoutError: The operation was aborted due to timeout": 2,
+        "Optional run-log link unavailable or ambiguous: collection-caa73327-9469-4ee1-9d1c-e4f2383c3664. Existing links retained; linking continues.": 7,
+        "Optional run-log link unavailable or ambiguous: collection-2229a3c6-9828-4005-9096-6462f323ac7e. Existing links retained; linking continues.": 1,
+        "Optional run-log link unavailable or ambiguous: collection-4b46a20b-25ec-4792-a7fc-bc36f8e061f7. Existing links retained; linking continues.": 6,
+        "Optional run-log link unavailable or ambiguous: collection-878483f7-e2aa-4b66-9203-4507e8133cb6. Existing links retained; linking continues.": 3,
+        "Optional run-log link unavailable or ambiguous: collection-126f871c-fe11-4cff-9f57-0c488bcc8851. Existing links retained; linking continues.": 1,
+        "Optional run-log link unavailable or ambiguous: collection-2e0b52bf-fe7f-4f7f-8562-024e3f3faba3. Existing links retained; linking continues.": 1,
+        "Optional run-log link unavailable or ambiguous: collection-53486a9a-576e-420e-ba65-d9ce60880dbc. Existing links retained; linking continues.": 1,
+        "Optional run-log link unavailable or ambiguous: collection-fcad1ded-9f26-4c63-a877-315479d2fa27. Existing links retained; linking continues.": 1
+      }
+    }
+  },
+  "stop_attempt": {
+    "id": "fcad1ded-9f26-4c63-a877-315479d2fa27",
+    "started": "2026-11-12T04:27:18.047Z",
+    "completed": "2026-11-12T04:46:05.380Z",
+    "status": "Failed",
+    "stage": "ProcessStartup",
+    "owner-pid": 48732
+  },
+  "response_samples": [
+    {
+      "error": "08a584fa-46c3-412c-8478-805ee63aac40-0004",
+      "capture": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\runtime\\source-responses\\8e51f9229313a50337a08f0919e9bcc2d0f67b4971cca2f46b937a764473d8bd.json",
+      "body": "{\"message\":\"Source fetch or protected response decoding failed\",\"statusCode\":502}",
+      "route": "/classes/200031669",
+      "completed": "2026-11-11T23:36:54.048Z"
+    },
+    {
+      "error": "2e0b52bf-fe7f-4f7f-8562-024e3f3faba3-0041",
+      "capture": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\runtime\\source-responses\\97c118e93aa0c387222f58944f8556532d5cf80aa2ccb4dbeb6614cc75f6194a.json",
+      "body": "{\"message\":\"Source queue unavailable\",\"statusCode\":503}",
+      "route": "/classes/200031456",
+      "completed": "2026-11-12T03:39:17.225Z"
+    }
+  ]
+}

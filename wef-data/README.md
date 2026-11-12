@@ -1,4 +1,33 @@
-# wef-data - November 11, README version 2026.11.11.1
+# wef-data — November 12, 2026
+
+## Current shared-day collector
+
+**Sequential correction, November12:** the added shared Airtable lock has been removed from the active Python and logging code. The existing `wef-data-collector` Windows task now runs the same `day1.py` implementation for Days0,1,2,3,4 in that order, followed by its trouble pass. Windows runs these task actions one after another. The separate day/rerun/save tasks are disabled. The existing three-minute task wake remains, but a running full sequence is allowed to finish; this is not a promise of a Day0 refresh every three minutes.
+
+The grouped order-of-go block is omitted from the Airtable class JSON for every day; all individual trip and result records remain intact. Day0 alone archives the complete grouped block under `ringstatus-data/wef-data/shows/{customer}/{show}/day0-order-of-go/{date}/{class}.json`. The normal runner commits only that folder locally. Remote publication is not performed: the existing data branch already had18 unpublished commits, which are not automatically published by this change. The complete decoded response also remains in the existing local response captures.
+
+The sections below retain the earlier parallel deployment history. They do not override this sequential correction. Exact correction hashes and independent review: `C:/Users/gombc/Documents/Codex/outputs/wef-data-sequential-fix-20261112/`.
+
+The verified Day 1 implementation is now the shared `day1.py` collector. Each existing Windows task supplies its day number: Day 0 retains its three-minute trigger; Days 1–5 retain their separate fifteen-minute triggers and offsets. The selected default show's synced days and actual date range determine which days exist. Missing days finish Skipped without requesting a schedule. All days use the same mapping and saving code.
+
+The old `wef-data-collector` and old separate save task remain disabled. The existing linking and cleanup tasks are unchanged. Source URLs, the proxy's one-second pause, credentials, native keys and results remain unchanged.
+
+Normal collection keeps the agreed no-ping exclusions: zero trips/No entries, Flat, Model,999, breaks and Under Saddle/Flat. Eligible requests remain serial, First trip → Second trip → Classic → other eligible classes. Existing Completed+verified skipping remains. Excluded records are retained.
+
+The separate `wef-data-reruns` task runs every fifteen minutes. It reads the existing WEF Shows `decoder-request-failures` table. A Pending trouble/Open endpoint is requested only if its current saved Airtable classification is eligible. Save failed uses the saved response capture without another source request, including records excluded from pinging. Reprocessing retains newer native source facts while filling missing/older records. Failed attempts update the same show/day/endpoint failure key; successful saving marks the existing problem Recovered. Empty trouble passes do not advance normal collection cadence.
+
+Each day has its own `runtime/dayN/logging`, response captures and `runtime/dayN-last-run.json`; reruns use `runtime/day-reruns/logging` and `runtime/day-reruns-last-run.json`. These outboxes do not flush the retired backlog. Day collectors and their log delivery share Airtable request spacing. No new schema, source retry layer, collection cap or data-admission gate was introduced. Source failure or failure-table delivery errors are reported; unrelated valid work continues saving.
+
+### Scheduled verification runbook
+
+1. Check the existing Windows task's actual start, state and result. Do not manually start a collector as scheduled proof.
+2. Read that attempt's terminal private run receipt and day result. Match its start time to the deployed source; an earlier healthy receipt is not proof of the current run.
+3. Match the native Data `run-logs` attempt ID and dated `runs` key. Confirm delivery acknowledgments and actual native schedule/class/trip/result fields and source times.
+4. Counts are acknowledged writes, including updates, not a unique-record census. Check class-requested, class-skipped, schedule-requested, reprocessed and item-errors separately.
+5. For a trouble pass, inspect its selected failure rows and current schedule flags. Confirm only unresolved eligible routes were requested; a saved-payload replay must have no new source request. Verify the same failure row's status, count, show/day links and capture evidence.
+6. Inspect actual error text and saved responses. A task exit0 alone is not useful-data proof. The existing oversized source-json field warning remains an actual Airtable limitation; its full response capture and unaffected saved fields are retained.
+
+Release baseline, exact six-file hashes, independent review and offline cases: `C:/Users/gombc/Documents/Codex/outputs/wef-data-shared-days-20261112/`. Shared deployment occurred November12 at00:46 Eastern; scheduled proof is tracked in that packet and the current decoder task record. The historical sections below describe earlier implementations.
 
 Updated November 11, 2026, 8:35 a.m. Eastern (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
 
