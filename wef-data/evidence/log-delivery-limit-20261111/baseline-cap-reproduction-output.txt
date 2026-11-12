@@ -1,0 +1,56 @@
+TAP version 13
+# Subtest: all 51 collection errors deliver once beyond the former 30-call limit
+not ok 1 - all 51 collection errors deliver once beyond the former 30-call limit
+  ---
+  duration_ms: 846.9266
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\log-delivery-limit-20261111\\cap-removal.test.cjs:17:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\evidence\log-delivery-limit-20261111\cap-removal.test.cjs:23:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: elapsed delivery time is not a synthetic logging failure; real failures remain pending
+not ok 2 - elapsed delivery time is not a synthetic logging failure; real failures remain pending
+  ---
+  duration_ms: 7.8558
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\log-delivery-limit-20261111\\cap-removal.test.cjs:31:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'Logging delivery budget reached'
+    - 'actual connection reset'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'actual connection reset'
+  actual: 'Logging delivery budget reached'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\evidence\log-delivery-limit-20261111\cap-removal.test.cjs:38:40)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 954.6336

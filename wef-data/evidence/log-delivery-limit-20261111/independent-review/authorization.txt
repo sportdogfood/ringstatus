@@ -1,0 +1,5 @@
+Forwarded original human messages from root chat 01a1a753-dce7-7951-a147-1b096e1538ba, supplied by /root to /root/review during review. No message ids asserted.
+Original: thats wrong. - ut **waits until all days finish before sending their errors through one shared logging pass**. - i dont care who approved the hardcode -- there are no hardcode, no patch over patch and no reiventing. unless there is specifc reason that this was added then tell me now otherwise remove it or fix it.
+Review request: you need to run [$code-review](C:\Users\gombc\.agents\skills\code-review\SKILL.md) i cant watch you continue to guess and watch me pay churnign tokens as your debug
+Latest: we need to be very clear day-0 must be rocket fast. and all days thereafter should run independent and there can be a fair pause before the next day starts so everything catches up. this is same for each day thereafter
+Preserved restrictions: no manual collectors, credential/URL/pause changes, no source requests or Airtable writes during this review. No implementation changes authorized to reviewer. Unrelated owner edits protected.

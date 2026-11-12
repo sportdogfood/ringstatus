@@ -1,0 +1,68 @@
+{
+  "reviewer": "wef-decoder",
+  "reviewed_at": "2026-11-11T20:53:37.016Z",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Review contract returned-token handling in the existing runner only",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/wef-data/runtime/wef-decoder-runner/worker.js",
+  "integration_coverage": "Same URL/header/cookie/token replay and AES decode, invalid/repeated tokens, redaction, callback caching across actual relay handlers. Offline only; install and normal scheduled proof pending.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/contract-release-20261111/backup/worker.js",
+      "sha256": "580b7b3bee26eaf88f5818970603ae073eb1317b59b9ee399c63107cc991e084"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/contract-release-20261111/backup/runner-relay.mjs",
+      "sha256": "91412b7699d71cf4cb725c7205d34e267ca9443052c84705fa547d5a943dce57"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/contract-release-20261111/worker.candidate.js",
+      "sha256": "818c5c903eafe74b3e1651dba3d3a5beb102c724528118afa6815417b9946a8a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/contract-release-20261111/runner-relay.candidate.mjs",
+      "sha256": "86becdf7dff5d8e8eebfdc430f817a5b03281f52fa92060917edbce5a009ff0d"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/contract-release-20261111/review.md",
+    "sha256": "a4e064598d1357dcb1dcf6d5df952efa565cf8ae6827661ce2f5538334b4c538"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/contract-release-20261111/review-execution.json",
+      "sha256": "2ef93db72be8e789f5f5755d8cc4de2c2cf2794061fb4be1869d9413afae0ded"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "approval boundary and existing implementation",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Latest owner contract/deploy-with-backup approval; exact baseline and two-file delta inspected, copied existing fallback logic only.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/contract-release-20261111/backup.json",
+          "sha256": "15d43b4712f3cfcec613bcb05f82e439de88f09d3a8765b3dc23e7b221da36ea"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/worker.js",
+          "sha256": "349440ed1172d2fb46926ff5625d1ac838038bff08ac0e0b02139aa5eb019aa4"
+        }
+      ]
+    },
+    {
+      "name": "syntax and focused integration checks",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "syntax-worker",
+        "syntax-relay",
+        "token-suite"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-11-11T21:38:39.563Z",
+  "run": "878483f7-e2aa-4b66-9203-4507e8133cb6",
+  "source": "Connected Cloudflare app passive observability invocations; no source request or manual collector",
+  "query_from": "2026-11-11T21:30:27Z",
+  "last_observed_class_response_at": "2026-11-11T21:37:01.319Z",
+  "classResponses": 77,
+  "statusCounts": {
+    "200": 61,
+    "502": 16
+  },
+  "lastClass": 200031484,
+  "disposition": "Normal-run acceptance FAIL. No further patch, retry, stop or rollback performed."
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "route": "/schedule?customer_id=15&show_id=200000078&date=2026-11-14",
+    "exit": 0,
+    "status": "HTTP/1.1 200 OK",
+    "lane": "runner",
+    "profile": null,
+    "recovery": "discovered",
+    "rings": 9,
+    "class": null,
+    "trips": null,
+    "message": null
+  },
+  {
+    "route": "/classes/200031471?customer_id=15&show_id=200000078",
+    "exit": 0,
+    "status": "HTTP/1.1 502 Bad Gateway",
+    "lane": "runner",
+    "profile": null,
+    "recovery": "deferred",
+    "rings": null,
+    "class": null,
+    "trips": null,
+    "message": "Source request deferred"
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "reviewer": "/root/review",
+  "commands": [
+    {
+      "id": "offline-logger",
+      "command": "node --require ./wef-data/evidence/log-delivery-limit-20261111/test-loader.cjs --test \"--test-skip-pattern=actual PowerShell wrapper\" wef-data/tests/attempt-log.test.js wef-data/evidence/log-delivery-limit-20261111/cap-removal.test.cjs",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "Windows Python subprocess / Node v22.22.2",
+      "started_at": "2026-11-12T02:27:12.614098+00:00",
+      "ended_at": "2026-11-12T02:27:14.424121+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: all 51 collection errors deliver once beyond the former 30-call limit\nok 1 - all 51 collection errors deliver once beyond the former 30-call limit\n  ---\n  duration_ms: 1567.5708\n  type: 'test'\n  ...\n# Subtest: elapsed delivery time is not a synthetic logging failure; real failures remain pending\nok 2 - elapsed delivery time is not a synthetic logging failure; real failures remain pending\n  ---\n  duration_ms: 18.1259\n  type: 'test'\n  ...\n# Subtest: durable start and success preserve actual times/run keys and mirror idempotently\nok 3 - durable start and success preserve actual times/run keys and mirror idempotently\n  ---\n  duration_ms: 32.56\n  type: 'test'\n  ...\n# Subtest: offline failures retain distinct error and attempt then deliver without fake success\nok 4 - offline failures retain distinct error and attempt then deliver without fake success\n  ---\n  duration_ms: 33.0408\n  type: 'test'\n  ...\n# Subtest: lost create response reconciles exact reserved key without duplicate\nok 5 - lost create response reconciles exact reserved key without duplicate\n  ---\n  duration_ms: 22.2624\n  type: 'test'\n  ...\n# Subtest: started record updates to terminal on same ID and older attempts cannot regress heartbeat\nok 6 - started record updates to terminal on same ID and older attempts cannot regress heartbeat\n  ---\n  duration_ms: 54.3744\n  type: 'test'\n  ...\n# Subtest: logging errors are sanitized before durable persistence\nok 7 - logging errors are sanitized before durable persistence\n  ---\n  duration_ms: 13.5599\n  type: 'test'\n  ...\n# Subtest: missing local durable storage prevents attempt start\nok 8 - missing local durable storage prevents attempt start\n  ---\n  duration_ms: 3.6055\n  type: 'test'\n  ...\n# Subtest: ambiguous log identity never causes a second create\nok 9 - ambiguous log identity never causes a second create\n  ---\n  duration_ms: 7.0577\n  type: 'test'\n  ...\n# Subtest: dead process leaves interrupted receipt and distinct error, never success\nok 10 - dead process leaves interrupted receipt and distinct error, never success\n  ---\n  duration_ms: 131.1479\n  type: 'test'\n  ...\n1..10\n# tests 10\n# suites 0\n# pass 10\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1722.9489\n",
+      "stderr": ""
+    },
+    {
+      "id": "task-settings",
+      "command": "powershell.exe -NoProfile -Command \"$t=Get-ScheduledTask -TaskName wef-data-collector; [pscustomobject]@{Name=$t.TaskName;MultipleInstances=$t.Settings.MultipleInstances.ToString();ExecutionTimeLimit=$t.Settings.ExecutionTimeLimit;Triggers=@($t.Triggers|ForEach-Object{[pscustomobject]@{StartBoundary=$_.StartBoundary;Interval=$_.Repetition.Interval}})}|ConvertTo-Json -Depth 5\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "Windows Python subprocess / Node v22.22.2",
+      "started_at": "2026-11-12T02:27:14.451989+00:00",
+      "ended_at": "2026-11-12T02:27:19.094136+00:00",
+      "exit_code": 0,
+      "stdout": "{\n    \"Name\":  \"wef-data-collector\",\n    \"MultipleInstances\":  \"IgnoreNew\",\n    \"ExecutionTimeLimit\":  \"PT0S\",\n    \"Triggers\":  [\n                     {\n                         \"StartBoundary\":  \"2026-10-28T23:18:13-05:00\",\n                         \"Interval\":  \"PT3M\"\n                     }\n                 ]\n}\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "observed_at": "2026-11-11T19:19:07.592Z",
+  "classes": [
+    {
+      "id": "recFlzDz3jxkzLke6",
+      "key": "15|200000078|2026-11-12|5|200031689",
+      "saved": "2026-11-11T19:13:15.854Z",
+      "class_id": 200031689,
+      "trips": []
+    },
+    {
+      "id": "recSMfr0SW1zYATNf",
+      "key": "15|200000078|2026-11-12|5|200031633",
+      "saved": "2026-11-11T19:13:14.732Z",
+      "class_id": 200031633,
+      "trips": [
+        {
+          "trip_id": 200402656,
+          "entry_id": 200249402
+        },
+        {
+          "trip_id": 200402657,
+          "entry_id": 200249405
+        },
+        {
+          "trip_id": 200402708,
+          "entry_id": 200249420
+        },
+        {
+          "trip_id": 200402683,
+          "entry_id": 200249411
+        }
+      ]
+    },
+    {
+      "id": "recHQRCl1DqxKt5xU",
+      "key": "15|200000078|2026-11-12|5|200031630",
+      "saved": "2026-11-11T19:13:13.601Z",
+      "class_id": 200031630,
+      "trips": [
+        {
+          "trip_id": 200402362,
+          "entry_id": 200249787
+        },
+        {
+          "trip_id": 200402360,
+          "entry_id": 200249782
+        },
+        {
+          "trip_id": 200402079,
+          "entry_id": 200250595
+        },
+        {
+          "trip_id": 200402752,
+          "entry_id": 200248004
+        },
+        {
+          "trip_id": 200402532,
+          "entry_id": 200248096
+        },
+        {
+          "trip_id": 200402019,
+          "entry_id": 200247371
+        },
+        {
+          "trip_id": 200402070,
+          "entry_id": 200249682
+        },
+        {
+          "trip_id": 200402071,
+          "entry_id": 200249683
+        },
+        {
+          "trip_id": 200400553,
+          "entry_id": 200249769
+        },
+        {
+          "trip_id": 200400391,
+          "entry_id": 200249559
+        },
+        {
+          "trip_id": 200402902,
+          "entry_id": 200249250
+        },
+        {
+          "trip_id": 200402936,
+          "entry_id": 200250258
+        },
+        {
+          "trip_id": 200400960,
+          "entry_id": 200249878
+        },
+        {
+          "trip_id": 200402873,
+          "entry_id": 200250225
+        },
+        {
+          "trip_id": 200402021,
+          "entry_id": 200247373
+        },
+        {
+          "trip_id": 200402631,
+          "entry_id": 200245851
+        },
+        {
+          "trip_id": 200401648,
+          "entry_id": 200246955
+        },
+        {
+          "trip_id": 200402778,
+          "entry_id": 200250361
+        },
+        {
+          "trip_id": 200402837,
+          "entry_id": 200250373
+        }
+      ]
+    }
+  ],
+  "classRun": {
+    "records": [
+      {
+        "id": "recSMfr0SW1zYATNf",
+        "createdTime": "2026-11-09T09:39:34.000Z",
+        "cellValuesByFieldId": {
+          "fldS0HKKkbVdu0mIm": "15|200000078|2026-11-12|5|200031633",
+          "fldTEAWNt7Z1hlwH9": "2026-11-11T19:13:14.732Z",
+          "fldkzVmxMOTvtqFQW": [
+            {
+              "id": "recdYdHaxAUalC6cg",
+              "name": "collection-caa73327-9469-4ee1-9d1c-e4f2383c3664|2026-11-12"
+            }
+          ]
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "dayRun": {
+    "records": [
+      {
+        "id": "recdYdHaxAUalC6cg",
+        "createdTime": "2026-11-11T19:12:43.000Z",
+        "cellValuesByFieldId": {
+          "fld47sYfdr8cwz60t": "2026-11-11T19:15:24.836Z",
+          "fld5xTmiIEP72BtXC": "Succeeded",
+          "fldGJIjHdf0vTH6Rs": "collection-caa73327-9469-4ee1-9d1c-e4f2383c3664|2026-11-12",
+          "fldGi5eRDGb6fJr2Q": "2026-11-11T19:12:33.374Z",
+          "fldUYwfJL04VpsdQN": 1321,
+          "fldbFH53TuWXmFuqk": 1
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  },
+  "trips": {
+    "records": [
+      {
+        "id": "rec8VEDBiJpoUdclh",
+        "createdTime": "2026-11-11T17:20:49.000Z",
+        "cellValuesByFieldId": {
+          "fld9Tvq66MfLKZ7W2": "2026-11-11T19:13:14.732Z",
+          "fldBuCaiJ4AZlB5fI": "200402683",
+          "fldM0XcYYHVjGOk04": [
+            {
+              "id": "recSMfr0SW1zYATNf",
+              "name": "15|200000078|2026-11-12|5|200031633"
+            }
+          ],
+          "fldl4Iviqf4G4Hhow": [
+            {
+              "id": "recdYdHaxAUalC6cg",
+              "name": "collection-caa73327-9469-4ee1-9d1c-e4f2383c3664|2026-11-12"
+            }
+          ],
+          "fldzqdj7PBgYfhNhG": "15|200000078|2026-11-12|5|200031633|200249411|FB8DE492214E42C990B92489BF2FC257"
+        }
+      },
+      {
+        "id": "recXRINdZKghGVDKD",
+        "createdTime": "2026-11-11T13:41:15.000Z",
+        "cellValuesByFieldId": {
+          "fld9Tvq66MfLKZ7W2": "2026-11-11T17:19:14.899Z",
+          "fldBuCaiJ4AZlB5fI": "200402358",
+          "fldM0XcYYHVjGOk04": [
+            {
+              "id": "recSMfr0SW1zYATNf",
+              "name": "15|200000078|2026-11-12|5|200031633"
+            }
+          ],
+          "fldl4Iviqf4G4Hhow": [
+            {
+              "id": "recyhazwe03doXqwp",
+              "name": "collection-25892f42-b070-4b95-8ac6-dfe97e2bc2e8|2026-11-12"
+            }
+          ],
+          "fldzqdj7PBgYfhNhG": "15|200000078|2026-11-12|5|200031633|200250844|B4328947E9894240B14F07114192716C"
+        }
+      },
+      {
+        "id": "recsIGIiHvzI1RM25",
+        "createdTime": "2026-11-11T17:20:49.000Z",
+        "cellValuesByFieldId": {
+          "fld9Tvq66MfLKZ7W2": "2026-11-11T19:13:14.732Z",
+          "fldBuCaiJ4AZlB5fI": "200402656",
+          "fldM0XcYYHVjGOk04": [
+            {
+              "id": "recSMfr0SW1zYATNf",
+              "name": "15|200000078|2026-11-12|5|200031633"
+            }
+          ],
+          "fldl4Iviqf4G4Hhow": [
+            {
+              "id": "recyhazwe03doXqwp",
+              "name": "collection-25892f42-b070-4b95-8ac6-dfe97e2bc2e8|2026-11-12"
+            }
+          ],
+          "fldzqdj7PBgYfhNhG": "15|200000078|2026-11-12|5|200031633|200249402|8A36A0D04B6B4245B55689E933CFA38D"
+        }
+      },
+      {
+        "id": "recuxO55Rv90Hbeb1",
+        "createdTime": "2026-11-11T17:20:49.000Z",
+        "cellValuesByFieldId": {
+          "fld9Tvq66MfLKZ7W2": "2026-11-11T19:13:14.732Z",
+          "fldBuCaiJ4AZlB5fI": "200402708",
+          "fldM0XcYYHVjGOk04": [
+            {
+              "id": "recSMfr0SW1zYATNf",
+              "name": "15|200000078|2026-11-12|5|200031633"
+            }
+          ],
+          "fldl4Iviqf4G4Hhow": [
+            {
+              "id": "recyhazwe03doXqwp",
+              "name": "collection-25892f42-b070-4b95-8ac6-dfe97e2bc2e8|2026-11-12"
+            }
+          ],
+          "fldzqdj7PBgYfhNhG": "15|200000078|2026-11-12|5|200031633|200249420|8975C08D614B4FA59BE886BBE72B7570"
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 5
+    },
+    "nextCursor": "itroKAA6mFrrAVhcA/recuxO55Rv90Hbeb1"
+  },
+  "entries": {
+    "records": [
+      {
+        "id": "recb4v4PPFMSSO0Uj",
+        "createdTime": "2026-11-11T17:19:46.000Z",
+        "cellValuesByFieldId": {
+          "fld5MUArcMarzsYUq": "200000078|200249411",
+          "fldOgQ697YNaHYhig": "2026-11-11T19:13:14.732Z",
+          "fldS8RxWFp3QCGYWs": 200249411
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  }
+}

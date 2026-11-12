@@ -1,8 +1,14 @@
 # wef-schedules-decoded
 
-Updated **10 November 2026, America/New_York**. README version **2026.11.10.3**. Operating lock version **2026.11.08.1**: [locked baseline and change boundary](VERIFIED-BASELINE.md).
+Updated **11 November 2026, America/New_York**. README version **2026.11.11.1**. Operating lock version **2026.11.08.1**: [locked baseline and change boundary](VERIFIED-BASELINE.md).
 
 ## Current operating state
+
+### November 11 returned-token compatibility and Fast contract
+
+Cloudflare version `ecf2c1de-32c3-40fe-9eee-e140873bb615` added valid returned-anonymous-token adoption and one identical GET replay. The existing local runner now uses the same recovery: validate the returned `_t`, update its existing in-memory token cache, wait 1,000 ms and replay once using the new bearer/decryption key. Invalid, expired or account tokens fail; a second token response stops without a third request. Headers, URLs, credential files, shared queue and pause are unchanged. The runner was restarted once at `2026-11-11T20:53:55.689Z`; TCP-only listener verification passed. Eight offline checks and Code Review passed. This does not establish recovery of every empty source response.
+
+Exact pre-change runner files, hashes and restoration instructions are retained in [backup manifest](evidence/contract-release-20261111/backup.json) and [restore instructions](evidence/contract-release-20261111/RESTORE.md). [Review and executed checks](evidence/contract-release-20261111/review.md). Fast owns the approved class exclusions/order and existing alert-path corrections; its deployment and next normal scheduled acceptance are recorded separately in [Fast's operating README](../../wef-data/README.md). No manual collector is acceptance proof.
 
 ### November 10 approved fallback profile release
 
@@ -157,3 +163,14 @@ evidence. Legacy proxy routes and task definitions remain unchanged.
 ## Returned-token repair — November 11, 2026
 
 Version ecf2c1de-32c3-40fe-9eee-e140873bb615 deployed at 18:31:37 UTC. The decoder saves a valid returned anonymous token in the existing fallback memory cache and replays the identical GET once after the existing one-second gap. Invalid tokens, a second token response and replay failures remain failures. All 48 focused checks and actual Cloudflare preview passed (class 200031333, two populated trips). The release uses the active deployed baseline and excludes unrelated staged work. URLs, profiles, queue/pause, installed runner, credentials and Fast code are unchanged. Normal scheduled Fast save verification FAILED: new-version SglPacer calls for class 200031471 received upstream HTTP 200 with Empty source payload across the recovery attempts; the proxy returned 502. Its native class record recc0ebGwU1BoZTD3 has no full detail or last-success. The active normal Fast attempt began at17:18UTC, before deployment; post-deployment class requests used the new decoder. The passing preview used cgid=-1; Fast's normal request omitted cgid. That difference is untested and is not established as the cause. No further code edits or source calls followed the failed verification. [Repair evidence](evidence/returned-token-20261111/)
+
+## Fast invocation and later recovery — November 11 candidate
+
+Decoder version409af439-426f-4934-be19-a543b96e9825 is deployed; Fast integration and scheduled native saves remain unverified. Fast passes use the existing URLs with `X-RS-Recovery: defer`; this makes one invocation through the endpoint's proven lane/profile, or a family hint before that endpoint has succeeded. Valid matching responses establish a lane in the existing SglPacer storage; schedule dates do not reset it. No payload is cached.
+
+The independent trouble pass uses `X-RS-Recovery: trouble`. Initial unknown endpoints retain established five profiles, one renewal, five profiles. Later trouble passes try one existing alternative, retain the proven lane until a matching success, and advance to the next alternative on failure. No repeated ten-attempt discovery, permanent failure gate, new cadence threshold or user option. Default callers and health recovery are unchanged. Existing pause, queue, routes and credentials are unchanged.
+
+Diagnostic headers distinguish lane, profile, recovery state and redacted failure reason; upstream status appears only when actually observed. A proxy502 does not mean the source returned502. WEF Shows decoder-request-failures records actual captures, show/day links and separate request/recovery/save evidence.
+
+### Test and release checks
+Run the component collection-lane, fallback and pacing tests; test identity mismatches, zero rings, remembered lanes across dates, isolated errors, initial discovery and later one-alternative recovery. Test actual Cloudflare preview source responses before deployment. Verify the existing DO storage/pacing wrapper separately if the preview tool cannot bind SQLite DOs. Code Review must inspect exact frozen bundle against the active baseline and Fast's shared-day/invoke/save/trouble consumers. Deploy reviewed artifacts only, then observe normal scheduled invocation, capture, native save/readback and failure-log delivery. Never run a manual collector as proof. Evidence: `evidence/fast-trouble-20261111/`.

@@ -1,0 +1,77 @@
+{
+  "reviewer": "wef-decoder",
+  "reviewed_at": "2026-11-11T19:19:37.199Z",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Review only approved one-line runner header condition and normal scheduled class save",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/wef-data/runtime/wef-decoder-runner/worker.js",
+  "integration_coverage": "Actual runner request/header/decode path, unchanged relay/token/pacing and Fast consumer; controlled preview evidence inspected; native scheduled class/trip/entry/run readbacks; whole attempt and exact warning detail not claimed.",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/returned-token-20261111/runner-class-baseline.js",
+      "sha256": "1fdaaca7d7435e2ae0c1c2a7d40d501b0436e83e18e815f08807c008c60fffa0"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/wef-data/runtime/wef-decoder-runner/worker.js",
+      "sha256": "580b7b3bee26eaf88f5818970603ae073eb1317b59b9ee399c63107cc991e084"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/returned-token-20261111/runner-class-review.md",
+    "sha256": "30ce334a6e559f97ca03cac906e0b24ef7f90d994f1fe5dc33407e397956dff2"
+  },
+  "logs": [],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "approval-boundary and protected behavior",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Latest explicit approval authorizes only tested one-line condition and existing runner restart; actual complete diff matches and protected dependencies unchanged.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/returned-token-20261111/runner-class-protected.json",
+          "sha256": "24b2089e27b77fbe1e65685a0d08f5064d0b23542352d44275e0e56d34dcb928"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/wef-data/runtime/wef-decoder-runner/runner-relay.mjs",
+          "sha256": "91412b7699d71cf4cb725c7205d34e267ca9443052c84705fa547d5a943dce57"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/wef-data/fast_collector.py",
+          "sha256": "9b26d49fa61176c34c64134748d4baec1e527dec497e8f26d2fd8a43b51ece6f"
+        }
+      ]
+    },
+    {
+      "name": "preview and focused offline protection",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected controlled actual preview and three successful preinstallation checks from this same chat; no independent execution requested or claimed.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/returned-token-20261111/runner-class-preview.json",
+          "sha256": "fc6ab15d891f16a9fc32e450e45082866d600f3740a1d3de652e03214fefd2ff"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/returned-token-20261111/runner-class-offline.test.mjs",
+          "sha256": "0bf6616e36c34d2cc9dd9fad4281f51ef75bacc2ffdb031852a3d2e2ddcda911"
+        }
+      ]
+    },
+    {
+      "name": "normal scheduled downstream save",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Read native Airtable normal scheduled run, populated class, trip and entry records; not a manual source or collector invocation.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/returned-token-20261111/runner-class-scheduled-save.json",
+          "sha256": "b4db2651149ca7218fe1ce34a7ba66056bcac08d8ba81261d87d6e105631c08b"
+        }
+      ]
+    }
+  ]
+}

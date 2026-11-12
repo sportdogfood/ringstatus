@@ -1,0 +1,89 @@
+TAP version 13
+# Subtest: all 51 collection errors deliver once beyond the former 30-call limit
+ok 1 - all 51 collection errors deliver once beyond the former 30-call limit
+  ---
+  duration_ms: 1644.1542
+  type: 'test'
+  ...
+# Subtest: elapsed delivery time is not a synthetic logging failure; real failures remain pending
+ok 2 - elapsed delivery time is not a synthetic logging failure; real failures remain pending
+  ---
+  duration_ms: 19.6534
+  type: 'test'
+  ...
+# Subtest: durable start and success preserve actual times/run keys and mirror idempotently
+ok 3 - durable start and success preserve actual times/run keys and mirror idempotently
+  ---
+  duration_ms: 28.0502
+  type: 'test'
+  ...
+# Subtest: offline failures retain distinct error and attempt then deliver without fake success
+ok 4 - offline failures retain distinct error and attempt then deliver without fake success
+  ---
+  duration_ms: 30.6674
+  type: 'test'
+  ...
+# Subtest: lost create response reconciles exact reserved key without duplicate
+ok 5 - lost create response reconciles exact reserved key without duplicate
+  ---
+  duration_ms: 17.9414
+  type: 'test'
+  ...
+# Subtest: started record updates to terminal on same ID and older attempts cannot regress heartbeat
+ok 6 - started record updates to terminal on same ID and older attempts cannot regress heartbeat
+  ---
+  duration_ms: 50.3346
+  type: 'test'
+  ...
+# Subtest: logging errors are sanitized before durable persistence
+ok 7 - logging errors are sanitized before durable persistence
+  ---
+  duration_ms: 13.777
+  type: 'test'
+  ...
+# Subtest: missing local durable storage prevents attempt start
+ok 8 - missing local durable storage prevents attempt start
+  ---
+  duration_ms: 3.04
+  type: 'test'
+  ...
+# Subtest: ambiguous log identity never causes a second create
+ok 9 - ambiguous log identity never causes a second create
+  ---
+  duration_ms: 6.2449
+  type: 'test'
+  ...
+# Subtest: actual PowerShell wrapper logs missing credentials before any child collection
+not ok 10 - actual PowerShell wrapper logs missing credentials before any child collection
+  ---
+  duration_ms: 2114.5594
+  type: 'test'
+  location: 'C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\tests\\attempt-log.test.js:13:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, scandir 'C:\\Users\\gombc\\AppData\\Local\\Temp\\wef-logs-U4Gk7u\\runtime\\logging\\wef-data\\run-logs'"
+  code: 'ENOENT'
+  stack: |-
+    Object.readdirSync (node:fs:1590:26)
+    TestContext.<anonymous> (C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\tests\attempt-log.test.js:13:519)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: dead process leaves interrupted receipt and distinct error, never success
+ok 11 - dead process leaves interrupted receipt and distinct error, never success
+  ---
+  duration_ms: 159.5379
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 10
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2572.1748

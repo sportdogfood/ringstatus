@@ -1,0 +1,20 @@
+{
+  "created_at": "2026-11-11T20:51:21.638Z",
+  "files": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/wef-data/runtime/wef-decoder-runner/worker.js",
+      "sha256": "580b7b3bee26eaf88f5818970603ae073eb1317b59b9ee399c63107cc991e084"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/wef-data/runtime/wef-decoder-runner/runner-relay.mjs",
+      "sha256": "91412b7699d71cf4cb725c7205d34e267ca9443052c84705fa547d5a943dce57"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/README.md",
+      "sha256": "cf4df199a1e182c8921e2f5ab8f2158c7623106a6850753d4f4e9cb1b244bc9f",
+      "note": "Pre-edit README text recovered by reversing the exact documented version/section delta; no runtime effect."
+    }
+  ],
+  "authorization": "Owner approved full contract deployment with backup; Fast owns Fast files separately.",
+  "protected": "No credential, URL, pause, task configuration, tunnel, legacy task or shared proxy changes."
+}

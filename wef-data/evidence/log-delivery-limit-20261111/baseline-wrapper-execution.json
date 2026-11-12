@@ -1,0 +1,8 @@
+{
+  "command": "node --test --test-name-pattern=actual PowerShell wrapper wef-data/tests/attempt-log.test.js",
+  "started": "2026-11-12T02:18:42.9489004+00:00",
+  "completed": "2026-11-12T02:18:44.6967178+00:00",
+  "exit_code": 1,
+  "scope": "Unchanged baseline wrapper fixture only; no production task or collector",
+  "output": "baseline-wrapper-output.txt"
+}

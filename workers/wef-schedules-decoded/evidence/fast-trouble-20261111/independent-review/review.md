@@ -1,0 +1,31 @@
+# Independent decoder component review
+Reviewer /root/review; source chat 01a1a753-dce7-7951-a147-1b096e1538ba.
+
+## Findings
+No unresolved actionable defect found in frozen source a19b43133a5ff08bfe92ca8ce927e6d1a6f38525d9b1af74a16a8a364e20e4a5. Component review PASS; this is not deployment or full pipeline acceptance.
+
+The initial unfrozen version had reproduced identity/normalization and persistent lane lockout defects. The writer corrected these before freeze. Initial execution-log.json and counterexamples.test.mjs are historical, not acceptance evidence: that run passed 24 existing tests and 4 of 5 counterexamples, with the fifth failing because the writer had already corrected decoded-header leakage during review. Final acceptance uses final-execution-log.json and final-checks.test.mjs only.
+
+Deployment artifact accuracy: protected bundle bytes match the archived active-version artifact exactly after removing the helper insertion, mode dispatch and DO storage injection. An earlier CRLF conversion was corrected by the writer before final receipt. Final bundle SHA256 1ab4c3738a1cc22b128df17fdd12bf964fe340e9786a117ca2ad8cf338c286f2. Bundle helper equals reviewed source after the required bundled reply-to-reply2 symbol rename. bundle-verification.json and bundle-diff.txt retain evidence.
+
+## Independent verification
+Final 32 isolated tests PASS (26 provided component/fallback/pacing tests plus 6 reviewer cases). Bundle node syntax check PASS. Actual commands, UTC start/end, runtime, exit codes and output are in final-execution-log.json. Mocked checks cover correct/wrong class and schedule identity, returned date mismatch, empty matching schedules, sanitized response headers, redirects, trailing slash, valid lane persistence across reconstructed handlers, one-call fast failure, initial discovery, exhausted and learned-lane outage recovery, and one-alternative later trouble attempts.
+
+A reviewer fixture instantiated the actual DO wrapper against a mock DurableObject base and storage, with the real createPacer. It verified ctx.storage injection, nextAllowed persistence, complete response bytes and queue timestamps. Existing real-timer pacing checks passed. This demonstrates JavaScript wiring under the documented base-class shape, not Cloudflare deployment behavior.
+
+## Path and failure review
+Mode dispatch runs after existing route/query validation and explicitly excludes health probes. Default handler and health/fallback code are untouched. All requests still traverse the same named sgl-source Durable Object. Persistent endpoint keys retain customer/show/path/cgid, intentionally not schedule date, so proven transport does not reset each day; no payload is cached. Class and schedule families remain separate. Family value only selects an initial attempt for a distinct endpoint; only that endpoint's matching decoded success establishes its saved lane. Wrong response identities are not learned.
+
+Fast/defer does one selected source invocation. A saved or exhausted later trouble request selects one alternative in the existing profile order. Failed alternatives advance next without clearing a known lane; valid success replaces endpoint/family lane and resets alternative position. An exhausted initial outage can later recover; no permanent stale-lane gate remains. Initial unproven trouble discovery retains established profile rounds and renewal. It can retry an initial family-hinted profile inside that first discovery, but later calls do not repeat full discovery. Underlying token fetch/returned-token replay may still perform extra upstream work; one invocation is not a promise of one HTTP exchange. No additional token policy, URL, pause, threshold, expiry, reset, service, task or schema was added by this component.
+
+Unusable responses are generated JSON errors with an allowlisted diagnostic header set, no decoded marker or forwarded arbitrary transport headers. Redirect responses become errors. Storage/transport exceptions propagate to the existing outer queue failure path; no manual repair or force-success behavior added. Existing fallback token handling, shared queue and health logic are inspected dependencies, not reimplemented.
+
+## Scope and limits
+Authority retained in approval.md includes owner-approved fast passes, later trouble, persistent clean lanes and explicit end-to-end implementation/review. Scope inspected against source-diff.txt and archived deployment artifact. Only shared-worker.mjs, new collection-lane tests and the prepared bundle are reviewed; unrelated pipeline implementation remains outside this component review. Failure-table saving, all-day orchestration, source-reader consumer integration and normal scheduled proof remain UNVERIFIED here. No provider request, Airtable write, manual collector/delivery, deployment, task/config change, credential read or implementation edit was performed by reviewer.
+
+## Diagnostic refresh review
+The final current source is 69c9eebe109318db857912163af479edb747ec36adab239873fdc4558e0895e2; current test is af500d4753a43c2f0099deff17afeb78021cb1ba610f0f27cfb5bd214a721439; current bundle is a827bae5ae46af36ec683085f0ac4cabbef91fb739950b7f1285d59f2029cee1. Prior report/receipt/log/verifier are preserved under before-diagnostic-refresh. The earlier hashes and 32 checks describe the prior reviewed baseline, not a newly repeated suite.
+
+No new actionable finding. Removing only `if(details.reason)reason=details.reason;` from each current source/bundle reproduces its exact previously reviewed SHA256. The callback preserves the existing bounded fallback reason before generic fallback HTTP synthesis, while upstream status remains separately observed. Inspected fallback.mjs reports use bounded diagnostic strings, not raw credential/error content. No retry, storage, pacing, route or recovery control changes.
+
+Independent affected fixture PASS: observed upstream HTTP 200 plus proxy 502 retains `Schedule response could not be decoded` in X-RS-Failure-Reason. Updated bundle syntax PASS. Actual command/output in diagnostic-execution-log.json; exact delta proof in diagnostic-delta.json. Component review remains COMPLETE/PASS. No production request/deployment was made; full consumer/scheduled proof remains outside this refresh.

@@ -1,0 +1,7 @@
+# Runner returned-token compatibility review
+
+PASS approved boundary: latest owner approval deploys reviewed contract with backup. This delta implements contract returned-token handling only. Compared exact installed backup against candidate: existing fallback replay block reused in runner worker; existing in-memory token cache receives validated response token via callback. No changes to headers, URLs/parameters, credential files, source renewal, task config, tunnel or existing proxy queue/pause.
+
+PASS source trace: valid future anonymous token triggers exactly one same-GET replay using the new bearer and AES derivation, after1000ms; second token stops after two GETs. Invalid/account/expired tokens cannot update cache or replay. Redaction includes newly returned token even when callback throws. Callback updates existing cache before the next request; no new persistence. Ordinary responses, redirects, HTTP errors, route validation, Windows headers and cookie remain baseline. Source JSON {} remains rejected by the existing proxy usability check; no claim this change resolves every source-empty incident.
+
+PASS actual executed checks: review-execution.json records syntax and8 focused offline tests, including actual relay handler reuse of returned token across two requests with no listen/network. No live source/collector was invoked by tests. No code-review findings. Installation/restart and next normal scheduled proof remain pending at review time. Backup manifest and exact original files are in backup.json/backup.

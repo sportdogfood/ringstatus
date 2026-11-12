@@ -1,0 +1,9 @@
+{
+  "version": "707a2483-dc47-45f7-b776-984e9bdc5733",
+  "created_on": "2026-11-12T03:33:57.229384Z",
+  "active": false,
+  "bundle_sha256": "1ab4c3738a1cc22b128df17fdd12bf964fe340e9786a117ca2ad8cf338c286f2",
+  "bindings_preserved": true,
+  "migration_tag": "sgl-pacing-v1",
+  "compatibility_date": "2026-10-21"
+}

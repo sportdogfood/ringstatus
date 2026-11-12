@@ -1,0 +1,106 @@
+--- 
++++ 
+@@ -579,6 +579,83 @@
+   status,
+   headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", ...extra }
+ }), "reply");
++// These records belong to the existing source queue, not a new queue or service.
++async function collectThroughLane(request,env,mode){
++  const url=new URL(request.url);url.pathname=url.pathname.replace(/\/+$/,'');
++  const isClass=/^\/classes\/[1-9]\d*$/.test(url.pathname);
++  const family=`lane|${isClass?'class':'schedule'}|${url.searchParams.get('customer_id')}|${url.searchParams.get('show_id')}`;
++  const endpoint=family+'|'+url.pathname+'|'+(url.searchParams.get('cgid')??'');
++  const storage=env.SGL_LANE_STORAGE;
++  if(!storage)return reply2({message:'Source lane storage unavailable'},503);
++  const saved=await storage.get(endpoint),hint=await storage.get(family);
++  const profiles=['original-header','profile-fb-header1','profile-fb-header2','windows-clean','android-clean'];
++  let selected=saved?.lane?saved:hint?.lane?hint:{lane:'runner'},last;
++  // Later trouble passes try one alternative, retaining the proven lane until success.
++  const alternatives=[{lane:'runner'},...profiles.map(profile=>({lane:'cloudflare-fallback',profile}))]
++    .filter(choice=>!saved?.lane||choice.lane!==saved.lane||choice.profile!==saved.profile);
++  if(mode==='trouble'&&(saved?.lane||saved?.exhausted))
++    selected=alternatives[(saved.next??0)%alternatives.length];
++  const attempt=async choice=>{
++    let response,reason='',upstream=null;
++    if(choice.lane==='runner'){
++      try{
++        const target=new URL(env.RUNNER_ORIGIN);target.pathname=url.pathname;target.search=url.search;
++        if(target.protocol!=='https:')throw Error('Invalid runner origin');
++        response=await fetch(target,{headers:{Authorization:'Bearer '+env.RUNNER_KEY},redirect:'manual',cache:'no-store',signal:AbortSignal.timeout(30000)});
++      }catch{reason='runner-unavailable';}
++    }else{
++      response=await fetchFallback(request,env,{profile:choice.profile,report:details=>{
++        if(Number.isInteger(details.schedule_upstream_status))upstream=details.schedule_upstream_status;
++        env.SGL_HEALTH_REPORT?.(details);
++      }});
++    }
++    const payload=response?.ok?await response.clone().json().catch(()=>null):null;
++    const usable=response?.ok&&response.headers.get('x-rs-decoded')==='1'&&payload&&
++      (isClass?String(payload.class?.class_id)===url.pathname.split('/')[2]:Array.isArray(payload.rings)&&
++        String(payload.show?.show_id)===url.searchParams.get('show_id')&&
++        (!payload.date||payload.date===url.searchParams.get('date')));
++    if(!usable&&!reason)reason=!response?.ok?`${choice.lane}-http-${response?.status??502}`:
++      response.headers.get('x-rs-decoded')!=='1'?'response-undecoded':'empty-invalid-or-wrong-identity';
++    const headers=new Headers({'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});
++    if(usable)headers.set('X-RS-Decoded','1');
++    headers.set('X-RS-Source-Lane',choice.lane);
++    if(choice.profile)headers.set('X-RS-Header-Profile',choice.profile);
++    headers.set('X-RS-Recovery-State',usable?(saved?.lane?'known':'discovered'):'deferred');
++    if(upstream!==null)headers.set('X-RS-Upstream-Status',String(upstream));
++    if(!usable)headers.set('X-RS-Failure-Reason',reason);
++    if(usable){
++      const record={lane:choice.lane,...choice.profile?{profile:choice.profile}:{}};
++      await storage.put(endpoint,record);await storage.put(family,record);
++      return {usable:true,response:new Response(response.body,{status:response.status,headers})};
++    }
++    await response?.body?.cancel();
++    headers.delete('X-RS-Decoded');headers.delete('Content-Length');headers.delete('Content-Encoding');
++    const status=response&&response.status>=400?response.status:502;
++    return {usable:false,response:reply2({message:'Source request deferred',reason,statusCode:status},status,Object.fromEntries(headers))};
++  };
++  last=await attempt(selected);
++  if(last.usable||mode==='defer')return last.response;
++  if(saved?.lane||saved?.exhausted){
++    await storage.put(endpoint,{...saved,next:((saved.next??0)+1)%alternatives.length});
++    return last.response;
++  }
++  // Discovery is once per unproven endpoint. A class failure never clears a proven lane.
++  for(let round=0;round<2;round++){
++    if(round){
++      await new Promise(resolve=>setTimeout(resolve,1000));
++      try{await renewFallbackToken(env,'source-header-recovery');}catch{break;}
++    }
++    for(const profile of profiles){
++      await new Promise(resolve=>setTimeout(resolve,1000));
++      await last.response.body?.cancel();
++      last=await attempt({lane:'cloudflare-fallback',profile});
++      if(last.usable)return last.response;
++    }
++  }
++  await storage.put(endpoint,{exhausted:true});
++  const headers=new Headers(last.response.headers);headers.set('X-RS-Recovery-State','exhausted');
++  return new Response(last.response.body,{status:last.response.status,headers});
++}
+ var sourceHandler = {
+   async fetch(request, env) {
+     const url = new URL(request.url), pathname = url.pathname.replace(/\/+$/, "") || "/";
+@@ -604,6 +681,10 @@
+       if ([...url.searchParams.keys()].some((k) => !allowed.includes(k)) || url.searchParams.get("customer_id") !== "15" || pathname !== "/ring" && !/^\d+$/.test(url.searchParams.get("show_id") || "") || isRingDetail && !/^\d{4}-\d{2}-\d{2}$/.test(url.searchParams.get("show_date") || "") || isPeople && url.searchParams.get("pid") !== pathname.split("/")[2] || isEntries && (!/^[1-9]\d*$/.test(url.searchParams.get("page") || "") || url.searchParams.has("sort_on") && url.searchParams.get("sort_on") !== "number" || url.searchParams.has("sort_type") && url.searchParams.get("sort_type") !== "asc" || url.searchParams.has("search_text") && url.searchParams.get("search_text") !== "") || pathname === "/schedule" && !/^(?:\d{4}-\d{2}-\d{2}|00\/00\/00)$/.test(url.searchParams.get("date") || ""))
+         return reply2({ message: "Invalid source parameters" }, 400);
+     }
++    const mode=request.headers.get('X-RS-Recovery');
++    if(!env.SGL_HEALTH_PROBE&&(mode==='defer'||mode==='trouble')&&
++      (pathname==='/schedule'||/^\/classes\/[1-9]\d*$/.test(pathname)))
++      return collectThroughLane(request,env,mode);
+     const fallbackEligible = true;
+     const fallback = /* @__PURE__ */ __name(async (reason) => {
+       console.error(JSON.stringify({ message: "Using direct source fallback", path: pathname, reason }));
+@@ -698,7 +779,7 @@
+   async fetch(request) {
+     await this.ready;
+     return this.enqueue(async ({ startedAt }) => {
+-      const response = await sourceHandler.fetch(request, this.env);
++      const response = await sourceHandler.fetch(request, {...this.env,SGL_LANE_STORAGE:this.ctx.storage});
+       const body = response.body === null ? null : await response.arrayBuffer();
+       const headers = new Headers(response.headers);
+       headers.set("X-RS-Queue-Start", String(startedAt));

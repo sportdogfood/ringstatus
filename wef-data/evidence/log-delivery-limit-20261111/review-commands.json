@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root",
+  "commands": [
+    {
+      "id": "syntax-review",
+      "command": "node --check \"C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\log-delivery-limit-20261111\\candidate\\attempt-log.js\"",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-12T02:20:17.323376+00:00",
+      "ended_at": "2026-11-12T02:20:17.403801+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

@@ -2,6 +2,26 @@
 
 Updated November 11, 2026, 8:35 a.m. Eastern (America/New_York). Production: C:/Users/gombc/OneDrive - Sport Dog Food/github/repos/ringstatus/wef-data. Airtable: appdl16HJ5ETm8N69.
 
+## Returned-response review — November 11, 2026
+
+Owner clarified: keep the no-ping exclusions, retain returned responses for review, and finish processing unaffected work. The existing Source capture is enabled in runtime/source-responses. Each saved capture includes the validated requested URL, customer/show/day/class and source/receipt times. JSON and nested reader body/stdout base64 copies are redacted before saving; the original stdout SHA256 remains provenance, not a promise that redacted bytes equal the originals. HTTP error bodies remain error evidence, never accepted business data.
+
+Invalid JSON, unsupported class structures and mismatched class identity stay available for review through the saved-response pointer in existing error messages. They are not projected onto the wrong record. Other valid classes, records and results continue saving. A capture-write problem warns and does not discard otherwise valid work. Existing stage outcomes and errors continue reporting incomplete source/data coverage; counts-json separately says Completed with warnings when processing reaches its end. No new Airtable status/field/schema, retry layer or green success claim is added.
+
+Fresh generated rs-flag names now also use the already-read flags.Name/Priority-Sort999 policy before a native link exists. Unknown/unlisted and non999 classifications keep their eligibility. No flag-link writer or new query is added. Existing exclusions, First→Second→Classic→other order, serial requests, URLs, pause, cadences, memberships, placeholder-result writes, independent linking and cleanup are unchanged.
+
+Backups, exact restoration steps, tests, independent review and deployment/proof are in C:/Users/gombc/Documents/Codex/outputs/wef-data-response-review-20261111/. Normal scheduled capture verification is required; offline checks do not prove it. This section supersedes the earlier pending999 correction. The previous normal878483f7 invocation remains separate and its final errors must be retained, not replayed.
+
+## Class-request rules release — November 11, 2026
+
+Approved with an exact-file backup. Current schedules, linked temporary flags and existing Completed/verified rules determine class requests. Flat, Model, No entries, linked Priority-Sort999, breaks and raw Model/Under Saddle/Flat make no detail request. Returning Dropped classes use current schedule membership. Eligible order per day is First trip, Second trip, Classic, then other eligible flags in their existing order. One class request at a time; proxy URLs, pause, retries and cadences are unchanged.
+
+Every schedule/basic class remains saved. Skips are recorded as Skipped by rule in existing counts-json; they do not advance absence or alter saved details/trips/results. Class identity and class/trips structure are validated before detail JSON/success-time authoring. Existing result writes, including placeholders, remain unchanged. Schedule and detail outcomes are distinct in counts-json. Eligible detail failures and confirmed recovery use the existing Records/desktop incident and receipt-retry path.
+
+Schedule data still saves before details in the same collection invocation. True runtime independence from a long class stage remains unresolved: separating that block into an independent class-detail entry/task needs explicit architecture approval. No task or background worker was added.
+
+Backup, restoration instructions, offline tests, independent review and deployment evidence: C:/Users/gombc/Documents/Codex/outputs/wef-data-class-rules-20261111/. Normal scheduled verification is pending until a post-deployment run completes. Earlier descriptions below are dated history where superseded.
+
 ## Full collection, fallback and alerts — November 11
 
 Documentation update requested by Decoder in the existing Data chat. Decoder owns the shared proxy, recovery and health checks. Its requested addition of class-detail health checks is pending at this readback.

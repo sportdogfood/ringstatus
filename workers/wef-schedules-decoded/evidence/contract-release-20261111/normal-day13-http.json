@@ -1,0 +1,277 @@
+{
+  "observed_at": "2026-11-11T21:32:26.774Z",
+  "run": "878483f7-e2aa-4b66-9203-4507e8133cb6",
+  "timeframe": [
+    "2026-11-11T21:26:55Z",
+    "2026-11-11T21:30:27Z"
+  ],
+  "http": {
+    "classResponses": [
+      {
+        "at": "2026-11-11T21:28:32.080Z",
+        "class": "GET /classes/200031439",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:30.872Z",
+        "class": "GET /classes/200031321",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:29.656Z",
+        "class": "GET /classes/200031339",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:28.529Z",
+        "class": "GET /classes/200031344",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:27.395Z",
+        "class": "GET /classes/200031299",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:26.254Z",
+        "class": "GET /classes/200031294",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:25.125Z",
+        "class": "GET /classes/200031434",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:23.983Z",
+        "class": "GET /classes/200031419",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:22.774Z",
+        "class": "GET /classes/200031424",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:21.614Z",
+        "class": "GET /classes/200031399",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:20.470Z",
+        "class": "GET /classes/200031607",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:19.311Z",
+        "class": "GET /classes/200031604",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:18.187Z",
+        "class": "GET /classes/200031610",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:17.057Z",
+        "class": "GET /classes/200031662",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:15.940Z",
+        "class": "GET /classes/200031723",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:14.828Z",
+        "class": "GET /classes/200031438",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:13.700Z",
+        "class": "GET /classes/200031319",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:12.577Z",
+        "class": "GET /classes/200031320",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:11.454Z",
+        "class": "GET /classes/200031338",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:10.319Z",
+        "class": "GET /classes/200031343",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:09.189Z",
+        "class": "GET /classes/200031298",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:08.038Z",
+        "class": "GET /classes/200031293",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:06.904Z",
+        "class": "GET /classes/200031591",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:05.783Z",
+        "class": "GET /classes/200031585",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:04.649Z",
+        "class": "GET /classes/200031593",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:03.523Z",
+        "class": "GET /classes/200031639",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:02.359Z",
+        "class": "GET /classes/200031643",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:01.211Z",
+        "class": "GET /classes/200031674",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:28:00.087Z",
+        "class": "GET /classes/200031631",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:58.929Z",
+        "class": "GET /classes/200031629",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:57.803Z",
+        "class": "GET /classes/200031626",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:56.659Z",
+        "class": "GET /classes/200031671",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:55.530Z",
+        "class": "GET /classes/200031653",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:54.326Z",
+        "class": "GET /classes/200031658",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:53.186Z",
+        "class": "GET /classes/200031616",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:52.064Z",
+        "class": "GET /classes/200031650",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:50.914Z",
+        "class": "GET /classes/200031645",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:49.779Z",
+        "class": "GET /classes/200031668",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:48.646Z",
+        "class": "GET /classes/200031619",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:47.503Z",
+        "class": "GET /classes/200031622",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:46.356Z",
+        "class": "GET /classes/200031433",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:45.205Z",
+        "class": "GET /classes/200031418",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:44.022Z",
+        "class": "GET /classes/200031423",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:42.823Z",
+        "class": "GET /classes/200031398",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:41.671Z",
+        "class": "GET /classes/200031686",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:40.535Z",
+        "class": "GET /classes/200031720",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:39.371Z",
+        "class": "GET /classes/200031716",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:38.130Z",
+        "class": "GET /classes/200031680",
+        "status": 200
+      },
+      {
+        "at": "2026-11-11T21:27:36.945Z",
+        "class": "GET /classes/200031634",
+        "status": 200
+      }
+    ],
+    "sourceErrors": [],
+    "runnerFailures": []
+  },
+  "nativeRun": {
+    "records": [
+      {
+        "id": "recoRKxOLlKFTQWqQ",
+        "createdTime": "2026-11-11T21:27:05.000Z",
+        "cellValuesByFieldId": {
+          "fld47sYfdr8cwz60t": "2026-11-11T21:30:26.430Z",
+          "fld5xTmiIEP72BtXC": "Partial",
+          "fldGJIjHdf0vTH6Rs": "collection-878483f7-e2aa-4b66-9203-4507e8133cb6|2026-11-13",
+          "fldUYwfJL04VpsdQN": 2023,
+          "fldbFH53TuWXmFuqk": 1
+        }
+      }
+    ],
+    "metadata": {
+      "totalRecordCount": 1
+    }
+  }
+}

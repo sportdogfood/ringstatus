@@ -1,0 +1,8 @@
+{
+  "command": "node --require ./wef-data/evidence/log-delivery-limit-20261111/test-loader.cjs --test --test-skip-pattern=actual PowerShell wrapper wef-data/tests/attempt-log.test.js wef-data/evidence/log-delivery-limit-20261111/cap-removal.test.cjs",
+  "started": "2026-11-12T02:18:44.7678189+00:00",
+  "completed": "2026-11-12T02:18:46.5516945+00:00",
+  "exit_code": 0,
+  "scope": "Actual candidate logger with isolated fixtures and injected transport; unchanged broken wrapper fixture excluded after baseline reproduction",
+  "output": "affected-checks-output.txt"
+}

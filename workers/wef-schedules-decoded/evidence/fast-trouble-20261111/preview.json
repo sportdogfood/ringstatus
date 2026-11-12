@@ -1,0 +1,6 @@
+[
+  {
+    "route": "/schedule?customer_id=15&show_id=200000078&date=2026-11-14",
+    "error": "HTTP Error 403: Forbidden"
+  }
+]

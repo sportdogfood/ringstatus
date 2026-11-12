@@ -24,13 +24,15 @@ function check(runtime, report, attempt, logging) {
     for (const e of (report["item-errors"] || []).filter(e => e.day === day.day)) {
       const field = /^classes ([0-9|:-]+) source-json$/.exec(e.key);
       const schedule = e.key === "Day inventory collection";
-      if (!field && !schedule) continue;
-      const key = prefix + (schedule ? "/schedule" : field[1]);
+      const sourceClass = /^\d+\|\d+\|\d{4}-\d{2}-\d{2}\|\d+\|\d+$/.test(e.key) && /^\/classes\/\d+$/.test(e.endpoint || '');
+      if (!field && !schedule && !sourceClass) continue;
+      const key = prefix + (schedule ? "/schedule" : field ? field[1] : e.key);
       current.add(key);
       const code = /HTTP (\d{3})/.exec(e.error)?.[1];
-      const reason = code ? "HTTP " + code : /timeout|timed out/i.test(e.error) ? "timeout" : "invalid or unavailable schedule";
+      const reason = code ? "HTTP " + code : /timeout|timed out/i.test(e.error) ? "timeout" : sourceClass ? "invalid or unavailable class detail" : "invalid or unavailable schedule";
       state.open[key] = schedule
         ? day.day + " /schedule failed (" + reason + "). " + day.counts.saved + " records saved."
+        : sourceClass ? day.day + " /classes/" + e.key.split("|").at(-1) + " failed (" + reason + "). Class " + e.key + "."
         : day.day + " class " + field[1] + ": Airtable rejected source-json (422).";
     }
     for (const key of Object.keys(state.open)) {

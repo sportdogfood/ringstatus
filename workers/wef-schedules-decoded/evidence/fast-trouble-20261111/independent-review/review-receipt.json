@@ -1,0 +1,147 @@
+{
+  "reviewer": "/root/review",
+  "reviewed_at": "2026-11-12T04:00:46.279489+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Independent predeployment decoder component review for approved fast and trouble flow",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+  "integration_coverage": "Default/health dispatch, existing DO/pacing, fallback/token dependencies, archived exact deployment bundle; full collector integration and scheduled proof reserved",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\shared-worker.before.mjs",
+      "sha256": "fbf47b80739d5c4e59b10ba443a81dc7d07b66b799c7912e176bd30360e0f59c"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\returned-token-20261111\\candidate.mjs",
+      "sha256": "ecdce96e0dade9ec0abd1839e403930e32d0e430a859d45966c132dbcde8145f"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+      "sha256": "69c9eebe109318db857912163af479edb747ec36adab239873fdc4558e0895e2"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\collection-lane.test.mjs",
+      "sha256": "af500d4753a43c2f0099deff17afeb78021cb1ba610f0f27cfb5bd214a721439"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\candidate.mjs",
+      "sha256": "a827bae5ae46af36ec683085f0ac4cabbef91fb739950b7f1285d59f2029cee1"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\review.md",
+    "sha256": "90248e528ac2b8c69aa5ba0221ca9e64707dabf0e2641b735dcb7ecb32212001"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\final-execution-log.json",
+      "sha256": "f76021ce347cbf7999f4c17c46a627cec276c9fe7ecbccf74d6d3120b24cf402"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\diagnostic-execution-log.json",
+      "sha256": "0c7a9b0c31dba3f0b2c4cb9dbcfe67af285e3e9b75e494e862c0c1f20fcfef56"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "Independent affected checks and counterexamples",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "final-offline"
+      ]
+    },
+    {
+      "name": "Deployment bundle syntax",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "final-lf-bundle-syntax"
+      ]
+    },
+    {
+      "name": "Approval boundary",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected owner excerpts and exact baseline delta; full pipeline proof explicitly reserved.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\approval.md",
+          "sha256": "3026bb8be28379fec057ebb3d50191698f5937c0917457984e6de565ee3253c2"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\source-diff.txt",
+          "sha256": "6aa56528369404942a21aa1c3d342891305897b786b204a81faca031dcebfa15"
+        }
+      ]
+    },
+    {
+      "name": "Protected deployment content and helper identity",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Exactly three scoped edits; removing them preserves all archived baseline bytes.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\bundle-verification.json",
+          "sha256": "f06f7249ffefdce7c052bc0494f669a85901c1d19f5c0051a7e67c4ae02fdc22"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\bundle-diff.txt",
+          "sha256": "1105f599ff01c5f5354f2aa18cda1bcd16113aedd92141f4fdbde3c10974da9d"
+        }
+      ]
+    },
+    {
+      "name": "Default health, token, DO and persistence consumers",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Traced changed path and unchanged dependencies; mocked DO execution independently included.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\fallback.mjs",
+          "sha256": "d86757f80361eb21d76fcbb3f3fe1e8a9de302ee7b5f69f1be7ae45c51e58e5b"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\sgl-pacing.mjs",
+          "sha256": "479f56d56f481a16104dc64faa33945be9175ddca0f971924b9151889787f138"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\worker.js",
+          "sha256": "349440ed1172d2fb46926ff5625d1ac838038bff08ac0e0b02139aa5eb019aa4"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\final-checks.test.mjs",
+          "sha256": "2e93aac099498ea7f9d760813ed4312a695a8116f30ebcccc19b42e40825785a"
+        }
+      ]
+    },
+    {
+      "name": "Diagnostic-only refresh independently verified",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "diagnostic-cause",
+        "diagnostic-bundle-syntax"
+      ]
+    },
+    {
+      "name": "Refresh exact approved delta",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Exact prior source/bundle hashes recovered by removing the single bounded-reason assignment; prior provenance retained.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\diagnostic-delta.json",
+          "sha256": "6dd430c31e56555116047bcebb1691e693ca57577222f11e3cb4593c95a97979"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\before-diagnostic-refresh\\review-receipt.json",
+          "sha256": "deef026ad8ba5222040b1cd1b1d5a8240b5450e1f0cdaaf5c532bfdee29a2399"
+        }
+      ]
+    }
+  ]
+}

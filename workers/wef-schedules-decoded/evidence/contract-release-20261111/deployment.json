@@ -1,0 +1,26 @@
+{
+  "installed_at": "2026-11-11T20:53:52.408Z",
+  "files": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/wef-data/runtime/wef-decoder-runner/worker.js",
+      "sha256": "818c5c903eafe74b3e1651dba3d3a5beb102c724528118afa6815417b9946a8a"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/wef-data/runtime/wef-decoder-runner/runner-relay.mjs",
+      "sha256": "86becdf7dff5d8e8eebfdc430f817a5b03281f52fa92060917edbce5a009ff0d"
+    }
+  ],
+  "backup": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus/workers/wef-schedules-decoded/evidence/contract-release-20261111/backup.json",
+  "restart": {
+    "at": "2026-11-11T20:53:55.6891579Z",
+    "task": "wef-decoder-runner-relay",
+    "old_pid": 51068,
+    "new_pid": 45704,
+    "stop_start_cycles": 1
+  },
+  "listener": {
+    "port": 18467,
+    "tcp_connect": true,
+    "http_request_sent": false
+  }
+}

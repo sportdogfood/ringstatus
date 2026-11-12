@@ -1,0 +1,12 @@
+{
+  "installed_at": "2026-11-12T02:20:39.7258393+00:00",
+  "file": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\attempt-log.js",
+  "sha256": "0BE1BA86170DB5B3C79197A2E2EABF69AEF2A3496AC121933CA78F84C099B623",
+  "baseline_sha256": "D679CA3B117D0DC6B5B609D33A5E6C852E6BF9EA6B281F567B094B01B451B896",
+  "changes": "Removed only aggregate flush 20second and30request caps",
+  "protected_files_unchanged": true,
+  "manual_delivery": false,
+  "manual_collectors": false,
+  "task_restart": false,
+  "scheduled_delivery_verified": false
+}

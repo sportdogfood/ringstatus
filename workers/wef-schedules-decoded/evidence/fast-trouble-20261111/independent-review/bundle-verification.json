@@ -1,0 +1,7 @@
+{
+  "protected_content_identical_after_three_scoped_edits_and_line_ending_normalization": true,
+  "byte_identical": true,
+  "bundle_helper_matches_source": true,
+  "baseline_sha256": "ecdce96e0dade9ec0abd1839e403930e32d0e430a859d45966c132dbcde8145f",
+  "candidate_sha256": "1ab4c3738a1cc22b128df17fdd12bf964fe340e9786a117ca2ad8cf338c286f2"
+}

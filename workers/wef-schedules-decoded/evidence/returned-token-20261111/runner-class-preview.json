@@ -1,0 +1,23 @@
+{
+  "sameURL": true,
+  "sameCookie": true,
+  "sameRunnerRenewalToken": true,
+  "results": [
+    {
+      "mode": "installed",
+      "status": 200,
+      "decoded": true,
+      "idsPopulated": false,
+      "errors": []
+    },
+    {
+      "mode": "class-uses-existing-working-headers",
+      "status": 200,
+      "decoded": true,
+      "classId": 200031471,
+      "trips": 2,
+      "idsPopulated": true,
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "reviewer": "/root/review",
+  "reviewed_at": "2026-11-12T03:27:36.654818+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Independent predeployment decoder component review for approved fast and trouble flow",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+  "integration_coverage": "Default/health dispatch, existing DO/pacing, fallback/token dependencies, archived exact deployment bundle; full collector integration and scheduled proof reserved",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\shared-worker.before.mjs",
+      "sha256": "fbf47b80739d5c4e59b10ba443a81dc7d07b66b799c7912e176bd30360e0f59c"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\returned-token-20261111\\candidate.mjs",
+      "sha256": "ecdce96e0dade9ec0abd1839e403930e32d0e430a859d45966c132dbcde8145f"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\shared-worker.mjs",
+      "sha256": "a19b43133a5ff08bfe92ca8ce927e6d1a6f38525d9b1af74a16a8a364e20e4a5"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\tests\\collection-lane.test.mjs",
+      "sha256": "9306168196a3df0348025c5727d86fc0dc74d75cf184b9de1d2b7d9b3e448c65"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\candidate.mjs",
+      "sha256": "1ab4c3738a1cc22b128df17fdd12bf964fe340e9786a117ca2ad8cf338c286f2"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\review.md",
+    "sha256": "04950047fd36f70d4bc9f8247661952ef084aea92918ff2f99ae1b090048cf10"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\final-execution-log.json",
+      "sha256": "f76021ce347cbf7999f4c17c46a627cec276c9fe7ecbccf74d6d3120b24cf402"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "PASS",
+  "required_checks": [
+    {
+      "name": "Independent affected checks and counterexamples",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "final-offline"
+      ]
+    },
+    {
+      "name": "Deployment bundle syntax",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "final-lf-bundle-syntax"
+      ]
+    },
+    {
+      "name": "Approval boundary",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Inspected owner excerpts and exact baseline delta; full pipeline proof explicitly reserved.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\approval.md",
+          "sha256": "3026bb8be28379fec057ebb3d50191698f5937c0917457984e6de565ee3253c2"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\source-diff.txt",
+          "sha256": "6aa56528369404942a21aa1c3d342891305897b786b204a81faca031dcebfa15"
+        }
+      ]
+    },
+    {
+      "name": "Protected deployment content and helper identity",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Exactly three scoped edits; removing them preserves all archived baseline bytes.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\bundle-verification.json",
+          "sha256": "f06f7249ffefdce7c052bc0494f669a85901c1d19f5c0051a7e67c4ae02fdc22"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\bundle-diff.txt",
+          "sha256": "1105f599ff01c5f5354f2aa18cda1bcd16113aedd92141f4fdbde3c10974da9d"
+        }
+      ]
+    },
+    {
+      "name": "Default health, token, DO and persistence consumers",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Traced changed path and unchanged dependencies; mocked DO execution independently included.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\fallback.mjs",
+          "sha256": "d86757f80361eb21d76fcbb3f3fe1e8a9de302ee7b5f69f1be7ae45c51e58e5b"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\sgl-pacing.mjs",
+          "sha256": "479f56d56f481a16104dc64faa33945be9175ddca0f971924b9151889787f138"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\worker.js",
+          "sha256": "349440ed1172d2fb46926ff5625d1ac838038bff08ac0e0b02139aa5eb019aa4"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\workers\\wef-schedules-decoded\\evidence\\fast-trouble-20261111\\independent-review\\final-checks.test.mjs",
+          "sha256": "2e93aac099498ea7f9d760813ed4312a695a8116f30ebcccc19b42e40825785a"
+        }
+      ]
+    }
+  ]
+}

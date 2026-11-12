@@ -1,0 +1,25 @@
+{
+  "runtime": "existing local workerd; preview-only compatibility2026-04-17, production remains2026-10-21",
+  "started": "2026-11-12T03:28:47.540199+00:00",
+  "ended": "2026-11-12T03:28:49.802371+00:00",
+  "results": [
+    {
+      "date": "2026-11-14",
+      "status": "HTTP/1.1 200 OK",
+      "recovery": "discovered",
+      "queueStart": "1794454127621",
+      "queueEnd": "1794454128346",
+      "rings": 9,
+      "message": null
+    },
+    {
+      "date": "2026-11-15",
+      "status": "HTTP/1.1 200 OK",
+      "recovery": "known",
+      "queueStart": "1794454129356",
+      "queueEnd": "1794454129789",
+      "rings": 9,
+      "message": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "version": "409af439-426f-4934-be19-a543b96e9825",
+  "deployment": "2ebff4e8-ad30-44d9-abe2-0845caeb872f",
+  "bundle_sha256": "a827bae5ae46af36ec683085f0ac4cabbef91fb739950b7f1285d59f2029cee1",
+  "independent_review": "PASS32offlinechecks",
+  "preview": "Cloudflare source9rings,class4712tripsknownprofile;localDOqueue1010msgap",
+  "scheduled_fast_save": "Unverified; Fast candidate not installed",
+  "active_percent": 100,
+  "code_readback_exact": true,
+  "six_bindings_unchanged": true,
+  "compatibility_date": "2026-10-21",
+  "initial_version": "707a2483-dc47-45f7-b776-984e9bdc5733",
+  "initial_deployment": "6a2054c1-9f89-4d3b-984f-ef455f48b249",
+  "uploaded_at": "2026-11-12T04:01:30.397982Z",
+  "diagnostic_delta": "Retain actual bounded fallback report reason; independent affected test and syntax PASS; prior32checks retained",
+  "initial_deployed_at": "2026-11-12T03:34:20.615994Z"
+}

@@ -1,0 +1,8 @@
+{
+  "command": "WEF_LOG_REVIEW_MODULE=baseline/attempt-log.js node --test cap-removal.test.cjs",
+  "started": "2026-11-12T02:19:26.9625809+00:00",
+  "completed": "2026-11-12T02:19:28.0443929+00:00",
+  "exit_code": 1,
+  "expected": "Both failures reproduce the original cap defect on unchanged baseline",
+  "output": "baseline-cap-reproduction-output.txt"
+}

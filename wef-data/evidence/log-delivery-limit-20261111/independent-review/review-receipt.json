@@ -1,0 +1,94 @@
+{
+  "reviewer": "/root/review",
+  "reviewed_at": "2026-11-12T02:28:09.529361+00:00",
+  "skill_sha256": "eceb991e13f304cecf06884d9ea856c97b38c1c17fb481248624023cd47f3002",
+  "objective": "Independent review of installed logger cap removal against amended owner requirements",
+  "target": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\attempt-log.js",
+  "integration_coverage": "entry.js, run.ps1, attempt-log.ps1, collect_day.report, serial scheduled loop, actual task settings; no live writes or collection",
+  "baseline": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\log-delivery-limit-20261111\\baseline\\attempt-log.js",
+      "sha256": "d679ca3b117d0dc6b5b609d33a5e6c852e6bf9ea6b281f567b094b01b451b896"
+    }
+  ],
+  "candidate": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\log-delivery-limit-20261111\\candidate\\attempt-log.js",
+      "sha256": "0be1ba86170db5b3c79197a2e2eabf69aef2a3496ac121933ca78f84c099b623"
+    },
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\attempt-log.js",
+      "sha256": "0be1ba86170db5b3c79197a2e2eabf69aef2a3496ac121933ca78f84c099b623"
+    }
+  ],
+  "report": {
+    "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\log-delivery-limit-20261111\\independent-review\\review.md",
+    "sha256": "ebfa4a53323e23bb82c898451009b9ad8962ec6c37ce671490382915d7a2b74f"
+  },
+  "logs": [
+    {
+      "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\log-delivery-limit-20261111\\independent-review\\execution-log.json",
+      "sha256": "e8a4ac092977c9403a62a14948cdfc2a0e662f8d7425584301c72c8fbbb76146"
+    }
+  ],
+  "review_status": "COMPLETE",
+  "candidate_status": "FAIL",
+  "required_checks": [
+    {
+      "name": "Independent offline logger regression",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "offline-logger"
+      ]
+    },
+    {
+      "name": "Actual cadence settings read-only",
+      "requirement": "execute",
+      "status": "executed",
+      "command_ids": [
+        "task-settings"
+      ]
+    },
+    {
+      "name": "Approval boundary and exact diff",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Compared three-line change with original and amended human text forwarded from source chat; protected other owner edits.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\log-delivery-limit-20261111\\independent-review\\authorization.txt",
+          "sha256": "708454bbbb00eeefbf2b1b25abcbef7694b7e4be4655cd210baa0d395091e963"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\evidence\\log-delivery-limit-20261111\\independent-review\\exact-diff.txt",
+          "sha256": "142ebcfedebb4ea61df757fc4b30cc599b7e63ea59eb4590cf93deee7ac9eb2e"
+        }
+      ]
+    },
+    {
+      "name": "Producer consumers failure idempotency and per-day scope",
+      "requirement": "inspect",
+      "status": "inspected",
+      "reason": "Traced actual synchronous collection-to-delivery path and per-day reporting; findings and proof limitations recorded.",
+      "evidence": [
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\entry.js",
+          "sha256": "a8fe8cf7ebb2064cf191988fc628f28cafb7d179a823e80006657fd97988546b"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\run.ps1",
+          "sha256": "af47fdb3108f0facf25e6e81bfebda85a8ba9cb25007e41eb9b9fa4798a84e09"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\attempt-log.ps1",
+          "sha256": "4256430ff89b239a8e61844bacebd144660f81196ebc4e3bf283548adfc37115"
+        },
+        {
+          "path": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus\\wef-data\\fast_collector.py",
+          "sha256": "9fdaef590c79d1d1673702f0dd0ca176de2ae3f7f97dc85ef245f88ff3c51e9d"
+        }
+      ]
+    }
+  ]
+}

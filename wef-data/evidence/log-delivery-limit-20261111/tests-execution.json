@@ -1,0 +1,8 @@
+{
+  "command": "node --require ./wef-data/evidence/log-delivery-limit-20261111/test-loader.cjs --test wef-data/tests/attempt-log.test.js wef-data/evidence/log-delivery-limit-20261111/cap-removal.test.cjs",
+  "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+  "started": "2026-11-12T02:18:15.8312692+00:00",
+  "completed": "2026-11-12T02:18:18.6716878+00:00",
+  "exit_code": 1,
+  "output": "tests-output.txt"
+}

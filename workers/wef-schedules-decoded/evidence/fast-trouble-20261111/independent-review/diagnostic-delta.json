@@ -1,0 +1,6 @@
+{
+  "source_only_delta": "if(details.reason)reason=details.reason;",
+  "source_removed_line_matches_prior_reviewed_hash": true,
+  "bundle_removed_line_matches_prior_reviewed_hash": true,
+  "scope": "Retain bounded existing fallback cause in failure header; no flow, pacing, retry or storage changes"
+}

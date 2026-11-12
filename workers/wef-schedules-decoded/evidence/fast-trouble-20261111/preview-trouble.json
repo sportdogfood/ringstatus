@@ -1,0 +1,24 @@
+[
+  {
+    "mode": "trouble",
+    "exit": 0,
+    "status": "HTTP/1.1 200 OK",
+    "lane": "cloudflare-fallback",
+    "profile": "profile-fb-header2",
+    "recovery": "discovered",
+    "class": 200031471,
+    "trips": 2,
+    "message": null
+  },
+  {
+    "mode": "defer",
+    "exit": 0,
+    "status": "HTTP/1.1 200 OK",
+    "lane": "cloudflare-fallback",
+    "profile": "profile-fb-header2",
+    "recovery": "known",
+    "class": 200031471,
+    "trips": 2,
+    "message": null
+  }
+]

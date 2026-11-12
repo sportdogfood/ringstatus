@@ -23,7 +23,7 @@ function target(route,params){
 async function read(route,params,{transport=fetchTextWithConfiguredTransport,timeout=0}={}){
  const url=target(route,params),started=new Date().toISOString(),begin=Date.now();
  let result;
- const metric={route,params,started,http:null};
+ const metric={route,params,url,started,http:null};
  const finish=()=>{metric.completed=new Date().toISOString();metric.elapsed_seconds=(Date.now()-begin)/1000;};
  try{
   result=await transport(url,async endpoint=>{

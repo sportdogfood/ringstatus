@@ -1,0 +1,38 @@
+{
+  "reviewer": "wef-decoder",
+  "commands": [
+    {
+      "id": "syntax-worker",
+      "command": "[\"C:\\\\Program Files\\\\nodejs\\\\node.exe\",\"--check\",\"workers/wef-schedules-decoded/evidence/contract-release-20261111/worker.candidate.js\"]",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-11T20:53:04.051Z",
+      "ended_at": "2026-11-11T20:53:04.133Z",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "syntax-relay",
+      "command": "[\"C:\\\\Program Files\\\\nodejs\\\\node.exe\",\"--check\",\"workers/wef-schedules-decoded/evidence/contract-release-20261111/runner-relay.candidate.mjs\"]",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-11T20:53:04.133Z",
+      "ended_at": "2026-11-11T20:53:04.207Z",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "id": "token-suite",
+      "command": "[\"C:\\\\Program Files\\\\nodejs\\\\node.exe\",\"--test\",\"workers/wef-schedules-decoded/evidence/contract-release-20261111/runner-token.test.mjs\"]",
+      "cwd": "C:\\Users\\gombc\\OneDrive - Sport Dog Food\\github\\repos\\ringstatus",
+      "runtime": "v22.22.2",
+      "started_at": "2026-11-11T20:53:04.207Z",
+      "ended_at": "2026-11-11T20:53:04.493Z",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: returned token replays same URL once, uses new decryption key, and updates existing cache hook\nok 1 - returned token replays same URL once, uses new decryption key, and updates existing cache hook\n  ---\n  duration_ms: 39.4985\n  type: 'test'\n  ...\n# Subtest: malformed, expired and account tokens cannot replay or update cache\nok 2 - malformed, expired and account tokens cannot replay or update cache\n  ---\n  duration_ms: 4.877\n  type: 'test'\n  ...\n# Subtest: a repeated token stops without a third GET and is redacted from errors\nok 3 - a repeated token stops without a third GET and is redacted from errors\n  ---\n  duration_ms: 1.6678\n  type: 'test'\n  ...\n# Subtest: callback errors cannot expose returned token or continue\nok 4 - callback errors cannot expose returned token or continue\n  ---\n  duration_ms: 1.0543\n  type: 'test'\n  ...\n# Subtest: ordinary responses preserve headers, URL, cookie, status and decoded body\nok 5 - ordinary responses preserve headers, URL, cookie, status and decoded body\n  ---\n  duration_ms: 7.072\n  type: 'test'\n  ...\n# Subtest: HTTP errors and redirects stay failures without replay\nok 6 - HTTP errors and redirects stay failures without replay\n  ---\n  duration_ms: 1.1235\n  type: 'test'\n  ...\n# Subtest: relay delta only saves the validated returned token in the existing memory cache\nok 7 - relay delta only saves the validated returned token in the existing memory cache\n  ---\n  duration_ms: 0.7381\n  type: 'test'\n  ...\n# Subtest: actual relay reuses the returned token on the next request without renewal or opening a port\nok 8 - actual relay reuses the returned token on the next request without renewal or opening a port\n  ---\n  duration_ms: 5.3461\n  type: 'test'\n  ...\n1..8\n# tests 8\n# suites 0\n# pass 8\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 202.6902\n",
+      "stderr": ""
+    }
+  ]
+}

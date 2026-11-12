@@ -1,10 +1,14 @@
 """Fresh scheduled collection: select day, schedules, classes, save, report."""
-import base64, concurrent.futures, datetime, json, os, pathlib, subprocess, sys, time
+import base64, concurrent.futures, datetime, json, os, pathlib, re, subprocess, sys, time
 from data_contract import packed, digest
 from wef_data_airtable import Airtable, error_text
 from wef_data_store import DataStore, DATA_BASE
 
 DAY_INTERVALS={0:180,1:3600,2:7200,3:10800}
+FLAGS_TABLE='tbltWFlkHKRhQSkyp'
+FLAG_NAME='fldfOgdWgBi8Ic07S'
+FLAG_SORT='fldjYKmLF9qlssjbX'
+SCHEDULE_FLAGS='fldFVOPRFWbGUmmFS'
 
 SHOW_CONTEXT_FIELDS={'show-key':'show-key','show-id':'show_id',
     'customer-id':'customer_id','show-name':'show_name',
@@ -16,6 +20,37 @@ def safe(v):
     if isinstance(v,dict):return {k:safe(x) for k,x in v.items() if k.lower() not in {'_','_t','token','cookie','authorization','access_token','refresh_token'}}
     if isinstance(v,list):return [safe(x) for x in v]
     return v
+
+
+def capture_safe(value,secrets=None):
+    """Redact the existing reader's JSON/base64 capture without trimming payloads."""
+    if secrets is None:secrets=tuple(secret for name,secret in os.environ.items() if secret and re.search(r'TOKEN|COOKIE|PASSWORD|SECRET|API_KEY',name,re.I))
+    if isinstance(value,dict):
+        output={}
+        for key,item in value.items():
+            if re.search(r'(^_t$|token|cookie|authorization|password|secret|api[_-]?key)',key,re.I):
+                output[key]='[redacted]';continue
+            if key in ('body','stdout-base64') and isinstance(item,str):
+                try:
+                    text=base64.b64decode(item,validate=True).decode('utf-8','replace')
+                    try:decoded=json.loads(text)
+                    except ValueError:decoded=text
+                    cleaned=capture_safe(decoded,secrets)
+                    output[key]=base64.b64encode((cleaned if isinstance(cleaned,str) else packed(cleaned)).encode('utf-8')).decode('ascii')
+                    continue
+                except (ValueError,TypeError):pass
+            output[key]=capture_safe(item,secrets)
+        return output
+    if isinstance(value,list):return [capture_safe(item,secrets) for item in value]
+    if not isinstance(value,str):return value
+    if value.lstrip().startswith(('{','[')):
+        try:return packed(capture_safe(json.loads(value),secrets))
+        except ValueError:pass
+    for secret in secrets:value=value.replace(secret,'[redacted]')
+    value=re.sub(r'Bearer\s+[^\s"\'<>]+','Bearer [redacted]',value,flags=re.I)
+    value=re.sub(r'\b[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b','[redacted]',value)
+    value=re.sub(r'(?im)^((?:set-cookie|cookie|authorization)\s*:)[^\r\n]*',r'\1 [redacted]',value)
+    return re.sub(r'''(?i)((?:["']?(?:_t|token|cookie|authorization|access_token|refresh_token|password|secret|api_key)["']?)\s*[:=]\s*)("(?:\\.|[^"\\])*(?:"|(?:\\)?\Z)|'(?:\\.|[^'\\])*(?:'|(?:\\)?\Z)|[^\s,;<>]+)''',r'\1"[redacted]"',value)
 
 
 def synced_source(table,schema_file=None):
@@ -45,19 +80,33 @@ class SourceFailure(RuntimeError):
 
 
 class Source:
-    def __init__(self,capture_root=None):
+    def __init__(self,capture_root=None,day=None):
         self.capture_root=pathlib.Path(capture_root) if capture_root is not None else None
+        self.day=day
     def fetch(self,route,params,timeout=0):
         try:result=subprocess.run(['node',str(pathlib.Path(__file__).with_name('source-reader.js')),route,packed(params),str(timeout)],capture_output=True,timeout=timeout+10 if timeout>0 else None)
         except subprocess.TimeoutExpired:raise SourceFailure('Source reader timed out',{'route':route,'params':params,'timeout':True,'completed':stamp()}) from None
         diagnostic={'route':route,'params':params,'exit-code':result.returncode}
         if self.capture_root is not None:
+            try:outer=json.loads(result.stdout)
+            except (ValueError,TypeError):outer=result.stdout.decode('utf-8','replace')
+            source_metric=outer.get('metric',{}) if isinstance(outer,dict) else {}
+            if not isinstance(source_metric,dict):source_metric={}
             received={'route':route,'params':params,'exit-code':result.returncode,
-                'stdout-base64':base64.b64encode(result.stdout).decode('ascii'),'received-at':stamp()}
+                'url':source_metric.get('url'),'show-id':params.get('show_id'),'customer-id':params.get('customer_id'),
+                'day':params.get('date') or self.day,'class-id':int(route.rsplit('/',1)[1]) if route.startswith('/classes/') else None,
+                'source-started':source_metric.get('started'),'source-completed':source_metric.get('completed'),
+                'http':source_metric.get('http'),'http-response-received':isinstance(outer,dict) and 'body' in outer,
+                'reader-ok':bool(isinstance(outer,dict) and outer.get('ok')),
+                'stdout-base64':base64.b64encode(result.stdout).decode('ascii'),
+                'stdout-sha256':__import__('hashlib').sha256(result.stdout).hexdigest(),'redacted':True,'received-at':stamp()}
+            received=capture_safe(received)
             path=self.capture_root/(digest(packed(received))+'.json')
-            atomic(path,received);diagnostic['saved-response']=str(path)
+            try:atomic(path,received);diagnostic['saved-response']=str(path)
+            except Exception as error:diagnostic['capture-error']=error_text(error)
         try:response=json.loads(result.stdout)
         except (ValueError,TypeError):raise SourceFailure('Source reader did not return a valid result',diagnostic) from None
+        if not isinstance(response,dict) or not isinstance(response.get('metric',{}),dict):raise SourceFailure('Source reader did not return a valid result',diagnostic)
         metric={**response.get('metric',{}),**diagnostic}
         if result.returncode or not response.get('ok'):raise SourceFailure(response.get('error','Source read failed'),metric)
         def check(v):
@@ -100,16 +149,49 @@ def class_detail_required(saved, fields):
         and saved.get(fields['class_related_data.results_verified']['id']) == 1)
 
 
+def select_class_details(rows,schedules,prior_classes,class_fields,prior_schedules,flags,priorities):
+    """Keep occurrences intact; one eligible occurrence is enough for its class."""
+    classes={row['class-key']:row for row in rows};ranked={}
+    order={'First trip':0,'Second trip':1,'Classic':2}
+    for key,schedule in schedules.items():
+        raw=json.loads(schedule['source-json'])
+        class_key=key.rsplit('|',1)[0]+'|'+str(raw.get('class_id'))
+        if class_key not in classes:continue
+        linked=[flags[value] for value in prior_schedules.get(key,{}).get('fields',{}).get(SCHEDULE_FLAGS,[]) if value in flags]
+        flag=priorities.get(key,{}).get('rs-flag')
+        labels={flag,*[value.get(FLAG_NAME) for value in linked]}
+        count=raw.get('total_trips')
+        if (schedule.get('kind')=='break' or labels.intersection({'Flat','Model','No entries'})
+                or str(raw.get('schedule_sequencetype','')).strip().lower() in ('model','under saddle/flat')
+                or type(count) in (int,float) and count==0
+                or any(value.get(FLAG_NAME)==flag and value.get(FLAG_SORT)==999 for value in flags.values())
+                or any(value.get(FLAG_SORT)==999 for value in linked)):continue
+        current={**prior_classes.get(class_key,{}).get('fields',{}),
+                 class_fields['record-status']['id']:classes[class_key]['record-status']}
+        if not class_detail_required(current,class_fields):continue
+        rank=order.get(flag,min((order.get(value.get(FLAG_NAME),3) for value in linked),default=3))
+        if class_key not in ranked or rank<ranked[class_key]:ranked[class_key]=rank
+    selected=sorted((row for row in rows if row['class-key'] in ranked),key=lambda row:ranked[row['class-key']])
+    skips=[{'class-key':row['class-key'],'outcome':'Skipped by rule'} for row in rows if row['class-key'] not in ranked]
+    return selected,skips
+
+
 def collect_day(schema_file, selection):
     """Existing fresh single-day collection; no class work is queued or resumed."""
     errors=[];saved=set();show=None;day=None;runkey=None;run_started=stamp()
     started=time.perf_counter();stage_started=started;timings={}
     detail_counts={'class-detail-requested':0,'class-detail-skipped':0}
+    stage_outcomes={}
     def timed(stage):
         nonlocal stage_started
         now=time.perf_counter();timings[stage]=round(now-stage_started,6);stage_started=now
-    def error(target,exception):
-        errors.append({'key':target,'error':error_text(exception) if isinstance(exception,Exception) else str(exception)})
+    def error(target,exception,endpoint=None,source=None):
+        message=capture_safe(error_text(exception) if isinstance(exception,Exception) else str(exception))
+        diagnostic=source or getattr(exception,'diagnostic',{})
+        for label,name in [('Requested URL','url'),('Source completed','completed'),('Saved response','saved-response'),('Capture error','capture-error')]:
+            if diagnostic.get(name):message+='\n'+label+': '+capture_safe(str(diagnostic[name]))
+        errors.append({'key':target,'error':message,
+                       **({'endpoint':endpoint} if endpoint else {})})
     def report():
         if runkey:
             save('runs',[{'run-key':runkey,'mode':'Scheduled day-zero collection' if priority==0 else 'Scheduled day-'+str(selection[2])+' collection',
@@ -118,12 +200,15 @@ def collect_day(schema_file, selection):
             timed('save-run-summary')
         return {'ok':not blocking_errors(errors),'state':'Partial' if blocking_errors(errors) else 'Saved',
                 'show-key':show,'day':day,'run-key':runkey,'counts':{'saved':len(saved),
-                'stage-seconds':dict(timings),'total-seconds':round(time.perf_counter()-started,6),**detail_counts},'item-errors':errors}
+                'stage-seconds':dict(timings),'stage-outcomes':stage_outcomes,
+                'processing-outcome':'Completed with warnings' if errors else 'Completed',
+                'total-seconds':round(time.perf_counter()-started,6),**detail_counts},'item-errors':errors}
     try:
-        client=Airtable();source=Source()
+        client=Airtable()
         store=DataStore(client,json.loads(pathlib.Path(schema_file).read_text(encoding='utf-8')),cache=True)
         context,day,priority=selection
         show=context['show-key']
+        source=Source(pathlib.Path(schema_file).parent/'runtime'/'source-responses',day=day)
     except Exception as exception:
         error('Show and day selection',exception);return report()
     timed('select-show-and-day')
@@ -215,14 +300,16 @@ def collect_day(schema_file, selection):
     try:
         payload,metric=schedule_payload(source,{**params,'date':day})
     except Exception as exception:
-        error('Day inventory collection',exception);return report()
+        error('Day inventory collection',exception);stage_outcomes['schedule']='Failed';stage_outcomes['class-detail']='Not run';return report()
     timed('fetch-rings-groups-classes')
+    if metric.get('capture-error'):error('Schedule response capture',metric['capture-error'],source=metric)
     inventory={table:{} for table in tables[:3]}
     schedules={};inventory_complete=True
     try:
         if not isinstance(payload['rings'],list):raise ValueError('Schedule rings must be a list')
         rings=iter(payload['rings'])
-    except Exception as exception:error('Day inventory collection',exception);return report()
+    except Exception as exception:
+        error('Day inventory collection',exception);stage_outcomes['schedule']='Failed';stage_outcomes['class-detail']='Not run';return report()
     for ring in rings:
         try:
             rk=show+'|'+day+'|'+str(ring['ring_number'])
@@ -268,9 +355,6 @@ def collect_day(schema_file, selection):
     try:prior_classes=store.inventory('classes') if graph.get('classes') else {}
     except Exception as exception:
         error('Class-detail selection',exception);prior_classes={}
-    detail_rows=[row for row in graph.get('classes',[]) if class_detail_required(
-        prior_classes.get(row['class-key'],{}).get('fields',{}),store.fields['classes'])]
-    detail_counts['class-detail-skipped']=len(graph.get('classes',[]))-len(detail_rows)
     for table in tables[:3]:
         save(table,source_rows(graph[table]));timed('save-inventory-'+table)
 
@@ -278,30 +362,49 @@ def collect_day(schema_file, selection):
     absent_schedules=missing_rows('schedules',schedules,show+'|'+day+'|','Dropped') if inventory_complete else []
     saved_schedules=save('schedules',list(schedules.values())+absent_schedules)
     timed('save-schedules')
+    priority_fields={}
     try:
         records=[{'id':store.inventory('schedules').get(key,{}).get('id',key),'fields':row} for key,row in schedules.items()]
         evaluation=subprocess.run(['node',str(pathlib.Path(__file__).with_name('schedule-priority.js'))],
             input=packed(records),capture_output=True,text=True,encoding='utf-8',check=True)
         priorities=json.loads(evaluation.stdout)
         by_id={record['id']:record['fields']['schedule-key'] for record in records}
+        priority_fields={by_id[row['id']]:row['fields'] for row in priorities['updates']}
         save('schedules',[{'schedule-key':by_id[row['id']],**row['fields']} for row in priorities['updates']
             if by_id[row['id']] in saved_schedules])
         for message in priorities['errors']:error('Schedule priority',message)
     except Exception as exception:error('Schedule priority',exception)
     timed('save-schedule-priorities')
+    stage_outcomes['schedule']='Failed' if blocking_errors(errors) else 'Succeeded'
+    detail_error_start=len(errors)
+    try:
+        flags={row['id']:row['fields'] for row in client.records(DATA_BASE,FLAGS_TABLE,fields=[FLAG_NAME,FLAG_SORT])} if graph.get('classes') else {}
+    except Exception as exception:error('Class-detail flags',exception);flags={}
+    try:prior_schedules=store.inventory('schedules')
+    except Exception as exception:error('Class-detail schedule flags',exception);prior_schedules={}
+    detail_rows,skips=select_class_details(graph.get('classes',[]),schedules,prior_classes,store.fields['classes'],prior_schedules,flags,priority_fields)
+    detail_counts.update({'class-detail-skipped':len(skips),'class-detail-skips':skips,
+                          'class-detail-order':[row['class-key'] for row in detail_rows]})
 
     # Class-detail stage: existing requests and detail-table writes follow.
     from record_mappings import RESULT_FIELDS,trip_records
     classes={};entries={};trips={};results={};missing_trips=[]
     entities={table:{} for table in ('horses','riders','trainers','owners')}
     def fetch(row):return source.fetch('/classes/'+str(row['class-id']),params)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
         requests={pool.submit(fetch,row):row for row in detail_rows}
         detail_counts['class-detail-requested']=len(requests)
         for future in concurrent.futures.as_completed(requests):
             row=requests[future];key=row['class-key']
+            metric={}
             try:
                 payload,metric=future.result();at=metric['completed']
+                if metric.get('capture-error'):error(key+' response capture',metric['capture-error'],source=metric)
+                if not isinstance(payload,dict) or not isinstance(payload.get('class'),dict):raise ValueError('Class object must be present')
+                if payload['class'].get('class_id')!=row['class-id']:raise ValueError('Class identity does not match requested class')
+                if not isinstance(payload.get('class_related_data',{}),dict):raise ValueError('Class related data must be an object')
+                if not isinstance(payload.get('trips'),list):raise ValueError('Class trips must be a list')
+                if any(not isinstance(trip,dict) for trip in payload['trips']):raise ValueError('Class trip must be an object')
                 classes[key]={'class-key':key,'source-json':packed(payload),'last-success':at,**run_fields,'record-status':'Active'}
                 if payload.get('class_related_data',{}).get('status') is not None:
                     classes[key]['status']=payload['class_related_data']['status']
@@ -309,7 +412,6 @@ def collect_day(schema_file, selection):
                     classes[key]['entry-count']=payload['total_entry_trips']
                     if type(payload['total_entry_trips']) in (int,float) and payload['total_entry_trips']==0:
                         classes[key]['record-status']='Active \u2014 no entries'
-                if not isinstance(payload['trips'],list):raise ValueError('Class trips must be a list')
                 current_trips=set();trip_errors=len(errors)
                 for trip in payload['trips']:
                     try:
@@ -338,10 +440,10 @@ def collect_day(schema_file, selection):
                         result_values={name:trip.get(source) for name,source in RESULT_FIELDS.items()}
                         status=classes[key].get('status',store.inventory('classes').get(key,{}).get('fields',{}).get(store.fields['classes']['status']['id']))
                         results[tk]={'result-key':tk,'class-status':status,**{name:str(v) if v is not None else None for name,v in result_values.items()},'source-json':packed(result_values),'last-success':at}
-                    except Exception as exception:error(key,exception)
+                    except Exception as exception:error(key,exception,source=metric)
                 if len(errors)==trip_errors:
                     missing_trips.extend(missing_rows('trips',current_trips,key+'|','dropped','absent'))
-            except Exception as exception:error(key,exception)
+            except Exception as exception:error(key,exception,endpoint='/classes/'+str(row['class-id']),source=metric)
     timed('fetch-and-prepare-entries-trips')
     absent_classes=missing_rows('classes',inventory['classes'],show+'|'+day+'|','Dropped') if inventory_complete else []
     updated_classes=save('classes',list(classes.values())+absent_classes);timed('save-class-details')
@@ -350,6 +452,7 @@ def collect_day(schema_file, selection):
     timed('save-entries')
     save('trips',list(trips.values())+missing_trips);timed('save-trips')
     save('results',results.values());timed('save-results')
+    stage_outcomes['class-detail']='Failed' if blocking_errors(errors[detail_error_start:]) else 'Succeeded'
     result=report()
     result['confirmed-classes']=sorted(updated_classes.intersection(classes))
     return result
@@ -428,6 +531,7 @@ def run(schema_file):
     return {'ok':not blocking_errors(errors),'state':'Partial' if blocking_errors(errors) else 'Saved','show-key':show,
             'day':reports[0]['day'] if reports else None,'run-key':reports[0].get('run-key') if reports else None,
             'counts':{'saved':sum(r['counts'].get('saved',0) for r in reports),
+                      'processing-outcome':'Completed with warnings' if errors else 'Completed',
                       'day-priorities':{day:priority for priority,day in days},
                       'stage-seconds':timings,'days':reports,'total-seconds':round(time.perf_counter()-started,6)},'item-errors':errors}
 

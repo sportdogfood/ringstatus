@@ -1,0 +1,5 @@
+{
+  "active_version": "ecf2c1de-32c3-40fe-9eee-e140873bb615",
+  "shared_worker_sha256": "fbf47b80739d5c4e59b10ba443a81dc7d07b66b799c7912e176bd30360e0f59c",
+  "scope": "Remember proven lanes in existing DO storage; explicit defer/trouble requests; preserve default health, URLs, pause, credentials and queue. No new service or manual collector."
+}

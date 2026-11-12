@@ -1,0 +1,15 @@
+--- C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\evidence\log-delivery-limit-20261111\baseline\attempt-log.js
++++ C:\Users\gombc\OneDrive - Sport Dog Food\github\repos\ringstatus\wef-data\evidence\log-delivery-limit-20261111\candidate\attempt-log.js
+@@ -26,9 +26,9 @@
+ function files(root,table){const dir=path.join(root,table);return fs.existsSync(dir)?fs.readdirSync(dir).filter(f=>f.endsWith('.json')).flatMap(f=>{let text;try{text=fs.readFileSync(path.join(dir,f),'utf8');}catch(error){if(error.code==='ENOENT')return [];throw error;}return [JSON.parse(text)];}):[];}
+ function digest(value){return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');}
+ function same(actual,expected){return Object.entries(expected).every(([k,v])=>JSON.stringify(actual[k]??(Array.isArray(v)?[]:v===''?'':null))===JSON.stringify(v));}
+-async function flush(root,config,request,{milliseconds=20000,operations=30}={}){
+- const started=Date.now();let calls=0;const ids={};
+- async function call(...args){if(Date.now()-started>milliseconds||calls>=operations)throw Error('Logging delivery budget reached');calls++;return request(...args);}
++async function flush(root,config,request){
++ let calls=0;const ids={};
++ async function call(...args){calls++;return request(...args);}
+  async function mirror(table,primary,key,fields){
+   const ackfile=path.join(root,'acks',table+'-'+key+'.json');const hash=digest(fields);
+   if(fs.existsSync(ackfile)){const ack=JSON.parse(fs.readFileSync(ackfile,'utf8'));if(ack.hash===hash)return ack.id;}
