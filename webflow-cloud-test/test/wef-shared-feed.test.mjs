@@ -7,6 +7,7 @@ import { APP_BASE, sharedBase } from '../src/lib/wef-schedule/shared-base.mjs';
 import { buildSharedDay, sharedScope } from '../src/lib/wef-schedule/shared-projection.mjs';
 import { readScheduleFeed, refreshScheduleFeed } from '../src/lib/wef-schedule/shared-feed.mjs';
 import { runScheduleRefresh } from '../src/lib/wef-schedule/refresh-run.mjs';
+import { runDueFeeds } from '../src/lib/wef-schedule/cadence.mjs';
 import { applyDay0Diff, makeDay0Diff } from '../public/wef-schedule-v2/day0-diff.js';
 import { createDeviceData, validDataset } from '../public/wef-schedule-v2/device-data.js';
 import { encodePayload, decodePayload } from '../src/lib/wef-schedule/shared-payload.mjs';
@@ -40,7 +41,7 @@ function fixture() {
     horses:[{id:'horse','horse-id':55,'horse-name':'Horse'}],
     riders:[{id:'rider','rider-id':66,'rider-name':'Rider'}],
     trainers:[{id:'trainer','trainer-id':77,'trainer-name':'Trainer'}],
-    feed:[],runs:[],errors:[],heartbeat:[],liveRings:[],liveGroups:[],liveClasses:[],liveEntries:[]
+    feed:[],runs:[],errors:[],heartbeat:[],conflicts:[],liveRings:[],liveGroups:[],liveClasses:[],liveEntries:[]
   };
 }
 
@@ -52,7 +53,7 @@ function filter(rows, formula='') {
   return rows.filter(row => terms.some(([,key,value]) => (key === 'is_default' ? Number(row[key]) : row[key]) === JSON.parse(value)));
 }
 
-const mergeKeys = {dataRows:'schedule-key',day0Rows:'schedule-key',feed:'show-day-key',runs:'run-id',heartbeat:'heartbeat-key',errors:'error-key'};
+const mergeKeys = {conflicts:'conflict-key',dataRows:'schedule-key',day0Rows:'schedule-key',feed:'show-day-key',runs:'run-id',heartbeat:'heartbeat-key',errors:'error-key'};
 function memory(data=fixture()) {
   data.dataRows??=[];data.day0Rows??=[];
   const reads=[], writes=[];
@@ -253,23 +254,64 @@ test('scope rollover and changed base reject an old diff; browser fetches the ma
   assert.equal((await readScheduleFeed(api,showId,'day0')).entries.length,0);
 });
 
-test('incomplete full input preserves the feed and logs error; normal no-change logs success',async () => {
+test('incomplete input keeps confirmed records and queues admin review without stopping the next lane',async () => {
   const api=memory();
   await refreshScheduleFeed(api,'full',now);
-  const saved=structuredClone(api.data.feed);
+  const saved=structuredClone(api.data.feed), records=(await readScheduleFeed(api,showId,'full')).records;
   const missing=api.data.schedules.shift();
   const failed=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
-  assert.equal(failed.log.result,'Error');
-  assert.match(failed.log.errors,/unconfirmed_empty_day/);
-  assert.deepEqual(api.data.feed,saved);
-  assert.equal(api.data.errors[0]['run-id'],failed.log['run-id']);
-  assert.equal(api.data.heartbeat[0].result,'Error');
+  assert.equal(failed.log.result,'Success');
+  assert.equal(api.data.conflicts.some(r=>r.reason.startsWith('unconfirmed_empty_day:')),true);
+  assert.deepEqual((await readScheduleFeed(api,showId,'full')).records,records);
+  assert.equal(api.data.errors.length,0);
+  assert.equal(api.data.heartbeat[0].result,'Success');
   api.data.schedules.unshift(missing);
   const next=await runScheduleRefresh(api,{lane:'day0',slot:now,clock:()=>now});
   assert.equal(next.log.result,'Success');
   assert.equal(JSON.parse(next.log.summary).changed,false);
-  assert.deepEqual(api.data.feed,saved);
+  assert.deepEqual((await readScheduleFeed(api,showId,'full')).records,records);
   await assert.rejects(runScheduleRefresh(api,{lane:'day0',slot:now,clock:()=>now}),/already_recorded/);
+});
+
+test('participant conflicts use per-trip snapshot identity, queue review once and preserve admin edits',async()=>{
+  const api=memory();await refreshScheduleFeed(api,'full',now);
+  api.data.trips[0].rider='88, 66';
+  const first=await runScheduleRefresh(api,{lane:'day0',slot:now,clock:()=>now});
+  assert.equal(first.log.result,'Success');assert.equal(api.data.conflicts.length,1);
+  assert.equal(api.data.conflicts[0].reason,'shared_participant_conflict');
+  const effective=applyDay0Diff(await readScheduleFeed(api,showId,'full'),await readScheduleFeed(api,showId,'day0'));
+  assert.equal(effective.records[0].entries[0].riderId,'rider');
+  api.data.conflicts[0]['admin-status']='Reviewing';api.data.conflicts[0]['admin-notes']='Admin owns this';
+  const before=api.writes.filter(r=>r.name==='conflicts').length;
+  const repeat=await runScheduleRefresh(api,{lane:'day0',slot:'2026-11-12T17:03:00Z',clock:()=>now});
+  assert.equal(repeat.log.result,'Success');assert.equal(api.writes.filter(r=>r.name==='conflicts').length,before);
+  assert.equal(api.data.conflicts[0]['admin-notes'],'Admin owns this');
+});
+
+test('class conflicts keep confirmed day data while unrelated dates update',async()=>{
+  const api=memory();await refreshScheduleFeed(api,'full',now);
+  const original=(await readScheduleFeed(api,showId,'full')).records[0];
+  api.data.classes[0]['entry-count']=null;
+  api.data.schedules[1].name='Updated unaffected date';
+  const run=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
+  assert.equal(run.log.result,'Success');
+  assert.equal(api.data.conflicts.some(r=>r['record-key']===classKey&&r.reason==='invalid_shared_class'),true);
+  const full=await readScheduleFeed(api,showId,'full');
+  assert.deepEqual(full.records[0],original);assert.equal(full.records[1].name,'Updated unaffected date');
+  assert.equal(api.data.dataRows.some(r=>r['class-name']==='Updated unaffected date'),true);
+});
+
+test('scheduled data conflicts do not stop either lane or rewrite synced sources',async()=>{
+  const api=memory();await refreshScheduleFeed(api,'full',now);
+  api.data.trips[0].rider='88, 66';
+  const original=JSON.stringify([api.data.shows,api.data.days,api.data.schedules,api.data.classes,api.data.trips]);
+  const state={},first=await runDueFeeds({api,state,save:async()=>{},now:new Date(now)});
+  assert.equal(first.stopped,null);assert.deepEqual(first.outcomes.map(r=>r.log.result),['Success','Success']);
+  const reviewWrites=api.writes.filter(r=>r.name==='conflicts').length;
+  const next=await runDueFeeds({api,state,save:async()=>{},now:new Date('2026-11-12T17:03:00Z')});
+  assert.equal(next.stopped,null);assert.equal(next.outcomes.length,1);
+  assert.equal(api.writes.filter(r=>r.name==='conflicts').length,reviewWrites);
+  assert.equal(JSON.stringify([api.data.shows,api.data.days,api.data.schedules,api.data.classes,api.data.trips]),original);
 });
 
 test('lossless compression carries an oversized full day and Day 0 stays a diff', async () => {

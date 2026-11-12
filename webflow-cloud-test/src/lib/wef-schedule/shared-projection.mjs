@@ -3,11 +3,17 @@ import { APP_BASE, equals, prefix } from './shared-base.mjs';
 
 const dateText = value => /^\d{4}-\d{2}-\d{2}$/.test(value ?? '') && Number.isFinite(Date.parse(value));
 const positive = value => Number.isSafeInteger(Number(value)) && Number(value) > 0;
-const json = value => typeof value === 'string' ? JSON.parse(value) : value;
+const json = value => {
+  try {return typeof value === 'string' ? JSON.parse(value) : value;}
+  catch {throw Error('invalid_shared_json');}
+};
+export const isSharedDataConflict = error => /^(?:(?:invalid|missing|ambiguous|conflicting|incomplete|unknown|unverified)_shared_|shared_(?:class|trip|participant)|unconfirmed_empty_day:|older_shared_dataset:|invalid_saved_schedule_feed|invalid_pending_schedule_day|duplicate_schedule_feed|schedule_(?:scope_changed|feed_missing:|projection_conflict)|readable_(?:source_identity|ring_missing|scope_changed)|duplicate_readable_identity|day0_(?:base_changed|feed_unavailable))/.test(error?.message ?? '');
 const removed = row => ['absent','dropped'].includes(String(row['record-status']).toLowerCase());
 const linkedId = value => typeof value === 'string' ? value : value?.id;
 function put(map, key, value, kind) {
-  if (map.has(key) && JSON.stringify(map.get(key)) !== JSON.stringify(value)) throw Error(`conflicting_shared_${kind}_identity`);
+  if (map.has(key) && JSON.stringify(map.get(key)) !== JSON.stringify(value)) {
+    throw Object.assign(Error(`conflicting_shared_${kind}_identity`),{details:{recordKey:key,kind,first:map.get(key),other:value}});
+  }
   map.set(key, value);
   return value;
 }
@@ -55,7 +61,14 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
     const ringId = Number(raw?.class?.schedule_ring_id);
     if (!inScope(row) || Number(raw?.show_id) !== show.show_id || Number(raw?.class?.class_id) !== row['class-id'] ||
       classKey !== `${row.ring}|${row['class-id']}` || !row.ring?.startsWith(key + '|') ||
-      !Number.isSafeInteger(row['entry-count']) || row['entry-count'] < 0) throw Error('invalid_shared_class');
+      !Number.isSafeInteger(row['entry-count']) || row['entry-count'] < 0) {
+      if (!api.onConflict) throw Error('invalid_shared_class');
+      api.onConflict({reason:'invalid_shared_class',date:day.date,recordKey:classKey,
+        details:{source:'wef-data.classes',sourceRecord:row.id,classId:row['class-id'],ring:row.ring,
+          snapshotShowId:raw?.show_id??null,snapshotClassId:raw?.class?.class_id??null,entryCount:row['entry-count']??null,
+          handling:'Retain confirmed day data; admin reviews this shared class.'}});
+      continue;
+    }
     if (!rings.has(row.ring)) {
       const match = masters.filter(r => r['ring-id'] === ringId && r['ring-number'] === number);
       if (match.length > 1) throw Error('ambiguous_ring_master');
@@ -141,7 +154,12 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
       if (kind === 'horse' || positive(row[kind])) throw Error('missing_shared_participant');
       return [];
     }
-    if (row[kind] && Number(row[kind]) !== id) throw Error('shared_participant_conflict');
+    if (row[kind] && Number(row[kind]) !== id) {
+      if (!api.onConflict) throw Error('shared_participant_conflict');
+      api.onConflict({reason:'shared_participant_conflict',date:day.date,recordKey:row['trip-key'],
+        details:{source:'wef-data.trips',field:kind,linked:row[kind],snapshot:id,
+          handling:'Use the validated per-trip snapshot participant; linked references may retain history.'}});
+    }
     const ref = refs[kind].get(id);
     const name = ref?.[kind+'-name'] || raw[kind+'_name'] || raw[kind];
     if (typeof name !== 'string' || !name.trim()) throw Error('missing_shared_participant_name');
@@ -161,7 +179,8 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
       'gone-in':row['gone-in'] ?? raw.gone_in};
   });
   const dayRings = [...rings.values()];
-  const dataset = projectData({
+  let dataset;
+  try {dataset = projectData({
     baseId:APP_BASE,capturedAt:now,
     shows:[{id:showId,'show-name':show.show_name,'customer-id':show.customer_id,'facility-id':show.facility_id,'selected-date':day.date}],
     days:[{id:dayId,show:[showId],date:day.date}], rings:dayRings, groups:[...groups.values()],
@@ -169,7 +188,7 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
     entries:[...entries.values()], trips:projectedTrips, horses:[...entities.horse.values()],riders:[...entities.rider.values()],trainers:[...entities.trainer.values()],
     ringHelper:masters.filter(m => dayRings.some(r => r['ring-id'] === m['ring-id'] && r['ring-number'] === m['ring-number']))
       .map(m => ({id:m.id,key:m['ring-key'],ringId:m['ring-id'],nickname:m['ring-nickname'],active:true}))
-  });
+  });} catch(error) {throw Object.assign(Error('schedule_projection_conflict'),{details:{message:error.message}});}
   const versions = [...schedules,...classes.filter(r => needed.has(r['class-key'])),...activeTrips.map(t => t.row)]
     .map(r => r['last-success']).filter(t => Number.isFinite(Date.parse(t))).sort();
   Object.assign(dataset.metadata,{source:'wef-schedule-app',sourceDayPriority:day['day-priority'],showKey:show['show-key'],

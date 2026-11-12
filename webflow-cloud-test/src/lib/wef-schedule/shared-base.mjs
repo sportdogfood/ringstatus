@@ -15,6 +15,7 @@ const tables = {
   liveGroups: ['tblDkL5dV1jwKS1XE', 'group-key customer-id date class-group-id ring status is-live estimated-start-time scope-status last-seen source-updated-at source-json'],
   liveClasses: ['tblhWQL0K4TtGJe7m', 'class-key customer-id show-id date class-id ring detail-available current-trip-id scope-status last-seen source-updated-at source-json'],
   liveEntries: ['tblpMWHRn7k5Kb58M', 'live-entry-key customer-id show-id date class trip-id entry-id horse-id rider-id trainer-id order-of-go actual-order scratch scope-status participation-link-status participation-verified-at last-seen source-updated-at source-json'],
+  conflicts: ['tbl2e132BoSMYolXr', 'conflict-key detected-at run-id lane date record-key reason details-json admin-status admin-notes'],
   feed: ['tblzsgMl5UNsPMk5W', 'show-day-key show-key date day-priority generated-at source-updated-at row-count payload-json'],
   dataRows: ['tblKh1xEt1p809qnt', rowFields],
   day0Rows: ['tblHoADAZbp6u52Bo', rowFields+' source-feed baseline-record base-version diff-checked-at diff-applied live-state-json'],
@@ -22,7 +23,7 @@ const tables = {
   errors: ['tbl0q9iniaffVoXAa', 'error-key run-id occurred-at show-id date message'],
   heartbeat: ['tblXeSnesC31P8P5S', 'heartbeat-key checked-at show-id date result summary errors run-id started completed']
 };
-const writeKey = {dataRows:'schedule-key',day0Rows:'schedule-key',feed:'show-day-key', runs:'run-id', errors:'error-key', heartbeat:'heartbeat-key'};
+const writeKey = {conflicts:'conflict-key',dataRows:'schedule-key',day0Rows:'schedule-key',feed:'show-day-key', runs:'run-id', errors:'error-key', heartbeat:'heartbeat-key'};
 const quoted = value => JSON.stringify(String(value));
 export const equals = (field, value) => `{${field}}=${typeof value === 'number' ? value : quoted(value)}`;
 export const prefix = (field, value) => `LEFT({${field}},${value.length})=${quoted(value)}`;
