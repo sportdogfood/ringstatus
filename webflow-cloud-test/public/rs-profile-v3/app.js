@@ -17,7 +17,7 @@ let launcherDrag=null,launcherDragged=false;
 launcherRoot.addEventListener('pointerdown',event=>{
  launcherDragged=false;
  const strip=event.target.closest('.launcher-scroll');
- const vertical=strip&&getComputedStyle(strip).flexDirection==='column';
+ const vertical=strip&&getComputedStyle(strip).flexDirection.startsWith('column');
  if(event.pointerType!=='mouse'||event.button!==0||!strip||(vertical?strip.scrollHeight<=strip.clientHeight:strip.scrollWidth<=strip.clientWidth))return;
  launcherDrag={strip,id:event.pointerId,vertical,start:vertical?event.clientY:event.clientX,offset:vertical?strip.scrollTop:strip.scrollLeft};
 });
@@ -34,7 +34,7 @@ launcherRoot.addEventListener('pointercancel',endLauncherDrag);
 launcherRoot.addEventListener('lostpointercapture',()=>{launcherDrag=null;});
 launcherRoot.addEventListener('dragstart',event=>{if(event.target.closest('.launcher-scroll'))event.preventDefault();});
 launcherRoot.addEventListener('click',event=>{if(launcherDragged){event.preventDefault();event.stopImmediatePropagation();launcherDragged=false;}},true);
-function placeLauncher(){const panel=$('#app'),footer=panel.querySelector(':scope > .footer-row'),embedded=mobileLauncher.matches&&!panel.hidden&&!!footer;const parent=embedded?panel:$('#preview-stage');if(launcherRoot.parentElement!==parent){if(embedded)parent.insertBefore(launcherRoot,footer);else parent.append(launcherRoot);}document.body.dataset.launcherEmbedded=String(embedded);}
+function placeLauncher(){const panel=$('#app'),footer=panel.querySelector(':scope > .footer-row'),embedded=(mobileLauncher.matches||document.documentElement.dataset.size!=='compact')&&!panel.hidden&&!!footer;const parent=embedded?panel:$('#preview-stage');if(launcherRoot.parentElement!==parent){if(embedded)parent.insertBefore(launcherRoot,footer);else parent.append(launcherRoot);}document.body.dataset.launcherEmbedded=String(embedded);}
 mobileLauncher.addEventListener('change',placeLauncher);
 // Direction changes only affect shell rows; content stays mounted.
 function bindMobileScroll(){
