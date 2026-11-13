@@ -9,3 +9,18 @@ const store=()=>{const m=new Map();return {getItem:k=>m.get(k)||null,setItem:(k,
 test('device is immediate, same horse serialized, older response preserves newer edit',async()=>{const held=[],sent=[],e=createHorseEdits({endpoint:'x',storage:store(),fetchImpl:async(_u,o)=>{const b=JSON.parse(o.body);sent.push(b);await new Promise(r=>held.push(r));return Response.json({ok:true,requestId:b.requestId,personUid:uid,logId:'recChange00000001'});}});e.setIdentity({uid,fingerprint:'device'});e.save(horse,showId,{nickname:'First'});e.save(horse,showId,{nickname:'Newer'});assert.equal(e.apply(rows)[0].entries[0].name,'Newer');assert.equal(sent.length,1);held.shift()();await tick();assert.equal(sent.length,2);held.shift()();await e.flush();assert.equal(e.pendingCount,0);assert.equal(e.apply(rows)[0].entries[0].name,'Newer');assert.equal(horse.name,'Horse');});
 test('reload retries exact input and another account cannot see or submit it',async()=>{const s=store(),sent=[];const e=createHorseEdits({endpoint:'x',storage:s,fetchImpl:async(_u,o)=>{sent.push(JSON.parse(o.body));throw Error('offline');}});e.setIdentity({uid,fingerprint:'device'});e.save(horse,showId,{nickname:'Retained'});await e.flush();e.setIdentity({uid:'other',fingerprint:'other'});assert.equal(e.apply(rows)[0].entries[0].name,'Horse');assert.equal(e.pendingCount,0);const next=createHorseEdits({endpoint:'x',storage:s,fetchImpl:async(_u,o)=>{const b=JSON.parse(o.body);sent.push(b);return Response.json({ok:true,requestId:b.requestId,personUid:uid,logId:'recChange00000001'});}});next.setIdentity({uid,fingerprint:'device'});await next.flush();assert.deepEqual(sent[0],sent.at(-1));assert.equal(next.apply(rows)[0].entries[0].name,'Retained');});
 test('storage failure keeps unsaved UI and sends no request',()=>{let calls=0;const e=createHorseEdits({endpoint:'x',storage:{getItem:()=>null,setItem(){throw Error('full');}},fetchImpl:()=>{calls++;}});e.setIdentity({uid,fingerprint:'device'});assert.throws(()=>e.save(horse,showId,{nickname:'Nick'}),/could not retain/);assert.equal(calls,0);assert.equal(e.apply(rows)[0].entries[0].name,'Horse');});
+
+test('save status remains pending until every real acknowledgment, without extra rendering',async()=>{
+ const held=[],statuses=[];let renders=0;
+ const e=createHorseEdits({endpoint:'x',storage:store(),onChange:()=>renders++,onStatus:s=>statuses.push(s),fetchImpl:async(_u,o)=>{const b=JSON.parse(o.body);await new Promise(r=>held.push(r));return Response.json({ok:true,requestId:b.requestId,personUid:uid,logId:'recChange00000001'});}});
+ e.setIdentity({uid,fingerprint:'device'});e.save(horse,showId,{nickname:'First'});e.save(horse,showId,{nickname:'Latest'});
+ assert.equal(statuses.at(-1),'Saved on device · Pending');const before=renders;
+ held.shift()();await tick();assert.equal(statuses.at(-1),'Saved on device · Pending');assert.equal(renders,before);
+ held.shift()();await e.flush();assert.equal(statuses.at(-1),'Submitted');assert.equal(renders,before);
+ e.setIdentity(null);assert.equal(statuses.at(-1),'');
+});
+test('failed acknowledgment never reports Submitted and retains the pending edit',async()=>{
+ const statuses=[],s=store(),e=createHorseEdits({endpoint:'x',storage:s,onStatus:v=>statuses.push(v),fetchImpl:async()=>Response.json({ok:false},{status:503})});
+ e.setIdentity({uid,fingerprint:'device'});e.save(horse,showId,{nickname:'Pending'});await e.flush();
+ assert.equal(e.pendingCount,1);assert.equal(statuses.at(-1),'Saved on device · Pending');assert.ok(!statuses.includes('Submitted'));
+});
