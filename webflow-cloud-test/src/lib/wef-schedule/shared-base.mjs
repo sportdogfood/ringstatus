@@ -36,11 +36,17 @@ export function sharedBase({token, fetchImpl = fetch, pause = ms => new Promise(
     if (!token) throw Error('missing_schedule_app_credentials');
     await pause(Math.max(0, 225 - (Date.now() - last)));
     last = Date.now();
-    const response = await fetchImpl(url, {
+    let response;
+    const request = {table:Object.keys(tables).find(name=>url.pathname.endsWith('/'+tables[name][0])),operation:init?.method??'GET'};
+    try { response = await fetchImpl(url, {
       headers: {Authorization: `Bearer ${token}`, 'Content-Type':'application/json'},
       cache:'no-store', redirect:'manual', signal:AbortSignal.timeout(15000), ...init
-    });
-    if (!response.ok) throw Error(`schedule_app_airtable_${response.status}`);
+    }); } catch(error) {error.scheduleRequest=request;throw error;}
+    if (!response.ok) {
+      const error=Error(`schedule_app_airtable_${response.status}`);error.scheduleRequest=request;
+      try {const body=await response.json();error.cause=Error(body.error?.message??body.error?.type??'Airtable rejected the request');}catch{}
+      throw error;
+    }
     const body = await response.json();
     if (!Array.isArray(body.records)) throw Error('invalid_shared_response');
     return body;

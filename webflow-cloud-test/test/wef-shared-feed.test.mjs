@@ -580,6 +580,23 @@ test('derived failure logs Error and stage even after Data save succeeds',async(
  assert.equal(api.data.heartbeat[0].result,'Error');assert.equal(api.data.feed.length,2);
 });
 
+test('failed scheduled run records a readable cause without credentials and does not retry',async()=>{
+ const api=memory();let attempts=0;
+ const readable=async()=>{attempts++;const error=Object.assign(Error('The operation timed out Bearer private-test-token'),{name:'TimeoutError',scheduleRequest:{operation:'GET',table:'day0Rows'}});throw error;};
+ const result=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now,readable});
+ const summary=JSON.parse(result.log.summary);
+ assert.equal(attempts,1);assert.equal(result.log.errors,'schedule_feed_failed');
+ assert.match(summary.cause,/GET day0Rows: TimeoutError: The operation timed out/);
+ assert.ok(!summary.cause.includes('private-test-token'));
+ assert.ok(api.data.errors[0].message.includes(summary.cause));
+ assert.equal(api.data.heartbeat[0].result,'Error');
+});
+
+test('Airtable transport failures retain table and operation for the existing error log',async()=>{
+ const api=sharedBase({token:'fixture',pause:async()=>{},fetchImpl:async()=>{throw new DOMException('The operation was aborted due to timeout','TimeoutError');}});
+ await assert.rejects(api.read('day0Rows'),error=>error.name==='TimeoutError'&&error.scheduleRequest.table==='day0Rows'&&error.scheduleRequest.operation==='GET');
+});
+
 test('invalid readable source identity fails before any derived write',async()=>{
  const api=memory();await refreshScheduleFeed(api,'full',now);api.data.schedules[0].id='changed-native-id';
  await assert.rejects(refreshReadableSchedule(api,'full',now),/readable_source_identity/);
