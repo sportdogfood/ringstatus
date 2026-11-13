@@ -6,7 +6,7 @@ const app=readFileSync(new URL('../public/rs-profile-v3/app.js',import.meta.url)
 const block=app.slice(app.indexOf('// Location uses'),app.indexOf("document.addEventListener('click',event=>{",app.indexOf('// Location uses')));
 function fixture(){
  const input={checked:true,disabled:false,matches:()=>true};let change,success,failure,saves=0;const logs=[],notices=[];
- const ctx={state:{currentUserId:'a',recognized:true},ui:{},document:{querySelector:()=>input,addEventListener:(_,fn)=>{change=fn;}},navigator:{geolocation:{getCurrentPosition:(ok,no)=>{success=ok;failure=no;}}},service:{updateProfileLocation:p=>logs.push(p)},saveUI:()=>saves++,notice:m=>notices.push(m),Date};
+ const ctx={ringSample:null,refreshRingDistance:()=>{},state:{currentUserId:'a',recognized:true},ui:{},document:{querySelector:()=>input,addEventListener:(_,fn)=>{change=fn;}},navigator:{geolocation:{getCurrentPosition:(ok,no)=>{success=ok;failure=no;}}},service:{updateProfileLocation:p=>logs.push(p)},saveUI:()=>saves++,notice:m=>notices.push(m),Date};
  vm.createContext(ctx);vm.runInContext(block,ctx);
  return {ctx,input,logs,notices,change:()=>change({target:input}),success:()=>success({coords:{latitude:26,longitude:-80,accuracy:5},timestamp:Date.now()}),fail:code=>failure({code}),saves:()=>saves};
 }

@@ -1,3 +1,4 @@
+import {estimateWalk,withinRing} from './ring-distance.js';
 import {v3Button,v3Brand,v3Back,v3Shell,v3Footer,v3Search} from './components.js';
 import {smsAlerts as optinAlerts} from './optins/catalog.js';
 import {key as optinKey,legacyKey as optinLegacyKey,fresh as freshOptins,decode as decodeOptins,validate as validateOptins} from './optins/model.js';
@@ -140,6 +141,7 @@ function themeToggle(){
 document.documentElement.dataset.size=previewParams.get('size')==='compact'?'compact':'desktop';
 let recognizeWidget;
 const recognizeRoot=document.createElement('div');recognizeRoot.id='recognize-entry';document.body.append(recognizeRoot);
+let ringSample=null,ringExpiry=null;
 let canonical=null,connection,loading=true,connectionError='',accountGeneration=0,scopeErrors={};
 const UI_KEY='rs_profile_v3_view:';
 const defaults={profile:true,actions:true,tabs:true,search:true,secondary:true,tab:'all',sort:'last_name',layout:'list',collapsed:{},activity:[]};
@@ -344,9 +346,31 @@ function horseSearchItems(){const q=query.toLowerCase();return horseRowsData().f
 function riderSearchItems(){const q=query.toLowerCase();return riderRowsData().filter(u=>(fullName(u)+' '+u.email+' '+u.tags.join(' ')).toLowerCase().includes(q)).map(u=>({kind:'person',id:u.id,label:fullName(u),description:u.tags.join(' · '),icon:'rider'}));}
 
 function openGroup(group){if(!['team','shows','waze','logs'].includes(group))return;if(libraryPage){location.assign('/test/rs-profile-v3/?'+new URLSearchParams({theme:document.documentElement.dataset.theme,size:document.documentElement.dataset.size,...(group==='team'?{tab:ui.tab}:{group})}));return;}closeDialog();ui.group=group;ui.launcher=group==='team'?(ui.tab==='all'?'profile':'team'):group;view=group==='team'?'kitchen':'group';selectedId=state.currentUserId;$('#app').hidden=false;saveUI();render();}
-function groupTabRow(){let selected=(ui.groupTabs||{})[ui.group]||'tab1';if(ui.group==='shows'&&selected==='tab1')selected='optins';const items=ui.group==='shows'?[['optins','Opt-ins'],['tab2','Tab 2'],['tab3','Tab 3']]:[['tab1','Tab 1'],['tab2','Tab 2'],['tab3','Tab 3']];return `<nav class="tab-row" role="tablist" aria-label="${ui.group==='shows'?'Shows':ui.group==='waze'?'Waze':'Logs'} tabs" data-stack="tabs" ${!ui.tabs?'hidden':''}>${items.map(([value,label])=>`<button class="ui-button" role="tab" aria-selected="${selected===value}" aria-controls="section-one" data-action="group-tab" data-value="${value}">${label}</button>`).join('')}</nav>`;}
+function groupTabRow(){let selected=(ui.groupTabs||{})[ui.group]||'tab1';if(ui.group==='shows'&&selected==='tab1')selected='optins';const items=ui.group==='shows'?[['optins','Opt-ins'],['tab2','Tab 2'],['tab3','Tab 3']]:[['tab1',ui.group==='waze'?'Ring distance':'Tab 1'],['tab2','Tab 2'],['tab3','Tab 3']];return `<nav class="tab-row" role="tablist" aria-label="${ui.group==='shows'?'Shows':ui.group==='waze'?'Waze':'Logs'} tabs" data-stack="tabs" ${!ui.tabs?'hidden':''}>${items.map(([value,label])=>`<button class="ui-button" role="tab" aria-selected="${selected===value}" aria-controls="section-one" data-action="group-tab" data-value="${value}">${label}</button>`).join('')}</nav>`;}
 
-function genericGroupSections(){const label={shows:'Shows',waze:'Waze',logs:'Logs'}[ui.group],tab=(ui.groupTabs||{})[ui.group]||'tab1';return section('one',label,`<p class="empty-result">${label} · Tab ${tab.slice(-1)}</p>`,'')+section('two','Section','',0,true);}
+// Ring 6 test uses the existing location choice, acquisition and logging path.
+function ringDistanceSection(){
+ const allowed=ui.locationAllowed?.[state.currentUserId]===true&&locationPermission!=='denied';
+ const point=allowed?(ringSample?.uid===state.currentUserId?ringSample:canonical?.geoip):null;
+ let distance='—',accuracy='—',status='Not confirmed',note=allowed?'Measure your location to test Ring 6.':'Allow precise location to measure your distance.';
+ if(point?.source==='gps'){
+  try{
+   const result=withinRing(point,{latitude:26.634806,longitude:-80.274528},{radiusFeet:100,maxAgeMs:60000,now:Date.now()});
+   distance=Math.round(estimateWalk(point,{latitude:26.634806,longitude:-80.274528}).metres/0.3048)+' ft';
+   accuracy=Number.isFinite(point.accuracy)?'±'+Math.ceil(point.accuracy/0.3048)+' ft':'—';
+   status=result.qualified?'Yes':result.metres!==undefined&&result.metres-point.accuracy>30.48?'No':'Not confirmed';
+   note=result.reason?'Location is older than 60 seconds or accuracy is unavailable. Measure again.':'Within 100 feet requires distance plus GPS accuracy to fit inside 100 feet.';
+   clearTimeout(ringExpiry);
+   const remaining=Date.parse(point.observedAt)+60001-Date.now();
+   if(remaining>0)ringExpiry=setTimeout(refreshRingDistance,remaining);
+  }catch{note='Location is unavailable. Measure again.';}
+ }else if(point){note='Approximate GeoIP cannot confirm distance to a ring.';}
+ const fields=[['Distance to Ring 6',distance],['GPS accuracy',accuracy],['Within 100 feet',status]];
+ return section('one','Ring 6 distance test',`<div data-ring-distance><div class="detail-grid">${fields.map(([label,value])=>`<div class="detail-display"><span class="detail-value">${value}</span><span class="detail-label">${label}</span></div>`).join('')}</div><p class="help" role="status">${note}</p>${allowed?button('measure-ring','Measure again'):locationField(actor())}</div>`,'');
+}
+function refreshRingDistance(){if(view==='group'&&ui.group==='waze'&&((ui.groupTabs||{}).waze||'tab1')==='tab1')render();}
+
+function genericGroupSections(){const label={shows:'Shows',waze:'Waze',logs:'Logs'}[ui.group],tab=(ui.groupTabs||{})[ui.group]||'tab1';if(ui.group==='waze'&&tab==='tab1')return ringDistanceSection();return section('one',label,`<p class="empty-result">${label} · Tab ${tab.slice(-1)}</p>`,'')+section('two','Section','',0,true);}
 
 function currentDestination(){if(libraryPage)return ui.launcher||'profile';if(!state.recognized)return ui.launcher==='logout'?'logout':'profile';if(view==='optins')return 'shows';if(view==='group')return ui.group;if(view==='agent')return 'agent';if(['horses','horse'].includes(view))return 'horses';if(view==='riders'||view==='person'&&originRoster==='riders')return 'riders';return ui.tab==='all'?'profile':'team';}
 
@@ -402,6 +426,7 @@ async function loginConnected(fd,form){const generation=accountGeneration,submit
 async function signOutConnected(login){closeDialog();const work=connection.signOut();view='home';render();try{await work;}catch{notice('Sign-out pending; private data has been cleared.');}}
 function acceptConnected(next,error){
  const previous=state.currentUserId,following=next?.identity?.currentId||null;
+ if(previous!==following){ringSample=null;clearTimeout(ringExpiry);}
  if(previous!==following){scheduleBoundsObserver?.disconnect();scheduleBoundsObserver=null;scheduleBox=null;scheduleFrame?.remove();scheduleFrame=null;scheduleReady=false;scheduleRequested=false;scheduleTrigger=null;}
  if(previous!==following){delete document.body.dataset.mobileScroll;accountGeneration++;scopeErrors={};clearTimeout(noticeTimer);$('#notice').hidden=true;closeDialog();selectedId=following;query='';draftPhoto='';ui={...defaults,collapsed:{},activity:[]};if(following){try{ui={...ui,...JSON.parse(localStorage.getItem(UI_KEY+following)||'{}'),activity:[],agentMessages:[],horses:JSON.parse(localStorage.getItem('rs_profile_v3_horses:'+following)||'[]')};}catch{}}optinData=freshOptins();optinDirty=false;optinGroup=null;optinFeedback='';if(following){try{const raw=localStorage.getItem(optinKey+':'+following);if(raw)optinData=decodeOptins(raw);}catch{}}}
  if(previous!==following&&following){applyNavigationParams();if(!website)$('#app').hidden=false;}
@@ -418,6 +443,7 @@ function handleDataAction(e){const b=e.target.closest('[data-action]');if(!b||!s
   document.querySelector('meta[name="theme-color"]').content=theme==='light'?'#ffffff':'#191919';
   b.outerHTML=themeToggle();renderPreviewTools();return;
  }
+ if(action==='measure-ring'){if(ui.locationAllowed?.[state.currentUserId]===true)requestProfileLocation(true);return;}
  if(action==='retry-scope'){void requestScope(value,true);return;}
  if(action==='launch'&&value==='horses'&&!canonical?.loaded?.horses)void requestScope('horses',true);
  if((action==='tab'&&value==='team')||(action==='launch'&&['team','riders'].includes(value))||(action==='nav-group'&&value==='team')){if(canonical.loaded?.roster===false)void requestScope('roster',true);if(canonical.loaded?.team===false)void requestScope('team',true);}
@@ -486,6 +512,7 @@ function locationField(user){
  return `<div class="detail-display" data-location-field><span class="detail-label">Location</span><label class="visibility-row"><span>Allow precise location</span><input type="checkbox" data-location-permission ${enabled?'checked':''}></label><span class="detail-label">Your browser will ask for permission.</span><button type="button" class="text-button" data-action="location-policy">Location privacy policy</button></div>`;
 }
 function updateLocationField(){
+ refreshRingDistance();
  const input=document.querySelector('[data-location-permission]');
  if(input){input.checked=ui.locationAllowed?.[state.currentUserId]===true&&locationPermission!=='denied';input.disabled=false;}
 }
@@ -494,24 +521,30 @@ async function readLocationPermission(){
 }
 document.addEventListener('change',event=>{
  const input=event.target;if(!input.matches('[data-location-permission]'))return;
+ requestProfileLocation(input.checked);
+});
+function requestProfileLocation(allowed){
  const person=state.currentUserId,preferences=ui,request=++locationRequest;
  if(!person)return;
  // Save the choice immediately; coordinates and log confirmation run in the background.
- const allowed=input.checked;
+ if(!allowed)ringSample=null;
  ui.locationAllowed={...ui.locationAllowed,[person]:allowed};saveUI();updateLocationField();
  const current=()=>request===locationRequest&&state.recognized&&state.currentUserId===person&&ui===preferences;
  if(!allowed||!navigator.geolocation){void service.updateProfileLocation(null);return;}
  navigator.geolocation.getCurrentPosition(position=>{
   if(!current())return;
+  ringSample={uid:person,source:'gps',latitude:position.coords.latitude,longitude:position.coords.longitude,accuracy:position.coords.accuracy,observedAt:new Date(position.timestamp||Date.now()).toISOString()};
   locationPermission='granted';updateLocationField();
-  void service.updateProfileLocation({latitude:position.coords.latitude,longitude:position.coords.longitude,accuracy:position.coords.accuracy,observedAt:new Date(position.timestamp||Date.now()).toISOString()});
+  const {latitude,longitude,accuracy,observedAt}=ringSample;
+  void service.updateProfileLocation({latitude,longitude,accuracy,observedAt});
  },error=>{
   if(!current())return;
+  ringSample=null;
   if(error.code===1){locationPermission='denied';ui.locationAllowed={...ui.locationAllowed,[person]:false};saveUI();updateLocationField();notice('Location was not allowed. You can change this in your browser site settings.');}
   // Timeout or unavailable coordinates do not change permission. Fall back quietly.
-  void service.updateProfileLocation(null);
+  void service.updateProfileLocation(null);refreshRingDistance();
  },{enableHighAccuracy:true,timeout:10000,maximumAge:0});
-});
+}
 document.addEventListener('click',event=>{
  if(!event.target.closest('[data-action="location-policy"]'))return;
  openDialog('Location privacy policy','<p class="dialog-note">Precise location is optional. Checking this box requests location permission from your browser for this device. When allowed, coordinates are sent through the existing RingStatus Astro connection and saved to your Profile in Airtable, with a working copy on this device. Approximate GeoIP is used when precise location is unavailable.</p><p class="dialog-note">Your choice is saved on this device for your Profile. Unchecking stops requests from this control; it does not revoke browser permission. You can revoke permission in your browser site settings. Unchecking clears the current location cache and uses approximate GeoIP instead. Previously captured logs remain pending until saved, and confirmed location history is retained.</p><div class="dialog-actions">'+button('dialog-close','Done',{variant:'primary'})+'</div>','button');

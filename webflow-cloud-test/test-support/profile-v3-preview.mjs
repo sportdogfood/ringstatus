@@ -26,7 +26,8 @@ http.createServer(async(req,res)=>{const url=new URL(req.url,'http://localhost')
   if(!actor||req.headers['x-rs-actor-scope']!==actor)return send({ok:false,error:'unauthorized'},'application/json',403);
   const view=url.searchParams.get('view')||'team';requests.push({method:req.method,view,actor});
   if(req.method==='GET'&&view===failScope){failScope=null;return send({ok:false,error:'Fixture connection interrupted. Please retry.'},'application/json',503);}
-  if(req.method==='POST'){let raw='';for await(const c of req)raw+=c;const b=JSON.parse(raw);requests.at(-1).operation=b.operation;const who=actor;await new Promise(r=>setTimeout(r,delay));if(who!==actor)return send({ok:false,error:'actor_changed'},'application/json',403);
+  if(req.method==='POST'){let raw='';for await(const c of req)raw+=c;const b=JSON.parse(raw);requests.at(-1).operation=b.operation;requests.at(-1).body=b;const who=actor;await new Promise(r=>setTimeout(r,delay));if(who!==actor)return send({ok:false,error:'actor_changed'},'application/json',403);
+   if(view==='geoip')return send({ok:true,saved:true,person_uid:actor,geoip:{latitude:b.latitude??26.634806,longitude:b.longitude??-80.274528,source:Number.isFinite(b.latitude)?'gps':'geoip',accuracy:b.accuracy,observedAt:b.observedAt||new Date().toISOString()}});
    if(b.operation==='profile'){const p=profiles.find(p=>p.id===actor),fields={...b.fields};delete fields.pin;Object.assign(p,fields,{revision:p.revision+1});}
    if(b.operation==='member_status'){const m=memberships.find(m=>m.id===b.membershipId);if(actor!=='owner'||m.role!=='Member')return send({ok:false,error:'forbidden'},'application/json',403);Object.assign(m,{active:b.active,revision:m.revision+1});}
    if(b.operation==='invitation_create')invitations.push({id:'invitation-1',userId:b.userId,teamId:'team',status:'pending',revision:0});
