@@ -29,7 +29,7 @@ button{font-family:inherit}button:disabled{opacity:.45;cursor:default}button,a,i
 .action-row>[data-action="nav-group"],.ui-button[data-v3-control="action"]{flex:1;border:0;border-radius:8px;background:var(--ui-control);font-size:13px;padding:7px 8px;gap:5px;min-width:0}.action-row>[data-action="nav-group"]:hover,.ui-button[data-v3-control="action"]:hover{background:var(--ui-control-hover)}.footer-row>[data-action="not-you"]{flex-shrink:0;font-size:12px}.footer-row>.account-wrap{min-width:0}.footer-row>.account-wrap>.ui-button{max-width:190px;white-space:normal;text-align:left}
 
 :root{--rs-surface:#191919;--rs-active:#363636;--rs-border:#414141;--rs-text:#f5f5f5;--rs-muted:#aaa;--ui-dialog:#212121;--menu-surface:#252525;--ui-control:#292929;--ui-row-hover:#2b2b2b;--ui-hover:#303030;--ui-control-hover:#353535;--ui-menu-hover:#373737;--ui-soft-border:#393939;--ui-panel-border:#3b3b3b;--ui-divider:#444;--ui-control-border:#484848;--ui-strong-border:#555;--ui-text:#eee;--ui-strong:#fff;--ui-subtle:#999;--ui-muted-text:#bbb;--ui-tag-text:#d8d8d8;--preview-bg:#efefef;--shell-available-height:calc(100dvh - 100px)}
-:root[data-theme="light"]{color-scheme:light;--rs-surface:#fff;--rs-active:#e5e5e5;--rs-border:#d4d4d4;--rs-text:#191919;--rs-muted:#626262;--ui-dialog:#fff;--menu-surface:#f7f7f7;--ui-control:#ededed;--ui-row-hover:#f2f2f2;--ui-hover:#ededed;--ui-control-hover:#e2e2e2;--ui-menu-hover:#e7e7e7;--ui-soft-border:#dedede;--ui-panel-border:#c9c9c9;--ui-divider:#d5d5d5;--ui-control-border:#c4c4c4;--ui-strong-border:#aaa;--ui-text:#222;--ui-strong:#111;--ui-subtle:#666;--ui-muted-text:#666;--ui-tag-text:#333;--preview-bg:#f3f3f3}
+:root[data-theme="light"],:host([data-theme="light"]){color-scheme:light;--rs-surface:#fff;--rs-active:#e5e5e5;--rs-border:#d4d4d4;--rs-text:#191919;--rs-muted:#626262;--ui-dialog:#fff;--menu-surface:#f7f7f7;--ui-control:#ededed;--ui-row-hover:#f2f2f2;--ui-hover:#ededed;--ui-control-hover:#e2e2e2;--ui-menu-hover:#e7e7e7;--ui-soft-border:#dedede;--ui-panel-border:#c9c9c9;--ui-divider:#d5d5d5;--ui-control-border:#c4c4c4;--ui-strong-border:#aaa;--ui-text:#222;--ui-strong:#111;--ui-subtle:#666;--ui-muted-text:#666;--ui-tag-text:#333;--preview-bg:#f3f3f3}
 :root[data-theme="dark"]{color-scheme:dark}
 body{padding:0;display:block;background:var(--preview-bg)}.preview-stage{width:100%;height:100dvh;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 56px;align-items:center;justify-items:end;gap:12px;padding:16px;overflow:hidden}.v3-panel{max-height:var(--shell-available-height);flex-shrink:0;grid-row:1}.launcher-widget{overflow-x:auto;scrollbar-width:none;grid-row:2;width:440px;max-width:100%;min-height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:3px;padding:5px 12px;scroll-padding-inline:12px;background:var(--rs-surface);border:1px solid var(--ui-strong-border);border-radius:999px;box-shadow:0 8px 30px #0002;color:var(--rs-text)}.launcher-widget .icon-button{width:44px;height:44px;border-radius:50%;color:var(--rs-text);flex-shrink:0}.launcher-widget .icon{width:23px;height:23px}.launcher-widget>[data-value="profile"]{position:sticky;left:12px;z-index:1;background:var(--rs-surface);box-shadow:-12px 0 0 var(--rs-surface),6px 0 0 var(--rs-surface)}.launcher-widget [aria-pressed="true"]{background:var(--ui-hover)}.launcher-widget>[data-value="profile"][aria-pressed="true"]{background:var(--ui-hover)}.preview-links{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px;padding:12px 16px 20px;font-size:12px;line-height:20px;color:#444}.preview-links button{font-size:inherit;color:inherit}.preview-links a[aria-current]{font-weight:600}@media(min-width:601px){:root[data-size="compact"] .v3-panel,:root[data-size="compact"] .launcher-widget{width:392px}}.avatar{color:#191919}.preview-links .text-button{padding:0}.stack-body .detail-grid{gap:8px}.stack-body .detail-display{padding:8px 0}.stack-body .detail-value{font-size:15px}.stack-body .detail-label{font-size:12px}
 @media(max-width:600px){:root{--shell-available-height:calc(100dvh - 50px)}body{background:var(--rs-surface)}.preview-stage{padding:0;gap:0;grid-template-rows:minmax(0,1fr) 50px;background:var(--rs-surface)}.preview-stage .v3-panel{width:100%;height:var(--shell-available-height);min-height:0;max-height:var(--shell-available-height);border:0;border-radius:0;box-shadow:none}.preview-stage .launcher-widget{width:100%;min-height:50px;padding:4px 12px;gap:3px;box-shadow:none}.launcher-widget .icon-button{width:38px;height:38px;min-width:38px;flex:0 0 38px}.launcher-widget .icon{width:22px;height:22px}}
@@ -116,8 +116,8 @@ body[data-website="true"],body[data-website="true"] .preview-stage{background:tr
  #app>.footer-row{padding-bottom:max(12px,env(safe-area-inset-bottom));flex-shrink:0}
  #app>.stack-top{flex-shrink:0}
  #app>.stack-scroll{flex:1;overflow-anchor:none}
- body[data-mobile-scroll="up"] #app>.stack-top>:is(.brand-row,.person-row){display:none}
- body[data-mobile-scroll="down"] #app>.footer-row{display:none}
+
+
  body[data-mobile-scroll="down"] #app>.launcher-widget,body[data-launcher-embedded="false"] .launcher-widget{padding-bottom:max(6px,env(safe-area-inset-bottom))}
  :host #signin.v3-panel[data-placement="floating"]{top:calc(var(--recognize-viewport-top,0px) + 8px);bottom:auto;max-height:calc(var(--recognize-viewport-height,100dvh) - 16px);min-height:0}
  :host #signin>.stack-top,:host #signin>.footer-row{flex-shrink:0}
@@ -142,3 +142,71 @@ html:has(body[data-app-open="true"]),body[data-app-open="true"]{overflow:hidden;
  html[data-theme="light"]:has(body[data-app-open="true"]),html[data-theme="light"] body[data-app-open="true"]{background:#fff;color-scheme:light}
  body[data-app-open="true"] .preview-stage{background:inherit}
 }
+
+
+/* Shared shell correction: fixed logo, scrolling body, right-anchored bottom navigation. */
+:root,:host{--shell-anchor-right:28px;--shell-anchor-bottom:22px}
+:root{background:#000;--preview-bg:#000}:root[data-theme="light"]{background:#fff;--preview-bg:#fff}
+body{overflow-x:hidden}
+.preview-stage{width:100%;grid-template-rows:minmax(0,1fr);justify-items:end;gap:0}
+.preview-stage>.v3-panel{width:820px;max-width:100%;height:calc(100dvh - 32px);max-height:calc(100dvh - 32px);min-height:0;display:flex;flex-direction:column;overflow:hidden}
+#app>.stack-top{flex:0 0 auto;position:relative;z-index:5}
+#app>.stack-scroll{flex:1;min-height:0;min-width:0;overflow-x:hidden;overflow-y:auto;overflow-anchor:none;border-radius:0}
+.back-row{justify-content:space-between;flex-shrink:0}
+.back-row .account-wrap{min-width:0;margin-right:auto}
+.back-row .account-wrap .ui-menu{top:calc(100% + 8px);bottom:auto;left:0;max-width:calc(100vw - 40px)}
+.back-row>.text-button{flex-shrink:0}
+.person-copy{min-width:0}.person-copy h2{overflow-wrap:anywhere}
+#app>.launcher-widget,.rings-shell>[data-profile-launcher-slot]>.launcher-widget{width:100%;max-width:100%;flex:0 0 auto;grid-row:auto;border-top:1px solid var(--rs-border);border-radius:0;background:var(--rs-surface);box-shadow:none;min-height:54px;padding:6px 12px;gap:8px;display:flex;flex-direction:row-reverse;overflow:hidden}
+.launcher-widget>.icon-button[data-value="profile"]{position:relative;left:auto;box-shadow:none;flex:0 0 40px;width:40px;height:40px;background:var(--rs-surface)}
+.launcher-widget>.icon-button[data-value="profile"][aria-pressed="true"]{background:var(--ui-hover)}
+.launcher-scroll{display:flex;flex-direction:row;direction:rtl;align-items:center;gap:8px;flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;touch-action:pan-x;padding:0 12px;scroll-padding-inline:12px;scrollbar-width:none}
+.launcher-scroll::-webkit-scrollbar{display:none}.launcher-scroll>.icon-button{flex:0 0 40px;width:40px;height:40px;direction:ltr}
+#widget[data-closed="true"]{position:fixed;right:var(--shell-anchor-right);bottom:var(--shell-anchor-bottom);width:40px;max-width:40px;min-height:40px;padding:0;border:0;display:flex;background:transparent}
+#widget[data-closed="true"]>.launcher-scroll{display:none}
+#widget[data-closed="true"]>.icon-button{background:var(--rs-surface)}
+.preview-links{color:var(--rs-muted)}
+:host #launcher{right:var(--shell-anchor-right);bottom:var(--shell-anchor-bottom);width:40px;height:40px;border-radius:50%;border:0;box-shadow:none}
+:host #signin.v3-panel[data-placement="floating"]{bottom:calc(var(--shell-anchor-bottom) + 48px);top:auto}
+@media(max-width:600px){
+ :root,:host{--shell-anchor-right:max(12px,env(safe-area-inset-right));--shell-anchor-bottom:max(6px,env(safe-area-inset-bottom))}
+ html,body{width:100%;max-width:100%;margin:0;padding:0;overscroll-behavior-x:none}
+ html:has(body[data-app-open="true"]),body[data-app-open="true"],body[data-app-open="true"] .preview-stage{background:#000;color-scheme:dark}
+ html[data-theme="light"]:has(body[data-app-open="true"]),html[data-theme="light"] body[data-app-open="true"],html[data-theme="light"] body[data-app-open="true"] .preview-stage{background:#fff;color-scheme:light}
+ .preview-stage{padding:0;gap:0;width:100%;height:100dvh;grid-template-rows:minmax(0,1fr)}
+ .preview-stage>.v3-panel{width:100%;max-width:100%;height:100dvh;max-height:100dvh;border:0;border-radius:0;box-shadow:none}
+ #app>.stack-top{padding-top:max(12px,env(safe-area-inset-top))}
+ #app>.launcher-widget{padding-bottom:var(--shell-anchor-bottom);padding-right:var(--shell-anchor-right);padding-left:max(12px,env(safe-area-inset-left));min-height:52px}
+ .ui-dialog{max-width:100%;max-height:100dvh}
+ :host #signin.v3-panel[data-placement="floating"]{left:0;right:0;width:100%;max-width:100%;bottom:calc(var(--shell-anchor-bottom) + 48px);top:auto;max-height:calc(var(--recognize-viewport-height,100dvh) - var(--shell-anchor-bottom) - 48px);border-radius:0;border-inline:0}
+}
+
+:host #signin .form-grid{grid-template-columns:minmax(0,1fr)}:host #signin .form-grid>.primary{width:100%;grid-column:1/-1}:host #signin .form-error:empty{display:none}
+
+/* One identity control remains anchored through sign-in and Profile toggling. */
+#widget[data-closed="true"]{display:none}
+#app>.launcher-widget,.rings-shell>[data-profile-launcher-slot]>.launcher-widget{padding-right:60px}
+:host #launcher{position:fixed;z-index:112;display:flex;align-items:center;justify-content:center;background:var(--rs-surface);color:var(--rs-text);padding:8px;border-radius:50%}
+:host #launcher svg{width:24px;height:24px}
+:host #launcher:not(.recognized),:host #launcher[aria-pressed="true"]{background:var(--ui-hover)}
+:host #signin.v3-panel[data-placement="floating"]{right:16px;left:auto;top:16px;bottom:16px;width:820px;max-width:calc(100vw - 32px);height:calc(100dvh - 32px);max-height:calc(100dvh - 32px);display:flex;flex-direction:column;overflow:hidden}
+:host #signin[hidden]{display:none!important}
+:host #signin>.stack-top{flex:0 0 auto}
+:host #signin>.stack-scroll{flex:1;min-height:0;display:flex;flex-direction:column;overflow:auto}
+:host #signin .stack-body{margin-top:auto;width:100%}
+:host #signin>.footer-row{flex:0 0 54px;min-height:54px;padding:6px 60px 6px 12px;border-top:1px solid var(--rs-border)}
+@media(max-width:600px){
+ #app>.launcher-widget{padding-right:calc(var(--shell-anchor-right) + 48px)}
+ :host #signin.v3-panel[data-placement="floating"]{left:0;right:0;top:var(--recognize-viewport-top,0px);bottom:auto;width:100%;max-width:100%;height:var(--recognize-viewport-height,100dvh);max-height:var(--recognize-viewport-height,100dvh);border:0;border-radius:0}
+ :host #signin>.footer-row{flex-basis:calc(46px + var(--shell-anchor-bottom));min-height:calc(46px + var(--shell-anchor-bottom));padding-bottom:var(--shell-anchor-bottom)}
+}
+
+/* Desktop drawer: preserve component tokens and the independent identity anchor. */
+@media(min-width:601px){
+ #app.v3-panel,:host #signin.v3-panel[data-placement="floating"]{position:fixed;inset:0 0 0 auto;width:min(820px,100vw);max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border-radius:0;border-block:0;border-right:0;box-shadow:none;transform:translateX(0);transition:transform 220ms ease,display 220ms allow-discrete;transition-behavior:allow-discrete}
+ #app.v3-panel[hidden],:host #signin.v3-panel[hidden]{transform:translateX(100%)}
+ @starting-style{#app.v3-panel:not([hidden]),:host #signin.v3-panel:not([hidden]){transform:translateX(100%)}}
+ #app>.launcher-widget{min-height:68px;padding-bottom:20px}
+ :host #signin>.footer-row{flex-basis:68px;min-height:68px}
+}
+@media(min-width:601px) and (prefers-reduced-motion:reduce){#app.v3-panel,:host #signin.v3-panel[data-placement="floating"]{transition:none}}
