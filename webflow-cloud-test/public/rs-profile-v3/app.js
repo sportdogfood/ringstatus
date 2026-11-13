@@ -76,9 +76,10 @@ function syncScheduleBounds(){
  const shell=scheduleFrame.contentDocument?.querySelector('.rings-shell');if(!shell)return;
  const r=shell.getBoundingClientRect();if(!r.width||!r.height)return;
  if(innerWidth<=600){scheduleBox=null;scheduleFrame.style.clipPath='none';return;}
- const top=Math.max(0,r.top-4),left=Math.max(0,r.left-4),right=Math.min(innerWidth,r.right+4),bottom=Math.min(innerHeight,r.bottom+4);
+ const drawer=shell.dataset.placement==='drawer';
+ const top=drawer?0:Math.max(0,r.top-4),left=drawer?Math.max(0,innerWidth-shell.offsetWidth):Math.max(0,r.left-4),right=drawer?innerWidth:Math.min(innerWidth,r.right+4),bottom=drawer?innerHeight:Math.min(innerHeight,r.bottom+4);
  scheduleBox={top,left,right,bottom,width:right-left,height:bottom-top};
- const radius=parseFloat(getComputedStyle(shell).borderRadius)*(r.width/shell.offsetWidth)+4;
+ const radius=drawer?0:parseFloat(getComputedStyle(shell).borderRadius)*(r.width/shell.offsetWidth)+4;
  scheduleFrame.style.clipPath=`inset(${top}px ${innerWidth-right}px ${innerHeight-bottom}px ${left}px round ${radius}px)`;
 }
 addEventListener('resize',syncScheduleBounds);

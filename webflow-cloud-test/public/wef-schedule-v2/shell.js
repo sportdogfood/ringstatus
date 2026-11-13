@@ -8,7 +8,7 @@ const theme=controls.splice(controls.findIndex(node=>node.classList.contains('v2
 const content=document.querySelector('.rings-scroll');oldHeader.remove();
 const bottom=document.querySelector('.v2-page-nav');
 const horses=document.querySelector('.rings-horse-actions');
-shell.classList.add('v3-panel');shell.setAttribute('role','main');shell.setAttribute('aria-label',content.getAttribute('aria-label')||'Schedule');shell.dataset.width='schedule';
+shell.classList.add('v3-panel');shell.setAttribute('role','main');shell.setAttribute('aria-label',content.getAttribute('aria-label')||'Schedule');shell.dataset.width='schedule';shell.dataset.placement='drawer';
 shell.innerHTML=v3Shell(v3Back(back.outerHTML)+v3Brand(`<div class="action-icons"></div>`),content.innerHTML,v3Footer('<span class="rings-shell-footer ui-button" data-variant="quiet" role="status"></span>'),horses.outerHTML+bottom.outerHTML);
 shell.querySelector('.action-icons').append(...controls);
 const status=shell.querySelector('.rings-shell-footer');

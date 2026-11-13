@@ -1,6 +1,6 @@
 /* Schedule slots only. Shell, typography, controls, back/brand/footer are rs-profile-v3 components. */
 .rings-app{display:flow-root;padding:0;font-family:Outfit,Arial,sans-serif}
-:root .v3-panel[data-width="schedule"]{width:820px;max-width:calc(100% - 32px);height:calc(100dvh - 32px);max-height:calc(100dvh - 32px);margin:16px 16px 16px auto;overflow:hidden}
+:root .v3-panel[data-width="schedule"]{overflow:hidden}
 :root .v3-panel[data-width="schedule"] .stack-scroll{overflow-x:hidden}
 .rings-header .action-icons{margin-left:auto}
 .rings-shell .back-row .v2-theme-toggle{margin-left:auto}
@@ -28,7 +28,6 @@
 /* Schedule renders at its authored size; Profile keeps its shared V3 scale. */
 @media(min-width:601px){
  :root:has(.rings-app){--rs-presentation-scale:1}
- :root .v3-panel[data-width="schedule"]{width:calc(820px / var(--rs-presentation-scale));max-width:calc((100vw - 32px) / var(--rs-presentation-scale));height:calc((100dvh - 32px) / var(--rs-presentation-scale));max-height:calc((100dvh - 32px) / var(--rs-presentation-scale));margin:calc(16px / var(--rs-presentation-scale)) calc(16px / var(--rs-presentation-scale)) calc(16px / var(--rs-presentation-scale)) auto}
  .rings-surface{width:min(calc(760px / var(--rs-presentation-scale)),calc((100vw - 32px) / var(--rs-presentation-scale)));max-height:calc(90dvh / var(--rs-presentation-scale));margin-bottom:calc(20px / var(--rs-presentation-scale))}
  .rings-surface[data-mode="class"]{width:min(calc(580px / var(--rs-presentation-scale)),calc((100vw - 40px) / var(--rs-presentation-scale)));max-height:calc((100dvh - 40px) / var(--rs-presentation-scale));top:calc(20px / var(--rs-presentation-scale));right:calc(20px / var(--rs-presentation-scale))}
  .v2-filter-menu{max-width:calc((100vw - 24px) / var(--rs-presentation-scale))}
@@ -99,5 +98,5 @@
  .v2-horse-form :is(.horse-choice-row,.dialog-actions)>.ui-button{position:relative;margin-block:4px}
  .v2-horse-form :is(.horse-choice-row,.dialog-actions)>.ui-button::before{content:"";position:absolute;inset:-4px 0}
  .rings-handle{position:relative;touch-action:none}
- .rings-handle::before{content:"";position:absolute;left:-12px;right:-12px;top:-12px;bottom:-28px}
+ .rings-handle::before{content:"";position:absolute;left:-12px;right:-12px;top:-12px;bottom:0}
 }

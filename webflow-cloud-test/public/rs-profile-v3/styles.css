@@ -203,10 +203,10 @@ body{overflow-x:hidden}
 
 /* Desktop drawer: preserve component tokens and the independent identity anchor. */
 @media(min-width:601px){
- #app.v3-panel,:host #signin.v3-panel[data-placement="floating"]{position:fixed;inset:0 0 0 auto;width:min(820px,100vw);max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border-radius:0;border-block:0;border-right:0;box-shadow:none;transform:translateX(0);transition:transform 220ms ease,display 220ms allow-discrete;transition-behavior:allow-discrete}
- #app.v3-panel[hidden],:host #signin.v3-panel[hidden]{transform:translateX(100%)}
- @starting-style{#app.v3-panel:not([hidden]),:host #signin.v3-panel:not([hidden]){transform:translateX(100%)}}
+ #app.v3-panel,:root .v3-panel[data-placement="drawer"][data-width],:host #signin.v3-panel[data-placement="floating"]{position:fixed;inset:0 0 0 auto;width:min(820px,100vw);max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border-radius:0;border-block:0;border-right:0;box-shadow:none;transform:translateX(0);transition:transform 220ms ease,display 220ms allow-discrete;transition-behavior:allow-discrete}
+ #app.v3-panel[hidden],.v3-panel[data-placement="drawer"][hidden],html[data-schedule-loading] .v3-panel[data-placement="drawer"],:host #signin.v3-panel[hidden]{transform:translateX(100%)}
+ @starting-style{#app.v3-panel:not([hidden]),.v3-panel[data-placement="drawer"]:not([hidden]),:host #signin.v3-panel:not([hidden]){transform:translateX(100%)}}
  #app>.launcher-widget{min-height:68px;padding-bottom:20px}
  :host #signin>.footer-row{flex-basis:68px;min-height:68px}
 }
-@media(min-width:601px) and (prefers-reduced-motion:reduce){#app.v3-panel,:host #signin.v3-panel[data-placement="floating"]{transition:none}}
+@media(min-width:601px) and (prefers-reduced-motion:reduce){#app.v3-panel,:root .v3-panel[data-placement="drawer"][data-width],:host #signin.v3-panel[data-placement="floating"]{transition:none}}

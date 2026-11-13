@@ -132,3 +132,13 @@ Owner approved completing the open Schedule corrections, desktop/mobile checks, 
 - Preserve the shared Back/logo padding and all brand tokens; no ad hoc restyling.
 - Pending-day banner stays removed from presentation. Underlying source conflicts remain recorded for later data review, with no source-record repairs or manual runner substitutes authorized by this UI release.
 - Preserve Profile's approved release; integrate on its latest commit before deploying Schedule through the existing branch/environment. Capture exact rollback and verify live routes after deployment.
+
+
+## Final candidate verification
+Integrated approved Profile release6cf49d2d. Schedule consumes its existing shared desktop drawer rules through data-placement=drawer, without replacing components, fonts, colors or data behavior. Source inspection found the earlier presentation max-width outranked the drawer selector on800px desktop; final shared selector resolves that specificity conflict.800x600 uses800px width/600px height;1024x768 uses820px width/768px height.
+
+Actual browser checks: desktop1024x768 and800x600; phone-sized393x852 and402x874; dark/light. Controls hide/return, data expands to full viewport, no document sideways movement, nested background remains fixed and returns to its original350px position on close. Native emulated vertical swipe starting on a horse works; horizontal horse swipe moves only its lane. Trainer Philip narrows40classes to1, Clear restores40; CWF keeps40. Nov15 date selection shows63saved classes; current Nov13 returns40. Schedule/Timelines switching preserves the same frame (no reload).
+
+Phone QC found a genuine invisible drag-handle hit area overlapping Clear. Its shared pseudo-element now ends before the header; visible styling/spacing unchanged. Native trainer and team Clear taps verified afterward. Desktop opening motion observed as running220ms shared transition.
+
+Current prepared data continues to carry shared-source conflicts, logged by the running3/15-minute workflow. This UI release does not certify fresh source details or repair synced records. Physical iPhone Safari toolbar/overscroll behavior and a new real user horse-save operation are not claimed from browser emulation/synthetic identity.
