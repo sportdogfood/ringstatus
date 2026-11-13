@@ -46,7 +46,8 @@ function placeLauncher(){
  }
  if(residentLauncherSlot&&residentLauncherSlot!==slot){residentLauncherSlot.hidden=true;}
  residentLauncherSlot=slot;
- if(slot)slot.hidden=false;
+ // Schedule exposes only its Profile control; retain the launcher for Profile itself.
+ if(slot)slot.hidden=true;
  const destination=slot||(embedded?panel:$('#preview-stage'));
  if(launcherRoot.parentElement!==destination){destination.append(launcherRoot);}
  document.body.dataset.launcherEmbedded=String(embedded);
@@ -110,7 +111,7 @@ function openSchedule(trigger){
  frame.addEventListener('load',()=>{
   if(frame!==scheduleFrame||!state.recognized)return;
   const doc=frame.contentDocument;if(!doc?.querySelector('.rings-shell')){scheduleFailed();return;}
-  doc.addEventListener('click',event=>{if(event.target.closest('.rings-profile-nav a,.back-row a.back-link')){event.preventDefault();event.stopImmediatePropagation();closeSchedule();}},true);
+  doc.addEventListener('click',event=>{if(event.target.closest('.rings-profile-nav a,.back-row a.back-link,.schedule-profile-control')){event.preventDefault();event.stopImmediatePropagation();closeSchedule();if(event.target.closest('.schedule-profile-control')){$('#app').hidden=false;renderPreviewTools();}}},true);
   const syncTheme=()=>{const theme=doc.documentElement.dataset.theme;if(['dark','light'].includes(theme)&&document.documentElement.dataset.theme!==theme)document.documentElement.dataset.theme=theme;};
   new MutationObserver(syncTheme).observe(doc.documentElement,{attributes:true,attributeFilter:['data-theme']});syncTheme();
   const reveal=()=>{
@@ -180,7 +181,7 @@ function prototypeSections(){if(isOptinsView()&&state.recognized)return optinSec
  if(ui.tab==='outputs')return section('one','Outputs',outputRows(),owner()?2:1)+section('two','Activity','',0,true);
  return section('one','Recent activity',activityRows(),ui.activity.length)+section('two','Outputs',outputRows(),owner()?2:1,!ui.secondary||ui.tab==='activity');}
 
-function render(){const signedIn=libraryPage||state.recognized;document.body.dataset.recognized=String(signedIn);recognizeRoot.hidden=signedIn;launcherRoot.hidden=!signedIn;$('#preview-links').hidden=!signedIn||!previewParams.has('show-footer');if(!signedIn){$('#app').hidden=true;placeLauncher();$('#app').replaceChildren();return;}renderPreviewTools();const scroll=$('.stack-scroll')?.scrollTop||0;$('#preview-stage').append(launcherRoot);$('#app').innerHTML=v3Shell(v3Back(`<button class="back-link" data-action="back" ${!libraryPage&&view==='home'?'hidden':''}><span aria-hidden="true">‹</span> ${isOptinsView()&&optinGroup?'Opt-ins':'Back'}</button>`)+brand()+profileRow(),actionRow()+tabRow()+searchRow()+sections(),footer());placeLauncher();$('.stack-scroll').scrollTop=scroll;bindMobileScroll();$('#app').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.innerHTML=icon('user');},{once:true}));syncNavigationLocation();}
+function render(){const signedIn=libraryPage||state.recognized;document.body.dataset.recognized=String(signedIn);recognizeRoot.hidden=signedIn||hostSchedule;launcherRoot.hidden=!signedIn;$('#preview-links').hidden=!signedIn||!previewParams.has('show-footer');if(!signedIn){$('#app').hidden=true;placeLauncher();$('#app').replaceChildren();return;}renderPreviewTools();const scroll=$('.stack-scroll')?.scrollTop||0;$('#preview-stage').append(launcherRoot);$('#app').innerHTML=v3Shell(v3Back(`<button class="back-link" data-action="back" ${!libraryPage&&view==='home'?'hidden':''}><span aria-hidden="true">‹</span> ${isOptinsView()&&optinGroup?'Opt-ins':'Back'}</button>`)+brand()+profileRow(),actionRow()+tabRow()+searchRow()+sections(),footer());placeLauncher();$('.stack-scroll').scrollTop=scroll;bindMobileScroll();$('#app').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.innerHTML=icon('user');},{once:true}));syncNavigationLocation();}
 
 function closeMenus(){if(activeMenu){const m=$('#'+activeMenu);if(m)m.hidden=true;document.querySelector(`[data-menu="${activeMenu}"]`)?.setAttribute('aria-expanded','false');activeMenu=null;}}
 function toggleMenu(id,trigger){const was=activeMenu===id;closeMenus();if(!was){const menu=$('#'+id);menu.hidden=false;trigger.setAttribute('aria-expanded','true');activeMenu=id;menu.style.position='fixed';menu.style.right='auto';menu.style.bottom='auto';menu.style.maxHeight=Math.max(100,innerHeight-32)+'px';const t=trigger.getBoundingClientRect(),r=menu.getBoundingClientRect();menu.style.left=Math.max(12,Math.min(t.right-r.width,innerWidth-r.width-12))+'px';const above=trigger.closest('.account-wrap')||t.bottom+r.height+8>innerHeight-12;menu.style.top=Math.max(12,Math.min(above?t.top-r.height-8:t.bottom+6,innerHeight-r.height-12))+'px';menu.querySelector('button')?.focus();}}

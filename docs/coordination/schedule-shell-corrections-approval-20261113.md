@@ -105,3 +105,30 @@ Baseline `821fd1e9e776f62d2f70f37b2864a11ab578a345` preserves the latest Profile
 Local preview uses the retained October 30 dataset strictly as a read-only UI fixture; it does not replace the production feeds or change their cadence. Browser checks cover nested website → Profile → Schedule and direct /wef, dark/light desktop and phone-sized viewports. Physical iPhone Safari and its real toolbar/overscroll behavior remain unverified.
 
 Separate Profile-owner account/header and right-anchor launcher changes are being handled in that owner's preview. They are not silently absorbed into this Schedule patch. No live asset changes or native publishing.
+
+## Connected working prototype requirement (owner clarification)
+
+Owner requires both full-size interactive UI and current prepared Airtable feeds with real sign-in and saving. Scaled review frames and synthetic identity are not acceptance evidence for that requirement. No Schedule deployment is approved.
+
+- Actual existing Astro dev app runs locally on8808;8809/wef supplies the existing /test mount and normal full-size embedding. No synthetic endpoint replacements on8809.
+- Existing prepared scope/data loaded from wef-schedule-app, current show2026 ESP Pre-Charity, selected dayNovember13. Existing pending-source messages are retained; a successful fetch does not prove source details are fresh.
+- Saving must use the existing authenticated Astro /test/wef-schedule/input route and wef-schedule-app change-log, with immediate device feedback and later confirmation. Synced sources remain unchanged.
+- Exact remaining dependency: the Profile/Recognize owner must supply the approved local identity source configuration, session-secret provisioning and populated IAM snapshot through the existing authorized setup. rs-astro found no approved reusable local staging setup. The protected refresh endpoint cannot bootstrap an unauthenticated empty local database. No live cookies copied, fake identity used as real proof, guard bypassed or source records repaired.
+- Root requested the existing handoff from wef-profile-prototype and rs-astro. Data/UI checks can continue independently. Real save proof requires a signed-in authorized user and an owner-selected legitimate edit; no invented business edits.
+- Local application configuration is ignored by Git; no secret values belong in reports, patches or screenshots.
+
+
+## Pending-data issue retained for later review — 13 November
+Owner requested removing the visible “Schedule pending for Nov 13. Showing last loaded schedule.” message while reviewing the design. Hide that message in Schedule and Timelines only. Preserve feed metadata, stored packages, refresh cadence, source records and existing filters. This does not fix or certify Nov 13 data: investigate why the prepared feed marks this day pending and serves last loaded records after UI corrections; no data repair or runner change authorized by this presentation request.
+
+Back/logo spacing remains owned by the existing V3 stack, Back and brand components. Do not introduce Schedule-specific padding or brand overrides. Verify computed shared padding at desktop and phone sizes before delivery.
+
+
+## Final owner approval and superseding decisions — 13 November
+Owner approved completing the open Schedule corrections, desktop/mobile checks, deployment to /wef and then locking the accepted version. This supersedes the earlier local-only deployment hold. Native site publication remains separate.
+
+- Schedule now shows only the shared Profile icon in its own bottom navigation. The separate full launcher row is hidden in Schedule, preserving Profile launcher behavior outside Schedule. This supersedes the earlier always-visible full Schedule launcher proposal.
+- Desktop Schedule becomes a right-edge drawer, using the shared Profile drawer geometry/motion: maximum820px width, viewport-limited width/height, page scroll locked while open and restored on close. Mobile remains edge-to-edge with the approved scroll corrections.
+- Preserve the shared Back/logo padding and all brand tokens; no ad hoc restyling.
+- Pending-day banner stays removed from presentation. Underlying source conflicts remain recorded for later data review, with no source-record repairs or manual runner substitutes authorized by this UI release.
+- Preserve Profile's approved release; integrate on its latest commit before deploying Schedule through the existing branch/environment. Capture exact rollback and verify live routes after deployment.

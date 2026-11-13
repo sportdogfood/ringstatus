@@ -55,6 +55,10 @@ pageNav.querySelector('a').dataset.listView='schedule';
 for(const [label,glyph] of [['Horses','horse'],['Results','list'],['Notifications','bell'],['Comments','comment']]){
  const button=document.createElement('button');button.type='button';button.disabled=true;button.innerHTML=v3Icon(glyph)+'<span>'+label+'</span>';button.classList.add('rings-pill');v3Control(button);pageNav.append(button);
 }
+// Reuse the existing Profile navigation, including the parent-owned overlay return.
+const profileControl=document.createElement('button');profileControl.type='button';profileControl.className='rings-pill schedule-profile-control';profileControl.setAttribute('aria-label','Profile');profileControl.title='Profile';profileControl.innerHTML=v3Icon('user');v3Control(profileControl);
+profileControl.addEventListener('click',()=>document.querySelector('.back-row a.back-link')?.click());
+pageNav.prepend(profileControl);
 trainerControl.hidden=true;
 trainerSelect.addEventListener('change',()=>{state.trainer=trainerSelect.value;state.horses.clear();if(surface.open)surface.close();syncDay();renderSchedule();});
 daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');
@@ -125,11 +129,9 @@ let entryLaneCleanup=[];
 function renderSchedule(){
  entryLaneCleanup.forEach(cleanup=>cleanup());entryLaneCleanup=[];
  const dayRecords=filterTrainer(publishedSchedule(shownRecords().filter(r=>r.date===state.day),publicationOptions),state.trainer);
- const pendingNote=days.find(d=>d.date===state.day)?.pending?'<p class="rings-detail-note" role="status">Schedule pending for '+escape(dateLabel(state.day))+'.'+(dayRecords.length?' Showing last loaded schedule.':'')+'</p>':'';
  if(isDay){
   const rows=dayRows(dayRecords,{status:state.dayStatus,sort:state.daySort,direction:state.dayDirection});
   schedule.innerHTML='<section class="rings-panel v2-day-list" aria-label="Classes in day order"><div class="v2-day-head">'+daySortHead('time','TIME')+daySortHead('ring','RING')+'<span>NO</span><span>CLASS</span><span>STATUS</span><span>ENTRIES</span></div>'+rows.map(dayLine).join('')+(rows.length?'':'<p class="rings-detail-note">No classes match this view.</p>')+'</section>';
-  if(pendingNote)schedule.innerHTML=pendingNote+(rows.length?schedule.innerHTML:'');
   schedule.style.paddingBottom='0px';return;
  }
  const visible=state.horses.size?dayRecords.map(row=>({...row,entries:row.entries.filter(e=>state.horses.has(e.horseId))})).filter(row=>row.entries.length):dayRecords;
@@ -141,7 +143,6 @@ function renderSchedule(){
   ringActions.scrollLeft=left;ringAnchorSignature=signature;
  }
  schedule.innerHTML=rings.filter(r=>(!state.horses.size&&!state.trainer)||visible.some(row=>row.ring===r)).map(r=>`<div id="ring-${r}" class="rings-anchor">${ringPanel(r,teamRollups(visible.filter(row=>row.ring===r),state.team))}</div>`).join('')||'<p class="rings-detail-note" role="status">No schedule rows match this view.</p>';
- if(pendingNote)schedule.innerHTML=pendingNote+(visible.length?schedule.innerHTML:'');
  entryLaneCleanup=[...schedule.querySelectorAll('.rings-entry-rollups')].map(enableDragScroll);
  if(state.ring!==null&&!visible.some(r=>String(r.ring)===state.ring))state.ring=null;
  ringActions.querySelectorAll('[data-ring]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.ring===state.ring));b.disabled=false;});
