@@ -34,7 +34,16 @@ launcherRoot.addEventListener('pointercancel',endLauncherDrag);
 launcherRoot.addEventListener('lostpointercapture',()=>{launcherDrag=null;});
 launcherRoot.addEventListener('dragstart',event=>{if(event.target.closest('.launcher-scroll'))event.preventDefault();});
 launcherRoot.addEventListener('click',event=>{if(launcherDragged){event.preventDefault();event.stopImmediatePropagation();launcherDragged=false;}},true);
-function placeLauncher(){const panel=$('#app'),footer=panel.querySelector(':scope > .footer-row'),embedded=(mobileLauncher.matches||document.documentElement.dataset.size!=='compact')&&!panel.hidden&&!!footer;const parent=embedded?panel:$('#preview-stage');if(launcherRoot.parentElement!==parent){if(embedded)parent.insertBefore(launcherRoot,footer);else parent.append(launcherRoot);}document.body.dataset.launcherEmbedded=String(embedded);}
+function placeLauncher(){
+ const panel=$('#app'),footer=panel.querySelector(':scope > .footer-row');
+ const scheduleDocked=mobileLauncher.matches&&!!scheduleFrame&&!scheduleFrame.hidden;
+ const embedded=!scheduleDocked&&(mobileLauncher.matches||document.documentElement.dataset.size!=='compact')&&!panel.hidden&&!!footer;
+ document.body.dataset.scheduleLauncher=String(scheduleDocked);
+ const parent=embedded?panel:$('#preview-stage');
+ if(launcherRoot.parentElement!==parent){if(embedded)parent.insertBefore(launcherRoot,footer);else parent.append(launcherRoot);}
+ document.body.dataset.launcherEmbedded=String(embedded);
+ if(scheduleFrame)scheduleFrame.style.height=scheduleDocked?`${Math.max(0,innerHeight-launcherRoot.getBoundingClientRect().height)}px`:'100dvh';
+}
 mobileLauncher.addEventListener('change',placeLauncher);
 // Direction changes only affect shell rows; content stays mounted.
 function bindMobileScroll(){
@@ -58,6 +67,7 @@ const website=previewParams.get('website')==='1';document.body.dataset.website=S
 const scheduleHref='/test/wef-schedule-v2/schedule';
 let scheduleFrame=null,scheduleReady=false,scheduleRequested=false,scheduleTrigger=null,scheduleBox=null,scheduleBoundsObserver=null;
 function syncScheduleBounds(){
+ placeLauncher();
  if(!scheduleFrame||scheduleFrame.hidden)return;
  const shell=scheduleFrame.contentDocument?.querySelector('.rings-shell');if(!shell)return;
  const r=shell.getBoundingClientRect();if(!r.width||!r.height)return;
@@ -68,9 +78,10 @@ function syncScheduleBounds(){
  scheduleFrame.style.clipPath=`inset(${top}px ${innerWidth-right}px ${innerHeight-bottom}px ${left}px round ${radius}px)`;
 }
 addEventListener('resize',syncScheduleBounds);
+new ResizeObserver(syncScheduleBounds).observe(launcherRoot);
 function scheduleBusy(busy){for(const button of [scheduleTrigger,...document.querySelectorAll('a[href="'+scheduleHref+'"]')])if(button){if(busy)button.setAttribute('aria-busy','true');else button.removeAttribute('aria-busy');}}
-function scheduleFailed(){scheduleBusy(false);scheduleRequested=false;scheduleFrame?.remove();scheduleFrame=null;notice('Schedule could not load. Try again.');}
-function closeSchedule(){scheduleRequested=false;if(scheduleFrame)scheduleFrame.hidden=true;scheduleBusy(false);if(scheduleTrigger?.isConnected)scheduleTrigger.focus({preventScroll:true});}
+function scheduleFailed(){scheduleBusy(false);scheduleRequested=false;scheduleFrame?.remove();scheduleFrame=null;placeLauncher();notice('Schedule could not load. Try again.');}
+function closeSchedule(){scheduleRequested=false;if(scheduleFrame)scheduleFrame.hidden=true;placeLauncher();scheduleBusy(false);if(scheduleTrigger?.isConnected)scheduleTrigger.focus({preventScroll:true});}
 function openSchedule(trigger){
  if(!state.recognized)return;
  scheduleTrigger=trigger;scheduleRequested=true;
@@ -280,7 +291,7 @@ function renderPreviewTools(){const theme=document.documentElement.dataset.theme
 const strip=$('#widget .launcher-scroll'),left=strip?.scrollLeft||0,top=strip?.scrollTop||0;$('#widget').innerHTML=launcherMarkup();$('#widget .launcher-scroll').scrollLeft=left;$('#widget .launcher-scroll').scrollTop=top;scheduleBusy(scheduleRequested&&!scheduleReady);placeLauncher();}
 function launcherMarkup(){const open=!$('#app').hidden;const items=coordinatedLauncher.map(([key,label,glyph])=>key==='schedule'?`<a class="icon-button" target="_self" href="${scheduleHref}" aria-label="${label}" title="${label}">${icon(glyph)}</a>`:`<button class="icon-button" data-action="launch" data-value="${key}" aria-label="${label}" title="${label}" aria-pressed="${open&&(key==='profile'||key===currentDestination())}" aria-controls="app" ${key==='profile'?`aria-expanded="${open}"`:''}>${icon(glyph)}</button>`);return items[0]+`<div class="launcher-scroll">${items.slice(1).join('')}</div>`;}
 
-function launch(destination){closeDialog();if(libraryPage&&['profile','team','shows','waze','logs','agent','horses','riders'].includes(destination)){location.assign('/test/rs-profile-v3/?'+new URLSearchParams({theme:document.documentElement.dataset.theme,size:document.documentElement.dataset.size,tab:['team','horses','riders'].includes(destination)?'team':'all',...(destination==='agent'?{screen:'agent'}:{}),...(['horses','riders'].includes(destination)?{roster:destination}:{}),...(['shows','waze','logs'].includes(destination)?{group:destination}:{})}));return;}if(destination==='profile'){const panel=$('#app');panel.hidden=!panel.hidden;renderPreviewTools();return;}ui.launcher=destination;$('#app').hidden=false;if(['shows','waze','logs'].includes(destination)){openGroup(destination);return;}if(['horses','riders'].includes(destination)){view=destination;ui.group='team';ui.tab='team';selectedId=state.currentUserId;saveUI();render();return;}if(destination==='agent'){view='agent';saveUI();render();return;}if(destination==='profile'||destination==='team'){ui.group='team';ui.tab=destination==='team'?'team':'all';view='kitchen';selectedId=state.currentUserId;saveUI();render();return;}if(destination==='logout'){void signOutConnected(true);return;}render();openDialog(destination==='alarm'?'Alarm':'Alerts','<p class="dialog-note">Not configured.</p>'+button('dialog-close','Done',{variant:'primary'}),'button');}
+function launch(destination){if(mobileLauncher.matches&&scheduleRequested)closeSchedule();closeDialog();if(libraryPage&&['profile','team','shows','waze','logs','agent','horses','riders'].includes(destination)){location.assign('/test/rs-profile-v3/?'+new URLSearchParams({theme:document.documentElement.dataset.theme,size:document.documentElement.dataset.size,tab:['team','horses','riders'].includes(destination)?'team':'all',...(destination==='agent'?{screen:'agent'}:{}),...(['horses','riders'].includes(destination)?{roster:destination}:{}),...(['shows','waze','logs'].includes(destination)?{group:destination}:{})}));return;}if(destination==='profile'){const panel=$('#app');panel.hidden=!panel.hidden;renderPreviewTools();return;}ui.launcher=destination;$('#app').hidden=false;if(['shows','waze','logs'].includes(destination)){openGroup(destination);return;}if(['horses','riders'].includes(destination)){view=destination;ui.group='team';ui.tab='team';selectedId=state.currentUserId;saveUI();render();return;}if(destination==='agent'){view='agent';saveUI();render();return;}if(destination==='profile'||destination==='team'){ui.group='team';ui.tab=destination==='team'?'team':'all';view='kitchen';selectedId=state.currentUserId;saveUI();render();return;}if(destination==='logout'){void signOutConnected(true);return;}render();openDialog(destination==='alarm'?'Alarm':'Alerts','<p class="dialog-note">Not configured.</p>'+button('dialog-close','Done',{variant:'primary'}),'button');}
 
 
 
