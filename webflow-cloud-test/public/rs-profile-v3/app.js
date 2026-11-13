@@ -36,7 +36,7 @@ launcherRoot.addEventListener('dragstart',event=>{if(event.target.closest('.laun
 launcherRoot.addEventListener('click',event=>{if(launcherDragged){event.preventDefault();event.stopImmediatePropagation();launcherDragged=false;}},true);
 function placeLauncher(){
  const panel=$('#app'),footer=panel.querySelector(':scope > .footer-row');
- const scheduleDocked=mobileLauncher.matches&&!!scheduleFrame&&!scheduleFrame.hidden;
+ const scheduleDocked=mobileLauncher.matches&&((!!scheduleFrame&&!scheduleFrame.hidden)||(hostSchedule&&state.recognized&&panel.hidden));
  const embedded=!scheduleDocked&&(mobileLauncher.matches||document.documentElement.dataset.size!=='compact')&&!panel.hidden&&!!footer;
  document.body.dataset.scheduleLauncher=String(scheduleDocked);
  const parent=embedded?panel:$('#preview-stage');
@@ -64,6 +64,7 @@ function bindMobileScroll(){
 
 const previewParams=new URLSearchParams(location.search);
 const website=previewParams.get('website')==='1';document.body.dataset.website=String(website);
+const hostSchedule=website&&parent!==window&&previewParams.get('host-schedule')==='1';
 const scheduleHref='/test/wef-schedule-v2/schedule';
 let scheduleFrame=null,scheduleReady=false,scheduleRequested=false,scheduleTrigger=null,scheduleBox=null,scheduleBoundsObserver=null;
 function syncScheduleBounds(){
@@ -84,6 +85,7 @@ function scheduleFailed(){scheduleBusy(false);scheduleRequested=false;scheduleFr
 function closeSchedule(){scheduleRequested=false;if(scheduleFrame)scheduleFrame.hidden=true;placeLauncher();scheduleBusy(false);if(scheduleTrigger?.isConnected)scheduleTrigger.focus({preventScroll:true});}
 function openSchedule(trigger){
  if(!state.recognized)return;
+ if(hostSchedule){closeDialog();$('#app').hidden=true;renderPreviewTools();return;}
  scheduleTrigger=trigger;scheduleRequested=true;
  if(scheduleFrame){if(scheduleReady){scheduleFrame.hidden=false;syncScheduleBounds();scheduleFrame.focus();}else scheduleBusy(true);return;}
  scheduleBusy(true);
@@ -417,7 +419,8 @@ if(website){
   const left=boxes.length?Math.max(0,Math.min(...boxes.map(r=>r.left))-4):innerWidth;
   const right=boxes.length?Math.max(0,innerWidth-Math.max(...boxes.map(r=>r.right))-4):0;
   const bottom=boxes.length?Math.max(0,innerHeight-Math.max(...boxes.map(r=>r.bottom))-4):0;
-  parent.postMessage({type:'rs-profile-bounds',top,right,bottom,left},location.origin);
+  const launcherHeight=hostSchedule&&mobileLauncher.matches&&!launcherRoot.hidden&&$('#app').hidden?launcherRoot.getBoundingClientRect().height:0;
+  parent.postMessage({type:'rs-profile-bounds',top,right,bottom,left,...(hostSchedule?{launcherHeight}:{})},location.origin);
  });};
  const observer=new MutationObserver(reportBounds);observer.observe(document.body,{subtree:true,childList:true,attributes:true});observer.observe(recognizeRoot.shadowRoot,{subtree:true,childList:true,attributes:true});const resizeObserver=new ResizeObserver(reportBounds);[$('#app'),$('#widget'),$('#dialog'),...recognizeRoot.shadowRoot.querySelectorAll('#signin,#launcher')].forEach(el=>resizeObserver.observe(el));addEventListener('resize',reportBounds);reportBounds();
 }
