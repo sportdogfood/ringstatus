@@ -12,7 +12,10 @@ const version = data => hash([data.metadata.showId,data.days,data.ringDetails,da
 function parseFeed(scope, day, row) {
   if (!row || row['show-day-key'] !== day['show-day-key'] || row['show-key'] !== scope.show['show-key'] ||
       row.date !== day.date) throw Error(`schedule_feed_missing:${day.date}`);
-  const {day0Diff, pending, ...data} = decodePayload(row['payload-json']);
+  let payload;
+  try {payload=decodePayload(row['payload-json']);}
+  catch {throw Error('invalid_saved_schedule_feed');}
+  const {day0Diff, pending, ...data} = payload;
   if (pending && (pending.date !== day.date || typeof pending.reason !== 'string' ||
       !Number.isSafeInteger(pending.sourceRowCount) || pending.sourceRowCount < 0)) throw Error('invalid_pending_schedule_day');
   if (pending && !data.records) {
@@ -99,33 +102,16 @@ export async function refreshScheduleFeed(api, lane, now, progress = []) {
     const changes = [], pendingDays = [];
     for (const day of scope.days) {
       const previous = savedByKey.get(day['show-day-key']);
-      const old = previous && parseFeed(scope,day,previous);
-      let dataset;
-      try {({dataset} = await buildSharedDay(api,scope,day,now,byDay.get(day.date),{snapshots:true,previous:old?.data}));}
+      let old;
+      if(previous)try {old=parseFeed(scope,day,previous);}
       catch(error) {
-        const incomplete = /^(invalid_shared_class|missing_shared_class|unconfirmed_empty_day:)/.test(error.message);
-        if (api.onConflict && isSharedDataConflict(error)) {
-          api.onConflict({reason:error.message,date:day.date,recordKey:error.details?.recordKey??day['show-day-key'],
-            details:{source:'Shared Data day projection',...error.details,scheduleKeys:byDay.get(day.date).map(r=>r['schedule-key']),
-              handling:old?.data?'Retain confirmed day package; continue other dates.':'Retain source records; await admin review; continue other dates.'}});
-        } else if (day.date === scope.day0.date || !incomplete) throw error;
-        const pending = {date:day.date,reason:error.message,sourceRowCount:byDay.get(day.date).length};
-        pendingDays.push(pending);
-        if (fingerprint(old?.pending ?? null) === fingerprint(pending) && previous['day-priority'] === day['day-priority']) continue;
-        const retained = old?.data ?? {metadata:{defaultDate:day.date}};
-        changes.push({'show-day-key':day['show-day-key'],'show-key':scope.show['show-key'],date:day.date,
-          'day-priority':day['day-priority'],'generated-at':now,'row-count':old?.data?.records.length ?? 0,
-          'payload-json':serialized({...retained,pending})});
-        continue;
+        if(!api.onConflict||!isSharedDataConflict(error))throw error;
+        api.onConflict({reason:error.message,date:day.date,recordKey:day['show-day-key'],
+          details:{source:'schedule-feed',sourceRecord:previous.id,handling:'Rebuild from current shared records; do not restore the saved package.'}});
       }
+      const {dataset} = await buildSharedDay(api,scope,day,now,byDay.get(day.date),{snapshots:true});
       dataset.metadata.dataVersion = version(dataset);
       const matching = old?.day0Diff?.baseVersion === dataset.metadata.dataVersion ? old.day0Diff : null;
-      if (old?.data && Date.parse(old.data.metadata.sourceUpdatedAt) > Date.parse(dataset.metadata.sourceUpdatedAt)) {
-        if(!api.onConflict)throw Error(`older_shared_dataset:${day.date}`);
-        api.onConflict({reason:'older_shared_dataset',date:day.date,recordKey:day['show-day-key'],
-          details:{source:'Shared Data day projection',savedSourceUpdatedAt:old.data.metadata.sourceUpdatedAt,
-            sourceUpdatedAt:dataset.metadata.sourceUpdatedAt,handling:'Publish the current shared schedule; retain confirmed missing details.'}});
-      }
       if (!old?.pending && old?.data?.metadata.dataVersion === dataset.metadata.dataVersion &&
           old.data.metadata.sourceUpdatedAt === dataset.metadata.sourceUpdatedAt &&
           previous['day-priority'] === day['day-priority'] &&
@@ -144,7 +130,7 @@ export async function refreshScheduleFeed(api, lane, now, progress = []) {
   const day = scope.day0, previous = savedByKey.get(day['show-day-key']);
   const base = parseFeed(scope,day,previous);
   if (!base.data) throw Error('day0_feed_unavailable');
-  const built = await buildSharedDay(api,scope,day,now,undefined,{previous:base.data});
+  const built = await buildSharedDay(api,scope,day,now);
   const effective = await overlayDay0(api,scope,built,now);
   const diff = makeDay0Diff(base.data,effective);
   const {checkedAt:ignored,...oldDiff} = base.day0Diff ?? {};

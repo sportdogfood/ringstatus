@@ -19,10 +19,22 @@ test('unchanged refresh does not render; full cannot overwrite the fast lane',as
  const device=createDeviceData({showId,endpoint:'https://example.test/data',storage:store(),onData:d=>renders.push(d),fetchImpl:async url=>Response.json(sample(url.searchParams.get('lane'),'2026-11-04T12:00:0'+version+'Z',url.searchParams.get('lane')==='day0'?'Fast':'Old full'))});
  const stop=device.start();await stop.ready;const initial=renders.length;version++;await device.refresh('day0');await device.refresh('full');assert.equal(renders.length,initial);assert.equal(device.current.records[0].entries[0].trainer,'Fast');stop();
 });
-test('incomplete, wrong-show, duplicate and empty packages retain saved data',async()=>{
+test('incomplete, wrong-show and duplicate packages retain device data',async()=>{
  let invalid=null;const device=createDeviceData({showId,endpoint:'https://example.test/data',storage:store(),onData:()=>{},fetchImpl:async url=>Response.json(invalid||sample(url.searchParams.get('lane')))});
  const stop=device.start();await stop.ready;const old=device.current.records[0];
- for(const mutate of [d=>d.metadata.package.complete=false,d=>d.metadata.showId='other',d=>d.records.push(d.records[0]),d=>d.records=[]]){invalid=sample('day0');mutate(invalid);assert.equal(validDataset(invalid,showId,'day0'),false);await device.refresh('day0');assert.equal(device.current.records[0],old);}stop();
+ for(const mutate of [d=>d.metadata.package.complete=false,d=>d.metadata.showId='other',d=>d.records.push(d.records[0])]){invalid=sample('day0');mutate(invalid);assert.equal(validDataset(invalid,showId,'day0'),false);await device.refresh('day0');assert.equal(device.current.records[0],old);}stop();
+});
+
+test('a valid current empty package clears older rows on the device and in its saved copy',async()=>{
+ const saved=store();let empty=false;const renders=[];
+ const device=createDeviceData({showId,endpoint:'https://example.test/data',storage:saved,onData:d=>renders.push(d),fetchImpl:async url=>{
+  const data=sample(url.searchParams.get('lane'),empty?'2026-11-04T12:03:00Z':'2026-11-04T12:00:00Z');
+  if(empty)data.records=[];return Response.json(data);
+ }});
+ const stop=device.start();await stop.ready;assert.equal(device.current.records.length,1);
+ empty=true;await device.refresh('day0');assert.equal(device.current.records.length,0);
+ assert.equal((await saved.read(showId,'day0')).records.length,0);
+ assert.equal(renders.at(-1).records.length,0);stop();
 });
 test('trainer filter keeps both trips, totals and day eligibility',()=>{
  const data=sample(),result=filterTrainer(data.records,'t1');assert.deepEqual(result[0].entries.map(e=>e.key),['trip1','trip2']);assert.equal(result[0].entryCount,5);assert.equal(result[0].trips,6);assert.deepEqual(trainerOptions(data.records,'2026-11-01'),[]);

@@ -6,7 +6,7 @@ export const FULL_REFRESH_MS=900000;
 export function validDataset(data,showId,lane){
  const scope=data?.metadata?.package;
  if(!data||data.metadata?.showId!==showId||!scope||scope.lane!==lane||scope.complete!==true||!Number.isFinite(Date.parse(scope.startedAt))||!Number.isFinite(Date.parse(data.metadata.refreshedAt||data.metadata.capturedAt)))return false;
- if(!Array.isArray(data.days)||!data.days.length||!Array.isArray(data.records)||!data.records.length||!data.ringDetails)return false;
+ if(!Array.isArray(data.days)||!data.days.length||!Array.isArray(data.records)||!data.ringDetails)return false;
  if(lane==='day0'&&(data.days.length!==1||data.days[0].date!==data.metadata.defaultDate))return false;
  if(fingerprint([...scope.dates||[]].sort())!==fingerprint(data.days.map(d=>d.date).sort()))return false;
  try{diffRecords([],data.records,'key');}catch{return false;}

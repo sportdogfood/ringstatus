@@ -46,9 +46,6 @@ export async function refreshReadableSchedule(api,lane,now,progress=[]) {
   api.read(name)
  ]);
  const sourceByKey=keyed(sources,'schedule-key'), old=keyed(existing,'schedule-key');
- const pending=new Set(full.metadata.pendingDays?.map(d=>d.date)||[]);
- // A valid freshly built Day0 diff can advance while the full lane awaits its next slot.
- if(diff)pending.delete(diff.date);
  const targets=lane==='day0'?await api.read('dataRows',prefix('schedule-key',scope.day0['show-day-key']+'|')):[];
  const baseline=keyed(targets,'schedule-key');
  const feeds=lane==='day0'?await api.read('feed',prefix('show-day-key',scope.day0['show-day-key'])):[];
@@ -57,8 +54,6 @@ export async function refreshReadableSchedule(api,lane,now,progress=[]) {
  const ringEdits=diff?new Set([...diff.rings.upsert.map(r=>r.key),...diff.rings.remove]):null;
  const desired=keyed(dataset.records,'key'),updates=[];
  for(const row of dataset.records){
-  // A pending day retains the last useful saved values and publication flags.
-  if(pending.has(row.date)&&old.has(row.key))continue;
   const fields=readableFields(row,dataset,sourceByKey.get(row.key),lane==='day0'?'Current Day-0':'Current Data');
   if(diff)Object.assign(fields,{
    'source-feed':[feeds[0].id],'baseline-record':baseline.has(row.key)?[baseline.get(row.key).id]:[],
@@ -73,7 +68,6 @@ export async function refreshReadableSchedule(api,lane,now,progress=[]) {
  let retired=0;
  for(const previous of existing){
   if(desired.has(previous['schedule-key']))continue;
-  if(lane==='full'&&pending.has(previous.date)&&previous['schedule-key'].startsWith(showKey+'|'))continue;
   const stage=(lane==='day0'&&!previous['schedule-key'].startsWith(scope.day0['show-day-key']+'|'))||!previous['schedule-key'].startsWith(showKey+'|')?'Outside current scope':'Removed from current source';
   if(previous['stage-status']!==stage){updates.push({'schedule-key':previous['schedule-key'],'stage-status':stage});retired++;}
  }
@@ -84,5 +78,5 @@ export async function refreshReadableSchedule(api,lane,now,progress=[]) {
   const batch=updates.slice(i,i+10);await api.upsertRows(name,batch);written+=batch.length;
   progress.push(...batch.map(r=>name+'|'+r['schedule-key']));
  }
- return {table:name,records:dataset.records.length,upserts:written,unchanged:dataset.records.length-(updates.length-retired),retired,pendingDays:[...pending]};
+ return {table:name,records:dataset.records.length,upserts:written,unchanged:dataset.records.length-(updates.length-retired),retired,pendingDays:[]};
 }

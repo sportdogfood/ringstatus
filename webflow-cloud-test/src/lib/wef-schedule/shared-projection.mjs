@@ -34,7 +34,7 @@ export async function sharedScope(api) {
   return {show, days:days.sort((a,b) => a.date.localeCompare(b.date)), day0:day0[0]};
 }
 
-export async function buildSharedDay(api, scope, day, now, scopedSchedules, {snapshots=false,previous} = {}) {
+export async function buildSharedDay(api, scope, day, now, scopedSchedules, {snapshots=false} = {}) {
   const {show} = scope, showId = show.id, dayId = day.id, key = day['show-day-key'];
   function review(error,row,source) {
     if(!api.onConflict)throw error;
@@ -45,7 +45,8 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
   }
   const ringPrefix = `${show.customer_id}|${show.facility_id}|`;
   const schedules = (scopedSchedules ?? await api.read('schedules', prefix('schedule-key', key + '|'))).filter(r => !removed(r));
-  if (!schedules.length) throw Error(`unconfirmed_empty_day:${day.date}`);
+  if (!schedules.length) api.onConflict?.({reason:`unconfirmed_empty_day:${day.date}`,date:day.date,recordKey:key,
+    details:{source:'wef-data.schedules',handling:'No current rows to publish for this day.'}});
   const classes = (await api.read('classes', prefix('class-key', key + '|'))).filter(r => !removed(r));
   const trips = await api.read('trips', prefix('trip-key', key + '|'));
   const masters = (await api.read('rings', prefix('ring-key', ringPrefix))).filter(r => r.active && r['ring-key'] === ringPrefix + 'id:' + r['ring-id']);
@@ -80,7 +81,7 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
       api.onConflict({reason:'invalid_shared_class',date:day.date,recordKey:classKey,
         details:{source:'wef-data.classes',sourceRecord:row.id,classId:row['class-id'],ring:row.ring,
           snapshotShowId:raw?.show_id??null,snapshotClassId:raw?.class?.class_id??null,entryCount:row['entry-count']??null,
-          handling:'Retain confirmed day data; admin reviews this shared class.'}});
+          handling:'Publish current schedule fields; omit unavailable class details.'}});
       continue;
     }
     if (!rings.has(row.ring)) {
@@ -123,8 +124,8 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
         row['schedule-key'] !== `${row.ring}|${raw.class_groupxclasses_id}`))) throw Error('invalid_shared_schedule');
     if(seenSchedules.has(row['schedule-key']))throw Error('duplicate_shared_schedule_identity');
     seenSchedules.add(row['schedule-key']);
-    try{put(groups,row.group,{id:row.group,'group-name':raw.group_name},'group');}
-    catch(error){review(error,row,'wef-data.schedules');}
+    // Group identity is shared; its display label belongs to each occurrence below.
+    groups.set(row.group,{id:row.group});
     return [{...row, show:[showId], day:[dayId], ring:[row.ring], group:[row.group],
       class:row.kind === 'class' ? [row.class] : [], 'source-json':raw}];
     }catch(error){review(error,row,'wef-data.schedules');return []; }
@@ -244,8 +245,7 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
     }catch(error){review(error,row,'wef-data.trips');classMap.get(classKey).detailsMissing=true;return [];}
   });
   const dayRings = [...rings.values()];
-  let dataset;
-  try {dataset = projectData({
+  const input = {
     baseId:APP_BASE,capturedAt:now,
     shows:[{id:showId,'show-name':show.show_name,'customer-id':show.customer_id,'facility-id':show.facility_id,'selected-date':day.date}],
     days:[{id:dayId,show:[showId],date:day.date}], rings:dayRings, groups:[...groups.values()],
@@ -253,20 +253,22 @@ export async function buildSharedDay(api, scope, day, now, scopedSchedules, {sna
     entries:[...entries.values()], trips:projectedTrips, horses:[...entities.horse.values()],riders:[...entities.rider.values()],trainers:[...entities.trainer.values()],
     ringHelper:masters.filter(m => dayRings.some(r => r['ring-id'] === m['ring-id'] && r['ring-number'] === m['ring-number']))
       .map(m => ({id:m.id,key:m['ring-key'],ringId:m['ring-id'],nickname:m['ring-nickname'],active:true}))
-  });} catch(error) {throw Object.assign(Error('schedule_projection_conflict'),{details:{message:error.message}});}
-  for(const record of dataset.records) {
-    if(classMap.get(record.classId)?.detailsMissing) {
-      const prior=previous?.records.find(r=>r.key===record.key&&r.classId===record.classId&&r.ring===record.ring&&r.date===record.date);
-      if(prior){
-        const group=classMap.get(record.classId),list=group.raw.trips;
-        const expected=Array.isArray(list)&&list.length&&list.every(t=>t&&positive(t.entry_id)&&typeof t.entryxclasses_uuid==='string'&&t.entryxclasses_uuid)?new Set(list.map(t=>`${record.classId}|${t.entry_id}|${t.entryxclasses_uuid}`)):null;
-        const fresh=new Set(record.entries.map(e=>e.key));
-        record.entries=[...structuredClone(prior.entries.filter(e=>!fresh.has(e.key)&&(!expected||expected.has(e.key)))),...record.entries]
-          .sort((a,b)=>(a.order??Infinity)-(b.order??Infinity)||String(a.entryNo).localeCompare(String(b.entryNo),undefined,{numeric:true})||a.key.localeCompare(b.key));
-        record.entryCount??=prior.entryCount;record.id||=prior.id;record.status||=prior.status;
-      }
-      record.detailsMissing=true;
+  };
+  let dataset;
+  try {dataset=projectData(input);}
+  catch(error) {
+    if(!api.onConflict)throw Object.assign(Error('schedule_projection_conflict'),{details:{message:error.message}});
+    dataset=projectData({...input,schedules:[],trips:[]});
+    for(const schedule of projectedSchedules) {
+      try {
+        const current=projectData({...input,schedules:[schedule],trips:projectedTrips.filter(t=>schedule.class.includes(t.class[0]))});
+        dataset.records.push(...current.records);
+      }catch(error){review(Object.assign(Error('schedule_projection_conflict'),{details:{message:error.message}}),
+        schedules.find(r=>r.id===schedule.id),'wef-data.schedules');}
     }
+  }
+  for(const record of dataset.records) {
+    if(classMap.get(record.classId)?.detailsMissing) record.detailsMissing=true;
     const source=schedules.find(r=>r['schedule-key']===record.key);
     record.group=scheduleJson.get(source.id)?.group_name??record.group;
     record.publication=publicationStatus(source,record.entryCount);

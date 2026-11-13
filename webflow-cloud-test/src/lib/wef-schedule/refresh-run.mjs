@@ -29,7 +29,7 @@ export async function runScheduleRefresh(api,{lane,slot,clock = () => new Date()
   }
   catch (error) {
     if (isSharedDataConflict(error)) conflicts.push({reason:safeError(error),recordKey:error.details?.recordKey??result?.date??lane,
-      date:result?.date,details:{stage,...error.details,handling:'Retain confirmed output; continue the next scheduled lane and cadence.'}});
+      date:result?.date,details:{stage,...error.details,handling:'Log the affected output; continue the next scheduled lane and cadence.'}});
     else {failure = safeError(error);cause=errorCause(error);}
   }
   try {
