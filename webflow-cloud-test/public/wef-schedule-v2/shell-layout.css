@@ -61,3 +61,22 @@
 .v2-horse-form{padding:8px 10px}
 .horse-choice-row{display:flex;gap:8px;overflow-x:auto;white-space:nowrap}
 .horse-choice-row>.ui-button{flex:0 0 auto}
+
+/* Phone hit regions only; existing visible controls and brand tokens stay unchanged. */
+@media(max-width:600px){
+ .rings-app :where(.v2-header-filter,.v2-theme-toggle,[data-edit-horse],.v2-nickname-form .icon-button,#rings-close,#v2-trainer-dialog .icon-button){--phone-hit-inset:5px;position:relative;margin:var(--phone-hit-inset);flex-shrink:0}
+ .rings-app .rings-header .v2-header-filter{--phone-hit-inset:8px}
+ .rings-app #v2-trainer-dialog .icon-button{--phone-hit-inset:7px}
+ .rings-app :where(.v2-header-filter,.v2-theme-toggle,[data-edit-horse],.v2-nickname-form .icon-button,#rings-close,#v2-trainer-dialog .icon-button)::before{content:"";position:absolute;inset:calc(-1 * var(--phone-hit-inset))}
+ .rings-app .back-row .v2-theme-toggle{margin-left:auto}
+ .v2-entry-item{max-width:100%;min-width:0}
+ .rings-entry-line .v2-entry-item>.rings-entry-rollup{flex:1 1 auto;min-width:0;overflow:hidden}
+ .v2-entry-item .rings-entry-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .v2-entry-item .rings-order{flex-shrink:0}
+ .v2-nickname-form{max-width:100%;gap:4px}
+ .v2-nickname-form>.field{min-width:0;flex:1}
+ .v2-horse-form :is(.horse-choice-row,.dialog-actions)>.ui-button{position:relative;margin-block:4px}
+ .v2-horse-form :is(.horse-choice-row,.dialog-actions)>.ui-button::before{content:"";position:absolute;inset:-4px 0}
+ .rings-handle{position:relative;touch-action:none}
+ .rings-handle::before{content:"";position:absolute;left:-12px;right:-12px;top:-12px;bottom:-28px}
+}

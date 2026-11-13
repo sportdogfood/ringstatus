@@ -1,9 +1,26 @@
 // V2 drawer/flyup cadence; desktop modality belongs to the Schedule shell.
 const desktop=matchMedia('(min-width:601px)');
 const localDialogs=new Map();
+const swipeDialogs=new WeakSet();
+
+function enableHandleDismiss(dialog){
+ if(swipeDialogs.has(dialog))return;swipeDialogs.add(dialog);let start=null;
+ dialog.addEventListener('pointerdown',event=>{
+  if(desktop.matches||!event.isPrimary||event.button!==0||!event.target.closest('.rings-handle'))return;
+  start={id:event.pointerId,x:event.clientX,y:event.clientY};dialog.setPointerCapture(event.pointerId);
+ });
+ dialog.addEventListener('pointermove',event=>{if(start&&event.pointerId===start.id&&event.clientY-start.y>8)event.preventDefault();});
+ dialog.addEventListener('pointerup',event=>{
+  if(!start||event.pointerId!==start.id)return;const dy=event.clientY-start.y,dx=Math.abs(event.clientX-start.x);start=null;
+  if(dialog.hasPointerCapture(event.pointerId))dialog.releasePointerCapture(event.pointerId);
+  if(!desktop.matches&&dy>=56&&dy>dx*1.5)dialog.close();
+ });
+ for(const name of ['pointercancel','lostpointercapture','close'])dialog.addEventListener(name,()=>{start=null;});
+}
 desktop.addEventListener('change',()=>{document.querySelectorAll('#rings-surface[open],#v2-trainer-dialog[open]').forEach(dialog=>dialog.close());});
 export function openShellDialog(dialog){
  if(dialog.open)return;
+ enableHandleDismiss(dialog);
  if(!desktop.matches){dialog.showModal();return;}
  for(const opened of localDialogs.keys())opened.close();
  const shell=document.querySelector('.rings-shell');

@@ -23,7 +23,7 @@ const newListState=()=>({trainer:'',team:'',day:todayDate(),ring:null,horses:new
 const listStates={schedule:newListState(),day:newListState()};
 let state=listStates[isDay?'day':'schedule'];
 Object.assign(state,{trainer:new URLSearchParams(location.search).get('trainer')||'',team:new URLSearchParams(location.search).get('team')===CWF_TEAM.id?CWF_TEAM.id:'',day:initialDay});
-const horseEdits=createHorseEdits({endpoint:new URL('../wef-schedule/input',location.href).href,onChange:refreshHorseDisplay});
+const horseEdits=createHorseEdits({endpoint:new URL('../wef-schedule/input',location.href).href,onChange:refreshHorseDisplay,onStatus:showHorseStatus});
 const shownRecords=()=>horseEdits.apply(records);
 let horseEditor=null;
 const schedule=document.querySelector('#rings-schedule');
@@ -108,7 +108,7 @@ function syncDay(){
  if(isDay)document.querySelector('.v2-day-tools h1').textContent=state.day===todayDate()?'Timelines':dateText;
  const footer=document.querySelector('.rings-shell-footer');
  const feedSource=['wef-data','wef-schedule-app'].includes(metadata.source);
- footer.textContent=Number.isFinite(Date.parse(metadata.capturedAt))?(feedSource?'Airtable refreshed':'Airtable snapshot')+' · '+new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:metadata.timezone,timeZoneName:'short'}).format(new Date(metadata.capturedAt))+(feedSource?'':' - not live'):'Loading schedule';
+ showFeedStatus(Number.isFinite(Date.parse(metadata.capturedAt))?(feedSource?'Airtable refreshed':'Airtable snapshot')+' · '+new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:metadata.timezone,timeZoneName:'short'}).format(new Date(metadata.capturedAt))+(feedSource?'':' - not live'):'Loading schedule');
  footer.title=metadata.show+' · '+metadata.capturedAt;
  const rows=filterTrainer(publishedSchedule(shownRecords().filter(r=>r.date===state.day),publicationOptions),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
@@ -293,6 +293,14 @@ document.addEventListener('click',event=>{
  toggle.setAttribute('aria-label',toggle.getAttribute('aria-label').replace(expanded?'Show':'Hide',expanded?'Hide':'Show'));
 });
 // Horse inputs share Profile's identity, local-first save and quiet Astro confirmation semantics.
+function paintFooter(){const footer=document.querySelector('.rings-shell-footer');footer.textContent=[footer.dataset.inputStatus,footer.dataset.feedStatus].filter(Boolean).join(' · ');}
+function showFeedStatus(text){document.querySelector('.rings-shell-footer').dataset.feedStatus=text;paintFooter();}
+function showHorseStatus(text){document.querySelector('.rings-shell-footer').dataset.inputStatus=text;paintFooter();}
+function mayEditHorse(){
+ if(horseEdits.ready)return true;const message='Sign in through Profile to edit horses.';showHorseStatus(message);
+ if(surface.open){const content=document.querySelector('#rings-surface-content');let notice=content.querySelector('[data-horse-signin]');if(!notice){notice=document.createElement('p');notice.className='feedback';notice.dataset.horseSignin='';notice.setAttribute('role','status');content.prepend(notice);}notice.textContent=message;}
+ return false;
+}
 function horseFromTrigger(trigger){const row=shownRecords().find(r=>r.key===trigger.dataset.rowKey);return {row,horse:row?.entries.find(e=>e.key===trigger.dataset.entryKey)};}
 function refreshHorseDisplay(){
  if(horseEditor&&!horseEdits.ready){horseEditor=null;if(surface.open)surface.close();}
@@ -300,7 +308,7 @@ function refreshHorseDisplay(){
  if(surface.open&&surface.dataset.mode==='entry'&&state.selection&&!horseEditor)selectRecord(state.selection.rowKey,state.selection.entryKey);
 }
 function openInlineNickname(trigger){
- if(!horseEdits.ready)return;
+ if(!mayEditHorse())return;
  const {horse}=horseFromTrigger(trigger);if(!horse)return;
  const item=trigger.closest('.v2-entry-item');if(item.querySelector('form'))return;
  item.insertAdjacentHTML('beforeend',inlineNickname(horseEdits.fields(horse).nickname));
@@ -313,7 +321,7 @@ schedule.addEventListener('submit',event=>{
  try{horseEdits.save(horse,metadata.showId,{nickname:form.elements.nickname.value});syncDay();renderSchedule();}catch(error){form.querySelector('[role=alert]').textContent=error.message;}
 });
 function openHorseEditor(trigger){
- const {row,horse}=horseFromTrigger(trigger);if(!row||!horse||!horseEdits.ready)return;
+ const {row,horse}=horseFromTrigger(trigger);if(!row||!horse||!mayEditHorse())return;
  horseEditor={rowKey:row.key,entryKey:horse.key,horse};
  document.querySelector('#rings-surface-title').textContent='Edit horse';surface.dataset.mode='entry';
  document.querySelector('#rings-surface-content').innerHTML=horseForm(horseEdits.fields(horse));
@@ -352,12 +360,12 @@ function applyDeviceData(data){
  if(!state.day)state.day=todayDate();
  if(!state.day)return;
  syncDay();renderSchedule();scroller.scrollTop=top;markScheduleReady();
- document.querySelector('.rings-shell-footer').textContent='Updated '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:metadata.timezone}).format(new Date(metadata.refreshedAt||metadata.capturedAt));
+ showFeedStatus('Updated '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:metadata.timezone}).format(new Date(metadata.refreshedAt||metadata.capturedAt)));
 }
 if(endpoint)scopeReady.then(scope=>{
  if(!scope?.showId){markScheduleReady();return;}
  const dataEndpoint=new URL(endpoint,location.href).href;
- const device=createDeviceData({showId:scope.showId,endpoint:dataEndpoint,seed:metadata.showId===scope.showId&&records.length?{records,days,ringDetails,metadata}:null,onData:applyDeviceData,onError:()=>{document.querySelector('.rings-shell-footer').textContent='Refresh unavailable - showing last loaded data';markScheduleReady();},onChecked:(data,lane)=>{void horseEdits.flush();document.querySelector('.rings-shell-footer').textContent=(lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date());}});
+ const device=createDeviceData({showId:scope.showId,endpoint:dataEndpoint,seed:metadata.showId===scope.showId&&records.length?{records,days,ringDetails,metadata}:null,onData:applyDeviceData,onError:()=>{showFeedStatus('Refresh unavailable - showing last loaded data');markScheduleReady();},onChecked:(data,lane)=>{void horseEdits.flush();showFeedStatus((lane==='day0'?'Day-0':'Full schedule')+' checked '+new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:data.metadata.timezone}).format(new Date()));}});
  // Only the same Astro application's approximate GeoIP ping; no GPS or persistence.
  void pingLocation(new URL('geo',dataEndpoint).href);
  let stop=device.start();
