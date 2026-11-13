@@ -99,7 +99,7 @@ function openSchedule(trigger){
   if(frame!==scheduleFrame||!state.recognized)return;
   const doc=frame.contentDocument;if(!doc?.querySelector('.rings-shell')){scheduleFailed();return;}
   doc.addEventListener('click',event=>{if(event.target.closest('.rings-profile-nav a,.back-row a.back-link,.schedule-profile-control')){event.preventDefault();event.stopImmediatePropagation();closeSchedule();if(event.target.closest('.schedule-profile-control')){$('#app').hidden=false;renderPreviewTools();}}},true);
-  const syncTheme=()=>{const theme=doc.documentElement.dataset.theme;if(['dark','light'].includes(theme)&&document.documentElement.dataset.theme!==theme)document.documentElement.dataset.theme=theme;recognizeRoot.dataset.theme=document.documentElement.dataset.theme;};
+  const syncTheme=()=>{const theme=doc.documentElement.dataset.theme;if(['dark','light'].includes(theme)&&document.documentElement.dataset.theme!==theme)document.documentElement.dataset.theme=theme;recognizeRoot.dataset.theme=document.documentElement.dataset.theme;const toggle=$('[data-action="theme"]');if(toggle)toggle.outerHTML=themeToggle();};
   new MutationObserver(syncTheme).observe(doc.documentElement,{attributes:true,attributeFilter:['data-theme']});syncTheme();
   const reveal=()=>{
    if(frame!==scheduleFrame||!state.recognized)return;
@@ -119,6 +119,12 @@ document.addEventListener('click',event=>{
  event.preventDefault();event.stopImmediatePropagation();openSchedule(link);
 },true);
 document.documentElement.dataset.theme=previewParams.get('theme')==='light'?'light':'dark';
+function themeToggle(){
+ const light=document.documentElement.dataset.theme==='light';
+ const label=light?'Light mode; switch to Dark mode':'Dark mode; switch to Light mode';
+ const shape=light?'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6 19 19M5 19l1.4-1.4M17.6 6.4 19 5"/>':'<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/>';
+ return `<button type="button" class="icon-button" data-action="theme" aria-label="${label}" title="${label}" aria-pressed="${light}"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${shape}</svg></button>`;
+}
 document.documentElement.dataset.size=previewParams.get('size')==='compact'?'compact':'desktop';
 let recognizeWidget;
 const recognizeRoot=document.createElement('div');recognizeRoot.id='recognize-entry';document.body.append(recognizeRoot);
@@ -347,14 +353,14 @@ function isOptinsExit(action,value){if(action==='back')return !optinGroup;if(act
 function allowOptinsExit(){if(!optinDirty)return true;if(!confirm('Leave without saving your preference changes?'))return false;try{const raw=localStorage.getItem(optinKey+':'+state.currentUserId);optinData=raw?decodeOptins(raw):freshOptins();}catch{optinData=freshOptins();}optinDirty=false;optinFeedback='';optinFeedbackKind='';return true;}
 
 
-function accountHeader(){const account=footer().replace(/^<footer[^>]*>/,'').replace(/<\/footer>$/,'');const back=['person','horse'].includes(view)||isOptinsView()&&optinGroup;return `${back?'<button class="back-link" data-action="back" aria-label="Back">‹</button>':''}${account}`;}
+function accountHeader(){const account=footer().replace(/^<footer[^>]*>/,'').replace(/<\/footer>$/,'');const back=['person','horse'].includes(view)||isOptinsView()&&optinGroup;return `${back?'<button class="back-link" data-action="back" aria-label="Back">‹</button>':''}${account}${themeToggle()}`;}
 function footer(){const u=actor();return v3Footer(`${menu('account-menu',button('menu',escape(u?fullName(u):'Accounts'),{variant:'quiet',icon:'user',extra:'data-menu="account-menu" aria-haspopup="menu" aria-expanded="false"'}),`${u?`<div class="menu-caption">${escape(u.email||fullName(u))}</div>`:''}${menuItem('add-account','Add account','plus')}${menuItem(u?'logout':'login',u?'Log out':'Log in',u?'logout':'login')}`,'account-wrap')}<button type="button" class="text-button" data-action="not-you">Not you?</button>`);}
 function pendingMarkup(){return canonical?.pendingSave?`<p class="feedback" role="status">${escape(canonical.pendingNeedsPin?'Pending: re-enter your PIN to retry.':canonical.pendingError?'Pending: '+canonical.pendingError:'Pending confirmation…')}</p>`:'';}
 function sections(){
  if(!state.recognized)return section('one','Profile',`<p class="feedback" role="status">${escape(connectionError|| (loading?'Loading Profile…':'Sign in to open your Profile.'))}</p>${loading?'':button('login','Log in')}`,'')+section('two','Section','',0,true);
  if(libraryPage)return prototypeSections();
  if(['horses','riders','horse'].includes(view))return domainRosterSections();
- if(view==='person'||(ui.tab==='all'&&!['group','agent','optins','riders'].includes(view))){const u=selected(),own=u?.id===state.currentUserId;return section('one','Profile',`${pendingMarkup()}${own?'<div class="record-actions"><button class="text-button" data-action="edit-profile">Edit</button></div>':''}<div class="detail-grid">${[['first_name','First name'],['last_name','Last name'],['email','Email'],['sms','Phone'],['level','Account level'],['role','Team role']].map(([k,label])=>`<div class="detail-display ${k==='email'?'full':''}"><span class="detail-value">${escape(u?.[k]||'—')}</span><span class="detail-label">${label}</span></div>`).join('')}${locationField(u)}</div>`,'')+section('two','Team',teamControls(),'',!ui.secondary);}
+ if(view==='person'||(ui.tab==='all'&&!['group','agent','optins','riders'].includes(view))){const u=selected(),own=u?.id===state.currentUserId;return section('one','Profile',`${pendingMarkup()}<div class="detail-grid">${[['first_name','First name'],['last_name','Last name'],['email','Email'],['sms','Phone'],['level','Account level'],['role','Team role']].map(([k,label])=>`<div class="detail-display ${k==='email'?'full':''}"><span class="detail-value">${escape(u?.[k]||'—')}</span><span class="detail-label">${label}</span></div>`).join('')}${locationField(u)}</div>`,'',false,own?'<button type="button" class="text-button" data-action="edit-profile">Edit</button>':'')+section('two','Team',teamControls(),'',!ui.secondary);}
  if(ui.tab==='team'&&!['group','agent','optins','riders'].includes(view)){const people=queryUsers(visiblePeople(),'',ui.sort);return section('one','Team',`${pendingMarkup()}${owner()?'<div class="record-actions"><button class="text-button" data-action="add-member">Add Team member</button></div>':''}${canonical.loaded?.roster===false?scopeMessage('roster','Team members'):personRows(people)}`,people.length)+section('two','Team settings',teamControls(),'');}
  return prototypeSections();
 }
@@ -394,6 +400,12 @@ function scopeMessage(scope,label){return `<p class="feedback" role="status">${e
 async function requestScope(scope,priority=false){if(!state.recognized)return;const generation=accountGeneration;delete scopeErrors[scope];try{await connection.load(scope,{priority,background:!priority});}catch(error){if(generation===accountGeneration){scopeErrors[scope]=error.message;render();}}}
 async function prepareTeam(){if(!state.recognized)return;const generation=accountGeneration,prioritizeHorses=['horses','horse'].includes(view);if(prioritizeHorses)await requestScope('horses');await requestScope('roster');if(generation===accountGeneration&&state.recognized)await requestScope('team');if(generation===accountGeneration&&state.recognized&&!prioritizeHorses)await requestScope('horses');}
 function handleDataAction(e){const b=e.target.closest('[data-action]');if(!b||!state.recognized)return;const {action,id,value}=b.dataset;
+ if(action==='theme'){
+  const theme=document.documentElement.dataset.theme==='light'?'dark':'light';
+  document.documentElement.dataset.theme=theme;recognizeRoot.dataset.theme=theme;
+  document.querySelector('meta[name="theme-color"]').content=theme==='light'?'#ffffff':'#191919';
+  b.outerHTML=themeToggle();renderPreviewTools();return;
+ }
  if(action==='retry-scope'){void requestScope(value,true);return;}
  if(action==='launch'&&value==='horses'&&!canonical?.loaded?.horses)void requestScope('horses',true);
  if((action==='tab'&&value==='team')||(action==='launch'&&['team','riders'].includes(value))||(action==='nav-group'&&value==='team')){if(canonical.loaded?.roster===false)void requestScope('roster',true);if(canonical.loaded?.team===false)void requestScope('team',true);}
@@ -455,35 +467,37 @@ for(const el of [$('#app'),recognizeRoot.shadowRoot.querySelector('#signin')]){d
 drawerDesktop.addEventListener('change',syncDrawerScroll);syncDrawerScroll();
 
 // Location uses the existing scoped Astro location endpoint.
-let locationPermission='prompt',locationRequest=0,locationBusy=false;
+let locationPermission='prompt',locationRequest=0;
 function locationField(user){
  if(user?.id!==state.currentUserId)return '';
- const enabled=ui.locationAllowed?.[state.currentUserId]===true&&locationPermission==='granted';
- return `<div class="detail-display" data-location-field><span class="detail-label">Location</span><label class="visibility-row"><span>Allow precise location</span><input type="checkbox" data-location-permission ${enabled?'checked':''} ${locationBusy?'disabled':''}></label><span class="detail-label">Your browser will ask for permission.</span><button type="button" class="text-button" data-action="location-policy">Location privacy policy</button></div>`;
+ const enabled=ui.locationAllowed?.[state.currentUserId]===true&&locationPermission!=='denied';
+ return `<div class="detail-display" data-location-field><span class="detail-label">Location</span><label class="visibility-row"><span>Allow precise location</span><input type="checkbox" data-location-permission ${enabled?'checked':''}></label><span class="detail-label">Your browser will ask for permission.</span><button type="button" class="text-button" data-action="location-policy">Location privacy policy</button></div>`;
 }
 function updateLocationField(){
  const input=document.querySelector('[data-location-permission]');
- if(input){input.checked=ui.locationAllowed?.[state.currentUserId]===true&&locationPermission==='granted';input.disabled=locationBusy;}
+ if(input){input.checked=ui.locationAllowed?.[state.currentUserId]===true&&locationPermission!=='denied';input.disabled=false;}
 }
 async function readLocationPermission(){
- try{const permission=await navigator.permissions.query({name:'geolocation'});locationPermission=permission.state;updateLocationField();permission.onchange=()=>{locationPermission=permission.state;if(permission.state!=='granted'){locationRequest++;locationBusy=false;void service.updateProfileLocation(null);}updateLocationField();};}catch{}
+ try{const permission=await navigator.permissions.query({name:'geolocation'});locationPermission=permission.state;updateLocationField();permission.onchange=()=>{locationPermission=permission.state;if(permission.state!=='granted'){locationRequest++;void service.updateProfileLocation(null);}updateLocationField();};}catch{}
 }
 document.addEventListener('change',event=>{
  const input=event.target;if(!input.matches('[data-location-permission]'))return;
  const person=state.currentUserId,preferences=ui,request=++locationRequest;
  if(!person)return;
- if(!input.checked){ui.locationAllowed={...ui.locationAllowed,[person]:false};saveUI();locationBusy=false;updateLocationField();void service.updateProfileLocation(null);return;}
- input.checked=false;
- if(!navigator.geolocation){notice('Location is unavailable in this browser.');return;}
- locationBusy=true;updateLocationField();
- const finish=allowed=>{
-  if(request!==locationRequest)return false;locationBusy=false;
-  if(!state.recognized||state.currentUserId!==person||ui!==preferences){updateLocationField();return false;}
-  ui.locationAllowed={...ui.locationAllowed,[person]:allowed};saveUI();
-  if(allowed)locationPermission='granted';updateLocationField();return true;
- };
- navigator.geolocation.getCurrentPosition(position=>{if(finish(true))void service.updateProfileLocation({latitude:position.coords.latitude,longitude:position.coords.longitude,accuracy:position.coords.accuracy,observedAt:new Date(position.timestamp||Date.now()).toISOString()});},error=>{
-  if(!finish(false))return;void service.updateProfileLocation(null);if(state.recognized&&state.currentUserId===person&&ui===preferences)notice(error.code===1?'Location was not allowed. You can change this in your browser site settings.':'Location is unavailable. Try again.');
+ // Save the choice immediately; coordinates and log confirmation run in the background.
+ const allowed=input.checked;
+ ui.locationAllowed={...ui.locationAllowed,[person]:allowed};saveUI();updateLocationField();
+ const current=()=>request===locationRequest&&state.recognized&&state.currentUserId===person&&ui===preferences;
+ if(!allowed||!navigator.geolocation){void service.updateProfileLocation(null);return;}
+ navigator.geolocation.getCurrentPosition(position=>{
+  if(!current())return;
+  locationPermission='granted';updateLocationField();
+  void service.updateProfileLocation({latitude:position.coords.latitude,longitude:position.coords.longitude,accuracy:position.coords.accuracy,observedAt:new Date(position.timestamp||Date.now()).toISOString()});
+ },error=>{
+  if(!current())return;
+  if(error.code===1){locationPermission='denied';ui.locationAllowed={...ui.locationAllowed,[person]:false};saveUI();updateLocationField();notice('Location was not allowed. You can change this in your browser site settings.');}
+  // Timeout or unavailable coordinates do not change permission. Fall back quietly.
+  void service.updateProfileLocation(null);
  },{enableHighAccuracy:true,timeout:10000,maximumAge:0});
 });
 document.addEventListener('click',event=>{
