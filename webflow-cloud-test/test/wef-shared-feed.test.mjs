@@ -734,3 +734,18 @@ test('an older source clock queues review but cannot hold back current scheduled
  assert.equal(run.log.result,'Success');assert.equal(api.data.conflicts.some(r=>r.reason==='older_shared_dataset'),true);
  assert.equal((await readScheduleFeed(api,showId,'full')).records[0].name,'Current shared values');
 });
+
+test('repeat conflict logging reads existing concerns once and preserves admin decisions',async()=>{
+ const api=memory();
+ for(let i=1;i<=12;i++)api.data.schedules.push({...structuredClone(api.data.schedules[0]),id:'rec'+String(i+100).padStart(14,'0'),
+  'schedule-key':ringKey(date)+'|'+(25+i),'source-position':i,
+  'source-json':{...api.data.schedules[0]['source-json'],class_groupxclasses_id:25+i,group_name:'Different group '+i}});
+ assert.equal((await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now})).log.result,'Success');
+ assert.equal(api.data.conflicts.length,12);
+ api.data.conflicts[0]['admin-status']='Reviewed';api.data.conflicts[0]['admin-notes']='Keep for later';
+ const before=JSON.stringify(api.data.conflicts),read=api.reads.length,write=api.writes.length;
+ assert.equal((await runScheduleRefresh(api,{lane:'full',slot:'2026-11-12T17:15:00Z',clock:()=>now})).log.result,'Success');
+ assert.equal(api.reads.slice(read).filter(n=>n==='conflicts').length,1);
+ assert.equal(api.writes.slice(write).some(w=>w.name==='conflicts'),false);
+ assert.equal(JSON.stringify(api.data.conflicts),before);
+});
