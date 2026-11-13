@@ -33,7 +33,18 @@ if(!document.getElementById('rs-profile-v3-frame')){
   let themeObserver;
   const hostReady=()=>frame.contentWindow?.postMessage({type:'rs-host-schedule-ready'},location.origin);
   const syncTheme=()=>{const theme=hostSchedule.contentDocument?.documentElement.dataset.theme;if((theme==='light'||theme==='dark')&&frame.contentDocument?.documentElement)frame.contentDocument.documentElement.dataset.theme=theme;};
-  const watchTheme=()=>{themeObserver?.disconnect();const root=hostSchedule.contentDocument?.documentElement;if(root){themeObserver=new MutationObserver(syncTheme);themeObserver.observe(root,{attributes:true,attributeFilter:['data-theme']});syncTheme();hostReady();}};
+  const watchTheme=()=>{themeObserver?.disconnect();const doc=hostSchedule.contentDocument,root=doc?.documentElement;if(root){
+   // Use the existing Profile action instead of navigating away from Schedule.
+   doc.addEventListener('click',event=>{
+    if(!event.target.closest('.schedule-profile-control,.back-row a.back-link'))return;
+    const panel=frame.contentDocument?.getElementById('app');
+    const control=frame.contentDocument?.getElementById('recognize-entry')?.shadowRoot?.querySelector('#launcher');
+    if(!panel||!control)return;
+    event.preventDefault();event.stopImmediatePropagation();
+    if(panel.hidden)control.click();
+   },true);
+   themeObserver=new MutationObserver(syncTheme);themeObserver.observe(root,{attributes:true,attributeFilter:['data-theme']});syncTheme();hostReady();
+  }};
   hostSchedule.addEventListener('load',watchTheme);frame.addEventListener('load',()=>{syncTheme();hostReady();});watchTheme();
  }
  if(website){

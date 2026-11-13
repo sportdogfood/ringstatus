@@ -5,7 +5,8 @@
 .rings-header .action-icons{margin-left:auto}
 .rings-shell .back-row .v2-theme-toggle{margin-left:auto}
 .v2-page-nav,.rings-horse-actions{margin-inline:18px;overflow-x:auto;flex-shrink:0}
-.v2-page-nav{display:flex;gap:8px;padding-block:8px}
+.v2-page-nav{display:flex;gap:8px;padding-block:8px;position:relative;isolation:isolate}
+.v2-page-nav>.schedule-profile-control{position:sticky;right:0;margin-left:auto;z-index:2;flex-shrink:0;background:var(--rs-surface)}
 .rings-pill{flex:0 0 auto}
 .rings-shell-footer{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* Shared launcher stays horizontal in its existing shell slot. */
@@ -55,7 +56,7 @@
 .rings-shell>.stack-scroll{overflow-anchor:none;min-width:0;touch-action:pan-x pan-y;overscroll-behavior:none}
 .rings-shell .back-row{display:flex;align-items:center;min-width:0}
 .rings-shell .back-row>.back-link{flex-shrink:0}
-.rings-shell .back-row>.rings-shell-footer{display:block;flex:1;min-width:0;padding:0;min-height:0;font-size:inherit;text-align:right}
+.rings-shell .stack-body>.rings-shell-footer{display:block;min-width:0;padding:0;min-height:0;font-size:inherit}
 .rings-shell .stack-top>.rings-actions{position:static;flex-shrink:0}
 .rings-shell[data-controls-hidden="true"]>.stack-top,
 .rings-shell[data-controls-hidden="true"]>.rings-horse-actions,
@@ -74,7 +75,10 @@
 }
 
 /* Existing V3 input/buttons; these rules arrange the inline editor and single-row choices only. */
-.v2-entry-item{display:inline-flex;align-items:center;gap:4px;flex:0 0 auto;white-space:nowrap}
+.v2-entry-item{display:inline-flex;align-items:center;gap:0;flex:0 0 auto;white-space:nowrap}
+.rings-entry-line .v2-entry-tools{min-height:44px}
+.rings-app [data-edit-horse]{width:36px;height:44px;flex:0 0 36px;margin:0;padding:0}
+.rings-app [data-edit-horse]>.icon{width:18px;height:18px}
 .v2-nickname-form{display:flex;align-items:center;gap:8px;min-width:0}
 .v2-nickname-form>.field{width:180px;max-width:42vw}
 .v2-nickname-form .form-error{margin:0;max-width:180px;white-space:normal}
@@ -84,10 +88,10 @@
 
 /* Phone hit regions only; existing visible controls and brand tokens stay unchanged. */
 @media(max-width:600px){
- .rings-app :where(.v2-header-filter,.v2-theme-toggle,[data-edit-horse],.v2-nickname-form .icon-button,#rings-close,#v2-trainer-dialog .icon-button){--phone-hit-inset:5px;position:relative;margin:var(--phone-hit-inset);flex-shrink:0}
+ .rings-app :where(.v2-header-filter,.v2-theme-toggle,.v2-nickname-form .icon-button,#rings-close,#v2-trainer-dialog .icon-button){--phone-hit-inset:5px;position:relative;margin:var(--phone-hit-inset);flex-shrink:0}
  .rings-app .rings-header .v2-header-filter{--phone-hit-inset:8px}
  .rings-app #v2-trainer-dialog .icon-button{--phone-hit-inset:7px}
- .rings-app :where(.v2-header-filter,.v2-theme-toggle,[data-edit-horse],.v2-nickname-form .icon-button,#rings-close,#v2-trainer-dialog .icon-button)::before{content:"";position:absolute;inset:calc(-1 * var(--phone-hit-inset))}
+ .rings-app :where(.v2-header-filter,.v2-theme-toggle,.v2-nickname-form .icon-button,#rings-close,#v2-trainer-dialog .icon-button)::before{content:"";position:absolute;inset:calc(-1 * var(--phone-hit-inset))}
  .rings-app .back-row .v2-theme-toggle{margin-left:auto}
  .v2-entry-item{max-width:100%;min-width:0}
  .rings-entry-line .v2-entry-item>.rings-entry-rollup{flex:1 1 auto;min-width:0;overflow:hidden}

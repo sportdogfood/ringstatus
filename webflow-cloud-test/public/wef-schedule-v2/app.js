@@ -58,7 +58,7 @@ for(const [label,glyph] of [['Horses','horse'],['Results','list'],['Notification
 // Reuse the existing Profile navigation, including the parent-owned overlay return.
 const profileControl=document.createElement('button');profileControl.type='button';profileControl.className='rings-pill schedule-profile-control';profileControl.setAttribute('aria-label','Profile');profileControl.title='Profile';profileControl.innerHTML=v3Icon('user');v3Control(profileControl);
 profileControl.addEventListener('click',()=>document.querySelector('.back-row a.back-link')?.click());
-pageNav.prepend(profileControl);
+pageNav.append(profileControl);
 trainerControl.hidden=true;
 trainerSelect.addEventListener('change',()=>{state.trainer=trainerSelect.value;state.horses.clear();if(surface.open)surface.close();syncDay();renderSchedule();});
 daySelect.innerHTML=days.map(d=>`<option value="${escape(d.date)}">${escape(dateLabel(d.date))}</option>`).join('');

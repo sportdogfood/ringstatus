@@ -12,7 +12,8 @@ shell.classList.add('v3-panel');shell.setAttribute('role','main');shell.setAttri
 shell.innerHTML=v3Shell(v3Back(back.outerHTML)+v3Brand(`<div class="action-icons"></div>`),content.innerHTML,v3Footer('<span class="rings-shell-footer ui-button" data-variant="quiet" role="status"></span>'),horses.outerHTML+bottom.outerHTML);
 shell.querySelector('.action-icons').append(...controls);
 const status=shell.querySelector('.rings-shell-footer');
-shell.querySelector('.back-row').append(status,theme);
+shell.querySelector('.back-row').append(theme);
+shell.querySelector('.stack-body').prepend(status);
 shell.querySelector(':scope > .footer-row').remove();
 const launcherSlot=document.createElement('div');launcherSlot.className='schedule-launcher-slot';launcherSlot.dataset.profileLauncherSlot='';launcherSlot.hidden=true;shell.append(launcherSlot);
 shell.querySelector('.stack-scroll').classList.add('rings-scroll');

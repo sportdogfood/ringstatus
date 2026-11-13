@@ -3,6 +3,8 @@ export const iconMeta={"rider": {"label": "Rider", "category": "people", "descri
 // Mic source: lucide-icons/lucide icons/mic.svg; ISC license in assets/lucide-LICENSE.
 paths.mic="<path d=\"M12 19v3\" />\n  <path d=\"M19 10v2a7 7 0 0 1-14 0v-2\" />\n  <rect x=\"9\" y=\"2\" width=\"6\" height=\"13\" rx=\"3\" />";
 iconMeta.mic={label:"Microphone",category:"interface",description:"Microphone",stroke:1.7};
+paths.pencil='<path d="m16 3 5 5-12 12-6 1 1-6Z"/><path d="m14 5 5 5"/>';
+iconMeta.pencil={label:"Pencil",category:"interface",description:"Plain pencil",stroke:1.7};
 export const iconNames=Object.keys(paths);
 export const icon=(name)=>`<svg class="icon" data-icon="${name}" viewBox="0 0 24 24" aria-hidden="true">${paths[name]||paths.user}</svg>`;
 export const svgSource=name=>`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${iconMeta[name]?.stroke||1.7}" stroke-linecap="round" stroke-linejoin="round">${paths[name]||paths.user}</svg>`;

@@ -37,6 +37,18 @@ launcherRoot.addEventListener('click',event=>{if(launcherDragged){event.preventD
 let residentLauncherSlot=null;
 function placeLauncher(){
  const panel=$('#app'),footer=panel.querySelector(':scope > .footer-row');
+ // Reuse the rendered shared account control; Schedule keeps its Profile return action.
+ const scheduleDocument=(scheduleFrame&&!scheduleFrame.hidden?scheduleFrame:hostSchedule?parent.document.getElementById('wef-schedule-v2'):null)?.contentDocument;
+ const back=scheduleDocument?.querySelector('.back-row a.back-link');
+ const account=state.recognized?panel.querySelector('.account-wrap [data-menu="account-menu"]'):null;
+ if(back){
+  const content=account?.innerHTML||'‹ Profile';
+  if(back.innerHTML!==content)back.innerHTML=content;
+  back.classList.toggle('ui-button',!!account);
+  if(account)back.dataset.variant='quiet';else delete back.dataset.variant;
+  back.setAttribute('aria-label',account?'Back to Profile: '+account.textContent.trim():'Back to Profile');
+ }
+
  const scheduleDocked=mobileLauncher.matches&&((!!scheduleFrame&&!scheduleFrame.hidden)||(hostSchedule&&state.recognized&&panel.hidden));
  const embedded=!scheduleDocked&&!panel.hidden;
  document.body.dataset.scheduleLauncher=String(scheduleDocked);
