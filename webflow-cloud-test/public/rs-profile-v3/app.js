@@ -41,16 +41,16 @@ function placeLauncher(){
  const embedded=!scheduleDocked&&(mobileLauncher.matches||document.documentElement.dataset.size!=='compact')&&!panel.hidden&&!!footer;
  document.body.dataset.scheduleLauncher=String(scheduleDocked);
  let slot=null;
- if(!mobileLauncher.matches&&state.recognized){
+ if(state.recognized){
   try{const frame=scheduleFrame&&!scheduleFrame.hidden?scheduleFrame:hostSchedule&&panel.hidden?parent.document.getElementById('wef-schedule-v2'):null;slot=frame?.contentDocument?.querySelector('.rings-shell > .schedule-launcher-slot');}catch{}
  }
  if(residentLauncherSlot&&residentLauncherSlot!==slot){residentLauncherSlot.hidden=true;}
  residentLauncherSlot=slot;
  if(slot)slot.hidden=false;
  const destination=slot||(embedded?panel:$('#preview-stage'));
- if(launcherRoot.parentElement!==destination){if(!slot&&embedded)destination.insertBefore(launcherRoot,footer);else destination.append(launcherRoot);}
+ if(launcherRoot.parentElement!==destination){destination.append(launcherRoot);}
  document.body.dataset.launcherEmbedded=String(embedded);
- if(scheduleFrame)scheduleFrame.style.height=scheduleDocked?`${Math.max(0,innerHeight-launcherRoot.getBoundingClientRect().height)}px`:'100dvh';
+ if(scheduleFrame)scheduleFrame.style.height=scheduleDocked&&!slot?`${Math.max(0,innerHeight-launcherRoot.getBoundingClientRect().height)}px`:'100dvh';
 }
 mobileLauncher.addEventListener('change',placeLauncher);
 launcherRoot.addEventListener('click',event=>{
@@ -111,6 +111,8 @@ function openSchedule(trigger){
   if(frame!==scheduleFrame||!state.recognized)return;
   const doc=frame.contentDocument;if(!doc?.querySelector('.rings-shell')){scheduleFailed();return;}
   doc.addEventListener('click',event=>{if(event.target.closest('.rings-profile-nav a,.back-row a.back-link')){event.preventDefault();event.stopImmediatePropagation();closeSchedule();}},true);
+  const syncTheme=()=>{const theme=doc.documentElement.dataset.theme;if(['dark','light'].includes(theme)&&document.documentElement.dataset.theme!==theme)document.documentElement.dataset.theme=theme;};
+  new MutationObserver(syncTheme).observe(doc.documentElement,{attributes:true,attributeFilter:['data-theme']});syncTheme();
   const reveal=()=>{
    if(frame!==scheduleFrame||!state.recognized)return;
    scheduleReady=true;scheduleBusy(false);
@@ -437,8 +439,11 @@ if(website){
   const left=boxes.length?Math.max(0,Math.min(...boxes.map(r=>r.left))-4):innerWidth;
   const right=boxes.length?Math.max(0,innerWidth-Math.max(...boxes.map(r=>r.right))-4):0;
   const bottom=boxes.length?Math.max(0,innerHeight-Math.max(...boxes.map(r=>r.bottom))-4):0;
-  const launcherHeight=hostSchedule&&mobileLauncher.matches&&!launcherRoot.hidden&&$('#app').hidden?launcherRoot.getBoundingClientRect().height:0;
-  parent.postMessage({type:'rs-profile-bounds',top,right,bottom,left,...(hostSchedule?{launcherHeight}:{})},location.origin);
+  const appOpen=!$('#app').hidden||!!(scheduleFrame&&!scheduleFrame.hidden);
+  const theme=scheduleFrame&&!scheduleFrame.hidden?scheduleFrame.contentDocument?.documentElement.dataset.theme:document.documentElement.dataset.theme;
+  if(document.body.dataset.appOpen!==String(appOpen))document.body.dataset.appOpen=String(appOpen);
+  const launcherHeight=hostSchedule&&!residentLauncherSlot&&mobileLauncher.matches&&!launcherRoot.hidden&&$('#app').hidden?launcherRoot.getBoundingClientRect().height:0;
+  parent.postMessage({type:'rs-profile-bounds',top,right,bottom,left,appOpen,theme,...(hostSchedule?{launcherHeight}:{})},location.origin);
  });};
- const observer=new MutationObserver(reportBounds);observer.observe(document.body,{subtree:true,childList:true,attributes:true});observer.observe(recognizeRoot.shadowRoot,{subtree:true,childList:true,attributes:true});const resizeObserver=new ResizeObserver(reportBounds);[$('#app'),launcherRoot,$('#dialog'),...recognizeRoot.shadowRoot.querySelectorAll('#signin,#launcher')].forEach(el=>resizeObserver.observe(el));addEventListener('resize',reportBounds);reportBounds();
+ const observer=new MutationObserver(reportBounds);observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});observer.observe(document.body,{subtree:true,childList:true,attributes:true});observer.observe(recognizeRoot.shadowRoot,{subtree:true,childList:true,attributes:true});const resizeObserver=new ResizeObserver(reportBounds);[$('#app'),launcherRoot,$('#dialog'),...recognizeRoot.shadowRoot.querySelectorAll('#signin,#launcher')].forEach(el=>resizeObserver.observe(el));addEventListener('resize',reportBounds);reportBounds();
 }

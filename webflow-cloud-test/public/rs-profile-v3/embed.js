@@ -5,7 +5,26 @@ if(!document.getElementById('rs-profile-v3-frame')){
  const scheduleUrl=schedule?.tagName==='IFRAME'?new URL(schedule.src,location.href):null;
  const hostSchedule=website&&scheduleUrl?.origin===location.origin&&/^\/test\/wef-schedule-v2\/schedule(?:\.html)?\/?$/.test(scheduleUrl.pathname)?schedule:null;
  const scheduleHeight=hostSchedule?.style.getPropertyValue('height'),scheduleHeightPriority=hostSchedule?.style.getPropertyPriority('height');
- let launcherHeight=0;
+ let launcherHeight=0,locked=false,savedScroll=0,savedStyles=null;
+ const syncOpenState=(open,theme,profileOpen)=>{
+  if(open!==locked){
+   locked=open;
+   if(open){
+    savedScroll=scrollY;
+    savedStyles=[document.documentElement,document.body].map(el=>({el,css:['overflow','overscroll-behavior','position','top','width','background-color'].map(key=>[key,el.style.getPropertyValue(key),el.style.getPropertyPriority(key)])}));
+    document.documentElement.style.overflow='hidden';document.documentElement.style.overscrollBehavior='none';
+    Object.assign(document.body.style,{position:'fixed',top:`${-savedScroll}px`,width:'100%',overflow:'hidden',overscrollBehavior:'none'});
+   }else if(savedStyles){
+    for(const {el,css} of savedStyles)for(const [key,value,priority] of css)if(value)el.style.setProperty(key,value,priority);else el.style.removeProperty(key);
+    window.scrollTo({top:savedScroll,left:0,behavior:'instant'});savedStyles=null;
+   }
+  }
+  if(open){
+   const background=theme==='light'?'#fff':'#000';
+   if(profileOpen&&matchMedia('(max-width:600px)').matches)frame.style.background=background;else frame.style.background='transparent';
+   document.documentElement.style.backgroundColor=background;document.body.style.backgroundColor=background;
+  }else frame.style.background='transparent';
+ };
  const fitSchedule=()=>{if(!hostSchedule)return;const height=matchMedia('(max-width:600px)').matches?launcherHeight:0;if(height>0)hostSchedule.style.setProperty('height',`${Math.max(0,(window.visualViewport?.height||innerHeight)-height)}px`);else if(scheduleHeight)hostSchedule.style.setProperty('height',scheduleHeight,scheduleHeightPriority);else hostSchedule.style.removeProperty('height');};
  const frame=document.createElement('iframe');frame.id='rs-profile-v3-frame';frame.title='RingStatus Profile';
  frame.src='/test/rs-profile-v3/'+(website?'?website=1'+(hostSchedule?'&host-schedule=1':'')+(new URLSearchParams(location.search).has('show-footer')?'&show-footer':''):location.search);
@@ -21,7 +40,9 @@ if(!document.getElementById('rs-profile-v3-frame')){
   addEventListener('message',event=>{
    if(event.origin!==location.origin||event.source!==frame.contentWindow||event.data?.type!=='rs-profile-bounds')return;
    const {top,right,bottom,left}=event.data;
-   if([top,right,bottom,left].every(n=>Number.isFinite(n)&&n>=0))frame.style.clipPath=`inset(${top}px ${right}px ${bottom}px ${left}px)`;
+   const profileOpen=event.data.appOpen===true;const open=profileOpen||!!hostSchedule;syncOpenState(open,event.data.theme,profileOpen);
+   if(profileOpen&&matchMedia('(max-width:600px)').matches)frame.style.clipPath='inset(0)';
+   else if([top,right,bottom,left].every(n=>Number.isFinite(n)&&n>=0))frame.style.clipPath=`inset(${top}px ${right}px ${bottom}px ${left}px)`;
    if(hostSchedule&&Number.isFinite(event.data.launcherHeight)&&event.data.launcherHeight>=0&&event.data.launcherHeight<=innerHeight){launcherHeight=event.data.launcherHeight;fitSchedule();}
   });
   frame.addEventListener('load',()=>{

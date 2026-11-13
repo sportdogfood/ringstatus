@@ -11,53 +11,52 @@ const horses=document.querySelector('.rings-horse-actions');
 shell.classList.add('v3-panel');shell.setAttribute('role','main');shell.setAttribute('aria-label',content.getAttribute('aria-label')||'Schedule');shell.dataset.width='schedule';
 shell.innerHTML=v3Shell(v3Back(back.outerHTML)+v3Brand(`<div class="action-icons"></div>`),content.innerHTML,v3Footer('<span class="rings-shell-footer ui-button" data-variant="quiet" role="status"></span>'),horses.outerHTML+bottom.outerHTML);
 shell.querySelector('.action-icons').append(...controls);
-shell.querySelector('.back-row').append(theme);
+const status=shell.querySelector('.rings-shell-footer');
+shell.querySelector('.back-row').append(status,theme);
+shell.querySelector(':scope > .footer-row').remove();
 const launcherSlot=document.createElement('div');launcherSlot.className='schedule-launcher-slot';launcherSlot.dataset.profileLauncherSlot='';launcherSlot.hidden=true;shell.append(launcherSlot);
 shell.querySelector('.stack-scroll').classList.add('rings-scroll');
 shell.querySelector('.brand-row').classList.add('rings-header');
 shell.querySelectorAll('.rings-pill').forEach(node=>v3Control(node));
 shell.querySelectorAll('.v2-theme-toggle').forEach(node=>v3Control(node,{icon:true}));
 
-// Keep the same shell slots; only the phone data viewport grows while scrolled.
-const phone=matchMedia('(max-width:600px)');
+// Direction comes from user input, never from layout-driven scroll clamping.
 const scroll=shell.querySelector('.stack-scroll');
 const anchors=shell.querySelector('.rings-actions');
-const anchorParent=anchors.parentElement,anchorNext=anchors.nextSibling;
-let direction=0,touch=null,clampedAtTop=false;
-function setPhoneScroll(scrolled){
- const next=String(phone.matches&&scrolled);if(shell.dataset.phoneScrolled===next)return;
- shell.dataset.phoneScrolled=next;
- // Growing a short list can clamp its offset to zero; that is not a return gesture.
- clampedAtTop=next==='true'&&scroll.scrollTop<=0;
-}
-function placeAnchors(){
- if(phone.matches)shell.querySelector('.stack-top').append(anchors);
- else anchorParent.insertBefore(anchors,anchorNext);
- direction=0;touch=null;setPhoneScroll(phone.matches&&scroll.scrollTop>8);
+shell.querySelector('.stack-top').append(anchors);
+let touch=null,travel=0,lastDirection=0;
+shell.dataset.controlsHidden='false';
+function setControlsHidden(hidden){
+ if(shell.dataset.controlsHidden===String(hidden))return;
+ const before=scroll.getBoundingClientRect().top,offset=scroll.scrollTop;
+ shell.dataset.controlsHidden=String(hidden);
+ // Keep the same records at the same screen position when the top rows return.
+ scroll.scrollTop=offset<=0?0:Math.max(0,offset+scroll.getBoundingClientRect().top-before);
+ for(const node of [shell.querySelector('.stack-top'),shell.querySelector('.rings-horse-actions'),shell.querySelector('.v2-page-nav')])node.inert=hidden;
 }
 function move(delta){
- if(!phone.matches||Math.abs(delta)<1)return;
- direction=Math.sign(delta);
- if(direction>0&&scroll.scrollHeight>scroll.clientHeight)setPhoneScroll(true);
- else if(direction<0&&scroll.scrollTop<=0)setPhoneScroll(false);
+ if(Math.abs(delta)<1||document.querySelector('dialog[open]'))return;
+ const direction=Math.sign(delta);
+ travel=direction===lastDirection?travel+Math.abs(delta):Math.abs(delta);lastDirection=direction;
+ if(travel<(direction>0?32:16))return;
+ if(direction<0)setControlsHidden(false);
+ else if(scroll.scrollHeight>scroll.clientHeight+1)setControlsHidden(true);
+ travel=0;
 }
-scroll.addEventListener('scroll',()=>{
- if(!phone.matches)return;
- if(scroll.scrollTop>8){clampedAtTop=false;setPhoneScroll(true);}
- else if(scroll.scrollTop<=0&&(!clampedAtTop||direction<0))setPhoneScroll(false);
-},{passive:true});
-scroll.addEventListener('wheel',event=>move(event.deltaY),{passive:true});
-scroll.addEventListener('touchstart',event=>{touch=event.touches[0]?{x:event.touches[0].clientX,y:event.touches[0].clientY}:null;},{passive:true});
-scroll.addEventListener('touchmove',event=>{
- const point=event.touches[0];if(!point||!touch)return;
- const dx=touch.x-point.clientX,dy=touch.y-point.clientY;
+shell.addEventListener('wheel',event=>{if(Math.abs(event.deltaY)>Math.abs(event.deltaX))move(event.deltaY);},{passive:true});
+shell.addEventListener('touchstart',event=>{const p=event.touches[0];touch=p?{x:p.clientX,y:p.clientY}:null;},{passive:true});
+shell.addEventListener('touchmove',event=>{
+ const p=event.touches[0];if(!p||!touch)return;
+ const dx=touch.x-p.clientX,dy=touch.y-p.clientY;
  if(Math.abs(dy)>Math.abs(dx))move(dy);
- touch={x:point.clientX,y:point.clientY};
+ touch={x:p.clientX,y:p.clientY};
 },{passive:true});
-for(const name of ['touchend','touchcancel'])scroll.addEventListener(name,()=>{touch=null;},{passive:true});
-scroll.addEventListener('keydown',event=>{
- if(event.target.closest('input,textarea,select,[contenteditable="true"]'))return;
- if(['ArrowDown','PageDown','End'].includes(event.key)||event.key===' '&&!event.shiftKey)move(12);
- if(['ArrowUp','PageUp','Home'].includes(event.key)||event.key===' '&&event.shiftKey)move(-12);
+for(const name of ['touchend','touchcancel'])shell.addEventListener(name,()=>{touch=null;},{passive:true});
+shell.addEventListener('keydown',event=>{
+ if(event.defaultPrevented||event.target.closest('input,textarea,select,[contenteditable="true"]'))return;
+ if(['ArrowDown','PageDown','End'].includes(event.key)||event.key===' '&&!event.shiftKey)move(32);
+ if(['ArrowUp','PageUp','Home'].includes(event.key)||event.key===' '&&event.shiftKey)move(-16);
 });
-phone.addEventListener('change',placeAnchors);placeAnchors();
+// Preserve the existing ring-toggle reset and native keyboard return-to-top behavior.
+scroll.addEventListener('scroll',()=>{if(scroll.scrollTop<=0&&lastDirection<0)setControlsHidden(false);},{passive:true});
+anchors.addEventListener('click',()=>setControlsHidden(false));

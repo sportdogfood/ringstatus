@@ -8,15 +8,9 @@
 .v2-page-nav{display:flex;gap:8px;padding-block:8px}
 .rings-pill{flex:0 0 auto}
 .rings-shell-footer{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(min-width:601px){
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden])){display:grid;grid-template-columns:minmax(0,1fr) 86px;grid-template-rows:auto minmax(0,1fr) auto auto auto}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.stack-top{grid-column:1;grid-row:1}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.stack-scroll{grid-column:1;grid-row:2}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.rings-horse-actions{grid-column:1;grid-row:3}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.v2-page-nav{grid-column:1;grid-row:4}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.footer-row{grid-column:1;grid-row:5}
- .rings-shell>[data-profile-launcher-slot]:not([hidden]){grid-column:2;grid-row:1/-1;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
-}
+/* The existing shared launcher is resident in the bottom shell slot. */
+.rings-shell>[data-profile-launcher-slot]:not([hidden]){display:flex;flex-shrink:0;min-width:0;overflow:hidden}
+.rings-shell>[data-profile-launcher-slot]>.launcher-widget{width:100%;max-width:100%}
 @media(max-width:600px){:root .v3-panel[data-width="schedule"]{width:100%;max-width:100%;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;box-shadow:none}.v2-page-nav,.rings-horse-actions{margin-inline:16px}}
 
 :where(.rings-app) :where(button:not(.ui-button):not(.icon-button)){border:0;font:inherit;color:inherit;cursor:pointer}
@@ -53,11 +47,24 @@
  :root .rings-shell>.v2-trainer-dialog[data-shell-local]{width:240px;inset:var(--surface-inset) var(--surface-inset) auto auto;margin:0}
 }
 
-:root:has(.rings-app[data-embedded="true"]),.rings-app[data-embedded="true"]{background:transparent}
+:root:has(.rings-app){height:100%;overflow:hidden;overscroll-behavior:none;background:var(--schedule-backdrop,#000)}
+:root[data-theme="light"]:has(.rings-app){--schedule-backdrop:#fff}
+.rings-app{height:100%;width:100%;max-width:100%;overflow:hidden;overscroll-behavior:none;background:var(--schedule-backdrop,#000)}
 
+/* Surrounding controls yield space to records; the launcher never collapses. */
+.rings-shell>*{min-width:0}
+.rings-shell>.stack-scroll{overflow-anchor:none;min-width:0;touch-action:pan-x pan-y;overscroll-behavior:none}
+.rings-shell .back-row{display:flex;align-items:center;min-width:0}
+.rings-shell .back-row>.back-link{flex-shrink:0}
+.rings-shell .back-row>.rings-shell-footer{display:block;flex:1;min-width:0;padding:0;min-height:0;font-size:inherit;text-align:right}
+.rings-shell .stack-top>.rings-actions{position:static;flex-shrink:0}
+.rings-shell[data-controls-hidden="true"]>.stack-top,
+.rings-shell[data-controls-hidden="true"]>.rings-horse-actions,
+.rings-shell[data-controls-hidden="true"]>.v2-page-nav{display:none}
+.rings-actions,.rings-horse-actions,.v2-page-nav,.rings-entry-rollups{overscroll-behavior-x:contain;overflow-y:hidden;touch-action:pan-x pan-y;max-width:100%}
 @media(max-width:600px){
- .rings-shell[data-phone-scrolled="true"]>.stack-top>.back-row,
- .rings-shell[data-phone-scrolled="true"]>.footer-row{display:none}
+ .rings-shell>.stack-top{padding-top:max(16px,env(safe-area-inset-top))}
+ .rings-shell>[data-profile-launcher-slot]>.launcher-widget{padding-bottom:max(6px,env(safe-area-inset-bottom))}
 }
 
 .v2-trainer-handle{display:none}
