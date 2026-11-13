@@ -101,7 +101,7 @@ body[data-website="true"],body[data-website="true"] .preview-stage{background:tr
  :root:not([data-size="compact"]) .preview-stage>.v3-panel{grid-column:1;grid-row:1;max-width:100%;height:var(--shell-available-height);display:grid;grid-template-columns:minmax(0,1fr) 86px;grid-template-rows:auto minmax(0,1fr) auto}
  :root:not([data-size="compact"]) #app>:is(.stack-top,.stack-scroll,.footer-row){grid-column:1}
  :root:not([data-size="compact"]) #app>.launcher-widget{grid-column:2;grid-row:1 / 4;align-self:center;margin:12px;max-height:calc(var(--shell-available-height) - 24px)}
- :root:not([data-size="compact"]) .launcher-widget{grid-column:1;grid-row:1;width:62px;max-width:62px;max-height:calc(100dvh - 48px);min-height:0;flex-direction:column-reverse;padding:12px;gap:8px}
+ :root:not([data-size="compact"]) .launcher-widget{grid-column:1;grid-row:1;width:62px;max-width:62px;max-height:calc(100dvh - 48px);min-height:0;flex-direction:column-reverse;padding:0;gap:8px;background:transparent;border:0;border-radius:0;box-shadow:none}
  :root:not([data-size="compact"]) .launcher-scroll{flex-direction:column-reverse;overflow-x:hidden;overflow-y:auto;min-height:0;padding:12px 0 4px;scroll-padding-block:12px 4px;flex:0 1 auto}
  :root:not([data-size="compact"]) .launcher-scroll>.icon-button{flex:0 0 40px}
 }
