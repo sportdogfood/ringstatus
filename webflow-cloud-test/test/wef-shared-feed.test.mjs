@@ -635,3 +635,16 @@ test('review link readback accepts Airtable terminal newline but rejects changed
   change='link';await assert.rejects(api.upsert('conflicts',fields),/schedule_app_write_readback/);
   change='problem';await assert.rejects(api.upsert('conflicts',fields),/schedule_app_write_readback/);
 });
+
+test('review links with class asterisks survive Airtable Markdown round-trip without changing the URL',async()=>{
+ const source={id:'recH1bxIJJSOFEO8s','class-number':590,'class-name':'Platinum Performance / USEF Show Jumping Talent Search 1*','source-json':'{}'};
+ const review=await conflictReviewFields({read:async()=>[source]},{reason:'invalid_shared_class',recordKey:'15|200000078|2026-11-13|4|200031591',details:{source:'wef-data.classes'}});
+ assert.ok(review.Record.includes('Search 1\\*]'));
+ assert.ok(review.Record.endsWith('/tblL2BwNM2Z8sdGDQ/recH1bxIJJSOFEO8s)'));
+ let stored;
+ const api=sharedBase({token:'offline-fixture',writable:true,pause:async()=>{},fetchImpl:async(url,init)=>{
+  if(init.method==='PATCH')stored=JSON.parse(init.body).records[0].fields;
+  return Response.json({records:[{id:'rec00000000000055',fields:{...stored,Record:stored.Record+'\n'}}]});
+ }});
+ await api.upsert('conflicts',{'conflict-key':'asterisk-roundtrip',...review});
+});

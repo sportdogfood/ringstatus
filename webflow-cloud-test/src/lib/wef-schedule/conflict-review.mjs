@@ -21,7 +21,7 @@ export async function conflictReviewFields(api, conflict) {
     table='tblst0MKROc3puhm5';label=row?.['ring-nickname']||row?.name||`Ring ${parts[3]}`;
   }
   label??='Schedule record';
-  const escaped=label.replace(/[\\\[\]]/g,'\\$&');
+  const escaped=label.replace(/[\\\[\]*]/g,'\\$&');
   const record=recordId(row?.id)?`[${escaped}](https://airtable.com/${APP_BASE}/${table}/${row.id})`:label;
   const problems=[];
   if(conflict.reason==='shared_participant_conflict') {
