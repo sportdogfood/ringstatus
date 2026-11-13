@@ -12,9 +12,10 @@ if(!document.getElementById('rs-profile-v3-frame')){
  frame.style.cssText='display:block;position:fixed;inset:0;width:100%;height:100dvh;border:0;z-index:10000;'+(website?'clip-path:inset(100%);background:transparent;':'');
  if(hostSchedule){
   let themeObserver;
+  const hostReady=()=>frame.contentWindow?.postMessage({type:'rs-host-schedule-ready'},location.origin);
   const syncTheme=()=>{const theme=hostSchedule.contentDocument?.documentElement.dataset.theme;if((theme==='light'||theme==='dark')&&frame.contentDocument?.documentElement)frame.contentDocument.documentElement.dataset.theme=theme;};
-  const watchTheme=()=>{themeObserver?.disconnect();const root=hostSchedule.contentDocument?.documentElement;if(root){themeObserver=new MutationObserver(syncTheme);themeObserver.observe(root,{attributes:true,attributeFilter:['data-theme']});syncTheme();}};
-  hostSchedule.addEventListener('load',watchTheme);frame.addEventListener('load',syncTheme);watchTheme();
+  const watchTheme=()=>{themeObserver?.disconnect();const root=hostSchedule.contentDocument?.documentElement;if(root){themeObserver=new MutationObserver(syncTheme);themeObserver.observe(root,{attributes:true,attributeFilter:['data-theme']});syncTheme();hostReady();}};
+  hostSchedule.addEventListener('load',watchTheme);frame.addEventListener('load',()=>{syncTheme();hostReady();});watchTheme();
  }
  if(website){
   addEventListener('message',event=>{
