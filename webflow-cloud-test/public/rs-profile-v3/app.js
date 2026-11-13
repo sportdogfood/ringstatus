@@ -38,19 +38,21 @@ let residentLauncherSlot=null;
 function placeLauncher(){
  const panel=$('#app'),footer=panel.querySelector(':scope > .footer-row');
  const scheduleDocked=mobileLauncher.matches&&((!!scheduleFrame&&!scheduleFrame.hidden)||(hostSchedule&&state.recognized&&panel.hidden));
- const embedded=!scheduleDocked&&(mobileLauncher.matches||document.documentElement.dataset.size!=='compact')&&!panel.hidden&&!!footer;
+ const embedded=!scheduleDocked&&!panel.hidden;
  document.body.dataset.scheduleLauncher=String(scheduleDocked);
  let slot=null;
- if(!mobileLauncher.matches&&state.recognized){
+ if(state.recognized){
   try{const frame=scheduleFrame&&!scheduleFrame.hidden?scheduleFrame:hostSchedule&&panel.hidden?parent.document.getElementById('wef-schedule-v2'):null;slot=frame?.contentDocument?.querySelector('.rings-shell > .schedule-launcher-slot');}catch{}
  }
  if(residentLauncherSlot&&residentLauncherSlot!==slot){residentLauncherSlot.hidden=true;}
  residentLauncherSlot=slot;
  if(slot)slot.hidden=false;
  const destination=slot||(embedded?panel:$('#preview-stage'));
- if(launcherRoot.parentElement!==destination){if(!slot&&embedded)destination.insertBefore(launcherRoot,footer);else destination.append(launcherRoot);}
+ if(launcherRoot.parentElement!==destination){destination.append(launcherRoot);}
  document.body.dataset.launcherEmbedded=String(embedded);
- if(scheduleFrame)scheduleFrame.style.height=scheduleDocked?`${Math.max(0,innerHeight-launcherRoot.getBoundingClientRect().height)}px`:'100dvh';
+ document.body.dataset.appOpen=String(!panel.hidden||!!(scheduleFrame&&!scheduleFrame.hidden));
+ launcherRoot.dataset.closed=String(panel.hidden&&!slot&&!(scheduleFrame&&!scheduleFrame.hidden));syncIdentityButton();
+ if(scheduleFrame)scheduleFrame.style.height=scheduleDocked&&!slot?`${Math.max(0,innerHeight-launcherRoot.getBoundingClientRect().height)}px`:'100dvh';
 }
 mobileLauncher.addEventListener('change',placeLauncher);
 launcherRoot.addEventListener('click',event=>{
@@ -61,23 +63,6 @@ launcherRoot.addEventListener('click',event=>{
  void handleUIAction(event);handleDataAction(event);
 });
 addEventListener('message',event=>{if(hostSchedule&&event.source===parent&&event.origin===location.origin&&event.data?.type==='rs-host-schedule-ready')placeLauncher();});
-// Direction changes only affect shell rows; content stays mounted.
-function bindMobileScroll(){
- const scroller=$('.stack-scroll');if(!scroller)return;
- let travel=0,lastDirection=0,touchY=null;
- function move(delta){
-  if(!mobileLauncher.matches||Math.abs(delta)<1)return;
-  const direction=Math.sign(delta);travel=direction===lastDirection?travel+Math.abs(delta):Math.abs(delta);lastDirection=direction;
-  if(travel<12)return;
-  document.body.dataset.mobileScroll=direction<0?'up':'down';travel=0;
- }
- // Read the user's direction, not layout-driven scrollTop clamping.
- scroller.addEventListener('wheel',event=>move(event.deltaY),{passive:true});
- scroller.addEventListener('touchstart',event=>{touchY=event.touches[0]?.clientY??null;},{passive:true});
- scroller.addEventListener('touchmove',event=>{const y=event.touches[0]?.clientY;if(touchY!==null&&y!==undefined)move(touchY-y);touchY=y??null;},{passive:true});
- scroller.addEventListener('keydown',event=>{if(event.target.matches('input,textarea,select'))return;if(['ArrowDown','PageDown'].includes(event.key))move(12);if(['ArrowUp','PageUp'].includes(event.key))move(-12);});
-}
-
 const previewParams=new URLSearchParams(location.search);
 const website=previewParams.get('website')==='1';document.body.dataset.website=String(website);
 const hostSchedule=website&&parent!==window&&previewParams.get('host-schedule')==='1';
@@ -111,6 +96,8 @@ function openSchedule(trigger){
   if(frame!==scheduleFrame||!state.recognized)return;
   const doc=frame.contentDocument;if(!doc?.querySelector('.rings-shell')){scheduleFailed();return;}
   doc.addEventListener('click',event=>{if(event.target.closest('.rings-profile-nav a,.back-row a.back-link')){event.preventDefault();event.stopImmediatePropagation();closeSchedule();}},true);
+  const syncTheme=()=>{const theme=doc.documentElement.dataset.theme;if(['dark','light'].includes(theme)&&document.documentElement.dataset.theme!==theme)document.documentElement.dataset.theme=theme;recognizeRoot.dataset.theme=document.documentElement.dataset.theme;};
+  new MutationObserver(syncTheme).observe(doc.documentElement,{attributes:true,attributeFilter:['data-theme']});syncTheme();
   const reveal=()=>{
    if(frame!==scheduleFrame||!state.recognized)return;
    scheduleReady=true;scheduleBusy(false);
@@ -178,10 +165,10 @@ function prototypeSections(){if(isOptinsView()&&state.recognized)return optinSec
  if(ui.tab==='outputs')return section('one','Outputs',outputRows(),owner()?2:1)+section('two','Activity','',0,true);
  return section('one','Recent activity',activityRows(),ui.activity.length)+section('two','Outputs',outputRows(),owner()?2:1,!ui.secondary||ui.tab==='activity');}
 
-function render(){const signedIn=libraryPage||state.recognized;document.body.dataset.recognized=String(signedIn);recognizeRoot.hidden=signedIn;launcherRoot.hidden=!signedIn;$('#preview-links').hidden=!signedIn||!previewParams.has('show-footer');if(!signedIn){$('#app').hidden=true;placeLauncher();$('#app').replaceChildren();return;}renderPreviewTools();const scroll=$('.stack-scroll')?.scrollTop||0;$('#preview-stage').append(launcherRoot);$('#app').innerHTML=v3Shell(v3Back(`<button class="back-link" data-action="back" ${!libraryPage&&view==='home'?'hidden':''}><span aria-hidden="true">‹</span> ${isOptinsView()&&optinGroup?'Opt-ins':'Back'}</button>`)+brand()+profileRow(),actionRow()+tabRow()+searchRow()+sections(),footer());placeLauncher();$('.stack-scroll').scrollTop=scroll;bindMobileScroll();$('#app').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.innerHTML=icon('user');},{once:true}));syncNavigationLocation();}
+function render(){recognizeRoot.dataset.theme=document.documentElement.dataset.theme;const signedIn=libraryPage||state.recognized;document.body.dataset.recognized=String(signedIn);recognizeRoot.hidden=false;launcherRoot.hidden=!signedIn;$('#preview-links').hidden=!signedIn||!previewParams.has('show-footer');if(!signedIn){$('#app').hidden=true;placeLauncher();$('#app').replaceChildren();return;}renderPreviewTools();const scroll=$('.stack-scroll')?.scrollTop||0;$('#preview-stage').append(launcherRoot);$('#app').innerHTML=v3Shell(v3Back(accountHeader())+brand(),profileRow()+actionRow()+tabRow()+searchRow()+sections(),'');placeLauncher();$('.stack-scroll').scrollTop=scroll;$('#app').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.innerHTML=icon('user');},{once:true}));syncNavigationLocation();}
 
 function closeMenus(){if(activeMenu){const m=$('#'+activeMenu);if(m)m.hidden=true;document.querySelector(`[data-menu="${activeMenu}"]`)?.setAttribute('aria-expanded','false');activeMenu=null;}}
-function toggleMenu(id,trigger){const was=activeMenu===id;closeMenus();if(!was){const menu=$('#'+id);menu.hidden=false;trigger.setAttribute('aria-expanded','true');activeMenu=id;menu.style.position='fixed';menu.style.right='auto';menu.style.bottom='auto';menu.style.maxHeight=Math.max(100,innerHeight-32)+'px';const t=trigger.getBoundingClientRect(),r=menu.getBoundingClientRect();menu.style.left=Math.max(12,Math.min(t.right-r.width,innerWidth-r.width-12))+'px';const above=trigger.closest('.account-wrap')||t.bottom+r.height+8>innerHeight-12;menu.style.top=Math.max(12,Math.min(above?t.top-r.height-8:t.bottom+6,innerHeight-r.height-12))+'px';menu.querySelector('button')?.focus();}}
+function toggleMenu(id,trigger){const was=activeMenu===id;closeMenus();if(!was){const menu=$('#'+id);menu.hidden=false;trigger.setAttribute('aria-expanded','true');activeMenu=id;menu.style.position='fixed';menu.style.right='auto';menu.style.bottom='auto';menu.style.maxHeight=Math.max(100,innerHeight-32)+'px';const t=trigger.getBoundingClientRect(),r=menu.getBoundingClientRect();menu.style.left=Math.max(12,Math.min(t.right-r.width,innerWidth-r.width-12))+'px';const above=t.bottom+r.height+8>innerHeight-12;menu.style.top=Math.max(12,Math.min(above?t.top-r.height-8:t.bottom+6,innerHeight-r.height-12))+'px';menu.querySelector('button')?.focus();}}
 function closeDialog(){if($('#dialog').open)$('#dialog').close();$('#dialog-body').replaceChildren();editor=null;horseEditor=null;draftPhoto='';returnFocus?.focus();}
 function openDialog(title,content,focus='input:not([type=file]):not([type=checkbox])'){closeMenus();returnFocus=document.activeElement;$('#dialog-title').textContent=title;$('#dialog-body').innerHTML=content;if(!$('#dialog').open)$('#dialog').showModal();$('#dialog-body').querySelector(focus)?.focus();}
 function showComponents(){openDialog('Components',`<div>${[['profile','Profile row'],['actions','Action row'],['tabs','Tab row'],['search','Search–sort'],['secondary','Second section']].map(([key,label])=>`<label class="visibility-row"><span>${label}</span><input type="checkbox" data-pref="${key}" ${(libraryPage&&key==='profile'?ui.libraryProfile:ui[key])?'checked':''}></label>`).join('')}</div><ol class="lock-order"><li>1. Back row or minimum space</li><li>2. Brand</li><li>3. Profile</li><li>4. Action row</li><li>5. Tab row</li><li>6. Search–sort</li><li>7. Section</li><li>8. Section</li><li>9. Footer</li></ol><div class="dialog-actions">${button('kitchen','Show all components')}${button('dialog-close','Done',{variant:'primary'})}</div>`,'input');}
@@ -308,7 +295,7 @@ render();
 
 function renderPreviewTools(){const theme=document.documentElement.dataset.theme,size=document.documentElement.dataset.size,current=location.pathname;const href=(path,params={})=>path+'?'+new URLSearchParams({theme,size,...(previewParams.has('show-footer')?{'show-footer':''}:{}),...(['agent','optins'].includes(view)&&path===current?{screen:view}:{}),...(['horses','riders'].includes(view)&&path===current?{roster:view}:{}),...(view==='group'&&path===current?{group:ui.group}:{}),...params});$('#preview-links').innerHTML=[['icons',href('/test/rs-profile-v3/icon-library/')],['components',href('/test/rs-profile-v3/component-library/')],['desktop lite',href(current,{size:'desktop',theme:'light'})],['desktop dark',href(current,{size:'desktop',theme:'dark'})],['<393 lite',href(current,{size:'compact',theme:'light'})],['<393 dark',href(current,{size:'compact',theme:'dark'})]].map(([label,url])=>`<a href="${escape(url)}">${escape(label)}</a>`).join('<span aria-hidden="true"> | </span>')+'<span aria-hidden="true"> | </span><button class="text-button" data-action="components">components-prefs</button>';
 const strip=launcherRoot.querySelector('.launcher-scroll'),left=strip?.scrollLeft||0,top=strip?.scrollTop||0;launcherRoot.innerHTML=launcherMarkup();launcherRoot.querySelector('.launcher-scroll').scrollLeft=left;launcherRoot.querySelector('.launcher-scroll').scrollTop=top;scheduleBusy(scheduleRequested&&!scheduleReady);placeLauncher();}
-function launcherMarkup(){const open=!$('#app').hidden;const items=coordinatedLauncher.map(([key,label,glyph])=>key==='schedule'?`<a class="icon-button" target="_self" href="${scheduleHref}" aria-label="${label}" title="${label}">${icon(glyph)}</a>`:`<button class="icon-button" data-action="launch" data-value="${key}" aria-label="${label}" title="${label}" aria-pressed="${open&&(key==='profile'||key===currentDestination())}" aria-controls="app" ${key==='profile'?`aria-expanded="${open}"`:''}>${icon(glyph)}</button>`);return items[0]+`<div class="launcher-scroll">${items.slice(1).join('')}</div>`;}
+function launcherMarkup(){const open=!$('#app').hidden;const items=coordinatedLauncher.map(([key,label,glyph])=>key==='schedule'?`<a class="icon-button" target="_self" href="${scheduleHref}" aria-label="${label}" title="${label}">${icon(glyph)}</a>`:`<button class="icon-button" data-action="launch" data-value="${key}" aria-label="${label}" title="${label}" aria-pressed="${open&&(key==='profile'||key===currentDestination())}" aria-controls="app" ${key==='profile'?`aria-expanded="${open}"`:''}>${icon(glyph)}</button>`);return `<div class="launcher-scroll">${items.slice(1).join('')}</div>`;}
 
 function launch(destination){const resident=!!residentLauncherSlot;if(scheduleRequested&&(mobileLauncher.matches||resident)){closeSchedule();if(resident&&destination==='profile')$('#app').hidden=true;}closeDialog();if(libraryPage&&['profile','team','shows','waze','logs','agent','horses','riders'].includes(destination)){location.assign('/test/rs-profile-v3/?'+new URLSearchParams({theme:document.documentElement.dataset.theme,size:document.documentElement.dataset.size,tab:['team','horses','riders'].includes(destination)?'team':'all',...(destination==='agent'?{screen:'agent'}:{}),...(['horses','riders'].includes(destination)?{roster:destination}:{}),...(['shows','waze','logs'].includes(destination)?{group:destination}:{})}));return;}if(destination==='profile'){const panel=$('#app');panel.hidden=!panel.hidden;renderPreviewTools();return;}ui.launcher=destination;$('#app').hidden=false;if(['shows','waze','logs'].includes(destination)){openGroup(destination);return;}if(['horses','riders'].includes(destination)){view=destination;ui.group='team';ui.tab='team';selectedId=state.currentUserId;saveUI();render();return;}if(destination==='agent'){view='agent';saveUI();render();return;}if(destination==='profile'||destination==='team'){ui.group='team';ui.tab=destination==='team'?'team':'all';view='kitchen';selectedId=state.currentUserId;saveUI();render();return;}if(destination==='logout'){void signOutConnected(true);return;}render();openDialog(destination==='alarm'?'Alarm':'Alerts','<p class="dialog-note">Not configured.</p>'+button('dialog-close','Done',{variant:'primary'}),'button');}
 
@@ -357,13 +344,14 @@ function isOptinsExit(action,value){if(action==='back')return !optinGroup;if(act
 function allowOptinsExit(){if(!optinDirty)return true;if(!confirm('Leave without saving your preference changes?'))return false;try{const raw=localStorage.getItem(optinKey+':'+state.currentUserId);optinData=raw?decodeOptins(raw):freshOptins();}catch{optinData=freshOptins();}optinDirty=false;optinFeedback='';optinFeedbackKind='';return true;}
 
 
+function accountHeader(){const account=footer().replace(/^<footer[^>]*>/,'').replace(/<\/footer>$/,'');const back=['person','horse'].includes(view)||isOptinsView()&&optinGroup;return `${back?'<button class="back-link" data-action="back" aria-label="Back">‹</button>':''}${account}`;}
 function footer(){const u=actor();return v3Footer(`${menu('account-menu',button('menu',escape(u?fullName(u):'Accounts'),{variant:'quiet',icon:'user',extra:'data-menu="account-menu" aria-haspopup="menu" aria-expanded="false"'}),`${u?`<div class="menu-caption">${escape(u.email||fullName(u))}</div>`:''}${menuItem('add-account','Add account','plus')}${menuItem(u?'logout':'login',u?'Log out':'Log in',u?'logout':'login')}`,'account-wrap')}<button type="button" class="text-button" data-action="not-you">Not you?</button>`);}
 function pendingMarkup(){return canonical?.pendingSave?`<p class="feedback" role="status">${escape(canonical.pendingNeedsPin?'Pending: re-enter your PIN to retry.':canonical.pendingError?'Pending: '+canonical.pendingError:'Pending confirmation…')}</p>`:'';}
 function sections(){
  if(!state.recognized)return section('one','Profile',`<p class="feedback" role="status">${escape(connectionError|| (loading?'Loading Profile…':'Sign in to open your Profile.'))}</p>${loading?'':button('login','Log in')}`,'')+section('two','Section','',0,true);
  if(libraryPage)return prototypeSections();
  if(['horses','riders','horse'].includes(view))return domainRosterSections();
- if(view==='person'||(ui.tab==='all'&&!['group','agent','optins','riders'].includes(view))){const u=selected(),own=u?.id===state.currentUserId;return section('one','Profile',`${pendingMarkup()}${own?'<div class="record-actions"><button class="text-button" data-action="edit-profile">Edit</button></div>':''}<div class="detail-grid">${[['first_name','First name'],['last_name','Last name'],['email','Email'],['sms','Phone'],['level','Account level'],['role','Team role']].map(([k,label])=>`<div class="detail-display ${k==='email'?'full':''}"><span class="detail-value">${escape(u?.[k]||'—')}</span><span class="detail-label">${label}</span></div>`).join('')}</div>`,'')+section('two','Team',teamControls(),'',!ui.secondary);}
+ if(view==='person'||(ui.tab==='all'&&!['group','agent','optins','riders'].includes(view))){const u=selected(),own=u?.id===state.currentUserId;return section('one','Profile',`${pendingMarkup()}${own?'<div class="record-actions"><button class="text-button" data-action="edit-profile">Edit</button></div>':''}<div class="detail-grid">${[['first_name','First name'],['last_name','Last name'],['email','Email'],['sms','Phone'],['level','Account level'],['role','Team role']].map(([k,label])=>`<div class="detail-display ${k==='email'?'full':''}"><span class="detail-value">${escape(u?.[k]||'—')}</span><span class="detail-label">${label}</span></div>`).join('')}${locationField(u)}</div>`,'')+section('two','Team',teamControls(),'',!ui.secondary);}
  if(ui.tab==='team'&&!['group','agent','optins','riders'].includes(view)){const people=queryUsers(visiblePeople(),'',ui.sort);return section('one','Team',`${pendingMarkup()}${owner()?'<div class="record-actions"><button class="text-button" data-action="add-member">Add Team member</button></div>':''}${canonical.loaded?.roster===false?scopeMessage('roster','Team members'):personRows(people)}`,people.length)+section('two','Team settings',teamControls(),'');}
  return prototypeSections();
 }
@@ -374,7 +362,7 @@ function teamControls(){
  for(const i of canonical?.invitations||[]){if(i.userId!==state.currentUserId||i.status!=='pending')continue;const pending=canonical.pendingActions?.some(a=>a.invitationId===i.id&&!a.error);html+=`<p>${escape(canonical.teams?.find(t=>t.id===i.teamId)?.name||'Team')} invitation</p>${pending?'<p class="feedback">Pending confirmation…</p>':`<div class="record-actions">${button('accept-invite','Accept',{extra:`data-id="${escape(i.id)}"`})}${button('decline-invite','Decline',{extra:`data-id="${escape(i.id)}"`})}</div>`}`;}
  if(!own){html+='<p class="empty-result">No Team membership.</p>';if(p?.level==='Preferred'&&!p.hasMembership)html+=canonical.pendingActions?.some(a=>a.operation==='team_create'&&!a.error)?'<p class="feedback">Creating Team…</p>':button('create-team','Create Team');return html;}
  html+=`<p>${escape(state.tenant.name)} · ${escape(own.role)} · ${own.active?'Active':'Inactive'}</p>`;if(!own.active)return html;
- for(const m of canonical.memberships.filter(m=>m.teamId===own.teamId&&m.userId!==state.currentUserId)){const p=state.users.find(p=>p.id===m.userId);if(!p)continue;const hidden=(canonical.hidden||[]).some(x=>x[0]===state.currentUserId&&x[1]===own.teamId&&x[2]===m.userId);html+=`<div class="record-actions"><span>${escape(fullName(p))}</span>${m.active?button('hide-member',hidden?'Show':'Hide personally',{extra:`data-id="${escape(m.userId)}" data-value="${hidden?'show':'hide'}"`}):''}${owner()&&m.role==='Member'?button('member-status',m.active?'Mark inactive':'Mark active',{extra:`data-id="${escape(m.id)}"`}):''}</div>`;}
+ for(const m of canonical.memberships.filter(m=>m.teamId===own.teamId&&m.userId!==state.currentUserId)){const p=state.users.find(p=>p.id===m.userId);if(!p)continue;const hidden=(canonical.hidden||[]).some(x=>x[0]===state.currentUserId&&x[1]===own.teamId&&x[2]===m.userId);html+=`<div class="record-actions"><span>${escape(fullName(p))}</span>${m.active?button('hide-member',hidden?'Show':'Hide',{variant:'quiet',extra:`data-id="${escape(m.userId)}" data-value="${hidden?'show':'hide'}"`}):''}${owner()&&m.role==='Member'?button('member-status',m.active?'Active':'Inactive',{variant:'quiet',extra:`data-id="${escape(m.id)}"`}):''}</div>`;}
  for(const i of canonical.invitations||[])if(i.teamId===own.teamId&&i.status==='pending')html+=`<p class="feedback">Invitation pending: ${escape(fullName(state.users.find(p=>p.id===i.userId)))}</p>`;
  return html;
 }
@@ -397,7 +385,7 @@ function acceptConnected(next,error){
  if(previous!==following){delete document.body.dataset.mobileScroll;accountGeneration++;scopeErrors={};clearTimeout(noticeTimer);$('#notice').hidden=true;closeDialog();selectedId=following;query='';draftPhoto='';ui={...defaults,collapsed:{},activity:[]};if(following){try{ui={...ui,...JSON.parse(localStorage.getItem(UI_KEY+following)||'{}'),activity:[],agentMessages:[],horses:JSON.parse(localStorage.getItem('rs_profile_v3_horses:'+following)||'[]')};}catch{}}optinData=freshOptins();optinDirty=false;optinGroup=null;optinFeedback='';if(following){try{const raw=localStorage.getItem(optinKey+':'+following);if(raw)optinData=decodeOptins(raw);}catch{}}}
  if(previous!==following&&following){applyNavigationParams();if(!website)$('#app').hidden=false;}
  canonical=next;state=presentation(next);loading=false;connectionError=error?.message||'';if(!canRead(next,selectedId))selectedId=state.currentUserId;
- render();void recognizeWidget?.refresh().catch(()=>{});if(error&&state.recognized)notice((canonical?.pendingSave?'Pending: ':'Unable to load: ')+error.message);
+ render();void recognizeWidget?.refresh().then(syncIdentityButton).catch(()=>{});if(error&&state.recognized)notice((canonical?.pendingSave?'Pending: ':'Unable to load: ')+error.message);
 }
 function scopeMessage(scope,label){return `<p class="feedback" role="status">${escape(scopeErrors[scope]||'Loading '+label+'…')}</p>${scopeErrors[scope]?button('retry-scope','Retry',{extra:`data-value="${scope}"`}):''}`;}
 async function requestScope(scope,priority=false){if(!state.recognized)return;const generation=accountGeneration;delete scopeErrors[scope];try{await connection.load(scope,{priority,background:!priority});}catch(error){if(generation===accountGeneration){scopeErrors[scope]=error.message;render();}}}
@@ -414,9 +402,11 @@ function handleDataAction(e){const b=e.target.closest('[data-action]');if(!b||!s
 document.addEventListener('click',handleDataAction);
 document.addEventListener('submit',e=>{const form=e.target,fd=new FormData(form);if(form.id==='invite-form'&&owner()){queueSave('invitation_create',{userId:String(fd.get('userId'))});closeDialog();}if(form.id==='team-form'){queueSave('team_create',{name:String(fd.get('name')||'').trim()});closeDialog();}});
 connection=createConnection(service,recognitionAdapter,acceptConnected);
+function syncIdentityButton(){const button=recognizeRoot.shadowRoot?.querySelector('#launcher');if(!button)return;const open=state.recognized&&!$('#app').hidden;button.setAttribute('aria-pressed',String(open));if(state.recognized){button.setAttribute('aria-expanded',String(open));button.setAttribute('aria-label','Profile');}}
 recognizeWidget=mountRecognize(recognizeRoot,{
+ profileIcon:icon('user'),onProfile:()=>launch('profile'),
  css:'@import url("/test/rs-profile-v3/primitives.css");@import url("/test/rs-profile-v3/styles.css");',
- markup:`<form id="signin" class="v3-panel" data-height="content" data-placement="floating" aria-label="Sign in" hidden><header class="stack stack-top"><div class="back-row" data-stack="back" aria-hidden="true"></div>${brand().replace('data-action="close"','id="close" type="button"').replace('Close Profile','Close sign in')}</header><div class="stack-scroll"><div class="stack stack-body"><section class="section" data-stack="section"><div class="form-grid"><div class="field"><input id="credential" name="credential" aria-label="Phone, PIN, or Invite" placeholder="Phone, PIN, or Invite" autocomplete="off" inputmode="numeric" required></div><p class="form-error" id="error" role="alert"></p></div></section></div></div><footer class="footer-row" data-stack="footer"><button class="ui-button primary" data-variant="primary" type="submit">Sign in</button></footer></form><button id="launcher" type="button" aria-controls="signin" aria-expanded="false"></button>`,
+ markup:`<form id="signin" class="v3-panel" data-height="content" data-placement="floating" aria-label="Sign in" hidden><header class="stack stack-top"><div class="back-row" data-stack="back" aria-hidden="true"></div>${brand().replace('data-action="close"','id="close" type="button"').replace('Close Profile','Close sign in')}</header><div class="stack-scroll"><div class="stack stack-body"><section class="section" data-stack="section"><div class="form-grid"><div class="field"><input id="credential" name="credential" aria-label="Phone, PIN, or Invite" placeholder="Phone, PIN, or Invite" autocomplete="off" inputmode="numeric" required></div><p class="form-error" id="error" role="alert"></p><button class="ui-button primary" data-variant="primary" type="submit">Sign in</button></div></section></div></div><footer class="footer-row" data-stack="footer" aria-hidden="true"></footer></form><button id="launcher" type="button" aria-controls="signin" aria-expanded="false"></button>`,
  adapter:{current:async()=>state.currentUserId,recognize:async value=>(await connection.login(value))?.identity?.currentId||null,signOut:()=>connection.signOut()},onRecognized:()=>{render();void prepareTeam();}});
 let stopRefresh=null;
 function beginRefresh(){if(!stopRefresh&&!libraryPage)stopRefresh=startProfileRefresh({refresh:()=>service.refreshProfile(),ready:()=>state.recognized});}
@@ -432,13 +422,70 @@ if(website){
   boundsPending=false;
   const roots=[$('#app'),launcherRoot.ownerDocument===document?launcherRoot:null,$('#dialog'),$('#notice'),scheduleFrame];
   if(!recognizeRoot.hidden)roots.push(...recognizeRoot.shadowRoot.querySelectorAll('#signin,#launcher'));
-  const boxes=roots.filter(el=>el&&!el.hidden&&(el.tagName!=='DIALOG'||el.open)).map(el=>el===scheduleFrame&&scheduleBox?scheduleBox:el.getBoundingClientRect()).filter(r=>r.width&&r.height);
+  const boxes=roots.filter(el=>el&&(!el.hidden||el.getAnimations().some(a=>a.playState==='running'))&&(el.tagName!=='DIALOG'||el.open)).map(el=>el===scheduleFrame&&scheduleBox?scheduleBox:el.getBoundingClientRect()).filter(r=>r.width&&r.height);
   const top=boxes.length?Math.max(0,Math.min(...boxes.map(r=>r.top))-4):innerHeight;
   const left=boxes.length?Math.max(0,Math.min(...boxes.map(r=>r.left))-4):innerWidth;
   const right=boxes.length?Math.max(0,innerWidth-Math.max(...boxes.map(r=>r.right))-4):0;
   const bottom=boxes.length?Math.max(0,innerHeight-Math.max(...boxes.map(r=>r.bottom))-4):0;
-  const launcherHeight=hostSchedule&&mobileLauncher.matches&&!launcherRoot.hidden&&$('#app').hidden?launcherRoot.getBoundingClientRect().height:0;
-  parent.postMessage({type:'rs-profile-bounds',top,right,bottom,left,...(hostSchedule?{launcherHeight}:{})},location.origin);
+  const drawerPanels=[$('#app'),recognizeRoot.shadowRoot.querySelector('#signin')];
+  const animating=drawerPanels.some(el=>el.getAnimations().some(a=>a.playState==='running'));
+  const appOpen=drawerPanels.some(el=>!el.hidden)||animating||!!(scheduleFrame&&!scheduleFrame.hidden);
+  const theme=scheduleFrame&&!scheduleFrame.hidden?scheduleFrame.contentDocument?.documentElement.dataset.theme:document.documentElement.dataset.theme;
+  if(document.body.dataset.appOpen!==String(appOpen))document.body.dataset.appOpen=String(appOpen);
+  const launcherHeight=hostSchedule&&!residentLauncherSlot&&mobileLauncher.matches&&!launcherRoot.hidden&&$('#app').hidden?launcherRoot.getBoundingClientRect().height:0;
+  parent.postMessage({type:'rs-profile-bounds',top,right,bottom,left,appOpen,theme,...(hostSchedule?{launcherHeight}:{})},location.origin);
+  if(animating)reportBounds();
  });};
- const observer=new MutationObserver(reportBounds);observer.observe(document.body,{subtree:true,childList:true,attributes:true});observer.observe(recognizeRoot.shadowRoot,{subtree:true,childList:true,attributes:true});const resizeObserver=new ResizeObserver(reportBounds);[$('#app'),launcherRoot,$('#dialog'),...recognizeRoot.shadowRoot.querySelectorAll('#signin,#launcher')].forEach(el=>resizeObserver.observe(el));addEventListener('resize',reportBounds);reportBounds();
+ const observer=new MutationObserver(reportBounds);observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});observer.observe(document.body,{subtree:true,childList:true,attributes:true});observer.observe(recognizeRoot.shadowRoot,{subtree:true,childList:true,attributes:true});const resizeObserver=new ResizeObserver(reportBounds);[$('#app'),launcherRoot,$('#dialog'),...recognizeRoot.shadowRoot.querySelectorAll('#signin,#launcher')].forEach(el=>resizeObserver.observe(el));addEventListener('resize',reportBounds);reportBounds();
 }
+
+// Lock standalone desktop page scrolling only while its existing drawer is visible.
+const drawerDesktop=matchMedia('(min-width:601px)');
+let drawerScrollState=null;
+function syncDrawerScroll(){
+ const open=drawerDesktop.matches&&[$('#app'),recognizeRoot.shadowRoot?.querySelector('#signin')].some(el=>el&&getComputedStyle(el).display!=='none');
+ if(open&&!drawerScrollState){drawerScrollState={x:scrollX,y:scrollY,overflow:document.body.style.overflow};document.body.style.overflow='hidden';}
+ else if(!open&&drawerScrollState){const saved=drawerScrollState;drawerScrollState=null;document.body.style.overflow=saved.overflow;window.scrollTo(saved.x,saved.y);}
+}
+const drawerObserver=new MutationObserver(syncDrawerScroll);
+for(const el of [$('#app'),recognizeRoot.shadowRoot.querySelector('#signin')]){drawerObserver.observe(el,{attributes:true,attributeFilter:['hidden']});el.addEventListener('transitionend',syncDrawerScroll);el.addEventListener('transitioncancel',syncDrawerScroll);}
+drawerDesktop.addEventListener('change',syncDrawerScroll);syncDrawerScroll();
+
+// Location permission is device-local; this control never saves or sends coordinates.
+let locationPermission='prompt',locationRequest=0,locationBusy=false;
+function locationField(user){
+ if(user?.id!==state.currentUserId)return '';
+ const enabled=ui.locationAllowed?.[state.currentUserId]===true&&locationPermission==='granted';
+ return `<div class="detail-display" data-location-field><span class="detail-label">Location</span><label class="visibility-row"><span>Allow precise location</span><input type="checkbox" data-location-permission ${enabled?'checked':''} ${locationBusy?'disabled':''}></label><span class="detail-label">Your browser will ask for permission.</span><button type="button" class="text-button" data-action="location-policy">Location privacy policy</button></div>`;
+}
+function updateLocationField(){
+ const input=document.querySelector('[data-location-permission]');
+ if(input){input.checked=ui.locationAllowed?.[state.currentUserId]===true&&locationPermission==='granted';input.disabled=locationBusy;}
+}
+async function readLocationPermission(){
+ try{const permission=await navigator.permissions.query({name:'geolocation'});locationPermission=permission.state;updateLocationField();permission.onchange=()=>{locationPermission=permission.state;updateLocationField();};}catch{}
+}
+document.addEventListener('change',event=>{
+ const input=event.target;if(!input.matches('[data-location-permission]'))return;
+ const person=state.currentUserId,preferences=ui,request=++locationRequest;
+ if(!person)return;
+ if(!input.checked){ui.locationAllowed={...ui.locationAllowed,[person]:false};saveUI();locationBusy=false;updateLocationField();return;}
+ input.checked=false;
+ if(!navigator.geolocation){notice('Location is unavailable in this browser.');return;}
+ locationBusy=true;updateLocationField();
+ const finish=allowed=>{
+  if(request!==locationRequest)return;locationBusy=false;
+  if(!state.recognized||state.currentUserId!==person||ui!==preferences){updateLocationField();return;}
+  ui.locationAllowed={...ui.locationAllowed,[person]:allowed};saveUI();
+  if(allowed)locationPermission='granted';updateLocationField();
+ };
+ navigator.geolocation.getCurrentPosition(()=>finish(true),error=>{
+  finish(false);if(state.recognized&&state.currentUserId===person&&ui===preferences)notice(error.code===1?'Location was not allowed. You can change this in your browser site settings.':'Location is unavailable. Try again.');
+ },{enableHighAccuracy:true,timeout:10000,maximumAge:0});
+});
+document.addEventListener('click',event=>{
+ if(!event.target.closest('[data-action="location-policy"]'))return;
+ openDialog('Location privacy policy','<p class="dialog-note">Precise location is optional. Checking this box requests location permission from your browser for this device. This control does not store or send the returned coordinates.</p><p class="dialog-note">Your choice is saved on this device for your Profile. Unchecking stops requests from this control; it does not revoke browser permission. You can revoke permission in your browser site settings. The existing approximate GeoIP lookup is separate and unchanged.</p><div class="dialog-actions">'+button('dialog-close','Done',{variant:'primary'})+'</div>','button');
+});
+void readLocationPermission();
+addEventListener('focus',readLocationPermission);

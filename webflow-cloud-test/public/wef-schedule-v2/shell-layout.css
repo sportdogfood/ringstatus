@@ -8,15 +8,9 @@
 .v2-page-nav{display:flex;gap:8px;padding-block:8px}
 .rings-pill{flex:0 0 auto}
 .rings-shell-footer{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(min-width:601px){
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden])){display:grid;grid-template-columns:minmax(0,1fr) 86px;grid-template-rows:auto minmax(0,1fr) auto auto auto}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.stack-top{grid-column:1;grid-row:1}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.stack-scroll{grid-column:1;grid-row:2}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.rings-horse-actions{grid-column:1;grid-row:3}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.v2-page-nav{grid-column:1;grid-row:4}
- .rings-shell:has(>[data-profile-launcher-slot]>#widget:not([hidden]))>.footer-row{grid-column:1;grid-row:5}
- .rings-shell>[data-profile-launcher-slot]:not([hidden]){grid-column:2;grid-row:1/-1;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
-}
+/* Shared launcher stays horizontal in its existing shell slot. */
+.rings-shell>[data-profile-launcher-slot]:not([hidden]){display:flex;flex-shrink:0;min-width:0;overflow:hidden}
+.rings-shell>[data-profile-launcher-slot]>.launcher-widget{width:100%;max-width:100%}
 @media(max-width:600px){:root .v3-panel[data-width="schedule"]{width:100%;max-width:100%;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;box-shadow:none}.v2-page-nav,.rings-horse-actions{margin-inline:16px}}
 
 :where(.rings-app) :where(button:not(.ui-button):not(.icon-button)){border:0;font:inherit;color:inherit;cursor:pointer}
