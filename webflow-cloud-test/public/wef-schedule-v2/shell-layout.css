@@ -46,6 +46,11 @@
 
 :root:has(.rings-app[data-embedded="true"]),.rings-app[data-embedded="true"]{background:transparent}
 
+@media(max-width:600px){
+ .rings-shell[data-phone-scrolled="true"]>.stack-top>.back-row,
+ .rings-shell[data-phone-scrolled="true"]>.footer-row{display:none}
+}
+
 .v2-trainer-handle{display:none}
 @media(max-width:600px){
  .v2-trainer-handle{display:block}
