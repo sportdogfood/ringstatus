@@ -16,8 +16,14 @@ export function mountRecognize(root,{adapter,css=screenCss+widgetCss,markup=null
  launcher.addEventListener('click',()=>{interaction++;if(userId){onProfile(userId);return}show(panel.hidden)});$('#close').addEventListener('click',()=>{interaction++;show(false)});
  shadow.addEventListener('keydown',event=>{if(event.key==='Escape'&&!panel.hidden){interaction++;show(false);event.stopPropagation();}});
  input.addEventListener('input',()=>{error.textContent='';input.removeAttribute('aria-invalid')});
- shadow.querySelector('form').addEventListener('submit',async e=>{e.preventDefault();if(busy)return;generation++;busy=true;const button=shadow.querySelector('.primary');button.disabled=true;try{const found=identity(await adapter.recognize(input.value));input.value='';if(!found){error.textContent='That phone, PIN, or invite was not found.';input.setAttribute('aria-invalid','true');return}userId=found;error.textContent='';paint();show(false);onRecognized(userId)}catch{error.textContent='Sign in is unavailable. Try again.'}finally{busy=false;button.disabled=false}});
+ shadow.querySelector('form').addEventListener('submit',async e=>{e.preventDefault();if(busy)return;generation++;busy=true;const button=shadow.querySelector('.primary');button.disabled=true;button.setAttribute('aria-busy','true');try{const found=identity(await adapter.recognize(input.value));input.value='';if(!found){error.textContent='That phone, PIN, or invite was not found.';input.setAttribute('aria-invalid','true');return}userId=found;error.textContent='';paint();show(false);onRecognized(userId)}catch{error.textContent='Sign in is unavailable. Try again.'}finally{busy=false;button.disabled=false;button.removeAttribute('aria-busy')}});
  async function signOut(){generation++;const work=adapter.signOut();userId=null;input.value='';error.textContent='';paint();show(true);onSignedOut();await work}
+ const viewport=globalThis.visualViewport;
+ function fitViewport(){
+  root.style.setProperty('--recognize-viewport-height',`${viewport?.height||innerHeight}px`);
+  root.style.setProperty('--recognize-viewport-top',`${viewport?.offsetTop||0}px`);
+ }
+ viewport?.addEventListener('resize',fitViewport);viewport?.addEventListener('scroll',fitViewport);fitViewport();
  paint();
- return {refresh,signOut,requestCredential:()=>{interaction++;show(true)},getUserId:()=>userId,destroy:()=>{shadow.replaceChildren()}};
+ return {refresh,signOut,requestCredential:()=>{interaction++;show(true)},getUserId:()=>userId,destroy:()=>{viewport?.removeEventListener('resize',fitViewport);viewport?.removeEventListener('scroll',fitViewport);shadow.replaceChildren()}};
 }

@@ -17,15 +17,16 @@ let launcherDrag=null,launcherDragged=false;
 launcherRoot.addEventListener('pointerdown',event=>{
  launcherDragged=false;
  const strip=event.target.closest('.launcher-scroll');
- if(event.pointerType!=='mouse'||event.button!==0||!strip||strip.scrollWidth<=strip.clientWidth)return;
- launcherDrag={strip,id:event.pointerId,x:event.clientX,left:strip.scrollLeft};
+ const vertical=strip&&getComputedStyle(strip).flexDirection==='column';
+ if(event.pointerType!=='mouse'||event.button!==0||!strip||(vertical?strip.scrollHeight<=strip.clientHeight:strip.scrollWidth<=strip.clientWidth))return;
+ launcherDrag={strip,id:event.pointerId,vertical,start:vertical?event.clientY:event.clientX,offset:vertical?strip.scrollTop:strip.scrollLeft};
 });
 launcherRoot.addEventListener('pointermove',event=>{
  const drag=launcherDrag;if(!drag||event.pointerId!==drag.id)return;
- const delta=event.clientX-drag.x;if(!launcherDragged&&Math.abs(delta)<5)return;
+ const delta=(drag.vertical?event.clientY:event.clientX)-drag.start;if(!launcherDragged&&Math.abs(delta)<5)return;
  launcherDragged=true;launcherRoot.setPointerCapture(event.pointerId);event.preventDefault();
  const scale=drag.strip.getBoundingClientRect().width/drag.strip.offsetWidth;
- drag.strip.scrollLeft=drag.left-delta/(scale||1);
+ drag.strip[drag.vertical?'scrollTop':'scrollLeft']=drag.offset-delta/(scale||1);
 });
 function endLauncherDrag(event){if(launcherDrag?.id!==event.pointerId)return;launcherDrag=null;if(launcherRoot.hasPointerCapture(event.pointerId))launcherRoot.releasePointerCapture(event.pointerId);}
 launcherRoot.addEventListener('pointerup',endLauncherDrag);
@@ -35,6 +36,23 @@ launcherRoot.addEventListener('dragstart',event=>{if(event.target.closest('.laun
 launcherRoot.addEventListener('click',event=>{if(launcherDragged){event.preventDefault();event.stopImmediatePropagation();launcherDragged=false;}},true);
 function placeLauncher(){const panel=$('#app'),footer=panel.querySelector(':scope > .footer-row'),embedded=mobileLauncher.matches&&!panel.hidden&&!!footer;const parent=embedded?panel:$('#preview-stage');if(launcherRoot.parentElement!==parent){if(embedded)parent.insertBefore(launcherRoot,footer);else parent.append(launcherRoot);}document.body.dataset.launcherEmbedded=String(embedded);}
 mobileLauncher.addEventListener('change',placeLauncher);
+// Direction changes only affect shell rows; content stays mounted.
+function bindMobileScroll(){
+ const scroller=$('.stack-scroll');if(!scroller)return;
+ let travel=0,lastDirection=0,touchY=null;
+ function move(delta){
+  if(!mobileLauncher.matches||Math.abs(delta)<1)return;
+  const direction=Math.sign(delta);travel=direction===lastDirection?travel+Math.abs(delta):Math.abs(delta);lastDirection=direction;
+  if(travel<12)return;
+  document.body.dataset.mobileScroll=direction<0?'up':'down';travel=0;
+ }
+ // Read the user's direction, not layout-driven scrollTop clamping.
+ scroller.addEventListener('wheel',event=>move(event.deltaY),{passive:true});
+ scroller.addEventListener('touchstart',event=>{touchY=event.touches[0]?.clientY??null;},{passive:true});
+ scroller.addEventListener('touchmove',event=>{const y=event.touches[0]?.clientY;if(touchY!==null&&y!==undefined)move(touchY-y);touchY=y??null;},{passive:true});
+ scroller.addEventListener('keydown',event=>{if(event.target.matches('input,textarea,select'))return;if(['ArrowDown','PageDown'].includes(event.key))move(12);if(['ArrowUp','PageUp'].includes(event.key))move(-12);});
+}
+
 const previewParams=new URLSearchParams(location.search);
 const website=previewParams.get('website')==='1';document.body.dataset.website=String(website);
 const scheduleHref='/test/wef-schedule-v2/schedule';
@@ -50,21 +68,23 @@ function syncScheduleBounds(){
  scheduleFrame.style.clipPath=`inset(${top}px ${innerWidth-right}px ${innerHeight-bottom}px ${left}px round ${radius}px)`;
 }
 addEventListener('resize',syncScheduleBounds);
-function closeSchedule(){scheduleRequested=false;if(scheduleFrame)scheduleFrame.hidden=true;scheduleTrigger?.removeAttribute('aria-busy');if(scheduleTrigger?.isConnected)scheduleTrigger.focus({preventScroll:true});}
+function scheduleBusy(busy){for(const button of [scheduleTrigger,...document.querySelectorAll('a[href="'+scheduleHref+'"]')])if(button){if(busy)button.setAttribute('aria-busy','true');else button.removeAttribute('aria-busy');}}
+function scheduleFailed(){scheduleBusy(false);scheduleRequested=false;scheduleFrame?.remove();scheduleFrame=null;notice('Schedule could not load. Try again.');}
+function closeSchedule(){scheduleRequested=false;if(scheduleFrame)scheduleFrame.hidden=true;scheduleBusy(false);if(scheduleTrigger?.isConnected)scheduleTrigger.focus({preventScroll:true});}
 function openSchedule(trigger){
  if(!state.recognized)return;
  scheduleTrigger=trigger;scheduleRequested=true;
- if(scheduleFrame){if(scheduleReady){scheduleFrame.hidden=false;syncScheduleBounds();scheduleFrame.focus();}return;}
- trigger.setAttribute('aria-busy','true');
+ if(scheduleFrame){if(scheduleReady){scheduleFrame.hidden=false;syncScheduleBounds();scheduleFrame.focus();}else scheduleBusy(true);return;}
+ scheduleBusy(true);
  const frame=document.createElement('iframe');scheduleFrame=frame;frame.id='profile-schedule-view';frame.title='RingStatus Schedule';frame.hidden=true;
  frame.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;border:0;z-index:110;background:transparent';
  frame.addEventListener('load',()=>{
   if(frame!==scheduleFrame||!state.recognized)return;
-  const doc=frame.contentDocument;if(!doc)return;
+  const doc=frame.contentDocument;if(!doc?.querySelector('.rings-shell')){scheduleFailed();return;}
   doc.addEventListener('click',event=>{if(event.target.closest('.rings-profile-nav a,.back-row a.back-link')){event.preventDefault();event.stopImmediatePropagation();closeSchedule();}},true);
   const reveal=()=>{
    if(frame!==scheduleFrame||!state.recognized)return;
-   scheduleReady=true;scheduleTrigger?.removeAttribute('aria-busy');
+   scheduleReady=true;scheduleBusy(false);
    if(scheduleRequested){frame.hidden=false;syncScheduleBounds();frame.focus();}
    const shell=doc.querySelector('.rings-shell');
    if(shell){scheduleBoundsObserver?.disconnect();scheduleBoundsObserver=new ResizeObserver(syncScheduleBounds);scheduleBoundsObserver.observe(shell);}
@@ -72,6 +92,7 @@ function openSchedule(trigger){
   if(doc.documentElement.dataset.scheduleReady==='true')reveal();
   else doc.addEventListener('rs-schedule-ready',reveal,{once:true});
  });
+ frame.addEventListener('error',scheduleFailed);
  frame.src=scheduleHref;document.body.append(frame);
 }
 document.addEventListener('click',event=>{
@@ -128,7 +149,7 @@ function prototypeSections(){if(isOptinsView()&&state.recognized)return optinSec
  if(ui.tab==='outputs')return section('one','Outputs',outputRows(),owner()?2:1)+section('two','Activity','',0,true);
  return section('one','Recent activity',activityRows(),ui.activity.length)+section('two','Outputs',outputRows(),owner()?2:1,!ui.secondary||ui.tab==='activity');}
 
-function render(){const signedIn=libraryPage||state.recognized;document.body.dataset.recognized=String(signedIn);recognizeRoot.hidden=signedIn;$('#widget').hidden=!signedIn;$('#preview-links').hidden=!signedIn||website;if(!signedIn){$('#app').hidden=true;placeLauncher();$('#app').replaceChildren();return;}renderPreviewTools();const scroll=$('.stack-scroll')?.scrollTop||0;$('#preview-stage').append(launcherRoot);$('#app').innerHTML=v3Shell(v3Back(`<button class="back-link" data-action="back" ${!libraryPage&&view==='home'?'hidden':''}><span aria-hidden="true">‹</span> ${isOptinsView()&&optinGroup?'Opt-ins':'Back'}</button>`)+brand()+profileRow(),actionRow()+tabRow()+searchRow()+sections(),footer());placeLauncher();$('.stack-scroll').scrollTop=scroll;$('#app').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.innerHTML=icon('user');},{once:true}));syncNavigationLocation();}
+function render(){const signedIn=libraryPage||state.recognized;document.body.dataset.recognized=String(signedIn);recognizeRoot.hidden=signedIn;$('#widget').hidden=!signedIn;$('#preview-links').hidden=!signedIn||!previewParams.has('show-footer');if(!signedIn){$('#app').hidden=true;placeLauncher();$('#app').replaceChildren();return;}renderPreviewTools();const scroll=$('.stack-scroll')?.scrollTop||0;$('#preview-stage').append(launcherRoot);$('#app').innerHTML=v3Shell(v3Back(`<button class="back-link" data-action="back" ${!libraryPage&&view==='home'?'hidden':''}><span aria-hidden="true">‹</span> ${isOptinsView()&&optinGroup?'Opt-ins':'Back'}</button>`)+brand()+profileRow(),actionRow()+tabRow()+searchRow()+sections(),footer());placeLauncher();$('.stack-scroll').scrollTop=scroll;bindMobileScroll();$('#app').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.innerHTML=icon('user');},{once:true}));syncNavigationLocation();}
 
 function closeMenus(){if(activeMenu){const m=$('#'+activeMenu);if(m)m.hidden=true;document.querySelector(`[data-menu="${activeMenu}"]`)?.setAttribute('aria-expanded','false');activeMenu=null;}}
 function toggleMenu(id,trigger){const was=activeMenu===id;closeMenus();if(!was){const menu=$('#'+id);menu.hidden=false;trigger.setAttribute('aria-expanded','true');activeMenu=id;menu.style.position='fixed';menu.style.right='auto';menu.style.bottom='auto';menu.style.maxHeight=Math.max(100,innerHeight-32)+'px';const t=trigger.getBoundingClientRect(),r=menu.getBoundingClientRect();menu.style.left=Math.max(12,Math.min(t.right-r.width,innerWidth-r.width-12))+'px';const above=trigger.closest('.account-wrap')||t.bottom+r.height+8>innerHeight-12;menu.style.top=Math.max(12,Math.min(above?t.top-r.height-8:t.bottom+6,innerHeight-r.height-12))+'px';menu.querySelector('button')?.focus();}}
@@ -255,8 +276,8 @@ if(!libraryPage){if(view!=='optins')ui.group='team';if(!['agent','optins','horse
 applyNavigationParams();
 render();
 
-function renderPreviewTools(){const theme=document.documentElement.dataset.theme,size=document.documentElement.dataset.size,current=location.pathname;const href=(path,params={})=>path+'?'+new URLSearchParams({theme,size,...(['agent','optins'].includes(view)&&path===current?{screen:view}:{}),...(['horses','riders'].includes(view)&&path===current?{roster:view}:{}),...(view==='group'&&path===current?{group:ui.group}:{}),...params});$('#preview-links').innerHTML=[['icons',href('/test/rs-profile-v3/icon-library/')],['components',href('/test/rs-profile-v3/component-library/')],['desktop lite',href(current,{size:'desktop',theme:'light'})],['desktop dark',href(current,{size:'desktop',theme:'dark'})],['<393 lite',href(current,{size:'compact',theme:'light'})],['<393 dark',href(current,{size:'compact',theme:'dark'})]].map(([label,url])=>`<a href="${escape(url)}">${escape(label)}</a>`).join('<span aria-hidden="true"> | </span>')+'<span aria-hidden="true"> | </span><button class="text-button" data-action="components">components-prefs</button>';
-const dockScroll=$('#widget .launcher-scroll')?.scrollLeft||0;$('#widget').innerHTML=launcherMarkup();$('#widget .launcher-scroll').scrollLeft=dockScroll;placeLauncher();}
+function renderPreviewTools(){const theme=document.documentElement.dataset.theme,size=document.documentElement.dataset.size,current=location.pathname;const href=(path,params={})=>path+'?'+new URLSearchParams({theme,size,...(previewParams.has('show-footer')?{'show-footer':''}:{}),...(['agent','optins'].includes(view)&&path===current?{screen:view}:{}),...(['horses','riders'].includes(view)&&path===current?{roster:view}:{}),...(view==='group'&&path===current?{group:ui.group}:{}),...params});$('#preview-links').innerHTML=[['icons',href('/test/rs-profile-v3/icon-library/')],['components',href('/test/rs-profile-v3/component-library/')],['desktop lite',href(current,{size:'desktop',theme:'light'})],['desktop dark',href(current,{size:'desktop',theme:'dark'})],['<393 lite',href(current,{size:'compact',theme:'light'})],['<393 dark',href(current,{size:'compact',theme:'dark'})]].map(([label,url])=>`<a href="${escape(url)}">${escape(label)}</a>`).join('<span aria-hidden="true"> | </span>')+'<span aria-hidden="true"> | </span><button class="text-button" data-action="components">components-prefs</button>';
+const strip=$('#widget .launcher-scroll'),left=strip?.scrollLeft||0,top=strip?.scrollTop||0;$('#widget').innerHTML=launcherMarkup();$('#widget .launcher-scroll').scrollLeft=left;$('#widget .launcher-scroll').scrollTop=top;scheduleBusy(scheduleRequested&&!scheduleReady);placeLauncher();}
 function launcherMarkup(){const open=!$('#app').hidden;const items=coordinatedLauncher.map(([key,label,glyph])=>key==='schedule'?`<a class="icon-button" target="_self" href="${scheduleHref}" aria-label="${label}" title="${label}">${icon(glyph)}</a>`:`<button class="icon-button" data-action="launch" data-value="${key}" aria-label="${label}" title="${label}" aria-pressed="${open&&(key==='profile'||key===currentDestination())}" aria-controls="app" ${key==='profile'?`aria-expanded="${open}"`:''}>${icon(glyph)}</button>`);return items[0]+`<div class="launcher-scroll">${items.slice(1).join('')}</div>`;}
 
 function launch(destination){closeDialog();if(libraryPage&&['profile','team','shows','waze','logs','agent','horses','riders'].includes(destination)){location.assign('/test/rs-profile-v3/?'+new URLSearchParams({theme:document.documentElement.dataset.theme,size:document.documentElement.dataset.size,tab:['team','horses','riders'].includes(destination)?'team':'all',...(destination==='agent'?{screen:'agent'}:{}),...(['horses','riders'].includes(destination)?{roster:destination}:{}),...(['shows','waze','logs'].includes(destination)?{group:destination}:{})}));return;}if(destination==='profile'){const panel=$('#app');panel.hidden=!panel.hidden;renderPreviewTools();return;}ui.launcher=destination;$('#app').hidden=false;if(['shows','waze','logs'].includes(destination)){openGroup(destination);return;}if(['horses','riders'].includes(destination)){view=destination;ui.group='team';ui.tab='team';selectedId=state.currentUserId;saveUI();render();return;}if(destination==='agent'){view='agent';saveUI();render();return;}if(destination==='profile'||destination==='team'){ui.group='team';ui.tab=destination==='team'?'team':'all';view='kitchen';selectedId=state.currentUserId;saveUI();render();return;}if(destination==='logout'){void signOutConnected(true);return;}render();openDialog(destination==='alarm'?'Alarm':'Alerts','<p class="dialog-note">Not configured.</p>'+button('dialog-close','Done',{variant:'primary'}),'button');}
@@ -343,7 +364,7 @@ async function signOutConnected(login){closeDialog();const work=connection.signO
 function acceptConnected(next,error){
  const previous=state.currentUserId,following=next?.identity?.currentId||null;
  if(previous!==following){scheduleBoundsObserver?.disconnect();scheduleBoundsObserver=null;scheduleBox=null;scheduleFrame?.remove();scheduleFrame=null;scheduleReady=false;scheduleRequested=false;scheduleTrigger=null;}
- if(previous!==following){accountGeneration++;scopeErrors={};clearTimeout(noticeTimer);$('#notice').hidden=true;closeDialog();selectedId=following;query='';draftPhoto='';ui={...defaults,collapsed:{},activity:[]};if(following){try{ui={...ui,...JSON.parse(localStorage.getItem(UI_KEY+following)||'{}'),activity:[],agentMessages:[],horses:JSON.parse(localStorage.getItem('rs_profile_v3_horses:'+following)||'[]')};}catch{}}optinData=freshOptins();optinDirty=false;optinGroup=null;optinFeedback='';if(following){try{const raw=localStorage.getItem(optinKey+':'+following);if(raw)optinData=decodeOptins(raw);}catch{}}}
+ if(previous!==following){delete document.body.dataset.mobileScroll;accountGeneration++;scopeErrors={};clearTimeout(noticeTimer);$('#notice').hidden=true;closeDialog();selectedId=following;query='';draftPhoto='';ui={...defaults,collapsed:{},activity:[]};if(following){try{ui={...ui,...JSON.parse(localStorage.getItem(UI_KEY+following)||'{}'),activity:[],agentMessages:[],horses:JSON.parse(localStorage.getItem('rs_profile_v3_horses:'+following)||'[]')};}catch{}}optinData=freshOptins();optinDirty=false;optinGroup=null;optinFeedback='';if(following){try{const raw=localStorage.getItem(optinKey+':'+following);if(raw)optinData=decodeOptins(raw);}catch{}}}
  if(previous!==following&&following){applyNavigationParams();if(!website)$('#app').hidden=false;}
  canonical=next;state=presentation(next);loading=false;connectionError=error?.message||'';if(!canRead(next,selectedId))selectedId=state.currentUserId;
  render();void recognizeWidget?.refresh().catch(()=>{});if(error&&state.recognized)notice((canonical?.pendingSave?'Pending: ':'Unable to load: ')+error.message);

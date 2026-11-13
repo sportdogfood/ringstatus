@@ -2,7 +2,7 @@
 if(!document.getElementById('rs-profile-v3-frame')){
  const website=location.pathname.replace(/\/$/,'')!=='/profile';
  const frame=document.createElement('iframe');frame.id='rs-profile-v3-frame';frame.title='RingStatus Profile';
- frame.src='/test/rs-profile-v3/'+(website?'?website=1':location.search);
+ frame.src='/test/rs-profile-v3/'+(website?'?website=1'+(new URLSearchParams(location.search).has('show-footer')?'&show-footer':''):location.search);
  frame.style.cssText='display:block;position:fixed;inset:0;width:100%;height:100dvh;border:0;z-index:10000;'+(website?'clip-path:inset(100%);background:transparent;':'');
  if(website){
   addEventListener('message',event=>{
@@ -19,5 +19,8 @@ if(!document.getElementById('rs-profile-v3-frame')){
    }
   });
  }
+ const viewport=window.visualViewport;
+ const fitViewport=()=>{const phone=matchMedia('(max-width:600px)').matches;frame.style.height=phone&&viewport?`${viewport.height}px`:'100dvh';frame.style.top=phone&&viewport?`${viewport.offsetTop}px`:'0';};
+ viewport?.addEventListener('resize',fitViewport);viewport?.addEventListener('scroll',fitViewport);addEventListener('resize',fitViewport);fitViewport();
  document.body.append(frame);
 }
