@@ -83,6 +83,7 @@ body[data-website="true"],body[data-website="true"] .preview-stage{background:tr
  :root:not([data-size="compact"]) .preview-stage{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr);padding:16px;gap:18px}
  :root:not([data-size="compact"]) :is(.v3-panel,.launcher-widget,.ui-dialog,body>.rings-surface,body>.v2-filter-menu),:host(:not([data-size="compact"])) :is(.v3-panel,#launcher){zoom:var(--rs-presentation-scale);max-width:calc((100vw - 32px)/var(--rs-presentation-scale))}
  :host(:not([data-size="compact"])) .v3-panel{right:16px;bottom:98px;max-height:calc((100dvh - 171px)/var(--rs-presentation-scale))}
+ :host #signin.v3-panel{width:420px}
  :root:not([data-size="compact"]) .ui-dialog{max-height:calc((100dvh - 32px)/var(--rs-presentation-scale))}
 }
 /* Optional striped list treatment shared by consuming screens. */
