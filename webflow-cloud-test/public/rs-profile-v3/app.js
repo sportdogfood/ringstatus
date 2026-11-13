@@ -454,7 +454,7 @@ const drawerObserver=new MutationObserver(syncDrawerScroll);
 for(const el of [$('#app'),recognizeRoot.shadowRoot.querySelector('#signin')]){drawerObserver.observe(el,{attributes:true,attributeFilter:['hidden']});el.addEventListener('transitionend',syncDrawerScroll);el.addEventListener('transitioncancel',syncDrawerScroll);}
 drawerDesktop.addEventListener('change',syncDrawerScroll);syncDrawerScroll();
 
-// Location permission is device-local; this control never saves or sends coordinates.
+// Location uses the existing scoped Astro location endpoint.
 let locationPermission='prompt',locationRequest=0,locationBusy=false;
 function locationField(user){
  if(user?.id!==state.currentUserId)return '';
@@ -466,29 +466,29 @@ function updateLocationField(){
  if(input){input.checked=ui.locationAllowed?.[state.currentUserId]===true&&locationPermission==='granted';input.disabled=locationBusy;}
 }
 async function readLocationPermission(){
- try{const permission=await navigator.permissions.query({name:'geolocation'});locationPermission=permission.state;updateLocationField();permission.onchange=()=>{locationPermission=permission.state;updateLocationField();};}catch{}
+ try{const permission=await navigator.permissions.query({name:'geolocation'});locationPermission=permission.state;updateLocationField();permission.onchange=()=>{locationPermission=permission.state;if(permission.state!=='granted'){locationRequest++;locationBusy=false;void service.updateProfileLocation(null);}updateLocationField();};}catch{}
 }
 document.addEventListener('change',event=>{
  const input=event.target;if(!input.matches('[data-location-permission]'))return;
  const person=state.currentUserId,preferences=ui,request=++locationRequest;
  if(!person)return;
- if(!input.checked){ui.locationAllowed={...ui.locationAllowed,[person]:false};saveUI();locationBusy=false;updateLocationField();return;}
+ if(!input.checked){ui.locationAllowed={...ui.locationAllowed,[person]:false};saveUI();locationBusy=false;updateLocationField();void service.updateProfileLocation(null);return;}
  input.checked=false;
  if(!navigator.geolocation){notice('Location is unavailable in this browser.');return;}
  locationBusy=true;updateLocationField();
  const finish=allowed=>{
-  if(request!==locationRequest)return;locationBusy=false;
-  if(!state.recognized||state.currentUserId!==person||ui!==preferences){updateLocationField();return;}
+  if(request!==locationRequest)return false;locationBusy=false;
+  if(!state.recognized||state.currentUserId!==person||ui!==preferences){updateLocationField();return false;}
   ui.locationAllowed={...ui.locationAllowed,[person]:allowed};saveUI();
-  if(allowed)locationPermission='granted';updateLocationField();
+  if(allowed)locationPermission='granted';updateLocationField();return true;
  };
- navigator.geolocation.getCurrentPosition(()=>finish(true),error=>{
-  finish(false);if(state.recognized&&state.currentUserId===person&&ui===preferences)notice(error.code===1?'Location was not allowed. You can change this in your browser site settings.':'Location is unavailable. Try again.');
+ navigator.geolocation.getCurrentPosition(position=>{if(finish(true))void service.updateProfileLocation({latitude:position.coords.latitude,longitude:position.coords.longitude,accuracy:position.coords.accuracy,observedAt:new Date(position.timestamp||Date.now()).toISOString()});},error=>{
+  if(!finish(false))return;void service.updateProfileLocation(null);if(state.recognized&&state.currentUserId===person&&ui===preferences)notice(error.code===1?'Location was not allowed. You can change this in your browser site settings.':'Location is unavailable. Try again.');
  },{enableHighAccuracy:true,timeout:10000,maximumAge:0});
 });
 document.addEventListener('click',event=>{
  if(!event.target.closest('[data-action="location-policy"]'))return;
- openDialog('Location privacy policy','<p class="dialog-note">Precise location is optional. Checking this box requests location permission from your browser for this device. This control does not store or send the returned coordinates.</p><p class="dialog-note">Your choice is saved on this device for your Profile. Unchecking stops requests from this control; it does not revoke browser permission. You can revoke permission in your browser site settings. The existing approximate GeoIP lookup is separate and unchanged.</p><div class="dialog-actions">'+button('dialog-close','Done',{variant:'primary'})+'</div>','button');
+ openDialog('Location privacy policy','<p class="dialog-note">Precise location is optional. Checking this box requests location permission from your browser for this device. When allowed, coordinates are sent through the existing RingStatus Astro connection and saved to your Profile in Airtable, with a working copy on this device. Approximate GeoIP is used when precise location is unavailable.</p><p class="dialog-note">Your choice is saved on this device for your Profile. Unchecking stops requests from this control; it does not revoke browser permission. You can revoke permission in your browser site settings. Unchecking clears the current location cache and uses approximate GeoIP instead. Previously captured logs remain pending until saved, and confirmed location history is retained.</p><div class="dialog-actions">'+button('dialog-close','Done',{variant:'primary'})+'</div>','button');
 });
 void readLocationPermission();
 addEventListener('focus',readLocationPermission);

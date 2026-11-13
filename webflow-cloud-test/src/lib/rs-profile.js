@@ -159,15 +159,45 @@ async function saveTeamOperation(c,body,eventId,inputHash,saved){
  }});
 }
 
+async function lastLoggedLocation(call,uid){
+ const rows=await call(TABLE.events,{formula:`AND({actor_uid} = '${quote(uid)}', {kind} = 'profile-location', {outcome} = 'confirmed')`,fresh:true,latestLocation:true});
+ const locations=rows.filter(r=>r.fields.actor_uid===uid&&r.fields.kind==='profile-location'&&r.fields.outcome==='confirmed').map(row=>{try{return JSON.parse(row.fields.result_json);}catch{return null;}}).filter(g=>g&&Number.isFinite(g.latitude)&&Number.isFinite(g.longitude)&&Math.abs(g.latitude)<=90&&Math.abs(g.longitude)<=180&&Number.isFinite(Date.parse(g.observedAt)));
+ locations.sort((a,b)=>Date.parse(b.observedAt)-Date.parse(a.observedAt));
+ const g=locations[0];return g?{latitude:g.latitude,longitude:g.longitude,source:g.source,observedAt:g.observedAt,...(Number.isFinite(g.accuracy)?{accuracy:g.accuracy}:{})}:null;
+}
+
 export async function handleProfile(request,env,fetchImpl=fetch,executionContext){
  const reply=(body,status=200)=>Response.json(body,{status,headers:{'Cache-Control':'no-store'}});
  try{
   if(!['GET','POST'].includes(request.method))fail('method_not_allowed',405);
   if(request.method==='POST'&&request.headers.get('Origin')!==new URL(request.url).origin)fail('origin_denied',403);
-  if(request.method==='GET'&&new URL(request.url).searchParams.get('view')==='geoip'){
+  if(new URL(request.url).searchParams.get('view')==='geoip'){
    const identity=await remembered(request,env);if(!identity||identity.identity_only)fail('authentication_required',401);
    if(request.headers.get('X-RS-Actor-Scope')!==identity.person_uid)fail('actor_changed',409);
-   return reply({ok:true,person_uid:identity.person_uid,geoip:await profileGeoip(request,fetchImpl)});
+   const position=request.method==='POST'?await request.json():null;
+   if(request.method==='GET')return reply({ok:true,person_uid:identity.person_uid,geoip:await lastLoggedLocation(createTenantRest(env,fetchImpl,{profile:true}),identity.person_uid)});
+   if(!/^[a-f0-9-]{36}$/i.test(position?.requestId||''))fail('invalid_request_id');
+   const eventId=await digest('profile-location|'+identity.person_uid+'|'+position.requestId),inputHash=await payloadHash({actor:identity.person_uid,position}),saved=await readTenantSave(env,eventId);
+   const prior=saved.row?JSON.parse(saved.row.result_json||'{}'):null;
+   if(prior&&(prior.actorId!==identity.person_uid||prior.payloadHash!==inputHash))fail('request_id_reused',409);
+   if(saved.row?.state==='complete')return reply({ok:true,person_uid:identity.person_uid,geoip:await lastLoggedLocation(createTenantRest(env,fetchImpl,{profile:true}),identity.person_uid),saved:true});
+   const geoip=prior&&Object.hasOwn(prior,'geoip')?prior.geoip:await profileGeoip(request,fetchImpl,position);
+   const observedAt=prior?.observedAt||geoip?.observedAt||new Date().toISOString();
+   const call=createTenantRest(env,fetchImpl,{profile:true});
+   const matches=await call(TABLE.people,{formula:`{recognition_person_uid} = '${quote(identity.person_uid)}'`});
+   if(matches.length!==1)fail('profile_not_found',404);
+   if(!active(matches[0]))fail('profile_inactive',403);
+   const person=matches[0];
+   await runTenantSave({env,key:saved.key,prior:saved.row,context:{actorId:identity.person_uid,payloadHash:inputHash,geoip,observedAt,envelope:{event:{eventId,inputHash}}},work:async op=>{
+    // Existing append-only event table holds each observation; the Person holds the latest.
+    const eventFields={event_uid:eventId,actor_uid:identity.person_uid,entity_uid:person.fields.entity_uid,action:'location_observed',kind:'profile-location',request_uid:position.requestId,input_hash:inputHash,occurred_at:observedAt,outcome:geoip?'confirmed':'location_unavailable',result_json:JSON.stringify({personRecordId:person.id,method:'automatic',target:null,observedAt,...geoip})};
+    await op.step('location-event',async()=>{const rows=await call(TABLE.events,{formula:`{event_uid} = '${eventId}'`,fresh:true});if(rows.length>1)fail('location_event_ambiguous',409);return rows[0]&&equalFields(rows[0].fields,eventFields)?rows[0]:null;},async()=>(await call(TABLE.events,{method:'POST',fields:eventFields}))[0]);
+    const latest=await lastLoggedLocation(call,identity.person_uid);
+    const fields=latest?{location_latitude:latest.latitude,location_longitude:latest.longitude,location_source:latest.source,location_observed_at:latest.observedAt}:null;
+    if(latest)await op.step('location-latest',async()=>{const row=await call(TABLE.people,{id:person.id,fresh:true});return equalFields(row.fields,fields)||Date.parse(row.fields.location_observed_at)>Date.parse(latest.observedAt)?row:null;},async()=>(await call(TABLE.people,{id:person.id,method:'PATCH',fields}))[0]);
+    return {record:{id:eventId,geoip}};
+   }});
+   return reply({ok:true,person_uid:identity.person_uid,geoip:await lastLoggedLocation(call,identity.person_uid),saved:true});
   }
   const c=await context(request,env,fetchImpl);
   if(request.method==='GET'){const view=new URL(request.url).searchParams.get('view')||'full';if(!['full','profile','roster','team','horses'].includes(view))fail('invalid_profile_view');const body={ok:true,person_uid:c.identity.person_uid,state:{...await stateOf(c,view),...(view==='horses'?{...await loadProfileHorses(c),loaded:{profile:true,horses:true}}:{})}},etag='"'+await payloadHash(body)+'"';if(request.headers.get('If-None-Match')===etag)return new Response(null,{status:304,headers:{ETag:etag,'Cache-Control':'private, no-store'}});return Response.json(body,{headers:{ETag:etag,'Cache-Control':'private, no-store'}});}

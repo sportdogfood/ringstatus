@@ -18,15 +18,51 @@ function retainPending(){
 }
 function remember(fingerprint=currentFingerprint){if(!confirmed||!currentUid||!fingerprint)return;const state=copy(confirmed);for(const person of state.profiles||[])delete person.pin;storage.setItem(snapshotKey(currentUid),JSON.stringify({uid:currentUid,deviceFingerprint:fingerprint,state}));const deviceToken=storage.getItem('rs_recognition_device_token_v1');if(deviceToken)storage.setItem('rs_recognition_identity_v1',JSON.stringify({personUid:currentUid,deviceToken,expiresAt:Number(storage.getItem('rs_recognition_device_expires_v1'))||Date.now()+365*86400000}));}
 const geoipPinged=new Set(),geoipKey=uid=>'rs_profile_geoip_v1:'+uid;
-async function pingGeoip(uid,check,fingerprint){
- const key=uid+':'+fingerprint;if(!fingerprint||geoipPinged.has(key))return;geoipPinged.add(key);
+let locationVersion=0,locationQueue=Promise.resolve();
+const locationPendingKey=uid=>'rs_profile_location_pending_v1:'+uid;
+function locationPending(uid){try{return JSON.parse(storage.getItem(locationPendingKey(uid))||'[]').filter(x=>x.uid===uid&&x.body?.requestId);}catch{return [];}}
+async function permittedPosition(uid){
  try{
-  const response=await fetch(endpoint+'?view=geoip',{credentials:'same-origin',signal:AbortSignal.timeout(2500),headers:{'X-RS-Actor-Scope':uid}});
-  if(!response.ok)return;const data=await response.json();
-  if(uid!==currentUid||check!==generation||fingerprint!==currentFingerprint||!confirmed||storage.getItem('rs_recognition_pending_signout_v1')||data.person_uid!==uid)return;
-  const geo=data.geoip;if(!geo||!Number.isFinite(geo.latitude)||!Number.isFinite(geo.longitude)||Math.abs(geo.latitude)>90||Math.abs(geo.longitude)>180||!['cloudflare','geoip'].includes(geo.source)||!Number.isFinite(Date.parse(geo.observedAt)))return;
-  storage.setItem(geoipKey(uid),JSON.stringify({uid,deviceFingerprint:fingerprint,geoip:{latitude:geo.latitude,longitude:geo.longitude,source:geo.source,observedAt:geo.observedAt}}));
+  const enabled=JSON.parse(storage.getItem('rs_profile_v3_view:'+uid)||'null')?.locationAllowed?.[uid]===true;
+  if(!enabled||!globalThis.navigator?.geolocation||(await navigator.permissions.query({name:'geolocation'})).state!=='granted')return null;
+  return await new Promise(resolve=>navigator.geolocation.getCurrentPosition(p=>resolve({latitude:p.coords.latitude,longitude:p.coords.longitude,accuracy:p.coords.accuracy,observedAt:new Date(p.timestamp||Date.now()).toISOString()}),()=>resolve(null),{enableHighAccuracy:true,timeout:10000,maximumAge:0}));
+ }catch{return null;}
+}
+async function pingGeoip(uid,check,fingerprint,position,force=false){
+ const key=uid+':'+fingerprint;if(!uid||!fingerprint||!confirmed||!force&&geoipPinged.has(key))return;geoipPinged.add(key);
+ const version=++locationVersion;
+ const current=()=>uid===currentUid&&check===generation&&fingerprint===currentFingerprint&&!!confirmed&&!storage.getItem('rs_recognition_pending_signout_v1')&&version===locationVersion;
+ try{
+  if(position===undefined)position=await permittedPosition(uid);
+  if(!current())return;
+  const entry={uid,deviceFingerprint:fingerprint,body:{requestId:crypto.randomUUID(),...(position?{latitude:position.latitude,longitude:position.longitude,accuracy:position.accuracy,observedAt:position.observedAt}:{})}};
+  storage.setItem(locationPendingKey(uid),JSON.stringify([...locationPending(uid),entry]));
+  const send=async()=>{
+   let latest=null;
+   for(const item of locationPending(uid)){
+    if(uid!==currentUid||check!==generation||fingerprint!==currentFingerprint||!confirmed||storage.getItem('rs_recognition_pending_signout_v1'))return null;
+    // A fresh credential may rotate the token; queued work remains bound to the same authenticated user.
+    const response=await fetch(endpoint+'?view=geoip',{method:'POST',credentials:'same-origin',signal:AbortSignal.timeout(35000),headers:{'X-RS-Actor-Scope':uid,'Content-Type':'application/json'},body:JSON.stringify(item.body)});
+    if(!response.ok)return null;
+    const data=await response.json();if(data.person_uid!==uid||data.saved!==true)return null;
+    storage.setItem(locationPendingKey(uid),JSON.stringify(locationPending(uid).filter(x=>x.body.requestId!==item.body.requestId)));
+    if(item.body.requestId===entry.body.requestId)latest=data;
+   }
+   return latest;
+  };
+  const operation=locationQueue.then(send,send);locationQueue=operation.catch(()=>{});
+  const data=await operation;if(!data)return;
+  if(!current()||data.person_uid!==uid||data.saved!==true)return;
+  const geo=data.geoip;if(!geo||!Number.isFinite(geo.latitude)||!Number.isFinite(geo.longitude)||Math.abs(geo.latitude)>90||Math.abs(geo.longitude)>180||!['gps','cloudflare','geoip'].includes(geo.source)||!Number.isFinite(Date.parse(geo.observedAt)))return;
+  try{const previous=JSON.parse(storage.getItem(geoipKey(uid))||'null');if(previous?.uid===uid&&previous.deviceFingerprint===fingerprint&&Date.parse(previous.geoip?.observedAt)>Date.parse(geo.observedAt))return;}catch{}
+  storage.setItem(geoipKey(uid),JSON.stringify({uid,deviceFingerprint:fingerprint,geoip:{latitude:geo.latitude,longitude:geo.longitude,source:geo.source,observedAt:geo.observedAt,...(Number.isFinite(geo.accuracy)?{accuracy:geo.accuracy}:{})}}));
+  notify();
  }catch{/* Optional metadata never delays or interrupts Profile. */}
+}
+export function updateProfileLocation(position=null){
+ // Retiring precision must take effect even if the fallback service is offline.
+ if(!position&&currentUid)storage.removeItem(geoipKey(currentUid));
+ return pingGeoip(currentUid,generation,currentFingerprint,position,true);
 }
 export function profileState(){
  if(!confirmed)return null;const state=viewPreferences(copy(confirmed));

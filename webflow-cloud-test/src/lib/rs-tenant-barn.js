@@ -20,13 +20,14 @@ export function createTenantRest(env,fetchImpl=fetch,{profile=false}={}){
  let last=0;const cache=new Map();
  const profileInvitations='tblOmDd6CDOBkf7Fh';
  const allowedTables=profile?[...Object.values(TABLE),profileInvitations]:Object.values(TABLE);
- const writeFields=profile?{...DIRECT_FIELDS,[TABLE.barn]:[...DIRECT_FIELDS[TABLE.barn],'tenant_active','profile_request_uid'],[TABLE.people]:[...DIRECT_FIELDS[TABLE.people],'profile_photo'],[profileInvitations]:['Invitation ID','Team','Recipient','Invited by','Status','revision','request_uid','request_hash']}:DIRECT_FIELDS;
- return async function call(table,{id,formula,fields,method='GET',fresh=false}={}){
+ const writeFields=profile?{...DIRECT_FIELDS,[TABLE.barn]:[...DIRECT_FIELDS[TABLE.barn],'tenant_active','profile_request_uid'],[TABLE.people]:[...DIRECT_FIELDS[TABLE.people],'profile_photo','location_latitude','location_longitude','location_source','location_observed_at'],[profileInvitations]:['Invitation ID','Team','Recipient','Invited by','Status','revision','request_uid','request_hash']}:DIRECT_FIELDS;
+ return async function call(table,{id,formula,fields,method='GET',fresh=false,latestLocation=false}={}){
   if(fresh)cache.clear();
   if(!allowedTables.includes(table)||!['GET','POST','PATCH'].includes(method))fail('tenant_write_boundary',403);
   if(method!=='GET'){if(!writeFields[table]||!fields||Object.keys(fields).some(k=>!writeFields[table].includes(k))||(method==='PATCH'&&!id))fail('tenant_write_boundary',403);for(const key of cache.keys())if(new URL(key).pathname.split('/')[3]===table)cache.delete(key);}
   const url=new URL(`https://api.airtable.com/v0/${BASE}/${table}${id&&method==='GET'?'/'+id:''}`);
   if(formula)url.searchParams.set('filterByFormula',formula);
+  if(latestLocation){if(table!==TABLE.events||method!=='GET')fail('tenant_write_boundary',403);url.searchParams.set('sort[0][field]','occurred_at');url.searchParams.set('sort[0][direction]','desc');url.searchParams.set('maxRecords','1');}
   const cacheKey=String(url);if(method==='GET'&&cache.has(cacheKey))return structuredClone(cache.get(cacheKey));
   const rows=[],seen=new Set();
   do{
