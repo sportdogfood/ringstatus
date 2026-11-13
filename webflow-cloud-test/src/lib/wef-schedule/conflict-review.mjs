@@ -4,7 +4,9 @@ import {APP_BASE,equals,recordId} from './shared-base.mjs';
 export async function conflictReviewFields(api, conflict) {
   const d=conflict.details??{}, key=conflict.recordKey??'', parts=key.split('|');
   let table, row, label;
-  if(d.source==='wef-data.trips') {
+  if(d.source==='wef-data.schedules'&&recordId(d.sourceRecord)) {
+    table='tbljK5BImDJnQcNB4';row={id:d.sourceRecord};label=['Schedule',d.name].filter(Boolean).join(' - ');
+  } else if(d.source==='wef-data.trips') {
     table='tbl9dATHFaF8z0x0I';[row]=await api.read('trips',equals('trip-key',key));
     let raw;try{raw=typeof row?.['source-json']==='string'?JSON.parse(row['source-json']):row?.['source-json'];}catch{}
     label=raw?.number?`Trip — entry ${raw.number}`:'Trip';
@@ -21,7 +23,7 @@ export async function conflictReviewFields(api, conflict) {
     table='tblst0MKROc3puhm5';label=row?.['ring-nickname']||row?.name||`Ring ${parts[3]}`;
   }
   label??='Schedule record';
-  const escaped=label.replace(/[\\\[\]]/g,'\\$&');
+  const escaped=label.replace(/[\\\[\]*]/g,'\\$&');
   const record=recordId(row?.id)?`[${escaped}](https://airtable.com/${APP_BASE}/${table}/${row.id})`:label;
   const problems=[];
   if(conflict.reason==='shared_participant_conflict') {
@@ -29,7 +31,10 @@ export async function conflictReviewFields(api, conflict) {
     const ids=String(d.linked??'').split(/[,\s]+/).filter(Boolean);
     problems.push(ids.length>1?`${title} field lists multiple ${kind}s.`:`${title} field differs from the trip details.`);
     if(d.snapshot!=null)problems.push(`Trip details identify ${kind} ${d.snapshot}.`);
-  } else if(conflict.reason==='invalid_shared_class') {
+  } else if(conflict.reason==='conflicting_shared_group_identity')problems.push('The same group has different names.');
+  else if(conflict.reason==='incomplete_shared_class_trips')problems.push('Trip details are incomplete.');
+  else if(conflict.reason==='older_shared_dataset')problems.push('The source update time is older than the saved data.');
+  else if(conflict.reason==='invalid_shared_class') {
     if(!row?.['source-json'])problems.push('Class details are empty.');
     else {
       if(d.snapshotShowId==null)problems.push('Show is missing from the class details.');

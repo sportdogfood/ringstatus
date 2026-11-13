@@ -47,6 +47,8 @@ export async function refreshReadableSchedule(api,lane,now,progress=[]) {
  ]);
  const sourceByKey=keyed(sources,'schedule-key'), old=keyed(existing,'schedule-key');
  const pending=new Set(full.metadata.pendingDays?.map(d=>d.date)||[]);
+ // A valid freshly built Day0 diff can advance while the full lane awaits its next slot.
+ if(diff)pending.delete(diff.date);
  const targets=lane==='day0'?await api.read('dataRows',prefix('schedule-key',scope.day0['show-day-key']+'|')):[];
  const baseline=keyed(targets,'schedule-key');
  const feeds=lane==='day0'?await api.read('feed',prefix('show-day-key',scope.day0['show-day-key'])):[];

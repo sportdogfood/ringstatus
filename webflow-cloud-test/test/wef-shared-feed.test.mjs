@@ -618,3 +618,119 @@ test('review link readback accepts Airtable terminal newline but rejects changed
   change='link';await assert.rejects(api.upsert('conflicts',fields),/schedule_app_write_readback/);
   change='problem';await assert.rejects(api.upsert('conflicts',fields),/schedule_app_write_readback/);
 });
+
+
+test('group-name conflicts publish every occurrence, retain its own name and keep both lanes running',async()=>{
+ const api=memory();await refreshScheduleFeed(api,'full',now);
+ api.data.schedules[0].name='Current scheduled class';
+ api.data.schedules.push({...structuredClone(api.data.schedules[0]),id:'rec00000000000010',
+  'schedule-key':ringKey(date)+'|26','source-position':1,name:'Second occurrence',
+  'source-json':{...api.data.schedules[0]['source-json'],class_groupxclasses_id:26,group_name:'Jumper & Young Jumper'}});
+ const source=JSON.stringify([api.data.schedules,api.data.classes,api.data.trips]);
+ const run=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
+ assert.equal(run.log.result,'Success');assert.deepEqual(JSON.parse(run.log.summary).pendingDays,[]);
+ const full=await readScheduleFeed(api,showId,'full'),rows=full.records.filter(r=>r.date===date);
+ assert.deepEqual(rows.map(r=>r.name),['Current scheduled class','Second occurrence']);
+ assert.deepEqual(rows.map(r=>r.group),['Jumper','Jumper & Young Jumper']);
+ assert.equal(rows.every(r=>r.entries.length===1),true);
+ const conflict=api.data.conflicts.find(r=>r.reason==='conflicting_shared_group_identity');
+ assert.ok(conflict.Record.includes('/tbljK5BImDJnQcNB4/rec00000000000010'));
+ assert.equal(conflict['Problem 1'],'The same group has different names.');
+ assert.equal((await runScheduleRefresh(api,{lane:'day0',slot:now,clock:()=>now})).log.result,'Success');
+ const count=api.writes.length;
+ const repeat=await runScheduleRefresh(api,{lane:'full',slot:'2026-11-12T17:15:00Z',clock:()=>now});
+ assert.equal(repeat.log.result,'Success');
+ assert.equal(api.writes.slice(count).some(w=>['feed','dataRows','conflicts'].includes(w.name)),false);
+ assert.equal(JSON.stringify([api.data.schedules,api.data.classes,api.data.trips]),source);
+});
+
+test('missing class trip arrays never hold back current schedule fields or derived rows',async()=>{
+ const api=memory();await refreshScheduleFeed(api,'full',now);
+ api.data.classes[0]['source-json'].trips=undefined;
+ api.data.schedules[0].name='New class name';api.data.schedules[0]['start-time']='10:30:00';
+ const source=JSON.stringify([api.data.schedules,api.data.classes,api.data.trips]);
+ const run=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
+ assert.equal(run.log.result,'Success');assert.deepEqual(JSON.parse(run.log.summary).pendingDays,[]);
+ const row=(await readScheduleFeed(api,showId,'full')).records[0];
+ assert.equal(row.name,'New class name');assert.equal(row.time,'10:30A');assert.equal(row.entries.length,1);
+ assert.equal(api.data.dataRows.find(r=>r['schedule-key']===scheduleKey)['class-name'],'New class name');
+ assert.equal(api.data.conflicts.some(r=>r.reason==='incomplete_shared_class_trips'),true);
+ assert.equal(JSON.stringify([api.data.schedules,api.data.classes,api.data.trips]),source);
+});
+
+test('Day0 applies available changes without removing confirmed trips missing normalized details',async()=>{
+ const api=memory(),second={...rawTrip,entryxclasses_uuid:'DEF',trip_id:102,order_of_go:3};
+ api.data.classes[0]['source-json'].trips.push(second);api.data.classes[0]['entry-count']=2;api.data.schedules[0]['source-json'].total_trips=2;
+ await refreshScheduleFeed(api,'full',now);
+ api.data.trips[0]['gone-in']=1;api.data.schedules[0].name='Current schedule';
+ const run=await runScheduleRefresh(api,{lane:'day0',slot:now,clock:()=>now});assert.equal(run.log.result,'Success');
+ const full=await readScheduleFeed(api,showId,'full'),diff=await readScheduleFeed(api,showId,'day0'),row=applyDay0Diff(full,diff).records[0];
+ assert.equal(row.name,'Current schedule');assert.equal(row.entries.length,2);assert.equal(row.entries.find(e=>e.key===tripKey).goneIn,1);
+ assert.deepEqual(diff.rows.remove,[]);assert.equal(diff.entries.every(e=>e.remove.length===0),true);
+ assert.equal(api.data.day0Rows.find(r=>r['schedule-key']===scheduleKey)['trip-count'],2);
+ const count=api.writes.length;
+ assert.equal((await runScheduleRefresh(api,{lane:'day0',slot:'2026-11-12T17:03:00Z',clock:()=>now})).log.result,'Success');
+ assert.equal(api.writes.slice(count).some(w=>['feed','day0Rows','conflicts'].includes(w.name)),false);
+});
+
+test('unreadable class or trip details isolate the concern instead of freezing schedule publication',async()=>{
+ for(const table of ['classes','trips']){
+  const api=memory();await refreshScheduleFeed(api,'full',now);
+  api.data[table][0]['source-json']='{not json';api.data.schedules[0].name='Updated despite bad details';
+  const lane=table==='classes'?'full':'day0',run=await runScheduleRefresh(api,{lane,slot:now,clock:()=>now});
+  assert.equal(run.log.result,'Success');
+  const full=await readScheduleFeed(api,showId,'full'),data=lane==='full'?full:applyDay0Diff(full,await readScheduleFeed(api,showId,'day0'));
+  assert.equal(data.records[0].name,'Updated despite bad details');assert.equal(data.records[0].entries.length,1);
+  assert.equal(api.data.conflicts.some(r=>r.reason==='invalid_shared_json'),true);
+ }
+});
+
+test('a bad trip does not discard its valid class peers or their new fields',async()=>{
+ const api=memory(),second={...rawTrip,entryxclasses_uuid:'DEF',trip_id:102,order_of_go:3};
+ api.data.classes[0]['source-json'].trips.push(second);api.data.classes[0]['entry-count']=2;
+ api.data.classes[0].trips.push('second');
+ api.data.trips.push({...structuredClone(api.data.trips[0]),id:'second','trip-key':classKey+'|12|DEF','trip-id':102,'source-uuid':'DEF','source-json':second});
+ await refreshScheduleFeed(api,'full',now);
+ api.data.trips[0]['gone-in']=1;api.data.trips[1]['source-json']='{broken';
+ const run=await runScheduleRefresh(api,{lane:'day0',slot:now,clock:()=>now});assert.equal(run.log.result,'Success');
+ const full=await readScheduleFeed(api,showId,'full'),row=applyDay0Diff(full,await readScheduleFeed(api,showId,'day0')).records[0];
+ assert.equal(row.entries.length,2);assert.equal(row.entries.find(e=>e.key===tripKey).goneIn,1);
+ assert.equal(api.data.conflicts.some(r=>r.reason==='invalid_shared_json'),true);
+});
+
+
+test('malformed snapshot trip items keep good trips and schedule rows, including repeat publication',async()=>{
+ const api=memory();api.data.classes[0]['source-json'].trips.push(null);api.data.schedules[0].name='Available schedule';
+ const run=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
+ assert.equal(run.log.result,'Success');assert.deepEqual(JSON.parse(run.log.summary).pendingDays,[]);
+ const row=(await readScheduleFeed(api,showId,'full')).records[0];
+ assert.equal(row.name,'Available schedule');assert.equal(row.entries.length,1);
+ assert.equal(api.data.conflicts.length>0,true);
+ assert.equal((await runScheduleRefresh(api,{lane:'full',slot:'2026-11-12T17:15:00Z',clock:()=>now})).log.result,'Success');
+ assert.equal((await readScheduleFeed(api,showId,'full')).records[0].entries.length,1);
+ const fast=await runScheduleRefresh(api,{lane:'day0',slot:now,clock:()=>now});
+ assert.equal(fast.log.result,'Success');
+ assert.equal((await readScheduleFeed(api,showId,'day0')).rows.remove.length,0);
+});
+
+test('a fresh Day0 diff updates readable rows despite a legacy pending full-day marker',async()=>{
+ const api=memory();await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
+ const saved=api.data.feed.find(r=>r.date===date),data=decodePayload(saved['payload-json']);
+ data.pending={date,reason:'conflicting_shared_group_identity',sourceRowCount:1};saved['payload-json']=encodePayload(data);
+ api.data.day0Rows.push({...structuredClone(api.data.dataRows[0]),id:'existing-fast-row','class-name':'Stale derived name'});
+ await runScheduleRefresh(api,{lane:'day0',slot:now,clock:()=>now});
+ assert.equal(api.data.day0Rows.find(r=>r['schedule-key']===scheduleKey)['class-name'],'Jumper');
+ api.data.schedules[0].name='Fast-lane current schedule';
+ const run=await runScheduleRefresh(api,{lane:'day0',slot:'2026-11-12T17:03:00Z',clock:()=>now});
+ assert.equal(run.log.result,'Success');
+ assert.equal(api.data.day0Rows.find(r=>r['schedule-key']===scheduleKey)['class-name'],'Fast-lane current schedule');
+ assert.equal((await readScheduleFeed(api,showId,'full')).metadata.pendingDays.length,0);
+});
+
+test('an older source clock queues review but cannot hold back current scheduled fields',async()=>{
+ const api=memory();await refreshScheduleFeed(api,'full',now);
+ api.data.schedules[0].name='Current shared values';api.data.schedules[0]['last-success']='2026-11-11T09:00:00Z';
+ const run=await runScheduleRefresh(api,{lane:'full',slot:now,clock:()=>now});
+ assert.equal(run.log.result,'Success');assert.equal(api.data.conflicts.some(r=>r.reason==='older_shared_dataset'),true);
+ assert.equal((await readScheduleFeed(api,showId,'full')).records[0].name,'Current shared values');
+});

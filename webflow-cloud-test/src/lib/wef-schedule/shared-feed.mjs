@@ -121,7 +121,10 @@ export async function refreshScheduleFeed(api, lane, now, progress = []) {
       dataset.metadata.dataVersion = version(dataset);
       const matching = old?.day0Diff?.baseVersion === dataset.metadata.dataVersion ? old.day0Diff : null;
       if (old?.data && Date.parse(old.data.metadata.sourceUpdatedAt) > Date.parse(dataset.metadata.sourceUpdatedAt)) {
-        throw Error(`older_shared_dataset:${day.date}`);
+        if(!api.onConflict)throw Error(`older_shared_dataset:${day.date}`);
+        api.onConflict({reason:'older_shared_dataset',date:day.date,recordKey:day['show-day-key'],
+          details:{source:'Shared Data day projection',savedSourceUpdatedAt:old.data.metadata.sourceUpdatedAt,
+            sourceUpdatedAt:dataset.metadata.sourceUpdatedAt,handling:'Publish the current shared schedule; retain confirmed missing details.'}});
       }
       if (!old?.pending && old?.data?.metadata.dataVersion === dataset.metadata.dataVersion &&
           old.data.metadata.sourceUpdatedAt === dataset.metadata.sourceUpdatedAt &&
