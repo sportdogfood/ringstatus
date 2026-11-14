@@ -104,7 +104,7 @@ function openSchedule(trigger){
  if(!state.recognized)return;
  if(hostSchedule){closeDialog();$('#app').hidden=true;renderPreviewTools();return;}
  scheduleTrigger=trigger;scheduleRequested=true;
- if(scheduleFrame){if(scheduleReady){scheduleFrame.hidden=false;syncScheduleBounds();scheduleFrame.focus();}else scheduleBusy(true);return;}
+ if(scheduleFrame){if(scheduleReady){scheduleFrame.hidden=false;syncScheduleBounds();scheduleFrame.focus({preventScroll:mobileLauncher.matches});}else scheduleBusy(true);return;}
  scheduleBusy(true);
  const frame=document.createElement('iframe');scheduleFrame=frame;frame.id='profile-schedule-view';frame.title='RingStatus Schedule';frame.hidden=true;
  frame.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;border:0;z-index:110;background:transparent';
@@ -117,7 +117,7 @@ function openSchedule(trigger){
   const reveal=()=>{
    if(frame!==scheduleFrame||!state.recognized)return;
    scheduleReady=true;scheduleBusy(false);
-   if(scheduleRequested){frame.hidden=false;syncScheduleBounds();frame.focus();}
+   if(scheduleRequested){frame.hidden=false;syncScheduleBounds();frame.focus({preventScroll:mobileLauncher.matches});}
    const shell=doc.querySelector('.rings-shell');
    if(shell){scheduleBoundsObserver?.disconnect();scheduleBoundsObserver=new ResizeObserver(syncScheduleBounds);scheduleBoundsObserver.observe(shell);}
   };

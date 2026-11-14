@@ -1,4 +1,4 @@
-import './shell.js';
+import {scheduleScroll as scroller} from './shell.js';
 import {recognitionAdapter} from '/test/rs-recognition/widget.js';
 import {createHorseEdits} from './horse-edits.js';
 import {inlineNickname,horseForm} from './horse-forms.js';
@@ -28,7 +28,6 @@ const shownRecords=()=>horseEdits.apply(records);
 let horseEditor=null;
 const schedule=document.querySelector('#rings-schedule');
 const surface=document.querySelector('#rings-surface');
-const scroller=document.querySelector('.rings-scroll');
 const ringActions=document.querySelector('.rings-actions');
 const horseActions=document.querySelector('.rings-horse-actions');
 document.querySelectorAll('.rings-actions,.rings-horse-actions,.v2-page-nav').forEach(enableDragScroll);
@@ -110,10 +109,8 @@ function syncDay(){
  teamControl.title=teamSelect.title=state.team?'Team: CWF':'Select team';teamControl.dataset.active=String(Boolean(state.team));
  schedule.setAttribute('aria-label','Schedule for '+dateText);
  if(isDay)document.querySelector('.v2-day-tools h1').textContent=state.day===todayDate()?'Timelines':dateText;
- const footer=document.querySelector('.rings-shell-footer');
  const feedSource=['wef-data','wef-schedule-app'].includes(metadata.source);
  showFeedStatus(Number.isFinite(Date.parse(metadata.capturedAt))?(feedSource?'Airtable refreshed':'Airtable snapshot')+' · '+new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:metadata.timezone,timeZoneName:'short'}).format(new Date(metadata.capturedAt))+(feedSource?'':' - not live'):'Loading schedule');
- footer.title=metadata.show+' · '+metadata.capturedAt;
  const rows=filterTrainer(publishedSchedule(shownRecords().filter(r=>r.date===state.day),publicationOptions),state.trainer);
  rings=days.find(d=>d.date===state.day)?.rings||[];
 
@@ -198,7 +195,7 @@ ringActions.addEventListener('click',event=>{
   scroller.scrollTo({top:0,behavior:'instant'});return;
  }
  const target=document.getElementById(`ring-${state.ring}`);
- if(target){const scale=scroller.getBoundingClientRect().height/scroller.offsetHeight||1;const anchorHeight=scroller.contains(ringActions)?ringActions.getBoundingClientRect().height:0;const y=scroller.scrollTop+(target.getBoundingClientRect().top-scroller.getBoundingClientRect().top-anchorHeight)/scale;scroller.scrollTo({top:Math.max(0,y),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
+ if(target)scroller.scrollToElement(target,matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth');
 });
 horseActions.addEventListener('click',event=>{const b=event.target.closest('[data-horse]');if(!b)return;const name=b.dataset.horse;if(state.horses.has(name))state.horses.delete(name);else state.horses.add(name);renderSchedule();});
 scroller.addEventListener('scroll',()=>{if(isDay)return;if(scroller.scrollTop>8)horseActions.hidden=false;else if(!state.horses.size)horseActions.hidden=true;},{passive:true});

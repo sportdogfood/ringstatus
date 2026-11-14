@@ -1,4 +1,5 @@
 import {v3Back,v3Brand,v3Shell,v3Footer,v3Control} from '../rs-profile-v3/components.js';
+import {phoneScroll} from './phone-scroll.js';
 const shell=document.querySelector('.rings-shell');
 if(window.frameElement?.id==='profile-schedule-view')document.body.dataset.embedded='true';
 const back=document.querySelector('.rings-profile-nav a');back.className='back-link';
@@ -9,7 +10,7 @@ const content=document.querySelector('.rings-scroll');oldHeader.remove();
 const bottom=document.querySelector('.v2-page-nav');
 const horses=document.querySelector('.rings-horse-actions');
 shell.classList.add('v3-panel');shell.setAttribute('role','main');shell.setAttribute('aria-label',content.getAttribute('aria-label')||'Schedule');shell.dataset.width='schedule';shell.dataset.placement='drawer';
-shell.innerHTML=v3Shell(v3Back(back.outerHTML)+v3Brand(`<div class="action-icons"></div>`),content.innerHTML,v3Footer('<span class="rings-shell-footer ui-button" data-variant="quiet" role="status"></span>'),horses.outerHTML+bottom.outerHTML);
+shell.innerHTML=v3Shell(v3Back(back.outerHTML)+v3Brand(`<div class="action-icons"></div>`),content.innerHTML,v3Footer('<span class="rings-shell-footer" role="status"></span>'),horses.outerHTML+bottom.outerHTML);
 shell.querySelector('.action-icons').append(...controls);
 const status=shell.querySelector('.rings-shell-footer');
 shell.querySelector('.back-row').append(theme);
@@ -25,14 +26,15 @@ shell.querySelectorAll('.v2-theme-toggle').forEach(node=>v3Control(node,{icon:tr
 const scroll=shell.querySelector('.stack-scroll');
 const anchors=shell.querySelector('.rings-actions');
 shell.querySelector('.stack-top').append(anchors);
+export const scheduleScroll=phoneScroll(shell,scroll,move);
 let touch=null,travel=0,lastDirection=0;
 shell.dataset.controlsHidden='false';
 function setControlsHidden(hidden){
  if(shell.dataset.controlsHidden===String(hidden))return;
- const before=scroll.getBoundingClientRect().top,offset=scroll.scrollTop;
+ const before=scroll.getBoundingClientRect().top,offset=scheduleScroll.scrollTop;
  shell.dataset.controlsHidden=String(hidden);
  // Keep the same records at the same screen position when the top rows return.
- scroll.scrollTop=offset<=0?0:Math.max(0,offset+scroll.getBoundingClientRect().top-before);
+ if(!scheduleScroll.native)scroll.scrollTop=offset<=0?0:Math.max(0,offset+scroll.getBoundingClientRect().top-before);
  for(const node of [shell.querySelector('.stack-top'),shell.querySelector('.rings-horse-actions'),shell.querySelector('.v2-page-nav')])node.inert=hidden;
 }
 function move(delta){
@@ -41,7 +43,7 @@ function move(delta){
  travel=direction===lastDirection?travel+Math.abs(delta):Math.abs(delta);lastDirection=direction;
  if(travel<(direction>0?32:16))return;
  if(direction<0)setControlsHidden(false);
- else if(scroll.scrollHeight>scroll.clientHeight+1)setControlsHidden(true);
+ else if(scheduleScroll.scrollHeight>scheduleScroll.clientHeight+1)setControlsHidden(true);
  travel=0;
 }
 shell.addEventListener('wheel',event=>{if(Math.abs(event.deltaY)>Math.abs(event.deltaX))move(event.deltaY);},{passive:true});
@@ -59,5 +61,5 @@ shell.addEventListener('keydown',event=>{
  if(['ArrowUp','PageUp','Home'].includes(event.key)||event.key===' '&&event.shiftKey)move(-16);
 });
 // Preserve the existing ring-toggle reset and native keyboard return-to-top behavior.
-scroll.addEventListener('scroll',()=>{if(scroll.scrollTop<=0&&lastDirection<0)setControlsHidden(false);},{passive:true});
+scroll.addEventListener('scroll',()=>{if(scheduleScroll.scrollTop<=0&&lastDirection<0)setControlsHidden(false);},{passive:true});
 anchors.addEventListener('click',()=>setControlsHidden(false));

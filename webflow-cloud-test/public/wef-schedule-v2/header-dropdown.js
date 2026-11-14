@@ -1,4 +1,5 @@
 import {openShellDialog} from './shell-dialog.js';
+import {scheduleViewport} from './phone-scroll.js';
 import {icon as v3Icon} from '../rs-profile-v3/icons.js';
 import {v3Control,v3Search} from '../rs-profile-v3/components.js';
 // Date menu and searchable trainer modal retain the existing select/change state.
@@ -45,12 +46,12 @@ export function headerDropdowns(host){
  function positionMenu(){
   if(!active)return;
   const {button}=active,rect=button.getBoundingClientRect(),width=menu.getBoundingClientRect().width;
-  const bounds=document.querySelector('.rings-shell').getBoundingClientRect();
+  const bounds=scheduleViewport();
   const above=button.dataset.placement==='top',scale=menu.getBoundingClientRect().width/menu.offsetWidth||1;
   menu.style.maxHeight=Math.max(44,Math.min(320,(above?rect.top-bounds.top-8:bounds.bottom-rect.bottom-8)/scale))+'px';
   menu.style.left=Math.max(bounds.left+8,Math.min(bounds.right-width-8,rect.right-width))/scale+'px';
   menu.style.top=(above?Math.max(bounds.top+8,rect.top-menu.getBoundingClientRect().height-8):rect.bottom+8)/scale+'px';
-  (menu.querySelector('[aria-selected=true]:not(:disabled)')||menu.querySelector('button:not(:disabled)')||menu).focus();
+  (menu.querySelector('[aria-selected=true]:not(:disabled)')||menu.querySelector('button:not(:disabled)')||menu).focus({preventScroll:document.documentElement.hasAttribute('data-schedule-phone-page')});
  }
  menu.tabIndex=-1;
  menu.addEventListener('toggle',()=>{const opened=menu.matches(':popover-open');active?.button.setAttribute('aria-expanded',String(opened));if(opened)positionMenu();});
@@ -58,7 +59,7 @@ export function headerDropdowns(host){
   const items=Array.from(menu.querySelectorAll('button:not(:disabled)')),index=items.indexOf(document.activeElement);
   if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)){
    event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?items.length-1:event.key==='ArrowDown'?(index+1)%items.length:(index-1+items.length)%items.length;items[next]?.focus();
-  }else if(event.key==='Escape'){event.preventDefault();close();active?.button.focus();}
+  }else if(event.key==='Escape'){event.preventDefault();close();active?.button.focus({preventScroll:document.documentElement.hasAttribute('data-schedule-phone-page')});}
  });
  addEventListener('resize',close);
  return (select,svg,{className='v2-header-filter',placement='bottom'}={})=>{

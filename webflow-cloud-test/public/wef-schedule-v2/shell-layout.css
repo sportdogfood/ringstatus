@@ -56,12 +56,26 @@
 .rings-shell>.stack-scroll{overflow-anchor:none;min-width:0;touch-action:pan-x pan-y;overscroll-behavior:none}
 .rings-shell .back-row{display:flex;align-items:center;min-width:0}
 .rings-shell .back-row>.back-link{flex-shrink:0}
-.rings-shell .stack-body>.rings-shell-footer{display:block;min-width:0;padding:0;min-height:0;font-size:inherit}
+.rings-shell .stack-body>.rings-shell-footer{display:block;min-width:0;padding:0;min-height:0;font-size:12px;line-height:18px;font-weight:400;color:var(--rs-muted);pointer-events:none}
 .rings-shell .stack-top>.rings-actions{position:static;flex-shrink:0}
 .rings-shell[data-controls-hidden="true"]>.stack-top,
 .rings-shell[data-controls-hidden="true"]>.rings-horse-actions,
 .rings-shell[data-controls-hidden="true"]>.v2-page-nav{display:none}
 .rings-actions,.rings-horse-actions,.v2-page-nav,.rings-entry-rollups{overscroll-behavior-x:contain;overflow-y:hidden;touch-action:pan-x pan-y;max-width:100%}
+/* Phone-only native page scrolling. Existing component sizes and tokens stay intact. */
+@media(max-width:600px){
+ :root[data-schedule-phone-page]{height:auto;min-height:100%;overflow-x:clip;overflow-y:visible;overscroll-behavior-y:auto}
+ :root[data-schedule-phone-page] .rings-app{height:auto;min-height:100%;overflow:visible;overscroll-behavior:auto}
+ :root[data-schedule-phone-page] .rings-shell.v3-panel[data-width="schedule"]{height:auto;max-height:none;overflow:visible;position:relative;padding-top:var(--phone-header-height);padding-bottom:var(--phone-bottom-height)}
+ :root[data-schedule-phone-page] .rings-shell>.stack-scroll{flex:none;overflow:visible;overscroll-behavior:auto}
+ :root[data-schedule-phone-page] .rings-shell>.stack-top{position:absolute;inset:0 0 auto;transform:translate3d(0,var(--phone-header-top,0px),0);will-change:transform;z-index:5;background:var(--rs-surface)}
+ :root[data-schedule-phone-page] .rings-shell[data-controls-hidden="true"]>.stack-top{display:flex}
+ :root[data-schedule-phone-page] .rings-shell>.v2-page-nav{position:absolute;top:0;left:0;right:0;transform:translate3d(0,var(--phone-nav-top),0);will-change:transform;z-index:5;background:var(--rs-surface)}
+ :root[data-schedule-phone-page] .rings-shell>.rings-horse-actions{position:absolute;top:0;left:0;right:0;transform:translate3d(0,var(--phone-horses-top),0);will-change:transform;z-index:5;background:var(--rs-surface)}
+ :root[data-schedule-phone-page] :is(.rings-surface,.rings-surface[data-mode="class"],.v2-trainer-dialog){position:fixed;inset:auto 12px auto;top:calc(var(--phone-visible-top) + var(--phone-visible-height) - 12px);margin:0 auto;max-height:calc(var(--phone-visible-height) - 24px);translate:0 -100%}
+ :root[data-schedule-phone-page][data-schedule-phone-paused]{overflow:hidden}
+ :root[data-schedule-phone-page][data-schedule-phone-paused]>.rings-app{position:fixed;top:calc(-1 * var(--schedule-phone-position));width:100%}
+}
 @media(max-width:600px){
  .rings-shell>.stack-top{padding-top:max(16px,env(safe-area-inset-top))}
  .rings-shell>[data-profile-launcher-slot]>.launcher-widget{padding-bottom:max(6px,env(safe-area-inset-bottom))}
