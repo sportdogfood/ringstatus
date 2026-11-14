@@ -6,6 +6,13 @@ from wef_data_store import DataStore,DATA_BASE
 from record_mappings import packed,refs,trip_records
 
 def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def request_ready_task(task):
+    requested=now()
+    try:
+        command=[str(pathlib.Path(os.environ.get('SystemRoot','C:/Windows'))/'System32/schtasks.exe'),'/Run','/TN',task]
+        result=subprocess.run(command,capture_output=True,text=True,encoding='utf-8',errors='replace',creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+        return {'task':task,'requested':requested,'completed':now(),'ok':result.returncode==0,**({} if result.returncode==0 else {'error':(result.stderr or result.stdout or 'Task start failed').strip(),'code':result.returncode})}
+    except Exception as error:return {'task':task,'requested':requested,'completed':now(),'ok':False,'error':str(error)}
 def raw(value):
     try:return json.loads(value or '{}')
     except (ValueError,TypeError):return {}
@@ -75,7 +82,7 @@ class Writer:
             row=dict(row)
             if table=='entries':row.pop('show',None) # Native w-shows is the current basic show link.
             key=str(row[self.store.primary[table]]);old=self.authored(table,cached[key]) if key in cached else {}
-            if diff and old and all(old.get(k)==v for k,v in row.items() if k!='last-success'):continue
+            if diff and old and all(old.get(k)==v or (isinstance(v,dict) and '$links' in v and old.get(k)) for k,v in row.items() if k!='last-success'):continue
             if at:row['last-success']=at
             for field,target,identity in [('w-shows','w-shows',self.show),('w-days','w-days',self.show+'|'+self.day)]:
                 if field in self.store.fields[table] and not old.get(field):row[field]=refs(target,identity)
@@ -119,14 +126,19 @@ class Writer:
             self.save(table,rows,diff=True,at=at)
     def failed(self,keys,message):
         self.save('schedules',[{'schedule-key':k,'class-detail-failed':True,'class-detail-error':message} for k in keys])
-    def save_class(self,key,capture):
-        data=json.loads(pathlib.Path(capture).read_text(encoding='utf-8'));body=data['payload'];at=data['metric']['completed']
+    def save_class(self,key,capture,payload=None,observed_at=None):
+        from_git=payload is not None
+        if observed_at is None:
+            data=json.loads(pathlib.Path(capture).read_text(encoding='utf-8'));at=data['metric']['completed']
+            if payload is None:payload=data['payload']
+        else:at=observed_at
+        body=payload
         previous=raw(self.rows('classes').get(key,{}).get('source-json'))
         # Keep class metadata used by existing rules; trip payloads are saved separately.
         class_body={k:v for k,v in previous.items() if k not in ('trips','class_group_order_of_go','iphonev2')}
         class_body['iphonev2']={k:v for k,v in body.items() if k!='rows'}
         class_body['capture']=capture
-        self.save('classes',[{'class-key':key,'source-json':packed(class_body),'entry-count':len(body['rows'])}],at=at)
+        self.save('classes',[{'class-key':key,'source-json':packed(class_body),'entry-count':len(body['rows'])}],diff=from_git,at=at)
         existing_trips=self.rows('trips');entries=self.rows('entries');customer,sid=key.split('|')[:2]
         pending={table:{} for table in ('horses','riders','trainers','owners','entries','trips')}
         for source in body['rows']:
@@ -157,7 +169,7 @@ class Writer:
             if old_key:trip['trip-key']=old_key
             trip['source-json']=packed({**mapped,'iphonev2':source})
             pending['trips'][trip['trip-key']]=trip
-        for table,items in pending.items():self.save(table,list(items.values()),at=at)
+        for table,items in pending.items():self.save(table,list(items.values()),diff=from_git,at=at)
         # The existing independent linking task fills remaining required empty links.
 
 def manifests(root):
@@ -188,7 +200,7 @@ def collect(root,day_number=1,api=None,reader=None):
     prior_schedule=store.inventory('schedules')
     class_done=live_confirmed(root,show,day) if day_number==0 else set()
     index=root/'runtime/fast'/('day'+str(day_number))/'collections'/(attempt+'.json')
-    plan={'show-key':show,'day':day,'day-number':day_number,'run-key':runkey,'started':started,'operations':[],'complete':False}
+    plan={'show-key':show,'day':day,'day-number':day_number,'run-key':runkey,'started':started,'operations':[],'complete':False,'snapshot-format':1}
     def capture(operation):
         plan['operations'].append(operation);atomic(index,capture_safe(plan))
     failed=set()
@@ -223,7 +235,7 @@ def collect(root,day_number=1,api=None,reader=None):
             cid=raw(row['source-json']).get('class_id')
             if cid is not None:routes.setdefault(sk.rsplit('|',1)[0]+'|'+str(cid),[]).append(sk)
         fail_field=store.fields['schedules']['class-detail-failed']['id']
-        eligible=[row for row in rows if row['class-id'] not in class_done and row['class-key'] not in failed and not any(prior_schedule.get(sk,{}).get('fields',{}).get(fail_field) for sk in routes.get(row['class-key'],[]))]
+        eligible=[row for row in rows if row['class-id'] not in class_done and row['class-key'] not in failed and (day_number==0 or not any(prior_schedule.get(sk,{}).get('fields',{}).get(fail_field) for sk in routes.get(row['class-key'],[])))]
         for key,row in graph['schedules'].items():
             saved=prior_schedule.get(key,{}).get('fields',{})
             old={name:saved[field['id']] for name,field in store.fields['schedules'].items() if field['id'] in saved}
@@ -242,7 +254,9 @@ def collect(root,day_number=1,api=None,reader=None):
             for row in eligible[next_class:]:
                 operation,_=class_request(row,False)
                 if operation:capture(operation)
-    except Exception as error:errors.append({'key':'Prepare/schedule','error':error_text(error)})
+    except Exception as error:
+        errors.append({'key':'Prepare/schedule','error':error_text(error)})
+        if hasattr(error,'metric'):health.append(error.metric)
     completed=now();counts={'class-requested':requested,'class-skipped':len(skips),'live-owned-skipped':len(class_done),'schedule-diff-count':len(diffs),'schedule-diffs-capture':str(index),'day-number':day_number,'elapsed-seconds':time.monotonic()-begin}
     plan.update({'complete':True,'completed':completed,'health':health,'counts':counts,'item-errors':errors});atomic(index,capture_safe(plan))
     return {'ok':not errors,'state':'Collected','show-key':show,'day':day,'run-key':runkey,'manifest':str(index),'health':health,'source-completed':completed,'schedule-diffs':diffs,'counts':counts,'item-errors':errors}
@@ -251,23 +265,43 @@ def collect(root,day_number=1,api=None,reader=None):
 def save_captures(root,api=None):
     """Independent saving task. Reads captured data; never invokes a source."""
     api=api or Airtable();schema=json.loads((root/'schema.json').read_text(encoding='utf-8'))
-    errors=[];days=[];writers={}
+    errors=[];days=[];writers={};snapshots=None;applied={}
     for file in manifests(root):
         plan=json.loads(file.read_text(encoding='utf-8'));receipt_file=file.with_suffix('.saved')
         receipt=json.loads(receipt_file.read_text(encoding='utf-8')) if receipt_file.exists() else {'processed':0,'counts':{},'item-errors':[],'started':now()}
-        if receipt.get('complete'):continue
+        if receipt.get('complete'):
+            if receipt.get('ok') and receipt.get('git'):applied[(plan['show-key'],plan['day'])]=receipt['git']['commit']
+            continue
+        if plan.get('snapshot-format') and not plan['complete']:continue
         show,day=plan['show-key'],plan['day'];identity=(show,day)
         if identity not in writers:writers[identity]=Writer(api,schema,show,day,errors)
         writer=writers[identity];before=dict(writer.counts)
+        git=None
+        if plan.get('snapshot-format'):
+            try:
+                if snapshots is None:
+                    from fast_snapshots import Snapshots
+                    snapshots=Snapshots(root)
+                git=snapshots.prepare(plan,applied.get(identity))
+                latest=snapshots.read(git['commit'],'index.json')[show+'|'+day]
+                diff_file=file.with_suffix('.diff');diff_file.write_text(git.pop('diff'),encoding='utf-8')
+                receipt['git']={k:v for k,v in git.items() if k!='paths'};receipt['git']['diff']=str(diff_file)
+            except Exception as error:
+                errors.append({'key':'Git snapshots '+show+'|'+day,'error':error_text(error)})
+                continue
         if not receipt.get('run-started'):
             prior=len(errors)
             writer.save('runs',[{'run-key':plan['run-key'],'started':plan['started'],'mode':'Scheduled day-'+str(plan['day-number'])+' collection','status':'Started'}]);receipt['run-started']=True
             receipt['item-errors'].extend(errors[prior:])
-        for operation in plan['operations'][receipt['processed']:]:
+        for position,operation in enumerate(plan['operations'][receipt['processed']:],receipt['processed']):
             prior=len(errors)
             try:
-                if operation['kind']=='schedule':writer.save_schedule(operation['graph'],operation['priorities'],operation['at'])
-                elif operation['kind']=='class':writer.save_class(operation['class-key'],operation['capture'])
+                entry=(latest.get('schedule') if operation['kind']=='schedule' else latest['classes'].get(operation.get('class-key'))) if git else None
+                name=entry['path'] if entry else None
+                changed=not git or name in git['changed']
+                body=snapshots.read(git['commit'],name) if git and name and changed else None
+                if operation['kind']=='schedule' and changed:writer.save_schedule(body['graph'] if body else operation['graph'],body['priorities'] if body else operation['priorities'],entry['observed-at'] if git else operation['at'])
+                elif operation['kind']=='class' and changed:writer.save_class(operation['class-key'],operation['capture'],payload=body,observed_at=entry['observed-at'] if git else None)
                 elif operation['kind']=='failure':writer.failed(operation['schedule-keys'],operation['error'])
             except Exception as error:errors.append({'key':'Save '+operation['kind'],'error':error_text(error)})
             receipt['item-errors'].extend(errors[prior:]);receipt['processed']+=1
@@ -282,5 +316,10 @@ def save_captures(root,api=None):
             receipt.update({'complete':True,'completed':completed,'ok':not all_errors,'saved':saved,'day':day,'day-number':plan['day-number'],'run-key':plan['run-key']});atomic(receipt_file,receipt)
             state_file=root/'runtime/day-cadence.json';state=raw(state_file.read_text(encoding='utf-8')) if state_file.exists() else {}
             state[show+'|'+day]={'attempted':datetime.datetime.fromisoformat(plan['started']).timestamp(),'completed':completed,'priority':plan['day-number'],'status':'Partial' if all_errors else 'Saved','run-key':plan['run-key']};atomic(state_file,state)
+            if receipt['ok'] and receipt.get('git'):applied[identity]=receipt['git']['commit']
+            receipt['ready-task']=request_ready_task('wef-data-linking')
+            if not receipt['ready-task']['ok']:
+                failure={'key':'Trigger wef-data-linking','error':receipt['ready-task']['error']};errors.append(failure);receipt['item-errors'].append(failure)
+            atomic(receipt_file,receipt)
             days.append({**receipt,'manifest':str(file)})
     return {'ok':not errors,'state':'Saved','counts':{'saved':sum(d['saved'] for d in days),'days':days},'item-errors':errors}

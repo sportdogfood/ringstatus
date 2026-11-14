@@ -74,8 +74,9 @@ const server = http.createServer(async (req, res) => {
     const body = Buffer.from(await result.arrayBuffer());
     res.writeHead(result.status, Object.fromEntries(result.headers));
     res.end(body);
-  } catch {
-    res.writeHead(502).end();
+  } catch (error) {
+    const reason=decoder.diagnostic(error,{SGL_TOKEN,SGL_COOKIE,RUNNER_KEY,SGL_RETURNED_TOKEN:cachedToken?.token});
+    res.writeHead(502,{'Content-Type':'application/json','Cache-Control':'no-store'}).end(JSON.stringify({message:'Runner request failed',reason,statusCode:502}));
   }
 });
 server.listen(18467, '127.0.0.1');

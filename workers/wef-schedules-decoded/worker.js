@@ -48,14 +48,16 @@ const reply = (data, status=200, extra={}) => new Response(JSON.stringify(data),
 function diagnostic(error,env,seen=new Set()) {
   if(error&&typeof error==='object'){
     if(seen.has(error))return '[circular cause]';seen.add(error);
-    const message=(error.name||'Error')+': '+(error.message||String(error));
+    const message=(error.name||'Error')+': '+(error.name==='SyntaxError'?'Source response was not valid JSON':error.message||String(error))+(error.code?' ['+error.code+']':'');
     return diagnostic(message,env)+(error.cause!==undefined?' Cause: '+diagnostic(error.cause,env,seen):'');
   }
   let text=String(error);
-  for(const secret of [env.SGL_TOKEN,env.SGL_COOKIE,env.SGL_RETURNED_TOKEN])if(secret)text=text.split(secret).join('[redacted]');
+  for(const secret of [env.SGL_TOKEN,env.SGL_COOKIE,env.SGL_RETURNED_TOKEN,env.RUNNER_KEY])if(secret)text=text.split(secret).join('[redacted]');
+  text=text.replace(/([\"']?cookie[\"']?\s*[:=]\s*)[^\r\n]*/gi,'$1[redacted]').replace(/([\"']?(?:_t|access_token|refresh_token|token)[\"']?\s*[:=]\s*)(?:\"[^\"]*\"|'[^']*'|[^\s,;}]+)/gi,'$1[redacted]');
   return text.replace(/Bearer\s+[^\s"'<>]+/gi,'Bearer [redacted]').slice(0,2000);
 }
 export default {
+  diagnostic,
   async fetch(request, env) {
     const url=new URL(request.url), pathname=url.pathname.replace(/\/+$/, "") || "/";
     if(request.method!=="GET") return reply({message:"GET only"},405);
@@ -139,7 +141,7 @@ export default {
       }
     } catch (error) {
       console.error(JSON.stringify({message:"Source fetch or protected response decoding failed",stage,upstreamStatus,error:diagnostic(error,{...env,SGL_RETURNED_TOKEN:returnedToken})}));
-      return reply({message:"Source fetch or protected response decoding failed",statusCode:502},502);
+      return reply({message:"Source fetch or protected response decoding failed",reason:diagnostic(error,{...env,SGL_RETURNED_TOKEN:returnedToken}),stage,upstreamStatus,statusCode:502},502);
     }
   }
 };

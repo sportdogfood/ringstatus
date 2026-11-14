@@ -1,5 +1,24 @@
 # wef-schedules-decoded
 
+## Token acquisition and error capture — November 12, 2026
+
+### Do not rediscover these recorded failures
+
+Use the existing **Repeat incident checks**, **Recovery coverage and 60-day history**, dated evidence and Airtable `decode-change-log` together. They include October empty-payload/redirect/Data diagnostics, November header isolation, direct TLS/CF-Worker behavior, runner/tunnel recovery, shared pause, timeout alignment, token acquisition, returned-token replay, clock linking and saved-lane preparation. A historical workaround is not automatically an active step.
+
+- The health caller's default Python User-Agent caused Cloudflare403/error1010. Explicit `Mozilla/5.0` fixed that caller; the normal13:45Eastern check verified nine rings throughrunner. Evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-health-caller-user-agent-20261112/`. This is distinct from an SGL token/source failure.
+- The exact installed runner differs from the repository copy: its existing Windows defaults and returned-token callback must be preserved. Use the dated `baseline-runtime` and `candidate-runtime` pair for that target; do not overwrite it with an unadapted repository copy.
+- Clock rows link only an available exact source-date day. The old November10selected-day fallback is **Superseded** in Airtable; no November10canonical day was invented. The newer exact-date change has its own verified record.
+- HTTP200 without `_t`, HTTP200 with `{}`, decode failure, transport failure and token replay are separate cases. Read actual lane/stage/status/reason and capture first. Preserve the one-second pause, exact show/date/ID and existing rules. No source call, restart, retry, credential change or collector run follows merely from reading the runbook.
+
+The current Airtable log also records the November11returned-token correction and November12caller, exact-date clock and token/error releases. Its entries link to original proof; they do not claim excluded class failures recovered.
+
+Worker `92cc485b-d86c-4d36-bb7b-1f18a865d02d` adds only the owner-approved token/error correction. When the config endpoint returns HTTP 200 without `_t`, token acquisition tries the existing Windows then Android User-Agents, spaced one second apart, and stops at the first valid anonymous token. Other HTTP errors and invalid/expired/account tokens still fail without those extra attempts. Normal data-request retries, URLs, credentials and pause are unchanged.
+
+Original failure reason, stage, upstream status, selected lane/profile, safe response headers and nested transport cause now survive into existing Fast captures and failed preparation manifests. Credentials are redacted. The exact installed runner retained its working Windows headers and returned-token callback; its existing relay task restarted once to load error responses. No collector or tunnel task was started.
+
+Cloudflare preview used a controlled original-profile missing-token response, then obtained a real Windows token and nine decoded rings for November 14. All three token profiles currently work independently; the historical omission was not reproduced or attributed solely to User-Agent. Preview failure injection also verified the real shared wrapper and Fast capture preserve a multiline socket cause/stage/upstream status without credentials. Independent Code Review and offline tests passed before deployment. Scheduled collection, native saving, separate linking and logging completed for November12–15 by20:53:35Z with zero new source/save errors. November14 requested no classes: this is not class-coverage acceptance. See [the token failure history and normalized review benchmarks](TOKEN-RECOVERY.md); evidence is `C:/Users/gombc/Documents/Codex/outputs/wef-token-acquisition-error-capture-20261112/`.
+
 Updated **11 November 2026, America/New_York**. README version **2026.11.11.1**. Operating lock version **2026.11.08.1**: [locked baseline and change boundary](VERIFIED-BASELINE.md).
 
 ## Current operating state

@@ -4,6 +4,9 @@ Updated November 10, 2026, America/New_York.
 
 ## Installed recovery order
 
+Current November12 token/error delta: config HTTP200 missing `_t` tries original, Windows, then Android token User-Agents, with one-second spacing and first-valid-token stop. Other config errors/invalid tokens stop immediately. Data recovery order below is unchanged. Failure captures now retain actual reason, stage, upstream/token status and safe diagnostic headers, plus nested socket cause. Read them instead of interpreting the generic502 alone. Preserve exact installed runner header/token behavior using its own reviewed baseline.
+
+
 The permanent runner is first. If it fails or returns unusable data, the existing Cloudflare fallback tries these profiles in order.
 
 1. `original-header`

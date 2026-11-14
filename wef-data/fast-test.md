@@ -260,3 +260,53 @@ Schedule diffs were captured as field/old/new. Example: Nov13 schedule key `15|2
 This verification does not declare the historically failed class endpoints recovered: their existing failure marks remain and exclude their requests as agreed. No history, failed marks or business records were manually repaired.
 
 Evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-fast-md-exact-20261112/per-date/utf8/scheduled-verification.json` and `native-readback.json`. Independent reviews are retained under the per-date and UTF-8 `independent-review/` directories; the earlier failing releases are historical evidence.
+
+
+## Approved Git latest schedule/classes — November 12, 2026, 5:38 p.m. Eastern
+
+The owner requested separate schedule/class folders, automatic Git diffs and Airtable consuming the latest data. The existing scheduled collection, saving and linking tasks remain separate; no source URL, pause, rule, credential, cadence or manual collector changes.
+
+1. Collection retains complete responses/errors in the existing local captures, once per eligible request.
+2. After that date finishes collection, the independent saver writes successful payloads into the existing `ringstatus-data` repository, isolated branch `codex/fast-snapshots`: `schedules/{customer}/{show}/{date}.json` and `classes/{customer}/{show}/{date}/{ring}-{class}.json`. A failed response never replaces a good class payload. Existing data-repository main and unrelated commits are not published.
+3. Git compares stable payloads against the last successfully saved revision for that exact show/date. Random encrypted schedule `_` and capture/observation clocks are not included in comparison. Full public class payloads are retained.
+4. The saver reads changed payloads from the exact new Git commit. Identical schedule/classes are skipped. Within a changed class, existing unchanged mapped records are skipped. Existing error-mark writes continue separately. An unsuccessful save does not advance the applied Git baseline.
+5. The existing independent linker fills required empty native links. The same actual date still waits for its previous saving and linking to finish. Other dates continue.
+
+Git publication/compare details and the commit are recorded in each `.saved` receipt; its `.diff` file retains Git's old/new changes. Source captures/error history remain unchanged. Git failure is reported through the existing saver error log with captures retained. No new task, timer, source retry or trouble pass is added. Git reduces repeated saving; fresh source requests are still required to discover changes.
+
+Offline: eight disposable Git/saver tests PASS; syntax PASS; single-agent Code Review COMPLETE/PASS. Installed at 22:38:36 UTC. Scheduled proof is pending; installation alone is not acceptance. Evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-git-latest-20261112/`.
+
+
+Scheduled Git verification: the 17:39 collection published November12/13/14 schedule payloads and November13/14 class payloads to `codex/fast-snapshots`. November13 saved 56 changed native records; November14 saved 110; both first passes finished linking without new saving/linking errors. The 17:45 November13 repeat fetched the same 48 class payloads; its scheduled saver found zero changed Git files and made zero business writes. Native Data run readback confirms Succeeded, records 0, errors 0. Operational run/log writes remain separate from business-data writes. November15's source preparation failed because config omitted `_t`; it saved no false payload and is not claimed recovered. No manual collectors ran. Full receipts/remote/native readbacks: `C:/Users/gombc/Documents/Codex/outputs/wef-git-latest-20261112/scheduled-verification.json`.
+
+
+## Latest-version Git index and access-only alerts — November 12, 2026
+
+Owner approved using existing ringstatus-data with a latest index for the Airtable consumer and prioritizing speed. The sole existing independent saver Git writer publishes root `index.json` on `codex/fast-snapshots` before consuming data. The index is keyed by customer/show/date and records the latest successful schedule/class file paths with original observed-at timestamps, current pass/run/time and redacted errors. Failed or omitted payloads retain last good paths/timestamps. Git commits data and index together; Airtable mapping reads paths/payloads/times from that exact commit and skips unchanged data. It no longer reopens local class capture bodies when indexed data/time is supplied. Full local captures/history remain.
+
+No second Git writer or new task, timer, gate, source retry or concurrency setting. Source requests, URLs, pause, native keys/results/links, independent collection/saving/linking and same-date sequencing are unchanged. This adds the explicit latest-index contract; collection speed must still be measured from scheduled receipts rather than assumed. Legacy in-flight capture consumption remains compatible.
+
+The existing hourly alert scope now documents individual class errors without class-level failure/recovery notices. Whole schedule/class-lane access failures and actual saving/linking/logging/cleanup/observation failures remain reportable. No error history or failure checkbox was cleared. Cadence/single health request is unchanged and the automation update was read back.
+
+Eleven offline producer/consumer/Git tests and syntax passed; single-agent Code Review COMPLETE/PASS before installation. Natural scheduled acceptance is pending. Evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-git-index-20261112/`.
+
+
+Scheduled index acceptance: November14 attempt `25e171e9-40ba-432f-9118-e4f0c32ccb38` collected 94 classes in40.484seconds; independent saving took6.955seconds and made0 business writes because payloads were unchanged. November15 attempt `d2186a6b-d3c3-4784-9e7c-22595e07f82d` collected4 in8.234seconds, saved in5.579seconds with0 business writes. Native run readback: both Succeeded/0errors. All98 class bodies and original observation times matched their exact indexed Git commit. Both passes linked by23:17:26.805Z; saving/linking log delivery succeeded. Full November14 collection-to-link time was308.052seconds (5m8s), including existing scheduled stage waits and linker reads. The index is working; this is not a claim that the complete workflow finishes in47seconds. Source loop/task cadences were preserved. Evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-git-index-20261112/scheduled-verification.json` and `native-readback.json`.
+
+
+## Approved ready-input triggering — November 12, 2026, 9 p.m. Eastern
+
+The existing collector now requests existing `wef-data-save` after a completed capture, including captured partial results. It does not wait for saving. Each actual date's completed saving receipt immediately requests existing `wef-data-linking` before the saver processes another date or delivers logs. It does not wait for linking. No source invocation or data retries are added. Skipped/Deferred source/no finished save requests no new stage.
+
+Both existing stage tasks use Windows' built-in Queue instance policy so busy-stage wake-ups are retained without overlapping copies. Their old periodic triggers were disabled after natural readiness proof; tasks remain enabled on demand. Collector task XML/cadence is unchanged. Stage task actions, principals, credentials and every other setting match the original exported XML; comparison passed. No new task, custom queue, service or runtime data gate. The same actual date still waits until its prior saving and linking are complete. A task-start failure is retained as an actual trigger error with no self-retry.
+
+Scheduled proof: November14 attempt `1e669843-19c4-4c7e-a6ed-681ff5fca541` collected94 valid classes, saved79 acknowledged business writes and linked in101.574seconds (1m42s), compared with the earlier same-date94-class308.052seconds (5m8s). Source completed02:00:53.977Z; saver accepted the ready request02:00:54.078Z, began02:00:55.490Z, saved02:01:13.081Z, requested linker02:01:13.400Z; linker began02:01:13.685Z and completed02:01:59.103Z. The latter starts before the old periodic linker boundary.
+
+After timer removal, selected Day0/November13 attempt `4744b050-2e37-445a-b839-e7cc044dc9bc` collected48 classes, saved3 acknowledged writes and linked in91.294seconds (1m31s). Native runs for both are Succeeded/0errors. Subsequent same-date collection began02:06:15.359Z, after prior link completion02:04:46.734Z. Saver/linker log delivery succeeded; no trigger errors. A later November14 pass had individual source class failures, and November15/next November13 preparation had the existing missing-_t error; these were retained and are not claimed fixed by trigger changes. Individual class failures remain documentation-only. No failed marks were cleared, no manual source or collector runs occurred.
+
+Review: fifteen offline Node/Python tests, syntax and effective task-definition comparison PASS; single-agent Code Review COMPLETE/PASS before installation. Evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-ready-triggers-20261112/`, including `scheduled-verification.json`, `native-readback.json`, exported final task XML and `review/`. Unchanged linker reads still take time; this change removes timer waits, not its mapping/read implementation.
+
+
+## November 13 — approved Day 0 failure-checkbox correction
+
+Day 0 no longer excludes a class solely because a matching schedule row has `class-detail-failed` checked. This supersedes the failed-class exclusion above for Day 0 only. Keep the checkbox and error history. Normal exclusions, priority order, confirmed Live ownership, separate saving/linking and Days 1–4 behavior stay unchanged. Each eligible class is attempted once per scheduled pass; no manual collectors. Test/review and scheduled verification evidence: `C:/Users/gombc/Documents/Codex/outputs/wef-day0-failure-exclusion-20261113/`. Natural 9 p.m. Eastern verification: November14 selected;89 class requests,32 normal-rule skips,0 Live skips. All89 public responses were HTTP200 with `{}`;zero valid class payloads. Saving completed9:01:50p.m.;linking completed9:02:55p.m. The checkbox correction worked; source acquisition failed. No class freshness or new class saves are claimed. No further runtime patch or manual retry was made.

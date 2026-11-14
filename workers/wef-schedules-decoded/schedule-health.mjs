@@ -11,7 +11,7 @@ export async function scheduleHealth(request,env,{original,alternate,renew,store
   if(defaults.length!==1||!Number.isSafeInteger(defaults[0].fields.show_id)||defaults[0].fields.show_id<=0)throw Error('Exactly one valid default show required');
   show=defaults[0];
   const ping=new URL('/schedule',request.url);ping.search=new URLSearchParams({date:'00/00/00',show_id:String(show.fields.show_id),customer_id:'15'});
-  for(let round=0;round<2&&!successful;round++){
+  for(let round=0;round<2&&!successful&&!renewalFailure;round++){
    if(round){
     await sleep(1000);
     try{await renew('schedule-health-recovery',failure=>{renewalFailure=failure;});}
@@ -27,7 +27,8 @@ export async function scheduleHealth(request,env,{original,alternate,renew,store
      successful=response.ok&&response.headers.get('x-rs-decoded')==='1'&&String(data?.show?.show_id)===String(show.fields.show_id)&&/^\d{4}-\d{2}-\d{2}$/.test(data?.show_date||'')&&Array.isArray(data?.rings);
      attempts.push({round:round+1,profile,lane:response.headers.get('x-rs-source-lane')||'cloudflare-fallback',status,usable:successful,...details});
     }catch{attempts.push({round:round+1,profile,status:null,usable:false,reason:'Request failed',...details});}
-    if(successful)break;
+    if(details.stage==='token-before-schedule')renewalFailure=details;
+    if(successful||renewalFailure)break;
    }
   }
   const date=successful?data.show_date:localDate(at);
@@ -41,7 +42,7 @@ export async function scheduleHealth(request,env,{original,alternate,renew,store
     const id=Number(sample.class_id),classPing=new URL('/classes/'+id,request.url);
     classPing.search=new URLSearchParams({show_id:String(show.fields.show_id),customer_id:'15'});
     classCheck={ok:false,status:null,class_id:id,endpoint:classPing.pathname+classPing.search};
-    for(let round=0;round<2&&!classCheck.ok;round++){
+    for(let round=0;round<2&&!classCheck.ok&&!renewalFailure;round++){
      if(round){
       await sleep(1000);
       try{await renew('class-health-recovery',failure=>{renewalFailure=failure;});}
@@ -58,7 +59,8 @@ export async function scheduleHealth(request,env,{original,alternate,renew,store
        if(classCheck.ok)classCheck.trips=payload.trips.length;
        attempts.push({endpoint:classCheck.endpoint,round:round+1,profile,lane:response.headers.get('x-rs-source-lane')||'cloudflare-fallback',status:response.status,usable:classCheck.ok,...details});
       }catch{attempts.push({endpoint:classCheck.endpoint,round:round+1,profile,status:null,usable:false,reason:'Class request failed',...details});}
-      if(classCheck.ok)break;
+      if(details.stage==='token-before-schedule')renewalFailure=details;
+      if(classCheck.ok||renewalFailure)break;
      }
     }
    }

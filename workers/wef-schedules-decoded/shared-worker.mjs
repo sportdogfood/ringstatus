@@ -1,3 +1,4 @@
+import decoder from './worker.js';
 import {scheduleHealth} from './schedule-health.mjs';
 import { publicRoute } from './public-live.mjs';
 import { fetchFallback, renewFallbackToken } from './fallback.mjs';
@@ -24,17 +25,21 @@ async function collectThroughLane(request,env,mode){
   if(mode==='trouble'&&(saved?.lane||saved?.exhausted))
     selected=alternatives[(saved.next??0)%alternatives.length];
   const attempt=async choice=>{
-    let response,reason='',upstream=null;
+    let response,reason='',upstream=null,failureStage=null,tokenStatus=null;
     if(choice.lane==='runner'){
       try{
         const target=new URL(env.RUNNER_ORIGIN);target.pathname=url.pathname;target.search=url.search;
         if(target.protocol!=='https:')throw Error('Invalid runner origin');
         response=await fetch(target,{headers:{Authorization:'Bearer '+env.RUNNER_KEY},redirect:'manual',cache:'no-store',signal:AbortSignal.timeout(30000)});
-      }catch{reason='runner-unavailable';}
+      }catch(error){
+        reason='runner-unavailable: '+decoder.diagnostic(error,env);
+      }
     }else{
       response=await fetchFallback(request,env,{profile:choice.profile,report:details=>{
         if(Number.isInteger(details.schedule_upstream_status))upstream=details.schedule_upstream_status;
         if(details.reason)reason=details.reason;
+        if(details.stage)failureStage=details.stage;
+        if(Number.isInteger(details.token_http_status))tokenStatus=details.token_http_status;
         env.SGL_HEALTH_REPORT?.(details);
       }});
     }
@@ -43,6 +48,15 @@ async function collectThroughLane(request,env,mode){
       (isClass?String(payload.class?.class_id)===url.pathname.split('/')[2]:Array.isArray(payload.rings)&&
         String(payload.show?.show_id)===url.searchParams.get('show_id')&&
         (!payload.date||payload.date===url.searchParams.get('date')));
+    if(!usable&&!response?.ok){
+      const detail=await response?.clone().json().catch(()=>null);
+      if(Number.isInteger(detail?.upstreamStatus))upstream=detail.upstreamStatus;
+      if(typeof detail?.stage==='string')failureStage=detail.stage;
+      if(detail?.reason||(!reason&&detail?.message)){
+        reason=`${choice.lane}-http-${response.status}: ${detail.reason||detail.message}`;
+        reason=decoder.diagnostic(reason,env);
+      }
+    }
     if(!usable&&!reason)reason=!response?.ok?`${choice.lane}-http-${response?.status??502}`:
       response.headers.get('x-rs-decoded')!=='1'?'response-undecoded':'empty-invalid-or-wrong-identity';
     const headers=new Headers({'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});
@@ -51,7 +65,7 @@ async function collectThroughLane(request,env,mode){
     if(choice.profile)headers.set('X-RS-Header-Profile',choice.profile);
     headers.set('X-RS-Recovery-State',usable?(saved?.lane?'known':'discovered'):'deferred');
     if(upstream!==null)headers.set('X-RS-Upstream-Status',String(upstream));
-    if(!usable)headers.set('X-RS-Failure-Reason',reason);
+    if(!usable)headers.set('X-RS-Failure-Reason',reason.replace(/[^\x20-\x7e]/g,' '));
     if(usable){
       const record={lane:choice.lane,...choice.profile?{profile:choice.profile}:{}};
       await storage.put(endpoint,record);await storage.put(family,record);
@@ -60,10 +74,10 @@ async function collectThroughLane(request,env,mode){
     await response?.body?.cancel();
     headers.delete('X-RS-Decoded');headers.delete('Content-Length');headers.delete('Content-Encoding');
     const status=response&&response.status>=400?response.status:502;
-    return {usable:false,response:reply({message:'Source request deferred',reason,statusCode:status},status,Object.fromEntries(headers))};
+    return {usable:false,tokenFailure:failureStage==='token-before-schedule',response:reply({message:'Source request deferred',reason,statusCode:status,...(failureStage?{stage:failureStage}:{}),...(upstream!==null?{upstreamStatus:upstream}:{}),...(tokenStatus!==null?{tokenHttpStatus:tokenStatus}:{})},status,Object.fromEntries(headers))};
   };
   last=await attempt(selected);
-  if(last.usable||mode==='defer')return last.response;
+  if(last.usable||last.tokenFailure||mode==='defer')return last.response;
   if(saved?.lane||saved?.exhausted){
     await storage.put(endpoint,{...saved,next:((saved.next??0)+1)%alternatives.length});
     return last.response;
@@ -78,7 +92,7 @@ async function collectThroughLane(request,env,mode){
       await new Promise(resolve=>setTimeout(resolve,1000));
       await last.response.body?.cancel();
       last=await attempt({lane:'cloudflare-fallback',profile});
-      if(last.usable)return last.response;
+      if(last.usable||last.tokenFailure)return last.response;
     }
   }
   await storage.put(endpoint,{exhausted:true});
@@ -140,8 +154,9 @@ export const sourceHandler = {
           if(index||round)await new Promise(resolve=>setTimeout(resolve,1000));
           response=await fetchFallback(request,env,{profile:index||round?profile:undefined,report:env.SGL_HEALTH_REPORT});
           const payload=response.ok?await response.clone().json().catch(()=>null):null;
+          const tokenFailure=!response.ok&&(await response.clone().json().catch(()=>null))?.stage==='token-before-schedule';
           const usable=response.ok&&(publicFeed||response.headers.get('x-rs-decoded')==='1'&&payload&&typeof payload==='object'&&!Array.isArray(payload)&&Object.keys(payload).length>0);
-          if(usable||!recover){
+          if(usable||!recover||tokenFailure){
             const headers=new Headers(response.headers);headers.set('X-RS-Source-Lane','cloudflare-fallback');
             if(recover)headers.set('X-RS-Header-Profile',profile);
             return new Response(response.body,{status:response.status,headers});

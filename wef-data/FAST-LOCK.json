@@ -1,5 +1,5 @@
 {
-  "version": "2026.11.12.3",
+  "version": "2026.11.12.7",
   "date": "2026-11-12",
   "timezone": "America/New_York",
   "created_at": "2026-11-12T17:09:17.833628+00:00",
@@ -24,7 +24,7 @@
     {
       "path": "wef-data/fast-entry.js",
       "role": "locked collection/save/link/dependency",
-      "sha256": "9bf9ea5e895dfad279f7af35ea9fa2520f76338eccddabdc61391a9240b52042"
+      "sha256": "2a92b84af60950cf06af1d1ecc8fa66e14394f7e5753c0cd23c3858d156e7719"
     },
     {
       "path": "wef-data/fast-hidden.vbs",
@@ -34,12 +34,12 @@
     {
       "path": "wef-data/fast-source.js",
       "role": "locked collection/save/link/dependency",
-      "sha256": "daa6fc0c143ecf5810f53d60ae63ab721071eb82bde1c6fe5498a5b77fb4b6f2"
+      "sha256": "84dbfe6258a4982d02e36322ea2816ad3cd187d7a23b30a28cd5a042986f6607"
     },
     {
       "path": "wef-data/fast_workflow.py",
       "role": "locked collection/save/link/dependency",
-      "sha256": "8facc4495f0c3983b4111772b05eff24c529db965ccb124934e5fa55ff6ad8e1"
+      "sha256": "63a6b522e072a1c44ca55d3226e8d62dfc028dbee6ca53ab43687c09e5404f73"
     },
     {
       "path": "wef-data/fast_linker.py",
@@ -105,12 +105,17 @@
       "path": "wef-data/logging-schema.json",
       "role": "locked collection/save/link/dependency",
       "sha256": "f437a7b750dff73d32b7e4b65742c8f355cb7ef0b53c502986ed5a8b6bfd9292"
+    },
+    {
+      "path": "wef-data/fast_snapshots.py",
+      "role": "Git latest payloads and diff for independent saver",
+      "sha256": "43a21bf74d571a8cfe1a5602580687269ebfee98ed8b2c7b3d033be3df933338"
     }
   ],
   "readme": {
     "path": "wef-data/FAST-README.md",
     "role": "dated operating documentation",
-    "sha256": "990b20792d760a3be69c6104eef7d572fbdf3aeabf5c7e690d492d09ffc5b65a"
+    "sha256": "628ec1dc1798384d459a885fe512eba3155e145c83bfd6136e93437c59309229"
   },
   "observed_support_files": [
     {
@@ -269,8 +274,8 @@
     "Scheduled verification of updated cleanup and automatic Fast owner notices pending",
     "Periodic Data review activation/routing and shared schedule-app propagation remain unverified"
   ],
-  "collector_baseline_version": "2026.11.12.1",
-  "updated_at": "2026-11-12T17:37:03.326359+00:00",
+  "collector_baseline_version": "2026.11.12.7",
+  "updated_at": "2026-11-13T02:08:21.397150+00:00",
   "support_revision": {
     "version": "2026.11.12.3",
     "evidence": "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-fast-support-20261112",
@@ -279,5 +284,51 @@
     "scheduled_cleanup": "Pending next genuine Records event or 19:00 Eastern task",
     "scheduled_owner_alerts": "Pending next existing hourly heartbeat",
     "collector_changes": false
+  },
+  "token_error_release": {
+    "scope": "Owner-approved fallback token acquisition and redacted error capture only",
+    "worker_version": "92cc485b-d86c-4d36-bb7b-1f18a865d02d",
+    "code_review": "COMPLETE/PASS",
+    "preview": "PASS; controlled missing token; real Windows token and Nov14 nine rings",
+    "runner_headers_and_returned_token_preserved": true,
+    "credentials_unchanged": true,
+    "scheduled_verification": "Normal Nov12\u201315 source/native saving/linking/logging completed; zero new source/save errors. Nov14 zero class requests; not class-coverage acceptance. See TOKEN-RECOVERY.md and scheduled-verification.json.",
+    "evidence": "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-token-acquisition-error-capture-20261112"
+  },
+  "git_latest_release": {
+    "at": "2026-11-12T22:38:36.291398+00:00",
+    "evidence": "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-git-latest-20261112",
+    "review": "COMPLETE/PASS",
+    "offline": "8 tests passed",
+    "scheduled": "PASS: natural Nov12/13/14 snapshot publication/saving; Nov13/14 first passes linked. Nov13 scheduled repeat 48 identical classes, zero changed Git files and zero business writes, native run Succeeded/0 errors. Nov15 source preparation missing _t remains a separate failure.",
+    "branch": "codex/fast-snapshots",
+    "source_calls_unchanged": true
+  },
+  "git_index_release": {
+    "at": "2026-11-12T23:10:17.102509+00:00",
+    "evidence": "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-git-index-20261112",
+    "review": "COMPLETE/PASS",
+    "tests": "11 passed",
+    "scheduled": "PASS: published index, 98 indexed payload/time matches, native Nov14/15 runs Succeeded/0 writes/0 errors, both separate linked receipts and log delivery succeeded. Nov14 collection40.484s, saving6.955s, full collection-to-link308.052s; remaining delay is existing stage cadence plus linker reads, not an index speed guarantee.",
+    "source_loop_unchanged": true,
+    "index": "index.json",
+    "repository": "sportdogfood/ringstatus-data",
+    "branch": "codex/fast-snapshots"
+  },
+  "ready_trigger_release": {
+    "at": "2026-11-13T01:59:34.184022+00:00",
+    "evidence": "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-ready-triggers-20261112",
+    "code_review": "COMPLETE/PASS, single-agent",
+    "offline_tests": "15 passed; syntax and exact task XML delta checks passed",
+    "scheduler_changes": "Existing saver/linker Queue; periodic TimeTriggers disabled; tasks remain enabled on demand. Collector XML byte-identical. Actions/principals/credentials/other settings unchanged.",
+    "scheduled": "PASS: Nov14 94 classes/101.574s through linked, Nov13 48 classes/91.294s through linked, native Succeeded/0 errors, ready-task outcomes and log delivery pass; same-date next start after prior save/link. Existing source failures retained separately."
+  },
+  "day0_failure_checkbox_release": {
+    "at": "2026-11-14T01:27:55.696292+00:00",
+    "delta": "Day0 ignores saved failure checkbox; other days/rules/history unchanged",
+    "evidence": "C:\\Users\\gombc\\Documents\\Codex\\outputs\\wef-day0-failure-exclusion-20261113",
+    "code_review": "COMPLETE/PASS independent",
+    "offline_tests": "6 plus reviewer selector/filter/history check passed",
+    "scheduled": "Day0 natural9p.m.run requested89 formerly eligible classes;89 HTTP200 empty objects,zero class successes. Saved9:01:50p.m.,linked9:02:55p.m. Correction works; source acquisition failed; no class freshness claimed."
   }
 }
