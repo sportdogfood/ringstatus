@@ -55,8 +55,8 @@ export function phoneScroll(shell,content,onDirection){
   document.documentElement.style.setProperty('--phone-visible-top',(owner===window?(viewport?.offsetTop||0):top)+'px');
   document.documentElement.style.setProperty('--phone-visible-height',height+'px');
   shell.style.minHeight=height+'px';
-  // Measure only content, not a previous frame height or an overlay.
-  const pageHeight=Math.max(height,headerHeight+content.offsetHeight+navHeight+horseHeight);
+  // Rounded offsetHeight can leave a fractional overflow inside the frame.
+  const pageHeight=Math.max(height,shell.getBoundingClientRect().height);
   const background=document.documentElement.dataset.theme==='light'?'#fff':'#000';
   for(const doc of documents.slice(1)){
    doc.documentElement.style.setProperty('--schedule-phone-page-height',Math.ceil(pageHeight)+'px');
