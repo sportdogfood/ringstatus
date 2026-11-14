@@ -1,3 +1,4 @@
+import {profilePhoneScroll} from './phone-scroll.js';
 import {estimateWalk,withinRing} from './ring-distance.js';
 import {v3Button,v3Brand,v3Back,v3Shell,v3Footer,v3Search} from './components.js';
 import {smsAlerts as optinAlerts} from './optins/catalog.js';
@@ -188,7 +189,8 @@ function prototypeSections(){if(isOptinsView()&&state.recognized)return optinSec
  if(ui.tab==='outputs')return section('one','Outputs',outputRows(),owner()?2:1)+section('two','Activity','',0,true);
  return section('one','Recent activity',activityRows(),ui.activity.length)+section('two','Outputs',outputRows(),owner()?2:1,!ui.secondary||ui.tab==='activity');}
 
-function profileScroller(){return mobileLauncher.matches?document.scrollingElement:$('.stack-scroll');}
+let phonePage;
+function profileScroller(){return mobileLauncher.matches?(phonePage||document.scrollingElement):$('.stack-scroll');}
 function render(){recognizeRoot.dataset.theme=document.documentElement.dataset.theme;const signedIn=libraryPage||state.recognized;document.body.dataset.recognized=String(signedIn);recognizeRoot.hidden=false;launcherRoot.hidden=!signedIn;$('#preview-links').hidden=!signedIn||!previewParams.has('show-footer');if(!signedIn){$('#app').hidden=true;placeLauncher();$('#app').replaceChildren();return;}renderPreviewTools();const scroll=profileScroller()?.scrollTop||0;$('#preview-stage').append(launcherRoot);$('#app').innerHTML=v3Shell(v3Back(accountHeader())+brand(),profileRow()+actionRow()+tabRow()+searchRow()+sections(),'');placeLauncher();profileScroller().scrollTop=scroll;$('#app').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.parentElement.innerHTML=icon('user');},{once:true}));syncNavigationLocation();}
 
 function closeMenus(){if(activeMenu){const m=$('#'+activeMenu);if(m){m.hidePopover();m.hidden=true;}document.querySelector(`[data-menu="${activeMenu}"]`)?.setAttribute('aria-expanded','false');activeMenu=null;}}
@@ -555,3 +557,5 @@ document.addEventListener('click',event=>{
 });
 void readLocationPermission();
 addEventListener('focus',readLocationPermission);
+
+phonePage=profilePhoneScroll($('#app'),recognizeRoot.shadowRoot.querySelector('#launcher'));

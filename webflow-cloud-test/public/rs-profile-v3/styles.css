@@ -234,3 +234,11 @@ body{overflow-x:hidden}
 @media(min-width:601px) and (prefers-reduced-motion:reduce){#app.v3-panel,:root .v3-panel[data-placement="drawer"][data-width],:host #signin.v3-panel[data-placement="floating"]{transition:none}}
 
 .record-actions>.ui-button{border-radius:8px}.record-actions{gap:8px}
+
+@media(max-width:600px){
+ :root[data-profile-phone-page]{height:auto;min-height:100%;overflow-x:clip;overflow-y:visible}
+ :root[data-profile-phone-page] #app{padding-top:var(--profile-header-height);padding-bottom:var(--profile-nav-height)}
+ :root[data-profile-phone-page] #app>.stack-top{position:absolute;inset:0 0 auto;transform:translate3d(0,var(--profile-header-top,0px),0);will-change:transform}
+ :root[data-profile-phone-page] #app>.launcher-widget{position:absolute;inset:0 0 auto;transform:translate3d(0,var(--profile-nav-top,0px),0);will-change:transform}
+ :host([data-phone-page]) #launcher{position:absolute;top:var(--profile-identity-top);bottom:auto}
+}
